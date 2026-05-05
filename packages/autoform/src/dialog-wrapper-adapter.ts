@@ -5,7 +5,7 @@ import type {
   AutoFormNormalizedSection,
   JsonValue,
 } from '@incmix/core'
-import type { DialogWrapperJsonValue, DialogWrapperSchema, DialogWrapperSchemaProperty } from '@incmix/ui/elements'
+import type { DialogWrapperJsonValue, DialogWrapperSchema, DialogWrapperSchemaProperty } from './dialog-wrapper.props'
 import {
   type DialogWrapperAdapterWidget,
   dialogWrapperAdapterFormats,

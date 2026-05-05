@@ -1,4 +1,4 @@
-import type { DialogWrapperSchemaProperty } from '@incmix/ui/elements'
+import type { DialogWrapperSchemaProperty } from './dialog-wrapper.props'
 
 export const dialogWrapperAdapterWidgets = {
   text: 'text',
