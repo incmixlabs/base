@@ -1,38 +1,38 @@
 {
   "name": "@incmix/ajv",
-  "version": "0.0.0",
-  "description": "AJV adapter for Incmix Autoform schemas.",
-  "license": "MIT",
-  "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "version": "5.0.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
-  },
-  "files": ["dist"],
-  "sideEffects": false,
-  "publishConfig": {
-    "access": "public"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vantezzen/autoform"
   },
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
-    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
-  },
-  "dependencies": {
-    "@incmix/core": "workspace:*"
+    "lint": "biome lint .",
+    "lint:fix": "biome lint . --write",
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch"
   },
   "devDependencies": {
+    "@incmix/config": "workspace:*",
+    "@storybook/react": "catalog:",
+    "@storybook/react-vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
     "ajv": "catalog:",
+    "storybook": "catalog:",
     "tsup": "catalog:",
     "typescript": "catalog:"
   },
   "peerDependencies": {
     "ajv": "^8.0.0"
+  },
+  "dependencies": {
+    "@incmix/core": "workspace:*",
+    "ajv-formats": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
   }
 }

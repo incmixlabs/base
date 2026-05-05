@@ -1,0 +1,224 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Documentation/Theming" />
+
+# Theming
+
+This library provides flexible theming options from quick presets to fine-grained CSS variable control.
+
+## Theme Component
+
+The `Theme` component provides context for all child components:
+
+```tsx
+import { Theme } from "@incmix/ui";
+
+<Theme
+  appearance="light"
+  accentColor="blue"
+  radius="md"
+  scaling="100%"
+>
+  {children}
+</Theme>
+```
+
+### Nested Themes
+
+You can nest Theme components to create sections with different styles:
+
+```tsx
+<Theme accentColor="blue">
+  <Button>Blue Button</Button>
+
+  <Theme accentColor="green">
+    <Button>Green Button</Button>
+  </Theme>
+</Theme>
+```
+
+## Theme Context
+
+Access the current theme values with `useThemeContext`:
+
+```tsx
+import { useThemeContext } from "@incmix/ui";
+
+function ThemeDisplay() {
+  const theme = useThemeContext();
+
+  return (
+    <div>
+      <p>Mode: {theme.appearance}</p>
+      <p>Accent: {theme.accentColor}</p>
+      <p>Radius: {theme.radius}</p>
+    </div>
+  );
+}
+```
+
+## Theme Editor
+
+For advanced customization, use the `ThemeEditor` component. This provides a visual interface for customizing all design tokens.
+
+```tsx
+import { ThemeEditorProvider, ThemeEditor, ThemePreview } from "@incmix/ui";
+
+function ThemeCustomizer() {
+  return (
+    <ThemeEditorProvider>
+      <div className="flex">
+        <ThemeEditor className="w-80" />
+        <ThemePreview className="flex-1" />
+      </div>
+    </ThemeEditorProvider>
+  );
+}
+```
+
+### Theme Editor Features
+
+- **Color Customization**: Edit all color tokens in HSL format for both light and dark modes
+- **Typography**: Configure font families and letter spacing
+- **Layout**: Adjust border radius and spacing
+- **Presets**: Quick apply preset themes (zinc, slate, rose, blue, green, orange, violet)
+- **Export**: Copy generated CSS or JSON configuration
+
+### Using Theme Editor Hook
+
+```tsx
+import { useThemeEditor } from "@incmix/ui";
+
+function CustomControls() {
+  const editor = useThemeEditor();
+
+  return (
+    <div>
+      <button onClick={() => editor.setMode("dark")}>
+        Dark Mode
+      </button>
+      <button onClick={() => editor.applyPreset("blue")}>
+        Blue Theme
+      </button>
+      <button onClick={() => navigator.clipboard.writeText(editor.exportCSS())}>
+        Copy CSS
+      </button>
+    </div>
+  );
+}
+```
+
+## CSS Variables
+
+The theme system uses CSS custom properties. Override them in your CSS:
+
+```css
+:root {
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+  --primary: 240 5.9% 10%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 5.9% 10%;
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 5.9% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 5.9% 90%;
+  --input: 240 5.9% 90%;
+  --ring: 240 5.9% 10%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 240 5.9% 10%;
+  /* ... other dark mode values */
+}
+```
+
+### Color Format
+
+Colors use HSL format without the `hsl()` wrapper:
+
+```css
+--primary: 221.2 83.2% 53.3%;  /* Blue */
+```
+
+In Tailwind classes, use:
+
+```tsx
+<div className="bg-primary text-primary-foreground" />
+```
+
+## Preset Themes
+
+Built-in presets for quick styling:
+
+| Preset | Description |
+|--------|-------------|
+| `default` | Neutral zinc-based theme |
+| `zinc` | Cool gray tones |
+| `slate` | Blue-gray tones |
+| `rose` | Pink/rose accent |
+| `blue` | Classic blue accent |
+| `green` | Natural green accent |
+| `orange` | Warm orange accent |
+| `violet` | Purple/violet accent |
+
+Apply programmatically:
+
+```tsx
+const editor = useThemeEditor();
+editor.applyPreset("blue");
+```
+
+## Dark Mode
+
+### Automatic Detection
+
+Use `appearance="inherit"` to follow system preference:
+
+```tsx
+<Theme appearance="inherit">
+  {children}
+</Theme>
+```
+
+### Manual Toggle
+
+```tsx
+function DarkModeToggle() {
+  const [dark, setDark] = React.useState(false);
+
+  return (
+    <Theme appearance={dark ? "dark" : "light"}>
+      <Button onClick={() => setDark(!dark)}>
+        Toggle Dark Mode
+      </Button>
+      {children}
+    </Theme>
+  );
+}
+```
+
+### CSS Class
+
+The Theme component adds `.dark` class when in dark mode, compatible with Tailwind's dark mode:
+
+```js
+// tailwind.config.js
+module.exports = {
+  darkMode: "class",
+  // ...
+}
+```
+
+## See Also
+
+- [ThemeEditor Stories](/docs/elements-themeeditor--docs) - Interactive theme editor examples
+- [Theme Stories](/docs/elements-theme--docs) - Theme component examples

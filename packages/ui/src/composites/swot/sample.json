@@ -1,0 +1,51 @@
+{
+  "title": "COMPARISON",
+  "subtitle": "SWOT analysis template for comparing strategic position and execution risk.",
+  "icon": "circle-minus",
+  "label": "Strategy / Matrix",
+  "groups": [
+    {
+      "letter": "S",
+      "title": "Strengths",
+      "icon": "rocket",
+      "color": "success",
+      "items": ["Distinct product craft", "Fast release cadence", "Strong design language", "Reusable UI primitives"]
+    },
+    {
+      "letter": "W",
+      "title": "Weaknesses",
+      "icon": "circle-alert",
+      "color": "error",
+      "items": [
+        "Manual template curation",
+        "Limited composite catalog",
+        "Early analytics depth",
+        "Authoring workflow gaps"
+      ]
+    },
+    {
+      "letter": "O",
+      "title": "Opportunities",
+      "icon": "sparkle",
+      "color": "chart1",
+      "items": [
+        "Backend template registry",
+        "AI-assisted composition",
+        "Reusable chart primitives",
+        "Searchable strategy kits"
+      ]
+    },
+    {
+      "letter": "T",
+      "title": "Threats",
+      "icon": "triangle-alert",
+      "color": "accent",
+      "items": [
+        "Inconsistent authored data",
+        "Overly complex templates",
+        "Unclear dependency scope",
+        "Weak preview metadata"
+      ]
+    }
+  ]
+}

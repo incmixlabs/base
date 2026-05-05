@@ -1,0 +1,289 @@
+import React from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { AutoForm } from "@incmix/react";
+import { AjvProvider, withFieldConfig } from "../src/index";
+import type { JSONSchemaType } from "../src/index";
+
+// Sample data types
+interface ContactForm {
+  firstName: string;
+  lastName: string;
+  email: string;
+  age: number;
+  role: "admin" | "user" | "guest";
+  notifications: boolean;
+  bio?: string;
+}
+
+interface AdvancedForm {
+  personalInfo: {
+    name: string;
+    email: string;
+    birthDate: string;
+  };
+  preferences: {
+    newsletter: boolean;
+    theme: "light" | "dark" | "auto";
+  };
+  skills: string[];
+}
+
+const meta: Meta = {
+  title: "AJV Provider/AutoForm",
+  component: AutoForm,
+  parameters: {
+    layout: "centered",
+  },
+  decorators: [
+    (Story) => (
+      <div className="w-[600px] p-8">
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+// Simple Contact Form
+const contactSchema: JSONSchemaType<ContactForm> = {
+  type: "object",
+  properties: {
+    firstName: withFieldConfig(
+      {
+        type: "string",
+        minLength: 2,
+        maxLength: 50,
+        description: "Your first name"
+      },
+      {
+        label: "First Name",
+        placeholder: "John",
+        required: true
+      }
+    ),
+    lastName: withFieldConfig(
+      {
+        type: "string",
+        minLength: 2,
+        maxLength: 50,
+        description: "Your last name"
+      },
+      {
+        label: "Last Name",
+        placeholder: "Doe"
+      }
+    ),
+    email: withFieldConfig(
+      {
+        type: "string",
+        format: "email",
+        description: "Your email address"
+      },
+      {
+        label: "Email",
+        placeholder: "john.doe@example.com",
+        inputType: "email"
+      }
+    ),
+    age: withFieldConfig(
+      {
+        type: "number",
+        minimum: 18,
+        maximum: 120,
+        default: 25,
+        description: "Your age"
+      },
+      {
+        label: "Age",
+        placeholder: "25"
+      }
+    ),
+    role: withFieldConfig(
+      {
+        type: "string",
+        enum: ["admin", "user", "guest"],
+        default: "user",
+        description: "Your role in the system"
+      },
+      {
+        label: "Role",
+        fieldType: "select"
+      }
+    ),
+    notifications: withFieldConfig(
+      {
+        type: "boolean",
+        default: true,
+        description: "Receive email notifications"
+      },
+      {
+        label: "Email Notifications",
+        fieldType: "switch"
+      }
+    ),
+    bio: withFieldConfig(
+      {
+        type: "string",
+        maxLength: 500,
+        description: "Tell us about yourself"
+      },
+      {
+        label: "Biography",
+        placeholder: "Tell us about yourself...",
+        fieldType: "textarea"
+      }
+    )
+  },
+  required: ["firstName", "lastName", "email", "age", "role", "notifications"]
+};
+
+export const SimpleForm: Story = {
+  args: {
+    provider: new AjvProvider(contactSchema),
+    onSubmit: (values) => {
+      console.log("Form submitted with values:", values);
+      alert("Form submitted! Check console for values.");
+    },
+    showSubmitButton: true,
+    formProps: {
+      className: "space-y-4"
+    }
+  }
+};
+
+// Advanced Nested Form
+const advancedSchema: JSONSchemaType<AdvancedForm> = {
+  type: "object",
+  properties: {
+    personalInfo: withFieldConfig(
+      {
+        type: "object",
+        properties: {
+          name: {
+            type: "string",
+            minLength: 2,
+            description: "Full name"
+          },
+          email: {
+            type: "string",
+            format: "email",
+            description: "Email address"
+          },
+          birthDate: {
+            type: "string",
+            format: "date",
+            description: "Date of birth"
+          }
+        },
+        required: ["name", "email", "birthDate"]
+      },
+      {
+        label: "Personal Information",
+        fieldType: "object"
+      }
+    ),
+    preferences: withFieldConfig(
+      {
+        type: "object",
+        properties: {
+          newsletter: {
+            type: "boolean",
+            default: false
+          },
+          theme: {
+            type: "string",
+            enum: ["light", "dark", "auto"],
+            default: "auto"
+          }
+        },
+        required: ["newsletter", "theme"]
+      },
+      {
+        label: "Preferences",
+        fieldType: "object"
+      }
+    ),
+    skills: withFieldConfig(
+      {
+        type: "array",
+        items: {
+          type: "string"
+        },
+        default: []
+      },
+      {
+        label: "Skills",
+        fieldType: "array",
+        description: "Add your skills"
+      }
+    )
+  },
+  required: ["personalInfo", "preferences", "skills"]
+};
+
+export const NestedForm: Story = {
+  args: {
+    provider: new AjvProvider(advancedSchema),
+    onSubmit: (values) => {
+      console.log("Advanced form submitted:", values);
+      alert("Form submitted! Check console for values.");
+    },
+    showSubmitButton: true,
+    formProps: {
+      className: "space-y-6"
+    }
+  }
+};
+
+// Form with Validation Errors
+export const WithValidation: Story = {
+  args: {
+    provider: new AjvProvider(contactSchema),
+    onSubmit: async (values) => {
+      // Simulate server validation
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log("Form validated and submitted:", values);
+      alert("Form validated and submitted!");
+    },
+    showSubmitButton: true,
+    formProps: {
+      className: "space-y-4"
+    }
+  }
+};
+
+// Disabled Form
+export const DisabledForm: Story = {
+  args: {
+    provider: new AjvProvider(contactSchema),
+    onSubmit: (values) => {
+      console.log("Form submitted:", values);
+    },
+    showSubmitButton: true,
+    formProps: {
+      className: "space-y-4"
+    },
+    disabled: true
+  }
+};
+
+// Form with Custom Styles
+export const CustomStyled: Story = {
+  args: {
+    provider: new AjvProvider(contactSchema),
+    onSubmit: (values) => {
+      console.log("Styled form submitted:", values);
+      alert("Styled form submitted!");
+    },
+    showSubmitButton: true,
+    formProps: {
+      className: "space-y-6 p-6 bg-gray-50 rounded-lg shadow-lg"
+    },
+    submitButtonProps: {
+      className: "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg"
+    }
+  }
+};

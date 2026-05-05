@@ -1,0 +1,50 @@
+import { Heading } from '@bwalkt/ui/typography/heading/Heading'
+import { Text } from '@bwalkt/ui/typography/text/Text'
+
+<section className="space-y-4">
+  <Heading as="h1" size="3x">
+    Vanilla Extract
+  </Heading>
+  <Text size="xl" className="max-w-3xl text-muted-foreground">
+    Autoform UI uses Vanilla Extract for token definition, theme structure, and static CSS generation.
+  </Text>
+  <Text size="md" className="max-w-3xl text-muted-foreground">
+    That choice keeps the design system explicit and typed. Instead of burying visual decisions in component-level
+    overrides, the framework tries to express them at the token layer first.
+  </Text>
+</section>
+
+<section className="mt-10 space-y-4">
+  <Heading as="h2" size="lg">
+    Why It Matters
+  </Heading>
+  <div className="space-y-3">
+    <Text size="md">
+      <strong>Tokens stay first-class.</strong> Color, spacing, typography, radius, and density can be shaped as part
+      of the system instead of as scattered local exceptions.
+    </Text>
+    <Text size="md">
+      <strong>Static styles stay predictable.</strong> Shared component styling is compiled ahead of time rather than
+      being assembled ad hoc at runtime.
+    </Text>
+    <Text size="md">
+      <strong>Customization scales better.</strong> Teams can tune the framework by adjusting the variables it is built
+      on, instead of rewriting the components that consume them.
+    </Text>
+  </div>
+</section>
+
+<section className="mt-10 space-y-4">
+  <Heading as="h2" size="lg">
+    Reference
+  </Heading>
+  <Text size="md" className="max-w-3xl text-muted-foreground">
+    Read more at{' '}
+    <strong>
+      <a href="https://vanilla-extract.style/" target="_blank" rel="noreferrer" className="font-inherit text-inherit underline">
+        vanilla-extract.style
+      </a>
+    </strong>
+    .
+  </Text>
+</section>

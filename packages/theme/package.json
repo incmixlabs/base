@@ -1,12 +1,8 @@
 {
   "name": "@incmix/theme",
-  "version": "0.0.0",
-  "description": "Design tokens and theme primitives for Incmix UI.",
-  "license": "MIT",
+  "version": "0.1.0",
+  "private": true,
   "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -14,18 +10,15 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
-  "sideEffects": false,
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts --clean",
-    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
   },
   "devDependencies": {
+    "@incmix/config": "workspace:*",
     "tsup": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

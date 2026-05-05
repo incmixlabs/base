@@ -1,0 +1,79 @@
+import { Meta, Canvas, Source } from "@storybook/addon-docs/blocks";
+import * as RecipeStories from "./Recipes.stories";
+
+<Meta title="Documentation/Recipes" />
+
+# Recipes
+
+Common patterns and component combinations for building real applications.
+
+## Forms
+
+### Login Form
+
+A complete login form with email, password, remember me checkbox, and forgot password link.
+
+<Canvas of={RecipeStories.LoginForm} sourceState="shown" />
+
+### Settings Form
+
+A comprehensive settings form with profile fields, preferences, and notification toggles.
+
+<Canvas of={RecipeStories.SettingsForm} sourceState="shown" />
+
+## Data Display
+
+### User Profile Card
+
+A profile card displaying user avatar, name, verification badge, and action buttons.
+
+<Canvas of={RecipeStories.ProfileCard} sourceState="shown" />
+
+### Stats Dashboard
+
+A dashboard grid showing statistics with progress bars and change indicators.
+
+<Canvas of={RecipeStories.StatsDashboard} sourceState="shown" />
+
+## Overlays
+
+### Delete Confirmation
+
+An alert dialog for confirming destructive actions.
+
+<Canvas of={RecipeStories.DeleteConfirmation} sourceState="shown" />
+
+## Navigation
+
+### Tab Navigation
+
+Tabs with badge indicators and card content panels.
+
+<Canvas of={RecipeStories.TabNavigation} sourceState="shown" />
+
+## Loading States
+
+### Skeleton Loading
+
+A skeleton placeholder for loading states.
+
+<Canvas of={RecipeStories.SkeletonLoading} sourceState="shown" />
+
+### Button Loading
+
+A button with loading spinner state.
+
+<Canvas of={RecipeStories.ButtonLoading} sourceState="shown" />
+
+## Feedback
+
+### Status Callouts
+
+Different callout variants for various message types.
+
+<Canvas of={RecipeStories.StatusCallouts} sourceState="shown" />
+
+## See Also
+
+- [Component Stories](/docs/elements-button--docs) - Individual component examples
+- [Theming](/docs/documentation-theming--docs) - Customize your theme

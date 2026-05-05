@@ -1,0 +1,203 @@
+import { writeFileSync } from 'node:fs'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import {
+  amber,
+  amberDark,
+  blue,
+  blueDark,
+  brown,
+  brownDark,
+  crimson,
+  crimsonDark,
+  cyan,
+  cyanDark,
+  gray,
+  grayDark,
+  green,
+  greenDark,
+  indigo,
+  indigoDark,
+  lime,
+  limeDark,
+  mint,
+  mintDark,
+  orange,
+  orangeDark,
+  pink,
+  pinkDark,
+  plum,
+  plumDark,
+  purple,
+  purpleDark,
+  red,
+  redDark,
+  sky,
+  skyDark,
+  teal,
+  tealDark,
+  tomato,
+  tomatoDark,
+  violet,
+  violetDark,
+  yellow,
+  yellowDark,
+} from '@radix-ui/colors'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const ROOT = resolve(__dirname, '..')
+const OUTPUT_PATH = resolve(ROOT, 'src/theme/runtime-palette.generated.ts')
+
+const HUE_NAMES = [
+  'orange',
+  'tomato',
+  'red',
+  'crimson',
+  'pink',
+  'plum',
+  'purple',
+  'violet',
+  'indigo',
+  'blue',
+  'sky',
+  'cyan',
+  'teal',
+  'green',
+  'lime',
+  'mint',
+  'yellow',
+  'amber',
+  'brown',
+  'gray',
+] as const
+
+type HueName = (typeof HUE_NAMES)[number]
+type PaletteMode = 'light' | 'dark'
+type RadixScale = Record<string, string>
+
+const RADIX_SCALES: Record<HueName, Record<PaletteMode, RadixScale>> = {
+  orange: { light: orange, dark: orangeDark },
+  tomato: { light: tomato, dark: tomatoDark },
+  red: { light: red, dark: redDark },
+  crimson: { light: crimson, dark: crimsonDark },
+  pink: { light: pink, dark: pinkDark },
+  plum: { light: plum, dark: plumDark },
+  purple: { light: purple, dark: purpleDark },
+  violet: { light: violet, dark: violetDark },
+  indigo: { light: indigo, dark: indigoDark },
+  blue: { light: blue, dark: blueDark },
+  sky: { light: sky, dark: skyDark },
+  cyan: { light: cyan, dark: cyanDark },
+  teal: { light: teal, dark: tealDark },
+  green: { light: green, dark: greenDark },
+  lime: { light: lime, dark: limeDark },
+  mint: { light: mint, dark: mintDark },
+  yellow: { light: yellow, dark: yellowDark },
+  amber: { light: amber, dark: amberDark },
+  brown: { light: brown, dark: brownDark },
+  gray: { light: gray, dark: grayDark },
+}
+
+const PALETTE_STEPS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] as const
+
+const CONTRAST_BY_HUE: Record<HueName, string> = {
+  orange: 'oklch(0.25 0 0)',
+  tomato: 'oklch(1 0 0)',
+  red: 'oklch(1 0 0)',
+  crimson: 'oklch(1 0 0)',
+  pink: 'oklch(1 0 0)',
+  plum: 'oklch(1 0 0)',
+  purple: 'oklch(1 0 0)',
+  violet: 'oklch(1 0 0)',
+  indigo: 'oklch(1 0 0)',
+  blue: 'oklch(1 0 0)',
+  sky: 'oklch(0.25 0 0)',
+  cyan: 'oklch(1 0 0)',
+  teal: 'oklch(1 0 0)',
+  green: 'oklch(1 0 0)',
+  lime: 'oklch(1 0 0)',
+  mint: 'oklch(0.25 0 0)',
+  yellow: 'oklch(0.25 0 0)',
+  amber: 'oklch(0.25 0 0)',
+  brown: 'oklch(1 0 0)',
+  gray: 'oklch(1 0 0)',
+}
+
+function round(value: number) {
+  return parseFloat(value.toFixed(3)).toString()
+}
+
+function hexToOklch(hex: string): string {
+  if (!/^#[0-9a-fA-F]{6}$/.test(hex)) {
+    throw new Error(`Invalid hex color format: ${hex}`)
+  }
+
+  const r = parseInt(hex.slice(1, 3), 16) / 255
+  const g = parseInt(hex.slice(3, 5), 16) / 255
+  const b = parseInt(hex.slice(5, 7), 16) / 255
+
+  const toLinear = (channel: number) => (channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4)
+  const lr = toLinear(r)
+  const lg = toLinear(g)
+  const lb = toLinear(b)
+
+  const l = 0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb
+  const m = 0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb
+  const s = 0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb
+
+  const lc = Math.cbrt(l)
+  const mc = Math.cbrt(m)
+  const sc = Math.cbrt(s)
+
+  const lightness = 0.2104542553 * lc + 0.793617785 * mc - 0.0040720468 * sc
+  const a = 1.9779984951 * lc - 2.428592205 * mc + 0.4505937099 * sc
+  const bOk = 0.0259040371 * lc + 0.7827717662 * mc - 0.808675766 * sc
+
+  const chroma = Math.sqrt(a * a + bOk * bOk)
+  let hue = (Math.atan2(bOk, a) * 180) / Math.PI
+  if (hue < 0) hue += 360
+
+  return `oklch(${round(lightness)} ${round(chroma)} ${Math.round(hue)})`
+}
+
+function getRadixScale(hue: HueName, mode: PaletteMode): RadixScale {
+  const scale = RADIX_SCALES[hue]?.[mode]
+  if (!scale || typeof scale !== 'object') {
+    throw new Error(`Missing Radix color scale for ${hue} (${mode})`)
+  }
+  return scale as RadixScale
+}
+
+function buildPaletteVars(mode: PaletteMode): Record<string, string> {
+  const vars: Record<string, string> = {}
+
+  for (const hue of HUE_NAMES) {
+    const scale = getRadixScale(hue, mode)
+    for (const step of PALETTE_STEPS) {
+      const hex = scale[`${hue}${step}`]
+      if (!hex) {
+        throw new Error(`Missing Radix color token ${hue}${step} (${mode})`)
+      }
+      vars[`--${hue}-${step}`] = hexToOklch(hex)
+    }
+    vars[`--${hue}-contrast`] = CONTRAST_BY_HUE[hue]
+  }
+
+  return vars
+}
+
+const generated = `// Auto-generated by scripts/generate-runtime-palette-source.ts
+// Do not edit by hand.
+
+export const runtimePaletteVarsByMode = ${JSON.stringify(
+  {
+    light: buildPaletteVars('light'),
+    dark: buildPaletteVars('dark'),
+  },
+  null,
+  2,
+)} as const
+`
+
+writeFileSync(OUTPUT_PATH, generated)
+console.log(`Updated ${OUTPUT_PATH}`)

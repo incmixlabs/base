@@ -1,0 +1,172 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Documentation/Getting Started" />
+
+# Getting Started
+
+This guide will help you set up and start using the component library in your project.
+
+## Installation
+
+Install the package and its peer dependencies:
+
+```bash
+npm install @incmix/ui
+```
+
+### Peer Dependencies
+
+Make sure you have these installed:
+
+```bash
+npm install react react-dom tailwindcss @base-ui/react
+```
+
+## Tailwind Configuration
+
+Add the component library to your `tailwind.config.js`:
+
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@incmix/ui/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      // Design tokens are automatically included via CSS variables
+    },
+  },
+  plugins: [],
+};
+```
+
+## CSS Setup
+
+Import the design tokens CSS in your main entry file:
+
+```tsx
+// In your main.tsx or App.tsx
+import "@incmix/ui/design-tokens.css";
+```
+
+Or include in your CSS:
+
+```css
+@import "@incmix/ui/design-tokens.css";
+```
+
+## Theme Provider
+
+Wrap your application with the `Theme` component:
+
+```tsx
+import { Theme } from "@incmix/ui";
+
+function App() {
+  return (
+    <Theme accentColor="blue" appearance="light">
+      {/* Your app content */}
+    </Theme>
+  );
+}
+```
+
+### Theme Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `appearance` | `"light" \| "dark" \| "inherit"` | `"inherit"` | Color scheme mode |
+| `accentColor` | See colors below | `"indigo"` | Primary accent color |
+| `grayColor` | `"auto" \| "gray" \| "mauve" \| ...` | `"auto"` | Gray scale color |
+| `radius` | `"none" \| "small" \| "medium" \| "large" \| "full"` | `"medium"` | Border radius |
+| `scaling` | `"90%" \| "95%" \| "100%" \| "105%" \| "110%"` | `"100%"` | UI scaling |
+| `panelBackground` | `"solid" \| "translucent"` | `"translucent"` | Panel background style |
+
+### Accent Colors
+
+Available accent colors:
+`gray`, `gold`, `bronze`, `brown`, `yellow`, `amber`, `orange`, `tomato`, `red`, `ruby`, `crimson`, `pink`, `plum`, `purple`, `violet`, `iris`, `indigo`, `blue`, `cyan`, `teal`, `jade`, `green`, `grass`, `lime`, `mint`, `sky`
+
+## Basic Usage
+
+### Importing Components
+
+```tsx
+import { Button, Card, TextField } from "@incmix/ui";
+```
+
+### Example Form
+
+```tsx
+import { Button, TextField, Select, SelectItem, Card } from "@incmix/ui";
+
+function ContactForm() {
+  return (
+    <Card.Root>
+      <Card.Header>
+        <Card.Title>Contact Us</Card.Title>
+        <Card.Description>Fill out the form below</Card.Description>
+      </Card.Header>
+      <Card.Content>
+        <form className="space-y-4">
+          <TextField
+            label="Name"
+            placeholder="Enter your name"
+            required
+          />
+          <TextField
+            label="Email"
+            type="email"
+            placeholder="you@example.com"
+            required
+          />
+          <Select label="Subject">
+            <SelectItem value="general">General Inquiry</SelectItem>
+            <SelectItem value="support">Support</SelectItem>
+            <SelectItem value="feedback">Feedback</SelectItem>
+          </Select>
+          <Button type="submit" className="w-full">
+            Send Message
+          </Button>
+        </form>
+      </Card.Content>
+    </Card.Root>
+  );
+}
+```
+
+## TypeScript
+
+All components export their prop types:
+
+```tsx
+import type { ButtonProps, TextFieldProps } from "@incmix/ui";
+
+// Use in your custom components
+interface MyButtonProps extends ButtonProps {
+  icon?: React.ReactNode;
+}
+```
+
+## Design Tokens
+
+Access design tokens programmatically:
+
+```tsx
+import { designTokens, getElementStyles } from "@incmix/ui";
+
+// Get size-based styles
+const styles = getElementStyles({
+  size: "md",
+  variant: "solid",
+  color: "primary",
+});
+```
+
+## Next Steps
+
+- Browse the component stories in the sidebar
+- See [Theming](/docs/documentation-theming--docs) for customization options
+- Check [Recipes](/docs/documentation-recipes--docs) for common patterns

@@ -1,4 +1,9 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "include": ["src"]
+  "extends": "@incmix/config/react-library.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "baseUrl": "."
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

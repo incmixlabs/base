@@ -1,0 +1,221 @@
+.editor-DeviceOverlay {
+  --device-frame-color: color-mix(in oklch, var(--foreground) 28%, var(--background));
+  --device-bezel-color: color-mix(in oklch, var(--background) 88%, black 12%);
+  --device-overlay-tint: color-mix(in oklch, var(--background) 90%, white 10%);
+  --device-max-width: 1100px;
+
+  width: min(100%, var(--device-max-width));
+  margin-inline: auto;
+  position: relative;
+}
+
+.editor-DeviceOverlay__shell {
+  border: 2px solid var(--device-frame-color);
+  background: var(--device-bezel-color);
+  box-shadow:
+    0 20px 40px rgb(0 0 0 / 0.18),
+    inset 0 0 0 1px rgb(255 255 255 / 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.editor-DeviceOverlay__content {
+  background: var(--background);
+  min-height: 320px;
+  position: relative;
+  z-index: 1;
+}
+
+.editor-DeviceOverlay__grid {
+  min-height: 100%;
+  height: 100%;
+}
+
+.editor-DeviceOverlay__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.07) 0%, transparent 22%),
+    linear-gradient(125deg, transparent 18%, rgb(255 255 255 / 0.09) 24%, transparent 34%), var(--device-overlay-tint);
+  mix-blend-mode: soft-light;
+  z-index: 2;
+}
+
+.editor-DeviceOverlay[data-device="desktop"],
+.editor-DeviceOverlay[data-device="desktop-wide"],
+.editor-DeviceOverlay[data-device="tv"] {
+  padding-bottom: 8px;
+}
+
+.editor-DeviceOverlay[data-device="desktop"] .editor-DeviceOverlay__shell,
+.editor-DeviceOverlay[data-device="desktop-wide"] .editor-DeviceOverlay__shell,
+.editor-DeviceOverlay[data-device="tv"] .editor-DeviceOverlay__shell {
+  border-radius: 20px;
+  padding: 16px;
+}
+
+.editor-DeviceOverlay[data-device="desktop"] .editor-DeviceOverlay__content,
+.editor-DeviceOverlay[data-device="desktop-wide"] .editor-DeviceOverlay__content,
+.editor-DeviceOverlay[data-device="tv"] .editor-DeviceOverlay__content {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.editor-DeviceOverlay[data-device="desktop"] {
+  width: min(100%, 1440px);
+}
+
+.editor-DeviceOverlay[data-device="desktop"] .editor-DeviceOverlay__content {
+  min-height: 810px;
+}
+
+.editor-DeviceOverlay[data-device="desktop-wide"] {
+  width: min(100%, 1920px);
+}
+
+.editor-DeviceOverlay[data-device="desktop-wide"] .editor-DeviceOverlay__content {
+  min-height: 980px;
+}
+
+.editor-DeviceOverlay[data-device="tv"] {
+  width: min(100%, 2560px);
+}
+
+.editor-DeviceOverlay[data-device="tv"] .editor-DeviceOverlay__content {
+  min-height: 1440px;
+}
+
+.editor-DeviceOverlay__stand {
+  width: 140px;
+  height: 84px;
+  margin: 0 auto;
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--device-frame-color) 86%, white 14%),
+    var(--device-frame-color)
+  );
+  clip-path: polygon(42% 0, 58% 0, 64% 56%, 84% 56%, 90% 100%, 10% 100%, 16% 56%, 36% 56%);
+}
+
+.editor-DeviceOverlay[data-device="laptop"] {
+  width: min(100%, 1366px);
+  padding-bottom: 20px;
+}
+
+.editor-DeviceOverlay[data-device="laptop"] .editor-DeviceOverlay__shell {
+  border-radius: 14px 14px 10px 10px;
+  padding: 14px 14px 16px;
+}
+
+.editor-DeviceOverlay[data-device="laptop"] .editor-DeviceOverlay__content {
+  border-radius: 8px;
+  min-height: 768px;
+  overflow: hidden;
+}
+
+.editor-DeviceOverlay__base {
+  height: 20px;
+  width: calc(100% + 20px);
+  margin-left: -10px;
+  border-radius: 0 0 18px 18px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--device-frame-color) 76%, white 24%),
+    var(--device-frame-color)
+  );
+  box-shadow: 0 10px 20px rgb(0 0 0 / 0.2);
+}
+
+.editor-DeviceOverlay[data-device="tablet-portrait"],
+.editor-DeviceOverlay[data-device="tablet-landscape"] {
+  padding-bottom: 6px;
+}
+
+.editor-DeviceOverlay[data-device="tablet-portrait"] {
+  width: min(100%, 768px);
+}
+
+.editor-DeviceOverlay[data-device="tablet-landscape"] {
+  width: min(100%, 1024px);
+}
+
+.editor-DeviceOverlay[data-device="tablet-portrait"] .editor-DeviceOverlay__shell,
+.editor-DeviceOverlay[data-device="tablet-landscape"] .editor-DeviceOverlay__shell {
+  border-radius: 28px;
+  padding: 10px;
+}
+
+.editor-DeviceOverlay[data-device="tablet-portrait"] .editor-DeviceOverlay__content,
+.editor-DeviceOverlay[data-device="tablet-landscape"] .editor-DeviceOverlay__content {
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.editor-DeviceOverlay[data-device="tablet-portrait"] .editor-DeviceOverlay__content {
+  min-height: 1024px;
+}
+
+.editor-DeviceOverlay[data-device="tablet-landscape"] .editor-DeviceOverlay__content {
+  min-height: 768px;
+}
+
+.editor-DeviceOverlay[data-device="phone-small"],
+.editor-DeviceOverlay[data-device="phone"],
+.editor-DeviceOverlay[data-device="phone-large"] {
+  border-radius: 40px;
+}
+
+.editor-DeviceOverlay[data-device="phone-small"] {
+  width: min(100%, 360px);
+}
+
+.editor-DeviceOverlay[data-device="phone"] {
+  width: min(100%, 390px);
+}
+
+.editor-DeviceOverlay[data-device="phone-large"] {
+  width: min(100%, 430px);
+}
+
+.editor-DeviceOverlay[data-device="phone-small"] .editor-DeviceOverlay__shell,
+.editor-DeviceOverlay[data-device="phone"] .editor-DeviceOverlay__shell,
+.editor-DeviceOverlay[data-device="phone-large"] .editor-DeviceOverlay__shell {
+  border-radius: 40px;
+  padding: 12px;
+}
+
+.editor-DeviceOverlay[data-device="phone-small"] .editor-DeviceOverlay__content,
+.editor-DeviceOverlay[data-device="phone"] .editor-DeviceOverlay__content,
+.editor-DeviceOverlay[data-device="phone-large"] .editor-DeviceOverlay__content {
+  border-radius: 30px;
+  min-height: 780px;
+  overflow: hidden;
+}
+
+.editor-DeviceOverlay__notch {
+  width: 38%;
+  height: 22px;
+  border-radius: 0 0 14px 14px;
+  background: color-mix(in oklch, var(--device-bezel-color) 92%, black 8%);
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.editor-DeviceOverlay[data-compact="true"][data-device="desktop"] .editor-DeviceOverlay__content,
+.editor-DeviceOverlay[data-compact="true"][data-device="desktop-wide"] .editor-DeviceOverlay__content,
+.editor-DeviceOverlay[data-compact="true"][data-device="tv"] .editor-DeviceOverlay__content,
+.editor-DeviceOverlay[data-compact="true"][data-device="laptop"] .editor-DeviceOverlay__content,
+.editor-DeviceOverlay[data-compact="true"][data-device="tablet-landscape"] .editor-DeviceOverlay__content {
+  min-height: 460px;
+}
+
+.editor-DeviceOverlay[data-compact="true"][data-device="tablet-portrait"] .editor-DeviceOverlay__content,
+.editor-DeviceOverlay[data-compact="true"][data-device="phone-small"] .editor-DeviceOverlay__content,
+.editor-DeviceOverlay[data-compact="true"][data-device="phone"] .editor-DeviceOverlay__content,
+.editor-DeviceOverlay[data-compact="true"][data-device="phone-large"] .editor-DeviceOverlay__content {
+  min-height: 620px;
+}
