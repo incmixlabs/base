@@ -9,14 +9,11 @@
   },
   "exclude": [
     "dist",
-    "src/declarative/**",
-    "src/widgets/**",
     "src/**/*.test.ts",
     "src/**/*.test.tsx",
     "src/**/*.stories.ts",
     "src/**/*.stories.tsx",
     "src/stories/**",
-    "src/types/incmix-core-declarative-ui-examples.d.ts",
     "src/theme/helpers/**",
     "src/_internal/base-button.tsx"
   ]

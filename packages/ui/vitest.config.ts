@@ -16,24 +16,8 @@ export default defineConfig({
   resolve: {
     alias: [
       {
-        find: '@incmix/core/declarative-ui.examples',
-        replacement: path.resolve(__dirname, '../core/src/declarative-ui.examples.ts'),
-      },
-      {
         find: '@',
         replacement: path.resolve(__dirname, './src'),
-      },
-      {
-        find: '@incmix/core',
-        replacement: path.resolve(__dirname, '../core/src/index.ts'),
-      },
-      {
-        find: '@incmix/react-runner',
-        replacement: path.resolve(__dirname, '../react-runner/src/index.ts'),
-      },
-      {
-        find: '@incmix/ajv',
-        replacement: path.resolve(__dirname, '../ajv/src/index.ts'),
       },
       {
         find: '@incmix/theme',

@@ -58,9 +58,6 @@ const lightEntries = {
 }
 
 const featureEntries = {
-  charts: 'src/charts/index.ts',
-  'charts/core': 'src/charts/core.ts',
-  'charts/renderers': 'src/charts/chart-renderers.tsx',
   'compose/sidebar': 'src/compose/sidebar.ts',
   filter: 'src/elements/filter/index.ts',
   'form/date': 'src/form/date/index.ts',
