@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
+  type AppDocument,
   COMPONENT_REGISTRY_ENTRY_KIND,
   COMPONENT_REGISTRY_SCHEMA_VERSION,
-  type AppDocument,
   type ComponentRegistryEntry,
   type DeclarativeSyncAdapter,
   type DeclarativeSyncChangeEnvelope,

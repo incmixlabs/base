@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
-  createDbRelationshipsFromColumnReferences,
   createDbDiagramDocument,
+  createDbRelationshipsFromColumnReferences,
   toDbDiagrammerDocument,
   updateDbDiagramLayoutFromDiagrammer,
   validateDbDiagramDocument,

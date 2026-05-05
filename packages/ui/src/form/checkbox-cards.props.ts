@@ -23,4 +23,4 @@ const checkboxCardsRootPropDefs = {
   gap: PropDef<(typeof gridPropDefs.gap.values)[number]>
 }
 
-export { checkboxCardsSizes, checkboxCardsVariants, checkboxCardsRootPropDefs }
+export { checkboxCardsRootPropDefs, checkboxCardsSizes, checkboxCardsVariants }

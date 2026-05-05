@@ -5,6 +5,10 @@ dist/
 build/
 storybook-static/
 coverage/
+.tanstack/
+test-results/
+*.tsbuildinfo
+apps/docs/src/routeTree.gen.ts
 
 .DS_Store
 *.log

@@ -1,13 +1,13 @@
 'use client'
 
-import { normalizePageDocument } from '@bwalkt/core'
-import { DeclarativePageRenderer, type DeclarativeRendererRegistry } from '@bwalkt/ui/declarative/renderer'
-import { assignDeclarativePageContext, createDeclarativePageActor } from '@bwalkt/ui/declarative/runtime'
-import { type ViewportPreset, ViewportPreview, ViewportPreviewControls } from '@bwalkt/ui/editor/docs'
-import { Badge, Card, Tabs } from '@bwalkt/ui/elements'
-import { Heading } from '@bwalkt/ui/typography/heading/Heading'
-import { Text } from '@bwalkt/ui/typography/text/Text'
-import { resolveLocalWidgetsInPageDocument } from '@bwalkt/ui/widgets'
+import { normalizePageDocument } from '@incmix/core'
+import { DeclarativePageRenderer, type DeclarativeRendererRegistry } from '@incmix/ui/declarative/renderer'
+import { assignDeclarativePageContext, createDeclarativePageActor } from '@incmix/ui/declarative/runtime'
+import { type ViewportPreset, ViewportPreview, ViewportPreviewControls } from '@incmix/ui/editor/docs'
+import { Badge, Card, Tabs } from '@incmix/ui/elements'
+import { Heading } from '@incmix/ui/typography/heading/Heading'
+import { Text } from '@incmix/ui/typography/text/Text'
+import { resolveLocalWidgetsInPageDocument } from '@incmix/ui/widgets'
 import * as React from 'react'
 import {
   declarativeUiGrammarPressureApp,

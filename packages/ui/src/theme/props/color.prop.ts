@@ -202,13 +202,13 @@ const accentColorPropDef = {
 
 export {
   accentColorPropDef,
-  surfaceColorPropDef,
-  surfaceTonePropDef,
-  colorPropDef,
-  semanticColorPropDef,
   //
   accentColors,
-  semanticColors,
-  semanticColorKeys,
+  colorPropDef,
   grayColors,
+  semanticColorKeys,
+  semanticColorPropDef,
+  semanticColors,
+  surfaceColorPropDef,
+  surfaceTonePropDef,
 }

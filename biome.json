@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.14/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -25,11 +25,45 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "complexity": {
+        "noForEach": "warn",
+        "noStaticOnlyClass": "warn",
+        "noUselessSwitchCase": "warn",
+        "useFlatMap": "warn"
+      },
+      "correctness": {
+        "noConstantCondition": "warn",
+        "noConstAssign": "error",
+        "noGlobalObjectCalls": "error",
+        "noInvalidConstructorSuper": "error",
+        "noSetterReturn": "error",
+        "noUndeclaredVariables": "error",
+        "noUnreachable": "error",
+        "noUnreachableSuper": "error"
+      },
+      "style": {
+        "useConst": "warn",
+        "useDefaultParameterLast": "warn",
+        "useExponentiationOperator": "warn",
+        "useNodejsImportProtocol": "off",
+        "useTemplate": "warn"
+      },
       "suspicious": {
-        "noExplicitAny": "off"
+        "noDuplicateCase": "error",
+        "noDuplicateClassMembers": "error",
+        "noDuplicateObjectKeys": "error",
+        "noDuplicateParameters": "error",
+        "noFunctionAssign": "error",
+        "noImportAssign": "error",
+        "noRedeclare": "error",
+        "noExplicitAny": "off",
+        "noArrayIndexKey": "off"
       },
       "a11y": {
-        "useButtonType": "off"
+        "noLabelWithoutControl": "off",
+        "noSvgWithoutTitle": "off",
+        "useButtonType": "off",
+        "useSemanticElements": "off"
       }
     }
   },
@@ -40,6 +74,55 @@
         "enabled": false
       },
       "assist": {
+        "enabled": false
+      }
+    },
+    {
+      "includes": ["**/*.test.tsx", "**/*.test.ts", "**/*.spec.tsx", "**/*.spec.ts"],
+      "linter": {
+        "enabled": false
+      },
+      "assist": {
+        "enabled": false
+      }
+    },
+    {
+      "includes": ["**/routeTree.gen.ts"],
+      "linter": {
+        "enabled": false
+      },
+      "formatter": {
+        "enabled": false
+      },
+      "assist": {
+        "enabled": false
+      }
+    },
+    {
+      "includes": ["**/*.css"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noUnknownAtRules": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["packages/ui/src/theme/styles/**/*.css"],
+      "linter": {
+        "enabled": false
+      }
+    },
+    {
+      "includes": ["packages/ui/src/elements/theme-panel.css"],
+      "linter": {
+        "enabled": false
+      }
+    },
+    {
+      "includes": ["packages/ui/src/theme/utilities/**/*.css"],
+      "linter": {
         "enabled": false
       }
     }
@@ -64,6 +147,11 @@
       "lineEnding": "lf",
       "lineWidth": 120,
       "trailingCommas": "none"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
     }
   },
   "assist": {

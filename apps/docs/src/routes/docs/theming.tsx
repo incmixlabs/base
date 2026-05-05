@@ -1,6 +1,6 @@
-import { Callout } from '@bwalkt/ui/elements'
-import { Heading } from '@bwalkt/ui/typography/heading/Heading'
-import { Text } from '@bwalkt/ui/typography/text/Text'
+import { Callout } from '@incmix/ui/elements'
+import { Heading } from '@incmix/ui/typography/heading/Heading'
+import { Text } from '@incmix/ui/typography/text/Text'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/docs/theming')({
@@ -31,7 +31,7 @@ function ThemingPage() {
         Theme Wrapper
       </Heading>
       <pre className="mt-4 overflow-x-auto rounded-xl border border-border/70 bg-muted/40 p-4 text-sm">
-        <code>{`import { Theme } from '@bwalkt/ui'
+        <code>{`import { Theme } from '@incmix/ui'
 
 export default function Themed() {
   return (

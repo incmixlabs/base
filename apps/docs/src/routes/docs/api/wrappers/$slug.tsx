@@ -1,4 +1,4 @@
-import { LiveCodeBlock, ThemesPropsTable } from '@bwalkt/ui/editor/docs'
+import { LiveCodeBlock, ThemesPropsTable } from '@incmix/ui/editor/docs'
 import {
   AccordionSchemaWrapper,
   Badge,
@@ -10,13 +10,13 @@ import {
   PopoverWrapper,
   TabsWrapper,
   TooltipWrapper,
-} from '@bwalkt/ui/elements'
-import { CheckboxGroupWrapper, RadioGroupWrapper, SwitchGroupWrapper } from '@bwalkt/ui/form'
-import { CommandWrapper, SidebarWrapper } from '@bwalkt/ui/layouts'
-import { TableWrapper } from '@bwalkt/ui/table'
-import { LinkWrapper } from '@bwalkt/ui/typography'
-import { Heading } from '@bwalkt/ui/typography/heading/Heading'
-import { Text } from '@bwalkt/ui/typography/text/Text'
+} from '@incmix/ui/elements'
+import { CheckboxGroupWrapper, RadioGroupWrapper, SwitchGroupWrapper } from '@incmix/ui/form'
+import { CommandWrapper, SidebarWrapper } from '@incmix/ui/layouts'
+import { TableWrapper } from '@incmix/ui/table'
+import { LinkWrapper } from '@incmix/ui/typography'
+import { Heading } from '@incmix/ui/typography/heading/Heading'
+import { Text } from '@incmix/ui/typography/text/Text'
 import { createFileRoute } from '@tanstack/react-router'
 import { FileText, Home, Inbox } from 'lucide-react'
 import { wrapperDocsBySlug } from './-docs'

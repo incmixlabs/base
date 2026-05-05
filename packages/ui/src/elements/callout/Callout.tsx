@@ -203,8 +203,7 @@ export namespace CalloutProps {
   export type Variant = CalloutVariant
 }
 
-// Also export individual components for convenience
-export { CalloutRoot, CalloutIcon, CalloutText }
-
 // Re-export the variant type
 export type { CalloutVariant }
+// Also export individual components for convenience
+export { CalloutIcon, CalloutRoot, CalloutText }

@@ -1,4 +1,4 @@
-import type { AppDocument, PageDocument } from '@bwalkt/core'
+import type { AppDocument, PageDocument } from '@incmix/core'
 
 export const declarativeUiTabbedSupportPage: PageDocument = {
   kind: 'page',

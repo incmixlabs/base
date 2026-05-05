@@ -8,7 +8,6 @@ It is heavily informed by a few projects that each solve part of the problem wel
 - base-ui 
 - Heavily inspired by `Radix UI Themes` for a token-first approach to visual consistency
 - `AutoForm` for declarative form generation
-- `json-render` for schema-driven composition of richer content
 - `casl` for roles and permissions
 - `orama` https://github.com/oramasearch/orama for search
 - `tinybase` for localfirst persistence
@@ -58,7 +57,7 @@ That means the system is not only about individual buttons, badges, or cards. It
 - content rendered from declarative data
 - reusable wrappers that connect design tokens, UI primitives, and domain structure
 
-This is where the influence of `AutoForm` and `json-render` is most visible. The ambition is to make rich interfaces easier to declare, not just easier to style.
+This is where the influence of `AutoForm` is most visible. The ambition is to make rich interfaces easier to declare, not just easier to style.
 
 ## Why Another UI Framework?
 

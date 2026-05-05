@@ -158,4 +158,4 @@ function getResponsiveCustomProperties({
   return styles
 }
 
-export { getResponsiveStyles, getResponsiveCustomProperties, getResponsiveClassNames }
+export { getResponsiveClassNames, getResponsiveCustomProperties, getResponsiveStyles }

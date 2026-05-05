@@ -2,7 +2,7 @@
 
 Tracking components that the React Compiler (`babel-plugin-react-compiler` v1.0.0) skips during compilation. Bailed-out components fall back to their existing manual memoization and work correctly -- they just don't benefit from automatic optimization.
 
-**Current state:** 420+ functions compiled. All known compiler-incompatible functions now have explicit `'use no memo'` opt-outs; the only remaining dedicated refactor is MediaPlayer ([#520](https://github.com/bwalkt/autoform/issues/520)).
+**Current state:** 420+ functions compiled. All known compiler-incompatible functions now have explicit `'use no memo'` opt-outs; the only remaining dedicated refactor is MediaPlayer ([#520](https://github.com/incmixlabs/base/issues/520)).
 
 ---
 
@@ -99,7 +99,7 @@ These now use targeted `'use no memo'` opt-outs at the affected function boundar
 
 ## Resolved: MediaPlayer Refactor (12 → 1 bailout)
 
-### MediaPlayer ([#520](https://github.com/bwalkt/autoform/issues/520))
+### MediaPlayer ([#520](https://github.com/incmixlabs/base/issues/520))
 
 `packages/ui/src/elements/media-player/MediaPlayer.tsx` -- refactored for React Compiler compatibility. 12 bailouts reduced to 1 isolated `'use no memo'` opt-out.
 
@@ -139,7 +139,7 @@ These now use targeted `'use no memo'` opt-outs at the affected function boundar
 | Ref-during-render fixes | 6 | **Resolved** |
 | Manual memoization removal | 2 | **Resolved** |
 | Explicit compiler opt-outs | 14 | **Resolved** (`'use no memo'`) |
-| MediaPlayer refactor | 12 → 1 | **Resolved** ([#520](https://github.com/bwalkt/autoform/issues/520)) |
+| MediaPlayer refactor | 12 → 1 | **Resolved** ([#520](https://github.com/incmixlabs/base/issues/520)) |
 | **Total remaining** | **1** | `MediaPlayerSeekTooltip` (`'use no memo'`) |
 
 ## References

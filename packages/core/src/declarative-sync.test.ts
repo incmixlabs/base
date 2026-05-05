@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { declarativeUiGrammarPressureApp, declarativeUiTabbedSupportPage } from './declarative-ui.examples'
 import {
   createFixtureDeclarativeSyncAdapter,
-  DeclarativeSyncAdapterError,
+  type DeclarativeSyncAdapterError,
   type DeclarativeSyncAppRecord,
   type DeclarativeSyncPageRecord,
 } from './index'

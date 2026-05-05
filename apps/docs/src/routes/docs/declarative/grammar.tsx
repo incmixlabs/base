@@ -1,6 +1,6 @@
-import { Callout } from '@bwalkt/ui/elements'
-import { Heading } from '@bwalkt/ui/typography/heading/Heading'
-import { Text } from '@bwalkt/ui/typography/text/Text'
+import { Callout } from '@incmix/ui/elements'
+import { Heading } from '@incmix/ui/typography/heading/Heading'
+import { Text } from '@incmix/ui/typography/text/Text'
 import { createFileRoute } from '@tanstack/react-router'
 import { GrammarPreview } from '../../../components/declarative/GrammarPreview'
 

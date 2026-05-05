@@ -1,6 +1,6 @@
 'use client'
 
-import type { CatalogEntry } from '@bwalkt/ui/editor/catalog'
+import type { CatalogEntry } from '@incmix/ui/editor/catalog'
 
 export type ElementDocsBaseEntry = Pick<
   CatalogEntry,

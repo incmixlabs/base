@@ -1,8 +1,8 @@
-import { Link } from '@bwalkt/ui/typography'
-import { Heading } from '@bwalkt/ui/typography/heading/Heading'
-import { Text } from '@bwalkt/ui/typography/text/Text'
+import { Link } from '@incmix/ui/typography'
+import { Heading } from '@incmix/ui/typography/heading/Heading'
+import { Text } from '@incmix/ui/typography/text/Text'
 
-const REPO_BLOB_BASE_URL = 'https://github.com/bwalkt/autoform/blob/main/'
+const REPO_BLOB_BASE_URL = 'https://github.com/incmixlabs/base/blob/main/'
 
 function toRepoUrl(path: string): string {
   return `${REPO_BLOB_BASE_URL}${path}`

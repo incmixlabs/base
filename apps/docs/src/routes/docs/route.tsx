@@ -1,10 +1,10 @@
-import { Avatar } from '@bwalkt/ui/elements'
-import { AppShell, CommandSearchProvider, type CommandSearchRouteGroup } from '@bwalkt/ui/layouts'
-import { Section as SectionComponent } from '@bwalkt/ui/layouts/section/Section'
-import { SidebarWrapperShell } from '@bwalkt/ui/layouts/sidebar/SidebarWrapperShell'
-import type { SidebarWrapperData } from '@bwalkt/ui/layouts/sidebar/sidebar-wrapper.types'
-import { ThemePanel } from '@bwalkt/ui/theme-panel'
-import { Heading } from '@bwalkt/ui/typography/heading/Heading'
+import { Avatar } from '@incmix/ui/elements'
+import { AppShell, CommandSearchProvider, type CommandSearchRouteGroup } from '@incmix/ui/layouts'
+import { Section as SectionComponent } from '@incmix/ui/layouts/section/Section'
+import { SidebarWrapperShell } from '@incmix/ui/layouts/sidebar/SidebarWrapperShell'
+import type { SidebarWrapperData } from '@incmix/ui/layouts/sidebar/sidebar-wrapper.types'
+import { ThemePanel } from '@incmix/ui/theme-panel'
+import { Heading } from '@incmix/ui/typography/heading/Heading'
 import { createFileRoute, Link, Outlet, useLocation, useNavigate } from '@tanstack/react-router'
 import * as React from 'react'
 import { elementDocsNav } from '../../lib/element-docs-nav'
@@ -62,7 +62,6 @@ const sections = [
         '/docs/elements',
       ),
       { title: 'Media Player', href: '/docs/media/media-player' },
-      { title: 'Video', href: '/docs/media/video' },
     ],
   },
   {

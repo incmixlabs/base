@@ -1,10 +1,10 @@
 'use client'
 
-import { avatarCatalogEntry, avatarGroupCatalogEntry, avatarPieCatalogEntry } from '@bwalkt/ui/editor/catalog'
+import { avatarCatalogEntry, avatarGroupCatalogEntry, avatarPieCatalogEntry } from '@incmix/ui/editor/catalog'
 import {
   avatarPropDefs as avatarElementPropDefs,
   avatarGroupPropDefs as avatarGroupElementPropDefs,
-} from '@bwalkt/ui/elements/props'
+} from '@incmix/ui/elements/props'
 import type { ElementDocsEntry } from '../element-docs-types'
 import { createEnumShowcaseSection, toEnumArrayLiteral } from '../element-docs-types'
 

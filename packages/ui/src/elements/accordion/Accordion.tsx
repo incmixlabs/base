@@ -320,4 +320,4 @@ export namespace AccordionProps {
 }
 
 export type { AccordionSize }
-export { AccordionRoot, AccordionItem, AccordionTrigger, AccordionContent }
+export { AccordionContent, AccordionItem, AccordionRoot, AccordionTrigger }

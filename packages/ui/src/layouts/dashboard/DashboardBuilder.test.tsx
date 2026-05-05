@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
-import * as React from 'react'
+import type * as React from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('@/elements', async () => {
@@ -448,8 +448,8 @@ vi.mock('./EditableDashboard', async () => {
 })
 
 import {
-  type DashboardBuilderLayoutChangeDetails,
   DashboardBuilder,
+  type DashboardBuilderLayoutChangeDetails,
   type DashboardBuilderProps,
 } from './DashboardBuilder'
 import type { DashboardLayoutPreset, DashboardResponsiveLayoutItems } from './DashboardLayout'

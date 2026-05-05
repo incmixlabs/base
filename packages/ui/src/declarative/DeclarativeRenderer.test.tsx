@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest'
-import { normalizePageDocument, type DeclarativeNode, type NormalizedPageDocument } from '@incmix/core'
+import { type DeclarativeNode, type NormalizedPageDocument, normalizePageDocument } from '@incmix/core'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'

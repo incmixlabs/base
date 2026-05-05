@@ -1,8 +1,8 @@
 'use client'
 
-import { Runner } from '@incmix/react-runner'
 import { javascript } from '@codemirror/lang-javascript'
 import { oneDark } from '@codemirror/theme-one-dark'
+import { Runner } from '@incmix/react-runner'
 import * as React from 'react'
 import { Button } from '@/elements/button/Button'
 import { Column, Flex } from '@/layouts/flex/Flex'

@@ -1,7 +1,7 @@
-import { catalog, getCatalogEntryRuntimeScopeLoader, LiveCodeBlock } from '@bwalkt/ui/editor/docs'
-import { Badge, Card, DataList } from '@bwalkt/ui/elements'
-import { Heading } from '@bwalkt/ui/typography/heading/Heading'
-import { Text } from '@bwalkt/ui/typography/text/Text'
+import { catalog, getCatalogEntryRuntimeScopeLoader, LiveCodeBlock } from '@incmix/ui/editor/docs'
+import { Badge, Card, DataList } from '@incmix/ui/elements'
+import { Heading } from '@incmix/ui/typography/heading/Heading'
+import { Text } from '@incmix/ui/typography/text/Text'
 import { createFileRoute } from '@tanstack/react-router'
 import * as React from 'react'
 

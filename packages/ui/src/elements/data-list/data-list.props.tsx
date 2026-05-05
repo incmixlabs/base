@@ -63,4 +63,4 @@ const dataListPropDefs = {
 } as const
 
 export type { DataListAlign, DataListOrientation, DataListSize, DataListTrim }
-export { dataListAlignValues, dataListPropDefs, dataListOrientationValues, dataListSizes, dataListTrimValues }
+export { dataListAlignValues, dataListOrientationValues, dataListPropDefs, dataListSizes, dataListTrimValues }

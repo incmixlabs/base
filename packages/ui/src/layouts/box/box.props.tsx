@@ -138,5 +138,5 @@ const boxPropDefs = {
 // Use all of the imported prop defs to ensure that JSDoc works
 type BoxOwnProps = GetPropDefTypes<typeof boxPropDefs & typeof asChildPropDef & typeof layoutPropDefs>
 
-export { boxPropDefs }
 export type { BoxOwnProps }
+export { boxPropDefs }

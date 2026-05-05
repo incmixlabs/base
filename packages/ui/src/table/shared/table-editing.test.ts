@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
+import type { TableCellEditor } from './table-editing'
 import {
   getDefaultTableCellEditor,
   isTableCellEditable,
   resolveTableCellEditor,
   validateTableCellEdit,
 } from './table-editing'
-import type { TableCellEditor } from './table-editing'
 
 type Row = {
   id: string

@@ -1,4 +1,4 @@
-const baseConfig = require('@bwalkt/config/tailwind.config')
+const baseConfig = require('@incmix/config/tailwind.config')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {

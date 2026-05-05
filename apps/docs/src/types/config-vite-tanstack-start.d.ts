@@ -1,4 +1,4 @@
-declare module '@bwalkt/config/vite-tanstack-start.js' {
+declare module '@incmix/config/vite-tanstack-start.js' {
   import type { PluginItem } from '@babel/core'
   import type { PluginOption, UserConfig } from 'vite'
 

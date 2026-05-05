@@ -59,5 +59,5 @@ function parseDisplayValue(value: string) {
 // Use all of the imported prop defs to ensure that JSDoc works
 type SectionOwnProps = GetPropDefTypes<typeof sectionPropDefs & typeof asChildPropDef>
 
-export { sectionPropDefs }
 export type { SectionOwnProps }
+export { sectionPropDefs }

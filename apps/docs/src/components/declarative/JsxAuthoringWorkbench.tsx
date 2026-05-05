@@ -1,5 +1,7 @@
 'use client'
 
+import { javascript } from '@codemirror/lang-javascript'
+import { oneDark } from '@codemirror/theme-one-dark'
 import {
   createDeclarativeBackgroundSyncScheduler,
   type DeclarativeBackgroundSyncReason,
@@ -13,28 +15,26 @@ import {
   type JsxAuthoringWorkbenchSyncResult,
   normalizePageDocument,
   type PageDocument,
-} from '@bwalkt/core'
+} from '@incmix/core'
 import {
   compileDeclarativeJsxToPage,
   DeclarativeJsxAuthoringError,
   projectDeclarativePageToJsx,
-} from '@bwalkt/ui/declarative/jsx-authoring'
-import { DeclarativePageRenderer, type DeclarativeRendererRegistry } from '@bwalkt/ui/declarative/renderer'
-import { createDeclarativePageActor } from '@bwalkt/ui/declarative/runtime'
+} from '@incmix/ui/declarative/jsx-authoring'
+import { DeclarativePageRenderer, type DeclarativeRendererRegistry } from '@incmix/ui/declarative/renderer'
+import { createDeclarativePageActor } from '@incmix/ui/declarative/runtime'
 import {
   codePaneEditorFrameClassName,
   codePaneFrameClassName,
   codePaneLabelClassName,
   codePaneShellClassName,
-} from '@bwalkt/ui/editor'
-import { type JsonValue, JsonViewEditor } from '@bwalkt/ui/editor/autoform'
-import { type ViewportPreset, ViewportPreview, ViewportPreviewControls } from '@bwalkt/ui/editor/docs'
-import { Badge, Button, Callout, Card } from '@bwalkt/ui/elements'
-import { Slider } from '@bwalkt/ui/form'
-import { Heading } from '@bwalkt/ui/typography/heading/Heading'
-import { Text } from '@bwalkt/ui/typography/text/Text'
-import { javascript } from '@codemirror/lang-javascript'
-import { oneDark } from '@codemirror/theme-one-dark'
+} from '@incmix/ui/editor'
+import { type JsonValue, JsonViewEditor } from '@incmix/ui/editor/autoform'
+import { type ViewportPreset, ViewportPreview, ViewportPreviewControls } from '@incmix/ui/editor/docs'
+import { Badge, Button, Callout, Card } from '@incmix/ui/elements'
+import { Slider } from '@incmix/ui/form'
+import { Heading } from '@incmix/ui/typography/heading/Heading'
+import { Text } from '@incmix/ui/typography/text/Text'
 import * as React from 'react'
 
 const initialAuthoringCode = `<Layout direction="vertical" gap={12}>

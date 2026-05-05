@@ -1,10 +1,10 @@
 'use client'
 
-import { LiveCodeBlock, ThemesPropsTable } from '@bwalkt/ui/editor/docs'
-import { Badge, Callout } from '@bwalkt/ui/elements'
-import { Code } from '@bwalkt/ui/typography'
-import { Heading } from '@bwalkt/ui/typography/heading/Heading'
-import { Text } from '@bwalkt/ui/typography/text/Text'
+import { LiveCodeBlock, ThemesPropsTable } from '@incmix/ui/editor/docs'
+import { Badge, Callout } from '@incmix/ui/elements'
+import { Code } from '@incmix/ui/typography'
+import { Heading } from '@incmix/ui/typography/heading/Heading'
+import { Text } from '@incmix/ui/typography/text/Text'
 import type * as React from 'react'
 import { ViewportPreview } from '@/editor/live/ViewportPreview'
 

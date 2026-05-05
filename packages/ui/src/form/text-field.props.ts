@@ -77,4 +77,4 @@ const textFieldSlotPropDefs = {
   pr: typeof paddingPropDefs.pr
 }
 
-export { textFieldAllVariants, textFieldSizes, textFieldVariants, textFieldRootPropDefs, textFieldSlotPropDefs }
+export { textFieldAllVariants, textFieldRootPropDefs, textFieldSizes, textFieldSlotPropDefs, textFieldVariants }

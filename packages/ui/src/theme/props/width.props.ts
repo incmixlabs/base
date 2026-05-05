@@ -60,5 +60,5 @@ const widthPropDefs = {
 
 type WidthProps = GetPropDefTypes<typeof widthPropDefs>
 
-export { widthPropDefs }
 export type { WidthProps }
+export { widthPropDefs }

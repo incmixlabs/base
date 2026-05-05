@@ -67,8 +67,8 @@ type CompositeValidator = ReturnType<typeof createAjvValidator>
 type CompositeTemplate = React.ComponentType<{ data: unknown; props?: Readonly<Record<string, unknown>> }>
 type CachedCompositeTemplate = { Template: CompositeTemplate } | { error: Error }
 
-export { compositeGlyphs, resolveCompositeGlyph }
 export type { CompositeGlyphName } from './glyphs'
+export { compositeGlyphs, resolveCompositeGlyph }
 
 const frozenSwotCompositeDefinition = freezeCompositeDefinition(swotCompositeDefinition)
 const frozenCompactHorizontalChartCompositeDefinition = freezeCompositeDefinition(

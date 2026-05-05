@@ -1,12 +1,12 @@
-import { deleteCookie, readCookie, writeCookie } from '@bwalkt/ui/hooks'
+import { deleteCookie, readCookie, writeCookie } from '@incmix/ui/hooks'
 import {
+  AdminThemeProvider,
   DEFAULT_THEME_CONFIG_STORAGE_KEY,
   DEFAULT_THEME_USER_PREFERENCES_STORAGE_KEY,
   DEFAULT_THEME_VARS_TOKENS_STORAGE_KEY,
-  AdminThemeProvider,
   useThemeContext,
   useThemeVarsContext,
-} from '@bwalkt/ui/theme'
+} from '@incmix/ui/theme'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { hydrateRoot } from 'react-dom/client'
 import { renderToString } from 'react-dom/server'

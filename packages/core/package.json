@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/vantezzen/autoform"
+    "url": "https://github.com/incmixlabs/base"
   },
   "scripts": {
     "lint": "biome lint .",
@@ -28,7 +28,7 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "@incmix/config": "file:../config",
+    "@incmix/config": "workspace:*",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
@@ -41,5 +41,13 @@
     "ajv-formats": "catalog:",
     "tinybase": "^8.1.1",
     "uuid": "catalog:"
+  },
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
   }
 }

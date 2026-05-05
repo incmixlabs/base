@@ -1,18 +1,18 @@
 import { describe, expect, it } from 'vitest'
 import {
+  type AppDocument,
+  type DeclarativeDocument,
+  normalizeAppDocument,
+  normalizeDeclarativeDocument,
+  normalizePageDocument,
+  type PageDocument,
+  resolveDeclarativeRef,
+} from './declarative-ui'
+import {
   declarativeUiGrammarPressureApp,
   declarativeUiReadonlyAuditPage,
   declarativeUiTabbedSupportPage,
 } from './declarative-ui.examples'
-import {
-  normalizeAppDocument,
-  normalizeDeclarativeDocument,
-  normalizePageDocument,
-  resolveDeclarativeRef,
-  type AppDocument,
-  type DeclarativeDocument,
-  type PageDocument,
-} from './declarative-ui'
 
 describe('declarative-ui', () => {
   it('resolves local refs and merges inline props and meta', () => {

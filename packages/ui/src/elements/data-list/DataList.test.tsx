@@ -2,6 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { getTextSizeClasses } from '@/typography/get-text-size-classes'
+import { DataList } from './DataList'
 import {
   dataListItemBase,
   dataListItemByAlign,
@@ -15,7 +16,6 @@ import {
   dataListRootSizeResponsive,
   dataListValueBase,
 } from './DataList.css'
-import { DataList } from './DataList'
 
 describe('DataList', () => {
   it('applies VE size and typography classes on the root', () => {

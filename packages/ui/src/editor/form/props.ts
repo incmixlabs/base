@@ -8,11 +8,11 @@ export { radioCardsRootPropDefs } from '@/form/radio-cards.props'
 export { radioGroupRootPropDefs } from '@/form/radio-group.props'
 export { ratingPropDefs } from '@/form/rating.props'
 export { selectPropDefs } from '@/form/select.props'
-export { sliderPropDefs }
 export { switchPropDefs } from '@/form/switch.props'
 export { switchGroupRootPropDefs } from '@/form/switch-group.props'
 export { textAreaPropDefs } from '@/form/text-area.props'
 export { textFieldRootPropDefs, textFieldSlotPropDefs } from '@/form/text-field.props'
+export { sliderPropDefs }
 
 export const formPropDefsByComponent = {
   slider: sliderPropDefs,

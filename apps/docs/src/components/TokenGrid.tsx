@@ -1,7 +1,7 @@
-import { Grid } from '@bwalkt/ui/layouts'
-import { semanticColors } from '@bwalkt/ui/theme'
-import { Heading } from '@bwalkt/ui/typography/heading/Heading'
-import { Text } from '@bwalkt/ui/typography/text/Text'
+import { Grid } from '@incmix/ui/layouts'
+import { semanticColors } from '@incmix/ui/theme'
+import { Heading } from '@incmix/ui/typography/heading/Heading'
+import { Text } from '@incmix/ui/typography/text/Text'
 
 const baseTokens = [
   { name: 'background', cssVar: '--background', description: 'App page background.' },

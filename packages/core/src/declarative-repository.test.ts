@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { declarativeUiReadonlyAuditPage, declarativeUiTabbedSupportPage } from './declarative-ui.examples'
 import {
   COMPONENT_REGISTRY_ENTRY_KIND,
   COMPONENT_REGISTRY_SCHEMA_VERSION,
@@ -9,7 +10,6 @@ import {
   watchDeclarativeRepositoryDocument,
   watchDeclarativeRepositoryListDocuments,
 } from './index'
-import { declarativeUiReadonlyAuditPage, declarativeUiTabbedSupportPage } from './declarative-ui.examples'
 import type { WatchableDeclarativeRepository } from './worker-repository-boundary'
 
 function createRegistryEntry() {

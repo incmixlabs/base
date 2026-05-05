@@ -8,4 +8,4 @@ This package provides a React integration for AutoForm. You'll most likely use U
 npm install @incmix/react
 ```
 
-For more information on how to use this package, see the [AutoForm documentation](https://autoform.vantezzen.io/docs/react/getting-started).
+For more information on how to use this package, see the [AutoForm documentation](https://github.com/incmixlabs/base/docs/react/getting-started).

@@ -10,4 +10,4 @@ const separatorPropDefs = {
   size: PropDef<(typeof separatorSizes)[number]>
 }
 
-export { separatorSizes, separatorPropDefs }
+export { separatorPropDefs, separatorSizes }

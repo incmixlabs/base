@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import * as React from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { toTanStackTableColumnDefs, type TableColumnDef } from '@/table/shared'
+import { type TableColumnDef, toTanStackTableColumnDefs } from '@/table/shared'
 import { InfiniteTable } from './InfiniteTable'
 import type { InfiniteTableColumnDef } from './infinite-table.props'
 

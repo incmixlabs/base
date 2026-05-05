@@ -2,8 +2,8 @@ import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
-import { SEMANTIC_COLOR_DEFAULTS } from './tokens'
 import { buildSemanticLaneVars, buildStaticSemanticLaneCss } from './semantic-lane-vars'
+import { SEMANTIC_COLOR_DEFAULTS } from './tokens'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const DESIGN_TOKENS_CSS_PATH = resolve(__dirname, 'design-tokens.css')

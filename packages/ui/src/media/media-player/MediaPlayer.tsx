@@ -2522,7 +2522,7 @@ function MediaPlayerDownload(props: React.ComponentProps<typeof Button>) {
 
     const mediaElement = context.mediaRef.current
 
-    if (!mediaElement || !mediaElement.currentSrc) return
+    if (!mediaElement?.currentSrc) return
 
     const link = document.createElement('a')
     link.href = mediaElement.currentSrc
@@ -2872,6 +2872,5 @@ export const MediaPlayer = {
 }
 
 export { useMediaSelector as useMediaPlayer } from 'media-chrome/react/media-store'
-export { useStore as useMediaPlayerStore }
-
 export type { MediaPlayerRootProps as MediaPlayerProps }
+export { useStore as useMediaPlayerStore }

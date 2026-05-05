@@ -23,4 +23,4 @@ const radioCardsRootPropDefs = {
   gap: PropDef<(typeof gridPropDefs.gap.values)[number]>
 }
 
-export { radioCardsSizes, radioCardsVariants, radioCardsRootPropDefs }
+export { radioCardsRootPropDefs, radioCardsSizes, radioCardsVariants }

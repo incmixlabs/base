@@ -28,5 +28,5 @@ type HoverCardContentOwnProps = GetPropDefTypes<
   typeof hoverCardContentPropDefs & typeof asChildPropDef & typeof widthPropDefs & typeof heightPropDefs
 >
 
-export { hoverCardContentPropDefs }
 export type { HoverCardContentOwnProps }
+export { hoverCardContentPropDefs }

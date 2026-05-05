@@ -128,4 +128,4 @@ const SkeletonAvatar = React.forwardRef<HTMLDivElement, SkeletonAvatarProps>(
 
 SkeletonAvatar.displayName = 'SkeletonAvatar'
 
-export { Skeleton, SkeletonText, SkeletonAvatar }
+export { Skeleton, SkeletonAvatar, SkeletonText }

@@ -60,4 +60,4 @@ const textAreaPropDefs = {
   maxRows: PropDef<number>
 }
 
-export { sizes as textAreaSizes, variants as textAreaVariants, resizeValues as textAreaResizeValues, textAreaPropDefs }
+export { resizeValues as textAreaResizeValues, sizes as textAreaSizes, textAreaPropDefs, variants as textAreaVariants }

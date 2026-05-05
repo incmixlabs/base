@@ -1130,7 +1130,7 @@ export function KanbanBoard({
     async (input: Parameters<typeof moveKanbanTask>[1]) => {
       return runSerializedMutation(async previousColumns => {
         const result = moveKanbanTask(previousColumns, input)
-        if (!result || !result.changed) return
+        if (!result?.changed) return
 
         const details = {
           taskId: result.task.id,
@@ -1153,7 +1153,7 @@ export function KanbanBoard({
     async (input: Parameters<typeof moveKanbanColumn>[1]) => {
       return runSerializedMutation(async previousColumns => {
         const result = moveKanbanColumn(previousColumns, input)
-        if (!result || !result.changed) return
+        if (!result?.changed) return
 
         const details = {
           columnId: result.columnId,

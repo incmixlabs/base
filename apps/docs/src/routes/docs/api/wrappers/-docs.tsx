@@ -1,4 +1,4 @@
-import type { PropDef } from '@bwalkt/ui/editor/docs'
+import type { PropDef } from '@incmix/ui/editor/docs'
 import {
   accordionSchemaWrapperPropDefs,
   calloutWrapperPropDefs,
@@ -15,7 +15,7 @@ import {
   tableWrapperPropDefs,
   tabsWrapperPropDefs,
   tooltipWrapperPropDefs,
-} from '@bwalkt/ui/props'
+} from '@incmix/ui/props'
 import type { ReactNode } from 'react'
 
 export type WrapperDoc = {

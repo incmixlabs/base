@@ -7,8 +7,8 @@ import {
   gridTemplateColumnsCustomResponsive,
   gridTemplateRowsCustomResponsive,
 } from '@/layouts/grid/Grid.css'
-import { Theme } from '@/theme/ThemeProvider'
 import { paddingResponsiveClasses } from '@/theme/helpers/padding-responsive.css'
+import { Theme } from '@/theme/ThemeProvider'
 import { designTokens } from '@/theme/tokens'
 import { Card } from './Card'
 import { cardRootBase, cardRootSizeResponsiveVariants, cardSurfaceBase } from './Card.css'

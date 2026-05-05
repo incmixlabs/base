@@ -8,7 +8,7 @@ import type {
   DeclarativeSyncConflict,
   JsxAuthoringWorkbenchRepository,
   PageDocument,
-} from '@bwalkt/core'
+} from '@incmix/core'
 import { cleanup, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import * as React from 'react'
@@ -33,8 +33,8 @@ vi.mock('@uiw/react-codemirror', () => ({
   },
 }))
 
-vi.mock('@bwalkt/core', async () => {
-  const actual = await vi.importActual<typeof import('@bwalkt/core')>('@bwalkt/core')
+vi.mock('@incmix/core', async () => {
+  const actual = await vi.importActual<typeof import('@incmix/core')>('@incmix/core')
 
   return {
     ...actual,

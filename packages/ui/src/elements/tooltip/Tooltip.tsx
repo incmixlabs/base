@@ -448,5 +448,5 @@ export namespace TooltipProps {
   export type Arrow = TooltipArrowProps
 }
 
-export { SimpleTooltip }
 export type { TooltipMaxWidth, TooltipSize, TooltipVariant }
+export { SimpleTooltip }

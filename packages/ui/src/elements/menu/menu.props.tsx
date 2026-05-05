@@ -49,12 +49,12 @@ const baseMenuRadioItemPropDefs = {
 type MenuSize = (typeof contentSizes)[number]
 type MenuVariant = (typeof contentVariants)[number]
 
+export type { MenuSize, MenuVariant }
 export {
-  contentSizes,
-  contentVariants,
+  baseMenuCheckboxItemPropDefs,
   baseMenuContentPropDefs,
   baseMenuItemPropDefs,
-  baseMenuCheckboxItemPropDefs,
   baseMenuRadioItemPropDefs,
+  contentSizes,
+  contentVariants,
 }
-export type { MenuSize, MenuVariant }

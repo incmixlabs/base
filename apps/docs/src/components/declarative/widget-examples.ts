@@ -1,5 +1,5 @@
-import type { PageDocument, WidgetDocument } from '@bwalkt/core'
-import type { LocalWidgetRegistry } from '@bwalkt/ui/widgets'
+import type { PageDocument, WidgetDocument } from '@incmix/core'
+import type { LocalWidgetRegistry } from '@incmix/ui/widgets'
 
 export const supportSummaryWidget: WidgetDocument = {
   kind: 'widget',

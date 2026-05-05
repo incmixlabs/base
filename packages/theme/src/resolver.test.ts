@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest'
+import { resolveConcreteChartRoleColor } from './chart.js'
+import type { ThemeContract } from './contract/theme-contract.js'
 import {
   createConcreteThemeResolver,
   createEmailThemeResolver,
@@ -6,8 +8,6 @@ import {
   defaultThemeFallbackTokens,
   resolveConcreteThemeToken,
 } from './resolver.js'
-import { resolveConcreteChartRoleColor } from './chart.js'
-import type { ThemeContract } from './contract/theme-contract.js'
 import { compileThemeTokens } from './runtime/theme-compiler.js'
 
 describe('theme concrete resolver', () => {

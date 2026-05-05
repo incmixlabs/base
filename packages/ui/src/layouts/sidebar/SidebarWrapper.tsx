@@ -876,7 +876,6 @@ function SidebarWrapper({
 SidebarWrapper.displayName = 'SidebarWrapper'
 SidebarWrapperContent.displayName = 'SidebarWrapperContent'
 
-export { SidebarWrapper, useSidebar }
 export type {
   SidebarWrapperData,
   SidebarWrapperGroup,
@@ -888,4 +887,4 @@ export type {
   SidebarWrapperUser,
 } from './sidebar-wrapper.types'
 // Internal-only export for SidebarWrapperShell. Intentionally not re-exported from layouts/index.ts.
-export { SidebarWrapperContent }
+export { SidebarWrapper, SidebarWrapperContent, useSidebar }

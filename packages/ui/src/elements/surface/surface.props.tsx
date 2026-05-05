@@ -35,5 +35,5 @@ const surfacePropDefs = {
 type SurfaceVariant = (typeof surfaceVariants)[number]
 type SurfaceShape = (typeof surfaceShapes)[number]
 
-export { surfacePropDefs, surfaceVariants, surfaceShapes }
-export type { SurfaceVariant, SurfaceShape }
+export type { SurfaceShape, SurfaceVariant }
+export { surfacePropDefs, surfaceShapes, surfaceVariants }

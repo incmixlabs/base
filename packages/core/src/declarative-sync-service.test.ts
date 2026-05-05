@@ -2,9 +2,9 @@ import { describe, expect, it, vi } from 'vitest'
 import { declarativeUiTabbedSupportPage } from './declarative-ui.examples'
 import {
   createDeclarativePageSyncService,
-  DeclarativeSyncAdapterError,
   type DeclarativePageSyncMetadata,
   type DeclarativeSyncAdapter,
+  DeclarativeSyncAdapterError,
   type DeclarativeSyncChangeEnvelope,
   type DeclarativeSyncPageRecord,
   type WorkerBackedDeclarativeRepository,

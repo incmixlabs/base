@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
+import { declarativeUiReadonlyAuditPage } from './declarative-ui.examples'
 import {
   createBroadcastChannelNotificationChannel,
   type DeclarativeBroadcastChannel,
   initializeTinyBaseDeclarativeRepository,
 } from './index'
-import { declarativeUiReadonlyAuditPage } from './declarative-ui.examples'
 
 function createFakeBroadcastChannelFactory() {
   const rooms = new Map<

@@ -20,5 +20,5 @@ const tooltipContentPropDefs = {
 
 type TooltipOwnProps = GetPropDefTypes<typeof tooltipContentPropDefs>
 
-export { tooltipContentPropDefs, tooltipProviderPropDefs }
 export type { TooltipOwnProps }
+export { tooltipContentPropDefs, tooltipProviderPropDefs }

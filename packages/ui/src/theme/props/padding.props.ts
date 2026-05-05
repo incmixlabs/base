@@ -136,5 +136,5 @@ const paddingPropDefs = {
 
 type PaddingProps = GetPropDefTypes<typeof paddingPropDefs>
 
-export { paddingPropDefs }
 export type { PaddingProps }
+export { paddingPropDefs }

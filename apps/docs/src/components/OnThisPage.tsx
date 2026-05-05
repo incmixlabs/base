@@ -1,7 +1,7 @@
 'use client'
 
-import { Heading } from '@bwalkt/ui/typography/heading/Heading'
-import { Text } from '@bwalkt/ui/typography/text/Text'
+import { Heading } from '@incmix/ui/typography/heading/Heading'
+import { Text } from '@incmix/ui/typography/text/Text'
 import { useLocation } from '@tanstack/react-router'
 import * as React from 'react'
 

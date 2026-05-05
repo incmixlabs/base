@@ -1,6 +1,6 @@
-import { Callout, Card } from '@bwalkt/ui/elements'
-import { Heading } from '@bwalkt/ui/typography/heading/Heading'
-import { Text } from '@bwalkt/ui/typography/text/Text'
+import { Callout, Card } from '@incmix/ui/elements'
+import { Heading } from '@incmix/ui/typography/heading/Heading'
+import { Text } from '@incmix/ui/typography/text/Text'
 import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router'
 import { wrapperDocsBySlug } from './api/wrappers/-docs'
 
