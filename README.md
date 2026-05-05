@@ -1,8 +1,8 @@
 # Incmix
 
-Public-facing frontend monorepo for Incmix UI, AutoForm, Storybook, and supporting packages.
+Public-facing frontend monorepo for Incmix UI, Theme, and Storybook.
 
-This workspace follows the public-source boundary described in `../autoform/docs/unify-org-dirs.md`: reusable npm packages live in `packages/*`, public Storybook lives in `apps/storybook`, and docs, private apps, backend services, auth code, paid integrations, and product-specific surfaces stay outside this repo.
+This workspace contains the public UI packages and public Storybook. Private apps, pro components, AutoForm, declarative UI, editor, table, backend services, auth code, paid integrations, and product-specific surfaces stay outside this repo.
 
 ## Layout
 
@@ -11,13 +11,9 @@ apps/
   storybook/
 
 packages/
-  core/
-  react/
-  autoform/
-  ajv/
-  ui/
+  config/
   theme/
-  table/
+  ui/
 ```
 
 ## Commands

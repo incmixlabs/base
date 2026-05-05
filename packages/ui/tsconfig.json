@@ -24,11 +24,6 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@incmix/ajv": ["../ajv/src/index.ts"],
-      "@incmix/core": ["../core/src/index.ts"],
-      "@incmix/core/declarative-ui.examples": ["../core/src/declarative-ui.examples.ts"],
-      "@incmix/react": ["../react/src/index.tsx"],
-      "@incmix/react-runner": ["../react-runner/src/index.ts"],
       "@incmix/theme": ["../theme/src/index.ts"]
     }
   },

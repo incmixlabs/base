@@ -2,7 +2,7 @@
   "name": "incmix",
   "version": "0.0.0",
   "private": true,
-  "description": "Public-facing frontend monorepo for Incmix UI, AutoForm, Storybook, and supporting packages.",
+  "description": "Public-facing frontend monorepo for Incmix UI, Theme, and Storybook.",
   "license": "MIT",
   "packageManager": "pnpm@10.26.2",
   "scripts": {

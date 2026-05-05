@@ -2,8 +2,6 @@ import { resolve } from 'node:path'
 
 const workspaceSourceAliasMap = {
   '@': '../../packages/ui/src',
-  '@incmix/core': '../../packages/core/src/index.ts',
-  '@incmix/react-runner': '../../packages/react-runner/src/index.ts',
 }
 
 const defaultWorkspaceSourceAliases = Object.keys(workspaceSourceAliasMap)

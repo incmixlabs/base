@@ -195,10 +195,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@incmix/ajv": "workspace:*",
     "@incmix/config": "workspace:*",
-    "@incmix/core": "workspace:*",
-    "@incmix/react": "workspace:*",
     "@radix-ui/colors": "^3.0.0",
     "@tailwindcss/postcss": "catalog:",
     "@testing-library/jest-dom": "catalog:",
