@@ -1,0 +1,61 @@
+.editor-EditorGrid {
+  --editor-grid-major-size: 120px;
+  --editor-grid-minor-size: 24px;
+  --editor-grid-major-color: color-mix(in oklch, var(--foreground) 32%, transparent);
+  --editor-grid-minor-color: color-mix(in oklch, var(--foreground) 16%, transparent);
+  --editor-grid-line-thickness: 1px;
+  --editor-grid-background: var(--background);
+
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--editor-grid-background);
+  background-image:
+    linear-gradient(
+      to right,
+      var(--editor-grid-major-color) var(--editor-grid-line-thickness),
+      transparent var(--editor-grid-line-thickness)
+    ),
+    linear-gradient(
+      to bottom,
+      var(--editor-grid-major-color) var(--editor-grid-line-thickness),
+      transparent var(--editor-grid-line-thickness)
+    ),
+    linear-gradient(
+      to right,
+      var(--editor-grid-minor-color) var(--editor-grid-line-thickness),
+      transparent var(--editor-grid-line-thickness)
+    ),
+    linear-gradient(
+      to bottom,
+      var(--editor-grid-minor-color) var(--editor-grid-line-thickness),
+      transparent var(--editor-grid-line-thickness)
+    );
+  background-size:
+    var(--editor-grid-major-size) var(--editor-grid-major-size),
+    var(--editor-grid-major-size) var(--editor-grid-major-size),
+    var(--editor-grid-minor-size) var(--editor-grid-minor-size),
+    var(--editor-grid-minor-size) var(--editor-grid-minor-size);
+}
+
+.dark .editor-EditorGrid {
+  --editor-grid-major-color: color-mix(in oklch, var(--foreground) 28%, transparent);
+  --editor-grid-minor-color: color-mix(in oklch, var(--foreground) 22%, transparent);
+}
+
+.editor-EditorGrid[data-minor-grid="false"] {
+  background-image:
+    linear-gradient(
+      to right,
+      var(--editor-grid-major-color) var(--editor-grid-line-thickness),
+      transparent var(--editor-grid-line-thickness)
+    ),
+    linear-gradient(
+      to bottom,
+      var(--editor-grid-major-color) var(--editor-grid-line-thickness),
+      transparent var(--editor-grid-line-thickness)
+    );
+  background-size:
+    var(--editor-grid-major-size) var(--editor-grid-major-size),
+    var(--editor-grid-major-size) var(--editor-grid-major-size);
+}

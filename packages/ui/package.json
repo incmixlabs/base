@@ -25,10 +25,14 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@incmix/core": "workspace:*",
+    "@incmix/react-runner": "workspace:*",
     "@incmix/table": "workspace:*",
     "@incmix/theme": "workspace:*"
   },
   "devDependencies": {
+    "@incmix/ajv": "workspace:*",
+    "@incmix/react": "workspace:*",
     "@types/react": "catalog:",
     "react": "catalog:",
     "tsup": "catalog:",

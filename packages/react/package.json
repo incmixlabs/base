@@ -1,39 +1,35 @@
 {
-  "name": "@incmix/react",
-  "version": "0.0.0",
-  "description": "React bindings for Incmix Autoform primitives.",
-  "license": "MIT",
-  "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "name": "@bwalkt/react",
+  "version": "4.0.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
-  },
-  "files": ["dist"],
-  "sideEffects": false,
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
-    "build": "tsup src/index.tsx --format cjs,esm --dts --clean",
-    "dev": "tsup src/index.tsx --format cjs,esm --dts --watch",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "lint": "biome lint .",
+    "build": "tsup src/index.tsx --format cjs,esm --dts",
+    "dev": "tsup src/index.tsx --format cjs,esm --dts --watch"
   },
-  "dependencies": {
-    "@incmix/core": "workspace:*"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vantezzen/autoform"
   },
   "devDependencies": {
+    "@bwalkt/config": "file:../config",
+    "@types/node": "catalog:",
     "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
     "react": "catalog:",
     "tsup": "catalog:",
     "typescript": "catalog:"
   },
+  "dependencies": {
+    "@bwalkt/core": "workspace:*",
+    "@hookform/resolvers": "catalog:",
+    "react-hook-form": "catalog:"
+  },
   "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0"
+    "@hookform/resolvers": "^5.2.2",
+    "react": "^16.8.0 || ^17 || ^18 || ^19",
+    "react-hook-form": "^7"
   }
 }

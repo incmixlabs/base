@@ -1,0 +1,99 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Documentation/Introduction" />
+
+# Component Library
+
+A comprehensive React component library built with **Base UI primitives** and **Tailwind CSS**, following **Radix UI Themes** design patterns.
+
+## Features
+
+- **Accessible by default** - Built on Base UI primitives with full keyboard navigation and ARIA support
+- **Tailwind CSS styling** - Fully customizable with Tailwind utility classes
+- **Design token system** - Consistent sizing, spacing, colors, and radius using semantic tokens
+- **Theme support** - Light/dark mode with customizable accent colors
+- **TypeScript** - Full type safety with exported prop types
+
+## Design Tokens
+
+The library uses semantic design tokens for consistency:
+
+### Sizes
+- `xs` - Extra small (compact UI elements)
+- `sm` - Small (default for form inputs)
+- `md` - Medium (default for most components)
+- `lg` - Large (emphasized elements)
+
+### Variants
+- `solid` - Filled background with contrasting text
+- `soft` - Subtle background with matching text
+- `outline` - Border only with transparent background
+- `ghost` - No visible background until interaction
+
+### Colors
+- `default` - Neutral gray
+- `primary` - Theme accent color
+- `info` - Blue informational
+- `success` - Green positive
+- `warning` - Amber caution
+- `error` - Red destructive
+
+### Radius
+- `none` - Sharp corners (0px)
+- `sm` - Small radius
+- `md` - Medium radius
+- `lg` - Large radius
+- `full` - Fully rounded (pill shape)
+
+## Component Categories
+
+### Form Elements
+TextField, Select, Textarea, Button, Checkbox, CheckboxCards, RadioGroup, Switch, Slider
+
+### Layout
+Box, Card, Inset, AspectRatio, Separator, ScrollArea
+
+### Typography
+Heading, Text, Code, Em, Strong, Quote, Kbd, Link
+
+### Feedback
+Callout, Badge, Progress, Spinner, Skeleton
+
+### Data Display
+Avatar, DataList, Table
+
+### Overlay
+Dialog, AlertDialog, Popover, Tooltip, HoverCard
+
+### Navigation
+Tabs, SegmentedControl
+
+### Menu
+ContextMenu, DropdownMenu
+
+## Quick Start
+
+```tsx
+import { Theme, Button, Card } from "@incmix/ui";
+
+function App() {
+  return (
+    <Theme accentColor="blue">
+      <Card.Root>
+        <Card.Header>
+          <Card.Title>Hello World</Card.Title>
+        </Card.Header>
+        <Card.Content>
+          <Button>Get Started</Button>
+        </Card.Content>
+      </Card.Root>
+    </Theme>
+  );
+}
+```
+
+## Next Steps
+
+- [Getting Started](/docs/documentation-getting-started--docs) - Installation and setup
+- [Theming](/docs/documentation-theming--docs) - Customize colors and styles
+- [Recipes](/docs/documentation-recipes--docs) - Common patterns and examples
