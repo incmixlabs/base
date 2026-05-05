@@ -13,7 +13,6 @@ const uiSrcPath = resolve(__dirname, '../../../packages/ui/src')
 
 const config: StorybookConfig = {
   stories: [
-    '../../../packages/ui/src/charts/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../../../packages/ui/src/elements/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../../../packages/ui/src/form/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../../../packages/ui/src/layouts/**/*.stories.@(js|jsx|mjs|ts|tsx)',
