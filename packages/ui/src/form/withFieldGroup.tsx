@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import type { Size } from '@/theme/tokens'
-import { useFieldGroup } from './FieldGroupContext'
+import { useFieldGroupOptional } from './FieldGroupContext'
 import type { TextFieldVariant } from './TextField'
 
 interface FieldGroupAwareProps {
@@ -13,6 +13,7 @@ interface FieldGroupAwareProps {
 /**
  * HOC that injects FieldGroup context values into wrapped components.
  * Props passed directly to the component take precedence over context values.
+ * Outside a FieldGroupProvider, props pass through without injected defaults.
  *
  * @example
  * ```tsx
@@ -30,12 +31,16 @@ interface FieldGroupAwareProps {
 /** withFieldGroup export. */
 export function withFieldGroup<P extends FieldGroupAwareProps>(WrappedComponent: React.ComponentType<P>) {
   const WithFieldGroup = React.forwardRef<unknown, P>((props, ref) => {
-    const fieldGroup = useFieldGroup()
+    const fieldGroup = useFieldGroupOptional()
 
     const mergedProps = {
       ...props,
-      size: props.size ?? fieldGroup.size,
-      variant: props.variant ?? fieldGroup.variant,
+      ...(fieldGroup
+        ? {
+            size: props.size ?? fieldGroup.size,
+            variant: props.variant ?? fieldGroup.variant,
+          }
+        : {}),
       ref,
     } as P & { ref: typeof ref }
 
