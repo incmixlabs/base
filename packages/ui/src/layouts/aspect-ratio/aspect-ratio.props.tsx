@@ -16,5 +16,5 @@ const aspectRatioPropDefs = {
 
 type AspectRatioOwnProps = GetPropDefTypes<typeof aspectRatioPropDefs>
 
-export { aspectRatioPropDefs, ratioValues as aspectRatioValues }
 export type { AspectRatioOwnProps }
+export { aspectRatioPropDefs, ratioValues as aspectRatioValues }

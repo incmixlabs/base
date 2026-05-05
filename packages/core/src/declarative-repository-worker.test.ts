@@ -1,15 +1,15 @@
-import { describe, expect, it } from 'vitest'
 import { v7 as uuidv7 } from 'uuid'
+import { describe, expect, it } from 'vitest'
+import { declarativeUiReadonlyAuditPage } from './declarative-ui.examples'
 import {
   createDeclarativeRepositoryWorkerHost,
   createWorkerBackedDeclarativeRepository,
-  initializeTinyBaseDeclarativeRepository,
   type DeclarativeDocumentNotification,
   type DeclarativeDocumentNotificationChannel,
   type DeclarativeRepositoryWorkerEndpoint,
+  initializeTinyBaseDeclarativeRepository,
   type MessageEventLike,
 } from './index'
-import { declarativeUiReadonlyAuditPage } from './declarative-ui.examples'
 
 function createNotificationChannel(): DeclarativeDocumentNotificationChannel {
   const listeners = new Set<(event: DeclarativeDocumentNotification) => void>()

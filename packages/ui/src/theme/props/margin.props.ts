@@ -157,5 +157,5 @@ const marginPropDefs = {
 
 type MarginProps = GetPropDefTypes<typeof marginPropDefs>
 
-export { marginPropDefs }
 export type { MarginProps }
+export { marginPropDefs }

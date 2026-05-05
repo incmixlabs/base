@@ -5,13 +5,13 @@ import {
   segmentedControlCatalogEntry,
   sliderCatalogEntry,
   tabsCatalogEntry,
-} from '@bwalkt/ui/editor/catalog'
+} from '@incmix/ui/editor/catalog'
 import {
   accordionPropDefs as accordionElementPropDefs,
   segmentedControlPropDefs as segmentedControlElementPropDefs,
   tabsPropDefs as tabsElementPropDefs,
-} from '@bwalkt/ui/elements/props'
-import { formPropDefsByComponent } from '@bwalkt/ui/form/props'
+} from '@incmix/ui/elements/props'
+import { formPropDefsByComponent } from '@incmix/ui/form/props'
 import type { ElementDocsEntry } from '../element-docs-types'
 import { autoProps, createAutogenEntry, createEnumShowcaseSection } from '../element-docs-types'
 

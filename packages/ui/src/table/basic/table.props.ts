@@ -129,5 +129,5 @@ const tablePropDefs = {
   Cell: tableCellPropDefs,
 } as const
 
-export { tablePropDefs, sizes as tableSizes, variants as tableVariants }
 export type { TableOwnProps }
+export { sizes as tableSizes, tablePropDefs, variants as tableVariants }

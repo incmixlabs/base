@@ -1,9 +1,9 @@
 'use client'
 
-import { imageCatalogEntry } from '@bwalkt/ui/editor/catalog'
-import { Image } from '@bwalkt/ui/elements'
-import { AspectRatio, Flex, Grid } from '@bwalkt/ui/layouts'
-import { Text } from '@bwalkt/ui/typography'
+import { imageCatalogEntry } from '@incmix/ui/editor/catalog'
+import { Image } from '@incmix/ui/elements'
+import { AspectRatio, Flex, Grid } from '@incmix/ui/layouts'
+import { Text } from '@incmix/ui/typography'
 import type { ElementDocsEntry } from '../element-docs-types'
 
 export const mediaEntries = {

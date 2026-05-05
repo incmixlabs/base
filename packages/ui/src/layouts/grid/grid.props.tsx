@@ -229,5 +229,5 @@ function parseAlignContentValue(value: string) {
 // Use all of the imported prop defs to ensure that JSDoc works
 type GridOwnProps = GetPropDefTypes<typeof gridPropDefs & typeof asChildPropDef>
 
-export { gridPropDefs }
 export type { GridOwnProps }
+export { gridPropDefs }

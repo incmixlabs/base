@@ -1,6 +1,6 @@
 'use client'
 
-import { AlertDialog, Button, ContextMenu, Dialog, DropdownMenu, ScrollArea, Timeline } from '@bwalkt/ui/elements'
+import { AlertDialog, Button, ContextMenu, Dialog, DropdownMenu, ScrollArea, Timeline } from '@incmix/ui/elements'
 import {
   alertDialogPropDefs as alertDialogElementPropDefs,
   contextMenuPropDefs as contextMenuElementPropDefs,
@@ -8,8 +8,8 @@ import {
   dropdownMenuPropDefs as dropdownMenuElementPropDefs,
   scrollAreaPropDefs as scrollAreaElementPropDefs,
   tablePropDefs as tableElementPropDefs,
-} from '@bwalkt/ui/elements/props'
-import { Flex } from '@bwalkt/ui/layouts'
+} from '@incmix/ui/elements/props'
+import { Flex } from '@incmix/ui/layouts'
 import {
   alertDialogPropDefs as alertDialogDocsPropDefs,
   contextMenuPropDefs as contextMenuDocsPropDefs,
@@ -18,9 +18,9 @@ import {
   scrollAreaPropDefs as scrollAreaDocsPropDefs,
   tablePropDefs as tableDocsPropDefs,
   timelinePropDefs,
-} from '@bwalkt/ui/props'
-import { Table } from '@bwalkt/ui/table'
-import { Text } from '@bwalkt/ui/typography/text/Text'
+} from '@incmix/ui/props'
+import { Table } from '@incmix/ui/table'
+import { Text } from '@incmix/ui/typography/text/Text'
 import {
   autoProps,
   createAutogenEntry,

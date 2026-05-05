@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { DeclarativeRepositoryError } from './declarative-repository'
 import { createRemoteDeclarativeRepository } from './declarative-remote-repository'
+import { DeclarativeRepositoryError } from './declarative-repository'
 import type { DeclarativeSyncAdapter, DeclarativeSyncChangeEnvelope } from './declarative-sync-boundary'
 
 const pageRecord = {

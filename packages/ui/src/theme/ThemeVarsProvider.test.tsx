@@ -2,8 +2,8 @@ import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { ThemeProvider } from './ThemeProvider'
-import { useThemeContext } from './theme-provider.context'
 import { ThemeVarsProvider, useThemeVarsContext } from './ThemeVarsProvider'
+import { useThemeContext } from './theme-provider.context'
 
 afterEach(() => {
   cleanup()

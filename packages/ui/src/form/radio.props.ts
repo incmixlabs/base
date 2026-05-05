@@ -16,4 +16,4 @@ const radioPropDefs = {
   variant: PropDef<(typeof radioVariants)[number]>
 }
 
-export { radioSizes, radioVariants, radioPropDefs }
+export { radioPropDefs, radioSizes, radioVariants }

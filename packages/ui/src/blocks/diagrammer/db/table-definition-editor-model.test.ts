@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { sampleDbSchemaDiagramDocument } from './sample-data'
 import {
-  addDbTableDefinitionChildRow,
   addDbDomainDefinitionRow,
+  addDbTableDefinitionChildRow,
   addDbTableDefinitionColumn,
   addDbTableDefinitionTable,
   addDbTypeDefinitionRow,

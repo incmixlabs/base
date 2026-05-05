@@ -40,4 +40,4 @@ function mapButtonSizeToSpinnerSize(
   }
 }
 
-export { mapResponsiveProp, mapCalloutSizeToTextSize, mapButtonSizeToSpinnerSize }
+export { mapButtonSizeToSpinnerSize, mapCalloutSizeToTextSize, mapResponsiveProp }

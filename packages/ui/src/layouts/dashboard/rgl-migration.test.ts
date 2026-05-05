@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { getDashboardColumnsForWidth } from './DashboardLayout'
 import {
+  type DashboardRglLayouts,
   dashboardBreakpointsFromRglBreakpoints,
   dashboardColumnsFromRglCols,
   dashboardLayoutItemsFromRglLayout,
@@ -10,7 +11,6 @@ import {
   getDashboardRglLayoutBreakpoint,
   rglLayoutFromDashboardItems,
   updateRglLayoutsWithDashboardItems,
-  type DashboardRglLayouts,
 } from './rgl-migration'
 
 describe('dashboard RGL migration helpers', () => {

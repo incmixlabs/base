@@ -1,7 +1,18 @@
 {
   "extends": "../../tsconfig.base.json",
-  "include": [".storybook", "src"],
+  "include": [".storybook/**/*.ts", ".storybook/**/*.tsx"],
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["../../packages/ui/src/*"],
+      "@incmix/ajv": ["../../packages/ajv/src/index.ts"],
+      "@incmix/core": ["../../packages/core/src/index.ts"],
+      "@incmix/core/declarative-ui.examples": ["../../packages/core/src/declarative-ui.examples.ts"],
+      "@incmix/react": ["../../packages/react/src/index.tsx"],
+      "@incmix/react-runner": ["../../packages/react-runner/src/index.ts"],
+      "@incmix/theme": ["../../packages/theme/src/index.ts"],
+      "@incmix/ui": ["../../packages/ui/src/index.ts"]
+    },
     "types": ["vite/client"]
   }
 }

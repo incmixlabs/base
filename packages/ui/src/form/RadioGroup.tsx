@@ -20,8 +20,8 @@ import {
 } from './radio-group.css'
 import type { RadioGroupItemProps, RadioGroupRootProps, RadioSize, RadioVariant } from './radio-group.props'
 
-export type { RadioSize }
 export type { RadioGroupItemProps, RadioGroupRootProps } from './radio-group.props'
+export type { RadioSize }
 
 // Context for sharing props
 interface RadioGroupContextValue {

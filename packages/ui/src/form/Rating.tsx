@@ -876,7 +876,7 @@ function RatingItem(props: RatingItemProps) {
   )
 }
 
-export type { RatingProps, RatingItemProps }
+export type { RatingItemProps, RatingProps }
 
 export {
   Rating,

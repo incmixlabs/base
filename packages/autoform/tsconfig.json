@@ -1,4 +1,12 @@
 {
   "extends": "../../tsconfig.base.json",
-  "include": ["src"]
+  "include": ["src"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@incmix/ajv": ["../ajv/src/index.ts"],
+      "@incmix/core": ["../core/src/index.ts"],
+      "@incmix/react": ["../react/src/index.tsx"]
+    }
+  }
 }

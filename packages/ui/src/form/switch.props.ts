@@ -62,4 +62,4 @@ const switchPropDefs = {
   disabled: PropDef<boolean>
 }
 
-export { switchSizes, switchVariants, switchPropDefs }
+export { switchPropDefs, switchSizes, switchVariants }

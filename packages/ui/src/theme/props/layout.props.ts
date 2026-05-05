@@ -467,5 +467,5 @@ type LayoutProps = GetPropDefTypes<
   typeof paddingPropDefs & typeof widthPropDefs & typeof heightPropDefs & typeof layoutPropDefs
 >
 
-export { layoutPropDefs }
 export type { LayoutProps }
+export { layoutPropDefs }

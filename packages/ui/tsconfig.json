@@ -12,7 +12,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "rootDir": "./src",
     "outDir": "./dist",
     "jsx": "react-jsx",
 
@@ -25,11 +24,22 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@incmix/core": ["../core/dist/index.d.ts"],
-      "@incmix/core/declarative-ui.examples": ["../core/dist/declarative-ui.examples.d.ts"],
-      "@incmix/ajv": ["../ajv/dist/index.d.ts"]
+      "@incmix/ajv": ["../ajv/src/index.ts"],
+      "@incmix/core": ["../core/src/index.ts"],
+      "@incmix/core/declarative-ui.examples": ["../core/src/declarative-ui.examples.ts"],
+      "@incmix/react": ["../react/src/index.tsx"],
+      "@incmix/react-runner": ["../react-runner/src/index.ts"],
+      "@incmix/theme": ["../theme/src/index.ts"]
     }
   },
   "include": ["src"],
-  "exclude": ["dist", "src/form/date/**/*.test.tsx", "src/theme/helpers/**", "src/_internal/base-button.tsx"]
+  "exclude": [
+    "dist",
+    "src/**/*.stories.ts",
+    "src/**/*.stories.tsx",
+    "src/stories/**",
+    "src/form/date/**/*.test.tsx",
+    "src/theme/helpers/**",
+    "src/_internal/base-button.tsx"
+  ]
 }

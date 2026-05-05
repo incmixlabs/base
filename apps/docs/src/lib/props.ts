@@ -6,4 +6,4 @@ export {
   type DocsPropDefinitionKey,
   docsPropDefinitions as definitions,
   type PropDef,
-} from '@bwalkt/ui/editor/docs'
+} from '@incmix/ui/editor/docs'

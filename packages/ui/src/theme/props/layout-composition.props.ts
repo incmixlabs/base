@@ -165,6 +165,7 @@ const layoutCompositionPropDefs = {
 type LayoutCompositionPropDefProps = GetPropDefTypes<typeof layoutCompositionPropDefs>
 type LayoutCompositionMode = (typeof layoutCompositionModes)[number]
 
+export type { LayoutCompositionMode, LayoutCompositionPropDefProps }
 export {
   layoutCompositionColumnValues,
   layoutCompositionFlowValues,
@@ -172,4 +173,3 @@ export {
   layoutCompositionPropDefs,
   layoutCompositionRowValues,
 }
-export type { LayoutCompositionMode, LayoutCompositionPropDefProps }

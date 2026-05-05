@@ -1,11 +1,11 @@
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { chartDarkTokenColorMap, chartLightTokenColorMap } from './chart-token-map'
 import { THEME_PROFILE_VAR_NAMES } from './profile-vars'
+import { buildRuntimePaletteVars } from './runtime-palette-vars'
 import { ThemeProvider } from './ThemeProvider'
 import { useThemeContext } from './theme-provider.context'
-import { buildRuntimePaletteVars } from './runtime-palette-vars'
-import { chartDarkTokenColorMap, chartLightTokenColorMap } from './chart-token-map'
 
 afterEach(() => {
   cleanup()

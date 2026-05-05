@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "@bwalkt/ui/globals.css";
+@import "@incmix/ui/globals.css";
 
 @source "../**/*.{ts,tsx}";
 @source "../../../ui/src/**/*.{ts,tsx}";

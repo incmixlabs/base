@@ -8,11 +8,11 @@ import {
   gridDocsPropDefs,
   sectionDocsPropDefs,
   sidebarDocsPropDefs,
-} from '@bwalkt/ui/editor/docs'
-import { Button, Card } from '@bwalkt/ui/elements'
-import { AspectRatio, Box, Container, Flex, Grid, Masonry, Section, Sidebar } from '@bwalkt/ui/layouts'
-import { masonryPropDefs } from '@bwalkt/ui/props'
-import { Text } from '@bwalkt/ui/typography/text/Text'
+} from '@incmix/ui/editor/docs'
+import { Button, Card } from '@incmix/ui/elements'
+import { AspectRatio, Box, Container, Flex, Grid, Masonry, Section, Sidebar } from '@incmix/ui/layouts'
+import { masonryPropDefs } from '@incmix/ui/props'
+import { Text } from '@incmix/ui/typography/text/Text'
 import type { ElementDocsEntry } from './element-docs-types'
 
 export const layoutDocsEntries: Record<string, ElementDocsEntry> = {

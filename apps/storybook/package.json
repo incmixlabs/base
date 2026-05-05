@@ -4,13 +4,22 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prebuild": "pnpm --filter @incmix/ui generate:theme-runtime",
     "build": "storybook build",
+    "build:analyze": "ANALYZE=true storybook build",
+    "predev": "pnpm --filter @incmix/ui generate:theme-runtime",
     "dev": "storybook dev -p 6006",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@incmix/autoform": "workspace:*",
+    "@incmix/ajv": "workspace:*",
+    "@incmix/config": "workspace:*",
+    "@incmix/core": "workspace:*",
+    "@incmix/react": "workspace:*",
+    "@incmix/react-runner": "workspace:*",
+    "@incmix/theme": "workspace:*",
     "@incmix/ui": "workspace:*",
+    "@base-ui/react": "1.2.0",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
@@ -20,7 +29,14 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "@tailwindcss/postcss": "catalog:",
+    "@vanilla-extract/vite-plugin": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "autoprefixer": "catalog:",
+    "babel-plugin-react-compiler": "catalog:",
+    "rollup-plugin-visualizer": "catalog:",
     "storybook": "catalog:",
+    "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:"
   }

@@ -1,10 +1,10 @@
 'use client'
 
-import { COMPONENT_REGISTRY_ENTRY_KIND, COMPONENT_REGISTRY_SCHEMA_VERSION } from '@bwalkt/core'
-import type { CatalogEntry } from '@bwalkt/ui/editor/catalog'
-import { createDocsPropDefs } from '@bwalkt/ui/editor/docs'
-import { Stepper } from '@bwalkt/ui/elements'
-import { stepperPropDefs as stepperThemePropDefs } from '@bwalkt/ui/elements/props'
+import { COMPONENT_REGISTRY_ENTRY_KIND, COMPONENT_REGISTRY_SCHEMA_VERSION } from '@incmix/core'
+import type { CatalogEntry } from '@incmix/ui/editor/catalog'
+import { createDocsPropDefs } from '@incmix/ui/editor/docs'
+import { Stepper } from '@incmix/ui/elements'
+import { stepperPropDefs as stepperThemePropDefs } from '@incmix/ui/elements/props'
 import {
   Checkbox,
   CheckboxGroup,
@@ -18,7 +18,7 @@ import {
   SwitchWithLabel,
   Textarea,
   TextField,
-} from '@bwalkt/ui/form'
+} from '@incmix/ui/form'
 import {
   checkboxPropDefs as checkboxThemePropDefs,
   radioGroupRootPropDefs,
@@ -26,8 +26,8 @@ import {
   switchPropDefs as switchThemePropDefs,
   textAreaPropDefs as textAreaThemePropDefs,
   textFieldRootPropDefs,
-} from '@bwalkt/ui/form/props'
-import { Flex } from '@bwalkt/ui/layouts'
+} from '@incmix/ui/form/props'
+import { Flex } from '@incmix/ui/layouts'
 import {
   checkboxGroupPropDefs,
   checkboxPropDefs,
@@ -37,7 +37,7 @@ import {
   switchPropDefs,
   textAreaPropDefs,
   textFieldPropDefs,
-} from '@bwalkt/ui/props'
+} from '@incmix/ui/props'
 import { Search } from 'lucide-react'
 import { autoProps, createAutogenEntry } from './element-docs-types'
 

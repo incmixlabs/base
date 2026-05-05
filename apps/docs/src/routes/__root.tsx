@@ -1,7 +1,7 @@
 import '../styles/globals.css'
-import { AdminThemeProvider } from '@bwalkt/ui/theme'
-import { Heading } from '@bwalkt/ui/typography/heading/Heading'
-import { Text } from '@bwalkt/ui/typography/text/Text'
+import { AdminThemeProvider } from '@incmix/ui/theme'
+import { Heading } from '@incmix/ui/typography/heading/Heading'
+import { Text } from '@incmix/ui/typography/text/Text'
 import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router'
 import {
   docsAppearanceBootstrapScript,

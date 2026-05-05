@@ -12,4 +12,4 @@ const radiusPropDef = {
   radius: PropDef<(typeof radii)[number]>
 }
 
-export { radiusPropDef, radii }
+export { radii, radiusPropDef }

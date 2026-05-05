@@ -1,6 +1,6 @@
-import { normalizeJsonSchemaWithUiSchema } from '@bwalkt/core'
-import { AutoFormModelRenderer } from '@bwalkt/ui/autoform'
-import { Heading, Text } from '@bwalkt/ui/typography'
+import { normalizeJsonSchemaWithUiSchema } from '@incmix/core'
+import { AutoFormModelRenderer } from '@incmix/ui/autoform'
+import { Heading, Text } from '@incmix/ui/typography'
 import { createFileRoute } from '@tanstack/react-router'
 import * as React from 'react'
 import {

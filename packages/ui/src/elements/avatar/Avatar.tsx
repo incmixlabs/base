@@ -184,6 +184,6 @@ const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
 
 Avatar.displayName = 'Avatar'
 
-export type { AvatarProps, AvatarSize }
 export type { AvatarHoverCardData, AvatarPresence } from './AvatarHoverCard'
+export type { AvatarProps, AvatarSize }
 export { Avatar }

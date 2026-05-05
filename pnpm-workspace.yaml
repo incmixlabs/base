@@ -37,6 +37,7 @@ catalog:
   '@types/node': ^25.2.2
   '@types/react': ^19.2.7
   '@types/react-dom': ^19.2.3
+  '@vitejs/plugin-react': ^5.0.4
   '@xstate/react': ^6.1.0
   '@xstate/store': ^3.14.1
   '@xstate/store-react': ^1.0.1

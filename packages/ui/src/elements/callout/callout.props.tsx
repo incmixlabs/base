@@ -37,4 +37,4 @@ const calloutIconPropDefs = {
   name: PropDef<string>
 }
 
-export { calloutRootPropDefs, calloutIconPropDefs }
+export { calloutIconPropDefs, calloutRootPropDefs }

@@ -12,8 +12,8 @@ import { Label } from './Label'
 import { switchSizeVariants } from './switch.css'
 import type { SwitchProps, SwitchSize, SwitchWithLabelProps } from './switch.props'
 
-export type { SwitchSize }
 export type { SwitchProps, SwitchWithLabelProps } from './switch.props'
+export type { SwitchSize }
 
 // Static checked color class — references --fc-primary set via formColorVars
 const checkedColorCls = 'data-[checked]:bg-[var(--fc-primary)]'

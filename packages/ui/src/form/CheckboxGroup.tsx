@@ -139,5 +139,5 @@ export const CheckboxGroup = {
   Item: CheckboxGroupItem,
 }
 
-export type { CheckboxGroupRootProps as CheckboxGroupProps }
 export type { CheckboxGroupItemProps, CheckboxGroupRootProps } from './checkbox-group.props'
+export type { CheckboxGroupRootProps as CheckboxGroupProps }

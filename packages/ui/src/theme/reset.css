@@ -41,12 +41,12 @@
       button,
       select,
       /* Buttons */
-        [type="button"],
+      [type="button"],
       [type="image"],
       [type="reset"],
       [type="submit"],
       /* Non-textual inputs */
-        [type="checkbox"],
+      [type="checkbox"],
       [type="color"],
       [type="radio"],
       [type="range"]
@@ -69,22 +69,22 @@
   &:where(
       textarea,
       /* Buttons */
-        input:not(
-          [type="button"],
-          [type="image"],
-          [type="reset"],
-          [type="submit"],
-          /* Non-textual inputs */
-            [type="checkbox"],
-          [type="color"],
-          [type="radio"],
-          [type="range"]
-        )
+      input:not(
+        [type="button"],
+        [type="image"],
+        [type="reset"],
+        [type="submit"],
+        /* Non-textual inputs */
+        [type="checkbox"],
+        [type="color"],
+        [type="radio"],
+        [type="range"]
+      )
     ) {
     all: unset;
     display: block;
     width: 100%;
-    width: stretch;
+    inline-size: stretch;
     font-weight: normal;
     font-style: normal;
     text-align: start;
@@ -170,7 +170,7 @@
   }
   &:where(iframe) {
     width: 100%;
-    width: stretch;
+    inline-size: stretch;
   }
   &:where(ins, u) {
     text-decoration: none;
@@ -206,7 +206,7 @@
   &:where(video) {
     display: block;
     width: 100%;
-    width: stretch;
+    inline-size: stretch;
   }
 
   /* * * * * * * * * * * * * * * * * * * */

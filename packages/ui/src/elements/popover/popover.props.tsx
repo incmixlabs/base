@@ -52,6 +52,5 @@ type PopoverContentVariant = (typeof contentVariants)[number]
 type PopoverContentSize = (typeof contentSizes)[number]
 type PopoverContentMaxWidth = (typeof maxWidthValues)[number]
 
-export { popoverContentPropDefs, contentVariants as popoverContentVariants, maxWidthValues as popoverMaxWidthValues }
-export type { PopoverContentOwnProps }
-export type { PopoverContentMaxWidth, PopoverContentSize, PopoverContentVariant }
+export type { PopoverContentMaxWidth, PopoverContentOwnProps, PopoverContentSize, PopoverContentVariant }
+export { contentVariants as popoverContentVariants, maxWidthValues as popoverMaxWidthValues, popoverContentPropDefs }

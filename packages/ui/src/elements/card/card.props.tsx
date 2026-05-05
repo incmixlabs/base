@@ -47,5 +47,5 @@ type CardSize = (typeof cardSizes)[number]
 type CardVariant = (typeof cardVariants)[number]
 type CardLayout = LayoutCompositionMode
 
-export { cardPropDefs, cardSizes, cardVariants, cardLayoutModes }
 export type { CardLayout, CardSize, CardVariant }
+export { cardLayoutModes, cardPropDefs, cardSizes, cardVariants }

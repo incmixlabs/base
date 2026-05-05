@@ -10,4 +10,4 @@ const ratingPropDefs = {
   size: PropDef<(typeof ratingSizes)[number]>
 }
 
-export { ratingSizes, ratingPropDefs }
+export { ratingPropDefs, ratingSizes }

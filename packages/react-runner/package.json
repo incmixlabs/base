@@ -37,5 +37,12 @@
     "react-dom": "catalog:",
     "tsup": "catalog:",
     "typescript": "catalog:"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/incmixlabs/base"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -117,5 +117,5 @@ export namespace DialogProps {
   export type Close = DialogCloseProps
 }
 
-export { alignValues as dialogContentAlignValues, contentSizes as dialogContentSizes, dialogContentPropDefs }
 export type { DialogContentAlign, DialogContentOwnProps, DialogContentSize }
+export { alignValues as dialogContentAlignValues, contentSizes as dialogContentSizes, dialogContentPropDefs }

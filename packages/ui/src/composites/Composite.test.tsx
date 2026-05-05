@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react'
 import { act, cleanup, render, screen } from '@testing-library/react'
+import type { ReactNode } from 'react'
 import { afterEach, describe, expect, it } from 'vitest'
 import {
   COMPOSITE_DEFINITIONS_STORAGE_KEY,
@@ -7,8 +7,8 @@ import {
   compositeGlyphs,
   getCompositeDefinition,
   loadCompositeDefinitionsFromLocalStorage,
-  registerLocalStorageCompositeDefinitions,
   registerCompositeDefinition,
+  registerLocalStorageCompositeDefinitions,
   resolveCompositeGlyph,
   unregisterCompositeDefinition,
 } from './Composite'
@@ -17,8 +17,8 @@ import {
   compactHorizontalChartCompositeSampleProps,
 } from './compact-horizontal-chart/definition'
 import { compactHorizontalChartCompositeSampleData } from './compact-horizontal-chart/sample-data'
-import { swotCompositeSampleData } from './swot/sample-data'
 import { swotCompositePropsSchema, swotCompositeSampleProps } from './swot/definition'
+import { swotCompositeSampleData } from './swot/sample-data'
 
 afterEach(() => {
   cleanup()
@@ -29,7 +29,7 @@ afterEach(() => {
   unregisterCompositeDefinition('runtime-scope-render-definition-test')
   unregisterCompositeDefinition('immutable-test')
   unregisterCompositeDefinition('late-test')
-  unregisterCompositeDefinition('persisted-json-render-test')
+  unregisterCompositeDefinition('persisted-schema-test')
   unregisterCompositeDefinition('persisted-jsx-test')
   unregisterCompositeDefinition('persisted-collision-test')
   unregisterCompositeDefinition('data-reactivity-test')
@@ -237,7 +237,7 @@ export default function ImmutableTemplate({ data }) {
 
   it('exposes a persisted json schema on registered definitions', () => {
     registerCompositeDefinition({
-      name: 'persisted-json-render-test',
+      name: 'persisted-schema-test',
       sampleData: { label: 'Persisted' },
       jsx: `
 export default function PersistedSchemaTemplate({ data }) {
@@ -246,8 +246,8 @@ export default function PersistedSchemaTemplate({ data }) {
 `,
     })
 
-    expect(getCompositeDefinition('persisted-json-render-test')?.jsonSchema).toMatchObject({
-      title: 'persisted-json-render-test composite data',
+    expect(getCompositeDefinition('persisted-schema-test')?.jsonSchema).toMatchObject({
+      title: 'persisted-schema-test composite data',
       type: 'object',
       properties: {
         label: { type: 'string' },
@@ -257,12 +257,12 @@ export default function PersistedSchemaTemplate({ data }) {
     })
   })
 
-  it('loads persisted json render definitions from localStorage on component usage and validates with their schema', async () => {
+  it('loads persisted schema definitions from localStorage on component usage and validates with their schema', async () => {
     window.localStorage.setItem(
       COMPOSITE_DEFINITIONS_STORAGE_KEY,
       JSON.stringify([
         {
-          name: 'persisted-json-render-test',
+          name: 'persisted-schema-test',
           sampleData: { label: 'Persisted' },
           jsonSchema: {
             type: 'object',
@@ -280,9 +280,9 @@ export default function PersistedSchemaTemplate({ data }) {
       ]),
     )
 
-    expect(window.localStorage.getItem(COMPOSITE_DEFINITIONS_STORAGE_KEY)).toContain('persisted-json-render-test')
+    expect(window.localStorage.getItem(COMPOSITE_DEFINITIONS_STORAGE_KEY)).toContain('persisted-schema-test')
 
-    render(<Composite name="persisted-json-render-test" data={{ label: 'Persisted from storage' }} />)
+    render(<Composite name="persisted-schema-test" data={{ label: 'Persisted from storage' }} />)
 
     expect(await screen.findByText('Persisted from storage')).toBeInTheDocument()
   })

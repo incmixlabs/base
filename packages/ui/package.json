@@ -1,10 +1,13 @@
 {
   "name": "@incmix/ui",
   "version": "1.0.0",
-  "private": true,
+  "license": "MIT",
   "type": "module",
   "types": "./dist/index.d.ts",
   "module": "./dist/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "lint": "biome lint .",
     "lint:fix": "biome lint . --write",
@@ -20,13 +23,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "predev": "pnpm generate:theme-runtime",
-    "dev": "storybook dev -p 6006",
-    "prestorybook": "pnpm generate:theme-runtime",
-    "storybook": "storybook dev -p 6006",
-    "prebuild-storybook": "pnpm generate:theme-runtime",
-    "build-storybook": "storybook build",
-    "prebuild:analyze": "pnpm generate:theme-runtime",
-    "build:analyze": "ANALYZE=true storybook build",
+    "dev": "tsup --config tsup.config.ts --watch",
     "build:analyze:lib": "vite build --config vite.analyze.config.ts",
     "check:bundle": "node scripts/check-bundle-guards.mjs",
     "generate:hues": "node scripts/generate-hue-palette.mjs",
@@ -310,14 +307,15 @@
       "import": "./dist/widgets.js"
     }
   },
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
-    "@bwalkt/ajv": "workspace:*",
-    "@bwalkt/config": "file:../config",
-    "@bwalkt/core": "workspace:*",
-    "@bwalkt/react": "workspace:*",
+    "@incmix/ajv": "workspace:*",
+    "@incmix/config": "workspace:*",
+    "@incmix/core": "workspace:*",
+    "@incmix/react": "workspace:*",
     "@radix-ui/colors": "^3.0.0",
-    "@storybook/addon-docs": "catalog:",
-    "@storybook/react-vite": "catalog:",
     "@tailwindcss/postcss": "catalog:",
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
@@ -340,7 +338,6 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "rollup-plugin-visualizer": "catalog:",
-    "storybook": "catalog:",
     "tailwind-merge": "catalog:",
     "tsup": "catalog:",
     "typescript": "catalog:",
@@ -353,8 +350,8 @@
     "@atlaskit/pragmatic-drag-and-drop-auto-scroll": "2.1.1",
     "@atlaskit/pragmatic-drag-and-drop-hitbox": "1.1.0",
     "@base-ui/react": "1.2.0",
-    "@bwalkt/react-runner": "workspace:*",
-    "@bwalkt/theme": "workspace:*",
+    "@incmix/react-runner": "workspace:*",
+    "@incmix/theme": "workspace:*",
     "@codemirror/lang-javascript": "catalog:",
     "@codemirror/theme-one-dark": "catalog:",
     "@internationalized/date": "^3.11.0",

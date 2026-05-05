@@ -4,7 +4,7 @@ import { useFormContext, useWatch } from 'react-hook-form'
 import { ArrayField } from './ArrayField'
 import { useAutoForm } from './context'
 import { ObjectField } from './ObjectField'
-import type { AutoFormFieldProps } from './types'
+import type { AutoFormFieldProps, FieldWrapperProps } from './types'
 import { getPathInObject } from './utils'
 
 export const AutoFormField: React.FC<{
@@ -19,10 +19,11 @@ export const AutoFormField: React.FC<{
   } = useFormContext()
 
   const fullPath = path.join('.')
-  const error = getPathInObject(errors, path)?.message as string | undefined
+  const error = (getPathInObject(errors, path) as { message?: string } | undefined)?.message
   const value = useWatch({ control, name: fullPath })
 
-  const FieldWrapper = field.fieldConfig?.fieldWrapper || uiComponents.FieldWrapper
+  const FieldWrapper =
+    (field.fieldConfig?.fieldWrapper as React.ComponentType<FieldWrapperProps> | undefined) ?? uiComponents.FieldWrapper
 
   let FieldComponent: React.ComponentType<AutoFormFieldProps> = () => (
     <uiComponents.ErrorMessage

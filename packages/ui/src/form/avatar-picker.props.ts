@@ -11,4 +11,4 @@ const avatarPickerPropDefs = {
   size: PropDef<(typeof avatarPickerSizes)[number]>
 }
 
-export { avatarPickerSizes, avatarPickerPropDefs }
+export { avatarPickerPropDefs, avatarPickerSizes }

@@ -1,5 +1,5 @@
 {
-  "name": "@bwalkt/docs",
+  "name": "@incmix/docs",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -11,25 +11,21 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@bwalkt/core": "workspace:*",
-    "@bwalkt/react-runner": "workspace:*",
-    "@bwalkt/ui": "workspace:*",
+    "@incmix/core": "workspace:*",
+    "@incmix/react-runner": "workspace:*",
+    "@incmix/ui": "workspace:*",
     "@codemirror/lang-javascript": "catalog:",
     "@codemirror/theme-one-dark": "catalog:",
-    "@json-render/core": "^0.15.0",
-    "@json-render/remotion": "^0.15.0",
     "@mdx-js/react": "catalog:",
-    "@remotion/player": "^4.0.441",
     "@tanstack/react-router": "catalog:",
     "@tanstack/react-start": "catalog:",
     "@uiw/react-codemirror": "catalog:",
     "lucide-react": "catalog:",
     "react": "catalog:",
-    "react-dom": "catalog:",
-    "remotion": "^4.0.441"
+    "react-dom": "catalog:"
   },
   "devDependencies": {
-    "@bwalkt/config": "workspace:*",
+    "@incmix/config": "workspace:*",
     "@mdx-js/rollup": "^3.1.1",
     "@rsbuild/core": "catalog:",
     "@tailwindcss/postcss": "catalog:",

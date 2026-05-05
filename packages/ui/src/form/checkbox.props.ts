@@ -84,4 +84,4 @@ const checkboxPropDefs = {
   value: PropDef<string>
 }
 
-export { checkboxSizes, checkboxVariants, checkboxSharedPropDefs, checkboxPropDefs }
+export { checkboxPropDefs, checkboxSharedPropDefs, checkboxSizes, checkboxVariants }

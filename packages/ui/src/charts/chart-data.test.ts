@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { createAutoformChartSeriesData, getAutoformChartRows } from './chart-data'
 import type { AutoformChartDef } from './chart-contract'
+import { createAutoformChartSeriesData, getAutoformChartRows } from './chart-data'
 
 type SalesRow = {
   region: string

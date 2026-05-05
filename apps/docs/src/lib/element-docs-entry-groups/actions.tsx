@@ -1,13 +1,13 @@
 'use client'
 
-import { buttonCatalogEntry, iconButtonCatalogEntry } from '@bwalkt/ui/editor/catalog'
-import { Button, Popover } from '@bwalkt/ui/elements'
+import { buttonCatalogEntry, iconButtonCatalogEntry } from '@incmix/ui/editor/catalog'
+import { Button, Popover } from '@incmix/ui/elements'
 import {
   elementPropDefsByComponent,
   iconButtonPropDefs as iconButtonElementPropDefs,
   popoverPropDefs as popoverElementPropDefs,
-} from '@bwalkt/ui/elements/props'
-import { popoverPropDefs } from '@bwalkt/ui/props'
+} from '@incmix/ui/elements/props'
+import { popoverPropDefs } from '@incmix/ui/props'
 import type { ElementDocsBaseEntry, ElementDocsEntry } from '../element-docs-types'
 import { autoProps, createAutogenEntry, createEnumShowcaseSection } from '../element-docs-types'
 

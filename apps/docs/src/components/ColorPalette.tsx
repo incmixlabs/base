@@ -1,7 +1,7 @@
-import { Callout } from '@bwalkt/ui/elements'
-import { Flex, Grid } from '@bwalkt/ui/layouts'
-import { Heading } from '@bwalkt/ui/typography/heading/Heading'
-import { Text } from '@bwalkt/ui/typography/text/Text'
+import { Callout } from '@incmix/ui/elements'
+import { Flex, Grid } from '@incmix/ui/layouts'
+import { Heading } from '@incmix/ui/typography/heading/Heading'
+import { Text } from '@incmix/ui/typography/text/Text'
 import { HUE_NAMES } from '@/theme/tokens'
 
 const ALL_HUES = HUE_NAMES

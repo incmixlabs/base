@@ -26,7 +26,7 @@ describe('Accordion', () => {
 
   it('renders fill content with fill-specific classes while the item is open', () => {
     render(
-      <Accordion.Root defaultValue="details" size="sm">
+      <Accordion.Root defaultValue={['details']} size="sm">
         <Accordion.Item value="details">
           <Accordion.Trigger>Details</Accordion.Trigger>
           <Accordion.Content fill data-testid="fill-panel">
@@ -44,7 +44,7 @@ describe('Accordion', () => {
 
   it('does not apply fill classes on the animated content path', () => {
     render(
-      <Accordion.Root defaultValue="details" size="sm">
+      <Accordion.Root defaultValue={['details']} size="sm">
         <Accordion.Item value="details">
           <Accordion.Trigger>Details</Accordion.Trigger>
           <Accordion.Content data-testid="animated-panel">Panel content</Accordion.Content>

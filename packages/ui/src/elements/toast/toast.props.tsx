@@ -41,5 +41,5 @@ const toastViewportPropDefs = {
 type ToastDismissable = (typeof dismissableValues)[number]
 type ToastViewportSide = (typeof sideValues)[number]
 
-export { toastRootPropDefs, toastViewportPropDefs, dismissableValues, sideValues }
 export type { ToastDismissable, ToastViewportSide }
+export { dismissableValues, sideValues, toastRootPropDefs, toastViewportPropDefs }

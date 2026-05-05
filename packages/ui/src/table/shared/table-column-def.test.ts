@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import {
   getTableColumnRuntimeMeta,
+  type TableColumnDef,
   toFlatTableColumnDef,
   toTanStackTableColumnDef,
-  type TableColumnDef,
 } from './table-column-def'
 
 type ProductRow = {

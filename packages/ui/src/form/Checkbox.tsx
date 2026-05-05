@@ -21,8 +21,8 @@ import { useFieldGroup } from './FieldGroupContext'
 import { resolveFormSize } from './form-size'
 import { Label } from './Label'
 
-export type { CheckboxSize }
 export type { CheckboxProps, CheckboxWithLabelProps } from './checkbox.props'
+export type { CheckboxSize }
 
 /** Checkbox export. */
 export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(

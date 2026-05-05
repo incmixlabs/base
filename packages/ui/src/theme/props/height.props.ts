@@ -60,5 +60,5 @@ const heightPropDefs = {
 
 type HeightProps = GetPropDefTypes<typeof heightPropDefs>
 
-export { heightPropDefs }
 export type { HeightProps }
+export { heightPropDefs }

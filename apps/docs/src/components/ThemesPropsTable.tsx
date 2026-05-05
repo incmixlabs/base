@@ -1,8 +1,8 @@
 'use client'
 
-import { Box } from '@bwalkt/ui/elements'
-import { Table } from '@bwalkt/ui/table'
-import { Code, Text } from '@bwalkt/ui/typography'
+import { Box } from '@incmix/ui/elements'
+import { Table } from '@incmix/ui/table'
+import { Code, Text } from '@incmix/ui/typography'
 import type { PropDef } from '../lib/props'
 import { definitions } from '../lib/props'
 

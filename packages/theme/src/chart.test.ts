@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest'
-import { createThemeResolver } from './resolver.js'
 import {
   CHART_COLOR_KEYS,
   CHART_ROLES,
@@ -16,6 +15,7 @@ import {
   resolveChartRoleToken,
   resolveConcreteChartRoleColor,
 } from './chart.js'
+import { createThemeResolver } from './resolver.js'
 
 describe('chart theme semantics', () => {
   it('normalizes chart aliases and selects series lanes', () => {

@@ -1,7 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-
+import type { DeclarativeSyncAdapterError } from './declarative-sync-boundary'
 import { createHttpDeclarativeSyncAdapter } from './declarative-sync-http'
-import { DeclarativeSyncAdapterError } from './declarative-sync-boundary'
 
 describe('createHttpDeclarativeSyncAdapter', () => {
   afterEach(() => {

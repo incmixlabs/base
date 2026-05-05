@@ -139,15 +139,14 @@ const normalizeEnumPropValue = <Def extends { values: readonly string[]; default
   return def.default as Def['values'][number] | undefined
 }
 
-export { breakpointsArray, breakpoints }
 export type {
-  PropDef,
-  GetPropDefTypes,
-  ResponsivePropDef,
-  PropDefValues,
   //
   Breakpoint,
+  GetPropDefTypes,
+  PropDef,
+  PropDefValues,
   Responsive,
+  ResponsivePropDef,
   Union,
 }
-export { getPropDefValues, normalizeEnumPropValue }
+export { breakpoints, breakpointsArray, getPropDefValues, normalizeEnumPropValue }

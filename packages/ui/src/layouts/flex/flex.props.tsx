@@ -123,5 +123,5 @@ function parseJustifyValue(value: string) {
 // Use all of the imported prop defs to ensure that JSDoc works
 type FlexOwnProps = GetPropDefTypes<typeof flexPropDefs & typeof gapPropDefs & typeof asChildPropDef>
 
-export { flexPropDefs }
 export type { FlexOwnProps }
+export { flexPropDefs }

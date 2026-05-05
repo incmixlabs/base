@@ -4,13 +4,13 @@ import * as React from 'react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { HUE_NAMES } from '@/theme/tokens'
 import { Avatar } from './Avatar'
+import { AVATAR_SIZE_CLASS, AvatarProvider, avatarSizeStyles } from './avatar.context'
 import {
   avatarFallbackMuted,
   avatarRadiusByRadius,
   avatarSoftFallbackByHueTone,
   avatarSolidFallbackByHueTone,
 } from './avatar.css'
-import { AVATAR_SIZE_CLASS, AvatarProvider, avatarSizeStyles } from './avatar.context'
 import { stringToAvatarSoftTone, stringToAvatarSolidTone, stringToHue } from './avatar.shared'
 
 afterEach(() => {

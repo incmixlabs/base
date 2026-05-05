@@ -5,7 +5,7 @@ import {
   type UsePersistentThemeConfigOptions,
   type UsePersistentThemePreferencesOptions,
   type UsePersistentThemeVarsTokensOptions,
-} from '@bwalkt/ui/theme'
+} from '@incmix/ui/theme'
 
 export const DOCS_APPEARANCE_COOKIE_APP_KEY = 'docs'
 export const DOCS_THEME_STORAGE_PREFIX = 'af:docs:theme'

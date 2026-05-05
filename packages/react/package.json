@@ -11,10 +11,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/vantezzen/autoform"
+    "url": "https://github.com/incmixlabs/base"
   },
   "devDependencies": {
-    "@incmix/config": "file:../config",
+    "@incmix/config": "workspace:*",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
@@ -31,5 +31,13 @@
     "@hookform/resolvers": "^5.2.2",
     "react": "^16.8.0 || ^17 || ^18 || ^19",
     "react-hook-form": "^7"
+  },
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
   }
 }

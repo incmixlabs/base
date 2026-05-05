@@ -127,7 +127,6 @@ export namespace SidebarProps {
   export type GroupAnchor = SidebarGroupAnchor
 }
 
-export { sidebarRootPropDefs, sidebarMenuButtonPropDefs, sidebarMenuSubButtonPropDefs, sidebarGroupAnchors }
 export type {
   SidebarCollapsible,
   SidebarColor,
@@ -138,3 +137,4 @@ export type {
   SidebarSide,
   SidebarVariant,
 }
+export { sidebarGroupAnchors, sidebarMenuButtonPropDefs, sidebarMenuSubButtonPropDefs, sidebarRootPropDefs }

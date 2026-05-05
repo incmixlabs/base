@@ -28,5 +28,5 @@ const badgePropDefs = {
 
 type BadgeVariant = (typeof variants)[number]
 
-export { badgePropDefs }
 export type { BadgeVariant }
+export { badgePropDefs }

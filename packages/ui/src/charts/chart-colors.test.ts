@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
 import { resolveChartThemeRoleColor } from '@incmix/theme'
+import { describe, expect, it } from 'vitest'
 import { chartColorContrastVar, chartColorVar } from '@/theme/props/color.prop'
 import {
   createChartStyleThemeResolver,

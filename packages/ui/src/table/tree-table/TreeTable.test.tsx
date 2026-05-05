@@ -4,8 +4,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   EDIT_TABLE_CELL_MODE,
   READ_TABLE_CELL_MODE,
-  toTanStackTableColumnDefs,
   type TableColumnDef,
+  toTanStackTableColumnDefs,
 } from '@/table/shared'
 import { TreeTable } from './TreeTable'
 import type { TreeTableColumnDef } from './tree-table.props'

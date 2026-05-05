@@ -1,9 +1,9 @@
 'use client'
 
-import { createDocsPropDefs, withMarginPropDocs } from '@bwalkt/ui/editor/docs'
-import { headingPropDefs, kbdPropDefs, linkPropDefs, textPropDefs } from '@bwalkt/ui/elements/props'
-import { Flex } from '@bwalkt/ui/layouts'
-import { Heading, Kbd, Link, Text } from '@bwalkt/ui/typography'
+import { createDocsPropDefs, withMarginPropDocs } from '@incmix/ui/editor/docs'
+import { headingPropDefs, kbdPropDefs, linkPropDefs, textPropDefs } from '@incmix/ui/elements/props'
+import { Flex } from '@incmix/ui/layouts'
+import { Heading, Kbd, Link, Text } from '@incmix/ui/typography'
 import type { ElementDocsEntry } from './element-docs-types'
 import { createEnumShowcaseSection } from './element-docs-types'
 
