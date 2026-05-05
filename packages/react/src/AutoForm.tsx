@@ -1,4 +1,4 @@
-import { getDefaultValues, type ParsedField, parseSchema, removeEmptyValues } from '@bwalkt/core'
+import { getDefaultValues, type ParsedField, parseSchema, removeEmptyValues } from '@incmix/core'
 import { useEffect } from 'react'
 import { type DefaultValues, FormProvider, useForm } from 'react-hook-form'
 import { AutoFormField } from './AutoFormField'

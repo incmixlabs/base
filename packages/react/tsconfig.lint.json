@@ -1,5 +1,5 @@
 {
-  "extends": "@bwalkt/config/react-library.json",
+  "extends": "@incmix/config/react-library.json",
   "compilerOptions": {
     "outDir": "dist"
   },

@@ -1,17 +1,17 @@
-# @bwalkt/ajv
+# @incmix/ajv
 
 AJV (Another JSON Schema Validator) provider for AutoForm.
 
 ## Installation
 
 ```bash
-npm install @bwalkt/ajv ajv
+npm install @incmix/ajv ajv
 ```
 
 ## Usage
 
 ```typescript
-import { AjvProvider } from "@bwalkt/ajv";
+import { AjvProvider } from "@incmix/ajv";
 import type { JSONSchemaType } from "ajv";
 
 interface FormData {
@@ -59,7 +59,7 @@ const provider = new AjvProvider(schema);
 You can add AutoForm-specific field configuration using the `withFieldConfig` helper:
 
 ```typescript
-import { withFieldConfig, createField } from "@bwalkt/ajv";
+import { withFieldConfig, createField } from "@incmix/ajv";
 
 const schema = {
   type: "object",
@@ -150,7 +150,7 @@ const complexSchema: JSONSchemaType<ComplexForm> = {
 If your form definition is assembled at runtime, keep the JSON Schema as the source of truth and build it with plain TypeScript.
 
 ```typescript
-import { AjvProvider } from "@bwalkt/ajv";
+import { AjvProvider } from "@incmix/ajv";
 
 type Variant = "individual" | "business";
 
@@ -210,4 +210,4 @@ Recommended split:
 
 - Use `AjvProvider` for validating runtime-generated data against runtime-generated schema.
 - Keep UI orchestration outside AJV. Generate steps, sections, and visibility from your own runtime model or AST layer.
-- If you need an inspectable form structure, pair AJV with `schemaToAst` from `@bwalkt/core`.
+- If you need an inspectable form structure, pair AJV with `schemaToAst` from `@incmix/core`.

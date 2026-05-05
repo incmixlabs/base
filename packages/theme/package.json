@@ -1,5 +1,5 @@
 {
-  "name": "@bwalkt/theme",
+  "name": "@incmix/theme",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -16,7 +16,7 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "@bwalkt/config": "workspace:*",
+    "@incmix/config": "workspace:*",
     "tsup": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"

@@ -1,4 +1,4 @@
-import type { ParsedSchema, SchemaProvider, SchemaValidation } from '@bwalkt/core'
+import type { ParsedSchema, SchemaProvider, SchemaValidation } from '@incmix/core'
 import type { JSONSchemaType, Schema } from 'ajv'
 import Ajv from 'ajv'
 import addFormats from 'ajv-formats'

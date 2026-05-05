@@ -1,4 +1,4 @@
-# @bwalkt/react
+# @incmix/react
 
 ## 4.0.0
 
@@ -9,7 +9,7 @@
 ### Patch Changes
 
 - Updated dependencies
-  - @bwalkt/core@3.0.0
+  - @incmix/core@3.0.0
 
 ## 3.1.0
 
@@ -20,8 +20,8 @@
 ### Patch Changes
 
 - Updated dependencies
-  - @bwalkt/core@2.2.0
-  - @bwalkt/yup@2.2.0
+  - @incmix/core@2.2.0
+  - @incmix/yup@2.2.0
 
 ## 3.0.0
 
@@ -38,7 +38,7 @@
 ### Patch Changes
 
 - Updated dependencies [df38752]
-  - @bwalkt/yup@2.1.0
+  - @incmix/yup@2.1.0
 
 ## 2.1.0
 
@@ -55,8 +55,8 @@
 ### Patch Changes
 
 - Updated dependencies
-  - @bwalkt/core@2.0.0
-  - @bwalkt/yup@2.0.0
+  - @incmix/core@2.0.0
+  - @incmix/yup@2.0.0
 
 ## 1.3.0
 
@@ -67,7 +67,7 @@
 ### Patch Changes
 
 - Updated dependencies
-  - @bwalkt/core@1.2.0
+  - @incmix/core@1.2.0
 
 ## 1.2.1
 
@@ -75,7 +75,7 @@
 
 - Add yup support
 - Updated dependencies
-  - @bwalkt/core@1.1.3
+  - @incmix/core@1.1.3
 
 ## 1.2.0
 
@@ -87,7 +87,7 @@
 
 - Clean build package
 - Updated dependencies
-  - @bwalkt/core@1.1.2
+  - @incmix/core@1.1.2
 
 ## 1.1.1
 
@@ -95,7 +95,7 @@
 
 - Fix build
 - Updated dependencies
-  - @bwalkt/core@1.1.1
+  - @incmix/core@1.1.1
 
 ## 1.1.0
 
@@ -106,4 +106,4 @@
 ### Patch Changes
 
 - Updated dependencies
-  - @bwalkt/core@1.1.0
+  - @incmix/core@1.1.0

@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/elements", "src/form", "src/theme"],
+  "exclude": ["dist", "src/form/date/**", "src/theme/helpers/**", "src/_internal/base-button.tsx"]
+}

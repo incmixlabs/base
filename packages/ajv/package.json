@@ -1,5 +1,5 @@
 {
-  "name": "@bwalkt/ajv",
+  "name": "@incmix/ajv",
   "version": "5.0.0",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -15,7 +15,7 @@
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch"
   },
   "devDependencies": {
-    "@bwalkt/config": "workspace:*",
+    "@incmix/config": "workspace:*",
     "@storybook/react": "catalog:",
     "@storybook/react-vite": "catalog:",
     "@types/node": "catalog:",
@@ -30,7 +30,7 @@
     "ajv": "^8.0.0"
   },
   "dependencies": {
-    "@bwalkt/core": "workspace:*",
+    "@incmix/core": "workspace:*",
     "ajv-formats": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"

@@ -1,4 +1,4 @@
-import type { FieldConfig } from '@bwalkt/core'
+import type { FieldConfig } from '@incmix/core'
 import type { Schema } from 'ajv'
 
 // Symbol for storing field configuration in JSON schema

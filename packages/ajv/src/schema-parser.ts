@@ -1,4 +1,4 @@
-import type { FieldConfig, ParsedField, ParsedSchema } from '@bwalkt/core'
+import type { FieldConfig, ParsedField, ParsedSchema } from '@incmix/core'
 import type { Schema } from 'ajv'
 import { AJV_FIELD_CONFIG_SYMBOL } from './field-config'
 

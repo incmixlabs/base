@@ -1,5 +1,5 @@
 {
-  "name": "@bwalkt/react",
+  "name": "@incmix/react",
   "version": "4.0.0",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -14,7 +14,7 @@
     "url": "https://github.com/vantezzen/autoform"
   },
   "devDependencies": {
-    "@bwalkt/config": "file:../config",
+    "@incmix/config": "file:../config",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
@@ -23,7 +23,7 @@
     "typescript": "catalog:"
   },
   "dependencies": {
-    "@bwalkt/core": "workspace:*",
+    "@incmix/core": "workspace:*",
     "@hookform/resolvers": "catalog:",
     "react-hook-form": "catalog:"
   },

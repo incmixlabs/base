@@ -1,5 +1,5 @@
 {
-  "extends": "@bwalkt/config/base.json",
+  "extends": "@incmix/config/base.json",
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {

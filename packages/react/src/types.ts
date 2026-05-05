@@ -4,7 +4,7 @@ import type {
   ParsedSchema,
   Renderable,
   SchemaProvider,
-} from '@bwalkt/core'
+} from '@incmix/core'
 import type { ReactNode } from 'react'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
 

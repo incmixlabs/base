@@ -1,4 +1,4 @@
-import { getLabel, type ParsedField } from '@bwalkt/core'
+import { getLabel, type ParsedField } from '@incmix/core'
 import type React from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { ArrayField } from './ArrayField'

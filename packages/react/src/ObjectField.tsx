@@ -1,4 +1,4 @@
-import { getLabel, type ParsedField } from '@bwalkt/core'
+import { getLabel, type ParsedField } from '@incmix/core'
 import type React from 'react'
 import { AutoFormField } from './AutoFormField'
 import { useAutoForm } from './context'

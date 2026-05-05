@@ -1,4 +1,35 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "include": ["src"]
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@incmix/core": ["../core/dist/index.d.ts"],
+      "@incmix/core/declarative-ui.examples": ["../core/dist/declarative-ui.examples.d.ts"],
+      "@incmix/ajv": ["../ajv/dist/index.d.ts"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["dist", "src/form/date/**/*.test.tsx", "src/theme/helpers/**", "src/_internal/base-button.tsx"]
 }

@@ -1,5 +1,5 @@
-import type { JsonSchemaNode } from '@bwalkt/core'
-import { schemaToAst } from '@bwalkt/core'
+import type { JsonSchemaNode } from '@incmix/core'
+import { schemaToAst } from '@incmix/core'
 import type { Meta, StoryObj } from '@storybook/react'
 import { AJV_FIELD_CONFIG_SYMBOL, withFieldConfig } from '../src/field-config'
 import { AjvProvider } from '../src/provider'
