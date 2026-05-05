@@ -35,7 +35,7 @@ export type {
 } from './dialog-wrapper.props'
 
 function hasOwnKey(object: unknown, key: PropertyKey): boolean {
-  return Object.hasOwn(object, key)
+  return object !== null && object !== undefined && Object.hasOwn(Object(object), key)
 }
 
 function getInitialValues(schema: DialogWrapperSchema, defaultValues?: Record<string, unknown>) {

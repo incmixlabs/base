@@ -1,5 +1,5 @@
+import type { DialogContentAlign, DialogContentSize } from '@incmix/ui/elements'
 import type * as React from 'react'
-import type { DialogContentAlign, DialogContentSize } from './dialog.props'
 
 export type DialogWrapperJsonValue =
   | string
