@@ -327,29 +327,6 @@ export const dataListPropDefs = {
 export const dialogPropDefs: PropDef[] = createDocsPropDefs(uiDialogPropDefs, {
   size: { typeSimple: `Responsive<${enumType(uiDialogPropDefs.size)}>` },
 })
-export const dialogWrapperPropDefs: PropDef[] = [
-  { name: 'schema', typeSimple: 'DialogWrapperSchema', required: true },
-  { name: 'trigger', typeSimple: 'ReactNode' },
-  { name: 'submitLabel', typeSimple: 'ReactNode', default: 'Submit' },
-  { name: 'cancelLabel', typeSimple: 'ReactNode', default: 'Cancel' },
-  { name: 'showCancel', typeSimple: 'boolean', default: true },
-  { name: 'closeOnSubmit', typeSimple: 'boolean', default: true },
-  { name: 'submitting', typeSimple: 'boolean', default: false },
-  { name: 'defaultOpen', typeSimple: 'boolean' },
-  { name: 'open', typeSimple: 'boolean' },
-  { name: 'onOpenChange', typeSimple: '(open: boolean) => void' },
-  { name: 'onSubmit', typeSimple: '(values: Record<string, unknown>) => void' },
-  { name: 'onCancel', typeSimple: '() => void' },
-  { name: 'values', typeSimple: 'Record<string, unknown>' },
-  { name: 'defaultValues', typeSimple: 'Record<string, unknown>' },
-  { name: 'onValuesChange', typeSimple: '(values: Record<string, unknown>) => void' },
-  { name: 'size', typeSimple: enumType(uiDialogPropDefs.size), default: String(uiDialogPropDefs.size.default) },
-  { name: 'align', typeSimple: enumType(uiDialogPropDefs.align), default: String(uiDialogPropDefs.align.default) },
-  { name: 'className', typeSimple: 'string' },
-  { name: 'bodyClassName', typeSimple: 'string' },
-  { name: 'renderField', typeSimple: '(args, defaultRender) => ReactNode' },
-  { name: 'renderFooter', typeSimple: '(args, defaultRender) => ReactNode' },
-]
 export const dropdownMenuPropDefs = {
   Content: createMenuPropDefs(uiDropdownMenuPropDefs.Content),
   Trigger: createDocsPropDefs(uiDropdownMenuPropDefs.Trigger),

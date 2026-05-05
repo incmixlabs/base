@@ -3,6 +3,17 @@ export * as core from '@incmix/core'
 export * from '@incmix/react'
 export { AutoFormModelRenderer, type AutoFormModelRendererProps } from './AutoFormModelRenderer'
 export {
+  DialogWrapper,
+  type DialogWrapperFieldErrorMap,
+  type DialogWrapperJsonValue,
+  type DialogWrapperProps,
+  type DialogWrapperRenderFieldArgs,
+  type DialogWrapperRenderFooterArgs,
+  type DialogWrapperSchema,
+  type DialogWrapperSchemaProperty,
+  type DialogWrapperSubmitHelpers,
+} from './DialogWrapper'
+export {
   adaptAutoFormModelToDialogWrapper,
   type DialogWrapperAdapterIssue,
   type DialogWrapperAdapterIssueCode,
