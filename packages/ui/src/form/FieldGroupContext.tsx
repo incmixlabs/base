@@ -41,12 +41,21 @@ const defaultFieldGroupValue: FieldGroupResolvedValue = {
   layout: 'stacked',
 }
 
+function resolveFieldGroupValue(context: FieldGroupContextValue): FieldGroupResolvedValue {
+  return {
+    size: context.size ?? defaultFieldGroupValue.size,
+    variant: context.variant ?? defaultFieldGroupValue.variant,
+    layout: context.layout ?? defaultFieldGroupValue.layout,
+  }
+}
+
+/** useFieldGroupOptional export. */
+export function useFieldGroupOptional(): FieldGroupResolvedValue | null {
+  const context = React.useContext(FieldGroupContext)
+  return context ? resolveFieldGroupValue(context) : null
+}
+
 /** useFieldGroup export. */
 export function useFieldGroup(): FieldGroupResolvedValue {
-  const context = React.useContext(FieldGroupContext)
-  return {
-    size: context?.size ?? defaultFieldGroupValue.size,
-    variant: context?.variant ?? defaultFieldGroupValue.variant,
-    layout: context?.layout ?? defaultFieldGroupValue.layout,
-  }
+  return useFieldGroupOptional() ?? defaultFieldGroupValue
 }

@@ -45,7 +45,13 @@ export {
 // Date & Time Components
 // Form Layout Components
 export { FieldGroup, type FieldGroupProps, type FieldGroupRowProps, type FieldGroupSectionProps } from './FieldGroup'
-export { type FieldGroupContextValue, FieldGroupProvider, useFieldGroup } from './FieldGroupContext'
+export {
+  type FieldGroupContextValue,
+  FieldGroupProvider,
+  type FieldGroupResolvedValue,
+  useFieldGroup,
+  useFieldGroupOptional,
+} from './FieldGroupContext'
 export { Fieldset, type FieldsetProps } from './Fieldset'
 export {
   FloatingToolbar,
