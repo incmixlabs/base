@@ -1,5 +1,8 @@
 'use client'
 
+import { Button, Card } from '@incmix/ui/elements'
+import { AspectRatio, Box, Container, Flex, Grid, Masonry, Section, Sidebar } from '@incmix/ui/layouts'
+import { Text } from '@incmix/ui/typography/text/Text'
 import {
   aspectRatioDocsPropDefs,
   boxDocsPropDefs,
@@ -8,11 +11,8 @@ import {
   gridDocsPropDefs,
   sectionDocsPropDefs,
   sidebarDocsPropDefs,
-} from '@incmix/ui/editor/docs'
-import { Button, Card } from '@incmix/ui/elements'
-import { AspectRatio, Box, Container, Flex, Grid, Masonry, Section, Sidebar } from '@incmix/ui/layouts'
-import { masonryPropDefs } from '@incmix/ui/props'
-import { Text } from '@incmix/ui/typography/text/Text'
+} from '@/editor/live'
+import { masonryPropDefs } from '@/editor/prop-defs'
 import type { ElementDocsEntry } from './element-docs-types'
 
 export const layoutDocsEntries: Record<string, ElementDocsEntry> = {

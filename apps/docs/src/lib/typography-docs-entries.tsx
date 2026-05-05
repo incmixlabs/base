@@ -1,9 +1,9 @@
 'use client'
 
-import { createDocsPropDefs, withMarginPropDocs } from '@incmix/ui/editor/docs'
-import { headingPropDefs, kbdPropDefs, linkPropDefs, textPropDefs } from '@incmix/ui/elements/props'
 import { Flex } from '@incmix/ui/layouts'
 import { Heading, Kbd, Link, Text } from '@incmix/ui/typography'
+import { headingPropDefs, kbdPropDefs, linkPropDefs, textPropDefs } from '@/editor/elements/props'
+import { createDocsPropDefs, withMarginPropDocs } from '@/editor/live'
 import type { ElementDocsEntry } from './element-docs-types'
 import { createEnumShowcaseSection } from './element-docs-types'
 

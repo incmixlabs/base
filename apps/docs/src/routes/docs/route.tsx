@@ -3,10 +3,10 @@ import { AppShell, CommandSearchProvider, type CommandSearchRouteGroup } from '@
 import { Section as SectionComponent } from '@incmix/ui/layouts/section/Section'
 import { SidebarWrapperShell } from '@incmix/ui/layouts/sidebar/SidebarWrapperShell'
 import type { SidebarWrapperData } from '@incmix/ui/layouts/sidebar/sidebar-wrapper.types'
-import { ThemePanel } from '@incmix/ui/theme-panel'
 import { Heading } from '@incmix/ui/typography/heading/Heading'
 import { createFileRoute, Link, Outlet, useLocation, useNavigate } from '@tanstack/react-router'
 import * as React from 'react'
+import { ThemePanel } from '@/editor/ThemePanel'
 import { elementDocsNav } from '../../lib/element-docs-nav'
 import { formDocsNav } from '../../lib/form-docs-nav'
 import { layoutDocsNav } from '../../lib/layout-docs-nav'
@@ -69,10 +69,6 @@ const sections = [
     items: [{ title: 'Bar Chart', href: '/docs/charts#bar-chart' }],
   },
   {
-    title: 'Composites',
-    items: [{ title: 'SWOT Matrix', href: '/docs/composites#swot-comparison-matrix' }],
-  },
-  {
     title: 'Blocks',
     items: [
       { title: 'Table', href: '/docs/declarative/registry#table' },
@@ -129,7 +125,6 @@ const sectionIcons = {
   Form: FormInput,
   Media: ImageIcon,
   Charts: FileText,
-  Composites: ComponentIcon,
   Blocks: ComponentIcon,
   AutoForm: FormInput,
   Wrappers: Code,

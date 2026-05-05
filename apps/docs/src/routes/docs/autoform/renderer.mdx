@@ -1,6 +1,5 @@
 import { normalizeJsonSchemaWithUiSchema } from '@incmix/core'
-import { adaptAutoFormModelToDialogWrapper, AutoFormModelRenderer } from '@incmix/autoform'
-import { DialogWrapper } from '@incmix/ui/elements'
+import { adaptAutoFormModelToDialogWrapper, AutoFormModelRenderer, DialogWrapper } from '@incmix/autoform'
 import {
   autoformArrayRepeaterJsonSchema,
   autoformArrayRepeaterUiSchema,
@@ -26,7 +25,7 @@ import {
   autoformUiSchemaUiSchema,
 } from '@incmix/autoform/stories/autoform-ui-schema-contract.example'
 import { Heading, Text } from '@incmix/ui/typography'
-import { LiveCodeBlock } from '@incmix/ui/editor/docs'
+import { LiveCodeBlock } from '@/editor/live'
 
 <Heading as="h1" size="2x">
   Renderer

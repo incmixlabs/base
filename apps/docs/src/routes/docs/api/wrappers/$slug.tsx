@@ -1,11 +1,10 @@
-import { LiveCodeBlock, ThemesPropsTable } from '@incmix/ui/editor/docs'
+import { DialogWrapper } from '@incmix/autoform'
 import {
   AccordionSchemaWrapper,
   Badge,
   Button,
   CalloutWrapper,
   CardWrapper,
-  DialogWrapper,
   MenuWrapper,
   PopoverWrapper,
   TabsWrapper,
@@ -13,12 +12,12 @@ import {
 } from '@incmix/ui/elements'
 import { CheckboxGroupWrapper, RadioGroupWrapper, SwitchGroupWrapper } from '@incmix/ui/form'
 import { CommandWrapper, SidebarWrapper } from '@incmix/ui/layouts'
-import { TableWrapper } from '@incmix/ui/table'
 import { LinkWrapper } from '@incmix/ui/typography'
 import { Heading } from '@incmix/ui/typography/heading/Heading'
 import { Text } from '@incmix/ui/typography/text/Text'
 import { createFileRoute } from '@tanstack/react-router'
 import { FileText, Home, Inbox } from 'lucide-react'
+import { LiveCodeBlock, ThemesPropsTable } from '@/editor/live'
 import { wrapperDocsBySlug } from './-docs'
 
 export const Route = createFileRoute('/docs/api/wrappers/$slug')({
@@ -43,7 +42,6 @@ const wrapperScope = {
   RadioGroupWrapper,
   SidebarWrapper,
   SwitchGroupWrapper,
-  TableWrapper,
   TabsWrapper,
   TooltipWrapper,
 }

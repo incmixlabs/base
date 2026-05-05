@@ -3,6 +3,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@/editor": ["src/editor/index.ts"],
+      "@/editor/*": ["src/editor/*"],
       "@/*": ["../../packages/ui/src/*"],
       "@incmix/ajv": ["../../packages/ajv/src/index.ts"],
       "@incmix/autoform": ["../../packages/autoform/src/index.tsx"],
@@ -16,17 +18,10 @@
       "@incmix/ui/charts/renderers": ["../../packages/ui/src/charts/chart-renderers.tsx"],
       "@incmix/ui/dashboard": ["../../packages/ui/src/layouts/dashboard/index.ts"],
       "@incmix/ui/declarative/renderer": ["../../packages/ui/src/declarative/DeclarativeRenderer.tsx"],
-      "@incmix/ui/editor/docs": ["../../packages/ui/src/editor/live/index.ts"],
-      "@incmix/ui/elements/props": ["../../packages/ui/src/editor/elements/props.ts"],
       "@incmix/ui/filter": ["../../packages/ui/src/elements/filter/index.ts"],
       "@incmix/ui/form/date-next": ["../../packages/ui/src/form/date/index.ts"],
-      "@incmix/ui/form/props": ["../../packages/ui/src/editor/form/props.ts"],
       "@incmix/ui/layouts/masonry": ["../../packages/ui/src/layouts/masonry/Masonry.tsx"],
-      "@incmix/ui/layouts/props": ["../../packages/ui/src/editor/layouts/props.ts"],
       "@incmix/ui/media/media-player": ["../../packages/ui/src/media/media-player/MediaPlayer.tsx"],
-      "@incmix/ui/props": ["../../packages/ui/src/editor/prop-defs.ts"],
-      "@incmix/ui/table/tree-ops": ["../../packages/ui/src/table/tree/index.ts"],
-      "@incmix/ui/theme-panel": ["../../packages/ui/src/editor/ThemePanel.tsx"],
       "@incmix/ui/*": ["../../packages/ui/src/*"]
     }
   },

@@ -26,4 +26,6 @@ export {
   type AutoFormWorkbenchViewport,
 } from './editor/AutoFormWorkbench'
 export { SchemaPreview, type SchemaPreviewProps } from './editor/SchemaPreview'
+export type { JsonObject, JsonPrimitive, JsonValue } from './json-editor'
+export { JsonDiffView, type JsonDiffViewProps, JsonViewEditor, type JsonViewEditorProps } from './json-editor'
 export { type UseAutoFormRuntimeOptions, useAutoFormRuntime } from './useAutoFormRuntime'

@@ -1,13 +1,13 @@
 'use client'
 
-import { buttonCatalogEntry, iconButtonCatalogEntry } from '@incmix/ui/editor/catalog'
 import { Button, Popover } from '@incmix/ui/elements'
+import { buttonCatalogEntry, iconButtonCatalogEntry } from '@/editor/catalog'
 import {
   elementPropDefsByComponent,
   iconButtonPropDefs as iconButtonElementPropDefs,
   popoverPropDefs as popoverElementPropDefs,
-} from '@incmix/ui/elements/props'
-import { popoverPropDefs } from '@incmix/ui/props'
+} from '@/editor/elements/props'
+import { popoverPropDefs } from '@/editor/prop-defs'
 import type { ElementDocsBaseEntry, ElementDocsEntry } from '../element-docs-types'
 import { autoProps, createAutogenEntry, createEnumShowcaseSection } from '../element-docs-types'
 

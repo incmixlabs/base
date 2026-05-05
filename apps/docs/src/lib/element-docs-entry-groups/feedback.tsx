@@ -1,11 +1,11 @@
 'use client'
 
-import { badgeCatalogEntry, calloutCatalogEntry, spinnerCatalogEntry } from '@incmix/ui/editor/catalog'
 import { Button, Toast } from '@incmix/ui/elements'
-import { elementPropDefsByComponent, toastPropDefs } from '@incmix/ui/elements/props'
-import { toastPropDefs as toastDocsPropDefs } from '@incmix/ui/props'
 import { Bell, CheckCircle2, Info } from 'lucide-react'
 import * as React from 'react'
+import { badgeCatalogEntry, calloutCatalogEntry, spinnerCatalogEntry } from '@/editor/catalog'
+import { elementPropDefsByComponent, toastPropDefs } from '@/editor/elements/props'
+import { toastPropDefs as toastDocsPropDefs } from '@/editor/prop-defs'
 import { autoProps, createAutogenEntry, type ElementDocsBaseEntry } from '../element-docs-types'
 
 const badgeElementPropDefs = elementPropDefsByComponent.badge

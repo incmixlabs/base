@@ -3,12 +3,10 @@ import * as React from 'react'
 import { Badge, Button, Icon, IconButton } from '@/elements'
 import { getControlSizeValues } from '@/elements/control-size'
 import { Column, Row } from '@/layouts/flex/Flex'
-import { Table } from '@/table'
 import { Text } from '@/typography'
 
 const scaleSizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const
 const badgeSizes = new Set<string>(['xs', 'sm', 'md'])
-const tableSizes = new Set<string>(['xs', 'sm', 'md', 'lg'])
 
 type ScaleSize = (typeof scaleSizes)[number]
 
@@ -21,25 +19,6 @@ const meta = {
 
 export default meta
 type Story = StoryObj<typeof meta>
-
-function SizeTable({ size }: { size: Exclude<ScaleSize, 'xl'> }) {
-  return (
-    <Table.Root size={size} variant="surface">
-      <Table.Header>
-        <Table.Row>
-          <Table.ColumnHeaderCell>Item</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell justify="end">Count</Table.ColumnHeaderCell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row>
-          <Table.RowHeaderCell>{size}</Table.RowHeaderCell>
-          <Table.Cell justify="end">128</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table.Root>
-  )
-}
 
 function MeasuredButton({ size }: { size: ScaleSize }) {
   const buttonRef = React.useRef<HTMLButtonElement>(null)
@@ -70,7 +49,6 @@ function MeasuredButton({ size }: { size: ScaleSize }) {
 
 function SizeRow({ size }: { size: ScaleSize }) {
   const hasBadge = badgeSizes.has(size)
-  const hasTable = tableSizes.has(size)
 
   return (
     <Column gap="3">
@@ -92,15 +70,6 @@ function SizeRow({ size }: { size: ScaleSize }) {
           </Text>
         )}
       </Row>
-      {hasTable ? (
-        <div style={{ maxWidth: 360 }}>
-          <SizeTable size={size as Exclude<ScaleSize, 'xl'>} />
-        </div>
-      ) : (
-        <Text size="xs" color="neutral">
-          Table supports xs-lg
-        </Text>
-      )}
     </Column>
   )
 }
@@ -113,7 +82,7 @@ export const Components: Story = {
           Component Size Scale
         </Text>
         <Text size="sm" color="neutral">
-          Text, icons, buttons, badges, and tables rendered together against the shared size scale.
+          Text, icons, buttons, and badges rendered together against the shared size scale.
         </Text>
       </Column>
       <Column gap="6">

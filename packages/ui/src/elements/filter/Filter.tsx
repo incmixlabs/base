@@ -26,8 +26,7 @@ import { Slider } from '@/form/Slider'
 import { TextField } from '@/form/TextField'
 import { Flex } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
-import type { TableSize } from '@/table/basic/Table'
-import { tableSizeTokens } from '@/table/table.tokens'
+import { controlSizeTokens } from '@/theme/token-maps'
 import type { Color } from '@/theme/tokens'
 import { filterHeaderClass, filterSliderValueRowClass } from './Filter.css'
 import type {
@@ -39,11 +38,13 @@ import type {
   FilterState,
 } from './filter.props'
 
+export type FilterSize = 'xs' | 'sm' | 'md' | 'lg'
+
 export interface FilterProps<TData> {
   filterFields: FilterField<TData>[]
   value: FilterState
   onValueChange: (value: FilterState) => void
-  size?: TableSize
+  size?: FilterSize
   color?: Color
   applyMode?: FilterApplyMode
   className?: string
@@ -101,7 +102,7 @@ function FilterCheckboxField<TData>({
   field: Extract<FilterField<TData>, { type: 'checkbox' }>
   filterValue: string[]
   onChange: (value: string[] | undefined) => void
-  size: TableSize
+  size: FilterSize
   color: Color
 }) {
   const options: FilterOption[] = field.options ?? []
@@ -146,7 +147,7 @@ function FilterInputField<TData>({
   field: Extract<FilterField<TData>, { type: 'input' }>
   filterValue: string
   onChange: (value: string | undefined) => void
-  size: TableSize
+  size: FilterSize
   color: Color
 }) {
   return (
@@ -172,7 +173,7 @@ function FilterSliderField<TData>({
   field: Extract<FilterField<TData>, { type: 'slider' }>
   filterValue: [number, number]
   onChange: (value: [number, number] | undefined) => void
-  size: TableSize
+  size: FilterSize
   color: Color
 }) {
   const min = field.min ?? 0
@@ -211,7 +212,7 @@ function FilterAvatarListField<TData>({
   field: Extract<FilterField<TData>, { type: 'avatar-list' }>
   filterValue: string[]
   onChange: (value: string[] | undefined) => void
-  size: TableSize
+  size: FilterSize
 }) {
   return (
     <Flex direction="column" style={{ gap: '0.125rem', padding: '0.25rem 0' }}>
@@ -425,7 +426,7 @@ function FilterFieldComponent<TData>({
   field: FilterField<TData>
   value: FilterState
   onFilterChange: (fieldId: string, value: unknown) => void
-  size: TableSize
+  size: FilterSize
   color: Color
 }) {
   switch (field.type) {
@@ -532,7 +533,7 @@ export function Filter<TData>({
   if (filterFields.length === 0) return null
 
   return (
-    <div className={className} style={{ fontSize: tableSizeTokens[size].fontSize }}>
+    <div className={className} style={{ fontSize: controlSizeTokens[size].fontSize }}>
       <Flex align="center" justify="between" gap="3" className={filterHeaderClass}>
         <span>Filters</span>
         {isManual ? (

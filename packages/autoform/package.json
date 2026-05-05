@@ -1,6 +1,6 @@
 {
   "name": "@incmix/autoform",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Public Autoform React package for schema-driven forms.",
   "license": "MIT",
   "type": "module",

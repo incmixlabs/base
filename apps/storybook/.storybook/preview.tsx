@@ -1,5 +1,5 @@
 import type { Preview } from '@storybook/react-vite'
-import { OutlineWrapper } from '../../../packages/ui/src/editor/OutlineWrapper'
+import { OutlineWrapper } from '../../../apps/docs/src/editor/OutlineWrapper'
 import { Theme } from '../../../packages/ui/src/theme/ThemeProvider'
 import './preview.css'
 import '../../../packages/ui/src/theme/chart-tokens.css'

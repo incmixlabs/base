@@ -1,26 +1,23 @@
 'use client'
 
 import { AlertDialog, Button, ContextMenu, Dialog, DropdownMenu, ScrollArea, Timeline } from '@incmix/ui/elements'
+import { Flex } from '@incmix/ui/layouts'
+import { Text } from '@incmix/ui/typography/text/Text'
 import {
   alertDialogPropDefs as alertDialogElementPropDefs,
   contextMenuPropDefs as contextMenuElementPropDefs,
   dialogPropDefs as dialogElementPropDefs,
   dropdownMenuPropDefs as dropdownMenuElementPropDefs,
   scrollAreaPropDefs as scrollAreaElementPropDefs,
-  tablePropDefs as tableElementPropDefs,
-} from '@incmix/ui/elements/props'
-import { Flex } from '@incmix/ui/layouts'
+} from '@/editor/elements/props'
 import {
   alertDialogPropDefs as alertDialogDocsPropDefs,
   contextMenuPropDefs as contextMenuDocsPropDefs,
   dialogPropDefs as dialogDocsPropDefs,
   dropdownMenuPropDefs as dropdownMenuDocsPropDefs,
   scrollAreaPropDefs as scrollAreaDocsPropDefs,
-  tablePropDefs as tableDocsPropDefs,
   timelinePropDefs,
-} from '@incmix/ui/props'
-import { Table } from '@incmix/ui/table'
-import { Text } from '@incmix/ui/typography/text/Text'
+} from '@/editor/prop-defs'
 import {
   autoProps,
   createAutogenEntry,
@@ -586,124 +583,6 @@ export const extendedEntries = {
           </div>
         </div>
       </ScrollArea>
-    </Flex>
-  )
-}`,
-      },
-    ],
-  }),
-  table: createAutogenEntry({
-    base: createElementBaseEntry({
-      slug: 'table',
-      title: 'Table',
-      description: 'Composable data table primitive with size, layout, and surface variants for structured records.',
-      sourcePath: 'packages/ui/src/table/basic/Table.tsx',
-      propDefs: tableDocsPropDefs.Root,
-      overviewCode: `<Table.Root size="md">
-  <Table.Header>
-    <Table.Row>
-      <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
-      <Table.ColumnHeaderCell>Status</Table.ColumnHeaderCell>
-      <Table.ColumnHeaderCell justify="end">Seats</Table.ColumnHeaderCell>
-    </Table.Row>
-  </Table.Header>
-  <Table.Body>
-    <Table.Row>
-      <Table.RowHeaderCell>Acme</Table.RowHeaderCell>
-      <Table.Cell>Active</Table.Cell>
-      <Table.Cell justify="end">24</Table.Cell>
-    </Table.Row>
-  </Table.Body>
-</Table.Root>`,
-      runtimeScope: { Table },
-    }),
-    propDefsByName: tableElementPropDefs.Root,
-    props: ['size', 'variant'],
-    display: 'stacked',
-    codeByProp: {
-      size: valuesLiteral => `export default function Example() {
-  const sizes = ${valuesLiteral}
-  return (
-    <Flex direction="column" gap="4">
-      {sizes.map(size => (
-        <Table.Root key={size} size={size}>
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Status</Table.ColumnHeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            <Table.Row>
-              <Table.RowHeaderCell>{size}</Table.RowHeaderCell>
-              <Table.Cell>Active</Table.Cell>
-            </Table.Row>
-          </Table.Body>
-        </Table.Root>
-      ))}
-    </Flex>
-  )
-}`,
-      variant: valuesLiteral => `export default function Example() {
-  const variants = ${valuesLiteral}
-  return (
-    <Flex direction="column" gap="4">
-      {variants.map(variant => (
-        <Table.Root key={variant} variant={variant}>
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Status</Table.ColumnHeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            <Table.Row>
-              <Table.RowHeaderCell>{variant}</Table.RowHeaderCell>
-              <Table.Cell>Active</Table.Cell>
-            </Table.Row>
-          </Table.Body>
-        </Table.Root>
-      ))}
-    </Flex>
-  )
-}`,
-    },
-    extraSections: [
-      {
-        id: 'layout',
-        title: 'Layout',
-        description: 'Use layout when dense numeric tables need tighter fit behavior or a fixed column strategy.',
-        code: `export default function Example() {
-  return (
-    <Flex direction="column" gap="4">
-      <Table.Root layout="auto">
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeaderCell>Layout</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Description</Table.ColumnHeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          <Table.Row>
-            <Table.RowHeaderCell>Auto</Table.RowHeaderCell>
-            <Table.Cell>Columns size to their content.</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table.Root>
-      <Table.Root layout="fixed">
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeaderCell>Layout</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Description</Table.ColumnHeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          <Table.Row>
-            <Table.RowHeaderCell>Fixed</Table.RowHeaderCell>
-            <Table.Cell>Columns share fixed table width more evenly.</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table.Root>
     </Flex>
   )
 }`,

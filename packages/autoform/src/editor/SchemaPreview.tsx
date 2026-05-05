@@ -1,7 +1,7 @@
 'use client'
 
-import type { JsonValue } from '@incmix/ui/editor/autoform'
 import * as React from 'react'
+import type { JsonValue } from '../json-editor'
 import { AutoFormWorkbench } from './AutoFormWorkbench'
 import type { SchemaPreviewProps } from './schema-preview.props'
 

@@ -6,23 +6,17 @@ import { defineConfig } from 'vitest/config'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const autoformSrcPath = path.resolve(__dirname, '../../packages/autoform/src')
+const docsEditorSrcPath = path.resolve(__dirname, 'src/editor')
 const uiSrcPath = path.resolve(__dirname, '../../packages/ui/src')
 
 const uiSourceExportAliases = {
   '@incmix/ui/charts/renderers': 'charts/chart-renderers.tsx',
   '@incmix/ui/dashboard': 'layouts/dashboard/index.ts',
   '@incmix/ui/declarative/renderer': 'declarative/DeclarativeRenderer.tsx',
-  '@incmix/ui/editor/docs': 'editor/live/index.ts',
-  '@incmix/ui/elements/props': 'editor/elements/props.ts',
   '@incmix/ui/filter': 'elements/filter/index.ts',
   '@incmix/ui/form/date-next': 'form/date/index.ts',
-  '@incmix/ui/form/props': 'editor/form/props.ts',
   '@incmix/ui/layouts/masonry': 'layouts/masonry/Masonry.tsx',
-  '@incmix/ui/layouts/props': 'editor/layouts/props.ts',
   '@incmix/ui/media/media-player': 'media/media-player/MediaPlayer.tsx',
-  '@incmix/ui/props': 'editor/prop-defs.ts',
-  '@incmix/ui/table/tree-ops': 'table/tree/index.ts',
-  '@incmix/ui/theme-panel': 'editor/ThemePanel.tsx',
 }
 
 export default defineConfig({
@@ -38,6 +32,8 @@ export default defineConfig({
         find,
         replacement: path.resolve(uiSrcPath, source),
       })),
+      { find: /^@\/editor\/(.+)$/, replacement: `${docsEditorSrcPath}/$1` },
+      { find: '@/editor', replacement: path.resolve(docsEditorSrcPath, 'index.ts') },
       {
         find: '@',
         replacement: uiSrcPath,

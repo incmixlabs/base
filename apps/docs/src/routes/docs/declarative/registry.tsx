@@ -1,8 +1,8 @@
-import { catalog, getCatalogEntryRuntimeScopeLoader, LiveCodeBlock } from '@incmix/ui/editor/docs'
 import { Badge, Card, DataList } from '@incmix/ui/elements'
 import { Heading } from '@incmix/ui/typography/heading/Heading'
 import { Text } from '@incmix/ui/typography/text/Text'
 import { createFileRoute } from '@tanstack/react-router'
+import { catalog, getCatalogEntryRuntimeScopeLoader, LiveCodeBlock } from '@/editor/live'
 
 export const Route = createFileRoute('/docs/declarative/registry')({
   component: DeclarativeRegistryPage,

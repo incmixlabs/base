@@ -2,6 +2,7 @@
 
 import { javascript } from '@codemirror/lang-javascript'
 import { oneDark } from '@codemirror/theme-one-dark'
+import { type JsonValue, JsonViewEditor } from '@incmix/autoform/editor'
 import {
   createDeclarativeBackgroundSyncScheduler,
   type DeclarativeBackgroundSyncReason,
@@ -23,19 +24,18 @@ import {
 } from '@incmix/ui/declarative/jsx-authoring'
 import { DeclarativePageRenderer, type DeclarativeRendererRegistry } from '@incmix/ui/declarative/renderer'
 import { createDeclarativePageActor } from '@incmix/ui/declarative/runtime'
-import {
-  codePaneEditorFrameClassName,
-  codePaneFrameClassName,
-  codePaneLabelClassName,
-  codePaneShellClassName,
-} from '@incmix/ui/editor'
-import { type JsonValue, JsonViewEditor } from '@incmix/ui/editor/autoform'
-import { type ViewportPreset, ViewportPreview, ViewportPreviewControls } from '@incmix/ui/editor/docs'
 import { Badge, Button, Callout, Card } from '@incmix/ui/elements'
 import { Slider } from '@incmix/ui/form'
 import { Heading } from '@incmix/ui/typography/heading/Heading'
 import { Text } from '@incmix/ui/typography/text/Text'
 import * as React from 'react'
+import {
+  codePaneEditorFrameClassName,
+  codePaneFrameClassName,
+  codePaneLabelClassName,
+  codePaneShellClassName,
+} from '@/editor'
+import { type ViewportPreset, ViewportPreview, ViewportPreviewControls } from '@/editor/live'
 
 const initialAuthoringCode = `<Layout direction="vertical" gap={12}>
   <Template template="Support Controls" />

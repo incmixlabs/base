@@ -1,8 +1,8 @@
-import { catalog, getCatalogEntryRuntimeScopeLoader, LiveCodeBlock, ThemesPropsTable } from '@incmix/ui/editor/docs'
 import { Badge, Card, DataList } from '@incmix/ui/elements'
 import { Heading } from '@incmix/ui/typography/heading/Heading'
 import { Text } from '@incmix/ui/typography/text/Text'
 import { createFileRoute } from '@tanstack/react-router'
+import { catalog, getCatalogEntryRuntimeScopeLoader, LiveCodeBlock, ThemesPropsTable } from '@/editor/live'
 
 const chartsCatalog = catalog.filter(entry => entry.family === 'charts')
 

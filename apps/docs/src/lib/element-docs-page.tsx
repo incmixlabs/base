@@ -1,8 +1,8 @@
 'use client'
 
-import { LiveCodeBlock, ThemesPropsTable } from '@incmix/ui/editor/docs'
 import { Heading } from '@incmix/ui/typography/heading/Heading'
 import { Text } from '@incmix/ui/typography/text/Text'
+import { LiveCodeBlock, ThemesPropsTable } from '@/editor/live'
 import { DocsPageHeader } from '../components/DocsPageHeader'
 import type { ElementDocsEntry } from './element-docs-types'
 

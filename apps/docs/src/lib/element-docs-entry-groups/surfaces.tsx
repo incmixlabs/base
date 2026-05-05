@@ -1,11 +1,11 @@
 'use client'
 
-import { cardCatalogEntry, dataListCatalogEntry } from '@incmix/ui/editor/catalog'
 import { Badge, DataList, IconButton } from '@incmix/ui/elements'
-import { elementPropDefsByComponent } from '@incmix/ui/elements/props'
 import { Flex } from '@incmix/ui/layouts'
 import { Code, Link } from '@incmix/ui/typography'
 import { Copy as CopyIcon } from 'lucide-react'
+import { cardCatalogEntry, dataListCatalogEntry } from '@/editor/catalog'
+import { elementPropDefsByComponent } from '@/editor/elements/props'
 import type { ElementDocsEntry } from '../element-docs-types'
 import { toEnumArrayLiteral } from '../element-docs-types'
 import { createDocsPropDefs } from '../props'

@@ -10,22 +10,16 @@ import { defineConfig } from 'vite'
 
 const analyze = process.env.ANALYZE === 'true'
 const autoformSrcPath = resolve(import.meta.dirname, '../../packages/autoform/src')
+const docsEditorSrcPath = resolve(import.meta.dirname, 'src/editor')
 const uiSrcPath = resolve(import.meta.dirname, '../../packages/ui/src')
 const uiSourceExportAliases = {
   '@incmix/ui/charts/renderers': 'charts/chart-renderers.tsx',
   '@incmix/ui/dashboard': 'layouts/dashboard/index.ts',
   '@incmix/ui/declarative/renderer': 'declarative/DeclarativeRenderer.tsx',
-  '@incmix/ui/editor/docs': 'editor/live/index.ts',
-  '@incmix/ui/elements/props': 'editor/elements/props.ts',
   '@incmix/ui/filter': 'elements/filter/index.ts',
   '@incmix/ui/form/date-next': 'form/date/index.ts',
-  '@incmix/ui/form/props': 'editor/form/props.ts',
   '@incmix/ui/layouts/masonry': 'layouts/masonry/Masonry.tsx',
-  '@incmix/ui/layouts/props': 'editor/layouts/props.ts',
   '@incmix/ui/media/media-player': 'media/media-player/MediaPlayer.tsx',
-  '@incmix/ui/props': 'editor/prop-defs.ts',
-  '@incmix/ui/table/tree-ops': 'table/tree/index.ts',
-  '@incmix/ui/theme-panel': 'editor/ThemePanel.tsx',
 }
 const analysisPlugins: PluginOption[] = analyze
   ? [
@@ -57,8 +51,15 @@ const config = createTanStackStartViteConfig({
   ],
 })
 
+const existingAliases = Object.entries(config.resolve?.alias ?? {}).map(([find, replacement]) => ({
+  find,
+  replacement,
+}))
+
 config.resolve.alias = [
-  ...Object.entries(config.resolve?.alias ?? {}).map(([find, replacement]) => ({ find, replacement })),
+  { find: /^@\/editor\/(.+)$/, replacement: `${docsEditorSrcPath}/$1` },
+  { find: '@/editor', replacement: resolve(docsEditorSrcPath, 'index.ts') },
+  ...existingAliases,
   ...Object.entries(uiSourceExportAliases).map(([find, source]) => ({
     find,
     replacement: resolve(uiSrcPath, source),

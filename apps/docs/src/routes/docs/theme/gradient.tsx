@@ -1,4 +1,3 @@
-import { LiveCodeBlock, ThemesPropsTable } from '@incmix/ui/editor/docs'
 import { Callout, Card, GradientBackground, type GradientPresetKey, gradientPresets } from '@incmix/ui/elements'
 import { Slider, TextField } from '@incmix/ui/form'
 import { Flex } from '@incmix/ui/layouts'
@@ -7,6 +6,7 @@ import { Heading } from '@incmix/ui/typography/heading/Heading'
 import { Text } from '@incmix/ui/typography/text/Text'
 import { createFileRoute } from '@tanstack/react-router'
 import * as React from 'react'
+import { LiveCodeBlock, ThemesPropsTable } from '@/editor/live'
 import { HUE_NAMES } from '@/theme/tokens'
 
 export const Route = createFileRoute('/docs/theme/gradient')({

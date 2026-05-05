@@ -26,10 +26,6 @@ Converted `React.forwardRef` to regular functions with `ref` as a prop (React 19
 
 Added `'use no memo'` directive to `useComposedRefs` in `packages/ui/src/lib/compose-refs.ts`. Variadic `...refs` used as deps can't be analyzed statically -- this is a low-level utility best left to manual memoization.
 
-### TodosBlock self-referencing useCallback (1 bailout)
-
-Removed `React.useCallback` wrapper from the recursive `renderItems` function in `packages/ui/src/blocks/crud/todos/TodosBlock.tsx`. The self-referencing `const` pattern caused the compiler's "cannot access variable before declaration" error. The compiler now memoizes it automatically.
-
 ### Masonry ESLint suppression (1 bailout)
 
 Removed `biome-ignore lint/correctness/useExhaustiveDependencies` and the `React.useCallback` wrapper from `onScroll` in `useScroller` (`packages/ui/src/elements/masonry/Masonry.tsx`). The suppression comment itself caused the compiler to skip the entire function.
@@ -58,7 +54,7 @@ Removed `useMemo`/`useCallback` wrappers where the compiler handles memoization 
 
 ---
 
-## Resolved: Explicit Compiler Opt-Outs (14 bailouts)
+## Resolved: Explicit Compiler Opt-Outs (11 bailouts)
 
 Known limitations in `babel-plugin-react-compiler` v1.0.0 and a few external/internal patterns are now explicitly opted out with `'use no memo'`. The code is correct; this keeps the rest of each file compilable while avoiding repeated bailout noise.
 
@@ -74,16 +70,6 @@ Known limitations in `babel-plugin-react-compiler` v1.0.0 and a few external/int
 | `packages/ui/src/form/date/Calendar.tsx` | 187 | Tagged template with cooked !== raw |
 | `packages/ui/src/form/date/DayPickerCore.tsx` | 43 | `new` expression in reorderable position |
 | `packages/ui/src/form/FileUpload.tsx` | 198 | Binary expression in reorderable position |
-
-### External library incompatibility (3 bailouts)
-
-TanStack Table uses patterns the compiler flags as incompatible. Nothing to fix on our side until TanStack ships compiler-compatible internals.
-
-| File | Line | Library |
-|------|------|---------|
-| `packages/ui/src/table/basic/TableWrapper.tsx` | 81 | `@tanstack/react-table` |
-| `packages/ui/src/table/infinite/InfiniteTable.tsx` | 96 | `@tanstack/react-table` |
-| `packages/ui/src/table/infinite/InfiniteTable.tsx` | 264 | `@tanstack/react-table` |
 
 ### Complex store/internal patterns (3 bailouts)
 

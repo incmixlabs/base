@@ -1,10 +1,7 @@
 'use client'
 
 import { COMPONENT_REGISTRY_ENTRY_KIND, COMPONENT_REGISTRY_SCHEMA_VERSION } from '@incmix/core'
-import type { CatalogEntry } from '@incmix/ui/editor/catalog'
-import { createDocsPropDefs } from '@incmix/ui/editor/docs'
 import { Stepper } from '@incmix/ui/elements'
-import { stepperPropDefs as stepperThemePropDefs } from '@incmix/ui/elements/props'
 import {
   Checkbox,
   CheckboxGroup,
@@ -19,6 +16,10 @@ import {
   Textarea,
   TextField,
 } from '@incmix/ui/form'
+import { Flex } from '@incmix/ui/layouts'
+import { Search } from 'lucide-react'
+import type { CatalogEntry } from '@/editor/catalog'
+import { stepperPropDefs as stepperThemePropDefs } from '@/editor/elements/props'
 import {
   checkboxPropDefs as checkboxThemePropDefs,
   radioGroupRootPropDefs,
@@ -26,8 +27,8 @@ import {
   switchPropDefs as switchThemePropDefs,
   textAreaPropDefs as textAreaThemePropDefs,
   textFieldRootPropDefs,
-} from '@incmix/ui/form/props'
-import { Flex } from '@incmix/ui/layouts'
+} from '@/editor/form/props'
+import { createDocsPropDefs } from '@/editor/live'
 import {
   checkboxGroupPropDefs,
   checkboxPropDefs,
@@ -37,8 +38,7 @@ import {
   switchPropDefs,
   textAreaPropDefs,
   textFieldPropDefs,
-} from '@incmix/ui/props'
-import { Search } from 'lucide-react'
+} from '@/editor/prop-defs'
 import { autoProps, createAutogenEntry } from './element-docs-types'
 
 function toRuntimeComponentName(value: string): string {

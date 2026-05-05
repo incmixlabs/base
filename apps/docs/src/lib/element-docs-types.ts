@@ -1,6 +1,6 @@
 'use client'
 
-import type { CatalogEntry } from '@incmix/ui/editor/catalog'
+import type { CatalogEntry } from '@/editor/catalog'
 
 export type ElementDocsBaseEntry = Pick<
   CatalogEntry,

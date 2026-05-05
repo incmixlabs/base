@@ -1,9 +1,9 @@
 'use client'
 
-import { imageCatalogEntry } from '@incmix/ui/editor/catalog'
 import { Image } from '@incmix/ui/elements'
 import { AspectRatio, Flex, Grid } from '@incmix/ui/layouts'
 import { Text } from '@incmix/ui/typography'
+import { imageCatalogEntry } from '@/editor/catalog'
 import type { ElementDocsEntry } from '../element-docs-types'
 
 export const mediaEntries = {

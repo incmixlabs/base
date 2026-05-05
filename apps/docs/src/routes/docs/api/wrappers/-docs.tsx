@@ -1,22 +1,20 @@
-import type { PropDef } from '@incmix/ui/editor/docs'
+import type { ReactNode } from 'react'
+import type { PropDef } from '@/editor/live'
 import {
   accordionSchemaWrapperPropDefs,
   calloutWrapperPropDefs,
   cardWrapperPropDefs,
   checkboxGroupWrapperPropDefs,
   commandWrapperPropDefs,
-  dialogWrapperPropDefs,
   linkWrapperPropDefs,
   menuWrapperPropDefs,
   popoverWrapperPropDefs,
   radioGroupWrapperPropDefs,
   sidebarWrapperPropDefs,
   switchGroupWrapperPropDefs,
-  tableWrapperPropDefs,
   tabsWrapperPropDefs,
   tooltipWrapperPropDefs,
-} from '@incmix/ui/props'
-import type { ReactNode } from 'react'
+} from '@/editor/prop-defs'
 
 export type WrapperDoc = {
   title: string
@@ -36,6 +34,25 @@ const treeViewWrapperPropDefs: PropDef[] = [
   { name: 'defaultLeafIcon', typeSimple: 'React.ComponentType<{ className?: string }>' },
   { name: 'onItemDrag', typeSimple: '(source: TreeDataItem, target: TreeDataItem) => void' },
   { name: 'renderItem', typeSimple: '(params: TreeRenderItemParams) => ReactNode' },
+]
+
+const dialogWrapperPropDefs: PropDef[] = [
+  { name: 'schema', typeSimple: 'DialogWrapperSchema', required: true },
+  { name: 'trigger', typeSimple: 'ReactNode' },
+  { name: 'title', typeSimple: 'ReactNode' },
+  { name: 'description', typeSimple: 'ReactNode' },
+  { name: 'defaultValues', typeSimple: 'Record<string, unknown>' },
+  { name: 'open', typeSimple: 'boolean' },
+  { name: 'defaultOpen', typeSimple: 'boolean' },
+  { name: 'onOpenChange', typeSimple: '(open: boolean) => void' },
+  { name: 'submitLabel', typeSimple: 'string', default: 'Submit' },
+  { name: 'cancelLabel', typeSimple: 'string', default: 'Cancel' },
+  { name: 'closeOnSubmit', typeSimple: 'boolean', default: true },
+  { name: 'validate', typeSimple: '(values) => DialogWrapperFieldErrorMap | Promise<DialogWrapperFieldErrorMap>' },
+  { name: 'onSubmit', typeSimple: '(values, helpers) => void | Promise<void>' },
+  { name: 'renderField', typeSimple: '(args, defaultRender) => ReactNode' },
+  { name: 'renderFooter', typeSimple: '(args, defaultRender) => ReactNode' },
+  { name: 'className', typeSimple: 'string' },
 ]
 
 export const wrapperDocsBySlug = {
@@ -199,7 +216,7 @@ export const wrapperDocsBySlug = {
       </>,
       <>
         Current data flow for this wrapper is direct: <code>schema -&gt; DialogWrapper</code>. The newer AutoForm path
-        uses a normalized runtime model instead.
+        uses a normalized runtime model instead. <code>DialogWrapper</code> now lives in <code>@incmix/autoform</code>.
       </>,
     ],
     basicUsageCode: `<DialogWrapper
@@ -371,63 +388,6 @@ export const wrapperDocsBySlug = {
   ]}
 />`,
     propDefs: switchGroupWrapperPropDefs,
-  },
-  table: {
-    title: 'TableWrapper',
-    description: (
-      <>
-        Typed data-driven wrapper for <code>Table</code> primitives built on TanStack Table for sorting and hierarchy.
-      </>
-    ),
-    overview: [
-      <>
-        <code>TableWrapper</code> preserves the existing data payload and render override escape hatches while handling
-        common table structure and interaction concerns for you.
-      </>,
-      <>
-        Cell renderer contracts are shared with <code>InfiniteTableWrapper</code>, so label, avatar, checkbox, timeline,
-        and sparkline renderers can move between basic and infinite table modes without redefining the cell model.
-      </>,
-      <>
-        Editable-cell behavior is intended to converge on that same shared contract next, including consistent cell
-        focus and tab navigation semantics.
-      </>,
-    ],
-    basicUsageCode: `<TableWrapper
-  size="sm"
-  variant="surface"
-  striped
-  data={{
-    caption: "Live accounts",
-    columns: [
-      { id: "name", header: "Customer", rowHeader: true, minWidth: "220px" },
-      { id: "email", header: "Email", minWidth: "240px" },
-      { id: "plan", header: "Plan" },
-      {
-        id: "status",
-        header: "Status",
-        renderer: {
-          type: "label",
-          values: [
-            { value: "active", color: "success", label: "Active" },
-            { value: "trial", color: "warning", label: "Trial" },
-          ],
-        },
-      },
-    ],
-    rows: [
-      {
-        id: "alex",
-        values: { name: "Alex Morgan", email: "alex@autoform.dev", plan: "Growth", status: "active" },
-      },
-      {
-        id: "sam",
-        values: { name: "Sam Lee", email: "sam@autoform.dev", plan: "Starter", status: "trial" },
-      },
-    ],
-  }}
-/>`,
-    propDefs: tableWrapperPropDefs,
   },
   tabs: {
     title: 'Tabs',
