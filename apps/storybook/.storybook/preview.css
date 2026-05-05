@@ -4,3 +4,45 @@
 @source "../.storybook/**/*.{ts,tsx}";
 @source "../../../packages/ajv/stories/**/*.{ts,tsx}";
 @source "../../../packages/ui/src/**/*.{ts,tsx,mdx}";
+
+.storybook-outline-wrapper {
+  --outline-box-color: rgb(0 102 255 / 0.9);
+  --outline-inline-color: rgb(255 40 40 / 0.9);
+  --outline-width: 1px;
+}
+
+.storybook-outline-wrapper[data-outline="true"]
+  :where(
+    div,
+    section,
+    article,
+    aside,
+    header,
+    footer,
+    nav,
+    main,
+    form,
+    fieldset,
+    ul,
+    ol,
+    li,
+    table,
+    thead,
+    tbody,
+    tr,
+    td,
+    th,
+    button,
+    input,
+    select,
+    textarea,
+    [role]
+  ) {
+  outline: var(--outline-width) solid var(--outline-box-color);
+  outline-offset: -1px;
+}
+
+.storybook-outline-wrapper[data-outline="true"] :where(span, p, label, a, small, strong, em, code, kbd, time) {
+  outline: var(--outline-width) solid var(--outline-inline-color);
+  outline-offset: 0;
+}
