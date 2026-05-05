@@ -36,22 +36,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./blocks/diagrammer": {
-      "types": "./dist/blocks/diagrammer/index.d.ts",
-      "import": "./dist/blocks/diagrammer.js"
-    },
-    "./blocks/diagrammer/db": {
-      "types": "./dist/blocks/diagrammer/db/index.d.ts",
-      "import": "./dist/blocks/diagrammer/db.js"
-    },
-    "./blocks/diagrammer/rules": {
-      "types": "./dist/blocks/diagrammer/rules/index.d.ts",
-      "import": "./dist/blocks/diagrammer/rules.js"
-    },
-    "./blocks/kanban": {
-      "types": "./dist/blocks/kanban/index.d.ts",
-      "import": "./dist/blocks/kanban.js"
-    },
     "./charts": {
       "types": "./dist/charts/index.d.ts",
       "import": "./dist/charts.js"
@@ -64,57 +48,13 @@
       "types": "./dist/charts/chart-renderers.d.ts",
       "import": "./dist/charts/renderers.js"
     },
-    "./composites": {
-      "types": "./dist/composites/index.d.ts",
-      "import": "./dist/composites.js"
-    },
     "./compose/sidebar": {
       "types": "./dist/compose/sidebar.d.ts",
       "import": "./dist/compose/sidebar.js"
     },
-    "./compose/view": {
-      "types": "./dist/compose/view.d.ts",
-      "import": "./dist/compose/view.js"
-    },
-    "./declarative": {
-      "types": "./dist/declarative/index.d.ts",
-      "import": "./dist/declarative.js"
-    },
-    "./declarative/jsx-authoring": {
-      "types": "./dist/declarative/jsx-authoring.d.ts",
-      "import": "./dist/declarative/jsx-authoring.js"
-    },
-    "./declarative/renderer": {
-      "types": "./dist/declarative/DeclarativeRenderer.d.ts",
-      "import": "./dist/declarative/renderer.js"
-    },
-    "./declarative/runtime": {
-      "types": "./dist/declarative/runtime.d.ts",
-      "import": "./dist/declarative/runtime.js"
-    },
     "./dashboard": {
       "types": "./dist/layouts/dashboard/index.d.ts",
       "import": "./dist/dashboard.js"
-    },
-    "./editor": {
-      "types": "./dist/editor/index.d.ts",
-      "import": "./dist/editor.js"
-    },
-    "./editor/autoform": {
-      "types": "./dist/editor/autoform/index.d.ts",
-      "import": "./dist/editor/autoform.js"
-    },
-    "./editor/catalog": {
-      "types": "./dist/editor/catalog.d.ts",
-      "import": "./dist/editor/catalog.js"
-    },
-    "./editor/docs": {
-      "types": "./dist/editor/live/index.d.ts",
-      "import": "./dist/editor/docs.js"
-    },
-    "./editor/live": {
-      "types": "./dist/editor/live/index.d.ts",
-      "import": "./dist/editor/live.js"
     },
     "./elements": {
       "types": "./dist/elements/index.d.ts",
@@ -143,10 +83,6 @@
     "./elements/card/Card": {
       "types": "./dist/elements/card/Card.d.ts",
       "import": "./dist/elements/card/Card.js"
-    },
-    "./elements/props": {
-      "types": "./dist/editor/elements/props.d.ts",
-      "import": "./dist/elements/props.js"
     },
     "./filter": {
       "types": "./dist/elements/filter/index.d.ts",
@@ -177,10 +113,6 @@
       "types": "./dist/form/phone.d.ts",
       "import": "./dist/form/phone.js"
     },
-    "./form/props": {
-      "types": "./dist/editor/form/props.d.ts",
-      "import": "./dist/form/props.js"
-    },
     "./globals.css": "./dist/globals.css",
     "./hooks": {
       "types": "./dist/hooks/index.d.ts",
@@ -206,10 +138,6 @@
       "types": "./dist/layouts/masonry/Masonry.d.ts",
       "import": "./dist/layouts/masonry.js"
     },
-    "./layouts/props": {
-      "types": "./dist/editor/layouts/props.d.ts",
-      "import": "./dist/layouts/props.js"
-    },
     "./layouts/section/Section": {
       "types": "./dist/layouts/section/Section.d.ts",
       "import": "./dist/layouts/section/Section.js"
@@ -234,49 +162,13 @@
       "types": "./dist/media/media-player/MediaPlayer.d.ts",
       "import": "./dist/media/media-player.js"
     },
-    "./props": {
-      "types": "./dist/editor/prop-defs.d.ts",
-      "import": "./dist/props.js"
-    },
     "./status-page": {
       "types": "./dist/status-page/index.d.ts",
       "import": "./dist/status-page.js"
     },
-    "./table": {
-      "types": "./dist/table/index.d.ts",
-      "import": "./dist/table.js"
-    },
-    "./table/basic": {
-      "types": "./dist/table/basic.d.ts",
-      "import": "./dist/table/basic.js"
-    },
-    "./table/infinite": {
-      "types": "./dist/table/infinite/index.d.ts",
-      "import": "./dist/table/infinite.js"
-    },
-    "./table/summary-chart": {
-      "types": "./dist/table/summary-chart.d.ts",
-      "import": "./dist/table/summary-chart.js"
-    },
-    "./table/tree": {
-      "types": "./dist/table/tree.d.ts",
-      "import": "./dist/table/tree.js"
-    },
-    "./table/tree-ops": {
-      "types": "./dist/table/tree/index.d.ts",
-      "import": "./dist/table/tree-ops.js"
-    },
-    "./table/view": {
-      "types": "./dist/table/view.d.ts",
-      "import": "./dist/table/view.js"
-    },
     "./theme": {
       "types": "./dist/theme/index.d.ts",
       "import": "./dist/theme.js"
-    },
-    "./theme-panel": {
-      "types": "./dist/editor/ThemePanel.d.ts",
-      "import": "./dist/theme-panel.js"
     },
     "./theme/contract": {
       "types": "./dist/theme/contract/theme-contract.d.ts",
@@ -297,10 +189,6 @@
     "./utils/date": {
       "types": "./dist/utils/date.d.ts",
       "import": "./dist/utils/date.js"
-    },
-    "./widgets": {
-      "types": "./dist/widgets/index.d.ts",
-      "import": "./dist/widgets.js"
     }
   },
   "files": [
@@ -343,24 +231,15 @@
   "dependencies": {
     "@antv/g2": "^5.4.8",
     "@atlaskit/pragmatic-drag-and-drop": "1.7.4",
-    "@atlaskit/pragmatic-drag-and-drop-auto-scroll": "2.1.1",
-    "@atlaskit/pragmatic-drag-and-drop-hitbox": "1.1.0",
     "@base-ui/react": "1.2.0",
-    "@incmix/react-runner": "workspace:*",
     "@incmix/theme": "workspace:*",
-    "@codemirror/lang-javascript": "catalog:",
-    "@codemirror/theme-one-dark": "catalog:",
     "@internationalized/date": "^3.11.0",
     "@ncdai/react-wheel-picker": "^1.2.0",
     "@tanstack/react-query": "^5.91.2",
-    "@tanstack/react-table": "^8.21.3",
-    "@tanstack/react-virtual": "^3.13.23",
-    "@uiw/react-codemirror": "catalog:",
     "@vanilla-extract/dynamic": "catalog:",
     "@xstate/react": "catalog:",
     "@xstate/store": "catalog:",
     "@xstate/store-react": "catalog:",
-    "@xyflow/react": "^12.10.2",
     "chrono-node": "^2.9.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

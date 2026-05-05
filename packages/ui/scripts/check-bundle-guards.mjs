@@ -14,7 +14,11 @@ const forbiddenDependencyPatterns = [
   'country-state-city',
   'react-dropzone',
   '@ncdai/react-wheel-picker',
+  '@atlaskit/pragmatic-drag-and-drop-auto-scroll',
+  '@atlaskit/pragmatic-drag-and-drop-hitbox',
+  '@tanstack/react-table',
   '@tanstack/react-virtual',
+  '@xyflow/react',
 ]
 
 const guardedEntries = [
@@ -22,8 +26,6 @@ const guardedEntries = [
   { name: 'elements', file: 'elements.js', maxGzipBytes: 240_000 },
   { name: 'layouts', file: 'layouts.js', maxGzipBytes: 285_000 },
   { name: 'form', file: 'form.js', maxGzipBytes: 285_000 },
-  { name: 'table', file: 'table.js', maxGzipBytes: 265_000 },
-  { name: 'table/basic', file: 'table/basic.js', maxGzipBytes: 265_000 },
 ]
 
 function resolveRelativeModule(fromFile, specifier) {

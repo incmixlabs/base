@@ -1,9 +1,23 @@
 import type { Preview } from '@storybook/react-vite'
-import { OutlineWrapper } from '../../../packages/ui/src/editor/OutlineWrapper'
+import type * as React from 'react'
 import { Theme } from '../../../packages/ui/src/theme/ThemeProvider'
 import './preview.css'
 import '../../../packages/ui/src/theme/chart-tokens.css'
 import '../../../packages/ui/src/theme/typography-tokens.css'
+
+type StorybookOutlineWrapperProps = {
+  children: React.ReactNode
+  className?: string
+  enabled?: boolean
+}
+
+function StorybookOutlineWrapper({ children, className, enabled = true }: StorybookOutlineWrapperProps) {
+  return (
+    <div data-outline={enabled} className={['storybook-outline-wrapper', className].filter(Boolean).join(' ')}>
+      {children}
+    </div>
+  )
+}
 
 const preview: Preview = {
   globalTypes: {
@@ -46,9 +60,9 @@ const preview: Preview = {
       }
 
       const content = hasOutline ? (
-        <OutlineWrapper enabled className="min-h-screen w-full">
+        <StorybookOutlineWrapper enabled className="min-h-screen w-full">
           <Story />
-        </OutlineWrapper>
+        </StorybookOutlineWrapper>
       ) : (
         <Story />
       )

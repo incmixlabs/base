@@ -7,7 +7,6 @@ import {
   resolveJsonSchemaRefs,
   type SchemaRefResolutionOptions,
 } from '@incmix/core'
-import { type JsonValue, JsonViewEditor } from '@incmix/ui/editor/autoform'
 import { Badge, Button, Callout, IconButton, SegmentedControl } from '@incmix/ui/elements'
 import { useClipboard } from '@incmix/ui/hooks'
 import { Flex } from '@incmix/ui/layouts'
@@ -17,6 +16,7 @@ import { Text } from '@incmix/ui/typography'
 import { Check, Copy, PanelLeftCloseIcon, PanelLeftOpenIcon } from 'lucide-react'
 import * as React from 'react'
 import { AutoFormModelRenderer } from '../AutoFormModelRenderer'
+import { type JsonValue, JsonViewEditor } from '../json-editor'
 import {
   contentStack,
   headerBlur,

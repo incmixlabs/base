@@ -1,8 +1,0 @@
-export { appShellPropDefs } from '@/layouts/app-shell/app-shell.props'
-export { aspectRatioPropDefs } from '@/layouts/aspect-ratio/aspect-ratio.props'
-export { boxPropDefs } from '@/layouts/box/box.props'
-export { containerPropDefs } from '@/layouts/container/container.props'
-export { flexPropDefs } from '@/layouts/flex/flex.props'
-export { gridPropDefs } from '@/layouts/grid/grid.props'
-export { sectionPropDefs } from '@/layouts/section/section.props'
-export { sidebarRootPropDefs } from '@/layouts/sidebar/sidebar.props'

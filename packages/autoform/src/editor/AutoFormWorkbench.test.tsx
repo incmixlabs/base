@@ -1,9 +1,9 @@
 import '@testing-library/jest-dom/vitest'
 import type { JsonSchemaNode } from '@incmix/core'
-import type { JsonValue } from '@incmix/ui/editor/autoform'
 import { cleanup, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
+import type { JsonValue } from '../json-editor'
 import { AutoFormWorkbench } from './AutoFormWorkbench'
 
 const WORKBENCH_INTERACTION_TEST_TIMEOUT_MS = 30_000

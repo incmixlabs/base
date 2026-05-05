@@ -1,9 +1,9 @@
 import { normalizeJsonSchemaWithUiSchema } from '@incmix/core'
 import { AutoFormModelRenderer, DialogWrapper, adaptAutoFormModelToDialogWrapper } from '@incmix/autoform'
-import { type JsonValue, JsonViewEditor } from '@incmix/ui/editor/autoform'
 import { Button } from '@incmix/ui/elements'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import * as React from 'react'
+import { type JsonValue, JsonViewEditor } from '../json-editor'
 import {
   autoformLayoutGridJsonSchema,
   autoformLayoutGridUiSchema,

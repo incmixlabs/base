@@ -11,7 +11,6 @@ import {
   getValueAtPath,
   incrementAutoFormSubmitCount,
   type JsonSchemaNode,
-  type NormalizedPageDocument,
   resetAutoFormState,
   setAutoFormErrors,
   setAutoFormFormErrors,
@@ -21,10 +20,9 @@ import {
   setAutoFormValues,
   touchAutoFormField,
 } from '@incmix/core'
-import { createDeclarativePageActor } from '@incmix/ui/declarative/runtime'
 import { useSelector } from '@xstate/react'
 import * as React from 'react'
-import { assign, waitFor } from 'xstate'
+import { type AnyActorRef, assign, createActor, fromPromise, setup, waitFor } from 'xstate'
 
 export interface UseAutoFormRuntimeOptions {
   initialValues: AutoFormRuntimeValues
@@ -84,18 +82,6 @@ export interface UseAutoFormRuntimeResult {
       runtime: AutoFormRuntimeSnapshot,
     ) => void | Promise<void>,
   ) => Promise<{ success: boolean; state: AutoFormRuntimeSnapshot }>
-}
-
-const autoFormLifecyclePage: NormalizedPageDocument = {
-  kind: 'page',
-  id: 'autoform.runtime',
-  title: 'AutoForm Runtime',
-  root: {
-    type: 'form',
-  },
-  runtime: {
-    actions: [],
-  },
 }
 
 type PendingSubmitOperation = {
@@ -162,6 +148,21 @@ type AutoFormRuntimeTouchSyncEvent = {
   dirtyFields: Record<string, boolean>
   isDirty: boolean
 }
+
+type AutoFormSubmitRequestEvent = {
+  type: 'autoform.submit.request'
+}
+
+type AutoFormLifecycleEvent =
+  | AutoFormFieldChangeEvent
+  | AutoFormFieldTouchEvent
+  | AutoFormFieldValidationRequestEvent
+  | AutoFormFieldValidationCompleteEvent
+  | AutoFormFormValidationRequestEvent
+  | AutoFormFormValidationCompleteEvent
+  | AutoFormRuntimeTouchSyncEvent
+  | AutoFormSubmitRequestEvent
+  | { type: 'autoform.validation.reset' }
 
 function createAutoFormLifecycleEventHandlers() {
   return {
@@ -266,6 +267,83 @@ function createAutoFormLifecycleEventHandlers() {
       }),
     },
   }
+}
+
+function createAutoFormLifecycleActor(
+  initialTouchState: Pick<AutoFormLifecycleActorContext, 'touched' | 'dirtyFields' | 'isDirty'>,
+  pendingSubmitRef: React.RefObject<PendingSubmitOperation | null>,
+): AnyActorRef {
+  const eventHandlers = createAutoFormLifecycleEventHandlers()
+
+  return createActor(
+    setup({
+      types: {} as {
+        context: AutoFormLifecycleActorContext
+        events: AutoFormLifecycleEvent
+      },
+      actors: {
+        autoFormSubmitRunner: fromPromise(async () => {
+          const pendingSubmit = pendingSubmitRef.current
+          if (!pendingSubmit) {
+            return
+          }
+
+          try {
+            await pendingSubmit.execute()
+            pendingSubmit.resolve()
+          } catch (error) {
+            pendingSubmit.reject(error)
+            throw error
+          } finally {
+            pendingSubmitRef.current = null
+          }
+        }),
+      },
+    }).createMachine({
+      id: 'autoform.lifecycle',
+      initial: 'ready',
+      context: {
+        touched: initialTouchState.touched,
+        dirtyFields: initialTouchState.dirtyFields,
+        isDirty: initialTouchState.isDirty,
+        fieldEventCount: 0,
+        touchEventCount: 0,
+        validationEventCount: 0,
+        validationStatus: 'idle',
+        lastValidationResult: null,
+        lastValidationScope: null,
+        lastFieldChangePath: null,
+        lastTouchedFieldPath: null,
+        lastValidatedPath: null,
+      },
+      states: {
+        ready: {
+          on: {
+            ...eventHandlers,
+            'autoform.submit.request': 'submitting',
+          },
+        },
+        submitting: {
+          invoke: {
+            src: 'autoFormSubmitRunner',
+            onDone: {
+              target: 'ready',
+            },
+            onError: {
+              target: 'error',
+            },
+          },
+          on: eventHandlers,
+        },
+        error: {
+          on: {
+            ...eventHandlers,
+            'autoform.submit.request': 'submitting',
+          },
+        },
+      },
+    } as any),
+  ) as AnyActorRef
 }
 
 function mergeFieldErrors(...maps: FieldErrorMap[]): FieldErrorMap {
@@ -377,60 +455,10 @@ export function useAutoFormRuntime({
   )
   const initialTouchState = initialTouchStateRef.current
 
-  const lifecycleActorRef = React.useRef<ReturnType<typeof createDeclarativePageActor> | null>(null)
+  const lifecycleActorRef = React.useRef<ReturnType<typeof createAutoFormLifecycleActor> | null>(null)
 
   if (!lifecycleActorRef.current) {
-    lifecycleActorRef.current = createDeclarativePageActor({
-      page: autoFormLifecyclePage,
-      context: {
-        touched: initialTouchState.touched,
-        dirtyFields: initialTouchState.dirtyFields,
-        isDirty: initialTouchState.isDirty,
-        fieldEventCount: 0,
-        touchEventCount: 0,
-        validationEventCount: 0,
-        validationStatus: 'idle',
-        lastValidationResult: null,
-        lastValidationScope: null,
-        lastFieldChangePath: null,
-        lastTouchedFieldPath: null,
-        lastValidatedPath: null,
-      },
-      services: {
-        action: async action => {
-          if (action.type !== 'apiCall' || action.url !== 'autoform.submit') {
-            return undefined
-          }
-
-          const pendingSubmit = pendingSubmitRef.current
-          if (!pendingSubmit) {
-            return undefined
-          }
-
-          try {
-            await pendingSubmit.execute()
-            pendingSubmit.resolve()
-            return undefined
-          } catch (error) {
-            pendingSubmit.reject(error)
-            throw error
-          } finally {
-            pendingSubmitRef.current = null
-          }
-        },
-      },
-      states: {
-        ready: {
-          on: createAutoFormLifecycleEventHandlers(),
-        },
-        submitting: {
-          on: createAutoFormLifecycleEventHandlers(),
-        },
-        error: {
-          on: createAutoFormLifecycleEventHandlers(),
-        },
-      },
-    })
+    lifecycleActorRef.current = createAutoFormLifecycleActor(initialTouchState, pendingSubmitRef)
   }
 
   const lifecycleActor = lifecycleActorRef.current
@@ -767,11 +795,7 @@ export function useAutoFormRuntime({
           }
 
           lifecycleActor.send({
-            type: 'declarative.action',
-            action: {
-              type: 'apiCall',
-              url: 'autoform.submit',
-            },
+            type: 'autoform.submit.request',
           })
 
           if (!lifecycleActor.getSnapshot().matches('submitting')) {

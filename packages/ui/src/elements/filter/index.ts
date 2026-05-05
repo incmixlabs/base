@@ -1,4 +1,4 @@
-export { Filter, type FilterProps } from './Filter'
+export { Filter, type FilterProps, type FilterSize } from './Filter'
 export type {
   FilterApplyMode,
   FilterField,
@@ -7,4 +7,3 @@ export type {
   FilterState,
   FilterStateItem,
 } from './filter.props'
-export { TableFilter, type TableFilterProps } from './TableFilter'

@@ -1,3 +1,5 @@
+export type { JsonObject, JsonPrimitive, JsonValue } from '../json-editor'
+export { JsonDiffView, type JsonDiffViewProps, JsonViewEditor, type JsonViewEditorProps } from '../json-editor'
 export {
   AutoFormWorkbench,
   type AutoFormWorkbenchInspectorTab,
