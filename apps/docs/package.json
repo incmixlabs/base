@@ -1,0 +1,30 @@
+{
+  "name": "@incmix/docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite dev --host 127.0.0.1 --port ${PORT:-3004}",
+    "preview": "vite preview --host 127.0.0.1 --port ${PORT:-3004}",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@incmix/autoform": "workspace:*",
+    "@incmix/core": "workspace:*",
+    "@incmix/react": "workspace:*",
+    "@incmix/table": "workspace:*",
+    "@incmix/theme": "workspace:*",
+    "@incmix/ui": "workspace:*",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}
