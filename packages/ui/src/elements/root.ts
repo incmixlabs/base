@@ -122,6 +122,7 @@ export {
   type PopoverWrapperRenderSection,
   type PopoverWrapperSection,
 } from './popover/PopoverWrapper'
+export { type PopoverContentVariant, popoverContentVariants } from './popover/popover.props'
 export { PriorityIcon, type PriorityIconPriority, type PriorityIconProps } from './priority-icon/PriorityIcon'
 export { Progress, type ProgressProps, type ProgressSize } from './progress/Progress'
 export { ScrollArea, type ScrollAreaProps } from './scroll-area/ScrollArea'

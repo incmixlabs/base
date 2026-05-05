@@ -1,8 +1,4 @@
-import { normalizeJsonSchemaWithUiSchema } from '@incmix/core'
-import { AutoFormModelRenderer } from '@incmix/ui/autoform'
-import { Heading, Text } from '@incmix/ui/typography'
-import { createFileRoute } from '@tanstack/react-router'
-import * as React from 'react'
+import { AutoFormModelRenderer } from '@incmix/autoform'
 import {
   autoformArrayRepeaterJsonSchema,
   autoformArrayRepeaterUiSchema,
@@ -18,7 +14,11 @@ import {
   autoformRepeaterBranchUiSchema,
   autoformStepperJsonSchema,
   autoformStepperUiSchema,
-} from '@/stories/autoform-ui-schema-contract.example'
+} from '@incmix/autoform/stories/autoform-ui-schema-contract.example'
+import { normalizeJsonSchemaWithUiSchema } from '@incmix/core'
+import { Heading, Text } from '@incmix/ui/typography'
+import { createFileRoute } from '@tanstack/react-router'
+import * as React from 'react'
 
 export const Route = createFileRoute('/docs/autoform/e2e')({
   component: AutoFormE2EPage,

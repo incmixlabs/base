@@ -1,4 +1,3 @@
-import type { JsonSchemaNode } from '@incmix/core'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import * as React from 'react'
 import { Button } from '@/elements/button/Button'
@@ -46,20 +45,8 @@ const accountSchema: DialogWrapperSchema = {
       type: 'boolean',
       title: 'I agree to the terms',
       default: false,
+      const: true,
     },
-  },
-}
-
-const accountValidationSchema: JsonSchemaNode = {
-  type: 'object',
-  required: ['fullName', 'email', 'plan', 'termsAccepted'],
-  properties: {
-    fullName: { type: 'string', minLength: 2 },
-    email: { type: 'string', format: 'email' },
-    plan: { type: 'string', enum: ['Starter', 'Pro', 'Enterprise'] },
-    seats: { type: 'integer', minimum: 1 },
-    notes: { type: 'string' },
-    termsAccepted: { type: 'boolean', const: true },
   },
 }
 
@@ -109,7 +96,6 @@ export const Controlled: Story = {
           onOpenChange={setOpen}
           trigger={<Button variant="soft">Open controlled dialog</Button>}
           schema={accountSchema}
-          validationSchema={accountValidationSchema}
           onSubmit={async (values, helpers, runtime) => {
             setLastRuntime({
               isValid: runtime.isValid,
@@ -173,7 +159,6 @@ export const RuntimeParity: Story = {
           defaultOpen
           closeOnSubmit
           schema={accountSchema}
-          validationSchema={accountValidationSchema}
           defaultValues={{
             fullName: 'Ada Lovelace',
             email: 'ada@example.com',

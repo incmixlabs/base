@@ -1,5 +1,4 @@
 import type { AutoFormNormalizedArrayNode } from '@incmix/core'
-import { singularizeLabel } from '@/utils/strings'
 
 export function getRepeaterStoreKey(node: AutoFormNormalizedArrayNode, repeaterScopeKey: string | undefined) {
   return repeaterScopeKey ? `${repeaterScopeKey}>${node.key}` : node.path
@@ -61,4 +60,12 @@ function summarizeArrayItemValue(value: unknown) {
 
 function isSummaryObject(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === 'object' && !Array.isArray(value)
+}
+
+function singularizeLabel(label: string): string {
+  if (/[b-df-hj-np-tv-z]ies$/i.test(label)) return `${label.slice(0, -3)}y`
+  if (/ies$/i.test(label)) return label.slice(0, -1)
+  if (/(sses|shes|ches|xes|zes)$/.test(label)) return label.slice(0, -2)
+  if (label.endsWith('s') && !label.endsWith('ss') && !label.endsWith('es')) return label.slice(0, -1)
+  return label
 }

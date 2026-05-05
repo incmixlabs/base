@@ -36,10 +36,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./autoform": {
-      "types": "./dist/autoform/index.d.ts",
-      "import": "./dist/autoform.js"
-    },
     "./blocks/diagrammer": {
       "types": "./dist/blocks/diagrammer/index.d.ts",
       "import": "./dist/blocks/diagrammer.js"

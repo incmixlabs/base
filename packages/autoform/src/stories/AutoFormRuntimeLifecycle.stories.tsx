@@ -1,7 +1,7 @@
 import { normalizeJsonSchemaWithUiSchema } from '@incmix/core'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import * as React from 'react'
-import { AutoFormModelRenderer } from '@/autoform'
+import { AutoFormModelRenderer } from '@incmix/autoform'
 import {
   autoformConditionalJsonSchema,
   autoformConditionalUiSchema,

@@ -1,5 +1,5 @@
 import type { SchemaRefResolutionOptions } from '@incmix/core'
-import type { JsonValue } from './json-value.types'
+import type { JsonValue } from '@incmix/ui/editor/autoform'
 
 export interface SchemaPreviewProps {
   /**

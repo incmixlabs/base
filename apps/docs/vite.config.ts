@@ -9,6 +9,7 @@ import type { PluginOption } from 'vite'
 import { defineConfig } from 'vite'
 
 const analyze = process.env.ANALYZE === 'true'
+const autoformSrcPath = resolve(import.meta.dirname, '../../packages/autoform/src')
 const uiSrcPath = resolve(import.meta.dirname, '../../packages/ui/src')
 const uiSourceExportAliases = {
   '@incmix/ui/charts/renderers': 'charts/chart-renderers.tsx',
@@ -62,6 +63,8 @@ config.resolve.alias = [
     find,
     replacement: resolve(uiSrcPath, source),
   })),
+  { find: /^@incmix\/autoform\/(.+)$/, replacement: `${autoformSrcPath}/$1` },
+  { find: '@incmix/autoform', replacement: resolve(autoformSrcPath, 'index.tsx') },
   { find: /^@incmix\/ui\/(.+)$/, replacement: `${uiSrcPath}/$1` },
   { find: '@incmix/ajv', replacement: resolve(import.meta.dirname, '../../packages/ajv/src/index.ts') },
   { find: '@incmix/react', replacement: resolve(import.meta.dirname, '../../packages/react/src/index.tsx') },

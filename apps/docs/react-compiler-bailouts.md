@@ -66,8 +66,8 @@ Known limitations in `babel-plugin-react-compiler` v1.0.0 and a few external/int
 
 | File | Line | Limitation |
 |------|------|-----------|
-| `packages/ui/src/autoform/useAutoFormRuntime.ts` | 69 | Value blocks inside try/catch |
-| `packages/ui/src/elements/dialog/DialogWrapper.tsx` | 357 | Value blocks inside try/catch |
+| `packages/autoform/src/useAutoFormRuntime.ts` | 359 | Value blocks inside try/catch |
+| `packages/ui/src/elements/dialog/DialogWrapper.tsx` | 802 | Value blocks inside try/catch |
 | `packages/ui/src/elements/button/dynamic-icon.tsx` | 51 | Dynamic `import()` expressions |
 | `packages/ui/src/elements/progress/Progress.tsx` | 57 | `as` (TSAsExpression) in object key |
 | `packages/ui/src/elements/sheet/Sheet.tsx` | 76 | Conditional expression as object key |

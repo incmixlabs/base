@@ -9,11 +9,13 @@ import { visualizer } from 'rollup-plugin-visualizer'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const analyze = process.env.ANALYZE === 'true'
 const storybookDocsBlocksPath = fileURLToPath(import.meta.resolve('@storybook/addon-docs/blocks'))
+const autoformSrcPath = resolve(__dirname, '../../../packages/autoform/src')
 const uiSrcPath = resolve(__dirname, '../../../packages/ui/src')
 
 const config: StorybookConfig = {
   stories: [
     '../../../packages/ajv/stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../../packages/autoform/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../../../packages/ui/src/blocks/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../../../packages/ui/src/charts/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../../../packages/ui/src/elements/**/*.stories.@(js|jsx|mjs|ts|tsx)',
@@ -41,6 +43,8 @@ const config: StorybookConfig = {
   viteFinal: async config => {
     const workspaceAliases = [
       { find: '@', replacement: uiSrcPath },
+      { find: /^@incmix\/autoform\/(.+)$/, replacement: `${autoformSrcPath}/$1` },
+      { find: '@incmix/autoform', replacement: resolve(autoformSrcPath, 'index.tsx') },
       { find: /^@incmix\/ui\/(.+)$/, replacement: `${uiSrcPath}/$1` },
       { find: '@incmix/ajv', replacement: resolve(__dirname, '../../../packages/ajv/src/index.ts') },
       {

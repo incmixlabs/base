@@ -21,10 +21,10 @@ import {
   setAutoFormValues,
   touchAutoFormField,
 } from '@incmix/core'
+import { createDeclarativePageActor } from '@incmix/ui/declarative/runtime'
 import { useSelector } from '@xstate/react'
 import * as React from 'react'
 import { assign, waitFor } from 'xstate'
-import { createDeclarativePageActor } from '@/declarative/runtime'
 
 export interface UseAutoFormRuntimeOptions {
   initialValues: AutoFormRuntimeValues

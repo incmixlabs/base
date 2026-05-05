@@ -1,5 +1,5 @@
+import { type ContainerBreakpoint, containerBreakpointKeys, containerBreakpoints } from '@incmix/ui/theme'
 import { type ComplexStyleRule, style, styleVariants } from '@vanilla-extract/css'
-import { type ContainerBreakpoint, containerBreakpointKeys, containerBreakpoints } from '@/theme/tokens'
 
 const responsiveBreakpoints = ['initial', ...containerBreakpointKeys] as const
 type AutoFormResponsiveBreakpoint = (typeof responsiveBreakpoints)[number]

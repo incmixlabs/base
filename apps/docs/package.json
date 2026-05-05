@@ -11,6 +11,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@incmix/autoform": "workspace:*",
     "@incmix/core": "workspace:*",
     "@incmix/react-runner": "workspace:*",
     "@incmix/ui": "workspace:*",

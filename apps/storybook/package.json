@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@incmix/ajv": "workspace:*",
+    "@incmix/autoform": "workspace:*",
     "@incmix/config": "workspace:*",
     "@incmix/core": "workspace:*",
     "@incmix/react": "workspace:*",

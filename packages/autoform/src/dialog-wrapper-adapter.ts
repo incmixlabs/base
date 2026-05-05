@@ -5,7 +5,7 @@ import type {
   AutoFormNormalizedSection,
   JsonValue,
 } from '@incmix/core'
-import type { DialogWrapperSchema, DialogWrapperSchemaProperty } from '@/elements/dialog/dialog-wrapper.props'
+import type { DialogWrapperJsonValue, DialogWrapperSchema, DialogWrapperSchemaProperty } from '@incmix/ui/elements'
 import {
   type DialogWrapperAdapterWidget,
   dialogWrapperAdapterFormats,
@@ -152,7 +152,7 @@ function adaptFieldNode(
     format: getDialogFieldFormat(node, issues),
     placeholder: node.placeholder,
     widget: isNativeWidget ? node.widget : undefined,
-    widgetProps: isNativeWidget ? node.props : undefined,
+    widgetProps: isNativeWidget ? getDialogWrapperWidgetProps(node.props) : undefined,
   }
 
   return property
@@ -250,4 +250,41 @@ function isDialogWrapperNativeWidget(node: AutoFormNormalizedFieldNode) {
 
 function getPrimitiveDefaultValue(value: JsonValue | undefined): string | number | boolean | undefined {
   return typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' ? value : undefined
+}
+
+function getDialogWrapperWidgetProps(
+  props: Record<string, JsonValue | undefined> | undefined,
+): Record<string, DialogWrapperJsonValue> | undefined {
+  if (!props) return undefined
+
+  const normalized: Record<string, DialogWrapperJsonValue> = {}
+
+  for (const [key, value] of Object.entries(props)) {
+    const nextValue = toDialogWrapperJsonValue(value)
+    if (nextValue !== undefined) {
+      normalized[key] = nextValue
+    }
+  }
+
+  return Object.keys(normalized).length > 0 ? normalized : undefined
+}
+
+function toDialogWrapperJsonValue(value: JsonValue | undefined): DialogWrapperJsonValue | undefined {
+  if (value === undefined) return undefined
+  if (value === null || typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+    return value
+  }
+  if (Array.isArray(value)) {
+    return value.map(toDialogWrapperJsonValue).filter((item): item is DialogWrapperJsonValue => item !== undefined)
+  }
+
+  const objectValue: Record<string, DialogWrapperJsonValue> = {}
+  for (const [key, childValue] of Object.entries(value)) {
+    const nextValue = toDialogWrapperJsonValue(childValue)
+    if (nextValue !== undefined) {
+      objectValue[key] = nextValue
+    }
+  }
+
+  return objectValue
 }
