@@ -1,0 +1,340 @@
+import { normalizeJsonSchemaWithUiSchema } from '@bwalkt/core'
+import { adaptAutoFormModelToDialogWrapper, AutoFormModelRenderer } from '@bwalkt/ui/autoform'
+import { DialogWrapper } from '@bwalkt/ui/elements'
+import {
+  autoformArrayRepeaterJsonSchema,
+  autoformArrayRepeaterUiSchema,
+  autoformConstrainedRepeaterJsonSchema,
+  autoformConstrainedRepeaterUiSchema,
+  autoformDateRulesJsonSchema,
+  autoformDateRulesUiSchema,
+  autoformDynamicBranchJsonSchema,
+  autoformDynamicBranchUiSchema,
+  autoformFileUploadJsonSchema,
+  autoformFileUploadUiSchema,
+  autoformRichWidgetsJsonSchema,
+  autoformRichWidgetsUiSchema,
+  autoformRendererJsonSchema,
+  autoformRendererUiSchema,
+  autoformResponsiveWorkspaceJsonSchema,
+  autoformResponsiveWorkspaceUiSchema,
+  autoformStepperFileUploadJsonSchema,
+  autoformStepperFileUploadUiSchema,
+  autoformStepperJsonSchema,
+  autoformStepperUiSchema,
+  autoformUiSchemaJsonSchema,
+  autoformUiSchemaUiSchema,
+} from '@/stories/autoform-ui-schema-contract.example'
+import { Heading, Text } from '@bwalkt/ui/typography'
+import { LiveCodeBlock } from '@bwalkt/ui/editor/docs'
+
+<Heading as="h1" size="2x">
+  Renderer
+</Heading>
+<Text size="sm" className="mt-2 text-muted-foreground">
+  The native renderer consumes the normalized AutoForm model. Wrapper pages still document schema-driven compatibility
+  surfaces separately.
+</Text>
+
+<Heading as="h2" size="lg" id="native-renderer" data-heading>
+  Native Renderer
+</Heading>
+
+<Text size="sm" className="mt-2 text-muted-foreground">
+  This is the normalized-data path: runtime <code>JSON Schema</code> plus <code>UI schema</code> is normalized first,
+  then passed into <code>AutoFormModelRenderer</code>.
+</Text>
+
+<LiveCodeBlock
+  scope={{ normalizeJsonSchemaWithUiSchema, AutoFormModelRenderer, autoformRendererJsonSchema, autoformRendererUiSchema }}
+  initialCode={`export default function Example() {
+  const model = normalizeJsonSchemaWithUiSchema(
+    autoformRendererJsonSchema,
+    autoformRendererUiSchema,
+  )
+
+  return (
+    <AutoFormModelRenderer
+      model={model}
+      surface="inline"
+      submitLabel="Create trip"
+      closeOnSubmit={false}
+    />
+  )
+}`}
+/>
+
+<Heading as="h2" size="lg" id="responsive-renderer" data-heading>
+  Responsive Renderer Examples
+</Heading>
+
+<Text size="sm" className="mt-2 text-muted-foreground">
+  Responsive layout metadata should be validated in the renderer, not only in code examples.
+</Text>
+
+<LiveCodeBlock
+  scope={{
+    normalizeJsonSchemaWithUiSchema,
+    AutoFormModelRenderer,
+    autoformResponsiveWorkspaceJsonSchema,
+    autoformResponsiveWorkspaceUiSchema,
+  }}
+  initialCode={`export default function Example() {
+  const model = normalizeJsonSchemaWithUiSchema(
+    autoformResponsiveWorkspaceJsonSchema,
+    autoformResponsiveWorkspaceUiSchema,
+  )
+
+  return (
+    <AutoFormModelRenderer
+      model={model}
+      surface="inline"
+      submitLabel="Save profile"
+      closeOnSubmit={false}
+    />
+  )
+}`}
+/>
+
+<Heading as="h2" size="lg" id="array-repeaters" data-heading>
+  Array Repeaters
+</Heading>
+
+<Text size="sm" className="mt-2 text-muted-foreground">
+  Primitive arrays render as repeated field lists, while array-of-object items render as nested groups with add/remove controls.
+</Text>
+
+<LiveCodeBlock
+  scope={{
+    normalizeJsonSchemaWithUiSchema,
+    AutoFormModelRenderer,
+    autoformArrayRepeaterJsonSchema,
+    autoformArrayRepeaterUiSchema,
+  }}
+  initialCode={`export default function Example() {
+  const model = normalizeJsonSchemaWithUiSchema(
+    autoformArrayRepeaterJsonSchema,
+    autoformArrayRepeaterUiSchema,
+  )
+
+  return (
+    <AutoFormModelRenderer
+      model={model}
+      surface="inline"
+      submitLabel="Save roster"
+      closeOnSubmit={false}
+    />
+  )
+}`}
+/>
+
+<LiveCodeBlock
+  scope={{
+    normalizeJsonSchemaWithUiSchema,
+    AutoFormModelRenderer,
+    autoformConstrainedRepeaterJsonSchema,
+    autoformConstrainedRepeaterUiSchema,
+  }}
+  initialCode={`export default function Example() {
+  const model = normalizeJsonSchemaWithUiSchema(
+    autoformConstrainedRepeaterJsonSchema,
+    autoformConstrainedRepeaterUiSchema,
+  )
+
+  return (
+    <AutoFormModelRenderer
+      model={model}
+      surface="inline"
+      defaultValues={{
+        dependents: [{ name: 'Ada Lovelace', relationship: 'Spouse' }],
+      }}
+      submitLabel="Save household"
+      closeOnSubmit={false}
+    />
+  )
+}`}
+/>
+
+<Heading as="h2" size="lg" id="rich-widget-props" data-heading>
+  Rich Widget Props
+</Heading>
+
+<Text size="sm" className="mt-2 text-muted-foreground">
+  The renderer supports richer widget props for mention textarea, avatar picker, multi-select, and file upload.
+</Text>
+
+<LiveCodeBlock
+  scope={{
+    normalizeJsonSchemaWithUiSchema,
+    AutoFormModelRenderer,
+    autoformRichWidgetsJsonSchema,
+    autoformRichWidgetsUiSchema,
+  }}
+  initialCode={`export default function Example() {
+  const model = normalizeJsonSchemaWithUiSchema(
+    autoformRichWidgetsJsonSchema,
+    autoformRichWidgetsUiSchema,
+  )
+
+  return (
+    <AutoFormModelRenderer
+      model={model}
+      surface="inline"
+      submitLabel="Save review"
+      closeOnSubmit={false}
+    />
+  )
+}`}
+/>
+
+<Heading as="h2" size="lg" id="date-rules" data-heading>
+  Date Rules
+</Heading>
+
+<Text size="sm" className="mt-2 text-muted-foreground">
+  AutoForm supports first-class date-rule metadata through <code>$autoform:dateRules</code>.
+</Text>
+
+<LiveCodeBlock
+  scope={{
+    normalizeJsonSchemaWithUiSchema,
+    AutoFormModelRenderer,
+    autoformDateRulesJsonSchema,
+    autoformDateRulesUiSchema,
+  }}
+  initialCode={`export default function Example() {
+  const model = normalizeJsonSchemaWithUiSchema(
+    autoformDateRulesJsonSchema,
+    autoformDateRulesUiSchema,
+  )
+
+  return (
+    <AutoFormModelRenderer
+      model={model}
+      surface="inline"
+      validationSchema={autoformDateRulesJsonSchema}
+      submitLabel="Save dates"
+      closeOnSubmit={false}
+    />
+  )
+}`}
+/>
+
+<Heading as="h2" size="lg" id="file-upload-widget" data-heading>
+  File Upload Widget
+</Heading>
+
+<LiveCodeBlock
+  scope={{
+    normalizeJsonSchemaWithUiSchema,
+    AutoFormModelRenderer,
+    autoformFileUploadJsonSchema,
+    autoformFileUploadUiSchema,
+  }}
+  initialCode={`export default function Example() {
+  const model = normalizeJsonSchemaWithUiSchema(
+    autoformFileUploadJsonSchema,
+    autoformFileUploadUiSchema,
+  )
+
+  return (
+    <AutoFormModelRenderer
+      model={model}
+      surface="inline"
+      submitLabel="Upload files"
+      closeOnSubmit={false}
+    />
+  )
+}`}
+/>
+
+<Heading as="h2" size="lg" id="stepper-runtime" data-heading>
+  Stepper Runtime
+</Heading>
+
+<LiveCodeBlock
+  scope={{
+    normalizeJsonSchemaWithUiSchema,
+    AutoFormModelRenderer,
+    autoformStepperJsonSchema,
+    autoformStepperUiSchema,
+  }}
+  initialCode={`export default function Example() {
+  const model = normalizeJsonSchemaWithUiSchema(
+    autoformStepperJsonSchema,
+    autoformStepperUiSchema,
+  )
+
+  return (
+    <AutoFormModelRenderer
+      model={model}
+      surface="inline"
+      validationSchema={autoformStepperJsonSchema}
+      submitLabel="Create onboarding"
+      closeOnSubmit={false}
+    />
+  )
+}`}
+/>
+
+<Heading as="h2" size="lg" id="stepper-file-upload" data-heading>
+  Stepper With Uploads
+</Heading>
+
+<LiveCodeBlock
+  scope={{
+    normalizeJsonSchemaWithUiSchema,
+    AutoFormModelRenderer,
+    autoformStepperFileUploadJsonSchema,
+    autoformStepperFileUploadUiSchema,
+  }}
+  initialCode={`export default function Example() {
+  const model = normalizeJsonSchemaWithUiSchema(
+    autoformStepperFileUploadJsonSchema,
+    autoformStepperFileUploadUiSchema,
+  )
+
+  return (
+    <AutoFormModelRenderer
+      model={model}
+      surface="inline"
+      validationSchema={autoformStepperFileUploadJsonSchema}
+      submitLabel="Submit application"
+      closeOnSubmit={false}
+    />
+  )
+}`}
+/>
+
+<Heading as="h2" size="lg" id="wrapper-adapter" data-heading>
+  Wrapper Adapter
+</Heading>
+
+<Text size="sm" className="mt-2 text-muted-foreground">
+  The normalized model can still adapt into the legacy schema-wrapper surface for dialog-based flows.
+</Text>
+
+<LiveCodeBlock
+  scope={{
+    adaptAutoFormModelToDialogWrapper,
+    DialogWrapper,
+    normalizeJsonSchemaWithUiSchema,
+    autoformUiSchemaJsonSchema,
+    autoformUiSchemaUiSchema,
+  }}
+  initialCode={`export default function Example() {
+  const normalized = normalizeJsonSchemaWithUiSchema(
+    autoformUiSchemaJsonSchema,
+    autoformUiSchemaUiSchema,
+  )
+  const adapter = adaptAutoFormModelToDialogWrapper(normalized)
+
+  return (
+    <DialogWrapper
+      trigger={<button type="button">Open dialog wrapper</button>}
+      schema={adapter.schema}
+    />
+  )
+}`}
+/>
+

@@ -1,0 +1,109 @@
+import { schemaToAst } from '@bwalkt/core'
+import { Heading, Text } from '@bwalkt/ui/typography'
+import { LiveCodeBlock } from '@bwalkt/ui/editor/docs'
+
+<Heading as="h1" size="2x">
+  Schema AST
+</Heading>
+<Text size="sm" className="mt-2 text-muted-foreground">
+  Core resolves local refs, builds the AST, and leaves runtime data validation to <code>ajv</code>.
+</Text>
+
+<Heading as="h2" size="lg" id="reference" data-heading>
+  Runtime Schema And AST Reference
+</Heading>
+
+<LiveCodeBlock
+  showPreview={false}
+  scope={{ schemaToAst }}
+  initialCode={`export default function Example() {
+  const schema = {
+    $id: "schema:signup",
+    type: "object",
+    required: ["accountType", "profile"],
+    $defs: {
+      profile: {
+        type: "object",
+        required: ["email"],
+        properties: {
+          email: { type: "string", format: "email" },
+          locale: { type: "string", default: "en-US" },
+        },
+      },
+    },
+    properties: {
+      accountType: {
+        type: "string",
+        const: "business",
+        default: "business",
+      },
+      profile: { $ref: "#/$defs/profile" },
+      companyName: { type: "string", minLength: 2 },
+    },
+    if: {
+      properties: {
+        accountType: { const: "business" },
+      },
+    },
+    then: {
+      required: ["companyName"],
+    },
+  }
+
+  const ast = schemaToAst(schema)
+
+  return (
+    <div style={{ display: "grid", gap: 16 }}>
+      <div style={{ padding: 16, border: "1px solid rgba(148, 163, 184, 0.35)", borderRadius: 16, background: "rgba(255,255,255,0.9)" }}>
+        <div style={{ fontWeight: 700, marginBottom: 8 }}>Runtime schema</div>
+        <pre style={{ margin: 0, overflow: "auto", fontSize: 12 }}>{JSON.stringify(schema, null, 2)}</pre>
+      </div>
+      <div style={{ padding: 16, border: "1px solid rgba(148, 163, 184, 0.35)", borderRadius: 16, background: "rgba(255,255,255,0.9)" }}>
+        <div style={{ fontWeight: 700, marginBottom: 8 }}>Derived AST</div>
+        <pre style={{ margin: 0, overflow: "auto", fontSize: 12 }}>{JSON.stringify(ast, null, 2)}</pre>
+      </div>
+    </div>
+  )
+}`}
+/>
+
+<Heading as="h2" size="lg" id="ref-resolution" data-heading>
+  $ref Resolution
+</Heading>
+
+<table>
+  <thead>
+    <tr>
+      <th>Behavior</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Local <code>$defs</code> refs</td><td>Supported</td></tr>
+    <tr><td>Legacy <code>definitions</code> refs</td><td>Supported</td></tr>
+    <tr><td>Percent-encoded local fragment refs</td><td>Supported</td></tr>
+    <tr><td>Unresolved refs</td><td>Fail fast</td></tr>
+    <tr><td>Empty / non-string refs</td><td>Fail fast</td></tr>
+    <tr><td>External refs</td><td>Rejected</td></tr>
+    <tr><td>Cyclic reachable refs</td><td>Rejected</td></tr>
+    <tr><td>Unused recursive helper defs</td><td>Ignored until referenced</td></tr>
+  </tbody>
+</table>
+
+<Heading as="h2" size="lg" id="validation-boundary" data-heading>
+  Validation Boundary
+</Heading>
+
+<table>
+  <thead>
+    <tr>
+      <th>Concern</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>ajv</code></td><td>email format, number range, required fields, object shape</td></tr>
+    <tr><td>runtime / conditions</td><td>visibility, step gating, branch selection, enabled/disabled state</td></tr>
+  </tbody>
+</table>
+

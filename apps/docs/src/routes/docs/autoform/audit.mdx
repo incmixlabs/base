@@ -1,0 +1,133 @@
+import { Callout } from '@bwalkt/ui/elements'
+import { Heading, Text } from '@bwalkt/ui/typography'
+
+<Heading as="h1" size="2x">
+  Lifecycle Audit
+</Heading>
+<Text size="sm" className="mt-2 text-muted-foreground">
+  Current AutoForm lifecycle status, what is already covered, what is partial, and what should come next.
+</Text>
+
+<Callout.Root variant="surface" color="info" className="mt-4">
+  <Callout.Text>
+    This page is the planning baseline for current AutoForm execution. “Done” means shipped and usable, “partial”
+    means real but incomplete, and “missing” means not in the current lifecycle yet.
+  </Callout.Text>
+</Callout.Root>
+
+<Heading as="h2" size="lg" id="status" data-heading>
+  Current Status
+</Heading>
+
+<table>
+  <thead>
+    <tr>
+      <th>Area</th>
+      <th>Status</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Schema -&gt; AST</td>
+      <td>Done</td>
+      <td><code>$ref</code>, <code>$defs</code>, legacy <code>definitions</code>, and AST generation are in core.</td>
+    </tr>
+    <tr>
+      <td>Normalization</td>
+      <td>Done</td>
+      <td>JSON Schema + UI schema normalize into the native AutoForm render model.</td>
+    </tr>
+    <tr>
+      <td>Validation/runtime state</td>
+      <td>Done</td>
+      <td>AJV-backed validation, touched/dirty state, submit count, and pending submit state are in the runtime hook.</td>
+    </tr>
+    <tr>
+      <td>Conditions</td>
+      <td>Done</td>
+      <td>Existing nodes can change runtime state, and branch-only fields now materialize correctly for nested objects and repeater-item scopes.</td>
+    </tr>
+    <tr>
+      <td>Arrays/repeaters</td>
+      <td>Partial</td>
+      <td>Add/remove and reorder now work for primitive arrays and object arrays, including nested path handling. Stronger array-level UX and richer item lifecycle are still missing.</td>
+    </tr>
+    <tr>
+      <td>Responsive layout</td>
+      <td>Done</td>
+      <td>Responsive columns, spans, layout modes, label placement, and boolean row/stacked layout are in the renderer contract.</td>
+    </tr>
+    <tr>
+      <td>Stepper runtime</td>
+      <td>Done</td>
+      <td>UI-schema steps map sections into multi-step flows and gate forward navigation on current-step validation.</td>
+    </tr>
+    <tr>
+      <td>Wrapper parity</td>
+      <td>Partial</td>
+      <td>Wrappers now have a shared normalized-model adapter path, but sections are still flattened, steps are ignored, and richer widget/runtime parity remains native-renderer-first.</td>
+    </tr>
+    <tr>
+      <td>Rich widget props</td>
+      <td>Partial</td>
+      <td>Mention textarea, avatar-backed selections, multi-select, and file-upload are in, but richer widget props are still not a complete first-class normalized contract across all surfaces.</td>
+    </tr>
+    <tr>
+      <td>Server error lifecycle</td>
+      <td>Done</td>
+      <td>Submit handlers can now push field-level and form-level server validation errors back into runtime state and native field surfaces.</td>
+    </tr>
+    <tr>
+      <td>E2E automation</td>
+      <td>Done</td>
+      <td>Playwright fixtures cover validation, conditions, branch materialization, repeaters, stepper flow, and async submit lifecycle.</td>
+    </tr>
+  </tbody>
+</table>
+
+<Heading as="h2" size="lg" id="covered-slice" data-heading>
+  What Is Already Covered
+</Heading>
+
+<Text size="sm" className="mt-2 text-muted-foreground">
+  The current AutoForm slice is strong enough for a first real E2E pass. It already covers:
+</Text>
+
+<ul>
+  <li>native normalized renderer</li>
+  <li>AJV validation and field error rendering</li>
+  <li>submit and pending-submit lifecycle</li>
+  <li>runtime conditions on existing fields</li>
+  <li>branch-only conditional materialization at root, nested-object, and repeater-item scopes</li>
+  <li>post-submit field-level and form-level server error handling</li>
+  <li>array repeater add/remove/reorder behavior</li>
+  <li>responsive layout behavior</li>
+  <li>stepper-based multi-step flows</li>
+  <li>Playwright browser coverage for the completed lifecycle slice</li>
+</ul>
+
+<Heading as="h2" size="lg" id="gaps" data-heading>
+  Remaining Gaps
+</Heading>
+
+<Text size="sm" className="mt-2 text-muted-foreground">
+  The most important open gaps are architectural, not cosmetic:
+</Text>
+
+<ul>
+  <li>arrays still need stronger array-level UX and richer item lifecycle operations beyond add/remove/reorder</li>
+  <li>wrapper parity still drops sections, steps, native condition runtime, and richer widget behavior</li>
+  <li>rich widget props are still not a complete first-class normalized contract across all surfaces</li>
+</ul>
+
+<Heading as="h2" size="lg" id="next-order" data-heading>
+  Recommended Next Order
+</Heading>
+
+<ol>
+  <li>Deepen wrapper parity beyond the adapter baseline, starting with higher-fidelity dialog behavior and richer widget/runtime support.</li>
+  <li>Continue improving array-level UX around repeaters, especially beyond the current add/remove/reorder lifecycle.</li>
+  <li>Add first-class date validation rules and renderer constraints.</li>
+</ol>
+
