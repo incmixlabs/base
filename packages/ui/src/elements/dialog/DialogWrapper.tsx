@@ -1,7 +1,6 @@
 'use client'
 
 import * as React from 'react'
-import { useAutoFormRuntime } from '@/autoform/useAutoFormRuntime'
 import { Button } from '@/elements/button/Button'
 import { Checkbox } from '@/form/Checkbox'
 import { Label } from '@/form/Label'
@@ -13,9 +12,17 @@ import { Flex } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
 import { hasOwnProperty as hasOwnKey } from '@/theme/helpers/has-own-property'
 import { Dialog } from './Dialog'
-import type { DialogWrapperProps, DialogWrapperSchema, DialogWrapperSchemaProperty } from './dialog-wrapper.props'
+import type {
+  DialogWrapperFieldErrorMap,
+  DialogWrapperProps,
+  DialogWrapperSchema,
+  DialogWrapperSchemaProperty,
+  DialogWrapperSubmitHelpers,
+} from './dialog-wrapper.props'
 
 export type {
+  DialogWrapperFieldErrorMap,
+  DialogWrapperJsonValue,
   DialogWrapperProps,
   DialogWrapperRenderFieldArgs,
   DialogWrapperRenderFooterArgs,
@@ -82,6 +89,418 @@ function normalizeDialogValues(
   }
 
   return nextValues
+}
+
+type DialogWrapperRuntimeValues = Record<string, unknown>
+
+type DialogWrapperRuntimeState = {
+  values: DialogWrapperRuntimeValues
+  initialValues: DialogWrapperRuntimeValues
+  errors: DialogWrapperFieldErrorMap
+  validationErrors: DialogWrapperFieldErrorMap
+  serverErrors: DialogWrapperFieldErrorMap
+  formErrors: string[]
+  isSubmitting: boolean
+  submitCount: number
+  isValid: boolean
+}
+
+type DialogWrapperRuntimeSnapshot = {
+  values: DialogWrapperRuntimeValues
+  errors: DialogWrapperFieldErrorMap
+  formErrors: string[]
+  submitCount: number
+  isSubmitting: boolean
+  isValid: boolean
+}
+
+function createDialogWrapperRuntimeState(
+  initialValues: DialogWrapperRuntimeValues,
+  values: DialogWrapperRuntimeValues = initialValues,
+): DialogWrapperRuntimeState {
+  return {
+    values,
+    initialValues,
+    errors: {},
+    validationErrors: {},
+    serverErrors: {},
+    formErrors: [],
+    isSubmitting: false,
+    submitCount: 0,
+    isValid: true,
+  }
+}
+
+function mergeFieldErrors(...maps: DialogWrapperFieldErrorMap[]): DialogWrapperFieldErrorMap {
+  const merged: DialogWrapperFieldErrorMap = {}
+
+  for (const map of maps) {
+    for (const [path, messages] of Object.entries(map)) {
+      merged[path] = [...(merged[path] ?? []), ...messages]
+    }
+  }
+
+  return merged
+}
+
+function isRuntimeStateValid(errors: DialogWrapperFieldErrorMap, formErrors: string[]) {
+  return Object.keys(errors).length === 0 && formErrors.length === 0
+}
+
+function withMergedErrors(
+  state: DialogWrapperRuntimeState,
+  validationErrors = state.validationErrors,
+  serverErrors = state.serverErrors,
+  formErrors = state.formErrors,
+): DialogWrapperRuntimeState {
+  const errors = mergeFieldErrors(validationErrors, serverErrors)
+  return {
+    ...state,
+    errors,
+    validationErrors,
+    serverErrors,
+    formErrors,
+    isValid: isRuntimeStateValid(errors, formErrors),
+  }
+}
+
+function toDialogRuntimeSnapshot(state: DialogWrapperRuntimeState): DialogWrapperRuntimeSnapshot {
+  return {
+    values: state.values,
+    errors: state.errors,
+    formErrors: state.formErrors,
+    submitCount: state.submitCount,
+    isSubmitting: state.isSubmitting,
+    isValid: state.isValid,
+  }
+}
+
+function setDialogWrapperValue(
+  state: DialogWrapperRuntimeState,
+  path: string,
+  nextValue: unknown,
+): DialogWrapperRuntimeState {
+  return {
+    ...state,
+    values: {
+      ...state.values,
+      [path]: nextValue,
+    },
+  }
+}
+
+function setDialogWrapperValues(
+  state: DialogWrapperRuntimeState,
+  values: DialogWrapperRuntimeValues,
+): DialogWrapperRuntimeState {
+  return {
+    ...state,
+    values,
+  }
+}
+
+function clearDialogWrapperServerError(state: DialogWrapperRuntimeState, path: string): DialogWrapperRuntimeState {
+  const nextServerErrors = Object.fromEntries(
+    Object.entries(state.serverErrors).filter(([key]) => key !== path && !key.startsWith(`${path}.`)),
+  )
+  return withMergedErrors(state, state.validationErrors, nextServerErrors)
+}
+
+function clearDialogWrapperServerErrors(state: DialogWrapperRuntimeState): DialogWrapperRuntimeState {
+  return withMergedErrors(state, state.validationErrors, {}, [])
+}
+
+function setDialogWrapperServerErrors(
+  state: DialogWrapperRuntimeState,
+  serverErrors: DialogWrapperFieldErrorMap,
+  formErrors: string[] = [],
+): DialogWrapperRuntimeState {
+  return withMergedErrors(state, state.validationErrors, normalizeFieldErrorMap(serverErrors), formErrors)
+}
+
+function setDialogWrapperFormErrors(state: DialogWrapperRuntimeState, formErrors: string[]): DialogWrapperRuntimeState {
+  return withMergedErrors(state, state.validationErrors, state.serverErrors, formErrors)
+}
+
+function normalizeFieldErrorMap(errors: DialogWrapperFieldErrorMap): DialogWrapperFieldErrorMap {
+  const normalized: DialogWrapperFieldErrorMap = {}
+
+  for (const [path, messages] of Object.entries(errors)) {
+    const nextMessages = messages.filter(Boolean)
+    if (nextMessages.length === 0) continue
+    normalized[path] = [...(normalized[path] ?? []), ...nextMessages]
+  }
+
+  return normalized
+}
+
+function addValidationError(errors: DialogWrapperFieldErrorMap, path: string, message: string) {
+  errors[path] = [...(errors[path] ?? []), message]
+}
+
+function validateDialogWrapperValues(
+  schema: DialogWrapperSchema,
+  values: DialogWrapperRuntimeValues,
+): DialogWrapperFieldErrorMap {
+  const errors: DialogWrapperFieldErrorMap = {}
+  const required = new Set(schema.required ?? [])
+
+  for (const [path, property] of Object.entries(schema.properties)) {
+    const value = values[path]
+    const isMissing = value === undefined || value === null || value === ''
+
+    if (required.has(path) && isMissing) {
+      addValidationError(errors, path, 'must have required property')
+      continue
+    }
+
+    if (isMissing) continue
+
+    if (property.const !== undefined && value !== property.const) {
+      addValidationError(errors, path, 'must be equal to constant')
+      continue
+    }
+
+    if (property.enum?.length && typeof value === 'string' && !property.enum.includes(value)) {
+      addValidationError(errors, path, 'must be equal to one of the allowed values')
+    }
+
+    if (property.type === 'string') {
+      if (typeof value !== 'string') {
+        addValidationError(errors, path, 'must be string')
+        continue
+      }
+      validateStringDialogValue(errors, path, property, value)
+      continue
+    }
+
+    if (property.type === 'integer' || property.type === 'number') {
+      if (typeof value !== 'number' || Number.isNaN(value)) {
+        addValidationError(errors, path, property.type === 'integer' ? 'must be integer' : 'must be number')
+        continue
+      }
+      if (property.type === 'integer' && !Number.isInteger(value)) {
+        addValidationError(errors, path, 'must be integer')
+      }
+      if (property.minimum !== undefined && value < property.minimum) {
+        addValidationError(errors, path, `must be >= ${property.minimum}`)
+      }
+      if (property.maximum !== undefined && value > property.maximum) {
+        addValidationError(errors, path, `must be <= ${property.maximum}`)
+      }
+      continue
+    }
+
+    if (property.type === 'boolean' && typeof value !== 'boolean') {
+      addValidationError(errors, path, 'must be boolean')
+    }
+  }
+
+  return errors
+}
+
+function validateStringDialogValue(
+  errors: DialogWrapperFieldErrorMap,
+  path: string,
+  property: DialogWrapperSchemaProperty,
+  value: string,
+) {
+  if (property.minLength !== undefined && value.length < property.minLength) {
+    addValidationError(errors, path, `must NOT have fewer than ${property.minLength} characters`)
+  }
+  if (property.maxLength !== undefined && value.length > property.maxLength) {
+    addValidationError(errors, path, `must NOT have more than ${property.maxLength} characters`)
+  }
+  if (property.pattern) {
+    try {
+      if (!new RegExp(property.pattern).test(value)) {
+        addValidationError(errors, path, `must match pattern "${property.pattern}"`)
+      }
+    } catch {
+      addValidationError(errors, path, `invalid pattern "${property.pattern}"`)
+    }
+  }
+  if (property.format === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+    addValidationError(errors, path, 'must match format "email"')
+  }
+  if (property.format === 'url') {
+    try {
+      new URL(value)
+    } catch {
+      addValidationError(errors, path, 'must match format "url"')
+    }
+  }
+}
+
+function useDialogWrapperRuntime({
+  schema,
+  initialValues,
+  values,
+  onValuesChange,
+  validateOnChange,
+}: {
+  schema: DialogWrapperSchema
+  initialValues: DialogWrapperRuntimeValues
+  values?: DialogWrapperRuntimeValues
+  onValuesChange?: (values: DialogWrapperRuntimeValues) => void
+  validateOnChange: boolean
+}) {
+  const isControlled = values !== undefined
+  const [state, setState] = React.useState<DialogWrapperRuntimeState>(() =>
+    createDialogWrapperRuntimeState(initialValues, values ?? initialValues),
+  )
+  const stateRef = React.useRef(state)
+
+  React.useEffect(() => {
+    stateRef.current = state
+  }, [state])
+
+  const commitLocalState = React.useCallback(
+    (updater: (current: DialogWrapperRuntimeState) => DialogWrapperRuntimeState) => {
+      const next = updater(stateRef.current)
+      stateRef.current = next
+      setState(next)
+      return next
+    },
+    [],
+  )
+
+  const validateAll = React.useCallback(
+    (runtimeState: DialogWrapperRuntimeState) =>
+      withMergedErrors(runtimeState, validateDialogWrapperValues(schema, runtimeState.values)),
+    [schema],
+  )
+
+  React.useEffect(() => {
+    const nextValues = values ?? stateRef.current.values
+    const withValues = setDialogWrapperValues({ ...stateRef.current, initialValues }, nextValues)
+    const nextState = {
+      ...(validateOnChange ? validateAll(withValues) : withValues),
+      initialValues,
+    }
+    stateRef.current = nextState
+    setState(nextState)
+  }, [initialValues, validateAll, validateOnChange, values])
+
+  const applyValues = React.useCallback(
+    (updater: (current: DialogWrapperRuntimeState) => DialogWrapperRuntimeState) => {
+      const next = updater(stateRef.current)
+      const resolvedNext = isControlled
+        ? {
+            ...next,
+            values: values ?? next.values,
+          }
+        : next
+
+      stateRef.current = resolvedNext
+      setState(resolvedNext)
+      onValuesChange?.(next.values)
+      return resolvedNext
+    },
+    [isControlled, onValuesChange, values],
+  )
+
+  const validatePath = React.useCallback(
+    (runtimeState: DialogWrapperRuntimeState, path: string) => {
+      const property = schema.properties[path]
+      if (!property) return runtimeState
+
+      const nextErrors = { ...runtimeState.validationErrors }
+      delete nextErrors[path]
+      const result = validateDialogWrapperValues({ ...schema, properties: { [path]: property } }, runtimeState.values)
+      return withMergedErrors(runtimeState, {
+        ...nextErrors,
+        ...result,
+      })
+    },
+    [schema],
+  )
+
+  const setValue = React.useCallback(
+    (path: string, nextValue: unknown) => {
+      applyValues(current => {
+        const withValue = clearDialogWrapperServerError(setDialogWrapperValue(current, path, nextValue), path)
+        return validateOnChange ? validatePath(withValue, path) : withValue
+      })
+    },
+    [applyValues, validateOnChange, validatePath],
+  )
+
+  const setFormErrors = React.useCallback(
+    (formErrors: string[]) => {
+      commitLocalState(current => setDialogWrapperFormErrors(current, formErrors))
+    },
+    [commitLocalState],
+  )
+
+  const submit = React.useCallback(
+    async (
+      onSubmit?: (
+        values: DialogWrapperRuntimeValues,
+        helpers: DialogWrapperSubmitHelpers,
+        runtime: DialogWrapperRuntimeSnapshot,
+      ) => void | Promise<void>,
+    ) => {
+      const beforeSubmit = validateAll(clearDialogWrapperServerErrors(stateRef.current))
+      const withSubmitCount = {
+        ...beforeSubmit,
+        submitCount: beforeSubmit.submitCount + 1,
+      }
+      stateRef.current = withSubmitCount
+      setState(withSubmitCount)
+
+      if (!withSubmitCount.isValid) {
+        return {
+          success: false,
+          state: toDialogRuntimeSnapshot(withSubmitCount),
+        }
+      }
+
+      const submittingState = { ...withSubmitCount, isSubmitting: true }
+      stateRef.current = submittingState
+      setState(submittingState)
+
+      const helpers: DialogWrapperSubmitHelpers = {
+        setServerErrors: (errors, formErrors = []) => {
+          commitLocalState(current => setDialogWrapperServerErrors(current, errors, formErrors))
+        },
+        setFormErrors: formErrors => {
+          commitLocalState(current => setDialogWrapperFormErrors(current, formErrors))
+        },
+        clearServerErrors: () => {
+          commitLocalState(current => clearDialogWrapperServerErrors(current))
+        },
+      }
+
+      try {
+        await onSubmit?.(submittingState.values, helpers, toDialogRuntimeSnapshot(submittingState))
+        const completedState = { ...stateRef.current, isSubmitting: false }
+        stateRef.current = completedState
+        setState(completedState)
+        return {
+          success: completedState.isValid,
+          state: toDialogRuntimeSnapshot(completedState),
+        }
+      } catch (error) {
+        const completedState = { ...stateRef.current, isSubmitting: false }
+        stateRef.current = completedState
+        setState(completedState)
+        throw error
+      }
+    },
+    [commitLocalState, validateAll],
+  )
+
+  return {
+    values: state.values,
+    errors: mergeFieldErrors(state.validationErrors, state.serverErrors),
+    formErrors: state.formErrors,
+    isSubmitting: state.isSubmitting,
+    submitCount: state.submitCount,
+    setFormErrors,
+    setValue,
+    submit,
+  }
 }
 
 function isTextareaField(property: DialogWrapperSchemaProperty) {
@@ -370,7 +789,6 @@ export function DialogWrapper({
   values,
   defaultValues,
   onValuesChange,
-  validationSchema,
   validateOnChange = true,
   submitErrorMessage = 'Something went wrong. Please try again.',
   onSubmitError,
@@ -391,13 +809,13 @@ export function DialogWrapper({
     [defaultValues, schema],
   )
   const normalizedValues = React.useMemo(() => normalizeDialogValues(schema, values), [schema, values])
-  const runtime = useAutoFormRuntime({
+  const runtime = useDialogWrapperRuntime({
+    schema,
     initialValues,
     values: normalizedValues,
     onValuesChange: nextValues => {
       onValuesChange?.(normalizeDialogValues(schema, nextValues) ?? nextValues)
     },
-    validationSchema,
     validateOnChange,
   })
   const resolvedValues = runtime.values
@@ -478,7 +896,7 @@ export function DialogWrapper({
           {schema.title ? <Dialog.Title>{schema.title}</Dialog.Title> : null}
           {schema.description ? <Dialog.Description>{schema.description}</Dialog.Description> : null}
         </Dialog.Header>
-        <form onSubmit={handleSubmit} noValidate={validationSchema !== undefined}>
+        <form onSubmit={handleSubmit} noValidate>
           <Dialog.Body className={cn('space-y-4', bodyClassName)}>
             {fieldEntries.map(([fieldName, property]) => {
               const fieldErrors = runtime.errors[fieldName] ?? []

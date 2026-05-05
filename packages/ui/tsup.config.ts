@@ -66,7 +66,6 @@ const lightEntries = {
 }
 
 const featureEntries = {
-  autoform: 'src/autoform/index.ts',
   'blocks/diagrammer': 'src/blocks/diagrammer/index.ts',
   'blocks/diagrammer/db': 'src/blocks/diagrammer/db/index.ts',
   'blocks/diagrammer/rules': 'src/blocks/diagrammer/rules/index.ts',

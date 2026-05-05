@@ -28,6 +28,10 @@ export default defineConfig({
         replacement: path.resolve(__dirname, '../core/src/index.ts'),
       },
       {
+        find: '@incmix/react-runner',
+        replacement: path.resolve(__dirname, '../react-runner/src/index.ts'),
+      },
+      {
         find: '@incmix/ajv',
         replacement: path.resolve(__dirname, '../ajv/src/index.ts'),
       },

@@ -31,6 +31,7 @@ const notesField = {
 const guestsField = {
   type: 'integer',
   title: 'Guests',
+  minimum: 1,
   widget: 'number-input',
   widgetProps: {
     variant: 'button',
@@ -58,17 +59,6 @@ const schema: DialogWrapperSchema = {
   },
 }
 
-const validationSchema = {
-  type: 'object',
-  required: ['fullName', 'email'],
-  properties: {
-    fullName: { type: fullNameField.type, minLength: fullNameField.minLength },
-    email: { type: emailField.type, format: emailField.format },
-    notes: { type: notesField.type, minLength: notesField.minLength },
-    guests: { type: guestsField.type, minimum: guestsField.widgetProps.min },
-  },
-}
-
 describe('DialogWrapper', () => {
   afterEach(() => cleanup())
 
@@ -82,7 +72,6 @@ describe('DialogWrapper', () => {
         <DialogWrapper
           defaultOpen
           schema={schema}
-          validationSchema={validationSchema}
           defaultValues={{ fullName: 'Ada Lovelace', email: 'not-an-email' }}
           onSubmit={onSubmit}
         />,
@@ -107,7 +96,6 @@ describe('DialogWrapper', () => {
           defaultOpen
           closeOnSubmit={false}
           schema={schema}
-          validationSchema={validationSchema}
           defaultValues={{ fullName: 'Ada Lovelace', email: 'ada@example.com' }}
           onSubmit={() =>
             new Promise<void>(resolve => {
@@ -138,7 +126,6 @@ describe('DialogWrapper', () => {
           defaultOpen
           closeOnSubmit
           schema={schema}
-          validationSchema={validationSchema}
           defaultValues={{ fullName: 'Ada Lovelace', email: 'ada@example.com' }}
           onSubmit={async (_values, helpers) => {
             helpers.setFormErrors(['Account could not be created'])
@@ -166,7 +153,6 @@ describe('DialogWrapper', () => {
           defaultOpen
           closeOnSubmit={false}
           schema={schema}
-          validationSchema={validationSchema}
           defaultValues={{ fullName: 'Ada Lovelace', email: 'ada@example.com' }}
           onSubmit={async (_values, helpers) => {
             helpers.setServerErrors({ email: ['Email already exists'] })
@@ -197,7 +183,6 @@ describe('DialogWrapper', () => {
           defaultOpen
           closeOnSubmit={false}
           schema={schema}
-          validationSchema={validationSchema}
           defaultValues={{ fullName: 'Ada Lovelace', email: 'ada@example.com', notes: '' }}
           onSubmit={onSubmit}
         />,
@@ -231,7 +216,6 @@ describe('DialogWrapper', () => {
           defaultOpen
           closeOnSubmit
           schema={schema}
-          validationSchema={validationSchema}
           defaultValues={{ fullName: 'Ada Lovelace', email: 'ada@example.com' }}
           onSubmit={async () => {
             throw new Error('boom')
@@ -259,7 +243,6 @@ describe('DialogWrapper', () => {
           defaultOpen
           closeOnSubmit={false}
           schema={schema}
-          validationSchema={validationSchema}
           defaultValues={{ fullName: 'Ada Lovelace', email: 'ada@example.com', guests: 2 }}
         />,
       )

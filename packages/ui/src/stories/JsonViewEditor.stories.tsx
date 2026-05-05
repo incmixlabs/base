@@ -1,8 +1,33 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import * as React from 'react'
-import { type JsonValue, JsonViewEditor, SchemaPreview } from '@/editor/autoform'
+import { type JsonValue, JsonViewEditor } from '@/editor/autoform'
 import { getTreeItemId, type JsonViewEditorCombinatorSelections } from '@/editor/autoform/JsonViewEditor'
-import { autoformUiSchemaJsonSchema, autoformUiSchemaUiSchema } from './autoform-ui-schema-contract.example'
+
+const editorDemoJsonSchema: JsonValue = {
+  type: 'object',
+  properties: {
+    fullName: { type: 'string', title: 'Full name', minLength: 2 },
+    email: { type: 'string', format: 'email', title: 'Email' },
+    plan: { type: 'string', enum: ['Starter', 'Pro', 'Enterprise'], default: 'Starter' },
+  },
+  required: ['fullName', 'email'],
+}
+
+const editorDemoUiSchema: JsonValue = {
+  sections: [
+    {
+      id: 'account',
+      title: 'Account',
+      fields: ['fullName', 'email', 'plan'],
+      columns: 1,
+    },
+  ],
+  fields: {
+    fullName: { label: 'Full name', placeholder: 'Ada Lovelace' },
+    email: { label: 'Email', placeholder: 'ada@example.com' },
+    plan: { label: 'Plan' },
+  },
+}
 
 const combinatorValue: JsonValue = {
   type: 'object',
@@ -563,12 +588,40 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
+function SchemaEditorPair({
+  jsonSchema,
+  uiSchema,
+  externalSchemas,
+}: {
+  jsonSchema: JsonValue
+  uiSchema: JsonValue
+  externalSchemas?: Record<string, JsonValue>
+}) {
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gap: '1rem',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(22rem, 1fr))',
+        alignItems: 'start',
+      }}
+    >
+      <JsonViewEditor
+        name="schema"
+        editable={false}
+        searchable
+        mode="schema"
+        value={jsonSchema}
+        externalSchemas={externalSchemas}
+      />
+      <JsonViewEditor name="uiSchema" editable={false} searchable value={uiSchema} />
+    </div>
+  )
+}
+
 export const SchemaAndUiSchema: Story = {
   render: () => (
-    <SchemaPreview
-      jsonSchema={autoformUiSchemaJsonSchema as JsonValue}
-      uiSchema={autoformUiSchemaUiSchema as JsonValue}
-    />
+    <SchemaEditorPair jsonSchema={editorDemoJsonSchema as JsonValue} uiSchema={editorDemoUiSchema as JsonValue} />
   ),
 }
 
@@ -576,7 +629,7 @@ export const ReadOnly: Story = {
   args: {
     name: 'schema',
     editable: false,
-    value: autoformUiSchemaJsonSchema as JsonValue,
+    value: editorDemoJsonSchema as JsonValue,
   },
 }
 
@@ -590,26 +643,26 @@ export const Combinators: Story = {
 }
 
 export const CombinatorsWorkbench: Story = {
-  render: () => <SchemaPreview jsonSchema={combinatorPreviewSchema} uiSchema={combinatorPreviewUiSchema} />,
+  render: () => <SchemaEditorPair jsonSchema={combinatorPreviewSchema} uiSchema={combinatorPreviewUiSchema} />,
 }
 
 export const NestedOneOfWorkbench: Story = {
-  render: () => <SchemaPreview jsonSchema={nestedOneOfPreviewSchema} uiSchema={nestedOneOfPreviewUiSchema} />,
+  render: () => <SchemaEditorPair jsonSchema={nestedOneOfPreviewSchema} uiSchema={nestedOneOfPreviewUiSchema} />,
 }
 
 export const RefNavigationWorkbench: Story = {
-  render: () => <SchemaPreview jsonSchema={refNavigationPreviewSchema} uiSchema={refNavigationPreviewUiSchema} />,
+  render: () => <SchemaEditorPair jsonSchema={refNavigationPreviewSchema} uiSchema={refNavigationPreviewUiSchema} />,
 }
 
 export const RefValidationErrorWorkbench: Story = {
   render: () => (
-    <SchemaPreview jsonSchema={invalidRefNavigationPreviewSchema} uiSchema={refNavigationPreviewUiSchema} />
+    <SchemaEditorPair jsonSchema={invalidRefNavigationPreviewSchema} uiSchema={refNavigationPreviewUiSchema} />
   ),
 }
 
 export const ExternalRefWorkbench: Story = {
   render: () => (
-    <SchemaPreview
+    <SchemaEditorPair
       jsonSchema={invalidRefNavigationPreviewSchema}
       uiSchema={refNavigationPreviewUiSchema}
       externalSchemas={externalRefSchemas}
@@ -682,22 +735,24 @@ export const SchemaOneOfEditor: Story = {
           combinatorSelections={combinatorSelections}
           onCombinatorSelectionsChange={setCombinatorSelections}
         />
-        <SchemaPreview jsonSchema={previewSchema} uiSchema={schemaOneOfPreviewUiSchema} />
+        <SchemaEditorPair jsonSchema={previewSchema} uiSchema={schemaOneOfPreviewUiSchema} />
       </div>
     )
   },
 }
 
 export const SchemaAwareWorkbench: Story = {
-  render: () => <SchemaPreview jsonSchema={schemaAwarePreviewSchema} uiSchema={schemaAwarePreviewUiSchema} />,
+  render: () => <SchemaEditorPair jsonSchema={schemaAwarePreviewSchema} uiSchema={schemaAwarePreviewUiSchema} />,
 }
 
 export const SchemaMetadataWorkbench: Story = {
-  render: () => <SchemaPreview jsonSchema={schemaAwarePreviewSchema} uiSchema={schemaAwarePreviewUiSchema} />,
+  render: () => <SchemaEditorPair jsonSchema={schemaAwarePreviewSchema} uiSchema={schemaAwarePreviewUiSchema} />,
 }
 
 export const SchemaRowClarityWorkbench: Story = {
-  render: () => <SchemaPreview jsonSchema={schemaRowClarityPreviewSchema} uiSchema={schemaRowClarityPreviewUiSchema} />,
+  render: () => (
+    <SchemaEditorPair jsonSchema={schemaRowClarityPreviewSchema} uiSchema={schemaRowClarityPreviewUiSchema} />
+  ),
 }
 
 export const SchemaRequiredEditor: Story = {

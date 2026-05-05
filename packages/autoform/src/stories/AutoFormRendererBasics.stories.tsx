@@ -1,8 +1,8 @@
 import { normalizeJsonSchemaWithUiSchema } from '@incmix/core'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import * as React from 'react'
-import { AutoFormModelRenderer } from '@/autoform'
-import { Button } from '@/elements/button/Button'
+import { AutoFormModelRenderer } from '@incmix/autoform'
+import { Button } from '@incmix/ui/elements'
 import {
   autoformArrayRepeaterJsonSchema,
   autoformArrayRepeaterUiSchema,

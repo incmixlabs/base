@@ -2,6 +2,8 @@
 
 export {
   DialogWrapper,
+  type DialogWrapperFieldErrorMap,
+  type DialogWrapperJsonValue,
   type DialogWrapperProps,
   type DialogWrapperRenderFieldArgs,
   type DialogWrapperRenderFooterArgs,

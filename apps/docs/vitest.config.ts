@@ -5,6 +5,7 @@ import { defineConfig } from 'vitest/config'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+const autoformSrcPath = path.resolve(__dirname, '../../packages/autoform/src')
 const uiSrcPath = path.resolve(__dirname, '../../packages/ui/src')
 
 const uiSourceExportAliases = {
@@ -41,6 +42,8 @@ export default defineConfig({
         find: '@',
         replacement: uiSrcPath,
       },
+      { find: /^@incmix\/autoform\/(.+)$/, replacement: `${autoformSrcPath}/$1` },
+      { find: '@incmix/autoform', replacement: path.resolve(autoformSrcPath, 'index.tsx') },
       { find: /^@incmix\/ui\/(.+)$/, replacement: `${uiSrcPath}/$1` },
       { find: '@incmix/ajv', replacement: path.resolve(__dirname, '../../packages/ajv/src/index.ts') },
       { find: '@incmix/core', replacement: path.resolve(__dirname, '../../packages/core/src/index.ts') },

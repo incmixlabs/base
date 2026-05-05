@@ -7,20 +7,16 @@ import {
   resolveJsonSchemaRefs,
   type SchemaRefResolutionOptions,
 } from '@incmix/core'
+import { type JsonValue, JsonViewEditor } from '@incmix/ui/editor/autoform'
+import { Badge, Button, Callout, IconButton, SegmentedControl } from '@incmix/ui/elements'
+import { useClipboard } from '@incmix/ui/hooks'
+import { Flex } from '@incmix/ui/layouts'
+import { cn } from '@incmix/ui/lib/utils'
+import type { Color } from '@incmix/ui/theme'
+import { Text } from '@incmix/ui/typography'
 import { Check, Copy, PanelLeftCloseIcon, PanelLeftOpenIcon } from 'lucide-react'
 import * as React from 'react'
-import { AutoFormModelRenderer } from '@/autoform/AutoFormModelRenderer'
-import { Badge } from '@/elements/badge/Badge'
-import { Button } from '@/elements/button/Button'
-import { IconButton } from '@/elements/button/IconButton'
-import { Callout } from '@/elements/callout/Callout'
-import { SegmentedControl } from '@/elements/tabs/SegmentedControl'
-import { useClipboard } from '@/hooks'
-import { Flex } from '@/layouts/flex/Flex'
-import { cn } from '@/lib/utils'
-import type { Color } from '@/theme/tokens'
-import { Text } from '@/typography/text/Text'
-import { viewportIcons } from '../viewport-icons'
+import { AutoFormModelRenderer } from '../AutoFormModelRenderer'
 import {
   contentStack,
   headerBlur,
@@ -39,8 +35,6 @@ import {
   viewportSurface,
   workbenchRoot,
 } from './AutoFormWorkbench.css'
-import { JsonViewEditor } from './JsonViewEditor'
-import type { JsonValue } from './json-value.types'
 
 export type AutoFormWorkbenchViewport = 'desktop' | 'tablet' | 'phone'
 export type AutoFormWorkbenchInspectorTab = 'schema' | 'uiSchema' | 'normalized'
@@ -58,6 +52,15 @@ const viewportWidths: Record<AutoFormWorkbenchViewport, number> = {
   tablet: 900,
   phone: 375,
 }
+
+const viewportIcons = {
+  position: 'only',
+  icons: [
+    { value: 'desktop', icon: 'monitor' },
+    { value: 'tablet', icon: 'tablet' },
+    { value: 'phone', icon: 'smartphone' },
+  ],
+} satisfies { position: 'only'; icons: Array<{ value: string; icon: string }> }
 
 function isJsonObject(value: JsonValue | undefined): value is Record<string, JsonValue> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)

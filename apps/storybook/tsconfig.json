@@ -6,6 +6,8 @@
     "paths": {
       "@/*": ["../../packages/ui/src/*"],
       "@incmix/ajv": ["../../packages/ajv/src/index.ts"],
+      "@incmix/autoform": ["../../packages/autoform/src/index.tsx"],
+      "@incmix/autoform/*": ["../../packages/autoform/src/*"],
       "@incmix/core": ["../../packages/core/src/index.ts"],
       "@incmix/core/declarative-ui.examples": ["../../packages/core/src/declarative-ui.examples.ts"],
       "@incmix/react": ["../../packages/react/src/index.tsx"],

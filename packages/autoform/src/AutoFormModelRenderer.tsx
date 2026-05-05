@@ -43,38 +43,47 @@ import {
   setValueAtPath,
   validateAutoFormDateRules,
 } from '@incmix/core'
-import * as React from 'react'
-import type { AvatarHoverCardData } from '@/elements/avatar/Avatar'
-import { Button, type ButtonProps } from '@/elements/button/Button'
-import { Icon } from '@/elements/button/Icon'
-import { Dialog } from '@/elements/dialog/Dialog'
-import { DirtyGuardDialog, type DirtyGuardDialogProps } from '@/elements/dialog/DirtyGuardDialog'
-import { type PopoverContentVariant, popoverContentVariants } from '@/elements/popover/popover.props'
-import { Stepper } from '@/elements/stepper/Stepper'
-import type { ToastNotifyOptions } from '@/elements/toast/Toast'
-import { Toast } from '@/elements/toast/toast.namespace'
-import { type TreeDataItem, TreeView } from '@/elements/tree-view/TreeView'
-import { AutoFormMentionTextarea, type AutoFormMentionTextareaConfig } from '@/form/AutoFormMentionTextarea'
-import { type AvatarItem, AvatarPicker } from '@/form/AvatarPicker'
-import { Checkbox } from '@/form/Checkbox'
-import { Combobox, type ComboboxOption } from '@/form/Combobox'
-import { DatePickerNext, DateTimePickerNext, TimePickerNext, type TimeValueNext } from '@/form/date'
-import { FieldGroup } from '@/form/FieldGroup'
-import { Fieldset } from '@/form/Fieldset'
-import { FileUpload, type UploadedFile, uploadedFileStatuses } from '@/form/FileUpload'
-import { Label } from '@/form/Label'
-import { LocationInput } from '@/form/LocationInput'
-import { MultiSelect, type MultiSelectOption } from '@/form/MultiSelect'
-import { NumberInput } from '@/form/NumberInput'
-import { Select, SelectItem } from '@/form/Select'
-import { Textarea } from '@/form/Textarea'
-import { TextField } from '@/form/TextField'
-import { useDirtyGuard } from '@/hooks'
-import { Flex } from '@/layouts/flex/Flex'
-import { cn } from '@/lib/utils'
-import { colorPropDef } from '@/theme/props/color.prop'
-import { normalizeEnumPropValue } from '@/theme/props/prop-def'
-import { radiusPropDef } from '@/theme/props/radius.prop'
+import {
+  type AvatarHoverCardData,
+  Button,
+  type ButtonProps,
+  Dialog,
+  DirtyGuardDialog,
+  type DirtyGuardDialogProps,
+  Icon,
+  type PopoverContentVariant,
+  popoverContentVariants,
+  Stepper,
+  Toast,
+  type ToastNotifyOptions,
+  type TreeDataItem,
+  TreeView,
+} from '@incmix/ui/elements'
+import {
+  AutoFormMentionTextarea,
+  type AutoFormMentionTextareaConfig,
+  type AvatarItem,
+  AvatarPicker,
+  Checkbox,
+  Combobox,
+  type ComboboxOption,
+  FieldGroup,
+  Fieldset,
+  Label,
+  MultiSelect,
+  type MultiSelectOption,
+  NumberInput,
+  Select,
+  SelectItem,
+  Textarea,
+  TextField,
+} from '@incmix/ui/form'
+import { DatePickerNext, DateTimePickerNext, TimePickerNext, type TimeValueNext } from '@incmix/ui/form/date'
+import { FileUpload, type UploadedFile, uploadedFileStatuses } from '@incmix/ui/form/file-upload'
+import { LocationInput } from '@incmix/ui/form/location'
+import { useDirtyGuard } from '@incmix/ui/hooks'
+import { Flex } from '@incmix/ui/layouts'
+import { cn } from '@incmix/ui/lib/utils'
 import {
   type Color,
   type GridColumns,
@@ -82,9 +91,11 @@ import {
   type Radius,
   type Size,
   type Spacing,
+  semanticColors,
   type TextFieldVariant,
   textFieldTokens,
-} from '@/theme/tokens'
+} from '@incmix/ui/theme'
+import * as React from 'react'
 import {
   autoFormActionSlot,
   autoFormBooleanInlineLabelClasses,
@@ -111,6 +122,8 @@ type AutoFormModelRendererValues = AutoFormRuntimeValues
 type AutoFormActionButtonProps = Pick<ButtonProps, 'size' | 'variant' | 'color' | 'radius' | 'highContrast'>
 type AutoFormSectionChrome = 'fieldset' | 'none'
 type AutoFormDirtyGuardAction = 'cancel' | 'close'
+const radiusValues = ['none', 'sm', 'md', 'lg', 'full'] as const
+
 export interface AutoFormDirtyGuardContext {
   action: AutoFormDirtyGuardAction
   values: AutoFormModelRendererValues
@@ -2304,29 +2317,23 @@ function mapHoverCard(value: boolean | AutoFormHoverCardProps | undefined): bool
 }
 
 function mapColor(value: string | undefined): Color | undefined {
-  return normalizeEnumPropValue(colorPropDef.color, value) as Color | undefined
+  return normalizeStringOption(semanticColors, value) as Color | undefined
 }
 
 function mapRadius(value: string | undefined): Radius | undefined {
-  return normalizeEnumPropValue(radiusPropDef.radius, value) as Radius | undefined
+  return normalizeStringOption(radiusValues, value) as Radius | undefined
 }
 
 function mapPopoverVariant(value: string | undefined): PopoverContentVariant | undefined {
-  return normalizeEnumPropValue({ type: 'enum', values: popoverContentVariants } as const, value) as
-    | PopoverContentVariant
-    | undefined
+  return normalizeStringOption(popoverContentVariants, value)
 }
 
 function mapTextFieldVariant(value: string | undefined): TextFieldVariant | undefined {
-  return normalizeEnumPropValue({ type: 'enum', values: textFieldTokens.variant } as const, value) as
-    | TextFieldVariant
-    | undefined
+  return normalizeStringOption(textFieldTokens.variant, value)
 }
 
 function mapSize(value: string | undefined): Size | undefined {
-  return normalizeEnumPropValue({ type: 'enum', values: Object.values(possibleSizes) } as const, value) as
-    | Size
-    | undefined
+  return normalizeStringOption(Object.values(possibleSizes), value)
 }
 
 function mapDateNextSize(
@@ -2335,10 +2342,17 @@ function mapDateNextSize(
   | React.ComponentProps<typeof DatePickerNext>['size']
   | React.ComponentProps<typeof DateTimePickerNext>['size']
   | React.ComponentProps<typeof TimePickerNext>['size'] {
-  return normalizeEnumPropValue({ type: 'enum', values: Object.values(possibleSizes) } as const, value) as
+  return normalizeStringOption(Object.values(possibleSizes), value) as
     | React.ComponentProps<typeof DatePickerNext>['size']
     | React.ComponentProps<typeof DateTimePickerNext>['size']
     | React.ComponentProps<typeof TimePickerNext>['size']
+}
+
+function normalizeStringOption<const Values extends readonly string[]>(
+  values: Values,
+  value: string | undefined,
+): Values[number] | undefined {
+  return typeof value === 'string' && values.includes(value) ? (value as Values[number]) : undefined
 }
 
 function mapControlButtonSize(

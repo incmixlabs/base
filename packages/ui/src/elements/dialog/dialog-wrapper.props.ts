@@ -1,12 +1,22 @@
-import type { FieldErrorMap, JsonSchemaNode, JsonValue } from '@incmix/core'
 import type * as React from 'react'
 import type { DialogContentAlign, DialogContentSize } from './dialog.props'
+
+export type DialogWrapperJsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | DialogWrapperJsonValue[]
+  | { [key: string]: DialogWrapperJsonValue }
+
+export type DialogWrapperFieldErrorMap = Record<string, string[]>
 
 export type DialogWrapperSchemaProperty = {
   type: 'string' | 'number' | 'integer' | 'boolean'
   title?: string
   description?: string
   default?: string | number | boolean
+  const?: string | number | boolean
   enum?: string[]
   format?: 'email' | 'password' | 'url' | 'textarea'
   placeholder?: string
@@ -18,7 +28,7 @@ export type DialogWrapperSchemaProperty = {
   pattern?: string
   readOnly?: boolean
   widget?: string
-  widgetProps?: Record<string, JsonValue>
+  widgetProps?: Record<string, DialogWrapperJsonValue>
 }
 
 export type DialogWrapperSchema = {
@@ -40,7 +50,7 @@ export type DialogWrapperRenderFieldArgs = {
 }
 
 export type DialogWrapperSubmitHelpers = {
-  setServerErrors: (errors: FieldErrorMap, formErrors?: string[]) => void
+  setServerErrors: (errors: DialogWrapperFieldErrorMap, formErrors?: string[]) => void
   setFormErrors: (formErrors: string[]) => void
   clearServerErrors: () => void
 }
@@ -66,7 +76,6 @@ export type DialogWrapperProps = {
   values?: Record<string, unknown>
   defaultValues?: Record<string, unknown>
   onValuesChange?: (values: Record<string, unknown>) => void
-  validationSchema?: JsonSchemaNode
   validateOnChange?: boolean
   submitErrorMessage?: string
   onSubmitError?: (error: unknown) => void
