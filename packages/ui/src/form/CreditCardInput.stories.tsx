@@ -2,12 +2,19 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 import { CreditCardInput, type CreditCardValue } from './CreditCardInput'
 import { Label } from './Label'
+import { TextField } from './TextField'
 
 const meta: Meta<typeof CreditCardInput> = {
   title: 'Form/CreditCardInput',
   component: CreditCardInput,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'CreditCardInput renders card number, expiry, CVV, and cardholder name as TextField controls while preserving card formatting and detection.',
+      },
+    },
   },
   argTypes: {
     size: {
@@ -181,6 +188,44 @@ export const WithError: Story = {
   ),
 }
 
+export const TextFieldBackedStates: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'State coverage for the TextField-backed card number, expiry, CVV, and cardholder name controls.',
+      },
+    },
+  },
+  render: () => (
+    <div className="w-80 space-y-4">
+      <div className="space-y-2">
+        <Label>Large soft</Label>
+        <CreditCardInput size="lg" variant="soft" showName />
+      </div>
+      <div className="space-y-2">
+        <Label>Error</Label>
+        <CreditCardInput error showName />
+      </div>
+      <div className="space-y-2">
+        <Label>Disabled</Label>
+        <CreditCardInput
+          disabled
+          showName
+          value={{
+            number: '4242 4242 4242 4242',
+            rawNumber: '4242424242424242',
+            expiry: '12/25',
+            cvv: '123',
+            name: 'Alex Morgan',
+            cardType: 'visa',
+            isValid: true,
+          }}
+        />
+      </div>
+    </div>
+  ),
+}
+
 export const CustomPlaceholders: Story = {
   render: () => (
     <div className="w-80 space-y-2">
@@ -226,12 +271,11 @@ export const CheckoutForm: Story = {
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="checkout-email">Email</Label>
-            <input
+            <TextField
               id="checkout-email"
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md"
               placeholder="you@example.com"
             />
           </div>

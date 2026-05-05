@@ -3,13 +3,12 @@
 import { Country, type ICountry } from 'country-state-city'
 import { ChevronDown, Phone } from 'lucide-react'
 import * as React from 'react'
-import { getRadiusStyles, getSizeStyles, useThemeRadius } from '@/elements/utils'
 import { isActivationKey } from '@/lib/keyboard-keys'
 import { cn } from '@/lib/utils'
 import type { Color, Radius, Size, TextFieldVariant } from '@/theme/tokens'
 import { useFieldGroup } from './FieldGroupContext'
-import { formColorVars } from './form-color'
-import { containerColorStyles, containerVariantStyles, getBaseVariant } from './textFieldStyles'
+import { TextField } from './TextField'
+import { toBaseTextFieldVariant } from './text-field-variant'
 
 // ============================================================================
 // Types
@@ -71,6 +70,8 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       phonePlaceholder = 'Phone number',
       className,
       style,
+      placeholder,
+      'aria-label': ariaLabel,
       ...props
     },
     ref,
@@ -78,11 +79,6 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
     const fieldGroup = useFieldGroup()
     const size = sizeProp ?? fieldGroup.size
     const variant = variantProp ?? fieldGroup.variant
-
-    const radius = useThemeRadius(radiusProp)
-    const sizeStyles = getSizeStyles(size)
-    const radiusStyles = getRadiusStyles(radius)
-    const combinedStyles = { ...sizeStyles, ...radiusStyles, ...style }
 
     const [dropdownOpen, setDropdownOpen] = React.useState(false)
     const dropdownRef = React.useRef<HTMLDivElement>(null)
@@ -170,63 +166,60 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       [selectedCountry, emitChange],
     )
 
-    const effectiveColor = error ? 'error' : color
-    const baseVariant = getBaseVariant(variant)
+    const textFieldStyle = {
+      '--tf-left-slot-width': '8.75rem',
+      ...style,
+    } as React.CSSProperties
+    const resolvedPlaceholder = placeholder ?? phonePlaceholder
 
     return (
-      <div
-        className={cn(
-          'relative flex items-center',
-          'h-[var(--element-height)]',
-          'rounded-[var(--element-border-radius)]',
-          containerVariantStyles[baseVariant],
-          effectiveColor && containerColorStyles[effectiveColor],
-          disabled && 'opacity-50 cursor-not-allowed',
-          className,
-        )}
-        style={
-          { ...(effectiveColor ? formColorVars[effectiveColor] : undefined), ...combinedStyles } as React.CSSProperties
-        }
-      >
-        {/* Country Selector */}
-        <button
-          ref={triggerRef}
-          type="button"
-          onClick={() => !disabled && setDropdownOpen(!dropdownOpen)}
-          disabled={disabled}
-          className={cn(
-            'flex items-center gap-1 px-2 h-full border-r border-input/50',
-            'hover:bg-accent/50 transition-colors',
-            'focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
-            'rounded-l-[var(--element-border-radius)]',
-          )}
-          aria-expanded={dropdownOpen}
-          aria-haspopup="listbox"
-        >
-          <span className="text-base">{selectedCountry?.flag}</span>
-          <span className="text-sm text-muted-foreground">+{selectedCountry?.phonecode}</span>
-          <ChevronDown className={cn('h-3 w-3 opacity-50', dropdownOpen && 'rotate-180')} />
-        </button>
-
-        {/* Phone Icon */}
-        <div className="flex items-center justify-center px-2">
-          <Phone className="h-4 w-4 text-muted-foreground" />
-        </div>
-
-        {/* Phone Number Input */}
-        <input
+      <div className="relative">
+        <TextField
           ref={ref}
           type="tel"
           value={phoneNumber}
           onChange={handlePhoneChange}
           disabled={disabled}
-          placeholder={phonePlaceholder}
-          className={cn(
-            'flex-1 h-full bg-transparent outline-none',
-            'text-[var(--element-font-size)]',
-            'pr-[var(--element-padding-x)]',
-            'placeholder:text-muted-foreground',
-          )}
+          placeholder={resolvedPlaceholder}
+          aria-label={ariaLabel ?? resolvedPlaceholder}
+          size={size}
+          variant={toBaseTextFieldVariant(variant)}
+          color={color}
+          radius={radiusProp}
+          error={error}
+          className={className}
+          style={textFieldStyle}
+          leftElement={
+            <div className={cn('flex h-[var(--tf-height)] items-center', disabled && 'opacity-50')}>
+              <button
+                ref={triggerRef}
+                type="button"
+                onClick={() => !disabled && setDropdownOpen(!dropdownOpen)}
+                disabled={disabled}
+                className={cn(
+                  'flex h-full items-center gap-1 border-r border-input/50 px-2',
+                  'transition-colors hover:bg-accent/50',
+                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
+                  'rounded-l-[var(--element-border-radius)]',
+                  disabled && 'cursor-not-allowed',
+                )}
+                aria-expanded={dropdownOpen}
+                aria-haspopup="listbox"
+                aria-label={
+                  selectedCountry
+                    ? `Change country code, current country ${selectedCountry.name} +${selectedCountry.phonecode}`
+                    : 'Select country code'
+                }
+              >
+                <span className="text-base">{selectedCountry?.flag}</span>
+                <span className="text-sm text-muted-foreground">+{selectedCountry?.phonecode}</span>
+                <ChevronDown className={cn('h-3 w-3 opacity-50', dropdownOpen && 'rotate-180')} aria-hidden="true" />
+              </button>
+              <div className="flex items-center justify-center px-2">
+                <Phone className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+              </div>
+            </div>
+          }
           {...props}
         />
 

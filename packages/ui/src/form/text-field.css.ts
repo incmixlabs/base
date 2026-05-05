@@ -13,8 +13,25 @@ export const textFieldRootCls = 'relative w-full'
 
 export const textFieldInputBaseCls = 'w-full outline-none transition-all duration-150 ease-in-out'
 
-export const textFieldIconContainerCls =
-  'absolute top-1/2 -translate-y-1/2 flex items-center justify-center w-[calc(var(--tf-padding-x)*2+var(--tf-icon-size))] z-10'
+export const textFieldIconContainerCls = 'absolute top-1/2 -translate-y-1/2 flex items-center justify-center z-10'
+
+const defaultSlotWidth = 'calc(var(--tf-padding-x) * 2 + var(--tf-icon-size))'
+
+export const textFieldLeftIconContainerCls = style({
+  width: `var(--tf-left-slot-width, ${defaultSlotWidth})`,
+})
+
+export const textFieldRightIconContainerCls = style({
+  width: `var(--tf-right-slot-width, ${defaultSlotWidth})`,
+})
+
+export const textFieldInputWithLeftElementCls = style({
+  paddingLeft: `var(--tf-left-slot-width, ${defaultSlotWidth})`,
+})
+
+export const textFieldInputWithRightElementCls = style({
+  paddingRight: `var(--tf-right-slot-width, ${defaultSlotWidth})`,
+})
 
 // ── Color × Variant styles ──
 // One VE class per color+variant combo (same pattern as surface.css.ts).

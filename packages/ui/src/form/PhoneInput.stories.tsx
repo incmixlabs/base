@@ -2,12 +2,19 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 import { Label } from './Label'
 import { PhoneInput, type PhoneValue } from './PhoneInput'
+import { TextField } from './TextField'
 
 const meta: Meta<typeof PhoneInput> = {
   title: 'Form/PhoneInput',
   component: PhoneInput,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'PhoneInput uses TextField for the editable phone-number surface while keeping the country selector as interactive left chrome.',
+      },
+    },
   },
 }
 
@@ -147,6 +154,40 @@ export const WithError: Story = {
   ),
 }
 
+export const TextFieldBackedStates: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'State coverage for the TextField-backed phone-number editor and country selector chrome.',
+      },
+    },
+  },
+  render: () => (
+    <div className="w-80 space-y-4">
+      <div className="space-y-2">
+        <Label>Large soft</Label>
+        <PhoneInput size="lg" variant="soft" defaultCountry="CA" />
+      </div>
+      <div className="space-y-2">
+        <Label>Error</Label>
+        <PhoneInput error aria-label="Phone number with error" />
+      </div>
+      <div className="space-y-2">
+        <Label>Disabled</Label>
+        <PhoneInput
+          disabled
+          value={{
+            countryCode: 'US',
+            phoneCode: '+1',
+            number: '5551234567',
+            fullNumber: '+15551234567',
+          }}
+        />
+      </div>
+    </div>
+  ),
+}
+
 export const ContactForm: Story = {
   render: () => {
     const [name, setName] = useState('')
@@ -160,24 +201,22 @@ export const ContactForm: Story = {
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="contact-name">Full Name</Label>
-            <input
+            <TextField
               id="contact-name"
               type="text"
               value={name}
               onChange={e => setName(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md"
               placeholder="John Doe"
             />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="contact-email">Email</Label>
-            <input
+            <TextField
               id="contact-email"
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md"
               placeholder="john@example.com"
             />
           </div>
