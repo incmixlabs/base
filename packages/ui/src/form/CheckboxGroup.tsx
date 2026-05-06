@@ -100,7 +100,8 @@ const CheckboxGroupItem = React.forwardRef<HTMLButtonElement, CheckboxGroupItemP
   ({ value, label, description, disabled, className, children, ...props }, ref) => {
     const context = React.useContext(CheckboxGroupContext)
     const id = React.useId()
-    const isDisabled = disabled || context.disabled
+    const safeDisabled = normalizeBooleanPropValue(checkboxGroupRootPropDefs.disabled, disabled) ?? false
+    const isDisabled = safeDisabled || context.disabled
     const displayLabel = label || children
 
     return (

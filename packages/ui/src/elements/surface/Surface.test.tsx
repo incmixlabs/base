@@ -45,16 +45,29 @@ describe('Surface', () => {
     expect(surface.className).toContain(surfaceColorVariants.chart1.soft)
   })
 
-  it('normalizes boolean-like visual props', () => {
+  it.each([
+    { highContrast: 'false', hover: 'true', hasHighContrast: false, hasHover: true },
+    { highContrast: 'TrUe', hover: 'FaLsE', hasHighContrast: true, hasHover: false },
+    { highContrast: '', hover: '', hasHighContrast: false, hasHover: true },
+  ])('normalizes boolean-like visual props %#', ({ highContrast, hover, hasHighContrast, hasHover }) => {
     render(
-      <Surface data-testid="surface" highContrast={'false' as any} hover={'true' as any}>
+      <Surface data-testid="surface" highContrast={highContrast as any} hover={hover as any}>
         Surface
       </Surface>,
     )
 
     const surface = screen.getByTestId('surface')
 
-    expect(surface.className).not.toContain('af-high-contrast')
-    expect(surface.className).toContain(surfaceHoverEnabledClass)
+    if (hasHighContrast) {
+      expect(surface.className).toContain('af-high-contrast')
+    } else {
+      expect(surface.className).not.toContain('af-high-contrast')
+    }
+
+    if (hasHover) {
+      expect(surface.className).toContain(surfaceHoverEnabledClass)
+    } else {
+      expect(surface.className).not.toContain(surfaceHoverEnabledClass)
+    }
   })
 })

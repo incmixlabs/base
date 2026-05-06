@@ -780,6 +780,7 @@ function assignResponsiveSpacingStyles(
   if (!hasCustomResponsiveSpacingValue(prop) || !isResponsiveValue(prop)) return
 
   let inheritedValue: string | undefined
+  // Set each breakpoint variable, inheriting the previous value when a breakpoint is omitted.
   for (const breakpoint of responsiveValueKeys) {
     const value = prop[breakpoint]
     inheritedValue = value !== undefined ? resolveSpacingValue(value.trim(), spacingToPixels) : inheritedValue

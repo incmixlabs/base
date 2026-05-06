@@ -135,7 +135,7 @@ describe('Box', () => {
     const box = screen.getByTestId('box')
 
     expect(box).toHaveClass('flex', 'flex-row', 'items-center', 'justify-between', 'gap-2')
-    expect(box.getAttribute('style')).toContain('gap:')
+    expect(box.style.gap).not.toBe('')
     expect(box).not.toHaveAttribute('layout')
     expect(box).not.toHaveAttribute('align')
     expect(box).not.toHaveAttribute('justify')
@@ -160,6 +160,10 @@ describe('Box', () => {
     expect(box).toHaveClass('grid', 'items-center')
     expect(box.style.gridTemplateColumns).toBe('repeat(12, minmax(0, 1fr))')
     expect(box.style.gap).toBe('2rem')
+    expect(box).not.toHaveAttribute('layout')
+    expect(box).not.toHaveAttribute('align')
+    expect(box).not.toHaveAttribute('columns')
+    expect(box).not.toHaveAttribute('gap')
   })
 
   it('supports responsive custom layout gap values', () => {

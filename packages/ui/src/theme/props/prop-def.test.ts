@@ -14,6 +14,7 @@ describe('prop-def normalization', () => {
   })
 
   it('can preserve exact-case enum matching when requested', () => {
+    expect(normalizeEnumPropValue(enumDef, 'soft', { caseSensitive: true })).toBe('soft')
     expect(normalizeEnumPropValue(enumDef, ' Soft ', { caseSensitive: true })).toBe('surface')
   })
 

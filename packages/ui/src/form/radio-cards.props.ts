@@ -1,3 +1,4 @@
+import { SPACING_SCALE_VALUES } from '@incmix/theme'
 import { gridPropDefs } from '@/layouts/grid/grid.props'
 import { asChildPropDef } from '@/theme/props/as-child.prop'
 import { colorPropDef } from '@/theme/props/color.prop'
@@ -7,7 +8,9 @@ import { formSizes } from './form-size'
 
 const radioCardsSizes = formSizes
 const radioCardsVariants = ['surface', 'classic'] as const
-const radioCardsGapValues = ['1', '2', '3', '4', '5', '6'] as const
+const radioCardsGapValues = SPACING_SCALE_VALUES
+
+type RadioCardsGap = (typeof radioCardsGapValues)[number]
 
 const radioCardsRootPropDefs = {
   ...asChildPropDef,
@@ -17,11 +20,14 @@ const radioCardsRootPropDefs = {
   ...highContrastPropDef,
   columns: { ...gridPropDefs.columns, default: 'repeat(auto-fit, minmax(160px, 1fr))' },
   gap: { type: 'enum', values: radioCardsGapValues, default: '4' },
+  disabled: { type: 'boolean', default: false },
 } satisfies {
   size: PropDef<(typeof radioCardsSizes)[number]>
   variant: PropDef<(typeof radioCardsVariants)[number]>
   columns: PropDef<(typeof gridPropDefs.columns.values)[number]>
-  gap: PropDef<(typeof radioCardsGapValues)[number]>
+  gap: PropDef<RadioCardsGap>
+  disabled: PropDef<boolean>
 }
 
+export type { RadioCardsGap }
 export { radioCardsGapValues, radioCardsRootPropDefs, radioCardsSizes, radioCardsVariants }

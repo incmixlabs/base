@@ -129,6 +129,7 @@ type PropDefValues<Def> = Def extends { values: readonly (infer V)[] } ? readonl
 
 const getPropDefValues = <Def extends { values: readonly unknown[] }>(def: Def): Def['values'] => def.values
 
+// Minimal prop-def shapes used by runtime normalization helpers.
 type EnumPropDefLike = { values: readonly string[]; default?: string }
 type BooleanPropDefLike = { type: 'boolean'; default?: boolean }
 type NormalizeEnumPropValueOptions = {
