@@ -1,15 +1,18 @@
 'use client'
 
 import { Country, type ICountry } from 'country-state-city'
-import { ChevronDown, Phone } from 'lucide-react'
 import * as React from 'react'
-import { getRadiusStyles, getSizeStyles, useThemeRadius } from '@/elements/utils'
+import { Button } from '@/elements/button/Button'
+import { Icon } from '@/elements/button/Icon'
+import { Flex } from '@/layouts/flex/Flex'
+import { useComposedRefs } from '@/lib/compose-refs'
 import { isActivationKey } from '@/lib/keyboard-keys'
 import { cn } from '@/lib/utils'
 import type { Color, Radius, Size, TextFieldVariant } from '@/theme/tokens'
+import { Text } from '@/typography'
 import { useFieldGroup } from './FieldGroupContext'
-import { formColorVars } from './form-color'
-import { containerColorStyles, containerVariantStyles, getBaseVariant } from './textFieldStyles'
+import { TextField } from './TextField'
+import { toBaseTextFieldVariant } from './text-field-variant'
 
 // ============================================================================
 // Types
@@ -27,7 +30,7 @@ export interface PhoneValue {
 }
 
 export interface PhoneInputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'value' | 'onChange'> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'value' | 'onChange' | 'type'> {
   /** The size of the input */
   size?: Size
   /** The visual variant */
@@ -46,7 +49,11 @@ export interface PhoneInputProps
   defaultCountry?: string
   /** Countries to show (if not provided, shows all) */
   countries?: string[]
-  /** Placeholder for the phone number input */
+  /**
+   * Placeholder for the phone number input.
+   *
+   * @deprecated Use the standard `placeholder` prop instead.
+   */
   phonePlaceholder?: string
 }
 
@@ -71,6 +78,8 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       phonePlaceholder = 'Phone number',
       className,
       style,
+      placeholder,
+      'aria-label': ariaLabel,
       ...props
     },
     ref,
@@ -79,14 +88,12 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
     const size = sizeProp ?? fieldGroup.size
     const variant = variantProp ?? fieldGroup.variant
 
-    const radius = useThemeRadius(radiusProp)
-    const sizeStyles = getSizeStyles(size)
-    const radiusStyles = getRadiusStyles(radius)
-    const combinedStyles = { ...sizeStyles, ...radiusStyles, ...style }
-
     const [dropdownOpen, setDropdownOpen] = React.useState(false)
     const dropdownRef = React.useRef<HTMLDivElement>(null)
     const triggerRef = React.useRef<HTMLButtonElement>(null)
+    const inputRef = React.useRef<HTMLInputElement>(null)
+    const composedInputRef = useComposedRefs(ref, inputRef)
+    const [hasAssociatedLabel, setHasAssociatedLabel] = React.useState<boolean | null>(null)
 
     // Get available countries
     const availableCountries = React.useMemo(() => {
@@ -134,6 +141,17 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       }
     }, [dropdownOpen])
 
+    React.useEffect(() => {
+      if (disabled) {
+        setDropdownOpen(false)
+      }
+    }, [disabled])
+
+    React.useLayoutEffect(() => {
+      const nextHasAssociatedLabel = Boolean(inputRef.current?.labels?.length)
+      setHasAssociatedLabel(current => (current === nextHasAssociatedLabel ? current : nextHasAssociatedLabel))
+    })
+
     // Emit change
     const emitChange = React.useCallback(
       (country: ICountry | undefined, number: string) => {
@@ -153,11 +171,12 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
 
     const handleCountrySelect = React.useCallback(
       (country: ICountry) => {
+        if (disabled) return
         setSelectedCountry(country)
         setDropdownOpen(false)
         emitChange(country, phoneNumber)
       },
-      [phoneNumber, emitChange],
+      [disabled, phoneNumber, emitChange],
     )
 
     const handlePhoneChange = React.useCallback(
@@ -170,106 +189,112 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       [selectedCountry, emitChange],
     )
 
-    const effectiveColor = error ? 'error' : color
-    const baseVariant = getBaseVariant(variant)
+    const textFieldStyle = {
+      '--tf-left-slot-width': '8.75rem',
+      ...style,
+    } as React.CSSProperties
+    const resolvedPlaceholder = placeholder ?? phonePlaceholder
+    const hasAriaLabelledBy = Boolean(props['aria-labelledby']?.trim())
+    const fallbackAriaLabel =
+      ariaLabel ?? (!hasAriaLabelledBy && hasAssociatedLabel === false ? 'Phone number' : undefined)
 
     return (
-      <div
-        className={cn(
-          'relative flex items-center',
-          'h-[var(--element-height)]',
-          'rounded-[var(--element-border-radius)]',
-          containerVariantStyles[baseVariant],
-          effectiveColor && containerColorStyles[effectiveColor],
-          disabled && 'opacity-50 cursor-not-allowed',
-          className,
-        )}
-        style={
-          { ...(effectiveColor ? formColorVars[effectiveColor] : undefined), ...combinedStyles } as React.CSSProperties
-        }
-      >
-        {/* Country Selector */}
-        <button
-          ref={triggerRef}
-          type="button"
-          onClick={() => !disabled && setDropdownOpen(!dropdownOpen)}
-          disabled={disabled}
-          className={cn(
-            'flex items-center gap-1 px-2 h-full border-r border-input/50',
-            'hover:bg-accent/50 transition-colors',
-            'focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
-            'rounded-l-[var(--element-border-radius)]',
-          )}
-          aria-expanded={dropdownOpen}
-          aria-haspopup="listbox"
-        >
-          <span className="text-base">{selectedCountry?.flag}</span>
-          <span className="text-sm text-muted-foreground">+{selectedCountry?.phonecode}</span>
-          <ChevronDown className={cn('h-3 w-3 opacity-50', dropdownOpen && 'rotate-180')} />
-        </button>
+      <TextField
+        {...props}
+        ref={composedInputRef}
+        type="tel"
+        value={phoneNumber}
+        onChange={handlePhoneChange}
+        disabled={disabled}
+        placeholder={resolvedPlaceholder}
+        aria-label={fallbackAriaLabel}
+        size={size}
+        variant={toBaseTextFieldVariant(variant)}
+        color={color}
+        radius={radiusProp}
+        error={error}
+        className={className}
+        style={textFieldStyle}
+        leftElement={
+          <Flex height="var(--tf-height)" align="center" className={cn('relative w-full', disabled && 'opacity-50')}>
+            <Button
+              ref={triggerRef}
+              type="button"
+              variant="ghost"
+              color="slate"
+              onClick={() => !disabled && setDropdownOpen(!dropdownOpen)}
+              disabled={disabled}
+              className={cn(
+                'h-full gap-1 border-y-0 border-l-0 border-r border-input/50 px-2 py-0',
+                'focus-visible:ring-inset',
+                'rounded-l-[var(--element-border-radius)]',
+                disabled && 'cursor-not-allowed',
+              )}
+              aria-expanded={dropdownOpen}
+              aria-haspopup="listbox"
+              aria-label={
+                selectedCountry
+                  ? `Change country code, current country ${selectedCountry.name} +${selectedCountry.phonecode}`
+                  : 'Select country code'
+              }
+            >
+              <Text size="md">{selectedCountry?.flag}</Text>
+              <Text size="sm" color="neutral">
+                +{selectedCountry?.phonecode}
+              </Text>
+              <Icon
+                icon="chevron-down"
+                size="xs"
+                color="neutral"
+                className={cn('opacity-50 transition-transform', dropdownOpen && 'rotate-180')}
+                aria-hidden="true"
+              />
+            </Button>
+            <Flex align="center" justify="center" px="2">
+              <Icon icon="phone" size="sm" color="neutral" aria-hidden="true" />
+            </Flex>
 
-        {/* Phone Icon */}
-        <div className="flex items-center justify-center px-2">
-          <Phone className="h-4 w-4 text-muted-foreground" />
-        </div>
-
-        {/* Phone Number Input */}
-        <input
-          ref={ref}
-          type="tel"
-          value={phoneNumber}
-          onChange={handlePhoneChange}
-          disabled={disabled}
-          placeholder={phonePlaceholder}
-          className={cn(
-            'flex-1 h-full bg-transparent outline-none',
-            'text-[var(--element-font-size)]',
-            'pr-[var(--element-padding-x)]',
-            'placeholder:text-muted-foreground',
-          )}
-          {...props}
-        />
-
-        {/* Country Dropdown */}
-        {dropdownOpen && (
-          <div
-            ref={dropdownRef}
-            className={cn(
-              'absolute left-0 top-full mt-1 z-50',
-              'w-64 max-h-[200px] overflow-y-auto',
-              'rounded-md border bg-popover text-popover-foreground shadow-md',
-              'animate-in fade-in-0 zoom-in-95',
-            )}
-            role="listbox"
-          >
-            {availableCountries.map(country => (
+            {dropdownOpen && (
               <div
-                key={country.isoCode}
-                onClick={() => handleCountrySelect(country)}
-                onKeyDown={e => {
-                  if (isActivationKey(e.key)) {
-                    e.preventDefault()
-                    handleCountrySelect(country)
-                  }
-                }}
+                ref={dropdownRef}
                 className={cn(
-                  'flex items-center gap-2 px-3 py-2 text-sm cursor-pointer',
-                  'hover:bg-accent hover:text-accent-foreground',
-                  'focus:bg-accent focus:text-accent-foreground focus:outline-none',
-                  selectedCountry?.isoCode === country.isoCode && 'bg-accent/50',
+                  'absolute left-0 top-full mt-1 z-50',
+                  'w-64 max-h-[200px] overflow-y-auto',
+                  'rounded-md border bg-popover text-popover-foreground shadow-md',
+                  'animate-in fade-in-0 zoom-in-95',
                 )}
-                role="option"
-                aria-selected={selectedCountry?.isoCode === country.isoCode}
-                tabIndex={0}
+                role="listbox"
               >
-                <span className="text-base">{country.flag}</span>
-                <span className="flex-1 truncate">{country.name}</span>
-                <span className="text-muted-foreground">+{country.phonecode}</span>
+                {availableCountries.map(country => (
+                  <div
+                    key={country.isoCode}
+                    onClick={() => handleCountrySelect(country)}
+                    onKeyDown={e => {
+                      if (isActivationKey(e.key)) {
+                        e.preventDefault()
+                        handleCountrySelect(country)
+                      }
+                    }}
+                    className={cn(
+                      'flex items-center gap-2 px-3 py-2 text-sm cursor-pointer',
+                      'hover:bg-accent hover:text-accent-foreground',
+                      'focus:bg-accent focus:text-accent-foreground focus:outline-none',
+                      selectedCountry?.isoCode === country.isoCode && 'bg-accent/50',
+                    )}
+                    role="option"
+                    aria-selected={selectedCountry?.isoCode === country.isoCode}
+                    tabIndex={0}
+                  >
+                    <span className="text-base">{country.flag}</span>
+                    <span className="flex-1 truncate">{country.name}</span>
+                    <span className="text-muted-foreground">+{country.phonecode}</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        )}
-      </div>
+            )}
+          </Flex>
+        }
+      />
     )
   },
 )

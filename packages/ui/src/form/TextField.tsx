@@ -23,6 +23,10 @@ import {
   textFieldIconCls,
   textFieldIconContainerCls,
   textFieldInputBaseCls,
+  textFieldInputWithLeftElementCls,
+  textFieldInputWithRightElementCls,
+  textFieldLeftIconContainerCls,
+  textFieldRightIconContainerCls,
   textFieldRootCls,
   textFieldSizeVariants,
 } from './text-field.css'
@@ -101,20 +105,30 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           style={{ ...marginProps.style, ...radiusStyles, ...style }}
         >
           {leftIcon && (
-            <div className={cn(textFieldIconContainerCls, textFieldIconCls, 'left-0 pointer-events-none')}>
+            <div
+              className={cn(
+                textFieldIconContainerCls,
+                textFieldLeftIconContainerCls,
+                textFieldIconCls,
+                'left-0 pointer-events-none',
+              )}
+            >
               <Flex align="center" justify="center" className="text-muted-foreground">
                 {leftIcon}
               </Flex>
             </div>
           )}
 
-          {leftElement && <div className={cn(textFieldIconContainerCls, 'left-0')}>{leftElement}</div>}
+          {leftElement && (
+            <div className={cn(textFieldIconContainerCls, textFieldLeftIconContainerCls, 'left-0')}>{leftElement}</div>
+          )}
 
           <input
             ref={ref}
             id={inputId}
             placeholder=" "
             disabled={disabled}
+            aria-invalid={error || undefined}
             className={cn(
               textFieldInputBaseCls,
               'peer',
@@ -153,14 +167,25 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           )}
 
           {rightIcon && (
-            <div className={cn(textFieldIconContainerCls, textFieldIconCls, 'right-0 pointer-events-none')}>
+            <div
+              className={cn(
+                textFieldIconContainerCls,
+                textFieldRightIconContainerCls,
+                textFieldIconCls,
+                'right-0 pointer-events-none',
+              )}
+            >
               <Flex align="center" justify="center" className="text-muted-foreground">
                 {rightIcon}
               </Flex>
             </div>
           )}
 
-          {rightElement && <div className={cn(textFieldIconContainerCls, 'right-0')}>{rightElement}</div>}
+          {rightElement && (
+            <div className={cn(textFieldIconContainerCls, textFieldRightIconContainerCls, 'right-0')}>
+              {rightElement}
+            </div>
+          )}
         </div>
       )
     }
@@ -171,19 +196,29 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     const control = (
       <div className={cn(textFieldRootCls, textFieldSizeVariants[size])} style={regularStyles}>
         {leftIcon && (
-          <div className={cn(textFieldIconContainerCls, textFieldIconCls, 'left-0 pointer-events-none')}>
+          <div
+            className={cn(
+              textFieldIconContainerCls,
+              textFieldLeftIconContainerCls,
+              textFieldIconCls,
+              'left-0 pointer-events-none',
+            )}
+          >
             <Flex align="center" justify="center" className="text-muted-foreground">
               {leftIcon}
             </Flex>
           </div>
         )}
 
-        {leftElement && <div className={cn(textFieldIconContainerCls, 'left-0')}>{leftElement}</div>}
+        {leftElement && (
+          <div className={cn(textFieldIconContainerCls, textFieldLeftIconContainerCls, 'left-0')}>{leftElement}</div>
+        )}
 
         <input
           ref={ref}
           id={inputId}
           disabled={disabled}
+          aria-invalid={error || undefined}
           className={cn(
             textFieldInputBaseCls,
             'box-border h-[var(--tf-height)]',
@@ -194,8 +229,8 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             'border',
             textFieldColorVariants[effectiveColor]?.[surfaceVariant],
 
-            (leftIcon || leftElement) && 'pl-[calc(var(--tf-padding-x)*2+var(--tf-icon-size))]',
-            (rightIcon || rightElement) && 'pr-[calc(var(--tf-padding-x)*2+var(--tf-icon-size))]',
+            (leftIcon || leftElement) && textFieldInputWithLeftElementCls,
+            (rightIcon || rightElement) && textFieldInputWithRightElementCls,
 
             disabled && 'opacity-50 cursor-not-allowed',
           )}
@@ -204,14 +239,23 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
         />
 
         {rightIcon && (
-          <div className={cn(textFieldIconContainerCls, textFieldIconCls, 'right-0 pointer-events-none')}>
+          <div
+            className={cn(
+              textFieldIconContainerCls,
+              textFieldRightIconContainerCls,
+              textFieldIconCls,
+              'right-0 pointer-events-none',
+            )}
+          >
             <Flex align="center" justify="center" className="text-muted-foreground">
               {rightIcon}
             </Flex>
           </div>
         )}
 
-        {rightElement && <div className={cn(textFieldIconContainerCls, 'right-0')}>{rightElement}</div>}
+        {rightElement && (
+          <div className={cn(textFieldIconContainerCls, textFieldRightIconContainerCls, 'right-0')}>{rightElement}</div>
+        )}
       </div>
     )
 

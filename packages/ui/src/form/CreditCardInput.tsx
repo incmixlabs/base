@@ -2,11 +2,11 @@
 
 import { CreditCard, Lock } from 'lucide-react'
 import * as React from 'react'
-import { getRadiusStyles, getSizeStyles, useThemeRadius } from '@/elements/utils'
 import { cn } from '@/lib/utils'
 import type { Color, Radius, Size, TextFieldVariant } from '@/theme/tokens'
 import { useFieldGroup } from './FieldGroupContext'
-import { containerVariantStyles, getBaseVariant } from './textFieldStyles'
+import { TextField } from './TextField'
+import { toBaseTextFieldVariant } from './text-field-variant'
 
 // ============================================================================
 // Types
@@ -102,7 +102,7 @@ const CardTypeIcon: React.FC<{ type: CardType; className?: string }> = ({ type, 
   switch (type) {
     case 'visa':
       return (
-        <svg viewBox="0 0 48 32" className={baseClass}>
+        <svg viewBox="0 0 48 32" className={baseClass} aria-hidden="true">
           <rect width="48" height="32" rx="4" fill="#1A1F71" />
           <path
             d="M19.5 21.5h-3l1.9-11.5h3l-1.9 11.5zm8.2-11.2c-.6-.2-1.5-.5-2.7-.5-3 0-5 1.5-5 3.7 0 1.6 1.5 2.5 2.7 3 1.2.6 1.6 1 1.6 1.5 0 .8-1 1.2-1.9 1.2-1.2 0-1.9-.2-3-.7l-.4-.2-.4 2.5c.7.4 2.1.7 3.5.7 3.2 0 5.2-1.5 5.2-3.8 0-1.3-.8-2.3-2.6-3.1-1.1-.5-1.7-1-1.7-1.5 0-.5.6-1 1.8-1 1 0 1.7.2 2.3.5l.3.1.4-2.4zm7.8-.3h-2.3c-.7 0-1.3.2-1.6 1l-4.5 10h3.2l.6-1.7h3.9l.4 1.7h2.8l-2.5-11zm-3.7 7.1l1.2-3.2.3-.9.2.8.7 3.3h-2.4zM17 10l-3 7.8-.3-1.5c-.5-1.8-2.2-3.7-4-4.7l2.7 9.9h3.2l4.8-11.5H17z"
@@ -112,7 +112,7 @@ const CardTypeIcon: React.FC<{ type: CardType; className?: string }> = ({ type, 
       )
     case 'mastercard':
       return (
-        <svg viewBox="0 0 48 32" className={baseClass}>
+        <svg viewBox="0 0 48 32" className={baseClass} aria-hidden="true">
           <rect width="48" height="32" rx="4" fill="#000" />
           <circle cx="18" cy="16" r="10" fill="#EB001B" />
           <circle cx="30" cy="16" r="10" fill="#F79E1B" />
@@ -124,7 +124,7 @@ const CardTypeIcon: React.FC<{ type: CardType; className?: string }> = ({ type, 
       )
     case 'amex':
       return (
-        <svg viewBox="0 0 48 32" className={baseClass}>
+        <svg viewBox="0 0 48 32" className={baseClass} aria-hidden="true">
           <rect width="48" height="32" rx="4" fill="#006FCF" />
           <path
             d="M12 10l-4 12h6l.5-1.5h1l.5 1.5h6.5v-1l.5 1h3l.5-1v1h12v-12h-12v1l-.5-1h-3l-.5 1v-1H12zm2 2h2l1.5 4.5V12h2.5l1 3 1-3h2.5v8h-1.5v-5l-1.5 5h-1.5l-1.5-5v5h-3l-.5-1.5h-2l-.5 1.5h-1.5l2.5-8zm1.5 2l-.75 2.5h1.5L14.5 14z"
@@ -134,7 +134,7 @@ const CardTypeIcon: React.FC<{ type: CardType; className?: string }> = ({ type, 
       )
     case 'discover':
       return (
-        <svg viewBox="0 0 48 32" className={baseClass}>
+        <svg viewBox="0 0 48 32" className={baseClass} aria-hidden="true">
           <rect width="48" height="32" rx="4" fill="#fff" />
           <rect x="0.5" y="0.5" width="47" height="31" rx="3.5" stroke="#E6E6E6" />
           <circle cx="30" cy="16" r="8" fill="#F47216" />
@@ -144,7 +144,7 @@ const CardTypeIcon: React.FC<{ type: CardType; className?: string }> = ({ type, 
         </svg>
       )
     default:
-      return <CreditCard className={cn('h-5 w-5 text-muted-foreground', className)} />
+      return <CreditCard className={cn('h-5 w-5 text-muted-foreground', className)} aria-hidden="true" />
   }
 }
 
@@ -219,13 +219,20 @@ function validateCardNumber(number: string): boolean {
 // Main Component
 // ============================================================================
 
+const fieldLabels = {
+  number: 'Card number',
+  expiry: 'Expiration date',
+  cvv: 'Security code',
+  name: 'Name on card',
+} as const
+
 /** CreditCardInput export. */
 export const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputProps>(
   (
     {
       size: sizeProp,
       variant: variantProp,
-      color: _color,
+      color,
       radius: radiusProp,
       error = false,
       disabled = false,
@@ -243,11 +250,6 @@ export const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputP
     const fieldGroup = useFieldGroup()
     const size = sizeProp ?? fieldGroup.size
     const variant = variantProp ?? fieldGroup.variant
-
-    const radius = useThemeRadius(radiusProp)
-    const sizeStyles = getSizeStyles(size)
-    const radiusStyles = getRadiusStyles(radius)
-    const combinedStyles = { ...sizeStyles, ...radiusStyles }
 
     // Internal state
     const [cardNumber, setCardNumber] = React.useState(value?.number ?? '')
@@ -337,120 +339,70 @@ export const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputP
       [emitChange],
     )
 
-    const baseVariant = getBaseVariant(variant)
-    const inputClass = cn(
-      'flex-1 bg-transparent outline-none',
-      'text-[var(--element-font-size)]',
-      'placeholder:text-muted-foreground',
-    )
+    const textFieldVariant = toBaseTextFieldVariant(variant)
+    const sharedTextFieldProps = {
+      size,
+      variant: textFieldVariant,
+      color,
+      radius: radiusProp,
+      error,
+      disabled,
+    }
 
     return (
       <div ref={ref} className={cn('space-y-2', className)}>
-        {/* Card Number Row */}
-        <div
-          className={cn(
-            'flex items-center',
-            'h-[var(--element-height)]',
-            'px-[var(--element-padding-x)]',
-            'rounded-[var(--element-border-radius)]',
-            containerVariantStyles[baseVariant],
-            error && 'border-destructive focus-within:ring-destructive/20',
-            disabled && 'opacity-50 cursor-not-allowed',
-          )}
-          style={combinedStyles}
-        >
-          <CardTypeIcon type={cardType} className="mr-3 shrink-0" />
-          <input
+        <TextField
+          {...sharedTextFieldProps}
+          type="text"
+          inputMode="numeric"
+          value={cardNumber}
+          onChange={handleNumberChange}
+          placeholder={numberPlaceholder}
+          aria-label={fieldLabels.number}
+          maxLength={19}
+          autoComplete="cc-number"
+          leftElement={<CardTypeIcon type={cardType} />}
+        />
+
+        <div className="flex gap-2">
+          <TextField
+            {...sharedTextFieldProps}
             type="text"
             inputMode="numeric"
-            value={cardNumber}
-            onChange={handleNumberChange}
-            disabled={disabled}
-            placeholder={numberPlaceholder}
-            className={inputClass}
-            maxLength={19}
-            autoComplete="cc-number"
+            value={expiry}
+            onChange={handleExpiryChange}
+            placeholder={expiryPlaceholder}
+            aria-label={fieldLabels.expiry}
+            maxLength={5}
+            autoComplete="cc-exp"
+            className="flex-1"
+          />
+
+          <TextField
+            {...sharedTextFieldProps}
+            type="text"
+            inputMode="numeric"
+            value={cvv}
+            onChange={handleCvvChange}
+            placeholder={cvvPlaceholder}
+            aria-label={fieldLabels.cvv}
+            maxLength={4}
+            autoComplete="cc-csc"
+            className="flex-1"
+            rightIcon={<Lock className="h-4 w-4 text-muted-foreground" aria-hidden="true" />}
           />
         </div>
 
-        {/* Expiry, CVV Row */}
-        <div className="flex gap-2">
-          <div
-            className={cn(
-              'flex items-center flex-1',
-              'h-[var(--element-height)]',
-              'px-[var(--element-padding-x)]',
-              'rounded-[var(--element-border-radius)]',
-              containerVariantStyles[baseVariant],
-              error && 'border-destructive focus-within:ring-destructive/20',
-              disabled && 'opacity-50 cursor-not-allowed',
-            )}
-            style={combinedStyles}
-          >
-            <input
-              type="text"
-              inputMode="numeric"
-              value={expiry}
-              onChange={handleExpiryChange}
-              disabled={disabled}
-              placeholder={expiryPlaceholder}
-              className={inputClass}
-              maxLength={5}
-              autoComplete="cc-exp"
-            />
-          </div>
-
-          <div
-            className={cn(
-              'flex items-center flex-1',
-              'h-[var(--element-height)]',
-              'px-[var(--element-padding-x)]',
-              'rounded-[var(--element-border-radius)]',
-              containerVariantStyles[baseVariant],
-              error && 'border-destructive focus-within:ring-destructive/20',
-              disabled && 'opacity-50 cursor-not-allowed',
-            )}
-            style={combinedStyles}
-          >
-            <input
-              type="text"
-              inputMode="numeric"
-              value={cvv}
-              onChange={handleCvvChange}
-              disabled={disabled}
-              placeholder={cvvPlaceholder}
-              className={inputClass}
-              maxLength={4}
-              autoComplete="cc-csc"
-            />
-            <Lock className="h-4 w-4 text-muted-foreground ml-2 shrink-0" />
-          </div>
-        </div>
-
-        {/* Cardholder Name (optional) */}
         {showName && (
-          <div
-            className={cn(
-              'flex items-center',
-              'h-[var(--element-height)]',
-              'px-[var(--element-padding-x)]',
-              'rounded-[var(--element-border-radius)]',
-              containerVariantStyles[baseVariant],
-              error && 'border-destructive focus-within:ring-destructive/20',
-              disabled && 'opacity-50 cursor-not-allowed',
-            )}
-            style={combinedStyles}
-          >
-            <input
-              type="text"
-              value={name}
-              onChange={handleNameChange}
-              disabled={disabled}
-              placeholder={namePlaceholder}
-              className={inputClass}
-              autoComplete="cc-name"
-            />
-          </div>
+          <TextField
+            {...sharedTextFieldProps}
+            type="text"
+            value={name}
+            onChange={handleNameChange}
+            placeholder={namePlaceholder}
+            aria-label={fieldLabels.name}
+            autoComplete="cc-name"
+          />
         )}
       </div>
     )
