@@ -134,7 +134,7 @@ describe('Box', () => {
 
     const box = screen.getByTestId('box')
 
-    expect(box).toHaveClass('flex', 'flex-row', 'items-center', 'justify-between')
+    expect(box).toHaveClass('flex', 'flex-row', 'items-center', 'justify-between', 'gap-2')
     expect(box.getAttribute('style')).toContain('gap:')
     expect(box).not.toHaveAttribute('layout')
     expect(box).not.toHaveAttribute('align')

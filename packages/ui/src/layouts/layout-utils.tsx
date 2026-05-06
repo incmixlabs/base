@@ -688,8 +688,7 @@ function getResponsiveSpacingValueClasses(
   gapProperty: LayoutGapProperty,
 ): string {
   if (hasCustomResponsiveSpacingValue(prop)) return gapResponsiveClasses[gapProperty]
-  if (typeof prop !== 'string') return getSpacingClasses(filterResponsiveTokenValues(prop, isSpacingValue), prefix)
-  return ''
+  return getSpacingClasses(filterResponsiveTokenValues(prop, isSpacingValue), prefix)
 }
 
 function getResponsiveGridTemplateAreaClasses(
