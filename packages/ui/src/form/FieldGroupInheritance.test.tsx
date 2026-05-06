@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from '@testing-library/react'
 import * as React from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { Radius, Size, TextFieldVariant } from '@/theme/tokens'
+import { designTokens, type Radius, type Size, type TextFieldVariant } from '@/theme/tokens'
 import { checkboxSizeVariants } from './checkbox.css'
 import { CheckboxWithLabel } from './Checkbox'
 import { FieldGroupProvider } from './FieldGroupContext'
@@ -50,6 +50,7 @@ describe('FieldGroup inheritance', () => {
 
     const input = screen.getByRole('textbox', { name: 'Name' })
     expect(input.closest('div')).toHaveClass(textFieldSizeVariants.md)
+    expect(input.closest('div')).toHaveStyle({ '--element-border-radius': designTokens.radius.md })
     expect(input).toHaveClass(textFieldColorVariants.slate.outline)
   })
 
