@@ -146,7 +146,13 @@ const RadioCardsRoot = React.forwardRef<HTMLDivElement, RadioCardsRootProps>(
 
     return (
       <RadioCardsContext.Provider
-        value={{ size, variant: safeVariant, color: safeColor, highContrast: safeHighContrast, disabled: effectiveDisabled }}
+        value={{
+          size,
+          variant: safeVariant,
+          color: safeColor,
+          highContrast: safeHighContrast,
+          disabled: effectiveDisabled,
+        }}
       >
         <RadioGroupPrimitive
           ref={ref}

@@ -71,7 +71,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     const size = (sizeProp ?? fieldGroup.size) as ExtendedFormSize
     const variant = variantProp ?? fieldGroup.variant
     const effectiveDisabled = disabled || fieldGroup.disabled
-    const effectiveReadOnly = readOnly === true
+    const effectiveReadOnly = readOnly === true || fieldGroup.readOnly
 
     const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
     const radiusStyles = getRadiusStyles(radius)

@@ -2,10 +2,13 @@ import { cleanup, render, screen } from '@testing-library/react'
 import * as React from 'react'
 import { afterEach, describe, expect, it } from 'vitest'
 import type { Radius, Size, TextFieldVariant } from '@/theme/tokens'
+import { checkboxSizeVariants } from './checkbox.css'
+import { CheckboxWithLabel } from './Checkbox'
 import { FieldGroupProvider } from './FieldGroupContext'
 import { MultiSelect } from './MultiSelect'
 import { Select, SelectItem } from './Select'
 import { Switch } from './Switch'
+import { Textarea } from './Textarea'
 import { TextField } from './TextField'
 import { textFieldColorVariants, textFieldSizeVariants } from './text-field.css'
 import { withFieldGroup } from './withFieldGroup'
@@ -20,10 +23,11 @@ interface DemoControlProps {
   radius?: Radius
   variant?: TextFieldVariant
   disabled?: boolean
+  readOnly?: boolean
 }
 
 const DemoControl = React.forwardRef<HTMLDivElement, DemoControlProps>(
-  ({ label, size, radius, variant, disabled }, ref) => (
+  ({ label, size, radius, variant, disabled, readOnly }, ref) => (
     <div
       ref={ref}
       data-testid={label}
@@ -31,6 +35,7 @@ const DemoControl = React.forwardRef<HTMLDivElement, DemoControlProps>(
       data-radius={radius ?? 'unset'}
       data-variant={variant ?? 'unset'}
       data-disabled={disabled === undefined ? 'unset' : String(disabled)}
+      data-read-only={readOnly === undefined ? 'unset' : String(readOnly)}
     />
   ),
 )
@@ -68,6 +73,7 @@ describe('FieldGroup inheritance', () => {
         <Select aria-label="Status">
           <SelectItem value="open">Open</SelectItem>
         </Select>
+        <span id="tags-label">Tags</span>
         <MultiSelect ariaLabelledby="tags-label" options={[{ value: 'urgent', label: 'Urgent' }]} />
         <Switch aria-label="Notifications" />
       </FieldGroupProvider>,
@@ -75,10 +81,33 @@ describe('FieldGroup inheritance', () => {
 
     expect(screen.getByRole('textbox', { name: 'Name' })).toBeDisabled()
     expect(screen.getByRole('combobox', { name: 'Status' })).toBeDisabled()
-    expect(screen.getByRole('button')).toHaveAttribute('aria-disabled', 'true')
-    expect(screen.getByRole('button')).toHaveAttribute('tabindex', '-1')
+    const tagsTrigger = screen.getByRole('button', { name: /^Tags\b/ })
+    expect(tagsTrigger).toHaveAttribute('aria-disabled', 'true')
+    expect(tagsTrigger).toHaveAttribute('tabindex', '-1')
     expect(screen.getByRole('switch', { name: 'Notifications' })).toHaveAttribute('aria-disabled', 'true')
     expect(screen.getByRole('switch', { name: 'Notifications' })).toHaveAttribute('tabindex', '-1')
+  })
+
+  it('applies inherited readOnly state consistently across text controls', () => {
+    render(
+      <FieldGroupProvider value={{ readOnly: true }}>
+        <TextField aria-label="Name" />
+        <Textarea aria-label="Description" />
+      </FieldGroupProvider>,
+    )
+
+    expect(screen.getByRole('textbox', { name: 'Name' })).toHaveAttribute('readonly')
+    expect(screen.getByRole('textbox', { name: 'Description' })).toHaveAttribute('readonly')
+  })
+
+  it('applies inherited size to CheckboxWithLabel', () => {
+    render(
+      <FieldGroupProvider value={{ size: 'md' }}>
+        <CheckboxWithLabel label="Subscribe" />
+      </FieldGroupProvider>,
+    )
+
+    expect(screen.getByRole('checkbox', { name: 'Subscribe' })).toHaveClass(checkboxSizeVariants.md)
   })
 
   it('does not inject FieldGroup defaults into wrapped controls outside a provider', () => {
@@ -89,6 +118,7 @@ describe('FieldGroup inheritance', () => {
     expect(control).toHaveAttribute('data-radius', 'unset')
     expect(control).toHaveAttribute('data-variant', 'unset')
     expect(control).toHaveAttribute('data-disabled', 'unset')
+    expect(control).toHaveAttribute('data-read-only', 'unset')
   })
 
   it('preserves direct props on wrapped controls outside a provider', () => {
@@ -99,11 +129,12 @@ describe('FieldGroup inheritance', () => {
     expect(control).toHaveAttribute('data-radius', 'sm')
     expect(control).toHaveAttribute('data-variant', 'ghost')
     expect(control).toHaveAttribute('data-disabled', 'true')
+    expect(control).toHaveAttribute('data-read-only', 'unset')
   })
 
   it('injects resolved values into wrapped controls inside a provider', () => {
     render(
-      <FieldGroupProvider value={{ size: 'lg', radius: 'lg', variant: 'soft', disabled: true }}>
+      <FieldGroupProvider value={{ size: 'lg', radius: 'lg', variant: 'soft', disabled: true, readOnly: true }}>
         <FieldGroupDemoControl label="wrapped-inside" />
       </FieldGroupProvider>,
     )
@@ -113,12 +144,20 @@ describe('FieldGroup inheritance', () => {
     expect(control).toHaveAttribute('data-radius', 'lg')
     expect(control).toHaveAttribute('data-variant', 'soft')
     expect(control).toHaveAttribute('data-disabled', 'true')
+    expect(control).toHaveAttribute('data-read-only', 'true')
   })
 
-  it('keeps direct props ahead of provider values while preserving inherited disabled', () => {
+  it('keeps direct props ahead of provider values while preserving inherited disabled and readOnly', () => {
     render(
-      <FieldGroupProvider value={{ size: 'lg', radius: 'lg', variant: 'soft', disabled: true }}>
-        <FieldGroupDemoControl label="wrapped-override" size="sm" radius="sm" variant="ghost" disabled={false} />
+      <FieldGroupProvider value={{ size: 'lg', radius: 'lg', variant: 'soft', disabled: true, readOnly: true }}>
+        <FieldGroupDemoControl
+          label="wrapped-override"
+          size="sm"
+          radius="sm"
+          variant="ghost"
+          disabled={false}
+          readOnly={false}
+        />
       </FieldGroupProvider>,
     )
 
@@ -127,5 +166,6 @@ describe('FieldGroup inheritance', () => {
     expect(control).toHaveAttribute('data-radius', 'sm')
     expect(control).toHaveAttribute('data-variant', 'ghost')
     expect(control).toHaveAttribute('data-disabled', 'true')
+    expect(control).toHaveAttribute('data-read-only', 'true')
   })
 })

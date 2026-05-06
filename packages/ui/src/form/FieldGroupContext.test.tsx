@@ -27,7 +27,14 @@ describe('FieldGroupContext', () => {
     )
 
     expect(screen.getByTestId('field-group-value')).toHaveTextContent(
-      JSON.stringify({ size: 'lg', radius: 'lg', variant: 'soft', layout: 'stacked', disabled: false }),
+      JSON.stringify({
+        size: 'lg',
+        radius: 'lg',
+        variant: 'soft',
+        layout: 'stacked',
+        disabled: false,
+        readOnly: false,
+      }),
     )
   })
 
@@ -35,7 +42,7 @@ describe('FieldGroupContext', () => {
     render(<ReadFieldGroup />)
 
     expect(screen.getByTestId('field-group-value')).toHaveTextContent(
-      JSON.stringify({ size: 'md', variant: 'outline', layout: 'stacked', disabled: false }),
+      JSON.stringify({ size: 'md', variant: 'outline', layout: 'stacked', disabled: false, readOnly: false }),
     )
   })
 
@@ -53,21 +60,28 @@ describe('FieldGroupContext', () => {
     )
 
     expect(screen.getByTestId('field-group-optional')).toHaveTextContent(
-      JSON.stringify({ size: 'md', variant: 'outline', layout: 'grid', disabled: false }),
+      JSON.stringify({ size: 'md', variant: 'outline', layout: 'grid', disabled: false, readOnly: false }),
     )
   })
 
-  it('inherits disabled from parent providers', () => {
+  it('inherits disabled and readOnly from parent providers', () => {
     render(
-      <FieldGroupProvider value={{ radius: 'full', disabled: true }}>
-        <FieldGroupProvider value={{ layout: 'grid', disabled: false }}>
+      <FieldGroupProvider value={{ radius: 'full', disabled: true, readOnly: true }}>
+        <FieldGroupProvider value={{ layout: 'grid', disabled: false, readOnly: false }}>
           <ReadFieldGroup />
         </FieldGroupProvider>
       </FieldGroupProvider>,
     )
 
     expect(screen.getByTestId('field-group-value')).toHaveTextContent(
-      JSON.stringify({ size: 'md', radius: 'full', variant: 'outline', layout: 'grid', disabled: true }),
+      JSON.stringify({
+        size: 'md',
+        radius: 'full',
+        variant: 'outline',
+        layout: 'grid',
+        disabled: true,
+        readOnly: true,
+      }),
     )
   })
 })

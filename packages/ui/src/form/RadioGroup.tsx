@@ -95,7 +95,13 @@ const RadioGroupRoot = React.forwardRef<HTMLDivElement, RadioGroupRootProps>(
 
     return (
       <RadioGroupContext.Provider
-        value={{ size, variant: safeVariant, color: safeColor, highContrast: safeHighContrast, disabled: effectiveDisabled }}
+        value={{
+          size,
+          variant: safeVariant,
+          color: safeColor,
+          highContrast: safeHighContrast,
+          disabled: effectiveDisabled,
+        }}
       >
         <RadioGroupPrimitive
           ref={ref}

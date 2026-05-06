@@ -191,7 +191,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
     const resolvedInputVariant = inputVariant ?? fieldGroup.variant
     const radius = radiusProp ?? fieldGroup.radius
     const effectiveDisabled = disabled || fieldGroup.disabled
-    const effectiveReadOnly = readOnly === true
+    const effectiveReadOnly = readOnly === true || fieldGroup.readOnly
     const isControlled = value !== undefined
     const [uncontrolledValue, setUncontrolledValue] = React.useState<number | ''>(defaultValue)
     const currentValue = isControlled ? value : uncontrolledValue

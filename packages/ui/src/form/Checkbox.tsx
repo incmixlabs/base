@@ -19,7 +19,7 @@ import {
 } from './checkbox.css'
 import type { CheckboxProps, CheckboxSize, CheckboxWithLabelProps } from './checkbox.props'
 import { checkboxPropDefs } from './checkbox.props'
-import { useFieldGroup } from './FieldGroupContext'
+import { useFieldGroup, useFieldGroupOptional } from './FieldGroupContext'
 import { resolveFormSize } from './form-size'
 import { Label } from './Label'
 
@@ -144,17 +144,18 @@ export {
 
 /** CheckboxWithLabel export. */
 export const CheckboxWithLabel = React.forwardRef<HTMLButtonElement, CheckboxWithLabelProps>(
-  ({ label, description, id, size = 'sm', className, ...props }, ref) => {
-    const fieldGroup = useFieldGroup()
+  ({ label, description, id, size, className, ...props }, ref) => {
+    const fieldGroup = useFieldGroupOptional()
     const generatedId = React.useId()
     const checkboxId = id || generatedId
-    const effectiveDisabled = props.disabled || fieldGroup.disabled
+    const effectiveSize = resolveFormSize(size ?? fieldGroup?.size ?? 'sm')
+    const effectiveDisabled = props.disabled || fieldGroup?.disabled === true
 
     return (
       <Row align="start" gap="2" className={className}>
-        <Checkbox ref={ref} id={checkboxId} size={size} {...props} />
+        <Checkbox ref={ref} id={checkboxId} size={effectiveSize} {...props} />
         <Column>
-          <Label htmlFor={checkboxId} size={size} disabled={effectiveDisabled}>
+          <Label htmlFor={checkboxId} size={effectiveSize} disabled={effectiveDisabled}>
             {label}
           </Label>
           {description && (
