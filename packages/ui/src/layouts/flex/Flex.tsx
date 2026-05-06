@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { resolveSpacingValue } from '@/theme/helpers'
+import { gapResponsiveClasses, gapResponsiveVars } from '@/theme/helpers/gap-responsive.css'
 import {
   type AlignItems,
   type Display,
@@ -45,6 +46,62 @@ import { flexPropDefs } from './flex.props'
 
 type FlexDisplay = 'none' | 'flex' | 'inline-flex'
 type FlexJustify = 'start' | 'center' | 'end' | 'between'
+const responsiveValueKeys = ['initial', 'xs', 'sm', 'md', 'lg', 'xl'] as const
+
+type ResponsiveValueKey = (typeof responsiveValueKeys)[number]
+type GapProperty = 'gap' | 'gapX' | 'gapY'
+type GapCssProperty = 'gap' | 'columnGap' | 'rowGap'
+
+function isResponsiveValue<T>(value: Responsive<T> | undefined): value is Partial<Record<ResponsiveValueKey, T>> {
+  return !!value && typeof value === 'object'
+}
+
+function hasCustomResponsiveSpacingValue(prop: Responsive<Spacing | string> | undefined): boolean {
+  if (!isResponsiveValue(prop)) return false
+
+  return responsiveValueKeys.some(key => {
+    const value = prop[key]
+    return !!value && !isSpacingValue(value)
+  })
+}
+
+function getResponsiveSpacingClasses(
+  prop: Responsive<Spacing | string> | undefined,
+  prefix: 'gap' | 'gap-x' | 'gap-y',
+  gapProperty: GapProperty,
+): string {
+  if (hasCustomResponsiveSpacingValue(prop)) return gapResponsiveClasses[gapProperty]
+  if (typeof prop !== 'string') return getSpacingClasses(filterResponsiveTokenValues(prop, isSpacingValue), prefix)
+  return ''
+}
+
+function assignStyleValue(style: React.CSSProperties, property: string, value: string) {
+  const customPropertyName = property.startsWith('var(') ? property.slice(4, -1) : property
+  ;(style as Record<string, string>)[customPropertyName] = value
+}
+
+function assignResponsiveSpacingStyles(
+  styles: React.CSSProperties,
+  prop: Responsive<Spacing | string> | undefined,
+  cssProperty: GapCssProperty,
+  gapProperty: GapProperty,
+) {
+  if (typeof prop === 'string') {
+    styles[cssProperty] = resolveSpacingValue(prop, spacingToPixels)
+    return
+  }
+
+  if (!isResponsiveValue(prop) || !hasCustomResponsiveSpacingValue(prop)) return
+
+  let inheritedValue: string | undefined
+  for (const breakpoint of responsiveValueKeys) {
+    const value = prop[breakpoint]
+    inheritedValue = value !== undefined ? resolveSpacingValue(value, spacingToPixels) : inheritedValue
+
+    const variableName = gapResponsiveVars[gapProperty][breakpoint]
+    if (inheritedValue !== undefined) assignStyleValue(styles, variableName, inheritedValue)
+  }
+}
 
 export interface FlexOwnProps extends SharedLayoutProps {
   /** Render as a different element */
@@ -220,24 +277,21 @@ export const Flex = React.forwardRef<HTMLElement, FlexProps>(
       typeof resolvedAlign !== 'string' ? getAlignItemsClasses(resolvedAlign) : '',
       typeof resolvedJustify === 'string' ? flexByJustify[resolvedJustify] : '',
       typeof resolvedJustify !== 'string' ? getJustifyContentClasses(resolvedJustify) : '',
-      typeof resolvedGap === 'string'
-        ? ''
-        : getSpacingClasses(filterResponsiveTokenValues(resolvedGap, isSpacingValue), 'gap'),
-      typeof resolvedGapX === 'string'
-        ? ''
-        : getSpacingClasses(filterResponsiveTokenValues(resolvedGapX, isSpacingValue), 'gap-x'),
-      typeof resolvedGapY === 'string'
-        ? ''
-        : getSpacingClasses(filterResponsiveTokenValues(resolvedGapY, isSpacingValue), 'gap-y'),
+      getResponsiveSpacingClasses(resolvedGap, 'gap', 'gap'),
+      getResponsiveSpacingClasses(resolvedGapX, 'gap-x', 'gapX'),
+      getResponsiveSpacingClasses(resolvedGapY, 'gap-y', 'gapY'),
       borderColor && !hasBorderWidthUtility(effectiveClassName) && 'border',
       getSharedLayoutClasses(sharedLayoutProps),
       className,
     )
 
+    const flexStyles: React.CSSProperties = {}
+    assignResponsiveSpacingStyles(flexStyles, resolvedGap, 'gap', 'gap')
+    assignResponsiveSpacingStyles(flexStyles, resolvedGapX, 'columnGap', 'gapX')
+    assignResponsiveSpacingStyles(flexStyles, resolvedGapY, 'rowGap', 'gapY')
+
     const styles: React.CSSProperties = {
-      ...(typeof resolvedGap === 'string' && { gap: resolveSpacingValue(resolvedGap, spacingToPixels) }),
-      ...(typeof resolvedGapX === 'string' && { columnGap: resolveSpacingValue(resolvedGapX, spacingToPixels) }),
-      ...(typeof resolvedGapY === 'string' && { rowGap: resolveSpacingValue(resolvedGapY, spacingToPixels) }),
+      ...flexStyles,
       ...getSharedLayoutStyles(sharedLayoutProps),
       ...style,
     }
