@@ -16,6 +16,12 @@ const accentColorOptions = accentColors.map(value => ({
   swatchColor: `var(--${value}-9, var(--color-accent-primary))`,
 }))
 
+const accentColorValues: readonly string[] = accentColors
+
+function isAccentColor(value: string): value is AccentColor {
+  return accentColorValues.includes(value)
+}
+
 export interface ThemePanelProps extends React.HTMLAttributes<HTMLDivElement> {
   pickerSize?: 'sm' | 'md' | 'lg'
   showHeading?: boolean
@@ -41,7 +47,11 @@ export function ThemePanel({ className, pickerSize = 'sm', showHeading = true, .
         value={theme.accentColor}
         options={accentColorOptions}
         size={pickerSize}
-        onChange={value => theme.onAccentColorChange(value as AccentColor)}
+        onChange={value => {
+          if (isAccentColor(value)) {
+            theme.onAccentColorChange(value)
+          }
+        }}
       />
     </Flex>
   )
