@@ -27,6 +27,12 @@ describe('PhoneInput', () => {
     expect(input).toHaveClass(surfaceClass(textFieldColorVariants.slate.soft))
   })
 
+  it('keeps the accessible field name independent from custom placeholder examples', () => {
+    render(<PhoneInput phonePlaceholder="(555) 123-4567" />)
+
+    expect(screen.getByRole('textbox', { name: 'Phone number' })).toHaveAttribute('placeholder', '(555) 123-4567')
+  })
+
   it('applies disabled and error state to the TextField input and country selector', () => {
     render(<PhoneInput disabled error />)
 

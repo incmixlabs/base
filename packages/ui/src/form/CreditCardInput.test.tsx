@@ -14,9 +14,26 @@ describe('CreditCardInput', () => {
     render(<CreditCardInput showName />)
 
     expect(screen.getByRole('textbox', { name: 'Card number' })).toHaveAttribute('autocomplete', 'cc-number')
-    expect(screen.getByRole('textbox', { name: 'MM/YY' })).toHaveAttribute('autocomplete', 'cc-exp')
-    expect(screen.getByRole('textbox', { name: 'CVV' })).toHaveAttribute('autocomplete', 'cc-csc')
+    expect(screen.getByRole('textbox', { name: 'Expiration date' })).toHaveAttribute('autocomplete', 'cc-exp')
+    expect(screen.getByRole('textbox', { name: 'Security code' })).toHaveAttribute('autocomplete', 'cc-csc')
     expect(screen.getByRole('textbox', { name: 'Name on card' })).toHaveAttribute('autocomplete', 'cc-name')
+  })
+
+  it('keeps accessible field names independent from custom placeholder examples', () => {
+    render(
+      <CreditCardInput
+        showName
+        numberPlaceholder="1234 5678 9012 3456"
+        expiryPlaceholder="01/30"
+        cvvPlaceholder="123"
+        namePlaceholder="JOHN DOE"
+      />,
+    )
+
+    expect(screen.getByRole('textbox', { name: 'Card number' })).toHaveAttribute('placeholder', '1234 5678 9012 3456')
+    expect(screen.getByRole('textbox', { name: 'Expiration date' })).toHaveAttribute('placeholder', '01/30')
+    expect(screen.getByRole('textbox', { name: 'Security code' })).toHaveAttribute('placeholder', '123')
+    expect(screen.getByRole('textbox', { name: 'Name on card' })).toHaveAttribute('placeholder', 'JOHN DOE')
   })
 
   it('uses TextField size and variant classes', () => {

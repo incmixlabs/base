@@ -1,9 +1,13 @@
 import '@testing-library/jest-dom/vitest'
-import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { cleanup, render, screen } from '@testing-library/react'
+import { afterEach, describe, expect, it } from 'vitest'
 import { Theme } from '@/theme/ThemeProvider'
 import { designTokens } from '@/theme/tokens'
 import { TextField } from './TextField'
+
+afterEach(() => {
+  cleanup()
+})
 
 describe('TextField', () => {
   it('uses the ThemeProvider radius for regular inputs', () => {
@@ -26,5 +30,11 @@ describe('TextField', () => {
 
     const input = screen.getByRole('textbox', { name: 'Email' })
     expect(input.closest('div')).toHaveStyle({ '--element-border-radius': designTokens.radius.lg })
+  })
+
+  it('exposes invalid state for floating inputs', () => {
+    render(<TextField aria-label="Email" variant="floating-outlined" label="Email" error />)
+
+    expect(screen.getByRole('textbox', { name: 'Email' })).toHaveAttribute('aria-invalid', 'true')
   })
 })

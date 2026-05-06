@@ -219,6 +219,13 @@ function validateCardNumber(number: string): boolean {
 // Main Component
 // ============================================================================
 
+const fieldLabels = {
+  number: 'Card number',
+  expiry: 'Expiration date',
+  cvv: 'Security code',
+  name: 'Name on card',
+} as const
+
 /** CreditCardInput export. */
 export const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputProps>(
   (
@@ -351,7 +358,7 @@ export const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputP
           value={cardNumber}
           onChange={handleNumberChange}
           placeholder={numberPlaceholder}
-          aria-label={numberPlaceholder}
+          aria-label={fieldLabels.number}
           maxLength={19}
           autoComplete="cc-number"
           leftElement={<CardTypeIcon type={cardType} />}
@@ -365,7 +372,7 @@ export const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputP
             value={expiry}
             onChange={handleExpiryChange}
             placeholder={expiryPlaceholder}
-            aria-label={expiryPlaceholder}
+            aria-label={fieldLabels.expiry}
             maxLength={5}
             autoComplete="cc-exp"
             className="flex-1"
@@ -378,7 +385,7 @@ export const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputP
             value={cvv}
             onChange={handleCvvChange}
             placeholder={cvvPlaceholder}
-            aria-label={cvvPlaceholder}
+            aria-label={fieldLabels.cvv}
             maxLength={4}
             autoComplete="cc-csc"
             className="flex-1"
@@ -393,7 +400,7 @@ export const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputP
             value={name}
             onChange={handleNameChange}
             placeholder={namePlaceholder}
-            aria-label={namePlaceholder}
+            aria-label={fieldLabels.name}
             autoComplete="cc-name"
           />
         )}

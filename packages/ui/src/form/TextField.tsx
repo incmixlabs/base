@@ -128,6 +128,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             id={inputId}
             placeholder=" "
             disabled={disabled}
+            aria-invalid={error || undefined}
             className={cn(
               textFieldInputBaseCls,
               'peer',
