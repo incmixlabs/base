@@ -28,6 +28,7 @@ export interface SelectProps
   onValueChange?: (value: string) => void
   portalContainer?: HTMLElement | null
   disabled?: boolean
+  readOnly?: boolean
   children: React.ReactNode
 }
 
@@ -41,6 +42,7 @@ const selectRootPropDefs = {
   onOpenChange: { type: 'callback', typeFullName: '(open: boolean) => void' },
   onValueChange: { type: 'callback', typeFullName: '(value: string) => void' },
   disabled: { type: 'boolean', default: false },
+  readOnly: { type: 'boolean', default: false },
 } satisfies {
   size: PropDef<(typeof formSizes)[number]>
   value: PropDef<string>
@@ -49,6 +51,7 @@ const selectRootPropDefs = {
   onOpenChange: PropDef<(open: boolean) => void>
   onValueChange: PropDef<(value: string) => void>
   disabled: PropDef<boolean>
+  readOnly: PropDef<boolean>
 }
 
 const triggerVariants = textFieldTokens.variant

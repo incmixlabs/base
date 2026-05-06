@@ -73,17 +73,24 @@ const CheckboxGroupRoot = React.forwardRef<HTMLDivElement, CheckboxGroupRootProp
     const safeOrientation =
       normalizeEnumPropValue(checkboxGroupRootPropDefs.orientation, orientation) ??
       checkboxGroupRootPropDefs.orientation.default
+    const effectiveDisabled = safeDisabled || fieldGroup.disabled
 
     return (
       <CheckboxGroupContext.Provider
-        value={{ size, variant: safeVariant, color: safeColor, highContrast: safeHighContrast, disabled: safeDisabled }}
+        value={{
+          size,
+          variant: safeVariant,
+          color: safeColor,
+          highContrast: safeHighContrast,
+          disabled: effectiveDisabled,
+        }}
       >
         <CheckboxGroupPrimitive
           ref={ref}
           value={value}
           defaultValue={defaultValue}
           onValueChange={onValueChange}
-          disabled={safeDisabled}
+          disabled={effectiveDisabled}
           className={cn(checkboxGroupRootBase, checkboxGroupRootOrientation[safeOrientation], className)}
           {...props}
         >

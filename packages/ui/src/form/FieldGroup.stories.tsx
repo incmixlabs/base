@@ -66,6 +66,11 @@ const meta: Meta<typeof FieldGroup> = {
       options: ['start', 'center', 'end', 'baseline', 'stretch'],
       description: 'Alignment for inline layout',
     },
+    disabled: {
+      control: 'boolean',
+      description: 'Disables all child form fields',
+      table: { defaultValue: { summary: 'false' } },
+    },
   },
 }
 

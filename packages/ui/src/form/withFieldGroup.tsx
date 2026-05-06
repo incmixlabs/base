@@ -1,18 +1,23 @@
 'use client'
 
 import * as React from 'react'
-import type { Size } from '@/theme/tokens'
+import type { Radius, Size } from '@/theme/tokens'
 import { useFieldGroupOptional } from './FieldGroupContext'
 import type { TextFieldVariant } from './TextField'
 
 interface FieldGroupAwareProps {
   size?: Size
+  radius?: Radius
   variant?: TextFieldVariant
+  disabled?: boolean
+  readOnly?: boolean
 }
 
 /**
  * HOC that injects FieldGroup context values into wrapped components.
- * Props passed directly to the component take precedence over context values.
+ * Props passed directly to the component take precedence over context values,
+ * except `disabled` and `readOnly`, which are merged as
+ * `fieldGroup.value || props.value === true`.
  * Outside a FieldGroupProvider, props pass through without injected defaults.
  *
  * @example
@@ -38,7 +43,10 @@ export function withFieldGroup<P extends FieldGroupAwareProps>(WrappedComponent:
       ...(fieldGroup
         ? {
             size: props.size ?? fieldGroup.size,
+            radius: props.radius ?? fieldGroup.radius,
             variant: props.variant ?? fieldGroup.variant,
+            disabled: fieldGroup.disabled || props.disabled === true,
+            readOnly: fieldGroup.readOnly || props.readOnly === true,
           }
         : {}),
       ref,

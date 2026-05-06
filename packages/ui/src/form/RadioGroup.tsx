@@ -81,6 +81,7 @@ const RadioGroupRoot = React.forwardRef<HTMLDivElement, RadioGroupRootProps>(
     const safeOrientation =
       normalizeEnumPropValue(radioGroupRootPropDefs.orientation, orientation) ??
       radioGroupRootPropDefs.orientation.default
+    const effectiveDisabled = safeDisabled || fieldGroup.disabled
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
 
     const handleValueChange = React.useCallback(
@@ -94,14 +95,20 @@ const RadioGroupRoot = React.forwardRef<HTMLDivElement, RadioGroupRootProps>(
 
     return (
       <RadioGroupContext.Provider
-        value={{ size, variant: safeVariant, color: safeColor, highContrast: safeHighContrast, disabled: safeDisabled }}
+        value={{
+          size,
+          variant: safeVariant,
+          color: safeColor,
+          highContrast: safeHighContrast,
+          disabled: effectiveDisabled,
+        }}
       >
         <RadioGroupPrimitive
           ref={ref}
           value={value}
           defaultValue={defaultValue}
           onValueChange={handleValueChange}
-          disabled={safeDisabled}
+          disabled={effectiveDisabled}
           className={cn('flex', radioGroupRootOrientation[safeOrientation], marginProps.className, className)}
           style={{ ...marginProps.style, ...style }}
           {...props}

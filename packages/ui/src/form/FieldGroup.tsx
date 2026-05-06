@@ -10,6 +10,7 @@ import type {
   AlignItems,
   FieldGroupLayout,
   GridColumns,
+  Radius,
   Responsive,
   Size,
   Spacing,
@@ -25,8 +26,14 @@ import { FieldGroupProvider } from './FieldGroupContext'
 export interface FieldGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Size to apply to all child form fields */
   size?: Size
+  /** Border radius to apply to child form fields */
+  radius?: Radius
   /** Variant to apply to all child form fields */
   variant?: TextFieldVariant
+  /** Whether child form fields should be disabled */
+  disabled?: boolean
+  /** Whether child form fields should be read-only */
+  readOnly?: boolean
   /** Gap between child elements */
   gap?: Spacing
   /** Layout mode */
@@ -40,11 +47,32 @@ export interface FieldGroupProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const FieldGroupRoot = React.forwardRef<HTMLDivElement, FieldGroupProps>(
-  ({ size, variant, gap = '4', layout = 'stacked', columns = '2', align, className, children, ...props }, ref) => {
+  (
+    {
+      size,
+      radius,
+      variant,
+      disabled,
+      readOnly,
+      gap = '4',
+      layout = 'stacked',
+      columns = '2',
+      align,
+      className,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
+    const providerValue = React.useMemo(
+      () => ({ size, radius, variant, layout, disabled, readOnly }),
+      [disabled, layout, radius, readOnly, size, variant],
+    )
+
     // Stacked layout - vertical flex column (default)
     if (layout === 'stacked') {
       return (
-        <FieldGroupProvider value={{ size, variant, layout }}>
+        <FieldGroupProvider value={providerValue}>
           <Flex ref={ref} direction="column" gap={gap} className={className} {...props}>
             {children}
           </Flex>
@@ -55,7 +83,7 @@ const FieldGroupRoot = React.forwardRef<HTMLDivElement, FieldGroupProps>(
     // Inline layout - horizontal flex row
     if (layout === 'inline') {
       return (
-        <FieldGroupProvider value={{ size, variant, layout }}>
+        <FieldGroupProvider value={providerValue}>
           <Flex ref={ref} direction="row" wrap="wrap" align={align || 'end'} gap={gap} className={className} {...props}>
             {children}
           </Flex>
@@ -66,7 +94,7 @@ const FieldGroupRoot = React.forwardRef<HTMLDivElement, FieldGroupProps>(
     // Grid layout
     if (layout === 'grid') {
       return (
-        <FieldGroupProvider value={{ size, variant, layout }}>
+        <FieldGroupProvider value={providerValue}>
           <Grid ref={ref} columns={columns} gap={gap} className={className} {...props}>
             {children}
           </Grid>
@@ -77,7 +105,7 @@ const FieldGroupRoot = React.forwardRef<HTMLDivElement, FieldGroupProps>(
     // Side-labels layout - vertical stack of self-contained rows
     if (layout === 'side-labels') {
       return (
-        <FieldGroupProvider value={{ size, variant, layout }}>
+        <FieldGroupProvider value={providerValue}>
           <Flex ref={ref} direction="column" gap={gap} className={cn(fieldGroupSideLabelsBase, className)} {...props}>
             {children}
           </Flex>
@@ -88,7 +116,7 @@ const FieldGroupRoot = React.forwardRef<HTMLDivElement, FieldGroupProps>(
     // Sectioned layout - vertical flex with sections
     if (layout === 'sectioned') {
       return (
-        <FieldGroupProvider value={{ size, variant, layout }}>
+        <FieldGroupProvider value={providerValue}>
           <Flex ref={ref} direction="column" className={className} {...props}>
             {children}
           </Flex>
@@ -98,7 +126,7 @@ const FieldGroupRoot = React.forwardRef<HTMLDivElement, FieldGroupProps>(
 
     // Fallback to stacked
     return (
-      <FieldGroupProvider value={{ size, variant, layout }}>
+      <FieldGroupProvider value={providerValue}>
         <Flex ref={ref} direction="column" gap={gap} className={className} {...props}>
           {children}
         </Flex>

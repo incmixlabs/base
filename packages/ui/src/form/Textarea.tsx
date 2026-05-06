@@ -42,6 +42,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       className,
       style,
       disabled,
+      readOnly,
       id,
       m,
       mx,
@@ -58,8 +59,10 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     const fieldGroup = useFieldGroup()
     const size = (sizeProp ?? fieldGroup.size) as ExtendedFormSize
     const variant = variantProp ?? fieldGroup.variant
+    const effectiveDisabled = disabled || fieldGroup.disabled
+    const effectiveReadOnly = readOnly === true || fieldGroup.readOnly
 
-    const radius = useThemeRadius(radiusProp)
+    const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
     const radiusStyles = getRadiusStyles(radius)
     const generatedId = React.useId()
     const textareaId = id || generatedId
@@ -113,7 +116,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             ref={ref}
             id={textareaId}
             placeholder=" "
-            disabled={disabled}
+            disabled={effectiveDisabled}
+            readOnly={effectiveReadOnly}
             aria-invalid={error || undefined}
             style={style as React.CSSProperties & { height?: number }}
             className={cn(
@@ -165,7 +169,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       'border',
       resizeClass,
       textFieldColorVariants[effectiveColor]?.[surfaceVariant],
-      disabled && 'opacity-50 cursor-not-allowed',
+      effectiveDisabled && 'opacity-50 cursor-not-allowed',
     )
 
     const control = autoSize ? (
@@ -175,7 +179,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         aria-invalid={error || undefined}
         className={cn(textFieldRootCls, textFieldSizeVariants[size], regularClasses)}
         style={combinedStyles as React.CSSProperties & { height?: number }}
-        disabled={disabled}
+        disabled={effectiveDisabled}
+        readOnly={effectiveReadOnly}
         placeholder={placeholder}
         minRows={minRows}
         maxRows={maxRows}
@@ -188,7 +193,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         aria-invalid={error || undefined}
         className={cn(textFieldRootCls, textFieldSizeVariants[size], regularClasses)}
         style={combinedStyles}
-        disabled={disabled}
+        disabled={effectiveDisabled}
+        readOnly={effectiveReadOnly}
         placeholder={placeholder}
         {...textareaProps}
       />
@@ -204,7 +210,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     return (
       <div className={cn('grid gap-1.5', marginProps.className, className)} style={marginProps.style}>
-        <Label htmlFor={textareaId} disabled={disabled} color={error ? SemanticColor.error : undefined}>
+        <Label htmlFor={textareaId} disabled={effectiveDisabled} color={error ? SemanticColor.error : undefined}>
           {label}
         </Label>
         {control}

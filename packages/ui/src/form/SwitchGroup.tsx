@@ -66,7 +66,7 @@ const SwitchGroupRoot = React.forwardRef<HTMLDivElement, SwitchGroupRootProps>(
       size: sizeProp,
       variant = 'surface',
       color = SemanticColor.primary,
-      radius = 'full',
+      radius: radiusProp,
       value: controlledValue,
       defaultValue = [],
       onValueChange,
@@ -80,6 +80,8 @@ const SwitchGroupRoot = React.forwardRef<HTMLDivElement, SwitchGroupRootProps>(
   ) => {
     const fieldGroup = useFieldGroup()
     const size = resolveFormSize(sizeProp ?? fieldGroup.size)
+    const radius = radiusProp ?? fieldGroup.radius ?? 'full'
+    const effectiveDisabled = disabled || fieldGroup.disabled
 
     const [internalValue, setInternalValue] = React.useState<string[]>(defaultValue)
     const isControlled = controlledValue !== undefined
@@ -99,7 +101,7 @@ const SwitchGroupRoot = React.forwardRef<HTMLDivElement, SwitchGroupRootProps>(
 
     return (
       <SwitchGroupContext.Provider
-        value={{ size, variant, color, radius, disabled, values, onValueChange: handleValueChange }}
+        value={{ size, variant, color, radius, disabled: effectiveDisabled, values, onValueChange: handleValueChange }}
       >
         <div
           ref={ref}

@@ -19,7 +19,7 @@ import {
 } from './checkbox.css'
 import type { CheckboxProps, CheckboxSize, CheckboxWithLabelProps } from './checkbox.props'
 import { checkboxPropDefs } from './checkbox.props'
-import { useFieldGroup } from './FieldGroupContext'
+import { useFieldGroup, useFieldGroupOptional } from './FieldGroupContext'
 import { resolveFormSize } from './form-size'
 import { Label } from './Label'
 
@@ -55,6 +55,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
     const safeVariant = normalizeEnumPropValue(checkboxPropDefs.variant, variant) ?? checkboxPropDefs.variant.default
     const safeColor = normalizeEnumPropValue(checkboxPropDefs.color, color) ?? SemanticColor.slate
     const safeHighContrast = normalizeBooleanPropValue(checkboxPropDefs.highContrast, highContrast) ?? false
+    const effectiveDisabled = disabled || fieldGroup.disabled
 
     const isControlled = checkedProp !== undefined
     const [uncontrolledChecked, setUncontrolledChecked] = React.useState(defaultChecked ?? false)
@@ -75,7 +76,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
         {...(isControlled ? { checked: checkedProp } : { defaultChecked })}
         onCheckedChange={handleCheckedChange}
         indeterminate={indeterminate}
-        disabled={disabled}
+        disabled={effectiveDisabled}
         required={required}
         name={name}
         value={value}
@@ -143,15 +144,18 @@ export {
 
 /** CheckboxWithLabel export. */
 export const CheckboxWithLabel = React.forwardRef<HTMLButtonElement, CheckboxWithLabelProps>(
-  ({ label, description, id, size = 'sm', className, ...props }, ref) => {
+  ({ label, description, id, size, className, ...props }, ref) => {
+    const fieldGroup = useFieldGroupOptional()
     const generatedId = React.useId()
     const checkboxId = id || generatedId
+    const effectiveSize = resolveFormSize(size ?? fieldGroup?.size ?? 'sm')
+    const effectiveDisabled = props.disabled || fieldGroup?.disabled === true
 
     return (
       <Row align="start" gap="2" className={className}>
-        <Checkbox ref={ref} id={checkboxId} size={size} {...props} />
+        <Checkbox ref={ref} id={checkboxId} size={effectiveSize} {...props} />
         <Column>
-          <Label htmlFor={checkboxId} size={size} disabled={props.disabled}>
+          <Label htmlFor={checkboxId} size={effectiveSize} disabled={effectiveDisabled}>
             {label}
           </Label>
           {description && (

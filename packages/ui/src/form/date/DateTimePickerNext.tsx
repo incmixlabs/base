@@ -116,7 +116,8 @@ export function DateTimePickerNext({
   const size: DateNextSize = isDateNextSize(inheritedSize) ? inheritedSize : 'md'
   const variant = variantProp ?? fieldGroup.variant
   const floatingStyle = getFloatingStyle(variant)
-  const radius = useThemeRadius(radiusProp)
+  const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
+  const effectiveIsDisabled = isDisabled || fieldGroup.disabled
   const buttonSize = buttonSizeByDateNextSize[size]
   const textFieldSize: TextFieldSize = size === 'xl' ? 'lg' : size
   const minuteStep = useMemo(() => normalizeMinuteStep(rawMinuteStep), [rawMinuteStep])
@@ -155,12 +156,26 @@ export function DateTimePickerNext({
     if (!isOpen) setShowTimePicker(false)
   }, [isOpen])
 
+  useEffect(() => {
+    if (effectiveIsDisabled) {
+      setShowTimePicker(false)
+      setIsOpen(false)
+    }
+  }, [effectiveIsDisabled])
+
   const openTimePicker = useCallback(() => {
+    if (effectiveIsDisabled) return
     timeSnapshotRef.current = { hours, minutes, seconds }
     setShowTimePicker(true)
-  }, [hours, minutes, seconds])
+  }, [effectiveIsDisabled, hours, minutes, seconds])
 
   const cancelTimePicker = useCallback(() => {
+    if (effectiveIsDisabled) {
+      setShowTimePicker(false)
+      setIsOpen(false)
+      return
+    }
+
     const snap = timeSnapshotRef.current
     setHoursState(snap.hours)
     setMinutesState(snap.minutes)
@@ -174,7 +189,7 @@ export function DateTimePickerNext({
     }
     setShowTimePicker(false)
     clockTriggerRef.current?.focus()
-  }, [value, showSeconds, onChange])
+  }, [effectiveIsDisabled, value, showSeconds, onChange])
 
   /* ── Date selection ── */
   const unavailableDateKeys = useMemo(
@@ -188,22 +203,33 @@ export function DateTimePickerNext({
 
   const commitDate = useCallback(
     (date: Date) => {
+      if (effectiveIsDisabled) return
       let combined = setHours(date, hours)
       combined = setMinutes(combined, snapMinute(minutes, minuteStep))
       if (showSeconds) combined = setSeconds(combined, seconds)
       onChange?.(combined)
     },
-    [hours, minutes, seconds, showSeconds, onChange, minuteStep],
+    [effectiveIsDisabled, hours, minutes, seconds, showSeconds, onChange, minuteStep],
   )
 
   /* ── Time changes (local state only, no emit) ── */
-  const handleTimeChange = useCallback((type: 'hours' | 'minutes' | 'seconds', val: number) => {
-    if (type === 'hours') setHoursState(val)
-    if (type === 'minutes') setMinutesState(val)
-    if (type === 'seconds') setSecondsState(val)
-  }, [])
+  const handleTimeChange = useCallback(
+    (type: 'hours' | 'minutes' | 'seconds', val: number) => {
+      if (effectiveIsDisabled) return
+      if (type === 'hours') setHoursState(val)
+      if (type === 'minutes') setMinutesState(val)
+      if (type === 'seconds') setSecondsState(val)
+    },
+    [effectiveIsDisabled],
+  )
 
   const applyTimePicker = useCallback(() => {
+    if (effectiveIsDisabled) {
+      setShowTimePicker(false)
+      setIsOpen(false)
+      return
+    }
+
     if (value) {
       let newDate = setHours(new Date(value), hours)
       newDate = setMinutes(newDate, snapMinute(minutes, minuteStep))
@@ -212,7 +238,7 @@ export function DateTimePickerNext({
     }
     setShowTimePicker(false)
     clockTriggerRef.current?.focus()
-  }, [value, hours, minutes, seconds, minuteStep, showSeconds, onChange])
+  }, [effectiveIsDisabled, value, hours, minutes, seconds, minuteStep, showSeconds, onChange])
 
   /* ── Options ── */
   const hourOptions = useMemo(() => buildHourOptions(), [])
@@ -252,9 +278,10 @@ export function DateTimePickerNext({
       minValue={toDateValue(minValue) ?? undefined}
       maxValue={toDateValue(maxValue) ?? undefined}
       isDateUnavailable={isDateUnavailable}
-      isDisabled={isDisabled}
+      isDisabled={effectiveIsDisabled}
       isOpen={isOpen}
       onOpenChange={nextOpen => {
+        if (effectiveIsDisabled && nextOpen) return
         setIsOpen(nextOpen)
         if (nextOpen) {
           setDisplayMonth(startOfMonth(value ?? new Date()))
@@ -318,7 +345,7 @@ export function DateTimePickerNext({
               minValue={minValue}
               maxValue={maxValue}
               disabledDates={disabledDates}
-              isDisabled={isDisabled}
+              isDisabled={effectiveIsDisabled}
               size={size}
               color={color}
               radius={radius}
@@ -333,6 +360,7 @@ export function DateTimePickerNext({
                 type="button"
                 variant="ghost"
                 size={buttonSize}
+                disabled={effectiveIsDisabled}
                 style={{ fontSize }}
                 aria-label="Open time picker"
                 aria-haspopup="dialog"
@@ -403,10 +431,22 @@ export function DateTimePickerNext({
                     )}
                   </WheelPickerWrapper>
                   <Flex align="center" justify="center" gap="2" className="border-t border-border" px="2" py="1">
-                    <Button type="button" variant="ghost" size={buttonSize} onClick={cancelTimePicker}>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size={buttonSize}
+                      disabled={effectiveIsDisabled}
+                      onClick={cancelTimePicker}
+                    >
                       Cancel
                     </Button>
-                    <Button type="button" variant="solid" size={buttonSize} onClick={applyTimePicker}>
+                    <Button
+                      type="button"
+                      variant="solid"
+                      size={buttonSize}
+                      disabled={effectiveIsDisabled}
+                      onClick={applyTimePicker}
+                    >
                       Apply
                     </Button>
                   </Flex>
@@ -422,7 +462,7 @@ export function DateTimePickerNext({
   return (
     <DateNextFieldWrapper
       label={label}
-      disabled={isDisabled}
+      disabled={effectiveIsDisabled}
       floatingStyle={floatingStyle}
       color={color}
       textFieldSize={textFieldSize}

@@ -99,7 +99,8 @@ export function DatePickerNext({
   const textFieldSize = size === 'xl' ? 'lg' : size
   const variant = variantProp ?? fieldGroup.variant
   const floatingStyle = getFloatingStyle(variant)
-  const radius = useThemeRadius(radiusProp)
+  const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
+  const effectiveIsDisabled = isDisabled || fieldGroup.disabled
   const generatedLabelId = useId()
   const labelId = label ? generatedLabelId : undefined
   const [uncontrolledValue, setUncontrolledValue] = useState<Date | undefined>(defaultValue)
@@ -193,7 +194,7 @@ export function DatePickerNext({
       minValue={minValue}
       maxValue={maxValue}
       disabledDates={disabledDates}
-      isDisabled={isDisabled}
+      isDisabled={effectiveIsDisabled}
       size={size}
       color={color}
       radius={radius}
@@ -208,7 +209,7 @@ export function DatePickerNext({
     return (
       <DateNextFieldWrapper
         label={label}
-        disabled={isDisabled}
+        disabled={effectiveIsDisabled}
         floatingStyle={null}
         color={color}
         textFieldSize={textFieldSize}
@@ -230,7 +231,7 @@ export function DatePickerNext({
               placeholder={placeholder}
               aria-label={label ? undefined : ariaLabel}
               aria-labelledby={labelId}
-              disabled={isDisabled}
+              disabled={effectiveIsDisabled}
               onChange={event => handleNaturalInputChange(event.currentTarget.value)}
               onKeyDown={handleNaturalInputKeyDown}
               className={cn(
@@ -243,7 +244,7 @@ export function DatePickerNext({
             <button
               type="button"
               aria-label="Open calendar"
-              disabled={isDisabled}
+              disabled={effectiveIsDisabled}
               onClick={() => {
                 setIsOpen(true)
                 setDisplayMonth(startOfMonth(selectedDate ?? new Date()))
@@ -292,7 +293,7 @@ export function DatePickerNext({
       minValue={toDateValue(minValue) ?? undefined}
       maxValue={toDateValue(maxValue) ?? undefined}
       isDateUnavailable={isDateUnavailable}
-      isDisabled={isDisabled}
+      isDisabled={effectiveIsDisabled}
       isOpen={isOpen}
       onOpenChange={nextOpen => {
         setIsOpen(nextOpen)
@@ -361,7 +362,7 @@ export function DatePickerNext({
   return (
     <DateNextFieldWrapper
       label={label}
-      disabled={isDisabled}
+      disabled={effectiveIsDisabled}
       floatingStyle={floatingStyle}
       color={color}
       textFieldSize={textFieldSize}
