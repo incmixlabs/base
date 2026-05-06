@@ -53,6 +53,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
       className,
       style,
       disabled,
+      readOnly,
       id,
       m,
       mx,
@@ -69,8 +70,9 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     const fieldGroup = useFieldGroup()
     const size = (sizeProp ?? fieldGroup.size) as ExtendedFormSize
     const variant = variantProp ?? fieldGroup.variant
+    const effectiveReadOnly = fieldGroup.readOnly || readOnly === true
 
-    const radius = useThemeRadius(radiusProp)
+    const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
     const radiusStyles = getRadiusStyles(radius)
     const generatedId = React.useId()
     const inputId = id || generatedId
@@ -129,6 +131,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             placeholder=" "
             disabled={disabled}
             aria-invalid={error || undefined}
+            readOnly={effectiveReadOnly}
             className={cn(
               textFieldInputBaseCls,
               'peer',
@@ -219,6 +222,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           id={inputId}
           disabled={disabled}
           aria-invalid={error || undefined}
+          readOnly={effectiveReadOnly}
           className={cn(
             textFieldInputBaseCls,
             'box-border h-[var(--tf-height)]',

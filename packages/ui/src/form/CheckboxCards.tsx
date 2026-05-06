@@ -131,18 +131,25 @@ const CheckboxCardsRoot = React.forwardRef<HTMLDivElement, CheckboxCardsRootProp
     const safeGap = normalizeEnumPropValue(checkboxCardsRootPropDefs.gap, gap) ?? checkboxCardsRootPropDefs.gap.default
     const safeHighContrast = normalizeBooleanPropValue(checkboxCardsRootPropDefs.highContrast, highContrast) ?? false
     const safeDisabled = typeof disabled === 'boolean' ? disabled : false
+    const effectiveDisabled = safeDisabled || fieldGroup.readOnly
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
 
     return (
       <CheckboxCardsContext.Provider
-        value={{ size, variant: safeVariant, color: safeColor, highContrast: safeHighContrast, disabled: safeDisabled }}
+        value={{
+          size,
+          variant: safeVariant,
+          color: safeColor,
+          highContrast: safeHighContrast,
+          disabled: effectiveDisabled,
+        }}
       >
         <CheckboxGroupPrimitive
           ref={ref}
           value={value}
           defaultValue={defaultValue}
           onValueChange={onValueChange}
-          disabled={safeDisabled}
+          disabled={effectiveDisabled}
           className={cn('grid', columnStyles[safeColumns], gapStyles[safeGap], marginProps.className, className)}
           style={{ ...marginProps.style, ...style }}
           {...props}

@@ -28,6 +28,7 @@ export interface SelectProps
   onValueChange?: (value: string) => void
   portalContainer?: HTMLElement | null
   disabled?: boolean
+  readOnly?: boolean
   children: React.ReactNode
 }
 

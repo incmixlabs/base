@@ -1,13 +1,15 @@
 'use client'
 
 import * as React from 'react'
-import type { Size } from '@/theme/tokens'
+import type { Radius, Size } from '@/theme/tokens'
 import { useFieldGroupOptional } from './FieldGroupContext'
 import type { TextFieldVariant } from './TextField'
 
 interface FieldGroupAwareProps {
   size?: Size
+  radius?: Radius
   variant?: TextFieldVariant
+  readOnly?: boolean
 }
 
 /**
@@ -38,7 +40,9 @@ export function withFieldGroup<P extends FieldGroupAwareProps>(WrappedComponent:
       ...(fieldGroup
         ? {
             size: props.size ?? fieldGroup.size,
+            radius: props.radius ?? fieldGroup.radius,
             variant: props.variant ?? fieldGroup.variant,
+            readOnly: fieldGroup.readOnly || props.readOnly === true,
           }
         : {}),
       ref,

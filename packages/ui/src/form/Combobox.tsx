@@ -4,6 +4,7 @@ import { ChevronDown } from 'lucide-react'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import type { Color, Radius, Size, TextFieldVariant } from '@/theme/tokens'
+import { useFieldGroup } from './FieldGroupContext'
 import { TextField } from './TextField'
 
 export interface ComboboxOption {
@@ -76,6 +77,8 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
     },
     ref,
   ) => {
+    const fieldGroup = useFieldGroup()
+    const effectiveReadOnly = fieldGroup.readOnly || readOnly
     const generatedId = React.useId()
     const inputId = id ?? generatedId
     const listboxId = `${inputId}-listbox`
@@ -178,13 +181,13 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
           radius={radius}
           error={error}
           disabled={disabled}
-          readOnly={readOnly}
+          readOnly={effectiveReadOnly}
           rightElement={<ChevronDown className="h-4 w-4 opacity-50" aria-hidden="true" />}
           onFocus={() => {
-            if (!disabled && !readOnly) setOpen(true)
+            if (!disabled && !effectiveReadOnly) setOpen(true)
           }}
           onClick={() => {
-            if (!disabled && !readOnly) setOpen(true)
+            if (!disabled && !effectiveReadOnly) setOpen(true)
           }}
           onBlur={() => {
             closeTimerRef.current = window.setTimeout(() => {
@@ -201,6 +204,7 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
           onKeyDown={event => {
             if (event.key === 'ArrowDown') {
               event.preventDefault()
+              if (disabled || effectiveReadOnly) return
               setOpen(true)
               setActiveIndex(current => getNextEnabledItemIndex(visibleItems, current, 1))
               return
@@ -208,6 +212,7 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
 
             if (event.key === 'ArrowUp') {
               event.preventDefault()
+              if (disabled || effectiveReadOnly) return
               setOpen(true)
               setActiveIndex(current => getNextEnabledItemIndex(visibleItems, current, -1))
               return
@@ -224,12 +229,12 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
             if (event.key === 'Enter') {
               event.preventDefault()
               const item = activeItem && !activeItem.disabled ? activeItem : visibleItems.find(next => !next.disabled)
-              if (item) selectValue(item.value)
+              if (!disabled && !effectiveReadOnly && item) selectValue(item.value)
             }
           }}
         />
 
-        {open && !disabled && !readOnly ? (
+        {open && !disabled && !effectiveReadOnly ? (
           <div
             id={listboxId}
             role="listbox"

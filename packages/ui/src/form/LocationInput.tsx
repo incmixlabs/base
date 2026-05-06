@@ -313,7 +313,7 @@ export const LocationInput = React.forwardRef<HTMLDivElement, LocationInputProps
       color: _color,
       radius: radiusProp,
       error = false,
-      disabled = false,
+      disabled: disabledProp = false,
       value,
       onChange,
       onCountryChange,
@@ -329,10 +329,11 @@ export const LocationInput = React.forwardRef<HTMLDivElement, LocationInputProps
     const fieldGroup = useFieldGroup()
     const size = (sizeProp ?? fieldGroup.size) as ExtendedFormSize
     const variant = variantProp ?? fieldGroup.variant
+    const disabled = disabledProp || fieldGroup.readOnly
     const floatingStyle = label ? getFloatingStyle(variant) : null
     const floating = label ? isFloatingVariant(variant) : false
 
-    const radius = useThemeRadius(radiusProp)
+    const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
     const sizeStyles = getSizeStyles(size)
     const radiusStyles = getRadiusStyles(radius)
     const combinedStyles = { ...sizeStyles, ...radiusStyles }

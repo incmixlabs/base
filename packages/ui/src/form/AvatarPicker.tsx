@@ -127,7 +127,7 @@ export const AvatarPicker = React.forwardRef<HTMLDivElement, AvatarPickerProps>(
       size: sizeProp,
       highlightColor = SemanticColor.slate,
       error = false,
-      disabled = false,
+      disabled: disabledProp = false,
       searchable = true,
       maxHeight = 300,
       renderItem,
@@ -141,6 +141,7 @@ export const AvatarPicker = React.forwardRef<HTMLDivElement, AvatarPickerProps>(
     const fieldGroup = useFieldGroup()
     const requestedSize = (sizeProp ?? fieldGroup.size ?? avatarPickerPropDefs.size.default) as FormSize
     const size = resolveFormSize(requestedSize)
+    const disabled = disabledProp || fieldGroup.readOnly
     const avatarSize = size as AvatarSize
     const textSize = avatarPickerTextSizeBySize[size]
     const effectiveHighlightColor = error ? SemanticColor.error : highlightColor

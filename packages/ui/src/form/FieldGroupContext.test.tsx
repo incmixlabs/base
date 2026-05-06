@@ -19,7 +19,7 @@ function ReadOptionalFieldGroup() {
 describe('FieldGroupContext', () => {
   it('inherits parent values when nested providers omit them', () => {
     render(
-      <FieldGroupProvider value={{ size: 'lg', variant: 'soft', layout: 'grid' }}>
+      <FieldGroupProvider value={{ size: 'lg', radius: 'lg', variant: 'soft', layout: 'grid' }}>
         <FieldGroupProvider value={{ layout: 'stacked' }}>
           <ReadFieldGroup />
         </FieldGroupProvider>
@@ -27,7 +27,7 @@ describe('FieldGroupContext', () => {
     )
 
     expect(screen.getByTestId('field-group-value')).toHaveTextContent(
-      JSON.stringify({ size: 'lg', variant: 'soft', layout: 'stacked' }),
+      JSON.stringify({ size: 'lg', radius: 'lg', variant: 'soft', layout: 'stacked', readOnly: false }),
     )
   })
 
@@ -35,7 +35,7 @@ describe('FieldGroupContext', () => {
     render(<ReadFieldGroup />)
 
     expect(screen.getByTestId('field-group-value')).toHaveTextContent(
-      JSON.stringify({ size: 'md', variant: 'outline', layout: 'stacked' }),
+      JSON.stringify({ size: 'md', variant: 'outline', layout: 'stacked', readOnly: false }),
     )
   })
 
@@ -53,7 +53,21 @@ describe('FieldGroupContext', () => {
     )
 
     expect(screen.getByTestId('field-group-optional')).toHaveTextContent(
-      JSON.stringify({ size: 'md', variant: 'outline', layout: 'grid' }),
+      JSON.stringify({ size: 'md', variant: 'outline', layout: 'grid', readOnly: false }),
+    )
+  })
+
+  it('inherits readOnly from parent providers', () => {
+    render(
+      <FieldGroupProvider value={{ radius: 'full', readOnly: true }}>
+        <FieldGroupProvider value={{ layout: 'grid', readOnly: false }}>
+          <ReadFieldGroup />
+        </FieldGroupProvider>
+      </FieldGroupProvider>,
+    )
+
+    expect(screen.getByTestId('field-group-value')).toHaveTextContent(
+      JSON.stringify({ size: 'md', radius: 'full', variant: 'outline', layout: 'grid', readOnly: true }),
     )
   })
 })

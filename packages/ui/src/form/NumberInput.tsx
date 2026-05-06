@@ -168,7 +168,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       size: sizeProp,
       inputVariant,
       color,
-      radius,
+      radius: radiusProp,
       error = false,
       step = 1,
       min,
@@ -189,6 +189,8 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
     const fieldGroup = useFieldGroup()
     const size = sizeProp ?? fieldGroup.size ?? 'sm'
     const resolvedInputVariant = inputVariant ?? fieldGroup.variant
+    const radius = radiusProp ?? fieldGroup.radius
+    const effectiveReadOnly = fieldGroup.readOnly || readOnly === true
     const isControlled = value !== undefined
     const [uncontrolledValue, setUncontrolledValue] = React.useState<number | ''>(defaultValue)
     const currentValue = isControlled ? value : uncontrolledValue
@@ -281,7 +283,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 
     const stepValue = React.useCallback(
       (direction: 1 | -1) => {
-        if (disabled || readOnly) return
+        if (disabled || effectiveReadOnly) return
 
         const safeStep = Number.isFinite(step) && step > 0 ? step : 1
         const base = getStepBase(currentValue ?? '', min, max, safeStep, direction)
@@ -296,7 +298,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         commitValue(normalized)
         focusInput()
       },
-      [allowDecimal, commitValue, currentValue, disabled, focusInput, max, min, readOnly, step],
+      [allowDecimal, commitValue, currentValue, disabled, effectiveReadOnly, focusInput, max, min, step],
     )
 
     const handleKeyDown = React.useCallback(
@@ -315,9 +317,13 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
     const decrementLabel = label ? `Decrease ${label}` : 'Decrease value'
     const incrementLabel = label ? `Increase ${label}` : 'Increase value'
     const canDecrement =
-      !disabled && !readOnly && !(typeof min === 'number' && typeof currentValue === 'number' && currentValue <= min)
+      !disabled &&
+      !effectiveReadOnly &&
+      !(typeof min === 'number' && typeof currentValue === 'number' && currentValue <= min)
     const canIncrement =
-      !disabled && !readOnly && !(typeof max === 'number' && typeof currentValue === 'number' && currentValue >= max)
+      !disabled &&
+      !effectiveReadOnly &&
+      !(typeof max === 'number' && typeof currentValue === 'number' && currentValue >= max)
     const controlButtonSize = iconButton?.size ?? mapControlButtonSize(size)
     const iconButtonColor = iconButton?.color ?? SemanticColor.slate
     const iconButtonVariant = iconButton?.variant ?? 'soft'
@@ -340,7 +346,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         radius={radius}
         error={error}
         disabled={disabled}
-        readOnly={readOnly}
+        readOnly={effectiveReadOnly}
         label={label}
         value={inputValue}
         min={min}

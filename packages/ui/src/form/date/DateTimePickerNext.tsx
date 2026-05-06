@@ -116,7 +116,8 @@ export function DateTimePickerNext({
   const size: DateNextSize = isDateNextSize(inheritedSize) ? inheritedSize : 'md'
   const variant = variantProp ?? fieldGroup.variant
   const floatingStyle = getFloatingStyle(variant)
-  const radius = useThemeRadius(radiusProp)
+  const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
+  const effectiveIsDisabled = isDisabled || fieldGroup.readOnly
   const buttonSize = buttonSizeByDateNextSize[size]
   const textFieldSize: TextFieldSize = size === 'xl' ? 'lg' : size
   const minuteStep = useMemo(() => normalizeMinuteStep(rawMinuteStep), [rawMinuteStep])
@@ -252,7 +253,7 @@ export function DateTimePickerNext({
       minValue={toDateValue(minValue) ?? undefined}
       maxValue={toDateValue(maxValue) ?? undefined}
       isDateUnavailable={isDateUnavailable}
-      isDisabled={isDisabled}
+      isDisabled={effectiveIsDisabled}
       isOpen={isOpen}
       onOpenChange={nextOpen => {
         setIsOpen(nextOpen)
@@ -318,7 +319,7 @@ export function DateTimePickerNext({
               minValue={minValue}
               maxValue={maxValue}
               disabledDates={disabledDates}
-              isDisabled={isDisabled}
+              isDisabled={effectiveIsDisabled}
               size={size}
               color={color}
               radius={radius}
@@ -422,7 +423,7 @@ export function DateTimePickerNext({
   return (
     <DateNextFieldWrapper
       label={label}
-      disabled={isDisabled}
+      disabled={effectiveIsDisabled}
       floatingStyle={floatingStyle}
       color={color}
       textFieldSize={textFieldSize}

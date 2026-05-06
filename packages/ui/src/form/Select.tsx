@@ -43,6 +43,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
       onValueChange,
       portalContainer: portalContainerProp,
       disabled,
+      readOnly,
       children,
       className,
       ...props
@@ -53,8 +54,9 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
     const fieldGroup = useFieldGroup()
     const size = (sizeProp ?? fieldGroup.size) as ExtendedFormSize
     const variant = variantProp ?? fieldGroup.variant
-    const radius = useThemeRadius(radiusProp)
+    const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
     const radiusStyles = getRadiusStyles(radius)
+    const effectiveDisabled = disabled || readOnly === true || fieldGroup.readOnly
     const themePortalContainer = useThemePortalContainer()
     const portalContainer = portalContainerProp ?? themePortalContainer
 
@@ -107,7 +109,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
           defaultOpen={defaultOpen}
           onOpenChange={onOpenChange}
           onValueChange={handleValueChange}
-          disabled={disabled}
+          disabled={effectiveDisabled}
         >
           <div
             className={cn(
@@ -193,11 +195,11 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
         defaultOpen={defaultOpen}
         onOpenChange={onOpenChange}
         onValueChange={handleValueChange}
-        disabled={disabled}
+        disabled={effectiveDisabled}
       >
         <div className={cn('grid gap-1.5', textFieldSizeVariants[size])} style={combinedStyles}>
           {label ? (
-            <Label htmlFor={effectiveId} color={error ? SemanticColor.error : undefined} disabled={disabled}>
+            <Label htmlFor={effectiveId} color={error ? SemanticColor.error : undefined} disabled={effectiveDisabled}>
               {label}
             </Label>
           ) : null}
@@ -212,7 +214,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
               'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)]',
               'rounded-[var(--element-border-radius)]',
               textFieldColorVariants[effectiveColor]?.[surfaceVariant],
-              disabled && 'opacity-50 cursor-not-allowed',
+              effectiveDisabled && 'opacity-50 cursor-not-allowed',
               className,
             )}
             {...props}

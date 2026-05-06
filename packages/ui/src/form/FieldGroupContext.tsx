@@ -1,20 +1,24 @@
 'use client'
 
 import * as React from 'react'
-import type { FieldGroupLayout, Size, TextFieldVariant } from '@/theme/tokens'
+import type { FieldGroupLayout, Radius, Size, TextFieldVariant } from '@/theme/tokens'
 
 // Props for FieldGroupProvider (optional values)
 export interface FieldGroupContextValue {
   size?: Size
+  radius?: Radius
   variant?: TextFieldVariant
   layout?: FieldGroupLayout
+  readOnly?: boolean
 }
 
 // Resolved values with defaults (always defined)
 export interface FieldGroupResolvedValue {
   size: Size
+  radius?: Radius
   variant: TextFieldVariant
   layout: FieldGroupLayout
+  readOnly: boolean
 }
 
 const FieldGroupContext = React.createContext<FieldGroupContextValue | null>(null)
@@ -26,10 +30,23 @@ export function FieldGroupProvider({ children, value }: { children: React.ReactN
   const mergedValue = React.useMemo<FieldGroupContextValue>(
     () => ({
       size: value.size ?? parent?.size,
+      radius: value.radius ?? parent?.radius,
       variant: value.variant ?? parent?.variant,
       layout: value.layout ?? parent?.layout,
+      readOnly: value.readOnly === true || parent?.readOnly === true ? true : undefined,
     }),
-    [parent?.layout, parent?.size, parent?.variant, value.layout, value.size, value.variant],
+    [
+      parent?.layout,
+      parent?.radius,
+      parent?.readOnly,
+      parent?.size,
+      parent?.variant,
+      value.layout,
+      value.radius,
+      value.readOnly,
+      value.size,
+      value.variant,
+    ],
   )
 
   return <FieldGroupContext.Provider value={mergedValue}>{children}</FieldGroupContext.Provider>
@@ -39,13 +56,16 @@ const defaultFieldGroupValue: FieldGroupResolvedValue = {
   size: 'md',
   variant: 'outline',
   layout: 'stacked',
+  readOnly: false,
 }
 
 function resolveFieldGroupValue(context: FieldGroupContextValue): FieldGroupResolvedValue {
   return {
     size: context.size ?? defaultFieldGroupValue.size,
+    radius: context.radius ?? defaultFieldGroupValue.radius,
     variant: context.variant ?? defaultFieldGroupValue.variant,
     layout: context.layout ?? defaultFieldGroupValue.layout,
+    readOnly: context.readOnly === true,
   }
 }
 

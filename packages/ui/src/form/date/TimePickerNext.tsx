@@ -110,7 +110,8 @@ export function TimePickerNext({
   const fieldGroup = useFieldGroup()
   const inheritedSize = sizeProp ?? fieldGroup.size
   const size: DateNextSize = isDateNextSize(inheritedSize) ? inheritedSize : 'md'
-  const radius = useThemeRadius(radiusProp)
+  const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
+  const effectiveIsDisabled = isDisabled || fieldGroup.readOnly
   const buttonSize = buttonSizeByDateNextSize[size]
   const minuteStep = useMemo(() => normalizeMinuteStep(rawMinuteStep), [rawMinuteStep])
 
@@ -262,7 +263,7 @@ export function TimePickerNext({
           aria-label={ariaLabel}
           aria-haspopup="dialog"
           aria-expanded={isOpen}
-          disabled={isDisabled}
+          disabled={effectiveIsDisabled}
           onClick={() => (isOpen ? cancelPicker() : openPicker())}
           className={cn(
             datePickerInput,
@@ -276,7 +277,7 @@ export function TimePickerNext({
         <button
           type="button"
           aria-label="Open time picker"
-          disabled={isDisabled}
+          disabled={effectiveIsDisabled}
           onClick={() => (isOpen ? cancelPicker() : openPicker())}
           className={cn(datePickerCalendarButton, 'text-muted-foreground transition-colors hover:text-foreground')}
         >
@@ -284,7 +285,7 @@ export function TimePickerNext({
         </button>
       </Group>
 
-      {isOpen && !isDisabled && (
+      {isOpen && !effectiveIsDisabled && (
         <>
           {/* Backdrop — closes on click (same pattern as MonthYearPicker) */}
           <button

@@ -117,6 +117,7 @@ const RadioCardsRoot = React.forwardRef<HTMLDivElement, RadioCardsRootProps>(
     const safeDisabled = normalizeBooleanPropValue(radioCardsRootPropDefs.disabled, disabled) ?? false
     const tokenColumns =
       typeof columns === 'string' ? normalizeEnumPropValue(radioCardsRootPropDefs.columns, columns) : undefined
+    const effectiveDisabled = safeDisabled || fieldGroup.readOnly
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
 
     const handleValueChange = React.useCallback(
@@ -145,14 +146,14 @@ const RadioCardsRoot = React.forwardRef<HTMLDivElement, RadioCardsRootProps>(
 
     return (
       <RadioCardsContext.Provider
-        value={{ size, variant: safeVariant, color: safeColor, highContrast: safeHighContrast, disabled: safeDisabled }}
+        value={{ size, variant: safeVariant, color: safeColor, highContrast: safeHighContrast, disabled: effectiveDisabled }}
       >
         <RadioGroupPrimitive
           ref={ref}
           value={value}
           defaultValue={defaultValue}
           onValueChange={handleValueChange}
-          disabled={safeDisabled}
+          disabled={effectiveDisabled}
           className={cn('grid', gapSizes[safeGap], marginProps.className, className)}
           style={gridStyle}
           {...props}

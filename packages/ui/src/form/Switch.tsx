@@ -29,7 +29,8 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
       size: sizeProp,
       variant = 'surface',
       color = SemanticColor.primary,
-      radius = 'full',
+      radius: radiusProp,
+      disabled,
       highContrast = false,
       className,
       ...props
@@ -38,10 +39,13 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
   ) => {
     const fieldGroup = useFieldGroup()
     const size = resolveFormSize(sizeProp ?? fieldGroup.size)
+    const radius = radiusProp ?? fieldGroup.radius ?? 'full'
     const safeVariant = normalizeEnumPropValue(switchPropDefs.variant, variant) ?? switchPropDefs.variant.default
     const safeColor = normalizeEnumPropValue(switchPropDefs.color, color) ?? SemanticColor.primary
     const safeRadius = normalizeEnumPropValue(switchPropDefs.radius, radius) ?? 'full'
     const safeHighContrast = normalizeBooleanPropValue(switchPropDefs.highContrast, highContrast) ?? false
+    const safeDisabled = normalizeBooleanPropValue(switchPropDefs.disabled, disabled) ?? false
+    const effectiveDisabled = safeDisabled || fieldGroup.readOnly
 
     return (
       <SwitchPrimitive.Root
@@ -49,6 +53,7 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         checked={checked}
         defaultChecked={defaultChecked}
         onCheckedChange={onCheckedChange}
+        disabled={effectiveDisabled}
         style={formColorVars[safeColor] as React.CSSProperties}
         className={cn(
           switchSizeVariants[size],
@@ -87,13 +92,15 @@ Switch.displayName = 'Switch'
 
 const SwitchWithLabel = React.forwardRef<HTMLButtonElement, SwitchWithLabelProps>(
   ({ label, labelPosition = 'right', size = 'sm', className, id: idProp, ...props }, ref) => {
+    const fieldGroup = useFieldGroup()
     const generatedId = React.useId()
     const id = idProp ?? generatedId
+    const effectiveDisabled = props.disabled || fieldGroup.readOnly
 
     return (
       <div className={cn('flex items-center gap-2', labelPosition === 'left' && 'flex-row-reverse', className)}>
         <Switch ref={ref} id={id} {...props} size={size} />
-        <Label htmlFor={id} size={size} disabled={props.disabled}>
+        <Label htmlFor={id} size={size} disabled={effectiveDisabled}>
           {label}
         </Label>
       </div>

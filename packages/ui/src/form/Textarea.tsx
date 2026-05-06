@@ -42,6 +42,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       className,
       style,
       disabled,
+      readOnly,
       id,
       m,
       mx,
@@ -58,8 +59,9 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     const fieldGroup = useFieldGroup()
     const size = (sizeProp ?? fieldGroup.size) as ExtendedFormSize
     const variant = variantProp ?? fieldGroup.variant
+    const effectiveReadOnly = fieldGroup.readOnly || readOnly === true
 
-    const radius = useThemeRadius(radiusProp)
+    const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
     const radiusStyles = getRadiusStyles(radius)
     const generatedId = React.useId()
     const textareaId = id || generatedId
@@ -114,6 +116,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             id={textareaId}
             placeholder=" "
             disabled={disabled}
+            readOnly={effectiveReadOnly}
             aria-invalid={error || undefined}
             style={style as React.CSSProperties & { height?: number }}
             className={cn(
@@ -176,6 +179,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         className={cn(textFieldRootCls, textFieldSizeVariants[size], regularClasses)}
         style={combinedStyles as React.CSSProperties & { height?: number }}
         disabled={disabled}
+        readOnly={effectiveReadOnly}
         placeholder={placeholder}
         minRows={minRows}
         maxRows={maxRows}
@@ -189,6 +193,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         className={cn(textFieldRootCls, textFieldSizeVariants[size], regularClasses)}
         style={combinedStyles}
         disabled={disabled}
+        readOnly={effectiveReadOnly}
         placeholder={placeholder}
         {...textareaProps}
       />

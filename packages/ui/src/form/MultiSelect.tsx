@@ -98,6 +98,8 @@ export interface MultiSelectProps {
   error?: boolean
   /** Whether the input is disabled */
   disabled?: boolean
+  /** Whether the input is read-only */
+  readOnly?: boolean
   /** Additional class name */
   className?: string
   /** Text shown when max items selected */
@@ -144,7 +146,8 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
       color,
       radius: radiusProp,
       error = false,
-      disabled = false,
+      disabled: disabledProp = false,
+      readOnly = false,
       className,
       maxSelectedText = 'Max items selected',
       showBadges = true,
@@ -165,8 +168,9 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
     const variant = variantProp ?? fieldGroup.variant
     const surfaceVariant = resolveSurfaceVariant(variant ?? 'outline', { allowLegacy: true })
     const effectiveColor: Color = error ? SemanticColor.error : (color ?? SemanticColor.slate)
-    const radius = useThemeRadius(radiusProp)
+    const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
     const combinedStyles = getRadiusStyles(radius)
+    const disabled = disabledProp || readOnly || fieldGroup.readOnly
     const floatingStyle = getFloatingStyle(variant)
     const generatedId = React.useId()
     const triggerId = id ?? generatedId

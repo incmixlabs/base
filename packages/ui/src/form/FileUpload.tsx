@@ -205,7 +205,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
       maxSize = 10 * 1024 * 1024, // 10MB default
       maxFiles = 10,
       multiple = true,
-      disabled = false,
+      disabled: disabledProp = false,
       value,
       onChange,
       onFilesAdded,
@@ -229,8 +229,9 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
     const reactId = React.useId()
     const fieldGroup = useFieldGroup()
     const size = resolveFormSize(sizeProp ?? fieldGroup.size)
-    const radius = useThemeRadius(radiusProp)
+    const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
     const radiusStyles = getRadiusStyles(radius)
+    const disabled = disabledProp || fieldGroup.readOnly
     const [files, setFiles] = React.useState<UploadedFile[]>(() => value ?? [])
     const filesRef = React.useRef<UploadedFile[]>(files)
 
