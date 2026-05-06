@@ -1,9 +1,8 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { surfaceColorVariants } from '@/elements/surface/surface.css'
 import { PhoneInput } from './PhoneInput'
-import { textFieldColorVariants, textFieldSizeVariants } from './text-field.css'
-
-const surfaceClass = (className: string) => className.split(' ')[0]
+import { textFieldSizeVariants } from './text-field.css'
 
 afterEach(() => {
   cleanup()
@@ -24,13 +23,19 @@ describe('PhoneInput', () => {
 
     const input = screen.getByRole('textbox', { name: 'Phone number' })
     expect(input.closest('div')).toHaveClass(textFieldSizeVariants.lg)
-    expect(input).toHaveClass(surfaceClass(textFieldColorVariants.slate.soft))
+    expect(input).toHaveClass(surfaceColorVariants.slate.soft)
   })
 
-  it('keeps the accessible field name independent from custom placeholder examples', () => {
-    render(<PhoneInput phonePlaceholder="(555) 123-4567" />)
+  it('keeps the accessible field name independent from custom placeholders', () => {
+    render(<PhoneInput placeholder="(555) 123-4567" />)
 
     expect(screen.getByRole('textbox', { name: 'Phone number' })).toHaveAttribute('placeholder', '(555) 123-4567')
+  })
+
+  it('keeps legacy phonePlaceholder as a fallback', () => {
+    render(<PhoneInput phonePlaceholder="(555) 987-6543" />)
+
+    expect(screen.getByRole('textbox', { name: 'Phone number' })).toHaveAttribute('placeholder', '(555) 987-6543')
   })
 
   it('applies disabled and error state to the TextField input and country selector', () => {
@@ -39,7 +44,7 @@ describe('PhoneInput', () => {
     const input = screen.getByRole('textbox', { name: 'Phone number' })
     expect(input).toBeDisabled()
     expect(input).toHaveAttribute('aria-invalid', 'true')
-    expect(input).toHaveClass(surfaceClass(textFieldColorVariants.error.outline))
+    expect(input).toHaveClass(surfaceColorVariants.error.outline)
     expect(screen.getByRole('button', { name: /change country code/i })).toBeDisabled()
   })
 

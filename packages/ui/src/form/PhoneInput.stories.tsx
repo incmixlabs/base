@@ -223,7 +223,7 @@ export const ContactForm: Story = {
 
           <div className="space-y-2">
             <Label>Phone Number</Label>
-            <PhoneInput value={phone} onChange={setPhone} phonePlaceholder="(555) 123-4567" />
+            <PhoneInput value={phone} onChange={setPhone} placeholder="(555) 123-4567" />
           </div>
         </div>
 

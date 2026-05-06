@@ -48,7 +48,11 @@ export interface PhoneInputProps
   defaultCountry?: string
   /** Countries to show (if not provided, shows all) */
   countries?: string[]
-  /** Placeholder for the phone number input */
+  /**
+   * Placeholder for the phone number input.
+   *
+   * @deprecated Use the standard `placeholder` prop instead.
+   */
   phonePlaceholder?: string
 }
 

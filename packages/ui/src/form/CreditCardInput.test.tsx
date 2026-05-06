@@ -1,9 +1,8 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { surfaceColorVariants } from '@/elements/surface/surface.css'
 import { CreditCardInput } from './CreditCardInput'
-import { textFieldColorVariants, textFieldSizeVariants } from './text-field.css'
-
-const surfaceClass = (className: string) => className.split(' ')[0]
+import { textFieldSizeVariants } from './text-field.css'
 
 afterEach(() => {
   cleanup()
@@ -41,7 +40,7 @@ describe('CreditCardInput', () => {
 
     const input = screen.getByRole('textbox', { name: 'Card number' })
     expect(input.closest('div')).toHaveClass(textFieldSizeVariants.lg)
-    expect(input).toHaveClass(surfaceClass(textFieldColorVariants.slate.soft))
+    expect(input).toHaveClass(surfaceColorVariants.slate.soft)
   })
 
   it('applies disabled and error state to all card fields', () => {
@@ -50,7 +49,7 @@ describe('CreditCardInput', () => {
     for (const input of screen.getAllByRole('textbox')) {
       expect(input).toBeDisabled()
       expect(input).toHaveAttribute('aria-invalid', 'true')
-      expect(input).toHaveClass(surfaceClass(textFieldColorVariants.error.outline))
+      expect(input).toHaveClass(surfaceColorVariants.error.outline)
     }
   })
 
