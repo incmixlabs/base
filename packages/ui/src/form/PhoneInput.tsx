@@ -29,7 +29,7 @@ export interface PhoneValue {
 }
 
 export interface PhoneInputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'value' | 'onChange'> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'value' | 'onChange' | 'type'> {
   /** The size of the input */
   size?: Size
   /** The visual variant */
@@ -137,6 +137,12 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       }
     }, [dropdownOpen])
 
+    React.useEffect(() => {
+      if (disabled) {
+        setDropdownOpen(false)
+      }
+    }, [disabled])
+
     // Emit change
     const emitChange = React.useCallback(
       (country: ICountry | undefined, number: string) => {
@@ -156,11 +162,12 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
 
     const handleCountrySelect = React.useCallback(
       (country: ICountry) => {
+        if (disabled) return
         setSelectedCountry(country)
         setDropdownOpen(false)
         emitChange(country, phoneNumber)
       },
-      [phoneNumber, emitChange],
+      [disabled, phoneNumber, emitChange],
     )
 
     const handlePhoneChange = React.useCallback(
@@ -183,6 +190,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
     return (
       <div className="relative">
         <TextField
+          {...props}
           ref={ref}
           type="tel"
           value={phoneNumber}
@@ -237,7 +245,6 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
               </Flex>
             </Flex>
           }
-          {...props}
         />
 
         {/* Country Dropdown */}

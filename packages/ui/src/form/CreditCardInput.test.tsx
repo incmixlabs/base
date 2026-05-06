@@ -48,7 +48,10 @@ describe('CreditCardInput', () => {
   it('applies disabled and error state to all card fields', () => {
     render(<CreditCardInput disabled error showName />)
 
-    for (const input of screen.getAllByRole('textbox')) {
+    const inputs = screen.getAllByRole('textbox')
+    expect(inputs).toHaveLength(4)
+
+    for (const input of inputs) {
       expect(input).toBeDisabled()
       expect(input).toHaveAttribute('aria-invalid', 'true')
       expect(input).toHaveClass(surfaceColorVariants.error.outline)

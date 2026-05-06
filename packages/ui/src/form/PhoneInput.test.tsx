@@ -70,6 +70,20 @@ describe('PhoneInput', () => {
     expect(screen.getByRole('button', { name: /change country code/i })).toBeDisabled()
   })
 
+  it('closes the country selector when disabled after opening', () => {
+    const handleChange = vi.fn()
+    const { rerender } = render(<PhoneInput countries={['US', 'CA']} onChange={handleChange} />)
+
+    fireEvent.click(screen.getByRole('button', { name: /change country code/i }))
+    expect(screen.getByRole('option', { name: /Canada/ })).toBeInTheDocument()
+
+    rerender(<PhoneInput countries={['US', 'CA']} disabled onChange={handleChange} />)
+
+    expect(screen.getByRole('button', { name: /change country code/i })).toBeDisabled()
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+    expect(handleChange).not.toHaveBeenCalled()
+  })
+
   it('keeps phone formatting behavior when TextField handles the input surface', () => {
     const handleChange = vi.fn()
     render(<PhoneInput onChange={handleChange} />)
