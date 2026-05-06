@@ -46,6 +46,19 @@ describe('Badge', () => {
     expect(badge.className).toContain(badgeHighContrastByVariant.soft)
   })
 
+  it('normalizes boolean-like highContrast and hover values', () => {
+    render(
+      <Badge variant="soft" highContrast={'false' as any} hover={'true' as any}>
+        Test
+      </Badge>,
+    )
+
+    const badge = screen.getByText('Test')
+    expect(badge.className).not.toContain('af-high-contrast')
+    expect(badge.className).not.toContain(badgeHighContrastByVariant.soft)
+    expect(badge.className).toContain(badgeHoverEnabledClass)
+  })
+
   it('defaults hover to false and applies hover classes when enabled', () => {
     const { rerender } = render(<Badge>Test</Badge>)
     const badge = screen.getByText('Test')

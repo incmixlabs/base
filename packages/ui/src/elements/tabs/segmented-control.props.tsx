@@ -10,11 +10,13 @@ const variants = ['surface', 'underline'] as const
 
 const segmentedControlSharedRootPropDefs = {
   ...hoverPropDefTrue,
+  animated: { type: 'boolean', default: false },
   size: { type: 'enum', values: sizes, default: 'md', responsive: true },
   ...colorPropDef,
   ...highContrastPropDef,
 } satisfies {
   hover: PropDef<boolean>
+  animated: PropDef<boolean>
   size: PropDef<(typeof sizes)[number]>
 }
 
@@ -25,6 +27,7 @@ const segmentedControlRootPropDefs = {
   ...radiusPropDef,
 } satisfies {
   hover: PropDef<boolean>
+  animated: PropDef<boolean>
   disabled?: PropDef<boolean>
   size: PropDef<(typeof sizes)[number]>
   variant: PropDef<(typeof variants)[number]>

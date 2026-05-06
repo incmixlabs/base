@@ -1,12 +1,13 @@
 import { asChildPropDef } from '@/theme/props/as-child.prop'
 import { gapPropDefs } from '@/theme/props/gap.props'
+import { layoutCompositionColumnValues, layoutCompositionRowValues } from '@/theme/props/layout-composition.props'
 
 import type { GetPropDefTypes, PropDef } from '@/theme/props/prop-def'
 
 const as = ['div', 'span'] as const
 const displayValues = ['none', 'inline-grid', 'grid'] as const
-const columnsValues = ['1', '2', '3', '4', '5', '6', '7', '8', '9'] as const
-const rowsValues = ['1', '2', '3', '4', '5', '6', '7', '8', '9'] as const
+const columnsValues = layoutCompositionColumnValues
+const rowsValues = layoutCompositionRowValues
 const flowValues = ['row', 'column', 'dense', 'row-dense', 'column-dense'] as const
 const alignValues = ['start', 'center', 'end', 'baseline', 'stretch'] as const
 const justifyValues = ['start', 'center', 'end', 'between'] as const

@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
-import { normalizeEnumPropValue } from '@/theme/props/prop-def'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color, Radius } from '@/theme/tokens'
 import { getInteractiveElementBaseClasses, SurfaceVariants, surfaceRadiusClasses } from '@/theme/tokens'
 import { SimpleTooltip } from '../tooltip/Tooltip'
@@ -165,6 +165,11 @@ const SegmentedControlRoot = React.forwardRef<HTMLDivElement, SegmentedControlRo
     const safeColor = (normalizeEnumPropValue(segmentedControlRootPropDefs.color, color) ??
       SemanticColor.slate) as Color
     const safeRadius = normalizeEnumPropValue(segmentedControlRootPropDefs.radius, radiusProp) as Radius | undefined
+    const safeHighContrast = normalizeBooleanPropValue(segmentedControlRootPropDefs.highContrast, highContrast) ?? false
+    const safeHover =
+      normalizeBooleanPropValue(segmentedControlRootPropDefs.hover, hover) ?? segmentedControlRootPropDefs.hover.default
+    const safeDisabled = normalizeBooleanPropValue(segmentedControlRootPropDefs.disabled, disabled)
+    const safeAnimated = normalizeBooleanPropValue(segmentedControlRootPropDefs.animated, animated) ?? false
     const radius = useThemeRadius(safeRadius)
     const marginProps = getMarginProps({ m: mProp, mx, my, mt, mr, mb, ml })
     const [internalValue, setInternalValue] = React.useState(defaultValue || '')
@@ -228,13 +233,13 @@ const SegmentedControlRoot = React.forwardRef<HTMLDivElement, SegmentedControlRo
           size: segmentedSize,
           radius,
           color: safeColor,
-          highContrast,
-          hover,
-          disabled,
+          highContrast: safeHighContrast,
+          hover: safeHover,
+          disabled: safeDisabled,
           variant: safeVariant,
           value,
           icons,
-          animated,
+          animated: safeAnimated,
           onValueChange: handleValueChange,
         }}
       >
@@ -247,7 +252,7 @@ const SegmentedControlRoot = React.forwardRef<HTMLDivElement, SegmentedControlRo
             safeVariant === SegmentedControlVariants.surface && surfaceRadiusClasses[radius],
             safeVariant === SegmentedControlVariants.surface && segmentedSurfaceRootByColor[safeColor],
             safeVariant === SegmentedControlVariants.underline && segmentedUnderlineRootByColor[safeColor],
-            highContrast && 'af-high-contrast',
+            safeHighContrast && 'af-high-contrast',
             marginProps.className,
             className,
           )}

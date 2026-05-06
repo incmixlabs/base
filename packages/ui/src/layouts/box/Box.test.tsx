@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
+import { gapResponsiveClasses, gapResponsiveVars } from '@/theme/helpers/gap-responsive.css'
 import { heightResponsiveClasses, heightResponsiveVars } from '@/theme/helpers/height-responsive.css'
 import { marginResponsiveClasses, marginResponsiveVars } from '@/theme/helpers/margin-responsive.css'
 import { paddingResponsiveClasses, paddingResponsiveVars } from '@/theme/helpers/padding-responsive.css'
@@ -133,10 +134,62 @@ describe('Box', () => {
 
     const box = screen.getByTestId('box')
 
-    expect(box).toHaveClass('flex', 'flex-row', 'items-center', 'justify-between')
-    expect(box.getAttribute('style')).toContain('gap:')
+    expect(box).toHaveClass('flex', 'flex-row', 'items-center', 'justify-between', 'gap-2')
+    expect(box.style.gap).not.toBe('')
     expect(box).not.toHaveAttribute('layout')
     expect(box).not.toHaveAttribute('align')
     expect(box).not.toHaveAttribute('justify')
+  })
+
+  it('normalizes prop-def-backed layout composition values', () => {
+    render(
+      <Box
+        data-testid="box"
+        layout={' Grid ' as any}
+        align={' CENTER ' as any}
+        columns={' 12 ' as any}
+        gap={' 2rem ' as any}
+      >
+        <span>One</span>
+        <span>Two</span>
+      </Box>,
+    )
+
+    const box = screen.getByTestId('box')
+
+    expect(box).toHaveClass('grid', 'items-center')
+    expect(box.style.gridTemplateColumns).toBe('repeat(12, minmax(0, 1fr))')
+    expect(box.style.gap).toBe('2rem')
+    expect(box).not.toHaveAttribute('layout')
+    expect(box).not.toHaveAttribute('align')
+    expect(box).not.toHaveAttribute('columns')
+    expect(box).not.toHaveAttribute('gap')
+  })
+
+  it('supports responsive custom layout gap values', () => {
+    render(
+      <Box
+        data-testid="box"
+        layout="row"
+        gap={{ initial: '16px', md: '24px' }}
+        gapX={{ initial: '1', lg: '2rem' }}
+        gapY={{ sm: '12px', xl: '4' }}
+      >
+        <span>One</span>
+        <span>Two</span>
+      </Box>,
+    )
+
+    const box = screen.getByTestId('box')
+
+    expect(box.className).toContain(gapResponsiveClasses.gap)
+    expect(box.className).toContain(gapResponsiveClasses.gapX)
+    expect(box.className).toContain(gapResponsiveClasses.gapY)
+    expect(box.style.getPropertyValue(customPropertyName(gapResponsiveVars.gap.initial))).toBe('16px')
+    expect(box.style.getPropertyValue(customPropertyName(gapResponsiveVars.gap.md))).toBe('24px')
+    expect(box.style.getPropertyValue(customPropertyName(gapResponsiveVars.gapX.initial))).toBe('4px')
+    expect(box.style.getPropertyValue(customPropertyName(gapResponsiveVars.gapX.lg))).toBe('2rem')
+    expect(box.style.getPropertyValue(customPropertyName(gapResponsiveVars.gapY.sm))).toBe('12px')
+    expect(box.style.getPropertyValue(customPropertyName(gapResponsiveVars.gapY.xl))).toBe('16px')
   })
 })

@@ -54,6 +54,20 @@ describe('Button', () => {
     expect(button.className).toContain(highContrastByVariant.soft)
   })
 
+  it('normalizes case-insensitive enum values and boolean-like visual props', () => {
+    render(
+      <Button variant={' SOFT ' as any} color={' INFO ' as any} highContrast={'false' as any} loading={'false' as any}>
+        Normalized
+      </Button>,
+    )
+
+    const button = screen.getByRole('button', { name: 'Normalized' })
+    expect(button.className).toContain(buttonColorVariants.info.soft)
+    expect(button.className).not.toContain('af-high-contrast')
+    expect(button).not.toBeDisabled()
+    expect(button).not.toHaveAttribute('aria-busy')
+  })
+
   it('keeps grayscale semantic lanes on the readable primary fill in high-contrast solid mode', () => {
     render(
       <>

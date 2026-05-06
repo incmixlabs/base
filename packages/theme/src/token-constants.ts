@@ -118,8 +118,13 @@ export const RHYTHM_RESPONSIVE_PROFILE_VARS: Record<
   },
 } as const
 
+/** Spacing scale values supported by layout spacing prop-defs. */
+export const SPACING_SCALE_VALUES = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] as const
+
+export type SpacingScaleValue = (typeof SPACING_SCALE_VALUES)[number]
+
 /** Spacing scale indices resolved to CSS pixel dimensions. */
-export const SPACING_TO_PIXELS: Record<string, string> = {
+export const SPACING_TO_PIXELS: Record<SpacingScaleValue, string> = {
   '0': '0px',
   '1': '4px',
   '2': '8px',

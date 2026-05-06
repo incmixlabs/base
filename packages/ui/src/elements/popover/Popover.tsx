@@ -10,7 +10,7 @@ import { getHeightProps } from '@/theme/helpers/get-height-styles'
 import { getWidthProps } from '@/theme/helpers/get-width-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
 import type { HeightProps } from '@/theme/props/height.props'
-import { normalizeEnumPropValue } from '@/theme/props/prop-def'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { WidthProps } from '@/theme/props/width.props'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
@@ -198,6 +198,7 @@ const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentProps>(
         ? ((tokenMaxWidth ?? popoverContentPropDefs.maxWidthToken.default) as PopoverContentMaxWidth)
         : undefined
     const safeRadius = normalizeEnumPropValue(popoverContentPropDefs.radius, radiusProp) as Radius | undefined
+    const safeHighContrast = normalizeBooleanPropValue(popoverContentPropDefs.highContrast, highContrast) ?? false
     const radius = useThemeRadius(safeRadius)
     const widthProps = getWidthProps({
       width,
@@ -238,8 +239,8 @@ const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentProps>(
                     popoverContentBySize[safeSize],
                     resolvedTokenMaxWidth && popoverContentMaxWidth[resolvedTokenMaxWidth],
                     surfaceColorVariants[safeColor][safeVariant],
-                    highContrast && 'af-high-contrast',
-                    highContrast && surfaceHighContrastByVariant[safeVariant],
+                    safeHighContrast && 'af-high-contrast',
+                    safeHighContrast && surfaceHighContrastByVariant[safeVariant],
                     widthProps.className,
                     heightProps.className,
                     className,

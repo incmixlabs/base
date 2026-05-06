@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
-import { normalizeEnumPropValue } from '@/theme/props/prop-def'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color, Radius } from '@/theme/tokens'
 import { capitalize } from '@/utils/strings'
 import { SimpleTooltip } from '../tooltip/Tooltip'
@@ -93,7 +93,10 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     const safeColor = (normalizeEnumPropValue(iconButtonPropDefs.color, color) ??
       iconButtonPropDefs.color.default ??
       SemanticColor.slate) as Color
-    const isDisabled = Boolean(disabled || loading)
+    const safeLoading = normalizeBooleanPropValue(iconButtonPropDefs.loading, loading)
+    const safeHighContrast = normalizeBooleanPropValue(iconButtonPropDefs.highContrast, highContrast) ?? false
+    const safeFill = normalizeBooleanPropValue(iconButtonPropDefs.fill, fill)
+    const isDisabled = Boolean(disabled || safeLoading)
     const radiusStyles = getRadiusStyles(radius)
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
     const combinedStyles = {
@@ -121,7 +124,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         icon={icon}
         size={safeSize}
         color={safeColor}
-        fill={fill}
+        fill={safeFill}
         iconProps={iconButtonIconProps}
         style={{ color: 'inherit' }}
       />
@@ -145,13 +148,13 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
           iconButtonSizeIconScope,
           'rounded-[var(--element-border-radius)]',
           iconButtonBase,
-          highContrast && 'af-high-contrast',
+          safeHighContrast && 'af-high-contrast',
           iconButtonColorVariants[safeColor][safeVariant],
           'transition-colors',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
           'disabled:pointer-events-none disabled:opacity-50',
           // High contrast
-          highContrast && iconButtonHighContrastByVariant[safeVariant],
+          safeHighContrast && iconButtonHighContrastByVariant[safeVariant],
           !tooltipContent && marginProps.className,
 
           className,
@@ -159,7 +162,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         style={buttonStyles}
         {...props}
       >
-        {loading ? (
+        {safeLoading ? (
           <svg
             className="animate-spin h-[1em] w-[1em]"
             xmlns="http://www.w3.org/2000/svg"

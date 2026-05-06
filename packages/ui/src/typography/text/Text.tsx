@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { getSpacingClasses, type Responsive, Slot, type Spacing } from '@/layouts/layout-utils'
 import { cn } from '@/lib/utils'
+import { highContrastPropDef } from '@/theme/props/high-contrast.prop'
+import { normalizeBooleanPropValue } from '@/theme/props/prop-def'
 import { getTextSizeClasses } from '../get-text-size-classes'
 import type { TextColor, TypographyVariant } from '../tokens'
 import { resolveTextColor, type TypographySize, type Weight } from '../tokens'
@@ -59,7 +61,8 @@ export const Text = React.forwardRef<HTMLElement, TextProps>(
     ref,
   ) => {
     const sizeClasses = getTextSizeClasses(size)
-    const resolvedWeight = highContrast
+    const safeHighContrast = normalizeBooleanPropValue(highContrastPropDef.highContrast, highContrast) ?? false
+    const resolvedWeight = safeHighContrast
       ? ({
           light: 'regular',
           regular: 'medium',

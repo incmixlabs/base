@@ -4,6 +4,7 @@ import { Switch as SwitchPrimitive } from '@base-ui/react/switch'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import { radiusStyleVariants } from '@/theme/radius.css'
 import { useFieldGroup } from './FieldGroupContext'
 import { formColorVars } from './form-color'
@@ -11,6 +12,7 @@ import { resolveFormSize } from './form-size'
 import { Label } from './Label'
 import { switchSizeVariants } from './switch.css'
 import type { SwitchProps, SwitchSize, SwitchWithLabelProps } from './switch.props'
+import { switchPropDefs } from './switch.props'
 
 export type { SwitchProps, SwitchWithLabelProps } from './switch.props'
 export type { SwitchSize }
@@ -36,6 +38,10 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
   ) => {
     const fieldGroup = useFieldGroup()
     const size = resolveFormSize(sizeProp ?? fieldGroup.size)
+    const safeVariant = normalizeEnumPropValue(switchPropDefs.variant, variant) ?? switchPropDefs.variant.default
+    const safeColor = normalizeEnumPropValue(switchPropDefs.color, color) ?? SemanticColor.primary
+    const safeRadius = normalizeEnumPropValue(switchPropDefs.radius, radius) ?? 'full'
+    const safeHighContrast = normalizeBooleanPropValue(switchPropDefs.highContrast, highContrast) ?? false
 
     return (
       <SwitchPrimitive.Root
@@ -43,23 +49,23 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         checked={checked}
         defaultChecked={defaultChecked}
         onCheckedChange={onCheckedChange}
-        style={formColorVars[color] as React.CSSProperties}
+        style={formColorVars[safeColor] as React.CSSProperties}
         className={cn(
           switchSizeVariants[size],
           'peer inline-flex shrink-0 cursor-pointer items-center border-2 border-transparent transition-colors',
           'h-[var(--sw-root-height)] w-[var(--sw-root-width)]',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
           'disabled:cursor-not-allowed disabled:opacity-50',
-          radiusStyleVariants[radius],
+          radiusStyleVariants[safeRadius],
           checkedColorCls,
 
           // Variant styles for unchecked state
-          variant === 'surface' && 'bg-input',
-          variant === 'classic' && 'bg-input border-border',
-          variant === 'soft' && 'bg-secondary/50',
+          safeVariant === 'surface' && 'bg-input',
+          safeVariant === 'classic' && 'bg-input border-border',
+          safeVariant === 'soft' && 'bg-secondary/50',
 
           // High contrast
-          highContrast && 'data-[checked]:shadow-md',
+          safeHighContrast && 'data-[checked]:shadow-md',
 
           className,
         )}

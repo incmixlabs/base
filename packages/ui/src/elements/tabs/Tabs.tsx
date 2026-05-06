@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
-import { normalizeEnumPropValue } from '@/theme/props/prop-def'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color } from '@/theme/tokens'
 import { getInteractiveElementBaseClasses } from '@/theme/tokens'
 import { SimpleTooltip } from '../tooltip/Tooltip'
@@ -136,6 +136,9 @@ const TabsRoot = React.forwardRef<HTMLDivElement, TabsRootProps>(
     const safeVariant = (normalizeEnumPropValue(tabsPropDefs.Root.variant, variant) ??
       tabsPropDefs.Root.variant.default) as TabsVariant
     const safeColor = (normalizeEnumPropValue(tabsPropDefs.Root.color, color) ?? SemanticColor.slate) as Color
+    const safeHighContrast = normalizeBooleanPropValue(tabsPropDefs.Root.highContrast, highContrast) ?? false
+    const safeHover = normalizeBooleanPropValue(tabsPropDefs.Root.hover, hover) ?? tabsPropDefs.Root.hover.default
+    const safeAnimated = normalizeBooleanPropValue(tabsPropDefs.Root.animated, animated) ?? false
     const [internalValue, setInternalValue] = React.useState<string | undefined>(defaultValue)
     const activeValue = value ?? internalValue ?? null
     const marginProps = getMarginProps({ m: mProp, mx, my, mt, mr, mb, ml })
@@ -156,12 +159,12 @@ const TabsRoot = React.forwardRef<HTMLDivElement, TabsRootProps>(
           size: tabsSize,
           variant: safeVariant,
           color: safeColor,
-          highContrast,
-          hover,
+          highContrast: safeHighContrast,
+          hover: safeHover,
           activeValue,
           orientation,
           icons,
-          animated,
+          animated: safeAnimated,
         }}
       >
         <TabsPrimitive.Root
@@ -171,7 +174,7 @@ const TabsRoot = React.forwardRef<HTMLDivElement, TabsRootProps>(
           orientation={orientation}
           className={cn(
             orientation === 'vertical' && 'flex gap-4',
-            highContrast && 'af-high-contrast',
+            safeHighContrast && 'af-high-contrast',
             marginProps.className,
             className,
           )}

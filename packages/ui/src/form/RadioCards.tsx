@@ -8,14 +8,17 @@ import {
   surfaceHighContrastByVariant,
   surfaceHoverEnabledClass,
 } from '@/elements/surface/surface.css'
+import { getSpacingClasses } from '@/layouts/layout-utils'
 import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color } from '@/theme/tokens'
 import { useFieldGroup } from './FieldGroupContext'
 import { resolveFormSize } from './form-size'
 import { type RadioCardSize, radioCardSizeVariants } from './radio-cards.css'
+import { type RadioCardsGap, radioCardsGapValues, radioCardsRootPropDefs } from './radio-cards.props'
 import { radioColorVariants, radioHighContrastByVariant } from './radio-group.css'
 
 export type { RadioCardSize }
@@ -63,7 +66,7 @@ export interface RadioCardsRootProps extends MarginProps {
   /** Grid columns - can be a number or CSS grid template */
   columns?: number | string
   /** Gap between cards */
-  gap?: '1' | '2' | '3' | '4' | '5' | '6'
+  gap?: RadioCardsGap
   /** Additional class names */
   className?: string
   /** Inline styles */
@@ -72,14 +75,10 @@ export interface RadioCardsRootProps extends MarginProps {
   children: React.ReactNode
 }
 
-const gapSizes: Record<NonNullable<RadioCardsRootProps['gap']>, string> = {
-  '1': 'gap-1',
-  '2': 'gap-2',
-  '3': 'gap-3',
-  '4': 'gap-4',
-  '5': 'gap-5',
-  '6': 'gap-6',
-}
+const gapSizes = Object.fromEntries(radioCardsGapValues.map(gap => [gap, getSpacingClasses(gap, 'gap')])) as Record<
+  RadioCardsGap,
+  string
+>
 
 const RadioCardsRoot = React.forwardRef<HTMLDivElement, RadioCardsRootProps>(
   (
@@ -110,6 +109,14 @@ const RadioCardsRoot = React.forwardRef<HTMLDivElement, RadioCardsRootProps>(
   ) => {
     const fieldGroup = useFieldGroup()
     const size = resolveFormSize(sizeProp ?? fieldGroup.size)
+    const safeVariant =
+      normalizeEnumPropValue(radioCardsRootPropDefs.variant, variant) ?? radioCardsRootPropDefs.variant.default
+    const safeColor = normalizeEnumPropValue(radioCardsRootPropDefs.color, color) ?? SemanticColor.neutral
+    const safeGap = normalizeEnumPropValue(radioCardsRootPropDefs.gap, gap) ?? radioCardsRootPropDefs.gap.default
+    const safeHighContrast = normalizeBooleanPropValue(radioCardsRootPropDefs.highContrast, highContrast) ?? false
+    const safeDisabled = normalizeBooleanPropValue(radioCardsRootPropDefs.disabled, disabled) ?? false
+    const tokenColumns =
+      typeof columns === 'string' ? normalizeEnumPropValue(radioCardsRootPropDefs.columns, columns) : undefined
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
 
     const handleValueChange = React.useCallback(
@@ -123,19 +130,30 @@ const RadioCardsRoot = React.forwardRef<HTMLDivElement, RadioCardsRootProps>(
 
     const gridStyle: React.CSSProperties = {
       ...marginProps.style,
-      gridTemplateColumns: typeof columns === 'number' ? `repeat(${columns}, 1fr)` : columns,
+      gridTemplateColumns:
+        typeof columns === 'number'
+          ? `repeat(${columns}, 1fr)`
+          : tokenColumns
+            ? tokenColumns === 'none'
+              ? 'none'
+              : `repeat(${tokenColumns}, minmax(0, 1fr))`
+            : typeof columns === 'string'
+              ? columns.trim()
+              : radioCardsRootPropDefs.columns.default,
       ...style,
     }
 
     return (
-      <RadioCardsContext.Provider value={{ size, variant, color, highContrast, disabled }}>
+      <RadioCardsContext.Provider
+        value={{ size, variant: safeVariant, color: safeColor, highContrast: safeHighContrast, disabled: safeDisabled }}
+      >
         <RadioGroupPrimitive
           ref={ref}
           value={value}
           defaultValue={defaultValue}
           onValueChange={handleValueChange}
-          disabled={disabled}
-          className={cn('grid', gapSizes[gap], marginProps.className, className)}
+          disabled={safeDisabled}
+          className={cn('grid', gapSizes[safeGap], marginProps.className, className)}
           style={gridStyle}
           {...props}
         >
@@ -166,7 +184,8 @@ export interface RadioCardsItemProps {
 const RadioCardsItem = React.forwardRef<HTMLButtonElement, RadioCardsItemProps>(
   ({ value, disabled, className, children, ...props }, ref) => {
     const context = React.useContext(RadioCardsContext)
-    const isDisabled = disabled || context.disabled
+    const safeDisabled = normalizeBooleanPropValue(radioCardsRootPropDefs.disabled, disabled) ?? false
+    const isDisabled = safeDisabled || context.disabled
 
     return (
       <RadioPrimitive.Root

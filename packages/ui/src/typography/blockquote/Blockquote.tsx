@@ -3,7 +3,9 @@ import type { Responsive } from '@/layouts/layout-utils'
 import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import { type SemanticColorKey, semanticColorVar } from '@/theme/props/color.prop'
+import { highContrastPropDef } from '@/theme/props/high-contrast.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
+import { normalizeBooleanPropValue } from '@/theme/props/prop-def'
 import { getResponsiveVariantClasses, typographyBreakpointKeys } from '../responsive'
 import { type TypographyColor, type TypographySize, typographyTokens, type Weight } from '../tokens'
 import { textBySize, textSizeResponsive } from '../typography.ve.css'
@@ -47,6 +49,7 @@ export const Blockquote = React.forwardRef<HTMLQuoteElement, BlockquoteProps>(
     const weightToken = typographyTokens.weight[weight]
     const colorToken = typographyTokens.color[color]
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
+    const safeHighContrast = normalizeBooleanPropValue(highContrastPropDef.highContrast, highContrast) ?? false
 
     const blockquoteStyles: React.CSSProperties = {
       ...marginProps.style,
@@ -74,7 +77,7 @@ export const Blockquote = React.forwardRef<HTMLQuoteElement, BlockquoteProps>(
           wrap === 'balance' && 'text-balance',
 
           // High contrast
-          highContrast && 'saturate-[1.2]',
+          safeHighContrast && 'saturate-[1.2]',
 
           marginProps.className,
           className,

@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { getSpacingClasses, type Responsive, Slot, type Spacing } from '@/layouts/layout-utils'
 import { cn } from '@/lib/utils'
+import { highContrastPropDef } from '@/theme/props/high-contrast.prop'
+import { normalizeBooleanPropValue } from '@/theme/props/prop-def'
 import { getResponsiveVariantClasses, typographyBreakpointKeys } from '../responsive'
 import type { TypographyColor, TypographyVariant } from '../tokens'
 import { type TypographySize, typographyTokens, type Weight } from '../tokens'
@@ -61,7 +63,8 @@ export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
     ref,
   ) => {
     const sizeClasses = getHeadingSizeClasses(size)
-    const resolvedWeight = highContrast
+    const safeHighContrast = normalizeBooleanPropValue(highContrastPropDef.highContrast, highContrast) ?? false
+    const resolvedWeight = safeHighContrast
       ? ({
           light: 'regular',
           regular: 'medium',
@@ -98,7 +101,7 @@ export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
           wrap === 'balance' && 'text-balance',
 
           // High contrast
-          highContrast && 'saturate-[1.1]',
+          safeHighContrast && 'saturate-[1.1]',
 
           // Margin
           getSpacingClasses(m, 'm'),

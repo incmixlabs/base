@@ -6,6 +6,7 @@ import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color } from '@/theme/tokens'
 import { Text } from '@/typography'
 import { useFieldGroup } from './FieldGroupContext'
@@ -19,6 +20,7 @@ import {
   radioSizeVariants,
 } from './radio-group.css'
 import type { RadioGroupItemProps, RadioGroupRootProps, RadioSize, RadioVariant } from './radio-group.props'
+import { radioGroupRootPropDefs } from './radio-group.props'
 
 export type { RadioGroupItemProps, RadioGroupRootProps } from './radio-group.props'
 export type { RadioSize }
@@ -71,6 +73,14 @@ const RadioGroupRoot = React.forwardRef<HTMLDivElement, RadioGroupRootProps>(
   ) => {
     const fieldGroup = useFieldGroup()
     const size = resolveFormSize(sizeProp ?? fieldGroup.size)
+    const safeVariant =
+      normalizeEnumPropValue(radioGroupRootPropDefs.variant, variant) ?? radioGroupRootPropDefs.variant.default
+    const safeColor = (normalizeEnumPropValue(radioGroupRootPropDefs.color, color) ?? SemanticColor.slate) as Color
+    const safeHighContrast = normalizeBooleanPropValue(radioGroupRootPropDefs.highContrast, highContrast) ?? false
+    const safeDisabled = normalizeBooleanPropValue(radioGroupRootPropDefs.disabled, disabled)
+    const safeOrientation =
+      normalizeEnumPropValue(radioGroupRootPropDefs.orientation, orientation) ??
+      radioGroupRootPropDefs.orientation.default
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
 
     const handleValueChange = React.useCallback(
@@ -83,14 +93,16 @@ const RadioGroupRoot = React.forwardRef<HTMLDivElement, RadioGroupRootProps>(
     )
 
     return (
-      <RadioGroupContext.Provider value={{ size, variant, color, highContrast, disabled }}>
+      <RadioGroupContext.Provider
+        value={{ size, variant: safeVariant, color: safeColor, highContrast: safeHighContrast, disabled: safeDisabled }}
+      >
         <RadioGroupPrimitive
           ref={ref}
           value={value}
           defaultValue={defaultValue}
           onValueChange={handleValueChange}
-          disabled={disabled}
-          className={cn('flex', radioGroupRootOrientation[orientation], marginProps.className, className)}
+          disabled={safeDisabled}
+          className={cn('flex', radioGroupRootOrientation[safeOrientation], marginProps.className, className)}
           style={{ ...marginProps.style, ...style }}
           {...props}
         >
