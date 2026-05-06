@@ -48,6 +48,7 @@ export {
 } from './props/color.prop'
 export * from './runtime/theme-compiler'
 export * from './sprinkles.css'
+export { ThemePanel, type ThemePanelProps } from './ThemePanel'
 export {
   type PanelBackground,
   type ThemeCalendar,
@@ -109,6 +110,8 @@ export {
   type TypographyResponsiveProfile,
 } from './token-constants'
 export {
+  type AccentColor,
+  type Appearance,
   CHART_COLOR_ALIASES,
   CHART_COLOR_KEYS,
   type ChartColorAlias,
@@ -117,10 +120,12 @@ export {
   type ContainerBreakpoint,
   containerBreakpointKeys,
   containerBreakpoints,
+  type GrayColor,
   type GridColumns,
   possibleSizes,
   type Radius,
   resolveThemeColorToken,
+  type Scaling,
   type Size,
   type Spacing,
   SURFACE_COLOR_KEYS,

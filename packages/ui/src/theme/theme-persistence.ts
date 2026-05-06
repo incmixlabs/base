@@ -10,6 +10,7 @@ import {
   type ThemeFontSource,
   type ThemeTypographySlot,
 } from './font-sources'
+import { accentColors, grayColors } from './props/color.prop'
 import type { ThemeTypography } from './theme-config'
 import { defaultThemeConfig } from './theme-config'
 import { TYPOGRAPHY_RESPONSIVE_PROFILES, type TypographyResponsiveProfile } from './token-constants'
@@ -81,33 +82,8 @@ export const defaultThemePersistenceConfig: ThemePersistenceConfig = {
 const appearances = new Set<Appearance>(['inherit', 'light', 'dark'])
 const semanticHues = new Set<SemanticHue>(SEMANTIC_HUE_OPTIONS.map(option => option.value))
 const colors = new Set<Color>(semanticColorScale)
-const accentColors = new Set<AccentColor>([
-  'gray',
-  'gold',
-  'bronze',
-  'brown',
-  'yellow',
-  'amber',
-  'orange',
-  'tomato',
-  'red',
-  'ruby',
-  'crimson',
-  'pink',
-  'plum',
-  'purple',
-  'violet',
-  'iris',
-  'indigo',
-  'blue',
-  'cyan',
-  'teal',
-  'green',
-  'lime',
-  'mint',
-  'sky',
-])
-const grayColors = new Set<GrayColor>(['auto', 'gray', 'mauve', 'slate', 'sage', 'olive', 'sand'])
+const accentColorSet = new Set<AccentColor>(accentColors)
+const grayColorSet = new Set<GrayColor>(grayColors)
 const radii = new Set<Radius>(['none', 'sm', 'md', 'lg', 'full'])
 const scalings = new Set<Scaling>(['90%', '95%', '100%', '105%', '110%'])
 const panelBackgrounds = new Set<ThemePersistenceConfig['panelBackground']>(['solid', 'translucent'])
@@ -135,11 +111,11 @@ function resolveColor(value: unknown, fallback: Color): Color {
 }
 
 function resolveAccentColor(value: unknown, fallback: AccentColor): AccentColor {
-  return typeof value === 'string' && accentColors.has(value as AccentColor) ? (value as AccentColor) : fallback
+  return typeof value === 'string' && accentColorSet.has(value as AccentColor) ? (value as AccentColor) : fallback
 }
 
 function resolveGrayColor(value: unknown, fallback: GrayColor): GrayColor {
-  return typeof value === 'string' && grayColors.has(value as GrayColor) ? (value as GrayColor) : fallback
+  return typeof value === 'string' && grayColorSet.has(value as GrayColor) ? (value as GrayColor) : fallback
 }
 
 function resolveRadius(value: unknown, fallback: Radius): Radius {

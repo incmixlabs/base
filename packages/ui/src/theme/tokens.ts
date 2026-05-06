@@ -5,6 +5,7 @@ import {
   type ChartColorToken,
   themeSizeTokens,
 } from '@incmix/theme'
+import type { accentColors, grayColors } from './props/color.prop'
 
 /** designTokens export. */
 export const designTokens = {
@@ -332,32 +333,8 @@ export function resolveThemeColorToken(token: ThemeColorToken): string {
 
 export type Appearance = 'inherit' | 'light' | 'dark'
 export type Scaling = '90%' | '95%' | '100%' | '105%' | '110%'
-export type AccentColor =
-  | 'gray'
-  | 'gold'
-  | 'bronze'
-  | 'brown'
-  | 'yellow'
-  | 'amber'
-  | 'orange'
-  | 'tomato'
-  | 'red'
-  | 'ruby'
-  | 'crimson'
-  | 'pink'
-  | 'plum'
-  | 'purple'
-  | 'violet'
-  | 'iris'
-  | 'indigo'
-  | 'blue'
-  | 'cyan'
-  | 'teal'
-  | 'green'
-  | 'lime'
-  | 'mint'
-  | 'sky'
-export type GrayColor = 'auto' | 'gray' | 'mauve' | 'slate' | 'sage' | 'olive' | 'sand'
+export type AccentColor = (typeof accentColors)[number]
+export type GrayColor = (typeof grayColors)[number]
 
 export type SemanticLane =
   | 'slate'
