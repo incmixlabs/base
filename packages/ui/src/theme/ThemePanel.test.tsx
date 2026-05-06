@@ -37,7 +37,9 @@ describe('ThemePanel', () => {
 
     await waitFor(() => {
       expect(screen.getByTestId('accent-color')).toHaveTextContent('teal')
-      expect(window.localStorage.getItem(DEFAULT_THEME_CONFIG_STORAGE_KEY)).toContain('"accentColor":"teal"')
+      const persisted = window.localStorage.getItem(DEFAULT_THEME_CONFIG_STORAGE_KEY)
+      expect(persisted).not.toBeNull()
+      expect(JSON.parse(persisted as string)).toMatchObject({ accentColor: 'teal' })
     })
   })
 })
