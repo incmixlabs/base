@@ -78,7 +78,8 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
     ref,
   ) => {
     const fieldGroup = useFieldGroup()
-    const effectiveReadOnly = fieldGroup.readOnly || readOnly
+    const effectiveDisabled = disabled || fieldGroup.disabled
+    const effectiveReadOnly = readOnly
     const generatedId = React.useId()
     const inputId = id ?? generatedId
     const listboxId = `${inputId}-listbox`
@@ -94,11 +95,11 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
     }, [open, selectedLabel])
 
     React.useEffect(() => {
-      if (disabled || effectiveReadOnly) {
+      if (effectiveDisabled || effectiveReadOnly) {
         setOpen(false)
         setActiveIndex(-1)
       }
-    }, [disabled, effectiveReadOnly])
+    }, [effectiveDisabled, effectiveReadOnly])
 
     React.useEffect(() => {
       return () => window.clearTimeout(closeTimerRef.current)
@@ -187,14 +188,14 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
           color={color}
           radius={radius}
           error={error}
-          disabled={disabled}
+          disabled={effectiveDisabled}
           readOnly={effectiveReadOnly}
           rightElement={<ChevronDown className="h-4 w-4 opacity-50" aria-hidden="true" />}
           onFocus={() => {
-            if (!disabled && !effectiveReadOnly) setOpen(true)
+            if (!effectiveDisabled && !effectiveReadOnly) setOpen(true)
           }}
           onClick={() => {
-            if (!disabled && !effectiveReadOnly) setOpen(true)
+            if (!effectiveDisabled && !effectiveReadOnly) setOpen(true)
           }}
           onBlur={() => {
             closeTimerRef.current = window.setTimeout(() => {
@@ -211,7 +212,7 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
           onKeyDown={event => {
             if (event.key === 'ArrowDown') {
               event.preventDefault()
-              if (disabled || effectiveReadOnly) return
+              if (effectiveDisabled || effectiveReadOnly) return
               setOpen(true)
               setActiveIndex(current => getNextEnabledItemIndex(visibleItems, current, 1))
               return
@@ -219,7 +220,7 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
 
             if (event.key === 'ArrowUp') {
               event.preventDefault()
-              if (disabled || effectiveReadOnly) return
+              if (effectiveDisabled || effectiveReadOnly) return
               setOpen(true)
               setActiveIndex(current => getNextEnabledItemIndex(visibleItems, current, -1))
               return
@@ -236,12 +237,12 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
             if (event.key === 'Enter') {
               event.preventDefault()
               const item = activeItem && !activeItem.disabled ? activeItem : visibleItems.find(next => !next.disabled)
-              if (!disabled && !effectiveReadOnly && item) selectValue(item.value)
+              if (!effectiveDisabled && !effectiveReadOnly && item) selectValue(item.value)
             }
           }}
         />
 
-        {open && !disabled && !effectiveReadOnly ? (
+        {open && !effectiveDisabled && !effectiveReadOnly ? (
           <div
             id={listboxId}
             role="listbox"

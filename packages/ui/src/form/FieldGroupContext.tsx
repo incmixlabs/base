@@ -9,7 +9,7 @@ export interface FieldGroupContextValue {
   radius?: Radius
   variant?: TextFieldVariant
   layout?: FieldGroupLayout
-  readOnly?: boolean
+  disabled?: boolean
 }
 
 // Resolved values with defaults (always defined)
@@ -18,7 +18,7 @@ export interface FieldGroupResolvedValue {
   radius?: Radius
   variant: TextFieldVariant
   layout: FieldGroupLayout
-  readOnly: boolean
+  disabled: boolean
 }
 
 const FieldGroupContext = React.createContext<FieldGroupContextValue | null>(null)
@@ -33,17 +33,17 @@ export function FieldGroupProvider({ children, value }: { children: React.ReactN
       radius: value.radius ?? parent?.radius,
       variant: value.variant ?? parent?.variant,
       layout: value.layout ?? parent?.layout,
-      readOnly: value.readOnly === true || parent?.readOnly === true ? true : undefined,
+      disabled: value.disabled === true || parent?.disabled === true ? true : undefined,
     }),
     [
       parent?.layout,
       parent?.radius,
-      parent?.readOnly,
+      parent?.disabled,
       parent?.size,
       parent?.variant,
       value.layout,
       value.radius,
-      value.readOnly,
+      value.disabled,
       value.size,
       value.variant,
     ],
@@ -56,7 +56,7 @@ const defaultFieldGroupValue: FieldGroupResolvedValue = {
   size: 'md',
   variant: 'outline',
   layout: 'stacked',
-  readOnly: false,
+  disabled: false,
 }
 
 function resolveFieldGroupValue(context: FieldGroupContextValue): FieldGroupResolvedValue {
@@ -65,7 +65,7 @@ function resolveFieldGroupValue(context: FieldGroupContextValue): FieldGroupReso
     radius: context.radius ?? defaultFieldGroupValue.radius,
     variant: context.variant ?? defaultFieldGroupValue.variant,
     layout: context.layout ?? defaultFieldGroupValue.layout,
-    readOnly: context.readOnly === true,
+    disabled: context.disabled === true,
   }
 }
 

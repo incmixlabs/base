@@ -111,7 +111,7 @@ export function TimePickerNext({
   const inheritedSize = sizeProp ?? fieldGroup.size
   const size: DateNextSize = isDateNextSize(inheritedSize) ? inheritedSize : 'md'
   const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
-  const effectiveIsDisabled = isDisabled || fieldGroup.readOnly
+  const effectiveIsDisabled = isDisabled || fieldGroup.disabled
   const buttonSize = buttonSizeByDateNextSize[size]
   const minuteStep = useMemo(() => normalizeMinuteStep(rawMinuteStep), [rawMinuteStep])
 

@@ -27,7 +27,7 @@ describe('FieldGroupContext', () => {
     )
 
     expect(screen.getByTestId('field-group-value')).toHaveTextContent(
-      JSON.stringify({ size: 'lg', radius: 'lg', variant: 'soft', layout: 'stacked', readOnly: false }),
+      JSON.stringify({ size: 'lg', radius: 'lg', variant: 'soft', layout: 'stacked', disabled: false }),
     )
   })
 
@@ -35,7 +35,7 @@ describe('FieldGroupContext', () => {
     render(<ReadFieldGroup />)
 
     expect(screen.getByTestId('field-group-value')).toHaveTextContent(
-      JSON.stringify({ size: 'md', variant: 'outline', layout: 'stacked', readOnly: false }),
+      JSON.stringify({ size: 'md', variant: 'outline', layout: 'stacked', disabled: false }),
     )
   })
 
@@ -53,21 +53,21 @@ describe('FieldGroupContext', () => {
     )
 
     expect(screen.getByTestId('field-group-optional')).toHaveTextContent(
-      JSON.stringify({ size: 'md', variant: 'outline', layout: 'grid', readOnly: false }),
+      JSON.stringify({ size: 'md', variant: 'outline', layout: 'grid', disabled: false }),
     )
   })
 
-  it('inherits readOnly from parent providers', () => {
+  it('inherits disabled from parent providers', () => {
     render(
-      <FieldGroupProvider value={{ radius: 'full', readOnly: true }}>
-        <FieldGroupProvider value={{ layout: 'grid', readOnly: false }}>
+      <FieldGroupProvider value={{ radius: 'full', disabled: true }}>
+        <FieldGroupProvider value={{ layout: 'grid', disabled: false }}>
           <ReadFieldGroup />
         </FieldGroupProvider>
       </FieldGroupProvider>,
     )
 
     expect(screen.getByTestId('field-group-value')).toHaveTextContent(
-      JSON.stringify({ size: 'md', radius: 'full', variant: 'outline', layout: 'grid', readOnly: true }),
+      JSON.stringify({ size: 'md', radius: 'full', variant: 'outline', layout: 'grid', disabled: true }),
     )
   })
 })

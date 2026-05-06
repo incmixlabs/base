@@ -81,7 +81,7 @@ const SwitchGroupRoot = React.forwardRef<HTMLDivElement, SwitchGroupRootProps>(
     const fieldGroup = useFieldGroup()
     const size = resolveFormSize(sizeProp ?? fieldGroup.size)
     const radius = radiusProp ?? fieldGroup.radius ?? 'full'
-    const effectiveDisabled = disabled || fieldGroup.readOnly
+    const effectiveDisabled = disabled || fieldGroup.disabled
 
     const [internalValue, setInternalValue] = React.useState<string[]>(defaultValue)
     const isControlled = controlledValue !== undefined

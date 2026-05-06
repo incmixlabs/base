@@ -329,7 +329,7 @@ export const LocationInput = React.forwardRef<HTMLDivElement, LocationInputProps
     const fieldGroup = useFieldGroup()
     const size = (sizeProp ?? fieldGroup.size) as ExtendedFormSize
     const variant = variantProp ?? fieldGroup.variant
-    const disabled = disabledProp || fieldGroup.readOnly
+    const disabled = disabledProp || fieldGroup.disabled
     const floatingStyle = label ? getFloatingStyle(variant) : null
     const floating = label ? isFloatingVariant(variant) : false
 

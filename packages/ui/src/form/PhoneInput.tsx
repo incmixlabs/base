@@ -87,6 +87,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
     const fieldGroup = useFieldGroup()
     const size = sizeProp ?? fieldGroup.size
     const variant = variantProp ?? fieldGroup.variant
+    const effectiveDisabled = disabled || fieldGroup.disabled
 
     const [dropdownOpen, setDropdownOpen] = React.useState(false)
     const dropdownRef = React.useRef<HTMLDivElement>(null)
@@ -142,10 +143,10 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
     }, [dropdownOpen])
 
     React.useEffect(() => {
-      if (disabled) {
+      if (effectiveDisabled) {
         setDropdownOpen(false)
       }
-    }, [disabled])
+    }, [effectiveDisabled])
 
     React.useLayoutEffect(() => {
       const nextHasAssociatedLabel = Boolean(inputRef.current?.labels?.length)
@@ -171,12 +172,12 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
 
     const handleCountrySelect = React.useCallback(
       (country: ICountry) => {
-        if (disabled) return
+        if (effectiveDisabled) return
         setSelectedCountry(country)
         setDropdownOpen(false)
         emitChange(country, phoneNumber)
       },
-      [disabled, phoneNumber, emitChange],
+      [effectiveDisabled, phoneNumber, emitChange],
     )
 
     const handlePhoneChange = React.useCallback(
@@ -205,7 +206,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
         type="tel"
         value={phoneNumber}
         onChange={handlePhoneChange}
-        disabled={disabled}
+        disabled={effectiveDisabled}
         placeholder={resolvedPlaceholder}
         aria-label={fallbackAriaLabel}
         size={size}
@@ -216,19 +217,23 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
         className={className}
         style={textFieldStyle}
         leftElement={
-          <Flex height="var(--tf-height)" align="center" className={cn('relative w-full', disabled && 'opacity-50')}>
+          <Flex
+            height="var(--tf-height)"
+            align="center"
+            className={cn('relative w-full', effectiveDisabled && 'opacity-50')}
+          >
             <Button
               ref={triggerRef}
               type="button"
               variant="ghost"
               color="slate"
-              onClick={() => !disabled && setDropdownOpen(!dropdownOpen)}
-              disabled={disabled}
+              onClick={() => !effectiveDisabled && setDropdownOpen(!dropdownOpen)}
+              disabled={effectiveDisabled}
               className={cn(
                 'h-full gap-1 border-y-0 border-l-0 border-r border-input/50 px-2 py-0',
                 'focus-visible:ring-inset',
                 'rounded-l-[var(--element-border-radius)]',
-                disabled && 'cursor-not-allowed',
+                effectiveDisabled && 'cursor-not-allowed',
               )}
               aria-expanded={dropdownOpen}
               aria-haspopup="listbox"
@@ -254,7 +259,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
               <Icon icon="phone" size="sm" color="neutral" aria-hidden="true" />
             </Flex>
 
-            {dropdownOpen && (
+            {dropdownOpen && !effectiveDisabled && (
               <div
                 ref={dropdownRef}
                 className={cn(

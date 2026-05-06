@@ -45,7 +45,7 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
     const safeRadius = normalizeEnumPropValue(switchPropDefs.radius, radius) ?? 'full'
     const safeHighContrast = normalizeBooleanPropValue(switchPropDefs.highContrast, highContrast) ?? false
     const safeDisabled = normalizeBooleanPropValue(switchPropDefs.disabled, disabled) ?? false
-    const effectiveDisabled = safeDisabled || fieldGroup.readOnly
+    const effectiveDisabled = safeDisabled || fieldGroup.disabled
 
     return (
       <SwitchPrimitive.Root
@@ -95,7 +95,7 @@ const SwitchWithLabel = React.forwardRef<HTMLButtonElement, SwitchWithLabelProps
     const fieldGroup = useFieldGroup()
     const generatedId = React.useId()
     const id = idProp ?? generatedId
-    const effectiveDisabled = props.disabled || fieldGroup.readOnly
+    const effectiveDisabled = props.disabled || fieldGroup.disabled
 
     return (
       <div className={cn('flex items-center gap-2', labelPosition === 'left' && 'flex-row-reverse', className)}>

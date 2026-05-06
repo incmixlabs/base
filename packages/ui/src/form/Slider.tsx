@@ -93,6 +93,7 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
   ) => {
     const fieldGroup = useFieldGroup()
     const size = resolveFormSize(sizeProp ?? fieldGroup.size)
+    const effectiveDisabled = disabled || fieldGroup.disabled
     const safeVariant = (normalizeEnumPropValue(sliderPropDefs.variant, variant) ??
       sliderPropDefs.variant.default) as SliderVariant
     const safeHighContrast = normalizeBooleanPropValue(sliderPropDefs.highContrast, highContrast) ?? false
@@ -107,7 +108,7 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
         min={min}
         max={max}
         step={step}
-        disabled={disabled}
+        disabled={effectiveDisabled}
         orientation={orientation}
         style={{ ...marginProps.style, ...formColorVars[color], ...style }}
         className={cn(
@@ -115,7 +116,7 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
           sliderSizeVariants[size],
           orientation === 'horizontal' && 'w-full',
           orientation === 'vertical' && 'h-full flex-col',
-          disabled && 'opacity-50 cursor-not-allowed',
+          effectiveDisabled && 'opacity-50 cursor-not-allowed',
           marginProps.className,
           className,
         )}

@@ -30,8 +30,8 @@ export interface FieldGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   radius?: Radius
   /** Variant to apply to all child form fields */
   variant?: TextFieldVariant
-  /** Whether child form fields should be read-only */
-  readOnly?: boolean
+  /** Whether child form fields should be disabled */
+  disabled?: boolean
   /** Gap between child elements */
   gap?: Spacing
   /** Layout mode */
@@ -50,7 +50,7 @@ const FieldGroupRoot = React.forwardRef<HTMLDivElement, FieldGroupProps>(
       size,
       radius,
       variant,
-      readOnly,
+      disabled,
       gap = '4',
       layout = 'stacked',
       columns = '2',
@@ -62,8 +62,8 @@ const FieldGroupRoot = React.forwardRef<HTMLDivElement, FieldGroupProps>(
     ref,
   ) => {
     const providerValue = React.useMemo(
-      () => ({ size, radius, variant, layout, readOnly }),
-      [layout, radius, readOnly, size, variant],
+      () => ({ size, radius, variant, layout, disabled }),
+      [disabled, layout, radius, size, variant],
     )
 
     // Stacked layout - vertical flex column (default)

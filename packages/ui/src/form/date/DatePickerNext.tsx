@@ -100,7 +100,7 @@ export function DatePickerNext({
   const variant = variantProp ?? fieldGroup.variant
   const floatingStyle = getFloatingStyle(variant)
   const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
-  const effectiveIsDisabled = isDisabled || fieldGroup.readOnly
+  const effectiveIsDisabled = isDisabled || fieldGroup.disabled
   const generatedLabelId = useId()
   const labelId = label ? generatedLabelId : undefined
   const [uncontrolledValue, setUncontrolledValue] = useState<Date | undefined>(defaultValue)

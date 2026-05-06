@@ -70,7 +70,8 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     const fieldGroup = useFieldGroup()
     const size = (sizeProp ?? fieldGroup.size) as ExtendedFormSize
     const variant = variantProp ?? fieldGroup.variant
-    const effectiveReadOnly = fieldGroup.readOnly || readOnly === true
+    const effectiveDisabled = disabled || fieldGroup.disabled
+    const effectiveReadOnly = readOnly === true
 
     const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
     const radiusStyles = getRadiusStyles(radius)
@@ -129,7 +130,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             ref={ref}
             id={inputId}
             placeholder=" "
-            disabled={disabled}
+            disabled={effectiveDisabled}
             aria-invalid={error || undefined}
             readOnly={effectiveReadOnly}
             className={cn(
@@ -220,7 +221,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
         <input
           ref={ref}
           id={inputId}
-          disabled={disabled}
+          disabled={effectiveDisabled}
           aria-invalid={error || undefined}
           readOnly={effectiveReadOnly}
           className={cn(
@@ -236,7 +237,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             (leftIcon || leftElement) && textFieldInputWithLeftElementCls,
             (rightIcon || rightElement) && textFieldInputWithRightElementCls,
 
-            disabled && 'opacity-50 cursor-not-allowed',
+            effectiveDisabled && 'opacity-50 cursor-not-allowed',
           )}
           placeholder={placeholder}
           {...inputProps}
@@ -273,7 +274,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
 
     return (
       <div className={cn('grid gap-1.5', marginProps.className, className)} style={marginProps.style}>
-        <Label htmlFor={inputId} disabled={disabled} color={error ? SemanticColor.error : undefined}>
+        <Label htmlFor={inputId} disabled={effectiveDisabled} color={error ? SemanticColor.error : undefined}>
           {label}
         </Label>
         {control}

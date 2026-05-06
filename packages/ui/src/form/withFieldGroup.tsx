@@ -9,7 +9,7 @@ interface FieldGroupAwareProps {
   size?: Size
   radius?: Radius
   variant?: TextFieldVariant
-  readOnly?: boolean
+  disabled?: boolean
 }
 
 /**
@@ -42,7 +42,7 @@ export function withFieldGroup<P extends FieldGroupAwareProps>(WrappedComponent:
             size: props.size ?? fieldGroup.size,
             radius: props.radius ?? fieldGroup.radius,
             variant: props.variant ?? fieldGroup.variant,
-            readOnly: fieldGroup.readOnly || props.readOnly === true,
+            disabled: fieldGroup.disabled || props.disabled === true,
           }
         : {}),
       ref,

@@ -33,6 +33,7 @@ export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
   ({ size: sizeProp, weight = 'medium', htmlFor, disabled, className, children, ...props }, ref) => {
     const fieldGroup = useFieldGroup()
     const size = sizeProp ?? fieldGroup.size
+    const effectiveDisabled = disabled || fieldGroup.disabled
     const textSize = sizeMap[size]
 
     return (
@@ -41,7 +42,7 @@ export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
         as="label"
         size={textSize}
         weight={weight}
-        className={cn('leading-none cursor-pointer', disabled && 'cursor-not-allowed opacity-70', className)}
+        className={cn('leading-none cursor-pointer', effectiveDisabled && 'cursor-not-allowed opacity-70', className)}
         {...props}
         {...(htmlFor && { htmlFor })}
       >

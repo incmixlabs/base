@@ -250,6 +250,7 @@ export const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputP
     const fieldGroup = useFieldGroup()
     const size = sizeProp ?? fieldGroup.size
     const variant = variantProp ?? fieldGroup.variant
+    const effectiveDisabled = disabled || fieldGroup.disabled
 
     // Internal state
     const [cardNumber, setCardNumber] = React.useState(value?.number ?? '')
@@ -346,7 +347,7 @@ export const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputP
       color,
       radius: radiusProp,
       error,
-      disabled,
+      disabled: effectiveDisabled,
     }
 
     return (

@@ -56,7 +56,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
     const variant = variantProp ?? fieldGroup.variant
     const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
     const radiusStyles = getRadiusStyles(radius)
-    const effectiveDisabled = disabled || readOnly === true || fieldGroup.readOnly
+    const effectiveDisabled = disabled || readOnly === true || fieldGroup.disabled
     const themePortalContainer = useThemePortalContainer()
     const portalContainer = portalContainerProp ?? themePortalContainer
 

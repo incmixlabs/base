@@ -55,7 +55,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
     const safeVariant = normalizeEnumPropValue(checkboxPropDefs.variant, variant) ?? checkboxPropDefs.variant.default
     const safeColor = normalizeEnumPropValue(checkboxPropDefs.color, color) ?? SemanticColor.slate
     const safeHighContrast = normalizeBooleanPropValue(checkboxPropDefs.highContrast, highContrast) ?? false
-    const effectiveDisabled = disabled || fieldGroup.readOnly
+    const effectiveDisabled = disabled || fieldGroup.disabled
 
     const isControlled = checkedProp !== undefined
     const [uncontrolledChecked, setUncontrolledChecked] = React.useState(defaultChecked ?? false)
@@ -148,7 +148,7 @@ export const CheckboxWithLabel = React.forwardRef<HTMLButtonElement, CheckboxWit
     const fieldGroup = useFieldGroup()
     const generatedId = React.useId()
     const checkboxId = id || generatedId
-    const effectiveDisabled = props.disabled || fieldGroup.readOnly
+    const effectiveDisabled = props.disabled || fieldGroup.disabled
 
     return (
       <Row align="start" gap="2" className={className}>

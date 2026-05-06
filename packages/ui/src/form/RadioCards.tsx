@@ -117,7 +117,7 @@ const RadioCardsRoot = React.forwardRef<HTMLDivElement, RadioCardsRootProps>(
     const safeDisabled = normalizeBooleanPropValue(radioCardsRootPropDefs.disabled, disabled) ?? false
     const tokenColumns =
       typeof columns === 'string' ? normalizeEnumPropValue(radioCardsRootPropDefs.columns, columns) : undefined
-    const effectiveDisabled = safeDisabled || fieldGroup.readOnly
+    const effectiveDisabled = safeDisabled || fieldGroup.disabled
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
 
     const handleValueChange = React.useCallback(

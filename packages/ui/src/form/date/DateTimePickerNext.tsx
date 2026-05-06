@@ -117,7 +117,7 @@ export function DateTimePickerNext({
   const variant = variantProp ?? fieldGroup.variant
   const floatingStyle = getFloatingStyle(variant)
   const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
-  const effectiveIsDisabled = isDisabled || fieldGroup.readOnly
+  const effectiveIsDisabled = isDisabled || fieldGroup.disabled
   const buttonSize = buttonSizeByDateNextSize[size]
   const textFieldSize: TextFieldSize = size === 'xl' ? 'lg' : size
   const minuteStep = useMemo(() => normalizeMinuteStep(rawMinuteStep), [rawMinuteStep])

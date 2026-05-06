@@ -73,7 +73,7 @@ const CheckboxGroupRoot = React.forwardRef<HTMLDivElement, CheckboxGroupRootProp
     const safeOrientation =
       normalizeEnumPropValue(checkboxGroupRootPropDefs.orientation, orientation) ??
       checkboxGroupRootPropDefs.orientation.default
-    const effectiveDisabled = safeDisabled || fieldGroup.readOnly
+    const effectiveDisabled = safeDisabled || fieldGroup.disabled
 
     return (
       <CheckboxGroupContext.Provider

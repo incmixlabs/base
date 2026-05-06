@@ -122,8 +122,9 @@ export function DateRangePickerNext({
   const size: DateNextSize = isDateNextSize(inheritedSize) ? inheritedSize : 'md'
   const textFieldSize = size === 'xl' ? 'lg' : size
   const variant = variantProp ?? fieldGroup.variant
+  const effectiveIsDisabled = isDisabled || fieldGroup.disabled
   const floatingStyle = getFloatingStyle(variant)
-  const radius = useThemeRadius(radiusProp)
+  const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
   const generatedLabelId = useId()
   const labelId = label ? generatedLabelId : undefined
   const isDual = visibleMonths === 2
@@ -200,7 +201,7 @@ export function DateRangePickerNext({
 
   /* ── Unified day click handler (both single and dual mode) ── */
   const onDayPress = (date: Date) => {
-    if (isDateDisabled(date) || isDisabled) return
+    if (isDateDisabled(date) || effectiveIsDisabled) return
     if (!rangeDraft?.from || rangeDraft.to) {
       setRangeDraft({ from: date })
       return
@@ -243,13 +244,13 @@ export function DateRangePickerNext({
 
   /* ── Navigation (dual mode — single mode uses panel's built-in nav) ── */
   const handlePrevMonth = () => {
-    if (isDisabled) return
+    if (effectiveIsDisabled) return
     const normalizedMonths = normalizeDualMonths(subMonths(leftMonth, 1), rightMonth)
     setLeftMonth(normalizedMonths.left)
     setRightMonth(normalizedMonths.right)
   }
   const handleNextMonth = () => {
-    if (isDisabled) return
+    if (effectiveIsDisabled) return
     const normalizedMonths = normalizeDualMonths(leftMonth, addMonths(rightMonth, 1))
     setLeftMonth(normalizedMonths.left)
     setRightMonth(normalizedMonths.right)
@@ -257,7 +258,7 @@ export function DateRangePickerNext({
 
   /* ── renderDay for range selection ── */
   const renderDay = (state: DayRenderState) => {
-    const nonInteractive = state.outsideMonth || state.unavailable || isDisabled
+    const nonInteractive = state.outsideMonth || state.unavailable || effectiveIsDisabled
     const selected = isSelectedDay(state.normalized)
     const selStart = isSelectionStart(state.normalized)
     const selEnd = isSelectionEnd(state.normalized)
@@ -335,7 +336,7 @@ export function DateRangePickerNext({
       minValue={toDateValue(minValue) ?? undefined}
       maxValue={toDateValue(maxValue) ?? undefined}
       isDateUnavailable={isDateUnavailable}
-      isDisabled={isDisabled}
+      isDisabled={effectiveIsDisabled}
       isOpen={isOpen}
       onOpenChange={nextOpen => {
         setIsOpen(nextOpen)
@@ -414,7 +415,7 @@ export function DateRangePickerNext({
                   aria-label="Previous month"
                   className={calendarNavButtonClass}
                   onClick={handlePrevMonth}
-                  disabled={isDisabled}
+                  disabled={effectiveIsDisabled}
                 >
                   <ChevronLeft className={dateNextCalendarNavIcon} />
                 </button>
@@ -457,7 +458,7 @@ export function DateRangePickerNext({
                   aria-label="Next month"
                   className={calendarNavButtonClass}
                   onClick={handleNextMonth}
-                  disabled={isDisabled}
+                  disabled={effectiveIsDisabled}
                 >
                   <ChevronRight className={dateNextCalendarNavIcon} />
                 </button>
@@ -491,7 +492,7 @@ export function DateRangePickerNext({
                   minValue={minValue}
                   maxValue={maxValue}
                   disabledDates={disabledDates}
-                  isDisabled={isDisabled}
+                  isDisabled={effectiveIsDisabled}
                   size={size}
                   color={color}
                   radius={radius}
@@ -508,7 +509,7 @@ export function DateRangePickerNext({
                   minValue={minValue}
                   maxValue={maxValue}
                   disabledDates={disabledDates}
-                  isDisabled={isDisabled}
+                  isDisabled={effectiveIsDisabled}
                   size={size}
                   color={color}
                   radius={radius}
@@ -524,7 +525,7 @@ export function DateRangePickerNext({
               minValue={minValue}
               maxValue={maxValue}
               disabledDates={disabledDates}
-              isDisabled={isDisabled}
+              isDisabled={effectiveIsDisabled}
               size={size}
               color={color}
               radius={radius}
@@ -540,7 +541,7 @@ export function DateRangePickerNext({
   return (
     <DateNextFieldWrapper
       label={label}
-      disabled={isDisabled}
+      disabled={effectiveIsDisabled}
       floatingStyle={floatingStyle}
       color={color}
       textFieldSize={textFieldSize}

@@ -81,7 +81,7 @@ const RadioGroupRoot = React.forwardRef<HTMLDivElement, RadioGroupRootProps>(
     const safeOrientation =
       normalizeEnumPropValue(radioGroupRootPropDefs.orientation, orientation) ??
       radioGroupRootPropDefs.orientation.default
-    const effectiveDisabled = safeDisabled || fieldGroup.readOnly
+    const effectiveDisabled = safeDisabled || fieldGroup.disabled
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
 
     const handleValueChange = React.useCallback(

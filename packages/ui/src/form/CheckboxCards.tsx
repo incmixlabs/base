@@ -131,7 +131,7 @@ const CheckboxCardsRoot = React.forwardRef<HTMLDivElement, CheckboxCardsRootProp
     const safeGap = normalizeEnumPropValue(checkboxCardsRootPropDefs.gap, gap) ?? checkboxCardsRootPropDefs.gap.default
     const safeHighContrast = normalizeBooleanPropValue(checkboxCardsRootPropDefs.highContrast, highContrast) ?? false
     const safeDisabled = typeof disabled === 'boolean' ? disabled : false
-    const effectiveDisabled = safeDisabled || fieldGroup.readOnly
+    const effectiveDisabled = safeDisabled || fieldGroup.disabled
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
 
     return (
