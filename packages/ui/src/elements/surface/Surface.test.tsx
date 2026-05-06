@@ -49,6 +49,8 @@ describe('Surface', () => {
     { highContrast: 'false', hover: 'true', hasHighContrast: false, hasHover: true },
     { highContrast: 'TrUe', hover: 'FaLsE', hasHighContrast: true, hasHover: false },
     { highContrast: '', hover: '', hasHighContrast: false, hasHover: true },
+    { highContrast: null, hover: null, hasHighContrast: false, hasHover: true },
+    { highContrast: undefined, hover: undefined, hasHighContrast: false, hasHover: true },
   ])('normalizes boolean-like visual props %#', ({ highContrast, hover, hasHighContrast, hasHover }) => {
     render(
       <Surface data-testid="surface" highContrast={highContrast as any} hover={hover as any}>
