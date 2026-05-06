@@ -139,6 +139,12 @@ export function TimePickerNext({
     }
   }, [value])
 
+  useEffect(() => {
+    if (effectiveIsDisabled) {
+      setIsOpen(false)
+    }
+  }, [effectiveIsDisabled])
+
   const openPicker = useCallback(() => {
     snapshotRef.current = value ? { ...value } : undefined
     setIsOpen(true)

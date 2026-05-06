@@ -94,6 +94,13 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
     }, [open, selectedLabel])
 
     React.useEffect(() => {
+      if (disabled || effectiveReadOnly) {
+        setOpen(false)
+        setActiveIndex(-1)
+      }
+    }, [disabled, effectiveReadOnly])
+
+    React.useEffect(() => {
       return () => window.clearTimeout(closeTimerRef.current)
     }, [])
 
