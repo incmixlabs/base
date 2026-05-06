@@ -1,4 +1,4 @@
-import { createVar, style } from '@vanilla-extract/css'
+import { createVar, fallbackVar, style } from '@vanilla-extract/css'
 import { breakpointMedia } from './responsive/breakpoints'
 
 const gapBreakpoints = ['initial', 'xs', 'sm', 'md', 'lg', 'xl'] as const
@@ -13,14 +13,21 @@ function createBreakpointVars() {
 }
 
 function createResponsiveStyle(cssProperty: 'gap' | 'columnGap' | 'rowGap', vars: Record<GapBreakpoint, string>) {
+  const initialValue = vars.initial
+  const xsValue = fallbackVar(vars.xs, initialValue)
+  const smValue = fallbackVar(vars.sm, xsValue)
+  const mdValue = fallbackVar(vars.md, smValue)
+  const lgValue = fallbackVar(vars.lg, mdValue)
+  const xlValue = fallbackVar(vars.xl, lgValue)
+
   return style({
-    [cssProperty]: vars.initial,
+    [cssProperty]: initialValue,
     '@media': {
-      [breakpointMedia.up('xs')]: { [cssProperty]: vars.xs },
-      [breakpointMedia.up('sm')]: { [cssProperty]: vars.sm },
-      [breakpointMedia.up('md')]: { [cssProperty]: vars.md },
-      [breakpointMedia.up('lg')]: { [cssProperty]: vars.lg },
-      [breakpointMedia.up('xl')]: { [cssProperty]: vars.xl },
+      [breakpointMedia.up('xs')]: { [cssProperty]: xsValue },
+      [breakpointMedia.up('sm')]: { [cssProperty]: smValue },
+      [breakpointMedia.up('md')]: { [cssProperty]: mdValue },
+      [breakpointMedia.up('lg')]: { [cssProperty]: lgValue },
+      [breakpointMedia.up('xl')]: { [cssProperty]: xlValue },
     },
   })
 }
