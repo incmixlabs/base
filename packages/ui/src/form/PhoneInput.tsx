@@ -5,6 +5,7 @@ import * as React from 'react'
 import { Button } from '@/elements/button/Button'
 import { Icon } from '@/elements/button/Icon'
 import { Flex } from '@/layouts/flex/Flex'
+import { useComposedRefs } from '@/lib/compose-refs'
 import { isActivationKey } from '@/lib/keyboard-keys'
 import { cn } from '@/lib/utils'
 import type { Color, Radius, Size, TextFieldVariant } from '@/theme/tokens'
@@ -90,6 +91,9 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
     const [dropdownOpen, setDropdownOpen] = React.useState(false)
     const dropdownRef = React.useRef<HTMLDivElement>(null)
     const triggerRef = React.useRef<HTMLButtonElement>(null)
+    const inputRef = React.useRef<HTMLInputElement>(null)
+    const composedInputRef = useComposedRefs(ref, inputRef)
+    const [hasAssociatedLabel, setHasAssociatedLabel] = React.useState<boolean | null>(null)
 
     // Get available countries
     const availableCountries = React.useMemo(() => {
@@ -143,6 +147,11 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       }
     }, [disabled])
 
+    React.useLayoutEffect(() => {
+      const nextHasAssociatedLabel = Boolean(inputRef.current?.labels?.length)
+      setHasAssociatedLabel(current => (current === nextHasAssociatedLabel ? current : nextHasAssociatedLabel))
+    })
+
     // Emit change
     const emitChange = React.useCallback(
       (country: ICountry | undefined, number: string) => {
@@ -185,108 +194,107 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       ...style,
     } as React.CSSProperties
     const resolvedPlaceholder = placeholder ?? phonePlaceholder
-    const fallbackAriaLabel = ariaLabel ?? (!props['aria-labelledby'] && !props.id ? 'Phone number' : undefined)
+    const hasAriaLabelledBy = Boolean(props['aria-labelledby']?.trim())
+    const fallbackAriaLabel =
+      ariaLabel ?? (!hasAriaLabelledBy && hasAssociatedLabel === false ? 'Phone number' : undefined)
 
     return (
-      <div className="relative">
-        <TextField
-          {...props}
-          ref={ref}
-          type="tel"
-          value={phoneNumber}
-          onChange={handlePhoneChange}
-          disabled={disabled}
-          placeholder={resolvedPlaceholder}
-          aria-label={fallbackAriaLabel}
-          size={size}
-          variant={toBaseTextFieldVariant(variant)}
-          color={color}
-          radius={radiusProp}
-          error={error}
-          className={className}
-          style={textFieldStyle}
-          leftElement={
-            <Flex height="var(--tf-height)" align="center" className={cn(disabled && 'opacity-50')}>
-              <Button
-                ref={triggerRef}
-                type="button"
-                variant="ghost"
-                color="slate"
-                onClick={() => !disabled && setDropdownOpen(!dropdownOpen)}
-                disabled={disabled}
-                className={cn(
-                  'h-full gap-1 border-y-0 border-l-0 border-r border-input/50 px-2 py-0',
-                  'focus-visible:ring-inset',
-                  'rounded-l-[var(--element-border-radius)]',
-                  disabled && 'cursor-not-allowed',
-                )}
-                aria-expanded={dropdownOpen}
-                aria-haspopup="listbox"
-                aria-label={
-                  selectedCountry
-                    ? `Change country code, current country ${selectedCountry.name} +${selectedCountry.phonecode}`
-                    : 'Select country code'
-                }
-              >
-                <Text size="md">{selectedCountry?.flag}</Text>
-                <Text size="sm" color="neutral">
-                  +{selectedCountry?.phonecode}
-                </Text>
-                <Icon
-                  icon="chevron-down"
-                  size="xs"
-                  color="neutral"
-                  className={cn('opacity-50 transition-transform', dropdownOpen && 'rotate-180')}
-                  aria-hidden="true"
-                />
-              </Button>
-              <Flex align="center" justify="center" px="2">
-                <Icon icon="phone" size="sm" color="neutral" aria-hidden="true" />
-              </Flex>
+      <TextField
+        {...props}
+        ref={composedInputRef}
+        type="tel"
+        value={phoneNumber}
+        onChange={handlePhoneChange}
+        disabled={disabled}
+        placeholder={resolvedPlaceholder}
+        aria-label={fallbackAriaLabel}
+        size={size}
+        variant={toBaseTextFieldVariant(variant)}
+        color={color}
+        radius={radiusProp}
+        error={error}
+        className={className}
+        style={textFieldStyle}
+        leftElement={
+          <Flex height="var(--tf-height)" align="center" className={cn('relative w-full', disabled && 'opacity-50')}>
+            <Button
+              ref={triggerRef}
+              type="button"
+              variant="ghost"
+              color="slate"
+              onClick={() => !disabled && setDropdownOpen(!dropdownOpen)}
+              disabled={disabled}
+              className={cn(
+                'h-full gap-1 border-y-0 border-l-0 border-r border-input/50 px-2 py-0',
+                'focus-visible:ring-inset',
+                'rounded-l-[var(--element-border-radius)]',
+                disabled && 'cursor-not-allowed',
+              )}
+              aria-expanded={dropdownOpen}
+              aria-haspopup="listbox"
+              aria-label={
+                selectedCountry
+                  ? `Change country code, current country ${selectedCountry.name} +${selectedCountry.phonecode}`
+                  : 'Select country code'
+              }
+            >
+              <Text size="md">{selectedCountry?.flag}</Text>
+              <Text size="sm" color="neutral">
+                +{selectedCountry?.phonecode}
+              </Text>
+              <Icon
+                icon="chevron-down"
+                size="xs"
+                color="neutral"
+                className={cn('opacity-50 transition-transform', dropdownOpen && 'rotate-180')}
+                aria-hidden="true"
+              />
+            </Button>
+            <Flex align="center" justify="center" px="2">
+              <Icon icon="phone" size="sm" color="neutral" aria-hidden="true" />
             </Flex>
-          }
-        />
 
-        {/* Country Dropdown */}
-        {dropdownOpen && (
-          <div
-            ref={dropdownRef}
-            className={cn(
-              'absolute left-0 top-full mt-1 z-50',
-              'w-64 max-h-[200px] overflow-y-auto',
-              'rounded-md border bg-popover text-popover-foreground shadow-md',
-              'animate-in fade-in-0 zoom-in-95',
-            )}
-            role="listbox"
-          >
-            {availableCountries.map(country => (
+            {dropdownOpen && (
               <div
-                key={country.isoCode}
-                onClick={() => handleCountrySelect(country)}
-                onKeyDown={e => {
-                  if (isActivationKey(e.key)) {
-                    e.preventDefault()
-                    handleCountrySelect(country)
-                  }
-                }}
+                ref={dropdownRef}
                 className={cn(
-                  'flex items-center gap-2 px-3 py-2 text-sm cursor-pointer',
-                  'hover:bg-accent hover:text-accent-foreground',
-                  'focus:bg-accent focus:text-accent-foreground focus:outline-none',
-                  selectedCountry?.isoCode === country.isoCode && 'bg-accent/50',
+                  'absolute left-0 top-full mt-1 z-50',
+                  'w-64 max-h-[200px] overflow-y-auto',
+                  'rounded-md border bg-popover text-popover-foreground shadow-md',
+                  'animate-in fade-in-0 zoom-in-95',
                 )}
-                role="option"
-                aria-selected={selectedCountry?.isoCode === country.isoCode}
-                tabIndex={0}
+                role="listbox"
               >
-                <span className="text-base">{country.flag}</span>
-                <span className="flex-1 truncate">{country.name}</span>
-                <span className="text-muted-foreground">+{country.phonecode}</span>
+                {availableCountries.map(country => (
+                  <div
+                    key={country.isoCode}
+                    onClick={() => handleCountrySelect(country)}
+                    onKeyDown={e => {
+                      if (isActivationKey(e.key)) {
+                        e.preventDefault()
+                        handleCountrySelect(country)
+                      }
+                    }}
+                    className={cn(
+                      'flex items-center gap-2 px-3 py-2 text-sm cursor-pointer',
+                      'hover:bg-accent hover:text-accent-foreground',
+                      'focus:bg-accent focus:text-accent-foreground focus:outline-none',
+                      selectedCountry?.isoCode === country.isoCode && 'bg-accent/50',
+                    )}
+                    role="option"
+                    aria-selected={selectedCountry?.isoCode === country.isoCode}
+                    tabIndex={0}
+                  >
+                    <span className="text-base">{country.flag}</span>
+                    <span className="flex-1 truncate">{country.name}</span>
+                    <span className="text-muted-foreground">+{country.phonecode}</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        )}
-      </div>
+            )}
+          </Flex>
+        }
+      />
     )
   },
 )

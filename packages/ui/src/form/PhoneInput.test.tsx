@@ -29,6 +29,12 @@ describe('PhoneInput', () => {
     expect(screen.getByRole('textbox', { name: 'Mobile phone' })).toHaveAttribute('type', 'tel')
   })
 
+  it('keeps the fallback accessible name when id is provided without a label', () => {
+    render(<PhoneInput id="mobile-phone" />)
+
+    expect(screen.getByRole('textbox', { name: 'Phone number' })).toHaveAttribute('id', 'mobile-phone')
+  })
+
   it('uses aria-labelledby instead of the fallback accessible name', () => {
     render(
       <div>
