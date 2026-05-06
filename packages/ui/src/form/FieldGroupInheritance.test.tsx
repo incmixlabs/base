@@ -1,12 +1,13 @@
 import { cleanup, render, screen } from '@testing-library/react'
 import * as React from 'react'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { Radius, Size, TextFieldVariant } from '@/theme/tokens'
 import { checkboxSizeVariants } from './checkbox.css'
 import { CheckboxWithLabel } from './Checkbox'
 import { FieldGroupProvider } from './FieldGroupContext'
 import { MultiSelect } from './MultiSelect'
 import { Select, SelectItem } from './Select'
+import { SignatureInput } from './SignatureInput'
 import { Switch } from './Switch'
 import { Textarea } from './Textarea'
 import { TextField } from './TextField'
@@ -98,6 +99,26 @@ describe('FieldGroup inheritance', () => {
 
     expect(screen.getByRole('textbox', { name: 'Name' })).toHaveAttribute('readonly')
     expect(screen.getByRole('textbox', { name: 'Description' })).toHaveAttribute('readonly')
+  })
+
+  it('applies inherited readOnly state to SignatureInput mutations', () => {
+    const getContext = vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(() => null)
+
+    try {
+      const { container, rerender } = render(<SignatureInput />)
+
+      expect(container.querySelector('canvas')).not.toHaveClass('pointer-events-none')
+
+      rerender(
+        <FieldGroupProvider value={{ readOnly: true }}>
+          <SignatureInput />
+        </FieldGroupProvider>,
+      )
+
+      expect(container.querySelector('canvas')).toHaveClass('pointer-events-none')
+    } finally {
+      getContext.mockRestore()
+    }
   })
 
   it('applies inherited size to CheckboxWithLabel', () => {

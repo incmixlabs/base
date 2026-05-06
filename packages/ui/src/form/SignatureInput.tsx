@@ -22,6 +22,8 @@ export interface SignatureInputProps {
   error?: boolean
   /** Whether the input is disabled */
   disabled?: boolean
+  /** Whether the input is read-only */
+  readOnly?: boolean
   /** Current value (data URL of the signature) */
   value?: string
   /** Called when signature changes */
@@ -63,6 +65,7 @@ export const SignatureInput = React.forwardRef<HTMLCanvasElement, SignatureInput
       strokeWidth = 2,
       backgroundColor = 'transparent',
       placeholder = 'Sign here',
+      readOnly,
       className,
     },
     ref,
@@ -73,6 +76,8 @@ export const SignatureInput = React.forwardRef<HTMLCanvasElement, SignatureInput
     const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
     const variant = variantProp ?? fieldGroup.variant
     const effectiveDisabled = disabled || fieldGroup.disabled
+    const effectiveReadOnly = readOnly === true || fieldGroup.readOnly
+    const mutationsDisabled = effectiveDisabled || effectiveReadOnly
 
     const radiusStyles = getRadiusStyles(radius)
 
@@ -159,7 +164,7 @@ export const SignatureInput = React.forwardRef<HTMLCanvasElement, SignatureInput
     // Start drawing
     const startDrawing = React.useCallback(
       (event: React.MouseEvent | React.TouchEvent) => {
-        if (effectiveDisabled) return
+        if (mutationsDisabled) return
 
         const coords = getCoordinates(event)
         if (!coords) return
@@ -173,13 +178,13 @@ export const SignatureInput = React.forwardRef<HTMLCanvasElement, SignatureInput
         ctx.beginPath()
         ctx.moveTo(coords.x, coords.y)
       },
-      [effectiveDisabled, getCoordinates, saveToHistory],
+      [mutationsDisabled, getCoordinates, saveToHistory],
     )
 
     // Draw
     const draw = React.useCallback(
       (event: React.MouseEvent | React.TouchEvent) => {
-        if (!isDrawing || effectiveDisabled) return
+        if (!isDrawing || mutationsDisabled) return
 
         const coords = getCoordinates(event)
         if (!coords) return
@@ -192,7 +197,7 @@ export const SignatureInput = React.forwardRef<HTMLCanvasElement, SignatureInput
         ctx.stroke()
         setIsEmpty(false)
       },
-      [isDrawing, effectiveDisabled, getCoordinates],
+      [isDrawing, mutationsDisabled, getCoordinates],
     )
 
     // Stop drawing
@@ -209,9 +214,15 @@ export const SignatureInput = React.forwardRef<HTMLCanvasElement, SignatureInput
       onChange?.(dataUrl)
     }, [isDrawing, onChange])
 
+    React.useEffect(() => {
+      if (mutationsDisabled) {
+        setIsDrawing(false)
+      }
+    }, [mutationsDisabled])
+
     // Undo last stroke
     const handleUndo = React.useCallback(() => {
-      if (history.length === 0 || effectiveDisabled) return
+      if (history.length === 0 || mutationsDisabled) return
 
       const canvas = canvasRef.current
       const ctx = canvas?.getContext('2d')
@@ -235,11 +246,11 @@ export const SignatureInput = React.forwardRef<HTMLCanvasElement, SignatureInput
       } else {
         onChange?.(canvas.toDataURL('image/png'))
       }
-    }, [history, effectiveDisabled, onChange])
+    }, [history, mutationsDisabled, onChange])
 
     // Clear canvas
     const handleClear = React.useCallback(() => {
-      if (effectiveDisabled) return
+      if (mutationsDisabled) return
 
       const canvas = canvasRef.current
       const ctx = canvas?.getContext('2d')
@@ -257,7 +268,7 @@ export const SignatureInput = React.forwardRef<HTMLCanvasElement, SignatureInput
 
       setIsEmpty(true)
       onChange?.(undefined)
-    }, [effectiveDisabled, backgroundColor, saveToHistory, onChange])
+    }, [mutationsDisabled, backgroundColor, saveToHistory, onChange])
 
     // Prevent touch scrolling while drawing
     React.useEffect(() => {
@@ -303,7 +314,7 @@ export const SignatureInput = React.forwardRef<HTMLCanvasElement, SignatureInput
           {/* Canvas */}
           <canvas
             ref={canvasRef}
-            className={cn('cursor-crosshair touch-none', effectiveDisabled && 'pointer-events-none')}
+            className={cn('cursor-crosshair touch-none', mutationsDisabled && 'pointer-events-none')}
             style={{ width, height }}
             onMouseDown={startDrawing}
             onMouseMove={draw}
@@ -320,7 +331,7 @@ export const SignatureInput = React.forwardRef<HTMLCanvasElement, SignatureInput
           <button
             type="button"
             onClick={handleUndo}
-            disabled={effectiveDisabled || history.length === 0}
+            disabled={mutationsDisabled || history.length === 0}
             className={cn(
               'inline-flex items-center gap-1 px-2 py-1 text-xs rounded-md',
               'border border-input bg-background hover:bg-accent',
@@ -335,7 +346,7 @@ export const SignatureInput = React.forwardRef<HTMLCanvasElement, SignatureInput
           <button
             type="button"
             onClick={handleClear}
-            disabled={effectiveDisabled || isEmpty}
+            disabled={mutationsDisabled || isEmpty}
             className={cn(
               'inline-flex items-center gap-1 px-2 py-1 text-xs rounded-md',
               'border border-input bg-background hover:bg-accent',
