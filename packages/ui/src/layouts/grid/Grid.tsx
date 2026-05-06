@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { resolveSpacingValue } from '@/theme/helpers'
+import { gapResponsiveClasses, gapResponsiveVars } from '@/theme/helpers/gap-responsive.css'
 import {
   type AlignContent,
   type AlignItems,
@@ -46,6 +47,8 @@ import {
   gridByJustify,
   gridByJustifyItems,
   gridColumns,
+  gridTemplateColumnsCustomResponsive,
+  gridTemplateRowsCustomResponsive,
 } from './Grid.css'
 import { gridPropDefs } from './grid.props'
 
@@ -55,6 +58,138 @@ import { gridPropDefs } from './grid.props'
 
 type GridDisplay = 'none' | 'grid' | 'inline-grid'
 type GridJustify = 'start' | 'center' | 'end' | 'between'
+const responsiveValueKeys = ['initial', 'xs', 'sm', 'md', 'lg', 'xl'] as const
+const responsiveBreakpointKeys = ['xs', 'sm', 'md', 'lg', 'xl'] as const
+
+type ResponsiveValueKey = (typeof responsiveValueKeys)[number]
+type ResponsiveBreakpointKey = (typeof responsiveBreakpointKeys)[number]
+type GridTemplateCustomProperty = '--grid-template-columns' | '--grid-template-rows'
+type GridStyles = React.CSSProperties &
+  Partial<Record<`${GridTemplateCustomProperty}-${ResponsiveBreakpointKey}`, string>>
+type GapProperty = 'gap' | 'gapX' | 'gapY'
+type GapCssProperty = 'gap' | 'columnGap' | 'rowGap'
+
+function isResponsiveValue<T>(value: Responsive<T> | undefined): value is Partial<Record<ResponsiveValueKey, T>> {
+  return !!value && typeof value === 'object'
+}
+
+function hasCustomResponsiveValue<T extends string>(
+  prop: Responsive<T | string> | undefined,
+  isValidTokenValue: (value: string) => value is T,
+): boolean {
+  if (!isResponsiveValue(prop)) return false
+
+  return responsiveValueKeys.some(key => {
+    const value = prop[key]
+    return !!value && !isValidTokenValue(value)
+  })
+}
+
+function getResponsiveCustomGridTemplateClasses<T extends string>(
+  prop: Responsive<T | string> | undefined,
+  isValidTokenValue: (value: string) => value is T,
+  customResponsiveClasses: Record<ResponsiveBreakpointKey, string>,
+): string {
+  if (!isResponsiveValue(prop) || !hasCustomResponsiveValue(prop, isValidTokenValue)) return ''
+
+  const classes: string[] = []
+  for (const bp of responsiveBreakpointKeys) {
+    const value = prop[bp]
+    if (value && !isValidTokenValue(value)) classes.push(customResponsiveClasses[bp])
+  }
+
+  return classes.join(' ')
+}
+
+function getGridColumnTemplate(value: GridColumns) {
+  return value === 'none' ? 'none' : `repeat(${value}, minmax(0, 1fr))`
+}
+
+function getGridRowTemplate(value: GridRows) {
+  return value === 'none' ? 'none' : `repeat(${value}, minmax(0, 1fr))`
+}
+
+function getGridTemplateStyleValue<T extends string>(
+  value: string,
+  isValidTokenValue: (value: string) => value is T,
+  tokenValueResolver: (value: T) => string,
+): string {
+  return isValidTokenValue(value) ? tokenValueResolver(value) : value
+}
+
+function assignStyleValue(style: React.CSSProperties, property: string, value: string) {
+  const customPropertyName = property.startsWith('var(') ? property.slice(4, -1) : property
+  ;(style as Record<string, string>)[customPropertyName] = value
+}
+
+function assignResponsiveGridTemplateStyles<T extends string>(
+  styles: GridStyles,
+  prop: Responsive<T | string> | undefined,
+  cssProperty: 'gridTemplateColumns' | 'gridTemplateRows',
+  customProperty: GridTemplateCustomProperty,
+  isValidTokenValue: (value: string) => value is T,
+  tokenValueResolver: (value: T) => string,
+) {
+  if (typeof prop === 'string') {
+    styles[cssProperty] = getGridTemplateStyleValue(prop, isValidTokenValue, tokenValueResolver)
+    return
+  }
+
+  if (!isResponsiveValue(prop) || !hasCustomResponsiveValue(prop, isValidTokenValue)) return
+
+  if (prop.initial && !isValidTokenValue(prop.initial)) {
+    styles[cssProperty] = prop.initial
+  }
+
+  for (const bp of responsiveBreakpointKeys) {
+    const value = prop[bp]
+    if (value && !isValidTokenValue(value)) {
+      styles[`${customProperty}-${bp}`] = value
+    }
+  }
+}
+
+function hasCustomResponsiveSpacingValue(prop: Responsive<Spacing | string> | undefined): boolean {
+  if (!isResponsiveValue(prop)) return false
+
+  return responsiveValueKeys.some(key => {
+    const value = prop[key]
+    return !!value && !isSpacingValue(value)
+  })
+}
+
+function getResponsiveSpacingClasses(
+  prop: Responsive<Spacing | string> | undefined,
+  prefix: 'gap' | 'gap-x' | 'gap-y',
+  gapProperty: GapProperty,
+): string {
+  if (hasCustomResponsiveSpacingValue(prop)) return gapResponsiveClasses[gapProperty]
+  if (typeof prop !== 'string') return getSpacingClasses(filterResponsiveTokenValues(prop, isSpacingValue), prefix)
+  return ''
+}
+
+function assignResponsiveSpacingStyles(
+  styles: React.CSSProperties,
+  prop: Responsive<Spacing | string> | undefined,
+  cssProperty: GapCssProperty,
+  gapProperty: GapProperty,
+) {
+  if (typeof prop === 'string') {
+    styles[cssProperty] = resolveSpacingValue(prop, spacingToPixels)
+    return
+  }
+
+  if (!isResponsiveValue(prop) || !hasCustomResponsiveSpacingValue(prop)) return
+
+  let inheritedValue: string | undefined
+  for (const breakpoint of responsiveValueKeys) {
+    const value = prop[breakpoint]
+    inheritedValue = value !== undefined ? resolveSpacingValue(value, spacingToPixels) : inheritedValue
+
+    const variableName = gapResponsiveVars[gapProperty][breakpoint]
+    if (inheritedValue !== undefined) assignStyleValue(styles, variableName, inheritedValue)
+  }
+}
 
 export interface GridOwnProps extends SharedLayoutProps {
   /** Render as a different element */
@@ -234,9 +369,16 @@ export const Grid = React.forwardRef<HTMLElement, GridProps>(
     const mappedRows = filterResponsiveTokenValues(resolvedRows, isGridRowsValue)
     const columnClasses = getGridColumnsClasses(mappedColumns)
     const rowClasses = getGridRowsClasses(mappedRows)
-    const hasCustomColumns = typeof resolvedColumns === 'string' && !columnClasses
-    const hasTokenColumns = typeof resolvedColumns === 'string' && !!columnClasses
-    const hasCustomRows = typeof resolvedRows === 'string' && !rowClasses
+    const columnCustomClasses = getResponsiveCustomGridTemplateClasses(
+      resolvedColumns,
+      isGridColumnsValue,
+      gridTemplateColumnsCustomResponsive,
+    )
+    const rowCustomClasses = getResponsiveCustomGridTemplateClasses(
+      resolvedRows,
+      isGridRowsValue,
+      gridTemplateRowsCustomResponsive,
+    )
 
     const classes = cn(
       gridBaseCls,
@@ -257,38 +399,44 @@ export const Grid = React.forwardRef<HTMLElement, GridProps>(
       typeof resolvedJustifyItems !== 'string'
         ? getJustifyItemsClasses(resolvedJustifyItems as Responsive<JustifyItems>)
         : '',
-      typeof resolvedGap === 'string'
-        ? ''
-        : getSpacingClasses(filterResponsiveTokenValues(resolvedGap, isSpacingValue), 'gap'),
-      typeof resolvedGapX === 'string'
-        ? ''
-        : getSpacingClasses(filterResponsiveTokenValues(resolvedGapX, isSpacingValue), 'gap-x'),
-      typeof resolvedGapY === 'string'
-        ? ''
-        : getSpacingClasses(filterResponsiveTokenValues(resolvedGapY, isSpacingValue), 'gap-y'),
+      getResponsiveSpacingClasses(resolvedGap, 'gap', 'gap'),
+      getResponsiveSpacingClasses(resolvedGapX, 'gap-x', 'gapX'),
+      getResponsiveSpacingClasses(resolvedGapY, 'gap-y', 'gapY'),
       resolvedColumns ? columnClasses : gridColumns['1'],
+      columnCustomClasses,
       resolvedRows ? rowClasses : '',
+      rowCustomClasses,
       borderColor && !hasBorderWidthUtility(effectiveClassName) && 'border',
       getSharedLayoutClasses(sharedLayoutProps),
       className,
     )
 
     // Build grid-specific styles.
-    const gridStyles: React.CSSProperties = {
+    const gridStyles: GridStyles = {
       ...(areas && typeof areas === 'string' && { gridTemplateAreas: areas }),
-      // Preserve arbitrary templates (e.g. "1fr 2fr") while keeping deterministic token rendering.
-      ...(hasCustomColumns && { gridTemplateColumns: resolvedColumns }),
-      ...(hasTokenColumns && {
-        gridTemplateColumns: resolvedColumns === 'none' ? 'none' : `repeat(${resolvedColumns}, minmax(0, 1fr))`,
-      }),
-      ...(hasCustomRows && { gridTemplateRows: resolvedRows }),
     }
+    assignResponsiveGridTemplateStyles(
+      gridStyles,
+      resolvedColumns,
+      'gridTemplateColumns',
+      '--grid-template-columns',
+      isGridColumnsValue,
+      getGridColumnTemplate,
+    )
+    assignResponsiveGridTemplateStyles(
+      gridStyles,
+      resolvedRows,
+      'gridTemplateRows',
+      '--grid-template-rows',
+      isGridRowsValue,
+      getGridRowTemplate,
+    )
+    assignResponsiveSpacingStyles(gridStyles, resolvedGap, 'gap', 'gap')
+    assignResponsiveSpacingStyles(gridStyles, resolvedGapX, 'columnGap', 'gapX')
+    assignResponsiveSpacingStyles(gridStyles, resolvedGapY, 'rowGap', 'gapY')
 
     const styles: React.CSSProperties = {
       ...gridStyles,
-      ...(typeof resolvedGap === 'string' && { gap: resolveSpacingValue(resolvedGap, spacingToPixels) }),
-      ...(typeof resolvedGapX === 'string' && { columnGap: resolveSpacingValue(resolvedGapX, spacingToPixels) }),
-      ...(typeof resolvedGapY === 'string' && { rowGap: resolveSpacingValue(resolvedGapY, spacingToPixels) }),
       ...getSharedLayoutStyles(sharedLayoutProps),
       ...style,
     }

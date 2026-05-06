@@ -4,6 +4,7 @@ import * as React from 'react'
 import { composeRefs } from '@/lib/compose-refs'
 import { cn } from '@/lib/utils'
 import { getHeightProps, getMarginProps, getPaddingProps, getWidthProps, resolveSpacingValue } from '@/theme/helpers'
+import { gapResponsiveClasses, gapResponsiveVars } from '@/theme/helpers/gap-responsive.css'
 import type { HeightProps } from '@/theme/props/height.props'
 import {
   type LayoutCompositionMode,
@@ -616,6 +617,8 @@ type GridTemplateCustomProperty = '--grid-template-areas' | '--grid-template-col
 type LayoutCompositionStyles = React.CSSProperties &
   Partial<Record<GridTemplateCustomProperty, string>> &
   Partial<Record<`${GridTemplateCustomProperty}-${ResponsiveGridTemplateBreakpoint}`, string>>
+type LayoutGapProperty = 'gap' | 'gapX' | 'gapY'
+type LayoutGapCssProperty = 'gap' | 'columnGap' | 'rowGap'
 
 function getGridColumnTemplate(value: GridColumns) {
   return value === 'none' ? 'none' : `repeat(${value}, minmax(0, 1fr))`
@@ -647,6 +650,17 @@ function hasCustomResponsiveGridTemplateValue<T extends string>(
   })
 }
 
+function hasCustomResponsiveSpacingValue(prop: Responsive<Spacing | string> | undefined): boolean {
+  if (!isResponsiveValue(prop)) return false
+
+  if (prop.initial && !isSpacingValue(prop.initial)) return true
+
+  return responsiveGridTemplateBreakpoints.some(bp => {
+    const value = prop[bp]
+    return !!value && !isSpacingValue(value)
+  })
+}
+
 function getResponsiveGridTemplateValueClasses<T extends string>(
   prop: Responsive<T | string> | undefined,
   isValidTokenValue: (value: string) => value is T,
@@ -666,6 +680,16 @@ function getResponsiveGridTemplateValueClasses<T extends string>(
   }
 
   return classes.join(' ')
+}
+
+function getResponsiveSpacingValueClasses(
+  prop: Responsive<Spacing | string> | undefined,
+  prefix: 'gap' | 'gap-x' | 'gap-y',
+  gapProperty: LayoutGapProperty,
+): string {
+  if (hasCustomResponsiveSpacingValue(prop)) return gapResponsiveClasses[gapProperty]
+  if (typeof prop !== 'string') return getSpacingClasses(filterResponsiveTokenValues(prop, isSpacingValue), prefix)
+  return ''
 }
 
 function getResponsiveGridTemplateAreaClasses(
@@ -719,6 +743,11 @@ function assignResponsiveGridTemplateStyles<T extends string>(
   }
 }
 
+function assignStyleValue(style: React.CSSProperties, property: string, value: string) {
+  const customPropertyName = property.startsWith('var(') ? property.slice(4, -1) : property
+  ;(style as Record<string, string>)[customPropertyName] = value
+}
+
 function assignResponsiveGridTemplateAreaStyles(
   getStyles: () => LayoutCompositionStyles,
   prop: Responsive<string> | undefined,
@@ -735,6 +764,29 @@ function assignResponsiveGridTemplateAreaStyles(
   for (const bp of responsiveGridTemplateBreakpoints) {
     const value = prop[bp]
     if (value) getStyles()[`--grid-template-areas-${bp}`] = value
+  }
+}
+
+function assignResponsiveSpacingStyles(
+  getStyles: () => LayoutCompositionStyles,
+  prop: Responsive<Spacing | string> | undefined,
+  cssProperty: LayoutGapCssProperty,
+  gapProperty: LayoutGapProperty,
+) {
+  if (typeof prop === 'string') {
+    getStyles()[cssProperty] = resolveSpacingValue(prop.trim(), spacingToPixels)
+    return
+  }
+
+  if (!hasCustomResponsiveSpacingValue(prop) || !isResponsiveValue(prop)) return
+
+  let inheritedValue: string | undefined
+  for (const breakpoint of responsiveValueKeys) {
+    const value = prop[breakpoint]
+    inheritedValue = value !== undefined ? resolveSpacingValue(value.trim(), spacingToPixels) : inheritedValue
+
+    const variableName = gapResponsiveVars[gapProperty][breakpoint]
+    if (inheritedValue !== undefined) assignStyleValue(getStyles(), variableName, inheritedValue)
   }
 }
 
@@ -800,9 +852,9 @@ export function getLayoutCompositionClasses(props: LayoutCompositionProps): stri
     )
   }
 
-  if (typeof gap !== 'string') addClass(getSpacingClasses(filterResponsiveTokenValues(gap, isSpacingValue), 'gap'))
-  if (typeof gapX !== 'string') addClass(getSpacingClasses(filterResponsiveTokenValues(gapX, isSpacingValue), 'gap-x'))
-  if (typeof gapY !== 'string') addClass(getSpacingClasses(filterResponsiveTokenValues(gapY, isSpacingValue), 'gap-y'))
+  addClass(getResponsiveSpacingValueClasses(gap, 'gap', 'gap'))
+  addClass(getResponsiveSpacingValueClasses(gapX, 'gap-x', 'gapX'))
+  addClass(getResponsiveSpacingValueClasses(gapY, 'gap-y', 'gapY'))
 
   return classes.join(' ')
 }
@@ -839,17 +891,9 @@ export function getLayoutCompositionStyles(props: LayoutCompositionProps): React
     )
   }
 
-  if (typeof gap === 'string') {
-    getStyles().gap = resolveSpacingValue(gap.trim(), spacingToPixels)
-  }
-
-  if (typeof gapX === 'string') {
-    getStyles().columnGap = resolveSpacingValue(gapX.trim(), spacingToPixels)
-  }
-
-  if (typeof gapY === 'string') {
-    getStyles().rowGap = resolveSpacingValue(gapY.trim(), spacingToPixels)
-  }
+  assignResponsiveSpacingStyles(getStyles, gap, 'gap', 'gap')
+  assignResponsiveSpacingStyles(getStyles, gapX, 'columnGap', 'gapX')
+  assignResponsiveSpacingStyles(getStyles, gapY, 'rowGap', 'gapY')
 
   return styles ?? emptyLayoutCompositionStyles
 }
