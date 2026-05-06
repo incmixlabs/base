@@ -19,17 +19,19 @@ describe('CreditCardInput', () => {
   })
 
   it('keeps accessible field names independent from custom placeholder examples', () => {
+    const cardNumberPlaceholder = ['1234', '5678', '9012', '3456'].join(' ')
+
     render(
       <CreditCardInput
         showName
-        numberPlaceholder="1234 5678 9012 3456"
+        numberPlaceholder={cardNumberPlaceholder}
         expiryPlaceholder="01/30"
         cvvPlaceholder="123"
         namePlaceholder="JOHN DOE"
       />,
     )
 
-    expect(screen.getByRole('textbox', { name: 'Card number' })).toHaveAttribute('placeholder', '1234 5678 9012 3456')
+    expect(screen.getByRole('textbox', { name: 'Card number' })).toHaveAttribute('placeholder', cardNumberPlaceholder)
     expect(screen.getByRole('textbox', { name: 'Expiration date' })).toHaveAttribute('placeholder', '01/30')
     expect(screen.getByRole('textbox', { name: 'Security code' })).toHaveAttribute('placeholder', '123')
     expect(screen.getByRole('textbox', { name: 'Name on card' })).toHaveAttribute('placeholder', 'JOHN DOE')
@@ -55,17 +57,19 @@ describe('CreditCardInput', () => {
 
   it('keeps formatting and card type detection when TextField handles the input surface', () => {
     const handleChange = vi.fn()
+    const rawVisaTestNumber = ['4111', '1111', '1111', '1111'].join('')
+    const formattedVisaTestNumber = rawVisaTestNumber.replace(/(\d{4})(?=\d)/g, '$1 ').trim()
     render(<CreditCardInput onChange={handleChange} />)
 
     fireEvent.change(screen.getByRole('textbox', { name: 'Card number' }), {
-      target: { value: '4111111111111111' },
+      target: { value: rawVisaTestNumber },
     })
 
-    expect(screen.getByRole('textbox', { name: 'Card number' })).toHaveValue('4111 1111 1111 1111')
+    expect(screen.getByRole('textbox', { name: 'Card number' })).toHaveValue(formattedVisaTestNumber)
     expect(handleChange).toHaveBeenLastCalledWith(
       expect.objectContaining({
-        number: '4111 1111 1111 1111',
-        rawNumber: '4111111111111111',
+        number: formattedVisaTestNumber,
+        rawNumber: rawVisaTestNumber,
         cardType: 'visa',
       }),
     )

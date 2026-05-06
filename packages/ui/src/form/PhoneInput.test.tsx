@@ -18,6 +18,28 @@ describe('PhoneInput', () => {
     ).toBeEnabled()
   })
 
+  it('uses an associated label instead of the fallback accessible name', () => {
+    render(
+      <div>
+        <label htmlFor="mobile-phone">Mobile phone</label>
+        <PhoneInput id="mobile-phone" />
+      </div>,
+    )
+
+    expect(screen.getByRole('textbox', { name: 'Mobile phone' })).toHaveAttribute('type', 'tel')
+  })
+
+  it('uses aria-labelledby instead of the fallback accessible name', () => {
+    render(
+      <div>
+        <span id="emergency-phone-label">Emergency phone</span>
+        <PhoneInput aria-labelledby="emergency-phone-label" />
+      </div>,
+    )
+
+    expect(screen.getByRole('textbox', { name: 'Emergency phone' })).toHaveAttribute('type', 'tel')
+  })
+
   it('uses TextField size and variant classes', () => {
     render(<PhoneInput size="lg" variant="soft" />)
 

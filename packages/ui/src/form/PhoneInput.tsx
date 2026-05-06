@@ -178,6 +178,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       ...style,
     } as React.CSSProperties
     const resolvedPlaceholder = placeholder ?? phonePlaceholder
+    const fallbackAriaLabel = ariaLabel ?? (!props['aria-labelledby'] && !props.id ? 'Phone number' : undefined)
 
     return (
       <div className="relative">
@@ -188,7 +189,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
           onChange={handlePhoneChange}
           disabled={disabled}
           placeholder={resolvedPlaceholder}
-          aria-label={ariaLabel ?? 'Phone number'}
+          aria-label={fallbackAriaLabel}
           size={size}
           variant={toBaseTextFieldVariant(variant)}
           color={color}
