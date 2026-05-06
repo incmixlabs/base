@@ -3,6 +3,7 @@ import {
   CHART_COLOR_KEYS,
   type ChartColorAlias,
   type ChartColorToken,
+  SPACING_SCALE_VALUES,
   themeSizeTokens,
 } from '@incmix/theme'
 import type { accentColors, grayColors } from './props/color.prop'
@@ -542,7 +543,7 @@ export const layoutTokens = {
   justifySelf: ['auto', 'start', 'center', 'end', 'stretch'] as const,
 
   // Spacing scale (0-9)
-  spacing: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] as const,
+  spacing: SPACING_SCALE_VALUES,
 } as const
 
 export type Display = (typeof layoutTokens.display)[number]

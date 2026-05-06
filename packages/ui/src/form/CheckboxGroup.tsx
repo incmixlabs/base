@@ -6,6 +6,7 @@ import { Check } from 'lucide-react'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color } from '@/theme/tokens'
 import { Text } from '@/typography'
 import {
@@ -24,6 +25,7 @@ import {
   checkboxGroupRootOrientation,
 } from './checkbox-group.css'
 import type { CheckboxGroupItemProps, CheckboxGroupRootProps } from './checkbox-group.props'
+import { checkboxGroupRootPropDefs } from './checkbox-group.props'
 import { useFieldGroup } from './FieldGroupContext'
 import { resolveFormSize } from './form-size'
 import { Label } from './Label'
@@ -63,16 +65,26 @@ const CheckboxGroupRoot = React.forwardRef<HTMLDivElement, CheckboxGroupRootProp
   ) => {
     const fieldGroup = useFieldGroup()
     const size = resolveFormSize(sizeProp ?? fieldGroup.size)
+    const safeVariant =
+      normalizeEnumPropValue(checkboxGroupRootPropDefs.variant, variant) ?? checkboxGroupRootPropDefs.variant.default
+    const safeColor = normalizeEnumPropValue(checkboxGroupRootPropDefs.color, color) ?? SemanticColor.slate
+    const safeHighContrast = normalizeBooleanPropValue(checkboxGroupRootPropDefs.highContrast, highContrast) ?? false
+    const safeDisabled = normalizeBooleanPropValue(checkboxGroupRootPropDefs.disabled, disabled)
+    const safeOrientation =
+      normalizeEnumPropValue(checkboxGroupRootPropDefs.orientation, orientation) ??
+      checkboxGroupRootPropDefs.orientation.default
 
     return (
-      <CheckboxGroupContext.Provider value={{ size, variant, color, highContrast, disabled }}>
+      <CheckboxGroupContext.Provider
+        value={{ size, variant: safeVariant, color: safeColor, highContrast: safeHighContrast, disabled: safeDisabled }}
+      >
         <CheckboxGroupPrimitive
           ref={ref}
           value={value}
           defaultValue={defaultValue}
           onValueChange={onValueChange}
-          disabled={disabled}
-          className={cn(checkboxGroupRootBase, checkboxGroupRootOrientation[orientation], className)}
+          disabled={safeDisabled}
+          className={cn(checkboxGroupRootBase, checkboxGroupRootOrientation[safeOrientation], className)}
           {...props}
         >
           {children}

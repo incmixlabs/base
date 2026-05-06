@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
-import { normalizeEnumPropValue } from '@/theme/props/prop-def'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color } from '@/theme/tokens'
 import { getResponsiveVariantClasses, typographyBreakpointKeys } from '../responsive'
 import { typographyTokens, type Weight } from '../tokens'
@@ -88,6 +88,7 @@ export const Link = React.forwardRef<HTMLElement, LinkProps>(
     const safeColor = (normalizeEnumPropValue(linkPropDefs.color, color) ??
       linkPropDefs.color.default ??
       SemanticColor.slate) as Color
+    const safeHighContrast = normalizeBooleanPropValue(linkPropDefs.highContrast, highContrast) ?? false
 
     const classes = cn(
       linkBaseCls,
@@ -95,7 +96,7 @@ export const Link = React.forwardRef<HTMLElement, LinkProps>(
       typeof size === 'string' ? linkBySize[safeSize] : sizeClasses,
       linkByUnderline[safeUnderline],
       linkByColor[safeColor],
-      highContrast && linkHighContrast,
+      safeHighContrast && linkHighContrast,
       wrap === 'nowrap' && 'whitespace-nowrap',
       wrap === 'pretty' && 'text-pretty',
       wrap === 'balance' && 'text-balance',

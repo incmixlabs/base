@@ -5,6 +5,7 @@ import { Box } from '@/layouts/box/Box'
 import { colorPropDef, SemanticColor } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
 import { CheckboxCards } from './CheckboxCards'
+import { checkboxCardsRootPropDefs } from './checkbox-cards.props'
 
 const meta: Meta<typeof CheckboxCards.Root> = {
   title: 'Form/CheckboxCards',
@@ -35,12 +36,12 @@ const meta: Meta<typeof CheckboxCards.Root> = {
     },
     columns: {
       control: 'select',
-      options: ['1', '2', '3', '4', 'auto'],
+      options: getPropDefValues(checkboxCardsRootPropDefs.columns),
       description: 'Number of columns',
     },
     gap: {
       control: 'select',
-      options: ['1', '2', '3', '4', '5', '6'],
+      options: getPropDefValues(checkboxCardsRootPropDefs.gap),
       description: 'Gap between cards',
     },
   },

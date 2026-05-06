@@ -8,8 +8,10 @@ import type { HeightProps } from '@/theme/props/height.props'
 import {
   type LayoutCompositionMode,
   layoutCompositionColumnValues,
+  layoutCompositionPropDefs,
   layoutCompositionRowValues,
 } from '@/theme/props/layout-composition.props'
+import { normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { WidthProps } from '@/theme/props/width.props'
 import type {
   AlignContent,
@@ -125,7 +127,7 @@ import { SPACING_TO_PIXELS } from '@incmix/theme'
 
 export const spacingToPixels = SPACING_TO_PIXELS as Record<string, string>
 
-type LayoutSpacingProp = Responsive<Spacing>
+type LayoutSpacingProp = Responsive<Spacing | string>
 
 interface LayoutPaddingProps {
   p?: LayoutSpacingProp
@@ -149,7 +151,7 @@ interface LayoutMarginProps {
 
 function getSpacingPixelValue(prop: LayoutSpacingProp | undefined): string | undefined {
   if (!prop || typeof prop !== 'string') return undefined
-  return resolveSpacingValue(prop, spacingToPixels)
+  return resolveSpacingValue(prop.trim(), spacingToPixels)
 }
 
 // ============================================================================
@@ -191,6 +193,73 @@ export function getResponsiveClasses<T extends string>(
 /** getSpacingClasses export. */
 export function getSpacingClasses(prop: LayoutSpacingProp | undefined, prefix: string): string {
   return getResponsiveClasses(prop as Responsive<string> | undefined, prefix, spacingScale)
+}
+
+const responsiveValueKeys = ['initial', 'xs', 'sm', 'md', 'lg', 'xl'] as const
+type ResponsiveValueKey = (typeof responsiveValueKeys)[number]
+
+export function normalizeResponsiveEnumPropValue<T extends string>(
+  def: { values: readonly T[]; default?: T },
+  prop: Responsive<T | string> | undefined,
+): Responsive<T> | undefined {
+  if (prop === undefined) return undefined
+
+  if (typeof prop === 'string') {
+    return normalizeEnumPropValue(def, prop)
+  }
+
+  const normalized: Partial<Record<ResponsiveValueKey, T>> = {}
+  for (const key of responsiveValueKeys) {
+    const value = prop[key]
+    if (value === undefined) continue
+
+    const normalizedValue = normalizeEnumPropValue(def, value)
+    if (normalizedValue !== undefined) normalized[key] = normalizedValue
+  }
+
+  return Object.keys(normalized).length > 0 ? (normalized as Responsive<T>) : undefined
+}
+
+export function normalizeResponsiveEnumOrStringPropValue<T extends string>(
+  def: { values: readonly T[]; default?: T | string },
+  prop: Responsive<T | string> | undefined,
+): Responsive<T | string> | undefined {
+  if (prop === undefined) return undefined
+
+  const normalizeStringValue = (value: string) => normalizeEnumPropValue(def, value) ?? value.trim()
+
+  if (typeof prop === 'string') {
+    return normalizeStringValue(prop)
+  }
+
+  const normalized: Partial<Record<ResponsiveValueKey, T | string>> = {}
+  for (const key of responsiveValueKeys) {
+    const value = prop[key]
+    if (value === undefined) continue
+
+    normalized[key] = typeof value === 'string' ? normalizeStringValue(value) : value
+  }
+
+  return Object.keys(normalized).length > 0 ? (normalized as Responsive<T | string>) : undefined
+}
+
+export function filterResponsiveTokenValues<T extends string>(
+  prop: Responsive<T | string> | undefined,
+  isValid: (value: string) => value is T,
+): Responsive<T> | undefined {
+  if (!prop) return undefined
+
+  if (typeof prop === 'string') {
+    return isValid(prop) ? prop : undefined
+  }
+
+  const filtered: Partial<Record<ResponsiveValueKey, T>> = {}
+  for (const key of responsiveValueKeys) {
+    const value = prop[key]
+    if (value && isValid(value)) filtered[key] = value
+  }
+
+  return Object.keys(filtered).length > 0 ? (filtered as Responsive<T>) : undefined
 }
 
 // ============================================================================
@@ -425,6 +494,10 @@ export function getGridRowsClasses(prop: Responsive<GridRows> | undefined): stri
   return getGridClasses(prop, gridRows, gridRowsResponsive)
 }
 
+export function isSpacingValue(value: string): value is Spacing {
+  return Object.hasOwn(spacingToPixels, value)
+}
+
 // ============================================================================
 // Layout Composition Helpers
 // ============================================================================
@@ -437,9 +510,9 @@ export interface LayoutCompositionProps {
   align?: Responsive<AlignItems>
   justify?: Responsive<JustifyContent>
   wrap?: Responsive<FlexWrap>
-  gap?: Responsive<Spacing>
-  gapX?: Responsive<Spacing>
-  gapY?: Responsive<Spacing>
+  gap?: Responsive<Spacing | string>
+  gapX?: Responsive<Spacing | string>
+  gapY?: Responsive<Spacing | string>
   areas?: Responsive<string>
   columns?: Responsive<GridColumns | string>
   rows?: Responsive<GridRows | string>
@@ -494,6 +567,25 @@ function isFlexLayoutMode(layout: LayoutMode | undefined) {
 
 function isGridLayoutMode(layout: LayoutMode | undefined) {
   return layout === 'grid'
+}
+
+function normalizeLayoutCompositionProps(props: LayoutCompositionProps): LayoutCompositionProps {
+  return {
+    ...props,
+    layout: normalizeEnumPropValue(layoutCompositionPropDefs.layout, props.layout),
+    direction: normalizeResponsiveEnumPropValue(layoutCompositionPropDefs.direction, props.direction),
+    align: normalizeResponsiveEnumPropValue(layoutCompositionPropDefs.align, props.align),
+    justify: normalizeResponsiveEnumPropValue(layoutCompositionPropDefs.justify, props.justify),
+    wrap: normalizeResponsiveEnumPropValue(layoutCompositionPropDefs.wrap, props.wrap),
+    gap: normalizeResponsiveEnumOrStringPropValue(layoutCompositionPropDefs.gap, props.gap),
+    gapX: normalizeResponsiveEnumOrStringPropValue(layoutCompositionPropDefs.gapX, props.gapX),
+    gapY: normalizeResponsiveEnumOrStringPropValue(layoutCompositionPropDefs.gapY, props.gapY),
+    columns: normalizeResponsiveEnumOrStringPropValue(layoutCompositionPropDefs.columns, props.columns),
+    rows: normalizeResponsiveEnumOrStringPropValue(layoutCompositionPropDefs.rows, props.rows),
+    flow: normalizeResponsiveEnumPropValue(layoutCompositionPropDefs.flow, props.flow),
+    alignContent: normalizeResponsiveEnumPropValue(layoutCompositionPropDefs.alignContent, props.alignContent),
+    justifyItems: normalizeResponsiveEnumPropValue(layoutCompositionPropDefs.justifyItems, props.justifyItems),
+  }
 }
 
 function filterResponsiveGridTemplateValues<T extends string>(
@@ -662,7 +754,7 @@ export function getLayoutCompositionClasses(props: LayoutCompositionProps): stri
     flow,
     alignContent,
     justifyItems,
-  } = props
+  } = normalizeLayoutCompositionProps(props)
 
   if (!layout) return ''
   if (layout === 'block') return getDisplayClasses('block')
@@ -708,15 +800,15 @@ export function getLayoutCompositionClasses(props: LayoutCompositionProps): stri
     )
   }
 
-  if (typeof gap !== 'string') addClass(getSpacingClasses(gap, 'gap'))
-  if (typeof gapX !== 'string') addClass(getSpacingClasses(gapX, 'gap-x'))
-  if (typeof gapY !== 'string') addClass(getSpacingClasses(gapY, 'gap-y'))
+  if (typeof gap !== 'string') addClass(getSpacingClasses(filterResponsiveTokenValues(gap, isSpacingValue), 'gap'))
+  if (typeof gapX !== 'string') addClass(getSpacingClasses(filterResponsiveTokenValues(gapX, isSpacingValue), 'gap-x'))
+  if (typeof gapY !== 'string') addClass(getSpacingClasses(filterResponsiveTokenValues(gapY, isSpacingValue), 'gap-y'))
 
   return classes.join(' ')
 }
 
 export function getLayoutCompositionStyles(props: LayoutCompositionProps): React.CSSProperties {
-  const { layout, areas, columns, rows, gap, gapX, gapY } = props
+  const { layout, areas, columns, rows, gap, gapX, gapY } = normalizeLayoutCompositionProps(props)
   const isFlexLayout = isFlexLayoutMode(layout)
   const isGridLayout = isGridLayoutMode(layout)
   if (!isFlexLayout && !isGridLayout) return emptyLayoutCompositionStyles
@@ -748,15 +840,15 @@ export function getLayoutCompositionStyles(props: LayoutCompositionProps): React
   }
 
   if (typeof gap === 'string') {
-    getStyles().gap = spacingToPixels[gap]
+    getStyles().gap = resolveSpacingValue(gap.trim(), spacingToPixels)
   }
 
   if (typeof gapX === 'string') {
-    getStyles().columnGap = spacingToPixels[gapX]
+    getStyles().columnGap = resolveSpacingValue(gapX.trim(), spacingToPixels)
   }
 
   if (typeof gapY === 'string') {
-    getStyles().rowGap = spacingToPixels[gapY]
+    getStyles().rowGap = resolveSpacingValue(gapY.trim(), spacingToPixels)
   }
 
   return styles ?? emptyLayoutCompositionStyles

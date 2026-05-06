@@ -7,7 +7,7 @@ import type { AvatarProps, AvatarSize } from '@/elements/avatar/avatar.props'
 import type { IconComponent } from '@/elements/icon.types'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
-import { normalizeEnumPropValue } from '@/theme/props/prop-def'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import { radiusStyleVariants } from '@/theme/radius.css'
 import type { Color, Radius } from '@/theme/tokens'
 import { Icon } from '../button/Icon'
@@ -86,6 +86,8 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
       badgePropDefs.variant.default) as BadgeVariant
     const safeColor = (normalizeEnumPropValue(badgePropDefs.color, color) ?? SemanticColor.slate) as Color
     const safeRadius = (normalizeEnumPropValue(badgePropDefs.radius, radius) ?? badgePropDefs.radius.default) as Radius
+    const safeHighContrast = normalizeBooleanPropValue(badgePropDefs.highContrast, highContrast) ?? false
+    const safeHover = normalizeBooleanPropValue(badgePropDefs.hover, hover) ?? false
     const normalizedIconName = typeof icon === 'string' ? icon.trim() : ''
     const iconContent = normalizedIconName ? (
       <Icon icon={normalizedIconName} size={safeSize} style={{ color: 'inherit', width: 'auto', height: 'auto' }} />
@@ -103,10 +105,10 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
           radiusStyleVariants[safeRadius],
           badgeVariantBorderWidth[safeVariant],
           badgeColorVariants[safeColor][safeVariant],
-          hover && badgeHoverEnabledClass,
-          hover && 'cursor-pointer',
-          highContrast && 'af-high-contrast',
-          highContrast && badgeHighContrastByVariant[safeVariant],
+          safeHover && badgeHoverEnabledClass,
+          safeHover && 'cursor-pointer',
+          safeHighContrast && 'af-high-contrast',
+          safeHighContrast && badgeHighContrastByVariant[safeVariant],
           className,
         )}
         {...props}

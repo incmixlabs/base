@@ -8,6 +8,7 @@ const gridColumns = getPropDefValues(gridPropDefs.columns)
 const gridGaps = getPropDefValues(gridPropDefs.gap)
 const gridAlignValues = getPropDefValues(gridPropDefs.align)
 const gridJustifyValues = getPropDefValues(gridPropDefs.justify)
+const showcasedColumns = gridColumns.filter(columns => ['1', '2', '3', '4', '6', '12'].includes(columns))
 
 const meta: Meta<typeof Grid> = {
   title: 'Layouts/Grid',
@@ -71,17 +72,27 @@ export const Default: Story = {
 export const ColumnVariants: Story = {
   render: () => (
     <div className="space-y-6 w-[500px]">
-      {gridColumns.slice(0, 6).map(cols => (
+      {showcasedColumns.map(cols => (
         <div key={cols}>
           <p className="text-sm text-muted-foreground mb-2">columns="{cols}"</p>
           <Grid columns={cols} gap="2">
-            {Array.from({ length: parseInt(cols, 10) * 2 }, (_, i) => (
+            {Array.from({ length: Math.min(parseInt(cols, 10) * 2, 12) }, (_, i) => (
               <DemoBox key={i}>{i + 1}</DemoBox>
             ))}
           </Grid>
         </div>
       ))}
     </div>
+  ),
+}
+
+export const NormalizedRuntimeValues: Story = {
+  render: () => (
+    <Grid columns={' 12 ' as any} gap={' 2rem ' as any} className="w-[520px]">
+      {Array.from({ length: 12 }, (_, index) => (
+        <DemoBox key={index}>{index + 1}</DemoBox>
+      ))}
+    </Grid>
   ),
 }
 

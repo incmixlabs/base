@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { Surface } from './Surface'
-import { surfaceColorVariants } from './surface.css'
+import { surfaceColorVariants, surfaceHoverEnabledClass } from './surface.css'
 
 afterEach(() => {
   cleanup()
@@ -43,5 +43,18 @@ describe('Surface', () => {
     const surface = screen.getByTestId('surface')
 
     expect(surface.className).toContain(surfaceColorVariants.chart1.soft)
+  })
+
+  it('normalizes boolean-like visual props', () => {
+    render(
+      <Surface data-testid="surface" highContrast={'false' as any} hover={'true' as any}>
+        Surface
+      </Surface>,
+    )
+
+    const surface = screen.getByTestId('surface')
+
+    expect(surface.className).not.toContain('af-high-contrast')
+    expect(surface.className).toContain(surfaceHoverEnabledClass)
   })
 })

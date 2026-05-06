@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import { getPaddingProps } from '@/theme/helpers/get-padding-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
 import type { PaddingProps } from '@/theme/props/padding.props'
-import { normalizeEnumPropValue } from '@/theme/props/prop-def'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color, Radius } from '@/theme/tokens'
 import { Icon } from '../button/Icon'
 import { getRadiusStyles, useThemeRadius } from '../utils'
@@ -95,6 +95,9 @@ const CalloutRoot = React.forwardRef<HTMLDivElement, CalloutRootProps>(
     const safeColor = (normalizeEnumPropValue(calloutRootPropDefs.color, color) ?? DEFAULT_CALLOUT_COLOR) as Color
     const supportsInverse = safeVariant === 'soft' || safeVariant === 'solid'
     const safeRadius = normalizeEnumPropValue(calloutRootPropDefs.radius, radiusProp) as Radius | undefined
+    const safeHighContrast = normalizeBooleanPropValue(calloutRootPropDefs.highContrast, highContrast) ?? false
+    const safeInverse = normalizeBooleanPropValue(calloutRootPropDefs.inverse, inverse)
+    const safeHover = normalizeBooleanPropValue(calloutRootPropDefs.hover, hover)
     const radius = useThemeRadius(safeRadius ?? 'lg')
     const paddingProps = getPaddingProps({ p, px, py, pt, pr, pb, pl })
     const combinedStyle = { ...paddingProps.style, ...getRadiusStyles(radius), ...style }
@@ -110,12 +113,12 @@ const CalloutRoot = React.forwardRef<HTMLDivElement, CalloutRootProps>(
             calloutSizeVars[safeSize],
             // Color and variant styles
             calloutColorVariants[safeColor][safeVariant],
-            inverse && supportsInverse && calloutInverseByVariant[safeColor][safeVariant],
-            hover && calloutHoverByVariant[safeVariant],
-            hover && 'callout-hover-enabled',
-            hover && 'cursor-pointer',
+            safeInverse && supportsInverse && calloutInverseByVariant[safeColor][safeVariant],
+            safeHover && calloutHoverByVariant[safeVariant],
+            safeHover && 'callout-hover-enabled',
+            safeHover && 'cursor-pointer',
             // High contrast mode
-            highContrast && calloutHighContrastByVariant[safeVariant],
+            safeHighContrast && calloutHighContrastByVariant[safeVariant],
             paddingProps.className,
             className,
           )}

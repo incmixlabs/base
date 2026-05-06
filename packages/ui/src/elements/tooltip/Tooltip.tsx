@@ -6,7 +6,7 @@ import * as m from 'motion/react-m'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { getWidthProps } from '@/theme/helpers/get-width-styles'
-import { normalizeEnumPropValue } from '@/theme/props/prop-def'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { WidthProps } from '@/theme/props/width.props'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
@@ -261,6 +261,7 @@ const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentProps>(
         ? ((tokenMaxWidth ?? tooltipContentPropDefs.maxWidthToken.default) as TooltipMaxWidth)
         : undefined
     const safeRadius = normalizeEnumPropValue(tooltipContentPropDefs.radius, radiusProp) as Radius | undefined
+    const safeHighContrast = normalizeBooleanPropValue(tooltipContentPropDefs.highContrast, highContrast) ?? false
     const radius = useThemeRadius(safeRadius)
     const widthProps = getWidthProps({
       width,
@@ -303,8 +304,8 @@ const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentProps>(
                     tooltipContentBySize[safeSize],
                     resolvedTokenMaxWidth && tooltipContentMaxWidth[resolvedTokenMaxWidth],
                     surfaceColorVariants[safeColor][safeVariant],
-                    highContrast && 'af-high-contrast',
-                    highContrast && surfaceHighContrastByVariant[safeVariant],
+                    safeHighContrast && 'af-high-contrast',
+                    safeHighContrast && surfaceHighContrastByVariant[safeVariant],
                     widthProps.className,
                     className,
                   )}

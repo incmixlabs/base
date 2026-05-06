@@ -71,13 +71,6 @@ function readSidebarCookie(): boolean | null {
   return null
 }
 
-function safeEnumValue<Def extends { values: readonly string[]; default: string }>(
-  def: Def,
-  value: unknown,
-): Def['values'][number] {
-  return (normalizeEnumPropValue(def, value) ?? def.default) as Def['values'][number]
-}
-
 type SidebarContextProps = {
   state: 'expanded' | 'collapsed'
   open: boolean
@@ -243,10 +236,10 @@ function SidebarRoot({
   ...props
 }: SidebarRootProps) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
-  const safeSide = safeEnumValue(sidebarRootPropDefs.side, side) as SidebarSide
-  const safeVariant = safeEnumValue(sidebarRootPropDefs.variant, variant) as SidebarVariant
-  const safeCollapsible = safeEnumValue(sidebarRootPropDefs.collapsible, collapsible) as SidebarCollapsible
-  const safeColor = safeEnumValue(sidebarRootPropDefs.color, color) as SidebarColor
+  const safeSide = normalizeEnumPropValue(sidebarRootPropDefs.side, side) as SidebarSide
+  const safeVariant = normalizeEnumPropValue(sidebarRootPropDefs.variant, variant) as SidebarVariant
+  const safeCollapsible = normalizeEnumPropValue(sidebarRootPropDefs.collapsible, collapsible) as SidebarCollapsible
+  const safeColor = normalizeEnumPropValue(sidebarRootPropDefs.color, color) as SidebarColor
 
   if (safeCollapsible === 'none') {
     return (
@@ -632,8 +625,8 @@ function SidebarMenuButton({
   ...props
 }: SidebarMenuButtonProps) {
   const { isMobile, state } = useSidebar()
-  const safeVariant = safeEnumValue(sidebarMenuButtonPropDefs.variant, variant) as SidebarMenuButtonVariant
-  const safeSize = safeEnumValue(sidebarMenuButtonPropDefs.size, size) as SidebarMenuButtonSize
+  const safeVariant = normalizeEnumPropValue(sidebarMenuButtonPropDefs.variant, variant) as SidebarMenuButtonVariant
+  const safeSize = normalizeEnumPropValue(sidebarMenuButtonPropDefs.size, size) as SidebarMenuButtonSize
   const iconMode = useIconCollapsed()
   const { ref: highlightRef, handlers: highlightHandlers, active: hasHighlight } = useHighlightHandlers()
   const comp = useRender({
@@ -811,7 +804,7 @@ function SidebarMenuSubButton({
   className,
   ...props
 }: SidebarMenuSubButtonProps) {
-  const safeSize = safeEnumValue(sidebarMenuSubButtonPropDefs.size, size) as SidebarMenuSubButtonSize
+  const safeSize = normalizeEnumPropValue(sidebarMenuSubButtonPropDefs.size, size) as SidebarMenuSubButtonSize
   const { ref: highlightRef, handlers: highlightHandlers, active: hasHighlight } = useHighlightHandlers()
   return useRender({
     defaultTagName: 'a',

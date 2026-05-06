@@ -1,7 +1,7 @@
 import * as React from 'react'
 import type { Responsive } from '@/layouts/layout-utils'
 import { cn } from '@/lib/utils'
-import { normalizeEnumPropValue } from '@/theme/props/prop-def'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import { codeBase, codeByColor, codeBySize, codeHighContrast, codeSizeResponsive } from '../inline-elements.css'
 import { getResponsiveVariantClasses, typographyBreakpointKeys } from '../responsive'
 import type { TypographyColor, TypographySize } from '../tokens'
@@ -29,6 +29,7 @@ export const Code = React.forwardRef<HTMLElement, CodeProps>(
     const safeVariant = (normalizeEnumPropValue(codePropDefs.variant, variant) ??
       codePropDefs.variant.default ??
       'soft') as 'solid' | 'soft' | 'outline' | 'ghost'
+    const safeHighContrast = normalizeBooleanPropValue(codePropDefs.highContrast, highContrast) ?? false
 
     return (
       <code
@@ -37,7 +38,7 @@ export const Code = React.forwardRef<HTMLElement, CodeProps>(
           codeBase,
           typeof size === 'string' ? codeBySize[safeSize] : getCodeSizeClasses(size),
           codeByColor[safeColor][safeVariant],
-          highContrast && codeHighContrast,
+          safeHighContrast && codeHighContrast,
           className,
         )}
         style={style}

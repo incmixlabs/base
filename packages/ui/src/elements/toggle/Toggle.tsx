@@ -5,7 +5,7 @@ import { ToggleGroup as ToggleGroupPrimitive } from '@base-ui/react/toggle-group
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
-import { normalizeEnumPropValue } from '@/theme/props/prop-def'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color, Radius } from '@/theme/tokens'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
@@ -79,7 +79,8 @@ const ToggleInner = React.forwardRef<HTMLButtonElement, ToggleProps>(
       | Radius
       | undefined
     const radius = useThemeRadius(safeRadius)
-    const effectiveHighContrast = context?.highContrast ?? highContrast
+    const safeHighContrast = normalizeBooleanPropValue(togglePropDefs.highContrast, highContrast) ?? false
+    const effectiveHighContrast = context?.highContrast ?? safeHighContrast
     const flush = context?.flush ?? false
     const radiusStyles = getRadiusStyles(radius)
     const staticClassName = cn(
@@ -154,8 +155,10 @@ const ToggleGroupRootInner = React.forwardRef<HTMLDivElement, ToggleGroupRootPro
       togglePropDefs.variant.default) as ToggleVariant
     const safeColor = (normalizeEnumPropValue(togglePropDefs.color, color) ?? SemanticColor.slate) as Color
     const safeRadius = normalizeEnumPropValue(togglePropDefs.radius, radiusProp) as Radius | undefined
+    const safeHighContrast = normalizeBooleanPropValue(togglePropDefs.highContrast, highContrast) ?? false
+    const safeFlush = normalizeBooleanPropValue(togglePropDefs.flush, flush)
     const radius = useThemeRadius(safeRadius)
-    const staticClassName = cn(toggleGroupRoot, !flush && toggleGroupRootLoose)
+    const staticClassName = cn(toggleGroupRoot, !safeFlush && toggleGroupRootLoose)
     const combinedClassName: BaseToggleGroupPrimitiveProps['className'] =
       typeof className === 'function'
         ? (state: BaseToggleGroupState) => cn(staticClassName, className(state))
@@ -168,8 +171,8 @@ const ToggleGroupRootInner = React.forwardRef<HTMLDivElement, ToggleGroupRootPro
           variant: safeVariant,
           color: safeColor,
           radius,
-          highContrast,
-          flush,
+          highContrast: safeHighContrast,
+          flush: safeFlush,
         }}
       >
         <ToggleGroupPrimitive ref={ref} className={combinedClassName} style={style} {...props}>

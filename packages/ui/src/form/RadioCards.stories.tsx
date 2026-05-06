@@ -5,6 +5,7 @@ import { Box } from '@/layouts/box/Box'
 import { colorPropDef, SemanticColor } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
 import { RadioCards } from './RadioCards'
+import { radioCardsRootPropDefs } from './radio-cards.props'
 
 const meta: Meta<typeof RadioCards.Root> = {
   title: 'Form/RadioCards',
@@ -39,7 +40,7 @@ const meta: Meta<typeof RadioCards.Root> = {
     },
     gap: {
       control: 'select',
-      options: ['1', '2', '3', '4', '5', '6'],
+      options: getPropDefValues(radioCardsRootPropDefs.gap),
       description: 'Gap between cards',
     },
   },

@@ -2,10 +2,12 @@
 
 import * as React from 'react'
 import { cn } from '@/lib/utils'
+import { resolveSpacingValue } from '@/theme/helpers'
 import {
   type AlignContent,
   type AlignItems,
   type Display,
+  filterResponsiveTokenValues,
   type GridColumns,
   type GridFlow,
   type GridRows,
@@ -24,7 +26,10 @@ import {
   hasBorderWidthUtility,
   isGridColumnsValue,
   isGridRowsValue,
+  isSpacingValue,
   type JustifyItems,
+  normalizeResponsiveEnumOrStringPropValue,
+  normalizeResponsiveEnumPropValue,
   type Responsive,
   type SharedLayoutProps,
   Slot,
@@ -42,6 +47,7 @@ import {
   gridByJustifyItems,
   gridColumns,
 } from './Grid.css'
+import { gridPropDefs } from './grid.props'
 
 // ============================================================================
 // Grid Props
@@ -74,39 +80,17 @@ export interface GridOwnProps extends SharedLayoutProps {
   /** Justify items along the inline axis */
   justifyItems?: Responsive<JustifyItems>
   /** Gap between items */
-  gap?: Responsive<Spacing>
+  gap?: Responsive<Spacing | string>
   /** Horizontal gap between items */
-  gapX?: Responsive<Spacing>
+  gapX?: Responsive<Spacing | string>
   /** Vertical gap between items */
-  gapY?: Responsive<Spacing>
+  gapY?: Responsive<Spacing | string>
 }
 
 type GridDivProps = GridOwnProps & Omit<React.ComponentPropsWithoutRef<'div'>, keyof GridOwnProps>
 type GridSpanProps = GridOwnProps & { as: 'span' } & Omit<React.ComponentPropsWithoutRef<'span'>, keyof GridOwnProps>
 
 export type GridProps = GridDivProps | GridSpanProps
-
-function filterResponsiveGridValues<T extends string>(
-  prop: Responsive<T | string> | undefined,
-  isValid: (value: string) => value is T,
-): Responsive<T> | undefined {
-  if (!prop) return undefined
-
-  if (typeof prop === 'string') {
-    return isValid(prop) ? prop : undefined
-  }
-
-  const filtered: Partial<Record<'initial' | 'xs' | 'sm' | 'md' | 'lg' | 'xl', T>> = {}
-
-  if (prop.initial && isValid(prop.initial)) filtered.initial = prop.initial
-  if (prop.xs && isValid(prop.xs)) filtered.xs = prop.xs
-  if (prop.sm && isValid(prop.sm)) filtered.sm = prop.sm
-  if (prop.md && isValid(prop.md)) filtered.md = prop.md
-  if (prop.lg && isValid(prop.lg)) filtered.lg = prop.lg
-  if (prop.xl && isValid(prop.xl)) filtered.xl = prop.xl
-
-  return Object.keys(filtered).length > 0 ? (filtered as Responsive<T>) : undefined
-}
 
 // ============================================================================
 // Grid Component
@@ -234,36 +218,56 @@ export const Grid = React.forwardRef<HTMLElement, GridProps>(
     }
 
     // Default to grid display if not specified
-    const resolvedDisplay = display || 'grid'
+    const resolvedDisplay = normalizeResponsiveEnumPropValue(gridPropDefs.display, display) ?? 'grid'
+    const resolvedColumns = normalizeResponsiveEnumOrStringPropValue(gridPropDefs.columns, columns)
+    const resolvedRows = normalizeResponsiveEnumOrStringPropValue(gridPropDefs.rows, rows)
+    const resolvedFlow = normalizeResponsiveEnumPropValue(gridPropDefs.flow, flow)
+    const resolvedAlign = normalizeResponsiveEnumPropValue(gridPropDefs.align, align)
+    const resolvedAlignContent = normalizeResponsiveEnumPropValue(gridPropDefs.alignContent, alignContent)
+    const resolvedJustify = normalizeResponsiveEnumPropValue(gridPropDefs.justify, justify)
+    const resolvedJustifyItems = normalizeResponsiveEnumPropValue(gridPropDefs.justifyItems, justifyItems)
+    const resolvedGap = normalizeResponsiveEnumOrStringPropValue(gridPropDefs.gap, gap)
+    const resolvedGapX = normalizeResponsiveEnumOrStringPropValue(gridPropDefs.gapX, gapX)
+    const resolvedGapY = normalizeResponsiveEnumOrStringPropValue(gridPropDefs.gapY, gapY)
 
-    const mappedColumns = filterResponsiveGridValues(columns, isGridColumnsValue)
-    const mappedRows = filterResponsiveGridValues(rows, isGridRowsValue)
+    const mappedColumns = filterResponsiveTokenValues(resolvedColumns, isGridColumnsValue)
+    const mappedRows = filterResponsiveTokenValues(resolvedRows, isGridRowsValue)
     const columnClasses = getGridColumnsClasses(mappedColumns)
     const rowClasses = getGridRowsClasses(mappedRows)
-    const hasCustomColumns = typeof columns === 'string' && !columnClasses
-    const hasTokenColumns = typeof columns === 'string' && !!columnClasses
-    const hasCustomRows = typeof rows === 'string' && !rowClasses
+    const hasCustomColumns = typeof resolvedColumns === 'string' && !columnClasses
+    const hasTokenColumns = typeof resolvedColumns === 'string' && !!columnClasses
+    const hasCustomRows = typeof resolvedRows === 'string' && !rowClasses
 
     const classes = cn(
       gridBaseCls,
       gridBase,
       typeof resolvedDisplay === 'string' ? gridByDisplay[resolvedDisplay] : '',
       typeof resolvedDisplay !== 'string' ? getDisplayClasses(resolvedDisplay as Responsive<Display>) : '',
-      typeof flow === 'string' ? gridByFlow[flow] : '',
-      typeof flow !== 'string' ? getGridFlowClasses(flow) : '',
-      typeof align === 'string' ? gridByAlign[align] : '',
-      typeof align !== 'string' ? getAlignItemsClasses(align) : '',
-      typeof alignContent === 'string' ? gridByAlignContent[alignContent] : '',
-      typeof alignContent !== 'string' ? getAlignContentClasses(alignContent) : '',
-      typeof justify === 'string' ? gridByJustify[justify] : '',
-      typeof justify !== 'string' ? getJustifyContentClasses(justify) : '',
-      typeof justifyItems === 'string' ? gridByJustifyItems[justifyItems] : '',
-      typeof justifyItems !== 'string' ? getJustifyItemsClasses(justifyItems) : '',
-      typeof gap === 'string' ? '' : getSpacingClasses(gap, 'gap'),
-      typeof gapX === 'string' ? '' : getSpacingClasses(gapX, 'gap-x'),
-      typeof gapY === 'string' ? '' : getSpacingClasses(gapY, 'gap-y'),
-      columns ? columnClasses : gridColumns['1'],
-      rows ? rowClasses : '',
+      typeof resolvedFlow === 'string' ? gridByFlow[resolvedFlow] : '',
+      typeof resolvedFlow !== 'string' ? getGridFlowClasses(resolvedFlow) : '',
+      typeof resolvedAlign === 'string' ? gridByAlign[resolvedAlign] : '',
+      typeof resolvedAlign !== 'string' ? getAlignItemsClasses(resolvedAlign) : '',
+      typeof resolvedAlignContent === 'string' ? gridByAlignContent[resolvedAlignContent] : '',
+      typeof resolvedAlignContent !== 'string'
+        ? getAlignContentClasses(resolvedAlignContent as Responsive<AlignContent>)
+        : '',
+      typeof resolvedJustify === 'string' ? gridByJustify[resolvedJustify] : '',
+      typeof resolvedJustify !== 'string' ? getJustifyContentClasses(resolvedJustify) : '',
+      typeof resolvedJustifyItems === 'string' ? gridByJustifyItems[resolvedJustifyItems] : '',
+      typeof resolvedJustifyItems !== 'string'
+        ? getJustifyItemsClasses(resolvedJustifyItems as Responsive<JustifyItems>)
+        : '',
+      typeof resolvedGap === 'string'
+        ? ''
+        : getSpacingClasses(filterResponsiveTokenValues(resolvedGap, isSpacingValue), 'gap'),
+      typeof resolvedGapX === 'string'
+        ? ''
+        : getSpacingClasses(filterResponsiveTokenValues(resolvedGapX, isSpacingValue), 'gap-x'),
+      typeof resolvedGapY === 'string'
+        ? ''
+        : getSpacingClasses(filterResponsiveTokenValues(resolvedGapY, isSpacingValue), 'gap-y'),
+      resolvedColumns ? columnClasses : gridColumns['1'],
+      resolvedRows ? rowClasses : '',
       borderColor && !hasBorderWidthUtility(effectiveClassName) && 'border',
       getSharedLayoutClasses(sharedLayoutProps),
       className,
@@ -273,18 +277,18 @@ export const Grid = React.forwardRef<HTMLElement, GridProps>(
     const gridStyles: React.CSSProperties = {
       ...(areas && typeof areas === 'string' && { gridTemplateAreas: areas }),
       // Preserve arbitrary templates (e.g. "1fr 2fr") while keeping deterministic token rendering.
-      ...(hasCustomColumns && { gridTemplateColumns: columns }),
+      ...(hasCustomColumns && { gridTemplateColumns: resolvedColumns }),
       ...(hasTokenColumns && {
-        gridTemplateColumns: columns === 'none' ? 'none' : `repeat(${columns}, minmax(0, 1fr))`,
+        gridTemplateColumns: resolvedColumns === 'none' ? 'none' : `repeat(${resolvedColumns}, minmax(0, 1fr))`,
       }),
-      ...(hasCustomRows && { gridTemplateRows: rows }),
+      ...(hasCustomRows && { gridTemplateRows: resolvedRows }),
     }
 
     const styles: React.CSSProperties = {
       ...gridStyles,
-      ...(typeof gap === 'string' && { gap: spacingToPixels[gap] }),
-      ...(typeof gapX === 'string' && { columnGap: spacingToPixels[gapX] }),
-      ...(typeof gapY === 'string' && { rowGap: spacingToPixels[gapY] }),
+      ...(typeof resolvedGap === 'string' && { gap: resolveSpacingValue(resolvedGap, spacingToPixels) }),
+      ...(typeof resolvedGapX === 'string' && { columnGap: resolveSpacingValue(resolvedGapX, spacingToPixels) }),
+      ...(typeof resolvedGapY === 'string' && { rowGap: resolveSpacingValue(resolvedGapY, spacingToPixels) }),
       ...getSharedLayoutStyles(sharedLayoutProps),
       ...style,
     }

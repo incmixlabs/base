@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
-import { normalizeEnumPropValue } from '@/theme/props/prop-def'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color, Radius, Responsive, Variant } from '@/theme/tokens'
 import { getInteractiveElementBaseClasses } from '@/theme/tokens'
 import { getRadiusStyles, useThemeRadius } from '../utils'
@@ -86,6 +86,9 @@ export function Button({
     buttonPropDefs.color.default ??
     SemanticColor.slate) as Color
   const safeRadius = normalizeEnumPropValue(buttonPropDefs.radius, radiusProp) as Radius | undefined
+  const safeLoading = normalizeBooleanPropValue(buttonPropDefs.loading, loading)
+  const safeHighContrast = normalizeBooleanPropValue(buttonPropDefs.highContrast, highContrast) ?? false
+  const safeInverse = normalizeBooleanPropValue(buttonPropDefs.inverse, inverse)
   const radius = useThemeRadius(safeRadius)
   const radiusStyles = getRadiusStyles(radius)
   const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
@@ -103,18 +106,18 @@ export function Button({
     buttonSizeVariants[resolvedSize],
     buttonSizeIconScope,
     'enabled:cursor-pointer',
-    !disabled && !loading && surfaceHoverEnabledClass,
-    highContrast && 'af-high-contrast',
+    !disabled && !safeLoading && surfaceHoverEnabledClass,
+    safeHighContrast && 'af-high-contrast',
     'rounded-[var(--element-border-radius)]',
     buttonColorVariants[safeColor][safeVariant],
-    inverse && buttonInverseVariants[safeColor][safeVariant],
-    loading && buttonLoading,
-    highContrast && highContrastByVariant[safeVariant],
+    safeInverse && buttonInverseVariants[safeColor][safeVariant],
+    safeLoading && buttonLoading,
+    safeHighContrast && highContrastByVariant[safeVariant],
     marginProps.className,
     className,
   )
 
-  const loadingOverlay = loading ? (
+  const loadingOverlay = safeLoading ? (
     <span className={buttonLoadingOverlayCls}>
       <Loader2 className="animate-spin text-current" />
     </span>
@@ -148,8 +151,8 @@ export function Button({
       ref: childRef ? composeRefs(ref, childRef) : ref,
       className: cn(buttonClasses, childProps.className),
       style: { ...combinedStyles, ...childProps.style },
-      'aria-busy': loading || undefined,
-      'aria-disabled': disabled || loading || undefined,
+      'aria-busy': safeLoading || undefined,
+      'aria-disabled': disabled || safeLoading || undefined,
       children: (
         <>
           {loadingOverlay}
@@ -167,7 +170,7 @@ export function Button({
       type="button"
       className={buttonClasses}
       style={combinedStyles}
-      disabled={disabled || loading}
+      disabled={disabled || safeLoading}
       {...props}
     >
       {loadingOverlay}

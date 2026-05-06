@@ -6,6 +6,7 @@ import * as React from 'react'
 import { Column, Row } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import { Text } from '@/typography'
 import {
   checkboxBase,
@@ -17,6 +18,7 @@ import {
   checkboxSizeVariants,
 } from './checkbox.css'
 import type { CheckboxProps, CheckboxSize, CheckboxWithLabelProps } from './checkbox.props'
+import { checkboxPropDefs } from './checkbox.props'
 import { useFieldGroup } from './FieldGroupContext'
 import { resolveFormSize } from './form-size'
 import { Label } from './Label'
@@ -50,6 +52,9 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
     const fieldGroup = useFieldGroup()
     const size = sizeProp ?? fieldGroup.size
     const resolvedSize = resolveFormSize(size)
+    const safeVariant = normalizeEnumPropValue(checkboxPropDefs.variant, variant) ?? checkboxPropDefs.variant.default
+    const safeColor = normalizeEnumPropValue(checkboxPropDefs.color, color) ?? SemanticColor.slate
+    const safeHighContrast = normalizeBooleanPropValue(checkboxPropDefs.highContrast, highContrast) ?? false
 
     const isControlled = checkedProp !== undefined
     const [uncontrolledChecked, setUncontrolledChecked] = React.useState(defaultChecked ?? false)
@@ -80,9 +85,9 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
           checkboxBase,
           checkboxBaseCls,
           checkboxSizeVariants[resolvedSize],
-          checkboxColorVariants[color][variant],
-          highContrast && 'af-high-contrast',
-          highContrast && checkboxHighContrastByVariant[variant],
+          checkboxColorVariants[safeColor][safeVariant],
+          safeHighContrast && 'af-high-contrast',
+          safeHighContrast && checkboxHighContrastByVariant[safeVariant],
           'disabled:cursor-not-allowed disabled:opacity-50',
           className,
         )}

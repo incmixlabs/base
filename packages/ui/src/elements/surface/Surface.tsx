@@ -4,7 +4,7 @@ import * as React from 'react'
 import { Slot } from '@/layouts/layout-utils'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
-import { normalizeEnumPropValue } from '@/theme/props/prop-def'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Radius, SurfaceColorKey } from '@/theme/tokens'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
@@ -55,6 +55,9 @@ export const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(
       SemanticColor.neutral) as SurfaceColorKey
     const safeShape = normalizeEnumPropValue(surfacePropDefs.shape, shape) ?? surfacePropDefs.shape.default
     const safeRadius = normalizeEnumPropValue(surfacePropDefs.radius, radiusProp) as Radius | undefined
+    const safeHighContrast = normalizeBooleanPropValue(surfacePropDefs.highContrast, highContrast) ?? false
+    const safeHover = normalizeBooleanPropValue(surfacePropDefs.hover, hover)
+    const safeSquare = normalizeBooleanPropValue(surfacePropDefs.square, square)
     const radius = useThemeRadius(safeRadius)
 
     return (
@@ -63,11 +66,11 @@ export const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(
         className={cn(
           'relative box-border border rounded-[var(--element-border-radius)]',
           surfaceColorVariants[safeColor][safeVariant],
-          hover && surfaceHoverEnabledClass,
-          highContrast && 'af-high-contrast',
-          highContrast && surfaceHighContrastByVariant[safeVariant],
+          safeHover && surfaceHoverEnabledClass,
+          safeHighContrast && 'af-high-contrast',
+          safeHighContrast && surfaceHighContrastByVariant[safeVariant],
           surfaceShapeVariants[safeShape],
-          square && surfaceSquare,
+          safeSquare && surfaceSquare,
           className,
         )}
         style={{ ...getRadiusStyles(radius), ...style }}

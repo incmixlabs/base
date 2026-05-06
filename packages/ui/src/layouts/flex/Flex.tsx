@@ -2,11 +2,13 @@
 
 import * as React from 'react'
 import { cn } from '@/lib/utils'
+import { resolveSpacingValue } from '@/theme/helpers'
 import {
   type AlignItems,
   type Display,
   type FlexDirection,
   type FlexWrap,
+  filterResponsiveTokenValues,
   getAlignItemsClasses,
   getDisplayClasses,
   getFlexDirectionClasses,
@@ -17,6 +19,9 @@ import {
   getSharedLayoutStyles,
   getSpacingClasses,
   hasBorderWidthUtility,
+  isSpacingValue,
+  normalizeResponsiveEnumOrStringPropValue,
+  normalizeResponsiveEnumPropValue,
   type Responsive,
   type SharedLayoutProps,
   Slot,
@@ -32,6 +37,7 @@ import {
   flexByJustify,
   flexByWrap,
 } from './Flex.css'
+import { flexPropDefs } from './flex.props'
 
 // ============================================================================
 // Flex Props
@@ -56,11 +62,11 @@ export interface FlexOwnProps extends SharedLayoutProps {
   /** Flex wrap behavior */
   wrap?: Responsive<FlexWrap>
   /** Gap between items */
-  gap?: Responsive<Spacing>
+  gap?: Responsive<Spacing | string>
   /** Horizontal gap between items */
-  gapX?: Responsive<Spacing>
+  gapX?: Responsive<Spacing | string>
   /** Vertical gap between items */
-  gapY?: Responsive<Spacing>
+  gapY?: Responsive<Spacing | string>
 }
 
 type FlexDivProps = FlexOwnProps & Omit<React.ComponentPropsWithoutRef<'div'>, keyof FlexOwnProps>
@@ -192,33 +198,46 @@ export const Flex = React.forwardRef<HTMLElement, FlexProps>(
     }
 
     // display already defaults to 'flex' via destructuring
-    const resolvedDisplay = display
+    const resolvedDisplay = normalizeResponsiveEnumPropValue(flexPropDefs.display, display) ?? 'flex'
+    const resolvedDirection = normalizeResponsiveEnumPropValue(flexPropDefs.direction, direction)
+    const resolvedWrap = normalizeResponsiveEnumPropValue(flexPropDefs.wrap, wrap)
+    const resolvedAlign = normalizeResponsiveEnumPropValue(flexPropDefs.align, align)
+    const resolvedJustify = normalizeResponsiveEnumPropValue(flexPropDefs.justify, justify)
+    const resolvedGap = normalizeResponsiveEnumOrStringPropValue(flexPropDefs.gap, gap)
+    const resolvedGapX = normalizeResponsiveEnumOrStringPropValue(flexPropDefs.gapX, gapX)
+    const resolvedGapY = normalizeResponsiveEnumOrStringPropValue(flexPropDefs.gapY, gapY)
 
     const classes = cn(
       flexBaseCls,
       flexBase,
       typeof resolvedDisplay === 'string' ? flexByDisplay[resolvedDisplay] : '',
       typeof resolvedDisplay !== 'string' ? getDisplayClasses(resolvedDisplay as Responsive<Display>) : '',
-      typeof direction === 'string' ? flexByDirection[direction] : '',
-      typeof direction !== 'string' ? getFlexDirectionClasses(direction) : '',
-      typeof wrap === 'string' ? flexByWrap[wrap] : '',
-      typeof wrap !== 'string' ? getFlexWrapClasses(wrap) : '',
-      typeof align === 'string' ? flexByAlign[align] : '',
-      typeof align !== 'string' ? getAlignItemsClasses(align) : '',
-      typeof justify === 'string' ? flexByJustify[justify] : '',
-      typeof justify !== 'string' ? getJustifyContentClasses(justify) : '',
-      typeof gap === 'string' ? '' : getSpacingClasses(gap, 'gap'),
-      typeof gapX === 'string' ? '' : getSpacingClasses(gapX, 'gap-x'),
-      typeof gapY === 'string' ? '' : getSpacingClasses(gapY, 'gap-y'),
+      typeof resolvedDirection === 'string' ? flexByDirection[resolvedDirection] : '',
+      typeof resolvedDirection !== 'string' ? getFlexDirectionClasses(resolvedDirection) : '',
+      typeof resolvedWrap === 'string' ? flexByWrap[resolvedWrap] : '',
+      typeof resolvedWrap !== 'string' ? getFlexWrapClasses(resolvedWrap) : '',
+      typeof resolvedAlign === 'string' ? flexByAlign[resolvedAlign] : '',
+      typeof resolvedAlign !== 'string' ? getAlignItemsClasses(resolvedAlign) : '',
+      typeof resolvedJustify === 'string' ? flexByJustify[resolvedJustify] : '',
+      typeof resolvedJustify !== 'string' ? getJustifyContentClasses(resolvedJustify) : '',
+      typeof resolvedGap === 'string'
+        ? ''
+        : getSpacingClasses(filterResponsiveTokenValues(resolvedGap, isSpacingValue), 'gap'),
+      typeof resolvedGapX === 'string'
+        ? ''
+        : getSpacingClasses(filterResponsiveTokenValues(resolvedGapX, isSpacingValue), 'gap-x'),
+      typeof resolvedGapY === 'string'
+        ? ''
+        : getSpacingClasses(filterResponsiveTokenValues(resolvedGapY, isSpacingValue), 'gap-y'),
       borderColor && !hasBorderWidthUtility(effectiveClassName) && 'border',
       getSharedLayoutClasses(sharedLayoutProps),
       className,
     )
 
     const styles: React.CSSProperties = {
-      ...(typeof gap === 'string' && { gap: spacingToPixels[gap] }),
-      ...(typeof gapX === 'string' && { columnGap: spacingToPixels[gapX] }),
-      ...(typeof gapY === 'string' && { rowGap: spacingToPixels[gapY] }),
+      ...(typeof resolvedGap === 'string' && { gap: resolveSpacingValue(resolvedGap, spacingToPixels) }),
+      ...(typeof resolvedGapX === 'string' && { columnGap: resolveSpacingValue(resolvedGapX, spacingToPixels) }),
+      ...(typeof resolvedGapY === 'string' && { rowGap: resolveSpacingValue(resolvedGapY, spacingToPixels) }),
       ...getSharedLayoutStyles(sharedLayoutProps),
       ...style,
     }

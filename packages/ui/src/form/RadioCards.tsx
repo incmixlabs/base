@@ -12,10 +12,12 @@ import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color } from '@/theme/tokens'
 import { useFieldGroup } from './FieldGroupContext'
 import { resolveFormSize } from './form-size'
 import { type RadioCardSize, radioCardSizeVariants } from './radio-cards.css'
+import { radioCardsRootPropDefs } from './radio-cards.props'
 import { radioColorVariants, radioHighContrastByVariant } from './radio-group.css'
 
 export type { RadioCardSize }
@@ -110,6 +112,14 @@ const RadioCardsRoot = React.forwardRef<HTMLDivElement, RadioCardsRootProps>(
   ) => {
     const fieldGroup = useFieldGroup()
     const size = resolveFormSize(sizeProp ?? fieldGroup.size)
+    const safeVariant =
+      normalizeEnumPropValue(radioCardsRootPropDefs.variant, variant) ?? radioCardsRootPropDefs.variant.default
+    const safeColor = normalizeEnumPropValue(radioCardsRootPropDefs.color, color) ?? SemanticColor.neutral
+    const safeGap = normalizeEnumPropValue(radioCardsRootPropDefs.gap, gap) ?? radioCardsRootPropDefs.gap.default
+    const safeHighContrast = normalizeBooleanPropValue(radioCardsRootPropDefs.highContrast, highContrast) ?? false
+    const safeDisabled = typeof disabled === 'boolean' ? disabled : false
+    const tokenColumns =
+      typeof columns === 'string' ? normalizeEnumPropValue(radioCardsRootPropDefs.columns, columns) : undefined
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
 
     const handleValueChange = React.useCallback(
@@ -123,19 +133,30 @@ const RadioCardsRoot = React.forwardRef<HTMLDivElement, RadioCardsRootProps>(
 
     const gridStyle: React.CSSProperties = {
       ...marginProps.style,
-      gridTemplateColumns: typeof columns === 'number' ? `repeat(${columns}, 1fr)` : columns,
+      gridTemplateColumns:
+        typeof columns === 'number'
+          ? `repeat(${columns}, 1fr)`
+          : tokenColumns
+            ? tokenColumns === 'none'
+              ? 'none'
+              : `repeat(${tokenColumns}, minmax(0, 1fr))`
+            : typeof columns === 'string'
+              ? columns.trim()
+              : radioCardsRootPropDefs.columns.default,
       ...style,
     }
 
     return (
-      <RadioCardsContext.Provider value={{ size, variant, color, highContrast, disabled }}>
+      <RadioCardsContext.Provider
+        value={{ size, variant: safeVariant, color: safeColor, highContrast: safeHighContrast, disabled: safeDisabled }}
+      >
         <RadioGroupPrimitive
           ref={ref}
           value={value}
           defaultValue={defaultValue}
           onValueChange={handleValueChange}
-          disabled={disabled}
-          className={cn('grid', gapSizes[gap], marginProps.className, className)}
+          disabled={safeDisabled}
+          className={cn('grid', gapSizes[safeGap], marginProps.className, className)}
           style={gridStyle}
           {...props}
         >

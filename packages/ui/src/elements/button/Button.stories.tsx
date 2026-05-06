@@ -112,6 +112,14 @@ export const Playground: Story = {
     ),
 }
 
+export const NormalizedRuntimeValues: Story = {
+  render: () => (
+    <Button variant={' SOFT ' as any} color={' INFO ' as any} highContrast={'false' as any} loading={'false' as any}>
+      Normalized
+    </Button>
+  ),
+}
+
 // Variants
 export const Solid: Story = {
   args: {

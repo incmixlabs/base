@@ -13,9 +13,11 @@ import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color, Size } from '@/theme/tokens'
 import { checkboxColorVariants, checkboxHighContrastByVariant } from './checkbox.css'
 import { type CheckboxCardSize, checkboxCardSizeVariants } from './checkbox-cards.css'
+import { checkboxCardsRootPropDefs } from './checkbox-cards.props'
 import { useFieldGroup } from './FieldGroupContext'
 import { resolveFormSize } from './form-size'
 
@@ -121,17 +123,27 @@ const CheckboxCardsRoot = React.forwardRef<HTMLDivElement, CheckboxCardsRootProp
   ) => {
     const fieldGroup = useFieldGroup()
     const size = sizeProp ?? fieldGroup.size
+    const safeVariant =
+      normalizeEnumPropValue(checkboxCardsRootPropDefs.variant, variant) ?? checkboxCardsRootPropDefs.variant.default
+    const safeColor = normalizeEnumPropValue(checkboxCardsRootPropDefs.color, color) ?? SemanticColor.neutral
+    const safeColumns =
+      normalizeEnumPropValue(checkboxCardsRootPropDefs.columns, columns) ?? checkboxCardsRootPropDefs.columns.default
+    const safeGap = normalizeEnumPropValue(checkboxCardsRootPropDefs.gap, gap) ?? checkboxCardsRootPropDefs.gap.default
+    const safeHighContrast = normalizeBooleanPropValue(checkboxCardsRootPropDefs.highContrast, highContrast) ?? false
+    const safeDisabled = typeof disabled === 'boolean' ? disabled : false
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
 
     return (
-      <CheckboxCardsContext.Provider value={{ size, variant, color, highContrast, disabled }}>
+      <CheckboxCardsContext.Provider
+        value={{ size, variant: safeVariant, color: safeColor, highContrast: safeHighContrast, disabled: safeDisabled }}
+      >
         <CheckboxGroupPrimitive
           ref={ref}
           value={value}
           defaultValue={defaultValue}
           onValueChange={onValueChange}
-          disabled={disabled}
-          className={cn('grid', columnStyles[columns], gapStyles[gap], marginProps.className, className)}
+          disabled={safeDisabled}
+          className={cn('grid', columnStyles[safeColumns], gapStyles[safeGap], marginProps.className, className)}
           style={{ ...marginProps.style, ...style }}
           {...props}
         >

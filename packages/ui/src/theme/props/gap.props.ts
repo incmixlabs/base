@@ -1,6 +1,7 @@
+import { SPACING_SCALE_VALUES } from '@incmix/theme'
 import type { PropDef } from './prop-def'
 
-const gapValues = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] as const
+const gapValues = SPACING_SCALE_VALUES
 
 const gapPropDefs = {
   /**

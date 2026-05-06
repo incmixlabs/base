@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
-import { normalizeEnumPropValue } from '@/theme/props/prop-def'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import { radiusStyleVariants } from '@/theme/radius.css'
 import type { Color, Radius } from '@/theme/tokens'
 import { useFieldGroup } from './FieldGroupContext'
@@ -95,6 +95,7 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
     const size = resolveFormSize(sizeProp ?? fieldGroup.size)
     const safeVariant = (normalizeEnumPropValue(sliderPropDefs.variant, variant) ??
       sliderPropDefs.variant.default) as SliderVariant
+    const safeHighContrast = normalizeBooleanPropValue(sliderPropDefs.highContrast, highContrast) ?? false
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
 
     return (
@@ -134,8 +135,8 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
               orientation === 'horizontal' && 'w-full',
               orientation === 'vertical' && 'h-full',
               sliderTrackVariantStyles[safeVariant],
-              highContrast && 'af-high-contrast',
-              highContrast && sliderTrackHighContrast,
+              safeHighContrast && 'af-high-contrast',
+              safeHighContrast && sliderTrackHighContrast,
             )}
           >
             <SliderPrimitive.Indicator
@@ -145,7 +146,7 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
                 safeVariant === 'soft' ? softFillColorCls : fillColorCls,
                 orientation === 'horizontal' && 'h-full',
                 orientation === 'vertical' && 'w-full bottom-0',
-                highContrast && sliderIndicatorHighContrast,
+                safeHighContrast && sliderIndicatorHighContrast,
               )}
             />
           </SliderPrimitive.Track>
@@ -160,7 +161,7 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
                 radiusStyleVariants[radius],
                 'h-[var(--slider-thumb-size)] w-[var(--slider-thumb-size)]',
                 borderColorCls,
-                highContrast && 'af-high-contrast',
+                safeHighContrast && 'af-high-contrast',
               )}
             />
           ))}

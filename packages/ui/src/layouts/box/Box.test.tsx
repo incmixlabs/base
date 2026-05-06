@@ -139,4 +139,25 @@ describe('Box', () => {
     expect(box).not.toHaveAttribute('align')
     expect(box).not.toHaveAttribute('justify')
   })
+
+  it('normalizes prop-def-backed layout composition values', () => {
+    render(
+      <Box
+        data-testid="box"
+        layout={' Grid ' as any}
+        align={' CENTER ' as any}
+        columns={' 12 ' as any}
+        gap={' 2rem ' as any}
+      >
+        <span>One</span>
+        <span>Two</span>
+      </Box>,
+    )
+
+    const box = screen.getByTestId('box')
+
+    expect(box).toHaveClass('grid', 'items-center')
+    expect(box.style.gridTemplateColumns).toBe('repeat(12, minmax(0, 1fr))')
+    expect(box.style.gap).toBe('2rem')
+  })
 })

@@ -129,14 +129,60 @@ type PropDefValues<Def> = Def extends { values: readonly (infer V)[] } ? readonl
 
 const getPropDefValues = <Def extends { values: readonly unknown[] }>(def: Def): Def['values'] => def.values
 
-const normalizeEnumPropValue = <Def extends { values: readonly string[]; default?: string }>(
+type EnumPropDefLike = { values: readonly string[]; default?: string }
+type BooleanPropDefLike = { type: 'boolean'; default?: boolean }
+type NormalizeEnumPropValueOptions = {
+  /**
+   * Defaults to false so generated/runtime inputs like " Soft " normalize to the
+   * canonical prop-def value "soft". Set true only for deliberately case-sensitive
+   * value lists.
+   */
+  caseSensitive?: boolean
+}
+
+function normalizeEnumPropValue<Def extends { values: readonly string[]; default: string }>(
   def: Def,
   value: unknown,
-): Def['values'][number] | undefined => {
+  options?: NormalizeEnumPropValueOptions,
+): Def['values'][number]
+function normalizeEnumPropValue<Def extends EnumPropDefLike>(
+  def: Def,
+  value: unknown,
+  options?: NormalizeEnumPropValueOptions,
+): Def['values'][number] | undefined
+function normalizeEnumPropValue<Def extends EnumPropDefLike>(
+  def: Def,
+  value: unknown,
+  options: NormalizeEnumPropValueOptions = {},
+): Def['values'][number] | undefined {
   if (typeof value !== 'string') return def.default as Def['values'][number] | undefined
   const normalized = value.trim()
   if (def.values.includes(normalized)) return normalized as Def['values'][number]
+  if (options.caseSensitive) return def.default as Def['values'][number] | undefined
+
+  const normalizedCase = normalized.toLowerCase()
+  const match = def.values.find(item => item.toLowerCase() === normalizedCase)
+  if (match) return match as Def['values'][number]
+
   return def.default as Def['values'][number] | undefined
+}
+
+/**
+ * Normalizes runtime boolean prop values from authored or generated sources.
+ * Booleans pass through, strings "true" and "false" are accepted after trimming
+ * and case normalization, and every other value falls back to the prop-def default.
+ */
+function normalizeBooleanPropValue<Def extends { type: 'boolean'; default: boolean }>(def: Def, value: unknown): boolean
+function normalizeBooleanPropValue<Def extends BooleanPropDefLike>(def: Def, value: unknown): boolean | undefined
+function normalizeBooleanPropValue<Def extends BooleanPropDefLike>(def: Def, value: unknown): boolean | undefined {
+  if (typeof value === 'boolean') return value
+  if (typeof value === 'string') {
+    const normalized = value.trim().toLowerCase()
+    if (normalized === 'true') return true
+    if (normalized === 'false') return false
+  }
+
+  return def.default
 }
 
 export type {
@@ -149,4 +195,4 @@ export type {
   ResponsivePropDef,
   Union,
 }
-export { breakpoints, breakpointsArray, getPropDefValues, normalizeEnumPropValue }
+export { breakpoints, breakpointsArray, getPropDefValues, normalizeBooleanPropValue, normalizeEnumPropValue }

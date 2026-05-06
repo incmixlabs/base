@@ -7,6 +7,7 @@ import { formSizes } from './form-size'
 
 const radioCardsSizes = formSizes
 const radioCardsVariants = ['surface', 'classic'] as const
+const radioCardsGapValues = ['1', '2', '3', '4', '5', '6'] as const
 
 const radioCardsRootPropDefs = {
   ...asChildPropDef,
@@ -15,12 +16,12 @@ const radioCardsRootPropDefs = {
   ...colorPropDef,
   ...highContrastPropDef,
   columns: { ...gridPropDefs.columns, default: 'repeat(auto-fit, minmax(160px, 1fr))' },
-  gap: { ...gridPropDefs.gap, default: '4' },
+  gap: { type: 'enum', values: radioCardsGapValues, default: '4' },
 } satisfies {
   size: PropDef<(typeof radioCardsSizes)[number]>
   variant: PropDef<(typeof radioCardsVariants)[number]>
   columns: PropDef<(typeof gridPropDefs.columns.values)[number]>
-  gap: PropDef<(typeof gridPropDefs.gap.values)[number]>
+  gap: PropDef<(typeof radioCardsGapValues)[number]>
 }
 
-export { radioCardsRootPropDefs, radioCardsSizes, radioCardsVariants }
+export { radioCardsGapValues, radioCardsRootPropDefs, radioCardsSizes, radioCardsVariants }
