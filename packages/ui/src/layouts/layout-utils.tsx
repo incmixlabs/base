@@ -589,28 +589,6 @@ function normalizeLayoutCompositionProps(props: LayoutCompositionProps): LayoutC
   }
 }
 
-function filterResponsiveGridTemplateValues<T extends string>(
-  prop: Responsive<T | string> | undefined,
-  isValid: (value: string) => value is T,
-): Responsive<T> | undefined {
-  if (!prop) return undefined
-
-  if (typeof prop === 'string') {
-    return isValid(prop) ? prop : undefined
-  }
-
-  const filtered: Partial<Record<'initial' | 'xs' | 'sm' | 'md' | 'lg' | 'xl', T>> = {}
-
-  if (prop.initial && isValid(prop.initial)) filtered.initial = prop.initial
-  if (prop.xs && isValid(prop.xs)) filtered.xs = prop.xs
-  if (prop.sm && isValid(prop.sm)) filtered.sm = prop.sm
-  if (prop.md && isValid(prop.md)) filtered.md = prop.md
-  if (prop.lg && isValid(prop.lg)) filtered.lg = prop.lg
-  if (prop.xl && isValid(prop.xl)) filtered.xl = prop.xl
-
-  return Object.keys(filtered).length > 0 ? (filtered as Responsive<T>) : undefined
-}
-
 const responsiveGridTemplateBreakpoints = ['xs', 'sm', 'md', 'lg', 'xl'] as const
 type ResponsiveGridTemplateBreakpoint = (typeof responsiveGridTemplateBreakpoints)[number]
 type GridTemplateCustomProperty = '--grid-template-areas' | '--grid-template-columns' | '--grid-template-rows'
@@ -669,7 +647,7 @@ function getResponsiveGridTemplateValueClasses<T extends string>(
 ): string {
   const useCustomResponsiveClasses = hasCustomResponsiveGridTemplateValue(prop, isValidTokenValue)
   if (!useCustomResponsiveClasses) {
-    return tokenClassResolver(filterResponsiveGridTemplateValues(prop, isValidTokenValue))
+    return tokenClassResolver(filterResponsiveTokenValues(prop, isValidTokenValue))
   }
 
   if (!isResponsiveValue(prop)) return ''
@@ -682,7 +660,7 @@ function getResponsiveGridTemplateValueClasses<T extends string>(
   return classes.join(' ')
 }
 
-function getResponsiveSpacingValueClasses(
+export function getResponsiveSpacingValueClasses(
   prop: Responsive<Spacing | string> | undefined,
   prefix: 'gap' | 'gap-x' | 'gap-y',
   gapProperty: LayoutGapProperty,
@@ -766,7 +744,7 @@ function assignResponsiveGridTemplateAreaStyles(
   }
 }
 
-function assignResponsiveSpacingStyles(
+export function assignResponsiveSpacingStyles(
   getStyles: () => LayoutCompositionStyles,
   prop: Responsive<Spacing | string> | undefined,
   cssProperty: LayoutGapCssProperty,
