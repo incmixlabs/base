@@ -166,9 +166,10 @@ const SegmentedControlRoot = React.forwardRef<HTMLDivElement, SegmentedControlRo
       SemanticColor.slate) as Color
     const safeRadius = normalizeEnumPropValue(segmentedControlRootPropDefs.radius, radiusProp) as Radius | undefined
     const safeHighContrast = normalizeBooleanPropValue(segmentedControlRootPropDefs.highContrast, highContrast) ?? false
-    const safeHover = normalizeBooleanPropValue(segmentedControlRootPropDefs.hover, hover)
+    const safeHover =
+      normalizeBooleanPropValue(segmentedControlRootPropDefs.hover, hover) ?? segmentedControlRootPropDefs.hover.default
     const safeDisabled = normalizeBooleanPropValue(segmentedControlRootPropDefs.disabled, disabled)
-    const safeAnimated = typeof animated === 'boolean' ? animated : false
+    const safeAnimated = normalizeBooleanPropValue(segmentedControlRootPropDefs.animated, animated) ?? false
     const radius = useThemeRadius(safeRadius)
     const marginProps = getMarginProps({ m: mProp, mx, my, mt, mr, mb, ml })
     const [internalValue, setInternalValue] = React.useState(defaultValue || '')

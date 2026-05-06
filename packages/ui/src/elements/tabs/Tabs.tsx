@@ -137,8 +137,8 @@ const TabsRoot = React.forwardRef<HTMLDivElement, TabsRootProps>(
       tabsPropDefs.Root.variant.default) as TabsVariant
     const safeColor = (normalizeEnumPropValue(tabsPropDefs.Root.color, color) ?? SemanticColor.slate) as Color
     const safeHighContrast = normalizeBooleanPropValue(tabsPropDefs.Root.highContrast, highContrast) ?? false
-    const safeHover = normalizeBooleanPropValue(tabsPropDefs.Root.hover, hover)
-    const safeAnimated = typeof animated === 'boolean' ? animated : false
+    const safeHover = normalizeBooleanPropValue(tabsPropDefs.Root.hover, hover) ?? tabsPropDefs.Root.hover.default
+    const safeAnimated = normalizeBooleanPropValue(tabsPropDefs.Root.animated, animated) ?? false
     const [internalValue, setInternalValue] = React.useState<string | undefined>(defaultValue)
     const activeValue = value ?? internalValue ?? null
     const marginProps = getMarginProps({ m: mProp, mx, my, mt, mr, mb, ml })
