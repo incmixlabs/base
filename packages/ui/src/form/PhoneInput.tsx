@@ -1,11 +1,14 @@
 'use client'
 
 import { Country, type ICountry } from 'country-state-city'
-import { ChevronDown, Phone } from 'lucide-react'
 import * as React from 'react'
+import { Button } from '@/elements/button/Button'
+import { Icon } from '@/elements/button/Icon'
+import { Flex } from '@/layouts/flex/Flex'
 import { isActivationKey } from '@/lib/keyboard-keys'
 import { cn } from '@/lib/utils'
 import type { Color, Radius, Size, TextFieldVariant } from '@/theme/tokens'
+import { Text } from '@/typography'
 import { useFieldGroup } from './FieldGroupContext'
 import { TextField } from './TextField'
 import { toBaseTextFieldVariant } from './text-field-variant'
@@ -190,16 +193,17 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
           className={className}
           style={textFieldStyle}
           leftElement={
-            <div className={cn('flex h-[var(--tf-height)] items-center', disabled && 'opacity-50')}>
-              <button
+            <Flex height="var(--tf-height)" align="center" className={cn(disabled && 'opacity-50')}>
+              <Button
                 ref={triggerRef}
                 type="button"
+                variant="ghost"
+                color="slate"
                 onClick={() => !disabled && setDropdownOpen(!dropdownOpen)}
                 disabled={disabled}
                 className={cn(
-                  'flex h-full items-center gap-1 border-r border-input/50 px-2',
-                  'transition-colors hover:bg-accent/50',
-                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
+                  'h-full gap-1 border-y-0 border-l-0 border-r border-input/50 px-2 py-0',
+                  'focus-visible:ring-inset',
                   'rounded-l-[var(--element-border-radius)]',
                   disabled && 'cursor-not-allowed',
                 )}
@@ -211,14 +215,22 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
                     : 'Select country code'
                 }
               >
-                <span className="text-base">{selectedCountry?.flag}</span>
-                <span className="text-sm text-muted-foreground">+{selectedCountry?.phonecode}</span>
-                <ChevronDown className={cn('h-3 w-3 opacity-50', dropdownOpen && 'rotate-180')} aria-hidden="true" />
-              </button>
-              <div className="flex items-center justify-center px-2">
-                <Phone className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-              </div>
-            </div>
+                <Text size="md">{selectedCountry?.flag}</Text>
+                <Text size="sm" color="neutral">
+                  +{selectedCountry?.phonecode}
+                </Text>
+                <Icon
+                  icon="chevron-down"
+                  size="xs"
+                  color="neutral"
+                  className={cn('opacity-50 transition-transform', dropdownOpen && 'rotate-180')}
+                  aria-hidden="true"
+                />
+              </Button>
+              <Flex align="center" justify="center" px="2">
+                <Icon icon="phone" size="sm" color="neutral" aria-hidden="true" />
+              </Flex>
+            </Flex>
           }
           {...props}
         />
