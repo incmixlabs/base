@@ -20,9 +20,10 @@ describe('Progress', () => {
     const progress = screen.getByTestId('progress')
     const indicator = progress.firstElementChild
 
+    expect(indicator).not.toBeNull()
     expect(progress).toHaveClass(progressTrackVariantStyles.soft)
     expect(progress).toHaveClass(progressTrackHighContrast)
-    expect(indicator).toHaveClass(progressSoftIndicatorColorStyles.success)
-    expect(indicator).toHaveClass(progressIndicatorHighContrast)
+    expect(indicator!).toHaveClass(progressSoftIndicatorColorStyles.success)
+    expect(indicator!).toHaveClass(progressIndicatorHighContrast)
   })
 })
