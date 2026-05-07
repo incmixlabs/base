@@ -300,6 +300,18 @@ const createChartSurfaceVariantStyles = (color: SurfaceColorKey) => {
   }
 }
 
+/**
+ * Canonical shared surface visual contract.
+ *
+ * This module owns reusable Vanilla Extract class maps for components whose
+ * root behaves as a single colored surface: Button, Badge, Surface, Popover,
+ * Tooltip, Callout, card-like controls, and similar one-box affordances.
+ *
+ * The public prop/metadata contract lives in `surface.props.tsx` and is
+ * re-exported from `@incmix/ui/elements`. Keep component-specific state maps
+ * local when a component has additional visual state that is not represented by
+ * a single surface layer, such as checked indicators or progress tracks.
+ */
 export const surfaceColorVariants = Object.fromEntries(
   SURFACE_COLOR_KEYS.map(color => [color, createChartSurfaceVariantStyles(color)]),
 ) as Record<SurfaceColorKey, Record<'classic' | 'solid' | 'soft' | 'surface' | 'outline' | 'ghost', string>>

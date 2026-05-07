@@ -35,6 +35,10 @@ export const progressSizeVariants = styleVariants({
 
 export const progressRadiusVariants = radiusStyleVariants
 
+// Progress is intentionally not a direct `surfaceColorVariants` consumer.
+// It is a two-layer component: the track owns variant styling while the
+// indicator owns color and animated width. Keeping these maps local avoids
+// pretending the control is one colored surface.
 export const progressTrackVariantStyles = styleVariants({
   surface: {
     backgroundColor: semanticColorVar('neutral', 'soft'),

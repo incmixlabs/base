@@ -24,6 +24,11 @@ export const checkboxIndicator = style({
 
 export type CheckboxVariant = 'solid' | 'soft' | 'outline'
 
+// Checkbox is intentionally not a direct `surfaceColorVariants` consumer.
+// Its visual contract has two states in the same control: an unchecked box
+// surface and a checked/indeterminate indicator surface. The shared surface
+// high-contrast classes still apply cleanly by variant, but the color maps need
+// local checked-state selectors.
 const createCheckboxColorVariantStyles = (color: Color): Record<CheckboxVariant, string> => ({
   solid: style({
     borderWidth: '1px',

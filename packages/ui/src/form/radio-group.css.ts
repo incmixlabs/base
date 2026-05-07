@@ -13,6 +13,10 @@ export const radioBaseCls =
 
 export type RadioVariant = 'classic' | 'surface' | 'soft'
 
+// Radio is intentionally not a direct `surfaceColorVariants` consumer.
+// The control combines an outer ring, checked fill, and inner indicator, so its
+// color maps need local checked-state selectors. Shared surface high-contrast
+// classes are still reused by matching variant.
 const createBaseVariantStyle = (color: Color) => ({
   selectors: {
     '&:focus-visible': {
