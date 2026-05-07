@@ -23,7 +23,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "predev": "pnpm generate:theme-runtime",
-    "dev": "tsup --config tsup.config.ts --watch",
+    "dev": "echo \"Starting @incmix/ui build in watch mode. This process stays running and rebuilds packages/ui/dist on source changes. To view stories, run from the repo root: pnpm dev:storybook.\" && tsup --config tsup.config.ts --watch",
     "build:analyze:lib": "vite build --config vite.analyze.config.ts",
     "check:bundle": "node scripts/check-bundle-guards.mjs",
     "generate:hues": "node scripts/generate-hue-palette.mjs",
