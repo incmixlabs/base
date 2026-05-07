@@ -147,6 +147,13 @@ export {
   type StepperStep,
 } from './stepper/Stepper'
 export { Surface, type SurfaceProps } from './surface/Surface'
+export {
+  type SurfaceShape,
+  type SurfaceVariant,
+  surfacePropDefs,
+  surfaceShapes,
+  surfaceVariants,
+} from './surface/surface.props'
 export { SegmentedControl } from './tabs/SegmentedControl'
 // Navigation
 export { Tabs } from './tabs/Tabs'
