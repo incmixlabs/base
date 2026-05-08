@@ -46,8 +46,16 @@ export function runReactCompilerHealthcheck({
     sourceExtensions,
     ignoredDirectories,
   })
+  for (const optOut of actualOptOuts) {
+    if (optOut.owner === '<unknown>') {
+      failures.push(`Could not infer React Compiler opt-out owner at ${optOut.file}:${optOut.line}`)
+    }
+  }
+
   const expectedKeys = new Set(expectedOptOuts.map(([file, owner]) => toKey(file, owner)))
-  const actualKeys = new Set(actualOptOuts.map(optOut => toKey(optOut.file, optOut.owner)))
+  const actualKeys = new Set(
+    actualOptOuts.filter(optOut => optOut.owner !== '<unknown>').map(optOut => toKey(optOut.file, optOut.owner)),
+  )
 
   for (const expectedKey of expectedKeys) {
     if (!actualKeys.has(expectedKey)) {
@@ -56,6 +64,10 @@ export function runReactCompilerHealthcheck({
   }
 
   for (const optOut of actualOptOuts) {
+    if (optOut.owner === '<unknown>') {
+      continue
+    }
+
     const actualKey = toKey(optOut.file, optOut.owner)
     if (!expectedKeys.has(actualKey)) {
       failures.push(`Unexpected React Compiler opt-out: ${actualKey} at ${optOut.file}:${optOut.line}`)
