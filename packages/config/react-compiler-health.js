@@ -1,6 +1,5 @@
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
+import { existsSync, lstatSync, readdirSync, readFileSync } from 'node:fs'
 import path from 'node:path'
-import process from 'node:process'
 
 const defaultSourceRoots = ['apps', 'packages']
 const defaultSourceExtensions = new Set(['.js', '.jsx', '.mjs', '.ts', '.tsx'])
@@ -13,6 +12,7 @@ const defaultIgnoredDirectories = new Set([
   'node_modules',
   'storybook-static',
 ])
+const useNoMemoDirectivePattern = /^\s*['"]use no memo['"]\s*;?\s*$/
 
 export function runReactCompilerHealthcheck({
   rootDir,
@@ -63,11 +63,7 @@ export function runReactCompilerHealthcheck({
   }
 
   if (failures.length > 0) {
-    console.error('React Compiler healthcheck failed:')
-    for (const failure of failures) {
-      console.error(`- ${failure}`)
-    }
-    process.exit(1)
+    throw new Error(['React Compiler healthcheck failed:', ...failures.map(failure => `- ${failure}`)].join('\n'))
   }
 
   console.log(`React Compiler healthcheck passed (${actualOptOuts.length} scoped opt-outs).`)
@@ -93,7 +89,10 @@ function scanDirectory({ directory, rootDir, sourceExtensions, ignoredDirectorie
 
   for (const entry of entries) {
     const absolutePath = path.join(directory, entry)
-    const stats = statSync(absolutePath)
+    const stats = lstatSync(absolutePath)
+    if (stats.isSymbolicLink()) {
+      continue
+    }
 
     if (stats.isDirectory()) {
       if (!ignoredDirectories.has(entry)) {
@@ -116,7 +115,7 @@ function scanDirectory({ directory, rootDir, sourceExtensions, ignoredDirectorie
     const relativePath = toRepoPath(rootDir, absolutePath)
     const lines = readFileSync(absolutePath, 'utf8').split(/\r?\n/)
     for (const [index, line] of lines.entries()) {
-      if (!/['"]use no memo['"]/.test(line)) {
+      if (!useNoMemoDirectivePattern.test(line)) {
         continue
       }
 
