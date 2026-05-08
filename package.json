@@ -8,6 +8,7 @@
   "scripts": {
     "build": "pnpm -r --if-present build",
     "build:analyze": "pnpm --filter @incmix/storybook build:analyze && pnpm --filter @incmix/ui build:analyze:lib",
+    "check:react-compiler": "node scripts/check-react-compiler-health.mjs",
     "dev:storybook": "pnpm --filter @incmix/storybook dev",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",

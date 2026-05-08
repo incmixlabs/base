@@ -28,11 +28,18 @@ This means published package artifacts are not currently transformed by React
 Compiler. The compiler validation path is the Vite analysis build plus the
 consumer app and Storybook builds that alias package source.
 
-## Automation decision
+## Automation
 
-No separate React Compiler healthcheck workflow is added for this batch. The
-current validation commands are:
+React Compiler healthcheck coverage is available through:
 
+- `pnpm check:react-compiler`
+
+The healthcheck verifies the shared compiler wiring and fails if the scoped
+`'use no memo'` inventory changes without updating the allowlist.
+
+The current validation commands are:
+
+- `pnpm check:react-compiler`
 - `pnpm --filter @incmix/ui build:analyze:lib`
 - pro docs build in the sibling `pro-ui` repository
 - Storybook build when touching Storybook/compiler integration
@@ -72,4 +79,5 @@ tooltip opt-out.
 
 Validated on 2026-05-07:
 
+- `pnpm check:react-compiler`
 - `pnpm --filter @incmix/ui build:analyze:lib`
