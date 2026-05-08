@@ -8,6 +8,7 @@
     "access": "public"
   },
   "exports": {
+    "./react-compiler-health.js": "./react-compiler-health.js",
     "./react-compiler.js": "./react-compiler.js",
     "./vite-tanstack-start.js": "./vite-tanstack-start.js",
     "./vite-aliases.js": "./vite-aliases.js",

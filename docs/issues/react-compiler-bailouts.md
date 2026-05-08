@@ -1,40 +1,83 @@
 ## Summary
-React Compiler rollout is effectively complete for the current batch. Known incompatible functions now use targeted `'use no memo'` opt-outs so the rest of their files still compile cleanly.
 
-## Current status
-- Resolved: forwardRef-to-ref-as-prop migrations
-- Resolved: `compose-refs` compiler bailout via `'use no memo'`
-- Resolved: TodosBlock self-referencing callback bailout
-- Resolved: Masonry ESLint-suppression bailout
-- Resolved: ref-during-render fixes across the remaining affected files
-- Resolved: manual `useMemo` / `useCallback` removal where the compiler can handle memoization directly
-- Resolved: explicit `'use no memo'` opt-outs for compiler-limitation sites, TanStack Table sites, and complex store/internal patterns
+Last audited: 2026-05-07.
 
-## Done
-- Compiler-limitation opt-outs:
-  - `packages/ui/src/autoform/useAutoFormRuntime.ts`
-  - `packages/ui/src/elements/dialog/DialogWrapper.tsx`
-  - `packages/ui/src/elements/button/dynamic-icon.tsx`
-  - `packages/ui/src/elements/progress/Progress.tsx`
-  - `packages/ui/src/elements/sheet/Sheet.tsx`
-  - `packages/ui/src/form/date/Calendar.tsx`
-  - `packages/ui/src/form/date/DayPickerCore.tsx`
-  - `packages/ui/src/form/FileUpload.tsx`
-- TanStack Table opt-outs:
-  - `packages/ui/src/table/basic/TableWrapper.tsx`
-  - `packages/ui/src/table/infinite/InfiniteTable.tsx`
-- Complex store/internal opt-outs:
-  - `packages/ui/src/form/Rating.tsx`
-  - `packages/ui/src/elements/masonry/Masonry.tsx` (`useResizeObserver`)
-  - `packages/ui/src/elements/masonry/Masonry.tsx` (`useThrottle`)
+React Compiler rollout is complete for the Vite-built surfaces that intentionally
+exercise `@incmix/ui` source. Production package output still uses
+`tsup`/esbuild and is intentionally outside the compiler path until the package
+build moves to a compiler-capable pipeline or a separate library healthcheck is
+added.
 
-## Remaining
-- MediaPlayer is the only remaining dedicated React Compiler refactor.
-- Tracking issue: `#520` https://github.com/bwalkt/autoform/issues/520
+## Compiler-enabled coverage
 
-## Recommended next step
-- Keep the current opt-outs in place.
-- Treat MediaPlayer as a standalone refactor:
-  - split the file into smaller sub-components
-  - remove render-time ref reads
-  - simplify manual memoization patterns
+- Shared compiler config: `packages/config/react-compiler.js`.
+- Base Storybook: `apps/storybook/.storybook/main.ts`.
+- UI source analysis build: `packages/ui/vite.analyze.config.ts`, run with
+  `pnpm --filter @incmix/ui build:analyze:lib`.
+- Pro docs and pro Storybook also compile base UI source through their Vite
+  configs in the sibling `pro-ui` repository.
+
+## Package build decision
+
+`packages/ui` production builds remain on `tsup`/esbuild:
+
+- `pnpm --filter @incmix/ui build`
+- `packages/ui/tsup.config.ts`
+
+This means published package artifacts are not currently transformed by React
+Compiler. The compiler validation path is the Vite analysis build plus the
+consumer app and Storybook builds that alias package source.
+
+## Automation
+
+React Compiler healthcheck coverage is available through:
+
+- `pnpm check:react-compiler`
+
+The healthcheck verifies the shared compiler wiring and fails if the scoped
+`'use no memo'` inventory changes without updating the allowlist.
+
+The current validation commands are:
+
+- `pnpm check:react-compiler`
+- `pnpm --filter @incmix/ui build:analyze:lib`
+- pro docs build in the sibling `pro-ui` repository
+- Storybook build when touching Storybook/compiler integration
+
+No `eslint-plugin-react-compiler` coverage is added for this batch. This
+workspace uses Biome as its primary lint tool, and the current compiler signal is
+provided by the compiler-enabled Vite builds plus explicit, documented
+`'use no memo'` opt-outs.
+
+## Current base opt-outs
+
+These are intentional opt-outs that keep the rest of each file compiler-enabled.
+
+| File | Function/component | Scope |
+| --- | --- | --- |
+| `packages/ui/src/lib/compose-refs.ts` | `useComposedRefs` | Variadic refs are used as the dependency list for a manually memoized callback. |
+| `packages/ui/src/elements/progress/Progress.tsx` | `Progress` | Compiler limitation around the typed variant lookup. |
+| `packages/ui/src/elements/sheet/Sheet.tsx` | `SheetContent` | Compiler limitation around conditional variant lookup. |
+| `packages/ui/src/form/FileUpload.tsx` | `FileUpload` | Compiler limitation in the file/dropzone handling block. |
+| `packages/ui/src/form/Rating.tsx` | `Rating` | Complex focus store and ref-backed item ordering. |
+| `packages/ui/src/layouts/masonry/Masonry.tsx` | `useResizeObserver` | ResizeObserver bookkeeping with item maps and callback indirection. |
+| `packages/ui/src/layouts/masonry/Masonry.tsx` | `useThrottle` | Throttled state bridge with timer/ref coordination. |
+| `packages/ui/src/media/media-player/MediaPlayer.tsx` | `MediaPlayerSeekTooltip` | Reads `hoverTimeRef.current` during render for tooltip display. |
+
+## MediaPlayer and #520
+
+The broad MediaPlayer compiler refactor is complete. The previous bailout
+cluster was reduced to one isolated and intentional opt-out:
+`MediaPlayerSeekTooltip`.
+
+Tracking issue [#520](https://github.com/bwalkt/autoform/issues/520) is stale
+if it still describes MediaPlayer as the remaining large bailout cluster. After
+these docs land, #520 should be closed or updated to track only the isolated
+tooltip opt-out.
+
+## Validation
+
+Validated on 2026-05-07:
+
+- `pnpm check:react-compiler`
+- `pnpm --filter @incmix/ui build:analyze:lib`
