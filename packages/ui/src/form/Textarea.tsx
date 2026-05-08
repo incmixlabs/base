@@ -1,5 +1,6 @@
 'use client'
 
+import { clsx } from 'clsx'
 import * as React from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
@@ -120,19 +121,18 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             readOnly={effectiveReadOnly}
             aria-invalid={error || undefined}
             style={style as React.CSSProperties & { height?: number }}
-            className={cn(
-              textFieldInputBaseCls,
-              'peer',
-              'box-border h-auto min-h-[calc(var(--tf-height)*2)]',
-              'disabled:opacity-50 disabled:cursor-not-allowed',
-              resizeClass,
-
-              // VE: color styles for floating variants
+            className={clsx(
+              cn(
+                textFieldInputBaseCls,
+                'peer',
+                'box-border h-auto min-h-[calc(var(--tf-height)*2)]',
+                'disabled:opacity-50 disabled:cursor-not-allowed',
+                resizeClass,
+                className,
+              ),
+              // VE classes must be joined outside tailwind-merge or one generated class can be dropped.
               floatingStyle && textFieldFloatingColorVariants[effectiveColor]?.[floatingStyle],
-
-              // VE: floating layout (padding, borders, radius)
               floatingStyle && floatingInputStyleVariants[floatingStyle],
-              className,
             )}
             {...autoSizeProps}
             {...textareaProps}
@@ -142,7 +142,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             <label
               htmlFor={textareaId}
               className={cn(
-                'duration-300 origin-[0]',
+                'absolute duration-300 origin-[0]',
                 'pointer-events-none select-none',
 
                 // VE: floating label positioning by style

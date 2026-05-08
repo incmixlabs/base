@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import * as React from 'react'
 import { describe, expect, it } from 'vitest'
 import { MentionTextarea } from './MentionTextarea'
+import { mentionDragOverlayColorVariants } from './MentionTextarea.css'
 import { collectMentionReferences } from './mention-markdown'
 
 const TEST_TIMEOUT_MS = 20_000
@@ -532,5 +533,27 @@ describe('MentionTextarea', () => {
         '<img alt="tiny.png" src="https://example.com/tiny.png" style="width: 100%; max-width: 50px; height: auto;" />',
       )
     })
+  })
+
+  it('uses semantic color styling for the image drag overlay', () => {
+    cleanup()
+
+    const { container } = render(
+      <MentionTextarea preview={false} color="success" onFileUpload={async () => 'https://example.com/upload.png'} />,
+    )
+
+    const root = container.firstElementChild as HTMLElement
+    fireEvent.dragEnter(root, {
+      dataTransfer: {
+        files: [],
+        types: ['Files'],
+      },
+    })
+
+    const overlay = screen.getByText('Attach images by dropping them here').parentElement
+
+    expect(overlay).toHaveClass(mentionDragOverlayColorVariants.success)
+    expect(overlay?.className).not.toContain('border-primary')
+    expect(overlay?.className).not.toContain('bg-primary')
   })
 })

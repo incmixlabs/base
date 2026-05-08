@@ -13,3 +13,15 @@ export const mentionItemHighlightColorVariants: Record<Color, string> = styleVar
     ]),
   ) as Record<Color, { backgroundColor: string; color: string }>,
 )
+
+export const mentionDragOverlayColorVariants: Record<Color, string> = styleVariants(
+  Object.fromEntries(
+    semanticColorKeys.map(color => [
+      color,
+      {
+        borderColor: semanticColorVar(color, 'primary'),
+        backgroundColor: semanticColorVar(color, 'primary-alpha'),
+      },
+    ]),
+  ) as Record<Color, { borderColor: string; backgroundColor: string }>,
+)

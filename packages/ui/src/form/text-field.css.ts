@@ -236,6 +236,16 @@ globalStyle(`.peer:placeholder-shown ~ ${_floatingLabelFilled}`, {
 
 globalStyle(`.peer:focus ~ ${_floatingLabelFilled}`, {
   transform: 'translateY(-1.25rem) scale(0.9)',
+  color: 'var(--tf-color-primary)',
+})
+
+globalStyle(`.peer[data-placeholder] ~ ${_floatingLabelFilled}`, {
+  transform: 'translateY(0) scale(1)',
+})
+
+globalStyle(`.peer[data-popup-open] ~ ${_floatingLabelFilled}`, {
+  transform: 'translateY(-1.25rem) scale(0.9)',
+  color: 'var(--tf-color-primary)',
 })
 
 const _floatingLabelOutlined = style({
@@ -265,6 +275,19 @@ globalStyle(`.peer:placeholder-shown ~ ${_floatingLabelOutlined}`, {
 
 globalStyle(`.peer:focus ~ ${_floatingLabelOutlined}`, {
   transform: 'translateY(-1.25rem) scale(0.9)',
+  color: 'var(--tf-color-primary)',
+  paddingLeft: '0.25rem',
+  paddingRight: '0.25rem',
+})
+
+globalStyle(`.peer[data-placeholder] ~ ${_floatingLabelOutlined}`, {
+  transform: `translateY(${floatingOutlinedPlaceholderTranslateVar}) scale(1)`,
+})
+
+globalStyle(`.peer[data-popup-open] ~ ${_floatingLabelOutlined}`, {
+  transform: 'translateY(-1.25rem) scale(0.9)',
+  color: 'var(--tf-color-primary)',
+  backgroundColor: 'var(--background)',
   paddingLeft: '0.25rem',
   paddingRight: '0.25rem',
 })
@@ -284,6 +307,16 @@ globalStyle(`.peer:placeholder-shown ~ ${_floatingLabelStandard}`, {
 
 globalStyle(`.peer:focus ~ ${_floatingLabelStandard}`, {
   transform: 'translateY(-1.75rem) scale(0.9)',
+  color: 'var(--tf-color-primary)',
+})
+
+globalStyle(`.peer[data-placeholder] ~ ${_floatingLabelStandard}`, {
+  transform: 'translateY(0) scale(1)',
+})
+
+globalStyle(`.peer[data-popup-open] ~ ${_floatingLabelStandard}`, {
+  transform: 'translateY(-1.75rem) scale(0.9)',
+  color: 'var(--tf-color-primary)',
 })
 
 export const floatingLabelStyleVariants: Record<FloatingStyle, string> = {

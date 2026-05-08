@@ -4,12 +4,14 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Tabs } from '@/elements'
 import type { AvatarHoverCardData } from '@/elements/avatar/Avatar'
+import { Row } from '@/layouts/flex/Flex'
 import { isActivationKey, KEYBOARD_KEYS } from '@/lib/keyboard-keys'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { mentionTextareaVar } from '@/theme/runtime/component-vars'
 import type { Color } from '@/theme/tokens'
-import { mentionItemHighlightColorVariants } from './MentionTextarea.css'
+import { Text } from '@/typography'
+import { mentionDragOverlayColorVariants, mentionItemHighlightColorVariants } from './MentionTextarea.css'
 import {
   getStructuredMentionTokens,
   MentionMarkdownPreview,
@@ -322,6 +324,8 @@ export function MentionTextarea({
   toolbarActions,
   preview = true,
   onFileUpload,
+  color,
+  error = false,
   className,
   ref,
   ...props
@@ -945,6 +949,7 @@ export function MentionTextarea({
 
   // Get the effective highlight color for active trigger
   const effectiveHighlightColor = activeTriggerConfig?.highlightColor ?? highlightColor
+  const effectiveDragOverlayColor: Color = error ? SemanticColor.error : (color ?? SemanticColor.slate)
 
   React.useLayoutEffect(() => {
     const textarea = textareaRef.current
@@ -978,6 +983,8 @@ export function MentionTextarea({
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         className={className}
+        color={color}
+        error={error}
         aria-expanded={isOpen}
         aria-controls={isOpen && !activeTriggerConfig?.renderPicker ? listboxId : undefined}
         aria-activedescendant={
@@ -1145,11 +1152,23 @@ export function MentionTextarea({
       onDrop={onFileUpload ? handleDrop : undefined}
     >
       {isDragOver && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center rounded-md border-2 border-dashed border-primary/50 bg-primary/5 pointer-events-none">
-          <span className="text-[length:var(--mention-textarea-drag-overlay-font-size)] font-medium text-muted-foreground">
+        <Row
+          align="center"
+          justify="center"
+          className={cn(
+            'absolute inset-0 z-10 rounded-md border-2 border-dashed pointer-events-none',
+            mentionDragOverlayColorVariants[effectiveDragOverlayColor],
+          )}
+        >
+          <Text
+            as="span"
+            weight="medium"
+            color="neutral"
+            className="text-[length:var(--mention-textarea-drag-overlay-font-size)]"
+          >
             Attach images by dropping them here
-          </span>
-        </div>
+          </Text>
+        </Row>
       )}
 
       {/* Hidden mirror div for cursor position calculation */}

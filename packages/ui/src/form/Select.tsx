@@ -1,6 +1,7 @@
 'use client'
 
 import { Select as SelectPrimitive } from '@base-ui/react/select'
+import { clsx } from 'clsx'
 import { CheckIcon, ChevronDown } from 'lucide-react'
 import * as React from 'react'
 import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
@@ -15,6 +16,7 @@ import type { SelectItemProps, SelectProps } from './select.props'
 import {
   floatingInputBaseCls,
   floatingInputStyleVariants,
+  floatingLabelStyleVariants,
   textFieldColorVariants,
   textFieldFloatingColorVariants,
   textFieldFloatingWrapperColorVariants,
@@ -41,6 +43,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
       defaultOpen,
       onOpenChange,
       onValueChange,
+      'aria-invalid': ariaInvalid,
       portalContainer: portalContainerProp,
       disabled,
       readOnly,
@@ -123,16 +126,17 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
             <SelectPrimitive.Trigger
               id={effectiveId}
               ref={ref}
-              className={cn(
-                'peer inline-flex items-center justify-between w-full outline-none transition-all duration-150 ease-in-out',
-                'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)]',
-                floatingInputBaseCls,
-
-                // VE: floating layout parity with TextField
+              aria-invalid={ariaInvalid ?? (error || undefined)}
+              className={clsx(
+                cn(
+                  'peer inline-flex items-center justify-between w-full outline-none transition-all duration-150 ease-in-out',
+                  'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+                  floatingInputBaseCls,
+                  className,
+                ),
+                // VE classes must be joined outside tailwind-merge or one generated class can be dropped.
                 floatingStyle && floatingInputStyleVariants[floatingStyle],
-                // VE: color parity with TextField
                 floatingStyle && textFieldFloatingColorVariants[effectiveColor]?.[floatingStyle],
-                className,
               )}
               {...props}
             >
@@ -146,34 +150,9 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
               <label
                 htmlFor={effectiveId}
                 className={cn(
-                  'absolute text-[length:var(--tf-font-size)] text-[color:var(--tf-color-text)]',
-                  'duration-300 origin-[0]',
+                  'absolute duration-300 origin-[0]',
                   'pointer-events-none select-none',
-
-                  // Base UI sets data-placeholder on Trigger when no value is selected.
-                  // peer-data-[placeholder]: is the Select equivalent of peer-placeholder-shown:
-
-                  // Matches TextField floating label positions exactly
-                  floatingStyle === 'filled' && [
-                    'left-[var(--tf-padding-x)] top-4 z-10',
-                    '-translate-y-4 scale-75',
-                    'peer-data-[placeholder]:scale-100 peer-data-[placeholder]:translate-y-0',
-                    'peer-data-[popup-open]:-translate-y-4 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--tf-color-primary)]',
-                  ],
-
-                  floatingStyle === 'outlined' && [
-                    'left-[var(--tf-padding-x)] top-2 z-10',
-                    '-translate-y-4 scale-75 bg-background px-1',
-                    'peer-data-[placeholder]:scale-100 peer-data-[placeholder]:translate-y-3',
-                    'peer-data-[popup-open]:-translate-y-4 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--tf-color-primary)] peer-data-[popup-open]:bg-background peer-data-[popup-open]:px-1',
-                  ],
-
-                  floatingStyle === 'standard' && [
-                    'left-0 top-3 z-10',
-                    '-translate-y-6 scale-75',
-                    'peer-data-[placeholder]:scale-100 peer-data-[placeholder]:translate-y-0',
-                    'peer-data-[popup-open]:-translate-y-6 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--tf-color-primary)]',
-                  ],
+                  floatingStyle && floatingLabelStyleVariants[floatingStyle],
                 )}
               >
                 {effectiveLabel}
@@ -207,6 +186,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
           <SelectPrimitive.Trigger
             id={effectiveId}
             ref={ref}
+            aria-invalid={ariaInvalid ?? (error || undefined)}
             className={cn(
               'inline-flex items-center justify-between w-full outline-none transition-all duration-150 ease-in-out',
               'border',
