@@ -1,5 +1,6 @@
 'use client'
 
+import { clsx } from 'clsx'
 import * as React from 'react'
 import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
 import { Flex } from '@/layouts/flex/Flex'
@@ -133,18 +134,11 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             disabled={effectiveDisabled}
             aria-invalid={error || undefined}
             readOnly={effectiveReadOnly}
-            className={cn(
-              textFieldInputBaseCls,
-              'peer',
-              floatingInputBaseCls,
-
-              // VE: color-dependent styles (text, border, bg, placeholder, focus)
+            className={clsx(
+              cn(textFieldInputBaseCls, 'peer', floatingInputBaseCls),
+              // VE classes must be joined outside tailwind-merge or one generated class can be dropped.
               floatingStyle && textFieldFloatingColorVariants[effectiveColor]?.[floatingStyle],
-
-              // VE: layout per floating style (padding, border-width, border-radius)
               floatingStyle && floatingInputStyleVariants[floatingStyle],
-
-              // VE: icon/element padding overrides
               (leftIcon || leftElement) && floatingInputWithLeftIconCls,
               (rightIcon || rightElement) && floatingInputWithRightIconCls,
             )}
