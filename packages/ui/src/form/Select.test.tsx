@@ -75,7 +75,8 @@ describe('Select floating variants', () => {
     const trigger = screen.getByTestId('select')
 
     expect(trigger).toHaveClass(textFieldFloatingColorVariants.success.outlined)
-    expect(trigger.parentElement).toHaveClass(textFieldFloatingWrapperColorVariants.success)
+    expect(trigger.parentElement).not.toBeNull()
+    expect(trigger.parentElement!).toHaveClass(textFieldFloatingWrapperColorVariants.success)
   })
 
   it('uses error color classes and invalid state when error is set', () => {
@@ -89,6 +90,7 @@ describe('Select floating variants', () => {
 
     expect(trigger).toHaveAttribute('aria-invalid', 'true')
     expect(trigger).toHaveClass(textFieldFloatingColorVariants.error.outlined)
-    expect(trigger.parentElement).toHaveClass(textFieldFloatingWrapperColorVariants.error)
+    expect(trigger.parentElement).not.toBeNull()
+    expect(trigger.parentElement!).toHaveClass(textFieldFloatingWrapperColorVariants.error)
   })
 })

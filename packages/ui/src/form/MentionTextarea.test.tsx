@@ -552,7 +552,8 @@ describe('MentionTextarea', () => {
 
     const overlay = screen.getByText('Attach images by dropping them here').parentElement
 
-    expect(overlay).toHaveClass(mentionDragOverlayColorVariants.success)
+    expect(overlay).not.toBeNull()
+    expect(overlay!).toHaveClass(mentionDragOverlayColorVariants.success)
     expect(overlay?.className).not.toContain('border-primary')
     expect(overlay?.className).not.toContain('bg-primary')
   })
