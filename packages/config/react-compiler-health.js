@@ -154,6 +154,13 @@ function findNearestOwner(lines, directiveIndex) {
     if (forwardRefMatch) {
       return forwardRefMatch[1]
     }
+
+    const arrowFunctionMatch = line.match(
+      /\b(?:export\s+)?const\s+([A-Za-z_$][\w$]*)(?:\s*:\s*[^=]+)?\s*=\s*(?:\([^)]*\)|[A-Za-z_$][\w$]*)\s*=>/,
+    )
+    if (arrowFunctionMatch) {
+      return arrowFunctionMatch[1]
+    }
   }
 
   return '<unknown>'
