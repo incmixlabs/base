@@ -1573,7 +1573,7 @@ function TourPrev(props: ButtonProps) {
     [value, store, onDefaultClick, onClickProp],
   )
 
-  if (!context.showPrev) return null
+  if (!context.showPrev || value === 0) return null
 
   const fallbackChildren = (
     <>
@@ -1592,12 +1592,13 @@ function TourPrev(props: ButtonProps) {
       type="button"
       aria-label={ariaLabel}
       data-slot="tour-prev"
+      size="xs"
       variant="outline"
       {...defaultPrevButtonProps}
       {...prevButtonProps}
       className={cn(defaultClassName, className)}
       onClick={onClick}
-      disabled={value === 0 || (disabled ?? defaultDisabled)}
+      disabled={disabled ?? defaultDisabled}
     >
       {buttonChildren}
     </Button>
@@ -1654,6 +1655,7 @@ function TourNext(props: ButtonProps) {
       type="button"
       aria-label={ariaLabel}
       data-slot="tour-next"
+      size="xs"
       {...defaultNextButtonProps}
       {...nextButtonProps}
       className={cn(defaultClassName, className)}
@@ -1704,6 +1706,7 @@ function TourSkip(props: ButtonProps) {
       type="button"
       aria-label={ariaLabel}
       data-slot="tour-skip"
+      size="xs"
       variant="outline"
       {...defaultSkipButtonProps}
       {...skipButtonProps}
