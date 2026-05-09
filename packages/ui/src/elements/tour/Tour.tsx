@@ -1,0 +1,1781 @@
+'use client'
+
+import {
+  autoUpdate,
+  flip,
+  hide,
+  limitShift,
+  type Middleware,
+  offset,
+  arrow as onArrow,
+  type Placement,
+  shift,
+  useFloating,
+} from '@floating-ui/react-dom'
+import { ChevronLeft, ChevronRight, X } from 'lucide-react'
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
+import { Button, type ButtonProps } from '@/elements/button/Button'
+import { useAsRef } from '@/hooks/use-as-ref'
+import { useIsomorphicLayoutEffect } from '@/hooks/use-isomorphic-layout-effect'
+import { useLazyRef } from '@/hooks/use-lazy-ref'
+import { Slot } from '@/layouts/layout-utils'
+import { useComposedRefs } from '@/lib/compose-refs'
+import { cn } from '@/lib/utils'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
+import { useThemePortalContainer } from '@/theme/theme-provider.context'
+import {
+  type TourAlign,
+  type TourDirection,
+  type TourSide,
+  type TourSticky,
+  tourPropDefs,
+  tourStepPropDefs,
+} from './tour.props'
+
+export {
+  type TourAlign,
+  type TourDirection,
+  type TourScrollBehavior,
+  type TourSide,
+  type TourSticky,
+  tourAlignments,
+  tourDirections,
+  tourPropDefs,
+  tourScrollBehaviors,
+  tourSides,
+  tourStepPropDefs,
+  tourStickyValues,
+} from './tour.props'
+
+const ROOT_NAME = 'Tour'
+const PORTAL_NAME = 'TourPortal'
+const STEP_NAME = 'TourStep'
+const ARROW_NAME = 'TourArrow'
+const HEADER_NAME = 'TourHeader'
+const TITLE_NAME = 'TourTitle'
+const DESCRIPTION_NAME = 'TourDescription'
+const CLOSE_NAME = 'TourClose'
+const PREV_NAME = 'TourPrev'
+const NEXT_NAME = 'TourNext'
+const SKIP_NAME = 'TourSkip'
+const FOOTER_NAME = 'TourFooter'
+
+const POINTER_DOWN_OUTSIDE = 'tour.pointerDownOutside'
+const INTERACT_OUTSIDE = 'tour.interactOutside'
+const OPEN_AUTO_FOCUS = 'tour.openAutoFocus'
+const CLOSE_AUTO_FOCUS = 'tour.closeAutoFocus'
+const EVENT_OPTIONS = { bubbles: false, cancelable: true }
+const EMPTY_BOUNDARY: Boundary[] = []
+
+type Direction = TourDirection
+type Side = TourSide
+type Align = TourAlign
+type Target = string | React.RefObject<HTMLElement | null> | HTMLElement
+type Boundary = Element | null
+type StepElement = HTMLDivElement
+type FooterElement = HTMLDivElement
+
+export interface ScrollOffset {
+  top?: number
+  bottom?: number
+  left?: number
+  right?: number
+}
+
+interface DivProps extends React.ComponentProps<'div'> {
+  asChild?: boolean
+}
+
+const OPPOSITE_SIDE: Record<Side, Side> = {
+  top: 'bottom',
+  right: 'left',
+  bottom: 'top',
+  left: 'right',
+}
+
+let focusGuardCount = 0
+
+function createFocusGuard() {
+  const element = document.createElement('span')
+  element.setAttribute('data-tour-focus-guard', '')
+  element.tabIndex = 0
+  element.style.outline = 'none'
+  element.style.opacity = '0'
+  element.style.position = 'fixed'
+  element.style.pointerEvents = 'none'
+  return element
+}
+
+function useFocusGuards(enabled: boolean) {
+  React.useEffect(() => {
+    if (!enabled) return
+
+    const edgeGuards = document.querySelectorAll('[data-tour-focus-guard]')
+    document.body.insertAdjacentElement('afterbegin', edgeGuards[0] ?? createFocusGuard())
+    document.body.insertAdjacentElement('beforeend', edgeGuards[1] ?? createFocusGuard())
+    focusGuardCount++
+
+    return () => {
+      if (focusGuardCount === 1) {
+        const guards = document.querySelectorAll('[data-tour-focus-guard]')
+        for (const node of guards) node.remove()
+      }
+      focusGuardCount--
+    }
+  }, [enabled])
+}
+
+function useFocusTrap(
+  containerRef: React.RefObject<HTMLElement | null>,
+  enabled: boolean,
+  tourOpen: boolean,
+  onOpenAutoFocus?: (event: OpenAutoFocusEvent) => void,
+  onCloseAutoFocus?: (event: CloseAutoFocusEvent) => void,
+) {
+  const lastFocusedElementRef = React.useRef<HTMLElement | null>(null)
+  const onOpenAutoFocusRef = useAsRef(onOpenAutoFocus)
+  const onCloseAutoFocusRef = useAsRef(onCloseAutoFocus)
+  const tourOpenRef = useAsRef(tourOpen)
+
+  React.useEffect(() => {
+    if (!enabled) return
+
+    const container = containerRef.current
+    if (!container) return
+
+    const previouslyFocusedElement = document.activeElement as HTMLElement | null
+
+    function getTabbableCandidates() {
+      if (!container) return []
+
+      const nodes: HTMLElement[] = []
+      const walker = document.createTreeWalker(container, NodeFilter.SHOW_ELEMENT, {
+        acceptNode: (node: Element) => {
+          const element = node as HTMLElement
+          const isHiddenInput = element.tagName === 'INPUT' && (element as HTMLInputElement).type === 'hidden'
+          if (element.hidden || isHiddenInput) return NodeFilter.FILTER_SKIP
+          return element.tabIndex >= 0 ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP
+        },
+      })
+
+      while (walker.nextNode()) {
+        nodes.push(walker.currentNode as HTMLElement)
+      }
+
+      return nodes
+    }
+
+    function getTabbableEdges() {
+      const candidates = getTabbableCandidates()
+      const first = candidates[0]
+      const last = candidates[candidates.length - 1]
+      return [first, last] as const
+    }
+
+    function onFocusIn(event: FocusEvent) {
+      if (!container) return
+
+      const target = event.target as HTMLElement | null
+      if (container.contains(target)) {
+        lastFocusedElementRef.current = target
+      } else {
+        const elementToFocus = lastFocusedElementRef.current ?? getTabbableCandidates()[0]
+        elementToFocus?.focus({ preventScroll: true })
+      }
+    }
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key !== 'Tab' || event.altKey || event.ctrlKey || event.metaKey) return
+
+      const [first, last] = getTabbableEdges()
+      const hasTabbableElements = first && last
+
+      if (!hasTabbableElements) {
+        if (document.activeElement === container) event.preventDefault()
+        return
+      }
+
+      if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first?.focus({ preventScroll: true })
+      } else if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last?.focus({ preventScroll: true })
+      }
+    }
+
+    const openAutoFocusEvent = new CustomEvent(OPEN_AUTO_FOCUS, EVENT_OPTIONS)
+    if (onOpenAutoFocusRef.current) {
+      container.addEventListener(OPEN_AUTO_FOCUS, onOpenAutoFocusRef.current as EventListener, { once: true })
+    }
+    container.dispatchEvent(openAutoFocusEvent)
+
+    if (!openAutoFocusEvent.defaultPrevented) {
+      const tabbableCandidates = getTabbableCandidates()
+      if (tabbableCandidates.length > 0) {
+        tabbableCandidates[0]?.focus({ preventScroll: true })
+      } else {
+        container.focus({ preventScroll: true })
+      }
+    }
+
+    document.addEventListener('focusin', onFocusIn)
+    container.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      document.removeEventListener('focusin', onFocusIn)
+      container.removeEventListener('keydown', onKeyDown)
+
+      if (!tourOpenRef.current) {
+        window.setTimeout(() => {
+          if (!container.isConnected) return
+
+          const closeAutoFocusEvent = new CustomEvent(CLOSE_AUTO_FOCUS, EVENT_OPTIONS)
+          if (onCloseAutoFocusRef.current) {
+            container.addEventListener(CLOSE_AUTO_FOCUS, onCloseAutoFocusRef.current as EventListener, { once: true })
+          }
+          container.dispatchEvent(closeAutoFocusEvent)
+
+          if (
+            !closeAutoFocusEvent.defaultPrevented &&
+            previouslyFocusedElement &&
+            document.body.contains(previouslyFocusedElement)
+          ) {
+            previouslyFocusedElement.focus({ preventScroll: true })
+          }
+
+          if (onCloseAutoFocusRef.current) {
+            container.removeEventListener(CLOSE_AUTO_FOCUS, onCloseAutoFocusRef.current as EventListener)
+          }
+        }, 0)
+      }
+    }
+  }, [containerRef, enabled, onOpenAutoFocusRef, onCloseAutoFocusRef, tourOpenRef])
+}
+
+function getDataState(open: boolean) {
+  return open ? 'open' : 'closed'
+}
+
+function getStringLabel(label: React.ReactNode, fallback: string) {
+  return typeof label === 'string' || typeof label === 'number' ? String(label) : fallback
+}
+
+function getControlAriaLabel(label: React.ReactNode, defaultLabel: React.ReactNode, fallback: string) {
+  return label === defaultLabel ? fallback : getStringLabel(label, fallback)
+}
+
+interface StepData {
+  target: Target
+  align: Align
+  alignOffset: number
+  side: Side
+  sideOffset: number
+  collisionBoundary: Boundary | Boundary[]
+  collisionPadding: number | Partial<Record<Side, number>>
+  arrowPadding: number
+  sticky: TourSticky
+  hideWhenDetached: boolean
+  avoidCollisions: boolean
+  onStepEnter?: () => void
+  onStepLeave?: () => void
+  required: boolean
+}
+
+interface StoreState {
+  open: boolean
+  value: number
+  steps: StepData[]
+  maskPath: string
+  spotlightRect: { x: number; y: number; width: number; height: number } | null
+}
+
+interface Store {
+  subscribe: (callback: () => void) => () => void
+  getState: () => StoreState
+  setState: <K extends keyof StoreState>(key: K, value: StoreState[K]) => void
+  notify: () => void
+  addStep: (stepData: StepData) => { id: string; index: number }
+  updateStep: (id: string, stepData: StepData) => void
+  removeStep: (id: string) => void
+}
+
+function useStore<T>(selector: (state: StoreState) => T, ogStore?: Store | null): T {
+  const contextStore = React.useContext(StoreContext)
+  const store = ogStore ?? contextStore
+
+  if (!store) {
+    throw new Error(`\`useStore\` must be used within \`${ROOT_NAME}\``)
+  }
+
+  const getSnapshot = React.useCallback(() => selector(store.getState()), [store, selector])
+  return React.useSyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
+}
+
+function getTargetElement(target: Target): HTMLElement | null {
+  if (typeof target === 'string') {
+    if (typeof document === 'undefined') return null
+
+    try {
+      return document.querySelector(target)
+    } catch {
+      return null
+    }
+  }
+
+  if (target && 'current' in target) {
+    return target.current
+  }
+
+  if (typeof HTMLElement !== 'undefined' && target instanceof HTMLElement) {
+    return target
+  }
+
+  return null
+}
+
+function getDefaultScrollBehavior(): ScrollBehavior {
+  if (typeof window === 'undefined') return tourPropDefs.scrollBehavior.default
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : tourPropDefs.scrollBehavior.default
+}
+
+function onScrollToElement(
+  element: HTMLElement,
+  scrollBehavior: ScrollBehavior = getDefaultScrollBehavior(),
+  scrollOffset?: ScrollOffset,
+) {
+  const offsetValue: Required<ScrollOffset> = {
+    top: 100,
+    bottom: 100,
+    left: 0,
+    right: 0,
+    ...scrollOffset,
+  }
+  const rect = element.getBoundingClientRect()
+  const viewportHeight = window.innerHeight
+  const viewportWidth = window.innerWidth
+
+  const isInViewport =
+    rect.top >= offsetValue.top &&
+    rect.bottom <= viewportHeight - offsetValue.bottom &&
+    rect.left >= offsetValue.left &&
+    rect.right <= viewportWidth - offsetValue.right
+
+  if (!isInViewport) {
+    const elementTop = rect.top + window.scrollY
+    const scrollTop = elementTop - offsetValue.top
+
+    window.scrollTo({
+      top: Math.max(0, scrollTop),
+      behavior: scrollBehavior,
+    })
+  }
+}
+
+function getSideAndAlignFromPlacement(placement: Placement): [Side, Align] {
+  const [side, align = 'center'] = placement.split('-') as [Side, Align?]
+  return [side, align]
+}
+
+function getPlacement(side: Side, align: Align): Placement {
+  return align === 'center' ? (side as Placement) : (`${side}-${align}` as Placement)
+}
+
+function updateMask(store: Store, targetElement: HTMLElement, padding = tourPropDefs.spotlightPadding.default) {
+  const clientRect = targetElement.getBoundingClientRect()
+  const viewportWidth = window.innerWidth
+  const viewportHeight = window.innerHeight
+
+  const x = Math.max(0, clientRect.left - padding)
+  const y = Math.max(0, clientRect.top - padding)
+  const width = Math.min(viewportWidth - x, clientRect.width + padding * 2)
+  const height = Math.min(viewportHeight - y, clientRect.height + padding * 2)
+
+  const path = `polygon(0% 0%, 0% 100%, ${x}px 100%, ${x}px ${y}px, ${x + width}px ${y}px, ${x + width}px ${y + height}px, ${x}px ${y + height}px, ${x}px 100%, 100% 100%, 100% 0%)`
+  store.setState('maskPath', path)
+  store.setState('spotlightRect', { x, y, width, height })
+}
+
+function useResolvedDirection(dirProp?: Direction): Direction {
+  const [documentDir, setDocumentDir] = React.useState<Direction>('ltr')
+
+  useIsomorphicLayoutEffect(() => {
+    if (dirProp) return
+
+    const dir = document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr'
+    setDocumentDir(dir)
+  }, [dirProp])
+
+  return dirProp ?? documentDir
+}
+
+const StoreContext = React.createContext<Store | null>(null)
+
+function useStoreContext(consumerName: string) {
+  const context = React.useContext(StoreContext)
+  if (!context) {
+    throw new Error(`\`${consumerName}\` must be used within \`${ROOT_NAME}\``)
+  }
+  return context
+}
+
+interface TourContextValue {
+  dir: Direction
+  alignOffset: number
+  sideOffset: number
+  spotlightPadding: number
+  dismissible: boolean
+  modal: boolean
+  stepFooter?: React.ReactElement | null
+  nextLabel: React.ReactNode
+  finishLabel: React.ReactNode
+  prevLabel: React.ReactNode
+  skipLabel: React.ReactNode
+  closeLabel: string
+  showNext: boolean
+  showPrev: boolean
+  showSkip: boolean
+  showClose: boolean
+  nextButtonProps?: ButtonProps
+  prevButtonProps?: ButtonProps
+  skipButtonProps?: ButtonProps
+  closeButtonProps?: TourCloseProps
+  onPointerDownOutside?: (event: PointerDownOutsideEvent) => void
+  onInteractOutside?: (event: InteractOutsideEvent) => void
+  onOpenAutoFocus?: (event: OpenAutoFocusEvent) => void
+  onCloseAutoFocus?: (event: CloseAutoFocusEvent) => void
+}
+
+const TourContext = React.createContext<TourContextValue | null>(null)
+
+function useTourContext(consumerName: string) {
+  const context = React.useContext(TourContext)
+  if (!context) {
+    throw new Error(`\`${consumerName}\` must be used within \`${ROOT_NAME}\``)
+  }
+  return context
+}
+
+interface StepContextValue {
+  arrowX?: number
+  arrowY?: number
+  placedAlign: Align
+  placedSide: Side
+  shouldHideArrow: boolean
+  onArrowChange: (arrow: HTMLSpanElement | null) => void
+  onFooterChange: (footer: FooterElement | null) => void
+}
+
+const StepContext = React.createContext<StepContextValue | null>(null)
+
+function useStepContext(consumerName: string) {
+  const context = React.useContext(StepContext)
+  if (!context) {
+    throw new Error(`\`${consumerName}\` must be used within \`${STEP_NAME}\``)
+  }
+  return context
+}
+
+const DefaultFooterContext = React.createContext(false)
+
+interface PortalContextValue {
+  portal: HTMLElement | null
+  onPortalChange: (node: HTMLElement | null) => void
+}
+
+const PortalContext = React.createContext<PortalContextValue | null>(null)
+
+function usePortalContext(consumerName: string) {
+  const context = React.useContext(PortalContext)
+  if (!context) {
+    throw new Error(`\`${consumerName}\` must be used within \`${ROOT_NAME}\``)
+  }
+  return context
+}
+
+function useScrollLock(enabled: boolean) {
+  React.useEffect(() => {
+    if (!enabled) return
+
+    const originalOverflow = window.getComputedStyle(document.body).overflow
+    const originalPaddingRight = document.body.style.paddingRight
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+
+    document.body.style.overflow = 'hidden'
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`
+    }
+
+    return () => {
+      document.body.style.overflow = originalOverflow
+      document.body.style.paddingRight = originalPaddingRight
+    }
+  }, [enabled])
+}
+
+export type PointerDownOutsideEvent = CustomEvent<{ originalEvent: PointerEvent }>
+export type InteractOutsideEvent = CustomEvent<{ originalEvent: PointerEvent | FocusEvent }>
+export type OpenAutoFocusEvent = CustomEvent<Record<string, never>>
+export type CloseAutoFocusEvent = CustomEvent<Record<string, never>>
+
+export interface TourProps extends DivProps {
+  open?: boolean
+  defaultOpen?: boolean
+  onOpenChange?: (open: boolean) => void
+  value?: number
+  defaultValue?: number
+  onValueChange?: (step: number) => void
+  onComplete?: () => void
+  onSkip?: () => void
+  onEscapeKeyDown?: (event: KeyboardEvent) => void
+  onPointerDownOutside?: (event: PointerDownOutsideEvent) => void
+  onInteractOutside?: (event: InteractOutsideEvent) => void
+  onOpenAutoFocus?: (event: OpenAutoFocusEvent) => void
+  onCloseAutoFocus?: (event: CloseAutoFocusEvent) => void
+  dir?: Direction
+  alignOffset?: number
+  sideOffset?: number
+  spotlightPadding?: number
+  autoScroll?: boolean
+  scrollBehavior?: ScrollBehavior
+  scrollOffset?: ScrollOffset
+  dismissible?: boolean
+  modal?: boolean
+  stepFooter?: React.ReactElement | null
+  nextLabel?: React.ReactNode
+  finishLabel?: React.ReactNode
+  prevLabel?: React.ReactNode
+  skipLabel?: React.ReactNode
+  closeLabel?: string
+  showNext?: boolean
+  showPrev?: boolean
+  showSkip?: boolean
+  showClose?: boolean
+  nextButtonProps?: ButtonProps
+  prevButtonProps?: ButtonProps
+  skipButtonProps?: ButtonProps
+  closeButtonProps?: TourCloseProps
+}
+
+function Tour(props: TourProps) {
+  const {
+    open: openProp,
+    defaultOpen = tourPropDefs.defaultOpen.default,
+    onOpenChange,
+    value: valueProp,
+    defaultValue = tourPropDefs.defaultValue.default,
+    onValueChange,
+    onComplete,
+    onSkip,
+    autoScroll = tourPropDefs.autoScroll.default,
+    scrollBehavior = getDefaultScrollBehavior(),
+    scrollOffset,
+    onEscapeKeyDown,
+    onPointerDownOutside,
+    onInteractOutside,
+    onOpenAutoFocus,
+    onCloseAutoFocus,
+    dir: dirProp,
+    alignOffset = tourPropDefs.alignOffset.default,
+    sideOffset = tourPropDefs.sideOffset.default,
+    spotlightPadding = tourPropDefs.spotlightPadding.default,
+    dismissible = tourPropDefs.dismissible.default,
+    modal = tourPropDefs.modal.default,
+    stepFooter,
+    nextLabel = tourPropDefs.nextLabel.default,
+    finishLabel = tourPropDefs.finishLabel.default,
+    prevLabel = tourPropDefs.prevLabel.default,
+    skipLabel = tourPropDefs.skipLabel.default,
+    closeLabel = tourPropDefs.closeLabel.default,
+    showNext = tourPropDefs.showNext.default,
+    showPrev = tourPropDefs.showPrev.default,
+    showSkip = tourPropDefs.showSkip.default,
+    showClose = tourPropDefs.showClose.default,
+    nextButtonProps,
+    prevButtonProps,
+    skipButtonProps,
+    closeButtonProps,
+    asChild = tourPropDefs.asChild.default,
+    ...rootProps
+  } = props
+
+  const safeDir = normalizeEnumPropValue(tourPropDefs.dir, dirProp)
+  const dir = useResolvedDirection(safeDir)
+  const safeAutoScroll =
+    normalizeBooleanPropValue(tourPropDefs.autoScroll, autoScroll) ?? tourPropDefs.autoScroll.default
+  const safeDismissible =
+    normalizeBooleanPropValue(tourPropDefs.dismissible, dismissible) ?? tourPropDefs.dismissible.default
+  const safeModal = normalizeBooleanPropValue(tourPropDefs.modal, modal) ?? tourPropDefs.modal.default
+  const safeShowNext = normalizeBooleanPropValue(tourPropDefs.showNext, showNext) ?? tourPropDefs.showNext.default
+  const safeShowPrev = normalizeBooleanPropValue(tourPropDefs.showPrev, showPrev) ?? tourPropDefs.showPrev.default
+  const safeShowSkip = normalizeBooleanPropValue(tourPropDefs.showSkip, showSkip) ?? tourPropDefs.showSkip.default
+  const safeShowClose = normalizeBooleanPropValue(tourPropDefs.showClose, showClose) ?? tourPropDefs.showClose.default
+
+  const [portal, setPortal] = React.useState<HTMLElement | null>(null)
+  const prevOpenRef = React.useRef<boolean | undefined>(undefined)
+  const previouslyFocusedElementRef = React.useRef<HTMLElement | null>(null)
+
+  const stateRef = useLazyRef<StoreState>(() => ({
+    open: openProp ?? defaultOpen,
+    value: valueProp ?? defaultValue,
+    steps: [],
+    maskPath: '',
+    spotlightRect: null,
+  }))
+  const listenersRef = useLazyRef<Set<() => void>>(() => new Set())
+  const stepIdsMapRef = useLazyRef<Map<string, number>>(() => new Map())
+  const stepIdCounterRef = useLazyRef(() => ({ current: 0 }))
+  const propsRef = useAsRef({
+    valueProp,
+    onOpenChange,
+    onValueChange,
+    onComplete,
+    onSkip,
+    onEscapeKeyDown,
+    onCloseAutoFocus,
+    autoScroll: safeAutoScroll,
+    scrollBehavior,
+    scrollOffset,
+  })
+
+  const store: Store = React.useMemo(
+    () => ({
+      subscribe: callback => {
+        listenersRef.current.add(callback)
+        return () => listenersRef.current.delete(callback)
+      },
+      getState: () => stateRef.current,
+      setState: (key, nextValue) => {
+        if (Object.is(stateRef.current[key], nextValue)) return
+
+        const previousValue = stateRef.current.value
+        stateRef.current[key] = nextValue
+
+        if (key === 'open' && typeof nextValue === 'boolean') {
+          propsRef.current.onOpenChange?.(nextValue)
+
+          if (nextValue) {
+            if (stateRef.current.steps.length > 0 && stateRef.current.value >= stateRef.current.steps.length) {
+              store.setState('value', 0)
+            }
+          } else if (stateRef.current.value < (stateRef.current.steps.length || 0) - 1) {
+            propsRef.current.onSkip?.()
+          }
+        } else if (key === 'value' && typeof nextValue === 'number') {
+          const prevStep = stateRef.current.steps[previousValue]
+          const nextStep = stateRef.current.steps[nextValue]
+
+          prevStep?.onStepLeave?.()
+          nextStep?.onStepEnter?.()
+
+          if (nextValue >= stateRef.current.steps.length) {
+            propsRef.current.onComplete?.()
+
+            if (propsRef.current.valueProp !== undefined) {
+              propsRef.current.onValueChange?.(nextValue)
+            }
+
+            store.setState('open', false)
+            return
+          }
+
+          if (propsRef.current.valueProp !== undefined) {
+            propsRef.current.onValueChange?.(nextValue)
+            return
+          }
+
+          propsRef.current.onValueChange?.(nextValue)
+
+          if (nextStep && propsRef.current.autoScroll) {
+            const targetElement = getTargetElement(nextStep.target)
+            if (targetElement) {
+              onScrollToElement(targetElement, propsRef.current.scrollBehavior, propsRef.current.scrollOffset)
+            }
+          }
+        }
+
+        store.notify()
+      },
+      notify: () => {
+        for (const listener of listenersRef.current) {
+          listener()
+        }
+      },
+      addStep: stepData => {
+        const id = `step-${stepIdCounterRef.current.current++}`
+        const index = stateRef.current.steps.length
+        stepIdsMapRef.current.set(id, index)
+        stateRef.current.steps = [...stateRef.current.steps, stepData]
+        store.notify()
+        return { id, index }
+      },
+      updateStep: (id, stepData) => {
+        const index = stepIdsMapRef.current.get(id)
+        if (index === undefined || Object.is(stateRef.current.steps[index], stepData)) return
+
+        stateRef.current.steps = stateRef.current.steps.map((currentStep, stepIndex) =>
+          stepIndex === index ? stepData : currentStep,
+        )
+        store.notify()
+      },
+      removeStep: id => {
+        const index = stepIdsMapRef.current.get(id)
+        if (index === undefined) return
+
+        stateRef.current.steps = stateRef.current.steps.filter((_, stepIndex) => stepIndex !== index)
+        stepIdsMapRef.current.delete(id)
+
+        for (const [stepId, stepIndex] of stepIdsMapRef.current.entries()) {
+          if (stepIndex > index) {
+            stepIdsMapRef.current.set(stepId, stepIndex - 1)
+          }
+        }
+
+        if (stateRef.current.value >= stateRef.current.steps.length) {
+          stateRef.current.value = Math.max(0, stateRef.current.steps.length - 1)
+        }
+
+        store.notify()
+      },
+    }),
+    [stateRef, listenersRef, stepIdsMapRef, stepIdCounterRef, propsRef],
+  )
+
+  const open = useStore(state => state.open, store)
+
+  React.useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (open && event.key === 'Escape') {
+        propsRef.current.onEscapeKeyDown?.(event)
+        if (event.defaultPrevented) return
+        store.setState('open', false)
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
+  }, [store, open, propsRef])
+
+  useIsomorphicLayoutEffect(() => {
+    const wasOpen = prevOpenRef.current
+
+    if (open && !wasOpen) {
+      previouslyFocusedElementRef.current = document.activeElement as HTMLElement | null
+    } else if (!open && wasOpen) {
+      window.setTimeout(() => {
+        const container = portal ?? document.body
+        const closeAutoFocusEvent = new CustomEvent(CLOSE_AUTO_FOCUS, EVENT_OPTIONS)
+
+        if (propsRef.current.onCloseAutoFocus) {
+          container.addEventListener(CLOSE_AUTO_FOCUS, propsRef.current.onCloseAutoFocus as EventListener, {
+            once: true,
+          })
+        }
+        container.dispatchEvent(closeAutoFocusEvent)
+
+        const elementToFocus = previouslyFocusedElementRef.current
+        if (!closeAutoFocusEvent.defaultPrevented && elementToFocus && document.body.contains(elementToFocus)) {
+          elementToFocus.focus({ preventScroll: true })
+        }
+
+        previouslyFocusedElementRef.current = null
+      }, 0)
+    }
+
+    prevOpenRef.current = open
+  }, [open, portal, propsRef])
+
+  useIsomorphicLayoutEffect(() => {
+    if (openProp !== undefined) {
+      store.setState('open', openProp)
+    }
+  }, [openProp, store])
+
+  useIsomorphicLayoutEffect(() => {
+    if (valueProp !== undefined) {
+      store.setState('value', valueProp)
+    }
+  }, [valueProp, store])
+
+  const contextValue = React.useMemo<TourContextValue>(
+    () => ({
+      dir,
+      alignOffset,
+      sideOffset,
+      spotlightPadding,
+      dismissible: safeDismissible,
+      modal: safeModal,
+      stepFooter:
+        stepFooter === undefined ? (
+          <TourFooter>
+            <TourStepCounter />
+            <TourSkip />
+            <TourPrev />
+            <TourNext />
+          </TourFooter>
+        ) : (
+          stepFooter
+        ),
+      nextLabel,
+      finishLabel,
+      prevLabel,
+      skipLabel,
+      closeLabel,
+      showNext: safeShowNext,
+      showPrev: safeShowPrev,
+      showSkip: safeShowSkip,
+      showClose: safeShowClose,
+      nextButtonProps,
+      prevButtonProps,
+      skipButtonProps,
+      closeButtonProps,
+      onPointerDownOutside,
+      onInteractOutside,
+      onOpenAutoFocus,
+      onCloseAutoFocus,
+    }),
+    [
+      dir,
+      alignOffset,
+      sideOffset,
+      spotlightPadding,
+      safeDismissible,
+      safeModal,
+      stepFooter,
+      nextLabel,
+      finishLabel,
+      prevLabel,
+      skipLabel,
+      closeLabel,
+      safeShowNext,
+      safeShowPrev,
+      safeShowSkip,
+      safeShowClose,
+      nextButtonProps,
+      prevButtonProps,
+      skipButtonProps,
+      closeButtonProps,
+      onPointerDownOutside,
+      onInteractOutside,
+      onOpenAutoFocus,
+      onCloseAutoFocus,
+    ],
+  )
+
+  const portalContextValue = React.useMemo<PortalContextValue>(
+    () => ({
+      portal,
+      onPortalChange: setPortal,
+    }),
+    [portal],
+  )
+
+  useScrollLock(open && safeModal)
+
+  const RootPrimitive = asChild ? Slot : 'div'
+
+  return (
+    <StoreContext.Provider value={store}>
+      <TourContext.Provider value={contextValue}>
+        <PortalContext.Provider value={portalContextValue}>
+          <RootPrimitive data-slot="tour" dir={dir} {...rootProps} />
+        </PortalContext.Provider>
+      </TourContext.Provider>
+    </StoreContext.Provider>
+  )
+}
+
+export interface TourStepProps extends DivProps {
+  target: Target
+  side?: Side
+  sideOffset?: number
+  align?: Align
+  alignOffset?: number
+  collisionBoundary?: Boundary | Boundary[]
+  collisionPadding?: number | Partial<Record<Side, number>>
+  arrowPadding?: number
+  sticky?: TourSticky
+  hideWhenDetached?: boolean
+  avoidCollisions?: boolean
+  required?: boolean
+  forceMount?: boolean
+  onStepEnter?: () => void
+  onStepLeave?: () => void
+}
+
+function TourStep(props: TourStepProps) {
+  const {
+    target,
+    side = tourStepPropDefs.side.default,
+    sideOffset,
+    align = tourStepPropDefs.align.default,
+    alignOffset,
+    collisionBoundary = EMPTY_BOUNDARY,
+    collisionPadding = tourStepPropDefs.collisionPadding.default,
+    arrowPadding = tourStepPropDefs.arrowPadding.default,
+    sticky = tourStepPropDefs.sticky.default,
+    hideWhenDetached = tourStepPropDefs.hideWhenDetached.default,
+    avoidCollisions = tourStepPropDefs.avoidCollisions.default,
+    required = tourStepPropDefs.required.default,
+    forceMount = tourStepPropDefs.forceMount.default,
+    onStepEnter,
+    onStepLeave,
+    onPointerDownCapture: onPointerDownCaptureProp,
+    onFocusCapture: onFocusCaptureProp,
+    onBlurCapture: onBlurCaptureProp,
+    children,
+    className,
+    style,
+    asChild = tourStepPropDefs.asChild.default,
+    ...stepProps
+  } = props
+
+  const store = useStoreContext(STEP_NAME)
+
+  const [arrow, setArrow] = React.useState<HTMLSpanElement | null>(null)
+  const [footer, setFooter] = React.useState<FooterElement | null>(null)
+
+  const stepRef = React.useRef<StepElement | null>(null)
+  const stepIdRef = React.useRef('')
+  const stepOrderRef = React.useRef(-1)
+  const onStepEnterRef = React.useRef(onStepEnter)
+  const onStepLeaveRef = React.useRef(onStepLeave)
+  const isPointerInsideReactTreeRef = React.useRef(false)
+  const isFocusInsideReactTreeRef = React.useRef(false)
+
+  const open = useStore(state => state.open)
+  const value = useStore(state => state.value)
+  const steps = useStore(state => state.steps)
+  const context = useTourContext(STEP_NAME)
+
+  const safeSide = (normalizeEnumPropValue(tourStepPropDefs.side, side) ?? tourStepPropDefs.side.default) as Side
+  const safeAlign = (normalizeEnumPropValue(tourStepPropDefs.align, align) ?? tourStepPropDefs.align.default) as Align
+  const safeSticky = (normalizeEnumPropValue(tourStepPropDefs.sticky, sticky) ??
+    tourStepPropDefs.sticky.default) as TourSticky
+  const safeHideWhenDetached =
+    normalizeBooleanPropValue(tourStepPropDefs.hideWhenDetached, hideWhenDetached) ??
+    tourStepPropDefs.hideWhenDetached.default
+  const safeAvoidCollisions =
+    normalizeBooleanPropValue(tourStepPropDefs.avoidCollisions, avoidCollisions) ??
+    tourStepPropDefs.avoidCollisions.default
+  const safeRequired =
+    normalizeBooleanPropValue(tourStepPropDefs.required, required) ?? tourStepPropDefs.required.default
+  const safeForceMount =
+    normalizeBooleanPropValue(tourStepPropDefs.forceMount, forceMount) ?? tourStepPropDefs.forceMount.default
+  const resolvedSideOffset = sideOffset ?? context.sideOffset
+  const resolvedAlignOffset = alignOffset ?? context.alignOffset
+  const handleStepEnter = React.useCallback(() => onStepEnterRef.current?.(), [])
+  const handleStepLeave = React.useCallback(() => onStepLeaveRef.current?.(), [])
+
+  const registeredStepData = React.useMemo<StepData>(
+    () => ({
+      target,
+      align: safeAlign,
+      alignOffset: resolvedAlignOffset,
+      side: safeSide,
+      sideOffset: resolvedSideOffset,
+      collisionBoundary,
+      collisionPadding,
+      arrowPadding,
+      sticky: safeSticky,
+      hideWhenDetached: safeHideWhenDetached,
+      avoidCollisions: safeAvoidCollisions,
+      onStepEnter: handleStepEnter,
+      onStepLeave: handleStepLeave,
+      required: safeRequired,
+    }),
+    [
+      target,
+      safeSide,
+      resolvedSideOffset,
+      safeAlign,
+      resolvedAlignOffset,
+      collisionBoundary,
+      collisionPadding,
+      arrowPadding,
+      safeSticky,
+      safeHideWhenDetached,
+      safeAvoidCollisions,
+      safeRequired,
+      handleStepEnter,
+      handleStepLeave,
+    ],
+  )
+  const initialStepDataRef = React.useRef<StepData | null>(null)
+  if (!initialStepDataRef.current) {
+    initialStepDataRef.current = registeredStepData
+  }
+
+  useIsomorphicLayoutEffect(() => {
+    onStepEnterRef.current = onStepEnter
+    onStepLeaveRef.current = onStepLeave
+  }, [onStepEnter, onStepLeave])
+
+  useIsomorphicLayoutEffect(() => {
+    const { id, index } = store.addStep(initialStepDataRef.current ?? registeredStepData)
+    stepIdRef.current = id
+    stepOrderRef.current = index
+
+    return () => {
+      store.removeStep(stepIdRef.current)
+    }
+  }, [store])
+
+  useIsomorphicLayoutEffect(() => {
+    if (!stepIdRef.current) return
+    store.updateStep(stepIdRef.current, registeredStepData)
+  }, [registeredStepData, store])
+
+  const stepData = steps[value]
+  const targetElement = stepData ? getTargetElement(stepData.target) : null
+  const isCurrentStep = stepOrderRef.current === value
+
+  const middleware = React.useMemo(() => {
+    if (!stepData) return []
+
+    const mainAxisOffset = stepData.sideOffset ?? resolvedSideOffset
+    const crossAxisOffset = stepData.alignOffset ?? resolvedAlignOffset
+    const padding =
+      typeof stepData.collisionPadding === 'number'
+        ? stepData.collisionPadding
+        : {
+            top: stepData.collisionPadding?.top ?? 0,
+            right: stepData.collisionPadding?.right ?? 0,
+            bottom: stepData.collisionPadding?.bottom ?? 0,
+            left: stepData.collisionPadding?.left ?? 0,
+          }
+    const boundary = Array.isArray(stepData.collisionBoundary)
+      ? stepData.collisionBoundary
+      : stepData.collisionBoundary
+        ? [stepData.collisionBoundary]
+        : []
+    const hasExplicitBoundaries = boundary.length > 0
+    const detectOverflowOptions = {
+      padding,
+      boundary: boundary.filter((item): item is Element => item !== null),
+      altBoundary: hasExplicitBoundaries,
+    }
+
+    return [
+      offset({
+        mainAxis: mainAxisOffset,
+        alignmentAxis: crossAxisOffset,
+      }),
+      stepData.avoidCollisions &&
+        shift({
+          mainAxis: true,
+          crossAxis: false,
+          limiter: stepData.sticky === 'partial' ? limitShift() : undefined,
+          ...detectOverflowOptions,
+        }),
+      stepData.avoidCollisions && flip({ ...detectOverflowOptions }),
+      arrow && onArrow({ element: arrow, padding: stepData.arrowPadding }),
+      stepData.hideWhenDetached && hide({ strategy: 'referenceHidden', ...detectOverflowOptions }),
+    ].filter(Boolean) as Middleware[]
+  }, [stepData, resolvedSideOffset, resolvedAlignOffset, arrow])
+
+  const placement = getPlacement(stepData?.side ?? safeSide, stepData?.align ?? safeAlign)
+
+  const {
+    refs,
+    floatingStyles,
+    placement: finalPlacement,
+    middlewareData,
+  } = useFloating({
+    placement,
+    middleware,
+    strategy: 'fixed',
+    whileElementsMounted: autoUpdate,
+    elements: {
+      reference: targetElement,
+    },
+  })
+
+  const composedRef = useComposedRefs<StepElement>(refs.setFloating, stepRef)
+  const [placedSide, placedAlign] = getSideAndAlignFromPlacement(finalPlacement)
+  const arrowX = middlewareData.arrow?.x
+  const arrowY = middlewareData.arrow?.y
+  const cannotCenterArrow = middlewareData.arrow?.centerOffset !== 0
+  const isHidden = safeHideWhenDetached && middlewareData.hide?.referenceHidden
+
+  const stepContextValue = React.useMemo<StepContextValue>(
+    () => ({
+      arrowX,
+      arrowY,
+      placedAlign,
+      placedSide,
+      shouldHideArrow: cannotCenterArrow,
+      onArrowChange: setArrow,
+      onFooterChange: setFooter,
+    }),
+    [arrowX, arrowY, placedSide, placedAlign, cannotCenterArrow],
+  )
+
+  React.useEffect(() => {
+    if (open && targetElement && isCurrentStep) {
+      updateMask(store, targetElement, context.spotlightPadding)
+
+      let rafId: number | null = null
+
+      function onResize() {
+        if (targetElement) {
+          updateMask(store, targetElement, context.spotlightPadding)
+        }
+      }
+
+      function onScroll() {
+        if (rafId !== null) return
+        rafId = requestAnimationFrame(() => {
+          if (targetElement) {
+            updateMask(store, targetElement, context.spotlightPadding)
+          }
+          rafId = null
+        })
+      }
+
+      window.addEventListener('resize', onResize)
+      window.addEventListener('scroll', onScroll, { passive: true })
+      return () => {
+        window.removeEventListener('resize', onResize)
+        window.removeEventListener('scroll', onScroll)
+        if (rafId !== null) cancelAnimationFrame(rafId)
+      }
+    }
+  }, [open, targetElement, isCurrentStep, store, context.spotlightPadding])
+
+  React.useEffect(() => {
+    if (!open || !isCurrentStep) return
+
+    const stepElement = stepRef.current
+    if (!stepElement) return
+
+    const ownerDocument = stepElement.ownerDocument
+
+    function onPointerDown(event: PointerEvent) {
+      if (event.target && !isPointerInsideReactTreeRef.current) {
+        const pointerDownOutsideEvent = new CustomEvent(POINTER_DOWN_OUTSIDE, {
+          ...EVENT_OPTIONS,
+          detail: { originalEvent: event },
+        })
+
+        context.onPointerDownOutside?.(pointerDownOutsideEvent)
+
+        const interactOutsideEvent = new CustomEvent(INTERACT_OUTSIDE, {
+          ...EVENT_OPTIONS,
+          detail: { originalEvent: event },
+        })
+        context.onInteractOutside?.(interactOutsideEvent)
+
+        if (
+          !pointerDownOutsideEvent.defaultPrevented &&
+          !interactOutsideEvent.defaultPrevented &&
+          context.dismissible
+        ) {
+          store.setState('open', false)
+        }
+      }
+
+      isPointerInsideReactTreeRef.current = false
+    }
+
+    const timerId = window.setTimeout(() => {
+      ownerDocument.addEventListener('pointerdown', onPointerDown)
+    }, 0)
+
+    return () => {
+      window.clearTimeout(timerId)
+      ownerDocument.removeEventListener('pointerdown', onPointerDown)
+    }
+  }, [open, isCurrentStep, store, context])
+
+  React.useEffect(() => {
+    if (!open || !isCurrentStep) return
+
+    const stepElement = stepRef.current
+    if (!stepElement) return
+
+    const currentStepElement = stepElement
+    const ownerDocument = currentStepElement.ownerDocument
+
+    function onFocusIn(event: FocusEvent) {
+      const target = event.target as HTMLElement
+      const isFocusInStep = currentStepElement.contains(target)
+      const isFocusInTarget = targetElement?.contains(target)
+
+      if (event.target && !isFocusInsideReactTreeRef.current && !isFocusInStep && !isFocusInTarget) {
+        const interactOutsideEvent = new CustomEvent(INTERACT_OUTSIDE, {
+          ...EVENT_OPTIONS,
+          detail: { originalEvent: event },
+        })
+
+        context.onInteractOutside?.(interactOutsideEvent)
+
+        if (!interactOutsideEvent.defaultPrevented && context.dismissible) {
+          store.setState('open', false)
+        }
+      }
+    }
+
+    ownerDocument.addEventListener('focusin', onFocusIn)
+    return () => {
+      ownerDocument.removeEventListener('focusin', onFocusIn)
+    }
+  }, [open, isCurrentStep, store, context, targetElement])
+
+  const onPointerDownCapture = React.useCallback(
+    (event: React.PointerEvent<StepElement>) => {
+      onPointerDownCaptureProp?.(event)
+      isPointerInsideReactTreeRef.current = true
+    },
+    [onPointerDownCaptureProp],
+  )
+
+  const onFocusCapture = React.useCallback(
+    (event: React.FocusEvent<StepElement>) => {
+      onFocusCaptureProp?.(event)
+      isFocusInsideReactTreeRef.current = true
+    },
+    [onFocusCaptureProp],
+  )
+
+  const onBlurCapture = React.useCallback(
+    (event: React.FocusEvent<StepElement>) => {
+      onBlurCaptureProp?.(event)
+      isFocusInsideReactTreeRef.current = false
+    },
+    [onBlurCaptureProp],
+  )
+
+  React.useEffect(() => {
+    if (!open || !isCurrentStep || !targetElement) return
+
+    function onTargetPointerDownCapture() {
+      isPointerInsideReactTreeRef.current = true
+    }
+
+    function onTargetFocusCapture() {
+      isFocusInsideReactTreeRef.current = true
+    }
+
+    function onTargetBlurCapture() {
+      isFocusInsideReactTreeRef.current = false
+    }
+
+    targetElement.addEventListener('pointerdown', onTargetPointerDownCapture, true)
+    targetElement.addEventListener('focus', onTargetFocusCapture, true)
+    targetElement.addEventListener('blur', onTargetBlurCapture, true)
+
+    return () => {
+      targetElement.removeEventListener('pointerdown', onTargetPointerDownCapture, true)
+      targetElement.removeEventListener('focus', onTargetFocusCapture, true)
+      targetElement.removeEventListener('blur', onTargetBlurCapture, true)
+    }
+  }, [open, isCurrentStep, targetElement])
+
+  useFocusGuards(open && isCurrentStep && context.modal)
+  useFocusTrap(stepRef, open && isCurrentStep && context.modal, open, context.onOpenAutoFocus, context.onCloseAutoFocus)
+
+  if (!open || !stepData || (!targetElement && !safeForceMount) || !isCurrentStep) {
+    return null
+  }
+
+  const StepPrimitive = asChild ? Slot : 'div'
+
+  return (
+    <StepContext.Provider value={stepContextValue}>
+      <StepPrimitive
+        ref={composedRef}
+        role="dialog"
+        aria-modal={context.modal || undefined}
+        data-slot="tour-step"
+        data-side={placedSide}
+        data-align={placedAlign}
+        dir={context.dir}
+        tabIndex={-1}
+        {...stepProps}
+        onPointerDownCapture={onPointerDownCapture}
+        onFocusCapture={onFocusCapture}
+        onBlurCapture={onBlurCapture}
+        className={cn(
+          'fixed z-50 flex w-[min(32rem,calc(100vw-2rem))] flex-col gap-4 rounded-[var(--element-border-radius)] border bg-popover p-4 text-popover-foreground shadow-md outline-none',
+          className,
+        )}
+        style={{
+          ...style,
+          ...floatingStyles,
+          visibility: isHidden ? 'hidden' : undefined,
+          pointerEvents: isHidden ? 'none' : undefined,
+        }}
+      >
+        {children}
+        {!footer && <DefaultFooterContext.Provider value={true}>{context.stepFooter}</DefaultFooterContext.Provider>}
+      </StepPrimitive>
+    </StepContext.Provider>
+  )
+}
+
+export interface TourSpotlightProps extends DivProps {
+  forceMount?: boolean
+}
+
+function TourSpotlight(props: TourSpotlightProps) {
+  const { asChild, className, style, forceMount = false, ...backdropProps } = props
+  const open = useStore(state => state.open)
+  const maskPath = useStore(state => state.maskPath)
+
+  if (!open && !forceMount) return null
+
+  const SpotlightPrimitive = asChild ? Slot : 'div'
+
+  return (
+    <SpotlightPrimitive
+      data-slot="tour-spotlight"
+      data-state={getDataState(open)}
+      {...backdropProps}
+      className={cn(
+        'fixed inset-0 z-50 bg-black/80 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0',
+        className,
+      )}
+      style={{
+        clipPath: maskPath,
+        ...style,
+      }}
+    />
+  )
+}
+
+export interface TourSpotlightRingProps extends DivProps {
+  forceMount?: boolean
+}
+
+function TourSpotlightRing(props: TourSpotlightRingProps) {
+  const { asChild, className, style, forceMount = false, ...ringProps } = props
+  const open = useStore(state => state.open)
+  const spotlightRect = useStore(state => state.spotlightRect)
+
+  if (!open && !forceMount) return null
+  if (!spotlightRect) return null
+
+  const RingPrimitive = asChild ? Slot : 'div'
+
+  return (
+    <RingPrimitive
+      data-slot="tour-spotlight-ring"
+      data-state={getDataState(open)}
+      {...ringProps}
+      className={cn('pointer-events-none fixed z-50 border-ring ring-[3px] ring-ring/50', className)}
+      style={{
+        left: spotlightRect.x,
+        top: spotlightRect.y,
+        width: spotlightRect.width,
+        height: spotlightRect.height,
+        ...style,
+      }}
+    />
+  )
+}
+
+export interface TourPortalProps {
+  children?: React.ReactNode
+  container?: HTMLElement | null
+}
+
+function TourPortal(props: TourPortalProps) {
+  const { children, container } = props
+  const portalContext = usePortalContext(PORTAL_NAME)
+  const themePortalContainer = useThemePortalContainer()
+  const [mounted, setMounted] = React.useState(false)
+
+  useIsomorphicLayoutEffect(() => {
+    setMounted(true)
+
+    const node = container ?? themePortalContainer ?? document.body
+    portalContext.onPortalChange(node)
+    return () => {
+      portalContext.onPortalChange(null)
+    }
+  }, [container, themePortalContainer, portalContext])
+
+  if (!mounted) return null
+
+  const portalContainer = container ?? themePortalContainer ?? portalContext.portal ?? document.body
+  return ReactDOM.createPortal(children, portalContainer)
+}
+
+export interface TourArrowProps extends React.ComponentProps<'svg'> {
+  width?: number
+  height?: number
+  asChild?: boolean
+}
+
+function TourArrow(props: TourArrowProps) {
+  const { width = 10, height = 5, className, children, asChild, ...arrowProps } = props
+  const stepContext = useStepContext(ARROW_NAME)
+  const baseSide = OPPOSITE_SIDE[stepContext.placedSide]
+
+  return (
+    <span
+      ref={stepContext.onArrowChange}
+      data-slot="tour-arrow"
+      style={{
+        position: 'absolute',
+        left: stepContext.arrowX != null ? `${stepContext.arrowX}px` : undefined,
+        top: stepContext.arrowY != null ? `${stepContext.arrowY}px` : undefined,
+        [baseSide]: 0,
+        transformOrigin: {
+          top: '',
+          right: '0 0',
+          bottom: 'center 0',
+          left: '100% 0',
+        }[stepContext.placedSide],
+        transform: {
+          top: 'translateY(100%)',
+          right: 'translateY(50%) rotate(90deg) translateX(-50%)',
+          bottom: 'rotate(180deg)',
+          left: 'translateY(50%) rotate(-90deg) translateX(50%)',
+        }[stepContext.placedSide],
+        visibility: stepContext.shouldHideArrow ? 'hidden' : undefined,
+      }}
+    >
+      <svg
+        viewBox="0 0 30 10"
+        preserveAspectRatio="none"
+        width={width}
+        height={height}
+        {...arrowProps}
+        className={cn('block fill-popover stroke-border', className)}
+      >
+        {asChild ? children : <polygon points="0,0 30,0 15,10" />}
+      </svg>
+    </span>
+  )
+}
+
+function TourHeader(props: DivProps) {
+  const { asChild, className, ...headerProps } = props
+  const context = useTourContext(HEADER_NAME)
+  const HeaderPrimitive = asChild ? Slot : 'div'
+
+  return (
+    <HeaderPrimitive
+      data-slot="tour-header"
+      dir={context.dir}
+      {...headerProps}
+      className={cn('flex flex-col gap-1.5 text-center sm:text-left', className)}
+    />
+  )
+}
+
+function TourTitle(props: DivProps) {
+  const { asChild, className, ...titleProps } = props
+  const context = useTourContext(TITLE_NAME)
+  const TitlePrimitive = asChild ? Slot : 'div'
+
+  return (
+    <TitlePrimitive
+      data-slot="tour-title"
+      dir={context.dir}
+      {...titleProps}
+      className={cn('font-semibold text-lg leading-none tracking-tight', className)}
+    />
+  )
+}
+
+function TourDescription(props: DivProps) {
+  const { asChild, className, ...descriptionProps } = props
+  const context = useTourContext(DESCRIPTION_NAME)
+  const DescriptionPrimitive = asChild ? Slot : 'div'
+
+  return (
+    <DescriptionPrimitive
+      data-slot="tour-description"
+      dir={context.dir}
+      {...descriptionProps}
+      className={cn('text-muted-foreground text-sm', className)}
+    />
+  )
+}
+
+export interface TourCloseProps extends React.ComponentProps<'button'> {
+  asChild?: boolean
+}
+
+function TourClose(props: TourCloseProps) {
+  const context = useTourContext(CLOSE_NAME)
+  const {
+    asChild: defaultAsChild,
+    className: defaultClassName,
+    children: defaultChildren,
+    onClick: onDefaultClick,
+    ...defaultCloseButtonProps
+  } = context.closeButtonProps ?? {}
+  const { asChild = defaultAsChild, className, children, onClick: onClickProp, ...closeButtonProps } = props
+  const store = useStoreContext(CLOSE_NAME)
+
+  const onClick = React.useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      onDefaultClick?.(event)
+      if (event.defaultPrevented) return
+      onClickProp?.(event)
+      if (event.defaultPrevented) return
+      store.setState('open', false)
+    },
+    [store, onDefaultClick, onClickProp],
+  )
+
+  const ClosePrimitive = asChild ? Slot : 'button'
+
+  if (!context.showClose) return null
+
+  return (
+    <ClosePrimitive
+      type="button"
+      aria-label={context.closeLabel}
+      {...defaultCloseButtonProps}
+      {...closeButtonProps}
+      className={cn(
+        "absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        defaultClassName,
+        className,
+      )}
+      onClick={onClick}
+    >
+      {children ?? defaultChildren ?? <X className="size-4" />}
+    </ClosePrimitive>
+  )
+}
+
+function TourPrev(props: ButtonProps) {
+  const context = useTourContext(PREV_NAME)
+  const {
+    children: defaultChildren,
+    className: defaultClassName,
+    disabled: defaultDisabled,
+    onClick: onDefaultClick,
+    ...defaultPrevButtonProps
+  } = context.prevButtonProps ?? {}
+  const { children, className, disabled, onClick: onClickProp, ...prevButtonProps } = props
+  const store = useStoreContext(PREV_NAME)
+  const value = useStore(state => state.value)
+
+  const onClick = React.useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      onDefaultClick?.(event)
+      if (event.defaultPrevented) return
+      onClickProp?.(event)
+      if (event.defaultPrevented) return
+
+      if (value > 0) {
+        store.setState('value', value - 1)
+      }
+    },
+    [value, store, onDefaultClick, onClickProp],
+  )
+
+  if (!context.showPrev) return null
+
+  const fallbackChildren = (
+    <>
+      <ChevronLeft />
+      {context.prevLabel}
+    </>
+  )
+  const buttonChildren = children ?? defaultChildren ?? fallbackChildren
+  const ariaLabel =
+    children !== undefined || defaultChildren !== undefined
+      ? getStringLabel(children ?? defaultChildren, 'Previous step')
+      : getControlAriaLabel(context.prevLabel, tourPropDefs.prevLabel.default, 'Previous step')
+
+  return (
+    <Button
+      type="button"
+      aria-label={ariaLabel}
+      data-slot="tour-prev"
+      variant="outline"
+      {...defaultPrevButtonProps}
+      {...prevButtonProps}
+      className={cn(defaultClassName, className)}
+      onClick={onClick}
+      disabled={value === 0 || (disabled ?? defaultDisabled)}
+    >
+      {buttonChildren}
+    </Button>
+  )
+}
+
+function TourNext(props: ButtonProps) {
+  const context = useTourContext(NEXT_NAME)
+  const {
+    children: defaultChildren,
+    className: defaultClassName,
+    disabled: defaultDisabled,
+    onClick: onDefaultClick,
+    ...defaultNextButtonProps
+  } = context.nextButtonProps ?? {}
+  const { children, className, disabled, onClick: onClickProp, ...nextButtonProps } = props
+  const store = useStoreContext(NEXT_NAME)
+  const value = useStore(state => state.value)
+  const steps = useStore(state => state.steps)
+  const isLastStep = value === steps.length - 1
+
+  const onClick = React.useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      onDefaultClick?.(event)
+      if (event.defaultPrevented) return
+      onClickProp?.(event)
+      if (event.defaultPrevented) return
+      store.setState('value', value + 1)
+    },
+    [value, store, onDefaultClick, onClickProp],
+  )
+
+  if (!context.showNext) return null
+
+  const label = isLastStep ? context.finishLabel : context.nextLabel
+  const fallbackChildren = (
+    <>
+      {label}
+      {!isLastStep && <ChevronRight />}
+    </>
+  )
+  const buttonChildren = children ?? defaultChildren ?? fallbackChildren
+  const ariaLabel =
+    children !== undefined || defaultChildren !== undefined
+      ? getStringLabel(children ?? defaultChildren, isLastStep ? 'Finish tour' : 'Next step')
+      : getControlAriaLabel(
+          label,
+          isLastStep ? tourPropDefs.finishLabel.default : tourPropDefs.nextLabel.default,
+          isLastStep ? 'Finish tour' : 'Next step',
+        )
+
+  return (
+    <Button
+      type="button"
+      aria-label={ariaLabel}
+      data-slot="tour-next"
+      {...defaultNextButtonProps}
+      {...nextButtonProps}
+      className={cn(defaultClassName, className)}
+      onClick={onClick}
+      disabled={disabled ?? defaultDisabled}
+    >
+      {buttonChildren}
+    </Button>
+  )
+}
+
+function TourSkip(props: ButtonProps) {
+  const context = useTourContext(SKIP_NAME)
+  const {
+    children: defaultChildren,
+    className: defaultClassName,
+    disabled: defaultDisabled,
+    onClick: onDefaultClick,
+    ...defaultSkipButtonProps
+  } = context.skipButtonProps ?? {}
+  const { children, className, disabled, onClick: onClickProp, ...skipButtonProps } = props
+  const store = useStoreContext(SKIP_NAME)
+  const value = useStore(state => state.value)
+  const steps = useStore(state => state.steps)
+  const isRequiredStep = steps[value]?.required
+
+  const onClick = React.useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      onDefaultClick?.(event)
+      if (event.defaultPrevented) return
+      onClickProp?.(event)
+      if (event.defaultPrevented || isRequiredStep) return
+      store.setState('open', false)
+    },
+    [store, onDefaultClick, onClickProp, isRequiredStep],
+  )
+
+  if (!context.showSkip) return null
+
+  const buttonChildren = children ?? defaultChildren ?? context.skipLabel
+  const ariaLabel =
+    children !== undefined || defaultChildren !== undefined
+      ? getStringLabel(buttonChildren, 'Skip tour')
+      : getControlAriaLabel(context.skipLabel, tourPropDefs.skipLabel.default, 'Skip tour')
+
+  return (
+    <Button
+      type="button"
+      aria-label={ariaLabel}
+      data-slot="tour-skip"
+      variant="outline"
+      {...defaultSkipButtonProps}
+      {...skipButtonProps}
+      className={cn(defaultClassName, className)}
+      onClick={onClick}
+      disabled={isRequiredStep || (disabled ?? defaultDisabled)}
+    >
+      {buttonChildren}
+    </Button>
+  )
+}
+
+export interface TourStepCounterProps extends DivProps {
+  format?: (current: number, total: number) => string
+}
+
+function TourStepCounter(props: TourStepCounterProps) {
+  const {
+    format = (current, total) => `${current} / ${total}`,
+    asChild,
+    className,
+    children,
+    ...stepCounterProps
+  } = props
+  const value = useStore(state => state.value)
+  const steps = useStore(state => state.steps)
+  const StepCounterPrimitive = asChild ? Slot : 'div'
+
+  return (
+    <StepCounterPrimitive
+      data-slot="tour-step-counter"
+      {...stepCounterProps}
+      className={cn('mr-auto shrink-0 whitespace-nowrap text-muted-foreground text-sm', className)}
+    >
+      {children ?? format(value + 1, steps.length)}
+    </StepCounterPrimitive>
+  )
+}
+
+function TourFooter(props: DivProps) {
+  const { asChild, className, ref, ...footerProps } = props
+  const stepContext = useStepContext(FOOTER_NAME)
+  const hasDefaultFooter = React.useContext(DefaultFooterContext)
+  const context = useTourContext(FOOTER_NAME)
+  const composedRef = useComposedRefs<HTMLElement>(ref, hasDefaultFooter ? undefined : stepContext.onFooterChange)
+  const FooterPrimitive = asChild ? Slot : 'div'
+
+  return (
+    <FooterPrimitive
+      data-slot="tour-footer"
+      dir={context.dir}
+      {...footerProps}
+      ref={composedRef}
+      className={cn('flex w-full flex-wrap items-center gap-2', className)}
+    />
+  )
+}
+
+export {
+  Tour,
+  TourArrow,
+  TourClose,
+  TourDescription,
+  TourFooter,
+  TourHeader,
+  TourNext,
+  TourPortal,
+  TourPrev,
+  TourSkip,
+  TourSpotlight,
+  TourSpotlightRing,
+  TourStep,
+  TourStepCounter,
+  TourTitle,
+}

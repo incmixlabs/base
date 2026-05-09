@@ -80,6 +80,10 @@
       "types": "./dist/elements/qr-code/index.d.ts",
       "import": "./dist/elements/qr-code.js"
     },
+    "./elements/tour": {
+      "types": "./dist/elements/tour/index.d.ts",
+      "import": "./dist/elements/tour.js"
+    },
     "./filter": {
       "types": "./dist/elements/filter/index.d.ts",
       "import": "./dist/filter.js"
@@ -225,6 +229,7 @@
   "dependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "1.7.4",
     "@base-ui/react": "1.2.0",
+    "@floating-ui/react-dom": "^2.1.8",
     "@incmix/theme": "workspace:*",
     "@internationalized/date": "^3.11.0",
     "@ncdai/react-wheel-picker": "^1.2.0",
