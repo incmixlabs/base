@@ -256,6 +256,14 @@ function getDataState(open: boolean) {
   return open ? 'open' : 'closed'
 }
 
+function getStringLabel(label: React.ReactNode, fallback: string) {
+  return typeof label === 'string' || typeof label === 'number' ? String(label) : fallback
+}
+
+function getControlAriaLabel(label: React.ReactNode, defaultLabel: React.ReactNode, fallback: string) {
+  return label === defaultLabel ? fallback : getStringLabel(label, fallback)
+}
+
 interface StepData {
   target: Target
   align: Align
@@ -411,7 +419,20 @@ interface TourContextValue {
   spotlightPadding: number
   dismissible: boolean
   modal: boolean
-  stepFooter?: React.ReactElement
+  stepFooter?: React.ReactElement | null
+  nextLabel: React.ReactNode
+  finishLabel: React.ReactNode
+  prevLabel: React.ReactNode
+  skipLabel: React.ReactNode
+  closeLabel: string
+  showNext: boolean
+  showPrev: boolean
+  showSkip: boolean
+  showClose: boolean
+  nextButtonProps?: ButtonProps
+  prevButtonProps?: ButtonProps
+  skipButtonProps?: ButtonProps
+  closeButtonProps?: TourCloseProps
   onPointerDownOutside?: (event: PointerDownOutsideEvent) => void
   onInteractOutside?: (event: InteractOutsideEvent) => void
   onOpenAutoFocus?: (event: OpenAutoFocusEvent) => void
@@ -513,7 +534,20 @@ export interface TourProps extends DivProps {
   scrollOffset?: ScrollOffset
   dismissible?: boolean
   modal?: boolean
-  stepFooter?: React.ReactElement
+  stepFooter?: React.ReactElement | null
+  nextLabel?: React.ReactNode
+  finishLabel?: React.ReactNode
+  prevLabel?: React.ReactNode
+  skipLabel?: React.ReactNode
+  closeLabel?: string
+  showNext?: boolean
+  showPrev?: boolean
+  showSkip?: boolean
+  showClose?: boolean
+  nextButtonProps?: ButtonProps
+  prevButtonProps?: ButtonProps
+  skipButtonProps?: ButtonProps
+  closeButtonProps?: TourCloseProps
 }
 
 function Tour(props: TourProps) {
@@ -541,6 +575,19 @@ function Tour(props: TourProps) {
     dismissible = tourPropDefs.dismissible.default,
     modal = tourPropDefs.modal.default,
     stepFooter,
+    nextLabel = tourPropDefs.nextLabel.default,
+    finishLabel = tourPropDefs.finishLabel.default,
+    prevLabel = tourPropDefs.prevLabel.default,
+    skipLabel = tourPropDefs.skipLabel.default,
+    closeLabel = tourPropDefs.closeLabel.default,
+    showNext = tourPropDefs.showNext.default,
+    showPrev = tourPropDefs.showPrev.default,
+    showSkip = tourPropDefs.showSkip.default,
+    showClose = tourPropDefs.showClose.default,
+    nextButtonProps,
+    prevButtonProps,
+    skipButtonProps,
+    closeButtonProps,
     asChild = tourPropDefs.asChild.default,
     ...rootProps
   } = props
@@ -552,6 +599,10 @@ function Tour(props: TourProps) {
   const safeDismissible =
     normalizeBooleanPropValue(tourPropDefs.dismissible, dismissible) ?? tourPropDefs.dismissible.default
   const safeModal = normalizeBooleanPropValue(tourPropDefs.modal, modal) ?? tourPropDefs.modal.default
+  const safeShowNext = normalizeBooleanPropValue(tourPropDefs.showNext, showNext) ?? tourPropDefs.showNext.default
+  const safeShowPrev = normalizeBooleanPropValue(tourPropDefs.showPrev, showPrev) ?? tourPropDefs.showPrev.default
+  const safeShowSkip = normalizeBooleanPropValue(tourPropDefs.showSkip, showSkip) ?? tourPropDefs.showSkip.default
+  const safeShowClose = normalizeBooleanPropValue(tourPropDefs.showClose, showClose) ?? tourPropDefs.showClose.default
 
   const [portal, setPortal] = React.useState<HTMLElement | null>(null)
   const prevOpenRef = React.useRef<boolean | undefined>(undefined)
@@ -738,7 +789,30 @@ function Tour(props: TourProps) {
       spotlightPadding,
       dismissible: safeDismissible,
       modal: safeModal,
-      stepFooter,
+      stepFooter:
+        stepFooter === undefined ? (
+          <TourFooter>
+            <TourStepCounter />
+            <TourSkip />
+            <TourPrev />
+            <TourNext />
+          </TourFooter>
+        ) : (
+          stepFooter
+        ),
+      nextLabel,
+      finishLabel,
+      prevLabel,
+      skipLabel,
+      closeLabel,
+      showNext: safeShowNext,
+      showPrev: safeShowPrev,
+      showSkip: safeShowSkip,
+      showClose: safeShowClose,
+      nextButtonProps,
+      prevButtonProps,
+      skipButtonProps,
+      closeButtonProps,
       onPointerDownOutside,
       onInteractOutside,
       onOpenAutoFocus,
@@ -752,6 +826,19 @@ function Tour(props: TourProps) {
       safeDismissible,
       safeModal,
       stepFooter,
+      nextLabel,
+      finishLabel,
+      prevLabel,
+      skipLabel,
+      closeLabel,
+      safeShowNext,
+      safeShowPrev,
+      safeShowSkip,
+      safeShowClose,
+      nextButtonProps,
+      prevButtonProps,
+      skipButtonProps,
+      closeButtonProps,
       onPointerDownOutside,
       onInteractOutside,
       onOpenAutoFocus,
@@ -1172,7 +1259,7 @@ function TourStep(props: TourStepProps) {
         onFocusCapture={onFocusCapture}
         onBlurCapture={onBlurCapture}
         className={cn(
-          'fixed z-50 flex w-80 flex-col gap-4 rounded-[var(--element-border-radius)] border bg-popover p-4 text-popover-foreground shadow-md outline-none',
+          'fixed z-50 flex w-[min(32rem,calc(100vw-2rem))] flex-col gap-4 rounded-[var(--element-border-radius)] border bg-popover p-4 text-popover-foreground shadow-md outline-none',
           className,
         )}
         style={{
@@ -1376,43 +1463,67 @@ export interface TourCloseProps extends React.ComponentProps<'button'> {
 }
 
 function TourClose(props: TourCloseProps) {
-  const { asChild, className, onClick: onClickProp, ...closeButtonProps } = props
+  const context = useTourContext(CLOSE_NAME)
+  const {
+    asChild: defaultAsChild,
+    className: defaultClassName,
+    children: defaultChildren,
+    onClick: onDefaultClick,
+    ...defaultCloseButtonProps
+  } = context.closeButtonProps ?? {}
+  const { asChild = defaultAsChild, className, children, onClick: onClickProp, ...closeButtonProps } = props
   const store = useStoreContext(CLOSE_NAME)
 
   const onClick = React.useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
+      onDefaultClick?.(event)
+      if (event.defaultPrevented) return
       onClickProp?.(event)
       if (event.defaultPrevented) return
       store.setState('open', false)
     },
-    [store, onClickProp],
+    [store, onDefaultClick, onClickProp],
   )
 
   const ClosePrimitive = asChild ? Slot : 'button'
 
+  if (!context.showClose) return null
+
   return (
     <ClosePrimitive
       type="button"
-      aria-label="Close tour"
+      aria-label={context.closeLabel}
+      {...defaultCloseButtonProps}
+      {...closeButtonProps}
       className={cn(
         "absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        defaultClassName,
         className,
       )}
       onClick={onClick}
-      {...closeButtonProps}
     >
-      <X className="size-4" />
+      {children ?? defaultChildren ?? <X className="size-4" />}
     </ClosePrimitive>
   )
 }
 
 function TourPrev(props: ButtonProps) {
-  const { children, onClick: onClickProp, ...prevButtonProps } = props
+  const context = useTourContext(PREV_NAME)
+  const {
+    children: defaultChildren,
+    className: defaultClassName,
+    disabled: defaultDisabled,
+    onClick: onDefaultClick,
+    ...defaultPrevButtonProps
+  } = context.prevButtonProps ?? {}
+  const { children, className, disabled, onClick: onClickProp, ...prevButtonProps } = props
   const store = useStoreContext(PREV_NAME)
   const value = useStore(state => state.value)
 
   const onClick = React.useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
+      onDefaultClick?.(event)
+      if (event.defaultPrevented) return
       onClickProp?.(event)
       if (event.defaultPrevented) return
 
@@ -1420,31 +1531,50 @@ function TourPrev(props: ButtonProps) {
         store.setState('value', value - 1)
       }
     },
-    [value, store, onClickProp],
+    [value, store, onDefaultClick, onClickProp],
   )
+
+  if (!context.showPrev) return null
+
+  const fallbackChildren = (
+    <>
+      <ChevronLeft />
+      {context.prevLabel}
+    </>
+  )
+  const buttonChildren = children ?? defaultChildren ?? fallbackChildren
+  const ariaLabel =
+    children !== undefined || defaultChildren !== undefined
+      ? getStringLabel(children ?? defaultChildren, 'Previous step')
+      : getControlAriaLabel(context.prevLabel, tourPropDefs.prevLabel.default, 'Previous step')
 
   return (
     <Button
       type="button"
-      aria-label="Previous step"
+      aria-label={ariaLabel}
       data-slot="tour-prev"
       variant="outline"
+      {...defaultPrevButtonProps}
       {...prevButtonProps}
+      className={cn(defaultClassName, className)}
       onClick={onClick}
-      disabled={value === 0 || prevButtonProps.disabled}
+      disabled={value === 0 || (disabled ?? defaultDisabled)}
     >
-      {children ?? (
-        <>
-          <ChevronLeft />
-          Previous
-        </>
-      )}
+      {buttonChildren}
     </Button>
   )
 }
 
 function TourNext(props: ButtonProps) {
-  const { children, onClick: onClickProp, ...nextButtonProps } = props
+  const context = useTourContext(NEXT_NAME)
+  const {
+    children: defaultChildren,
+    className: defaultClassName,
+    disabled: defaultDisabled,
+    onClick: onDefaultClick,
+    ...defaultNextButtonProps
+  } = context.nextButtonProps ?? {}
+  const { children, className, disabled, onClick: onClickProp, ...nextButtonProps } = props
   const store = useStoreContext(NEXT_NAME)
   const value = useStore(state => state.value)
   const steps = useStore(state => state.steps)
@@ -1452,27 +1582,60 @@ function TourNext(props: ButtonProps) {
 
   const onClick = React.useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
+      onDefaultClick?.(event)
+      if (event.defaultPrevented) return
       onClickProp?.(event)
       if (event.defaultPrevented) return
       store.setState('value', value + 1)
     },
-    [value, store, onClickProp],
+    [value, store, onDefaultClick, onClickProp],
   )
 
+  if (!context.showNext) return null
+
+  const label = isLastStep ? context.finishLabel : context.nextLabel
+  const fallbackChildren = (
+    <>
+      {label}
+      {!isLastStep && <ChevronRight />}
+    </>
+  )
+  const buttonChildren = children ?? defaultChildren ?? fallbackChildren
+  const ariaLabel =
+    children !== undefined || defaultChildren !== undefined
+      ? getStringLabel(children ?? defaultChildren, isLastStep ? 'Finish tour' : 'Next step')
+      : getControlAriaLabel(
+          label,
+          isLastStep ? tourPropDefs.finishLabel.default : tourPropDefs.nextLabel.default,
+          isLastStep ? 'Finish tour' : 'Next step',
+        )
+
   return (
-    <Button type="button" aria-label="Next step" data-slot="tour-next" {...nextButtonProps} onClick={onClick}>
-      {children ?? (
-        <>
-          {isLastStep ? 'Finish' : 'Next'}
-          {!isLastStep && <ChevronRight />}
-        </>
-      )}
+    <Button
+      type="button"
+      aria-label={ariaLabel}
+      data-slot="tour-next"
+      {...defaultNextButtonProps}
+      {...nextButtonProps}
+      className={cn(defaultClassName, className)}
+      onClick={onClick}
+      disabled={disabled ?? defaultDisabled}
+    >
+      {buttonChildren}
     </Button>
   )
 }
 
 function TourSkip(props: ButtonProps) {
-  const { children, onClick: onClickProp, ...skipButtonProps } = props
+  const context = useTourContext(SKIP_NAME)
+  const {
+    children: defaultChildren,
+    className: defaultClassName,
+    disabled: defaultDisabled,
+    onClick: onDefaultClick,
+    ...defaultSkipButtonProps
+  } = context.skipButtonProps ?? {}
+  const { children, className, disabled, onClick: onClickProp, ...skipButtonProps } = props
   const store = useStoreContext(SKIP_NAME)
   const value = useStore(state => state.value)
   const steps = useStore(state => state.steps)
@@ -1480,24 +1643,36 @@ function TourSkip(props: ButtonProps) {
 
   const onClick = React.useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
+      onDefaultClick?.(event)
+      if (event.defaultPrevented) return
       onClickProp?.(event)
       if (event.defaultPrevented || isRequiredStep) return
       store.setState('open', false)
     },
-    [store, onClickProp, isRequiredStep],
+    [store, onDefaultClick, onClickProp, isRequiredStep],
   )
+
+  if (!context.showSkip) return null
+
+  const buttonChildren = children ?? defaultChildren ?? context.skipLabel
+  const ariaLabel =
+    children !== undefined || defaultChildren !== undefined
+      ? getStringLabel(buttonChildren, 'Skip tour')
+      : getControlAriaLabel(context.skipLabel, tourPropDefs.skipLabel.default, 'Skip tour')
 
   return (
     <Button
       type="button"
-      aria-label="Skip tour"
+      aria-label={ariaLabel}
       data-slot="tour-skip"
       variant="outline"
+      {...defaultSkipButtonProps}
       {...skipButtonProps}
+      className={cn(defaultClassName, className)}
       onClick={onClick}
-      disabled={isRequiredStep || skipButtonProps.disabled}
+      disabled={isRequiredStep || (disabled ?? defaultDisabled)}
     >
-      {children ?? 'Skip'}
+      {buttonChildren}
     </Button>
   )
 }
@@ -1522,7 +1697,7 @@ function TourStepCounter(props: TourStepCounterProps) {
     <StepCounterPrimitive
       data-slot="tour-step-counter"
       {...stepCounterProps}
-      className={cn('shrink-0 whitespace-nowrap text-muted-foreground text-sm', className)}
+      className={cn('mr-auto shrink-0 whitespace-nowrap text-muted-foreground text-sm', className)}
     >
       {children ?? format(value + 1, steps.length)}
     </StepCounterPrimitive>
@@ -1543,7 +1718,7 @@ function TourFooter(props: DivProps) {
       dir={context.dir}
       {...footerProps}
       ref={composedRef}
-      className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end', className)}
+      className={cn('flex w-full flex-wrap items-center gap-2', className)}
     />
   )
 }

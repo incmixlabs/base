@@ -125,7 +125,7 @@ describe('Tour', () => {
     expect(screen.getByText('First step')).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: 'Next step' }))
-    await user.click(screen.getByRole('button', { name: 'Next step' }))
+    await user.click(screen.getByRole('button', { name: 'Finish tour' }))
 
     await waitFor(() => {
       expect(onComplete).toHaveBeenCalledTimes(1)
@@ -142,5 +142,51 @@ describe('Tour', () => {
     await user.click(await screen.findByRole('button', { name: 'Close tour' }))
 
     expect(onOpenChange).toHaveBeenCalledWith(false)
+  })
+
+  it('renders the built-in footer and applies root control props', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <div>
+        <button id="target-one" type="button">
+          Target one
+        </button>
+        <button id="target-two" type="button">
+          Target two
+        </button>
+        <Tour
+          open
+          nextLabel="Continue"
+          finishLabel="Done"
+          prevLabel="Back"
+          closeLabel="Exit tour"
+          skipButtonProps={{ children: 'Leave' }}
+        >
+          <TourPortal>
+            <TourStep target="#target-one">
+              <TourHeader>
+                <TourTitle>First step</TourTitle>
+              </TourHeader>
+              <TourClose />
+            </TourStep>
+            <TourStep target="#target-two">
+              <TourHeader>
+                <TourTitle>Second step</TourTitle>
+              </TourHeader>
+            </TourStep>
+          </TourPortal>
+        </Tour>
+      </div>,
+    )
+
+    expect(await screen.findByRole('button', { name: 'Continue' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Back' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Leave' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Exit tour' })).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Continue' }))
+
+    expect(await screen.findByRole('button', { name: 'Done' })).toBeInTheDocument()
   })
 })

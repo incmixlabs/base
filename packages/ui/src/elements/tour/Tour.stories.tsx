@@ -6,16 +6,11 @@ import {
   TourArrow,
   TourClose,
   TourDescription,
-  TourFooter,
   TourHeader,
-  TourNext,
   TourPortal,
-  TourPrev,
-  TourSkip,
   TourSpotlight,
   TourSpotlightRing,
   TourStep,
-  TourStepCounter,
   TourTitle,
   tourAlignments,
   tourSides,
@@ -32,6 +27,7 @@ const meta: Meta<typeof Tour> = {
     spotlightPadding: { control: 'number' },
     dismissible: { control: 'boolean' },
     modal: { control: 'boolean' },
+    showSkip: { control: 'boolean' },
   },
 }
 
@@ -45,12 +41,14 @@ function TourDemo({
   spotlightPadding = 6,
   dismissible = true,
   modal = true,
+  showSkip = true,
 }: {
   defaultOpen?: boolean
   sideOffset?: number
   spotlightPadding?: number
   dismissible?: boolean
   modal?: boolean
+  showSkip?: boolean
 }) {
   const [open, setOpen] = React.useState(defaultOpen)
 
@@ -95,18 +93,7 @@ function TourDemo({
         spotlightPadding={spotlightPadding}
         dismissible={dismissible}
         modal={modal}
-        stepFooter={
-          <TourFooter>
-            <div className="flex w-full items-center justify-between gap-3">
-              <TourStepCounter />
-              <div className="flex gap-2">
-                <TourSkip />
-                <TourPrev />
-                <TourNext />
-              </div>
-            </div>
-          </TourFooter>
-        }
+        showSkip={showSkip}
       >
         <TourPortal>
           <TourSpotlight />
@@ -159,6 +146,7 @@ export const Default: Story = {
     spotlightPadding: 6,
     dismissible: true,
     modal: true,
+    showSkip: true,
   },
 }
 
@@ -169,6 +157,7 @@ export const Open: Story = {
     spotlightPadding: 8,
     dismissible: true,
     modal: true,
+    showSkip: true,
   },
 }
 
