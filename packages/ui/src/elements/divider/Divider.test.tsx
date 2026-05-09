@@ -21,6 +21,8 @@ describe('Divider', () => {
 
     const divider = screen.getByTestId('divider')
 
+    expect(divider).toHaveAttribute('role', 'separator')
+    expect(divider).toHaveAttribute('aria-orientation', 'horizontal')
     expect(divider).toHaveAttribute('data-orientation', 'horizontal')
     expect(divider.className).toContain(dividerHorizontal)
     expect(divider.className).toContain(dividerSizeVariants.sm)
@@ -46,6 +48,7 @@ describe('Divider', () => {
     const divider = screen.getByTestId('divider')
 
     expect(divider).toHaveAttribute('data-orientation', 'vertical')
+    expect(divider).toHaveAttribute('aria-orientation', 'vertical')
     expect(divider.className).toContain(dividerVertical)
     expect(divider.className).toContain(dividerSizeVariants.lg)
     expect(divider.className).toContain(dividerColorVariants.primary)

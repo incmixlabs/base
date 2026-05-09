@@ -60,8 +60,12 @@ const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
     const hasContent = React.Children.count(children) > 0
 
     return (
+      // biome-ignore lint/a11y/useFocusableInteractive: Static separators are not keyboard-interactive widgets.
       <div
         ref={ref}
+        // biome-ignore lint/a11y/useAriaPropsForRole: Static separators do not expose range values.
+        role="separator"
+        aria-orientation={safeOrientation}
         data-orientation={safeOrientation}
         className={cn(
           dividerBase,
