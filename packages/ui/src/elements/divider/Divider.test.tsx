@@ -9,7 +9,7 @@ import {
   dividerSizeVariants,
   dividerVertical,
   dividerWithContent,
-} from './Divider.css'
+} from './divider.css'
 
 afterEach(() => {
   cleanup()

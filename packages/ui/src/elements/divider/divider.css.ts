@@ -66,15 +66,19 @@ export const dividerVertical = style({
 })
 
 export const dividerAlignStart = style({
-  '::before': { display: 'none' },
+  selectors: {
+    [`&${dividerWithContent}::before`]: { display: 'none' },
+  },
 })
 
 export const dividerAlignEnd = style({
-  '::after': { display: 'none' },
+  selectors: {
+    [`&${dividerWithContent}::after`]: { display: 'none' },
+  },
 })
 
 export const dividerSizeVariants: Record<DividerSize, string> = styleVariants({
-  xs: { vars: { [dividerThicknessVar]: '1px' } },
+  xs: { vars: { [dividerThicknessVar]: '0.0625rem' } },
   sm: { vars: { [dividerThicknessVar]: '0.125rem' } },
   md: { vars: { [dividerThicknessVar]: '0.25rem' } },
   lg: { vars: { [dividerThicknessVar]: '0.5rem' } },

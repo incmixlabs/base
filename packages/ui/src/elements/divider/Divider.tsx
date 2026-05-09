@@ -16,7 +16,7 @@ import {
   dividerSizeVariants,
   dividerVertical,
   dividerWithContent,
-} from './Divider.css'
+} from './divider.css'
 import { dividerPropDefs } from './divider.props'
 
 export type { DividerAlign, DividerOrientation, DividerSize }
