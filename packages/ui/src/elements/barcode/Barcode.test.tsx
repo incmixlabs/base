@@ -47,6 +47,7 @@ describe('Barcode', () => {
         lineColor: '#111111',
         background: '#ffffff',
         displayValue: false,
+        fontOptions: '',
       }),
     )
     expect(screen.getByTestId('barcode')).toHaveAttribute('data-format', 'CODE128')

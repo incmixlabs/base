@@ -82,7 +82,7 @@ const Barcode = React.forwardRef<SVGSVGElement, BarcodeProps>(
       text,
       font = 'monospace',
       fontSize = 20,
-      fontOptions,
+      fontOptions = '',
       textAlign = 'center',
       textPosition = 'bottom',
       textMargin = 2,
