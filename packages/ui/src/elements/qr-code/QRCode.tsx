@@ -177,6 +177,8 @@ const QRCodeRoot = React.forwardRef<HTMLDivElement, QRCodeRootProps>(
     const resolvedSize = Math.min(resolvedWidth, resolvedHeight)
     const radius = useThemeRadius(radiusProp)
     const rawForegroundColor = getForegroundColor(color, foregroundColor)
+    const onErrorRef = React.useRef(onError)
+    const onGeneratedRef = React.useRef(onGenerated)
     const generationKey = React.useMemo(() => {
       if (!value) return ''
 
@@ -191,6 +193,11 @@ const QRCodeRoot = React.forwardRef<HTMLDivElement, QRCodeRootProps>(
         backgroundColor,
       })
     }, [value, resolvedWidth, resolvedHeight, level, margin, radius, rawForegroundColor, backgroundColor])
+
+    React.useEffect(() => {
+      onErrorRef.current = onError
+      onGeneratedRef.current = onGenerated
+    })
 
     React.useEffect(() => {
       let isActive = true
@@ -258,13 +265,13 @@ const QRCodeRoot = React.forwardRef<HTMLDivElement, QRCodeRootProps>(
             error: null,
             generationKey,
           })
-          onGenerated?.()
+          onGeneratedRef.current?.()
         } catch (error) {
           if (!isActive) return
 
           const parsedError = error instanceof Error ? error : new Error('Failed to generate QR code')
           store.setStates({ error: parsedError, isGenerating: false, generatingKey: null })
-          onError?.(parsedError)
+          onErrorRef.current?.(parsedError)
         }
       }
 
@@ -273,18 +280,7 @@ const QRCodeRoot = React.forwardRef<HTMLDivElement, QRCodeRootProps>(
       return () => {
         isActive = false
       }
-    }, [
-      generationKey,
-      value,
-      resolvedSize,
-      level,
-      margin,
-      rawForegroundColor,
-      backgroundColor,
-      store,
-      onError,
-      onGenerated,
-    ])
+    }, [generationKey, value, resolvedSize, level, margin, rawForegroundColor, backgroundColor, store])
 
     const contextValue = React.useMemo<QRCodeContextValue>(
       () => ({

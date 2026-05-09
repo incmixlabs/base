@@ -99,6 +99,13 @@ const Barcode = React.forwardRef<SVGSVGElement, BarcodeProps>(
     const composedRef = useComposedRefs(ref, svgRef)
     const [error, setError] = React.useState<Error | null>(null)
     const lineColor = foregroundColor ?? (color ? semanticColorVar(color, 'primary') : '#000000')
+    const onErrorRef = React.useRef(onError)
+    const onGeneratedRef = React.useRef(onGenerated)
+
+    React.useEffect(() => {
+      onErrorRef.current = onError
+      onGeneratedRef.current = onGenerated
+    })
 
     React.useEffect(() => {
       let isActive = true
@@ -138,14 +145,14 @@ const Barcode = React.forwardRef<SVGSVGElement, BarcodeProps>(
             },
           })
           setError(null)
-          onGenerated?.()
+          onGeneratedRef.current?.()
         } catch (error) {
           if (!isActive || !svgRef.current) return
 
           const parsedError = error instanceof Error ? error : new Error('Failed to generate barcode.')
           svgRef.current.innerHTML = ''
           setError(parsedError)
-          onError?.(parsedError)
+          onErrorRef.current?.(parsedError)
         }
       }
 
@@ -170,8 +177,6 @@ const Barcode = React.forwardRef<SVGSVGElement, BarcodeProps>(
       textAlign,
       textPosition,
       textMargin,
-      onError,
-      onGenerated,
     ])
 
     return (
