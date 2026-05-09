@@ -41,7 +41,7 @@ function TourDemo({
   spotlightPadding = 6,
   dismissible = true,
   modal = true,
-  showSkip = true,
+  showSkip = false,
 }: {
   defaultOpen?: boolean
   sideOffset?: number
@@ -119,7 +119,9 @@ function TourDemo({
             <TourArrow />
             <TourHeader>
               <TourTitle>Required review</TourTitle>
-              <TourDescription>Required steps keep Skip disabled until the operator advances.</TourDescription>
+              <TourDescription>
+                Required steps keep completion controls unavailable until the operator advances.
+              </TourDescription>
             </TourHeader>
             <TourClose />
           </TourStep>
@@ -146,7 +148,7 @@ export const Default: Story = {
     spotlightPadding: 6,
     dismissible: true,
     modal: true,
-    showSkip: true,
+    showSkip: false,
   },
 }
 
@@ -157,7 +159,7 @@ export const Open: Story = {
     spotlightPadding: 8,
     dismissible: true,
     modal: true,
-    showSkip: true,
+    showSkip: false,
   },
 }
 

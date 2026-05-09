@@ -33,7 +33,7 @@ export const tourPropDefs = {
   closeLabel: { type: 'string', default: 'Close tour' },
   showNext: { type: 'boolean', default: true },
   showPrev: { type: 'boolean', default: true },
-  showSkip: { type: 'boolean', default: true },
+  showSkip: { type: 'boolean', default: false },
   showClose: { type: 'boolean', default: true },
   nextButtonProps: { type: 'object', typeFullName: 'ButtonProps' },
   prevButtonProps: { type: 'object', typeFullName: 'ButtonProps' },

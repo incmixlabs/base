@@ -161,6 +161,7 @@ describe('Tour', () => {
           finishLabel="Done"
           prevLabel="Back"
           closeLabel="Exit tour"
+          showSkip
           skipButtonProps={{ children: 'Leave' }}
         >
           <TourPortal>
@@ -181,12 +182,13 @@ describe('Tour', () => {
     )
 
     expect(await screen.findByRole('button', { name: 'Continue' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Back' })).toBeDisabled()
+    expect(screen.queryByRole('button', { name: 'Back' })).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Leave' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Exit tour' })).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: 'Continue' }))
 
+    expect(await screen.findByRole('button', { name: 'Back' })).toBeInTheDocument()
     expect(await screen.findByRole('button', { name: 'Done' })).toBeInTheDocument()
   })
 
