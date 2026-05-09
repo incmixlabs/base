@@ -35,7 +35,6 @@ export { AvatarProvider, type AvatarProviderProps } from './avatar/avatar.contex
 export { stringToHue } from './avatar/avatar.shared'
 export type { AvatarListItem } from './avatar/avatar-list.props'
 export { Badge, type BadgeProps } from './badge/Badge'
-export { Barcode, type BarcodeFormat, type BarcodeProps, barcodeFormats } from './barcode/Barcode'
 export { ActionButton, type ActionButtonData, type ActionButtonProps } from './button/ActionButton'
 export { Button, type ButtonProps } from './button/Button'
 export { Icon, type IconProps } from './button/Icon'
@@ -134,20 +133,6 @@ export {
 export { type PopoverContentVariant, popoverContentVariants } from './popover/popover.props'
 export { PriorityIcon, type PriorityIconPriority, type PriorityIconProps } from './priority-icon/PriorityIcon'
 export { Progress, type ProgressProps, type ProgressSize } from './progress/Progress'
-export {
-  QRCode,
-  QRCodeCanvas,
-  QRCodeDownload,
-  type QRCodeDownloadFormat,
-  QRCodeImage,
-  type QRCodeLevel,
-  QRCodeOverlay,
-  type QRCodeProps,
-  type QRCodeRootProps,
-  QRCodeSkeleton,
-  QRCodeSvg,
-  useQRCode,
-} from './qr-code/QRCode'
 export { ScrollArea, type ScrollAreaProps } from './scroll-area/ScrollArea'
 export {
   ScrollAreaWrapper,

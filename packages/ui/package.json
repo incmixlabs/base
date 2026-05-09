@@ -56,6 +56,10 @@
       "types": "./dist/elements/badge/Badge.d.ts",
       "import": "./dist/elements/badge/Badge.js"
     },
+    "./elements/barcode": {
+      "types": "./dist/elements/barcode/index.d.ts",
+      "import": "./dist/elements/barcode.js"
+    },
     "./elements/button/Button": {
       "types": "./dist/elements/button/Button.d.ts",
       "import": "./dist/elements/button/Button.js"
@@ -71,6 +75,10 @@
     "./elements/card/Card": {
       "types": "./dist/elements/card/Card.d.ts",
       "import": "./dist/elements/card/Card.js"
+    },
+    "./elements/qr-code": {
+      "types": "./dist/elements/qr-code/index.d.ts",
+      "import": "./dist/elements/qr-code.js"
     },
     "./filter": {
       "types": "./dist/elements/filter/index.d.ts",

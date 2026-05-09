@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Barcode, type BarcodeFormat, barcodeFormats } from '@/elements'
+import { Barcode, type BarcodeFormat, barcodeFormats } from '@/elements/barcode'
 
 const meta: Meta<typeof Barcode> = {
   title: 'Elements/Barcode',
