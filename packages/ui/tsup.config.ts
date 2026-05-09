@@ -38,6 +38,7 @@ const lightEntries = {
   'elements/button/IconButton': 'src/elements/button/IconButton.tsx',
   'elements/card/Card': 'src/elements/card/Card.tsx',
   'elements/qr-code': 'src/elements/qr-code/index.ts',
+  'elements/tour': 'src/elements/tour/index.ts',
   form: 'src/form/index.ts',
   hooks: 'src/hooks/index.ts',
   layouts: 'src/layouts/index.ts',
