@@ -8,15 +8,21 @@ import { useComposedRefs } from '@/lib/compose-refs'
 import { cn } from '@/lib/utils'
 import { resolveInteractiveForegroundToken, semanticColorVar } from '@/theme/props/color.prop'
 import type { Color, Radius } from '@/theme/tokens'
+import { type QRCodeDownloadFormat, type QRCodeLevel, qrCodePropDefs } from './qr-code.props'
+
+export {
+  type QRCodeDownloadFormat,
+  type QRCodeLevel,
+  qrCodeDownloadFormats,
+  qrCodeLevels,
+  qrCodePropDefs,
+} from './qr-code.props'
 
 const ROOT_NAME = 'QRCode'
 const CANVAS_NAME = 'QRCode.Canvas'
 const SVG_NAME = 'QRCode.Svg'
 const IMAGE_NAME = 'QRCode.Image'
 const SKELETON_NAME = 'QRCode.Skeleton'
-
-export type QRCodeLevel = 'L' | 'M' | 'Q' | 'H'
-export type QRCodeDownloadFormat = 'png' | 'svg'
 
 type QRCodeState = {
   dataUrl: string | null
@@ -269,12 +275,12 @@ const QRCodeRoot = React.forwardRef<HTMLDivElement, QRCodeRootProps>(
       width,
       height,
       size,
-      level = 'M',
-      margin = 1,
-      radius: radiusProp = 'none',
-      color = 'neutral',
+      level = qrCodePropDefs.level.default,
+      margin = qrCodePropDefs.margin.default,
+      radius: radiusProp = qrCodePropDefs.radius.default as Radius,
+      color = qrCodePropDefs.color.default as Color,
       foregroundColor,
-      backgroundColor = '#ffffff',
+      backgroundColor = qrCodePropDefs.backgroundColor.default,
       onError,
       onGenerated,
       asChild = false,
@@ -326,8 +332,8 @@ const QRCodeRoot = React.forwardRef<HTMLDivElement, QRCodeRootProps>(
       [listenersRef, stateRef],
     )
 
-    const resolvedWidth = width ?? size ?? 200
-    const resolvedHeight = height ?? size ?? width ?? 200
+    const resolvedWidth = width ?? size ?? qrCodePropDefs.width.default
+    const resolvedHeight = height ?? size ?? width ?? qrCodePropDefs.height.default
     const resolvedSize = Math.min(resolvedWidth, resolvedHeight)
     const radius = useThemeRadius(radiusProp)
     const rawForegroundColor = getForegroundColor(color, foregroundColor)

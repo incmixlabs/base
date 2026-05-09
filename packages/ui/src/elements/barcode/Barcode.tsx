@@ -5,45 +5,17 @@ import { useComposedRefs } from '@/lib/compose-refs'
 import { cn } from '@/lib/utils'
 import { resolveInteractiveForegroundToken, semanticColorVar } from '@/theme/props/color.prop'
 import type { Color } from '@/theme/tokens'
+import { type BarcodeFormat, type BarcodeTextAlign, type BarcodeTextPosition, barcodePropDefs } from './barcode.props'
 
-export type BarcodeFormat =
-  | 'CODE128'
-  | 'CODE128A'
-  | 'CODE128B'
-  | 'CODE128C'
-  | 'EAN13'
-  | 'EAN8'
-  | 'UPC'
-  | 'CODE39'
-  | 'ITF14'
-  | 'ITF'
-  | 'MSI'
-  | 'MSI10'
-  | 'MSI11'
-  | 'MSI1010'
-  | 'MSI1110'
-  | 'pharmacode'
-  | 'codabar'
-
-export const barcodeFormats: BarcodeFormat[] = [
-  'CODE128',
-  'CODE128A',
-  'CODE128B',
-  'CODE128C',
-  'EAN13',
-  'EAN8',
-  'UPC',
-  'CODE39',
-  'ITF14',
-  'ITF',
-  'MSI',
-  'MSI10',
-  'MSI11',
-  'MSI1010',
-  'MSI1110',
-  'pharmacode',
-  'codabar',
-]
+export {
+  type BarcodeFormat,
+  type BarcodeTextAlign,
+  type BarcodeTextPosition,
+  barcodeFormats,
+  barcodePropDefs,
+  barcodeTextAlignments,
+  barcodeTextPositions,
+} from './barcode.props'
 
 export interface BarcodeProps
   extends Omit<React.SVGAttributes<SVGSVGElement>, 'color' | 'height' | 'width' | 'onError'> {
@@ -60,8 +32,8 @@ export interface BarcodeProps
   font?: string
   fontSize?: number
   fontOptions?: string
-  textAlign?: 'left' | 'center' | 'right'
-  textPosition?: 'top' | 'bottom'
+  textAlign?: BarcodeTextAlign
+  textPosition?: BarcodeTextPosition
   textMargin?: number
   onError?: (error: Error) => void
   onGenerated?: () => void
@@ -71,21 +43,21 @@ const Barcode = React.forwardRef<SVGSVGElement, BarcodeProps>(
   (
     {
       value,
-      format = 'CODE128',
-      color = 'neutral',
+      format = barcodePropDefs.format.default,
+      color = barcodePropDefs.color.default as Color,
       foregroundColor,
-      backgroundColor = '#ffffff',
-      width = 2,
-      height = 100,
-      margin = 10,
-      displayValue = true,
+      backgroundColor = barcodePropDefs.backgroundColor.default,
+      width = barcodePropDefs.width.default,
+      height = barcodePropDefs.height.default,
+      margin = barcodePropDefs.margin.default,
+      displayValue = barcodePropDefs.displayValue.default,
       text,
-      font = 'monospace',
-      fontSize = 20,
-      fontOptions = '',
-      textAlign = 'center',
-      textPosition = 'bottom',
-      textMargin = 2,
+      font = barcodePropDefs.font.default,
+      fontSize = barcodePropDefs.fontSize.default,
+      fontOptions = barcodePropDefs.fontOptions.default,
+      textAlign = barcodePropDefs.textAlign.default,
+      textPosition = barcodePropDefs.textPosition.default,
+      textMargin = barcodePropDefs.textMargin.default,
       onError,
       onGenerated,
       className,
