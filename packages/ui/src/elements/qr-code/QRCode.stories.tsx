@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button } from '@/elements'
-import { QRCode } from '@/elements/qr-code'
+import { QRCode, qrCodeLevels } from '@/elements/qr-code'
 
 const meta: Meta<typeof QRCode> = {
   title: 'Elements/QRCode',
@@ -18,7 +18,7 @@ const meta: Meta<typeof QRCode> = {
   argTypes: {
     level: {
       control: 'select',
-      options: ['L', 'M', 'Q', 'H'],
+      options: qrCodeLevels,
     },
     color: {
       control: 'select',

@@ -21,3 +21,4 @@ export {
   type QRCodeSvgProps,
   useQRCode,
 } from './QRCode'
+export { qrCodeDownloadFormats, qrCodeLevels, qrCodePropDefs } from './qr-code.props'
