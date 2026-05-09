@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { useComposedRefs } from '@/lib/compose-refs'
 import { cn } from '@/lib/utils'
-import { semanticColorVar } from '@/theme/props/color.prop'
+import { resolveInteractiveForegroundToken, semanticColorVar } from '@/theme/props/color.prop'
 import type { Color } from '@/theme/tokens'
 
 export type BarcodeFormat =
@@ -98,7 +98,8 @@ const Barcode = React.forwardRef<SVGSVGElement, BarcodeProps>(
     const svgRef = React.useRef<SVGSVGElement | null>(null)
     const composedRef = useComposedRefs(ref, svgRef)
     const [error, setError] = React.useState<Error | null>(null)
-    const lineColor = foregroundColor ?? (color ? semanticColorVar(color, 'primary') : '#000000')
+    const lineColor =
+      foregroundColor ?? (color ? semanticColorVar(color, resolveInteractiveForegroundToken(color)) : '#000000')
     const onErrorRef = React.useRef(onError)
     const onGeneratedRef = React.useRef(onGenerated)
 

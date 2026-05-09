@@ -70,4 +70,20 @@ describe('Barcode', () => {
 
     expect(screen.getByTestId('barcode')).toHaveAttribute('aria-invalid', 'true')
   })
+
+  it('uses readable semantic foreground tokens for color prop values', async () => {
+    render(<Barcode value="SKU-123" color="neutral" />)
+
+    await waitFor(() => {
+      expect(JsBarcode).toHaveBeenCalled()
+    })
+
+    expect(JsBarcode).toHaveBeenCalledWith(
+      expect.any(SVGSVGElement),
+      'SKU-123',
+      expect.objectContaining({
+        lineColor: 'var(--color-neutral-text)',
+      }),
+    )
+  })
 })

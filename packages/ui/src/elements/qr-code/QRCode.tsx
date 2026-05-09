@@ -6,7 +6,7 @@ import { useLazyRef } from '@/hooks/use-lazy-ref'
 import { Slot } from '@/layouts/layout-utils'
 import { useComposedRefs } from '@/lib/compose-refs'
 import { cn } from '@/lib/utils'
-import { semanticColorVar } from '@/theme/props/color.prop'
+import { resolveInteractiveForegroundToken, semanticColorVar } from '@/theme/props/color.prop'
 import type { Color, Radius } from '@/theme/tokens'
 
 const ROOT_NAME = 'QRCode'
@@ -234,7 +234,7 @@ function resolveQRCodeColor(value: string, element: Element | null, fallback: st
 }
 
 function getForegroundColor(color: Color | undefined, foregroundColor: string | undefined): string {
-  return foregroundColor ?? (color ? semanticColorVar(color, 'primary') : '#000000')
+  return foregroundColor ?? (color ? semanticColorVar(color, resolveInteractiveForegroundToken(color)) : '#000000')
 }
 
 function clearCanvas(canvas: HTMLCanvasElement | null, width: number, height: number) {
@@ -373,7 +373,15 @@ const QRCodeRoot = React.forwardRef<HTMLDivElement, QRCodeRootProps>(
         const currentState = store.getState()
         if (currentState.generatingKey === generationKey || currentState.generationKey === generationKey) return
 
-        store.setStates({ isGenerating: true, generatingKey: generationKey, error: null })
+        clearCanvas(canvasRef.current, resolvedSize, resolvedSize)
+        store.setStates({
+          dataUrl: null,
+          svgString: null,
+          isGenerating: true,
+          generatingKey: generationKey,
+          error: null,
+          generationKey: '',
+        })
 
         const resolvedForegroundColor = resolveQRCodeColor(rawForegroundColor, rootRef.current, '#000000')
         const resolvedBackgroundColor = resolveQRCodeColor(backgroundColor, rootRef.current, '#ffffff')
@@ -389,6 +397,8 @@ const QRCodeRoot = React.forwardRef<HTMLDivElement, QRCodeRootProps>(
 
         try {
           const QRCodeModule = await import('qrcode')
+          if (!isActive || store.getState().generatingKey !== generationKey) return
+
           let dataUrl: string | null = null
 
           try {
@@ -400,16 +410,20 @@ const QRCodeRoot = React.forwardRef<HTMLDivElement, QRCodeRootProps>(
             dataUrl = null
           }
 
+          if (!isActive || store.getState().generatingKey !== generationKey) return
+
           if (canvasRef.current) {
             await QRCodeModule.toCanvas(canvasRef.current, value, options)
           }
+
+          if (!isActive || store.getState().generatingKey !== generationKey) return
 
           const svgString = await QRCodeModule.toString(value, {
             ...options,
             type: 'svg',
           })
 
-          if (!isActive) return
+          if (!isActive || store.getState().generatingKey !== generationKey) return
 
           store.setStates({
             dataUrl,

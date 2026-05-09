@@ -21,7 +21,7 @@ const meta: Meta<typeof Barcode> = {
     },
     color: {
       control: 'select',
-      options: ['slate', 'primary', 'secondary', 'accent', 'neutral', 'info', 'success', 'warning', 'error'],
+      options: ['slate', 'primary', 'secondary', 'accent', 'neutral', 'info', 'success', 'warning', 'error', 'inverse'],
     },
   },
 }

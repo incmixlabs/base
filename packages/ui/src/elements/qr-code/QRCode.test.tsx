@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen, waitFor } from '@testing-library/react'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { QRCode } from './QRCode'
 
 const toCanvas = vi.fn()
@@ -13,9 +13,20 @@ vi.mock('qrcode', () => ({
   toString,
 }))
 
+const originalGetContext = HTMLCanvasElement.prototype.getContext
+
+beforeEach(() => {
+  HTMLCanvasElement.prototype.getContext = vi.fn(() => ({ clearRect: vi.fn() })) as unknown as typeof originalGetContext
+})
+
 afterEach(() => {
   cleanup()
   vi.clearAllMocks()
+  HTMLCanvasElement.prototype.getContext = originalGetContext
+  document.documentElement.style.removeProperty('--color-neutral-text')
+  document.documentElement.style.removeProperty('--color-neutral-primary')
+  document.documentElement.style.removeProperty('--color-inverse-primary')
+  document.documentElement.style.removeProperty('--color-inverse-text')
 })
 
 describe('QRCode', () => {
@@ -90,6 +101,137 @@ describe('QRCode', () => {
     expect(options.color.dark).toMatch(/^#[\da-f]{6}$/i)
     expect(options.color.dark).not.toBe('#000000')
     expect(options.color.light).toBe('#ffffff')
+  })
+
+  it('uses readable semantic foreground tokens for color prop values', async () => {
+    document.documentElement.style.setProperty('--color-neutral-text', '#222222')
+    document.documentElement.style.setProperty('--color-neutral-primary', '#ffffff')
+    document.documentElement.style.setProperty('--color-inverse-primary', '#111111')
+    document.documentElement.style.setProperty('--color-inverse-text', '#eeeeee')
+    toCanvas.mockResolvedValue(undefined)
+    toDataURL.mockResolvedValue('data:image/png;base64,qr')
+    toString.mockResolvedValue('<svg viewBox="0 0 1 1" />')
+
+    const { rerender } = render(
+      <QRCode value="INV-123" color="neutral">
+        <QRCode.Canvas />
+      </QRCode>,
+    )
+
+    await waitFor(() => {
+      expect(toCanvas).toHaveBeenCalledTimes(1)
+    })
+
+    expect(toCanvas.mock.calls[0][2]).toEqual(
+      expect.objectContaining({
+        color: expect.objectContaining({ dark: '#222222' }),
+      }),
+    )
+
+    rerender(
+      <QRCode value="INV-456" color="inverse">
+        <QRCode.Canvas />
+      </QRCode>,
+    )
+
+    await waitFor(() => {
+      expect(toCanvas).toHaveBeenCalledTimes(2)
+    })
+
+    expect(toCanvas.mock.calls[1][2]).toEqual(
+      expect.objectContaining({
+        color: expect.objectContaining({ dark: '#111111' }),
+      }),
+    )
+  })
+
+  it('clears completed payloads before regenerating', async () => {
+    const dataUrlResolves: Array<(value: string) => void> = []
+
+    toCanvas.mockResolvedValue(undefined)
+    toDataURL.mockImplementation(
+      () =>
+        new Promise<string>(resolve => {
+          dataUrlResolves.push(resolve)
+        }),
+    )
+    toString.mockImplementation(async value => `<svg>${value}</svg>`)
+
+    const { rerender } = render(
+      <QRCode value="INV-1">
+        <QRCode.Skeleton data-testid="skeleton" />
+        <QRCode.Image data-testid="image" />
+        <QRCode.Download data-testid="download" />
+      </QRCode>,
+    )
+
+    await waitFor(() => {
+      expect(dataUrlResolves).toHaveLength(1)
+    })
+    dataUrlResolves[0]?.('data:image/png;base64,INV-1')
+
+    await waitFor(() => {
+      expect(screen.getByTestId('image')).toHaveAttribute('src', 'data:image/png;base64,INV-1')
+    })
+    expect(screen.getByTestId('download')).not.toBeDisabled()
+
+    rerender(
+      <QRCode value="INV-2">
+        <QRCode.Skeleton data-testid="skeleton" />
+        <QRCode.Image data-testid="image" />
+        <QRCode.Download data-testid="download" />
+      </QRCode>,
+    )
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('image')).not.toBeInTheDocument()
+    })
+    expect(screen.getByTestId('skeleton')).toBeInTheDocument()
+    expect(screen.getByTestId('download')).toBeDisabled()
+  })
+
+  it('does not let stale generations repaint the shared canvas', async () => {
+    const dataUrlResolves: Array<(value: string) => void> = []
+
+    toCanvas.mockResolvedValue(undefined)
+    toDataURL.mockImplementation(
+      () =>
+        new Promise<string>(resolve => {
+          dataUrlResolves.push(resolve)
+        }),
+    )
+    toString.mockImplementation(async value => `<svg>${value}</svg>`)
+
+    const { rerender } = render(
+      <QRCode value="INV-1">
+        <QRCode.Canvas />
+        <QRCode.Svg data-testid="svg" />
+      </QRCode>,
+    )
+
+    await waitFor(() => {
+      expect(toDataURL).toHaveBeenCalledTimes(1)
+    })
+
+    rerender(
+      <QRCode value="INV-2">
+        <QRCode.Canvas />
+        <QRCode.Svg data-testid="svg" />
+      </QRCode>,
+    )
+
+    await waitFor(() => {
+      expect(toDataURL).toHaveBeenCalledTimes(2)
+    })
+
+    dataUrlResolves[0]?.('data:image/png;base64,INV-1')
+    dataUrlResolves[1]?.('data:image/png;base64,INV-2')
+
+    await waitFor(() => {
+      expect(toCanvas).toHaveBeenCalledTimes(1)
+    })
+    expect(toCanvas).toHaveBeenCalledWith(expect.any(HTMLCanvasElement), 'INV-2', expect.anything())
+    expect(toCanvas).not.toHaveBeenCalledWith(expect.any(HTMLCanvasElement), 'INV-1', expect.anything())
   })
 
   it('starts a new generation when the value changes while a previous generation is pending', async () => {
