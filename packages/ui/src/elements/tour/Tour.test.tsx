@@ -189,4 +189,68 @@ describe('Tour', () => {
 
     expect(await screen.findByRole('button', { name: 'Done' })).toBeInTheDocument()
   })
+
+  it('ignores invalid selector targets', () => {
+    expect(() => {
+      render(
+        <Tour open>
+          <TourPortal>
+            <TourStep target="[invalid">
+              <TourHeader>
+                <TourTitle>Invalid target</TourTitle>
+              </TourHeader>
+            </TourStep>
+          </TourPortal>
+        </Tour>,
+      )
+    }).not.toThrow()
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+  })
+
+  it('updates step metadata without reordering registered steps', async () => {
+    const user = userEvent.setup()
+
+    function RetargetableDemo({ firstTarget }: { firstTarget: string }) {
+      return (
+        <div>
+          <button id="target-one" type="button">
+            Target one
+          </button>
+          <button id="target-one-alt" type="button">
+            Target one alternate
+          </button>
+          <button id="target-two" type="button">
+            Target two
+          </button>
+          <Tour open>
+            <TourPortal>
+              <TourStep target={firstTarget}>
+                <TourHeader>
+                  <TourTitle>First step</TourTitle>
+                </TourHeader>
+              </TourStep>
+              <TourStep target="#target-two">
+                <TourHeader>
+                  <TourTitle>Second step</TourTitle>
+                </TourHeader>
+              </TourStep>
+            </TourPortal>
+          </Tour>
+        </div>
+      )
+    }
+
+    const { rerender } = render(<RetargetableDemo firstTarget="#target-one" />)
+
+    await user.click(await screen.findByRole('button', { name: 'Next step' }))
+    expect(screen.getByText('Second step')).toBeInTheDocument()
+
+    rerender(<RetargetableDemo firstTarget="#target-one-alt" />)
+
+    await waitFor(() => {
+      expect(screen.getByText('Second step')).toBeInTheDocument()
+    })
+    expect(screen.queryByText('First step')).not.toBeInTheDocument()
+  })
 })

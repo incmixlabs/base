@@ -229,6 +229,8 @@ function useFocusTrap(
 
       if (!tourOpenRef.current) {
         window.setTimeout(() => {
+          if (!container.isConnected) return
+
           const closeAutoFocusEvent = new CustomEvent(CLOSE_AUTO_FOCUS, EVENT_OPTIONS)
           if (onCloseAutoFocusRef.current) {
             container.addEventListener(CLOSE_AUTO_FOCUS, onCloseAutoFocusRef.current as EventListener, { once: true })
@@ -295,6 +297,7 @@ interface Store {
   setState: <K extends keyof StoreState>(key: K, value: StoreState[K]) => void
   notify: () => void
   addStep: (stepData: StepData) => { id: string; index: number }
+  updateStep: (id: string, stepData: StepData) => void
   removeStep: (id: string) => void
 }
 
@@ -313,7 +316,12 @@ function useStore<T>(selector: (state: StoreState) => T, ogStore?: Store | null)
 function getTargetElement(target: Target): HTMLElement | null {
   if (typeof target === 'string') {
     if (typeof document === 'undefined') return null
-    return document.querySelector(target)
+
+    try {
+      return document.querySelector(target)
+    } catch {
+      return null
+    }
   }
 
   if (target && 'current' in target) {
@@ -702,6 +710,15 @@ function Tour(props: TourProps) {
         store.notify()
         return { id, index }
       },
+      updateStep: (id, stepData) => {
+        const index = stepIdsMapRef.current.get(id)
+        if (index === undefined || Object.is(stateRef.current.steps[index], stepData)) return
+
+        stateRef.current.steps = stateRef.current.steps.map((currentStep, stepIndex) =>
+          stepIndex === index ? stepData : currentStep,
+        )
+        store.notify()
+      },
       removeStep: id => {
         const index = stepIdsMapRef.current.get(id)
         if (index === undefined) return
@@ -947,8 +964,8 @@ function TourStep(props: TourStepProps) {
   const resolvedSideOffset = sideOffset ?? context.sideOffset
   const resolvedAlignOffset = alignOffset ?? context.alignOffset
 
-  useIsomorphicLayoutEffect(() => {
-    const { id, index } = store.addStep({
+  const registeredStepData = React.useMemo<StepData>(
+    () => ({
       target,
       align: safeAlign,
       alignOffset: resolvedAlignOffset,
@@ -963,30 +980,43 @@ function TourStep(props: TourStepProps) {
       onStepEnter,
       onStepLeave,
       required: safeRequired,
-    })
+    }),
+    [
+      target,
+      safeSide,
+      resolvedSideOffset,
+      safeAlign,
+      resolvedAlignOffset,
+      collisionBoundary,
+      collisionPadding,
+      arrowPadding,
+      safeSticky,
+      safeHideWhenDetached,
+      safeAvoidCollisions,
+      safeRequired,
+      onStepEnter,
+      onStepLeave,
+    ],
+  )
+  const initialStepDataRef = React.useRef<StepData | null>(null)
+  if (!initialStepDataRef.current) {
+    initialStepDataRef.current = registeredStepData
+  }
+
+  useIsomorphicLayoutEffect(() => {
+    const { id, index } = store.addStep(initialStepDataRef.current ?? registeredStepData)
     stepIdRef.current = id
     stepOrderRef.current = index
 
     return () => {
       store.removeStep(stepIdRef.current)
     }
-  }, [
-    target,
-    safeSide,
-    resolvedSideOffset,
-    safeAlign,
-    resolvedAlignOffset,
-    collisionBoundary,
-    collisionPadding,
-    arrowPadding,
-    safeSticky,
-    safeHideWhenDetached,
-    safeAvoidCollisions,
-    safeRequired,
-    onStepEnter,
-    onStepLeave,
-    store,
-  ])
+  }, [store])
+
+  useIsomorphicLayoutEffect(() => {
+    if (!stepIdRef.current) return
+    store.updateStep(stepIdRef.current, registeredStepData)
+  }, [registeredStepData, store])
 
   const stepData = steps[value]
   const targetElement = stepData ? getTargetElement(stepData.target) : null
