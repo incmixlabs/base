@@ -939,6 +939,8 @@ function TourStep(props: TourStepProps) {
   const stepRef = React.useRef<StepElement | null>(null)
   const stepIdRef = React.useRef('')
   const stepOrderRef = React.useRef(-1)
+  const onStepEnterRef = React.useRef(onStepEnter)
+  const onStepLeaveRef = React.useRef(onStepLeave)
   const isPointerInsideReactTreeRef = React.useRef(false)
   const isFocusInsideReactTreeRef = React.useRef(false)
 
@@ -963,6 +965,8 @@ function TourStep(props: TourStepProps) {
     normalizeBooleanPropValue(tourStepPropDefs.forceMount, forceMount) ?? tourStepPropDefs.forceMount.default
   const resolvedSideOffset = sideOffset ?? context.sideOffset
   const resolvedAlignOffset = alignOffset ?? context.alignOffset
+  const handleStepEnter = React.useCallback(() => onStepEnterRef.current?.(), [])
+  const handleStepLeave = React.useCallback(() => onStepLeaveRef.current?.(), [])
 
   const registeredStepData = React.useMemo<StepData>(
     () => ({
@@ -977,8 +981,8 @@ function TourStep(props: TourStepProps) {
       sticky: safeSticky,
       hideWhenDetached: safeHideWhenDetached,
       avoidCollisions: safeAvoidCollisions,
-      onStepEnter,
-      onStepLeave,
+      onStepEnter: handleStepEnter,
+      onStepLeave: handleStepLeave,
       required: safeRequired,
     }),
     [
@@ -994,14 +998,19 @@ function TourStep(props: TourStepProps) {
       safeHideWhenDetached,
       safeAvoidCollisions,
       safeRequired,
-      onStepEnter,
-      onStepLeave,
+      handleStepEnter,
+      handleStepLeave,
     ],
   )
   const initialStepDataRef = React.useRef<StepData | null>(null)
   if (!initialStepDataRef.current) {
     initialStepDataRef.current = registeredStepData
   }
+
+  useIsomorphicLayoutEffect(() => {
+    onStepEnterRef.current = onStepEnter
+    onStepLeaveRef.current = onStepLeave
+  }, [onStepEnter, onStepLeave])
 
   useIsomorphicLayoutEffect(() => {
     const { id, index } = store.addStep(initialStepDataRef.current ?? registeredStepData)

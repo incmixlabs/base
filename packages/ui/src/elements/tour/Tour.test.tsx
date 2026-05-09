@@ -253,4 +253,57 @@ describe('Tour', () => {
     })
     expect(screen.queryByText('First step')).not.toBeInTheDocument()
   })
+
+  it('uses latest step callbacks without reordering registered steps', async () => {
+    const user = userEvent.setup()
+    const initialFirstEnter = vi.fn()
+    const latestFirstEnter = vi.fn()
+    const initialSecondLeave = vi.fn()
+    const latestSecondLeave = vi.fn()
+
+    function CallbackDemo({ useLatestCallbacks }: { useLatestCallbacks: boolean }) {
+      return (
+        <div>
+          <button id="target-one" type="button">
+            Target one
+          </button>
+          <button id="target-two" type="button">
+            Target two
+          </button>
+          <Tour open>
+            <TourPortal>
+              <TourStep target="#target-one" onStepEnter={useLatestCallbacks ? latestFirstEnter : initialFirstEnter}>
+                <TourHeader>
+                  <TourTitle>First step</TourTitle>
+                </TourHeader>
+              </TourStep>
+              <TourStep target="#target-two" onStepLeave={useLatestCallbacks ? latestSecondLeave : initialSecondLeave}>
+                <TourHeader>
+                  <TourTitle>Second step</TourTitle>
+                </TourHeader>
+              </TourStep>
+            </TourPortal>
+          </Tour>
+        </div>
+      )
+    }
+
+    const { rerender } = render(<CallbackDemo useLatestCallbacks={false} />)
+
+    await user.click(await screen.findByRole('button', { name: 'Next step' }))
+    expect(screen.getByText('Second step')).toBeInTheDocument()
+
+    rerender(<CallbackDemo useLatestCallbacks />)
+
+    await waitFor(() => {
+      expect(screen.getByText('Second step')).toBeInTheDocument()
+    })
+
+    await user.click(screen.getByRole('button', { name: 'Previous step' }))
+
+    expect(initialFirstEnter).not.toHaveBeenCalled()
+    expect(initialSecondLeave).not.toHaveBeenCalled()
+    expect(latestFirstEnter).toHaveBeenCalledTimes(1)
+    expect(latestSecondLeave).toHaveBeenCalledTimes(1)
+  })
 })
