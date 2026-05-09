@@ -71,6 +71,27 @@ describe('QRCode', () => {
     })
   })
 
+  it('normalizes CSS color syntax to QR renderer hex colors', async () => {
+    toCanvas.mockResolvedValue(undefined)
+    toDataURL.mockResolvedValue('data:image/png;base64,qr')
+    toString.mockResolvedValue('<svg viewBox="0 0 1 1" />')
+
+    render(
+      <QRCode value="INV-123" foregroundColor="oklch(0.643 0 90)" backgroundColor="oklch(1 0 0)">
+        <QRCode.Canvas />
+      </QRCode>,
+    )
+
+    await waitFor(() => {
+      expect(toCanvas).toHaveBeenCalled()
+    })
+
+    const options = toCanvas.mock.calls[0][2] as { color: { dark: string; light: string } }
+    expect(options.color.dark).toMatch(/^#[\da-f]{6}$/i)
+    expect(options.color.dark).not.toBe('#000000')
+    expect(options.color.light).toBe('#ffffff')
+  })
+
   it('starts a new generation when the value changes while a previous generation is pending', async () => {
     const canvasResolves: Array<() => void> = []
 

@@ -49,6 +49,7 @@ type QRCodeContextValue = {
 
 const QRCodeStoreContext = React.createContext<QRCodeStore | null>(null)
 const QRCodeContext = React.createContext<QRCodeContextValue | null>(null)
+const hexColorPattern = /^#(?:[\da-f]{3,4}|[\da-f]{6}|[\da-f]{8})$/i
 
 function useQRCodeStore<T>(selector: (state: QRCodeState) => T): T {
   const store = React.useContext(QRCodeStoreContext)
@@ -69,14 +70,167 @@ function useQRCodeContext(consumerName: string): QRCodeContextValue {
   return context
 }
 
-function resolveCssColor(value: string, element: Element | null, fallback: string): string {
-  if (typeof window === 'undefined' || !value.includes('var(')) return value
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(Math.max(value, min), max)
+}
 
-  const variableName = value.match(/var\((--[^),\s]+)/)?.[1]
-  if (!variableName) return fallback
+function toHexByte(value: number): string {
+  return Math.round(clamp(value, 0, 255))
+    .toString(16)
+    .padStart(2, '0')
+}
+
+function toHexColor(red: number, green: number, blue: number, alpha = 1): string {
+  const alphaHex = alpha < 1 ? toHexByte(alpha * 255) : ''
+  return `#${toHexByte(red)}${toHexByte(green)}${toHexByte(blue)}${alphaHex}`
+}
+
+function parseAlpha(value: string | undefined): number {
+  if (!value) return 1
+  const trimmed = value.trim()
+  const alpha = trimmed.endsWith('%') ? Number.parseFloat(trimmed) / 100 : Number.parseFloat(trimmed)
+  return Number.isFinite(alpha) ? clamp(alpha, 0, 1) : 1
+}
+
+function parseRgbChannel(value: string): number {
+  const trimmed = value.trim()
+  const channel = trimmed.endsWith('%') ? Number.parseFloat(trimmed) * 2.55 : Number.parseFloat(trimmed)
+  return Number.isFinite(channel) ? clamp(channel, 0, 255) : 0
+}
+
+function parseRgbColor(value: string): string | null {
+  const match = value.trim().match(/^rgba?\((.*)\)$/i)
+  if (!match) return null
+
+  const body = match[1].trim()
+  const commaParts = body.includes(',') ? body.split(/\s*,\s*/) : null
+  const channelParts = commaParts ? commaParts.slice(0, 3) : body.split('/')[0].trim().split(/\s+/)
+  const alphaPart = commaParts ? commaParts[3] : body.split('/')[1]
+
+  if (channelParts.length < 3) return null
+
+  return toHexColor(
+    parseRgbChannel(channelParts[0]),
+    parseRgbChannel(channelParts[1]),
+    parseRgbChannel(channelParts[2]),
+    parseAlpha(alphaPart),
+  )
+}
+
+function parseOklchLightness(value: string): number {
+  const trimmed = value.trim()
+  const lightness = trimmed.endsWith('%') ? Number.parseFloat(trimmed) / 100 : Number.parseFloat(trimmed)
+  return Number.isFinite(lightness) ? clamp(lightness, 0, 1) : 0
+}
+
+function parseOklchHue(value: string | undefined): number {
+  if (!value || value === 'none') return 0
+
+  const trimmed = value.trim()
+  if (trimmed.endsWith('turn')) return Number.parseFloat(trimmed) * 360
+  if (trimmed.endsWith('rad')) return Number.parseFloat(trimmed) * (180 / Math.PI)
+  if (trimmed.endsWith('grad')) return Number.parseFloat(trimmed) * 0.9
+
+  return Number.parseFloat(trimmed)
+}
+
+function linearSrgbToChannel(value: number): number {
+  const clamped = clamp(value, 0, 1)
+  const encoded = clamped <= 0.0031308 ? 12.92 * clamped : 1.055 * clamped ** (1 / 2.4) - 0.055
+  return encoded * 255
+}
+
+function parseOklchColor(value: string): string | null {
+  const match = value.trim().match(/^oklch\((.*)\)$/i)
+  if (!match) return null
+
+  const body = match[1].trim()
+  const [colorPart, alphaPart] = body.split('/')
+  const parts = colorPart.trim().split(/\s+/)
+  if (parts.length < 3) return null
+
+  const lightness = parseOklchLightness(parts[0])
+  const chroma = parts[1] === 'none' ? 0 : Number.parseFloat(parts[1])
+  const hue = parseOklchHue(parts[2])
+  if (!Number.isFinite(chroma) || !Number.isFinite(hue)) return null
+
+  const hueRadians = (hue * Math.PI) / 180
+  const labA = chroma * Math.cos(hueRadians)
+  const labB = chroma * Math.sin(hueRadians)
+  const long = (lightness + 0.3963377774 * labA + 0.2158037573 * labB) ** 3
+  const medium = (lightness - 0.1055613458 * labA - 0.0638541728 * labB) ** 3
+  const short = (lightness - 0.0894841775 * labA - 1.291485548 * labB) ** 3
+
+  return toHexColor(
+    linearSrgbToChannel(4.0767416621 * long - 3.3077115913 * medium + 0.2309699292 * short),
+    linearSrgbToChannel(-1.2684380046 * long + 2.6097574011 * medium - 0.3413193965 * short),
+    linearSrgbToChannel(-0.0041960863 * long - 0.7034186147 * medium + 1.707614701 * short),
+    parseAlpha(alphaPart),
+  )
+}
+
+function parseHexCompatibleColor(value: string): string | null {
+  const trimmed = value.trim()
+  if (hexColorPattern.test(trimmed)) return trimmed
+  if (trimmed === 'transparent') return '#00000000'
+
+  return parseRgbColor(trimmed) ?? parseOklchColor(trimmed)
+}
+
+function getComputedColor(value: string, element: Element | null): string | null {
+  if (typeof document === 'undefined') return null
+
+  const ownerDocument = element?.ownerDocument ?? document
+  const view = ownerDocument.defaultView
+  if (!view) return null
+
+  const probe = ownerDocument.createElement('span')
+  probe.style.position = 'absolute'
+  probe.style.pointerEvents = 'none'
+  probe.style.visibility = 'hidden'
+  probe.style.color = value
+
+  const parent = element ?? ownerDocument.body ?? ownerDocument.documentElement
+  parent.appendChild(probe)
+
+  try {
+    return view.getComputedStyle(probe).color.trim() || null
+  } finally {
+    probe.remove()
+  }
+}
+
+function resolveCssVariableReferences(value: string, element: Element | null): string {
+  if (typeof document === 'undefined' || typeof window === 'undefined' || !value.includes('var(')) return value
 
   const owner = element ?? document.documentElement
-  return window.getComputedStyle(owner).getPropertyValue(variableName).trim() || fallback
+  let resolved = value.trim()
+
+  for (let index = 0; index < 8 && resolved.includes('var('); index += 1) {
+    const next = resolved.replace(/var\(\s*(--[\w-]+)\s*(?:,\s*([^)]+))?\)/g, (_, variableName, fallback) => {
+      return window.getComputedStyle(owner).getPropertyValue(variableName).trim() || fallback || ''
+    })
+
+    if (next === resolved) break
+    resolved = next.trim()
+  }
+
+  return resolved
+}
+
+function resolveQRCodeColor(value: string, element: Element | null, fallback: string): string {
+  const parsed = parseHexCompatibleColor(value)
+  if (parsed) return parsed
+
+  const computed = getComputedColor(value, element)
+  if (computed) {
+    const parsedComputed = parseHexCompatibleColor(computed)
+    if (parsedComputed) return parsedComputed
+  }
+
+  const resolved = resolveCssVariableReferences(value, element)
+  const parsedResolved = parseHexCompatibleColor(resolved)
+  return parsedResolved ?? fallback
 }
 
 function getForegroundColor(color: Color | undefined, foregroundColor: string | undefined): string {
@@ -221,8 +375,8 @@ const QRCodeRoot = React.forwardRef<HTMLDivElement, QRCodeRootProps>(
 
         store.setStates({ isGenerating: true, generatingKey: generationKey, error: null })
 
-        const resolvedForegroundColor = resolveCssColor(rawForegroundColor, rootRef.current, '#000000')
-        const resolvedBackgroundColor = resolveCssColor(backgroundColor, rootRef.current, '#ffffff')
+        const resolvedForegroundColor = resolveQRCodeColor(rawForegroundColor, rootRef.current, '#000000')
+        const resolvedBackgroundColor = resolveQRCodeColor(backgroundColor, rootRef.current, '#ffffff')
         const options = {
           errorCorrectionLevel: level,
           margin,
