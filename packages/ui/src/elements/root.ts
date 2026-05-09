@@ -82,6 +82,13 @@ export { AlertDialog } from './dialog/AlertDialog'
 export { Dialog } from './dialog/Dialog'
 export { DirtyGuardDialog, type DirtyGuardDialogProps } from './dialog/DirtyGuardDialog'
 export type { DialogContentAlign, DialogContentSize } from './dialog/dialog.props'
+export {
+  Divider,
+  type DividerAlign,
+  type DividerOrientation,
+  type DividerProps,
+  type DividerSize,
+} from './divider/Divider'
 // Gradient Background
 export { GradientBackground, type GradientBackgroundProps } from './gradient-background/GradientBackground'
 export {
