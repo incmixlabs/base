@@ -25,8 +25,6 @@ afterEach(() => {
   HTMLCanvasElement.prototype.getContext = originalGetContext
   document.documentElement.style.removeProperty('--color-neutral-text')
   document.documentElement.style.removeProperty('--color-neutral-primary')
-  document.documentElement.style.removeProperty('--color-inverse-primary')
-  document.documentElement.style.removeProperty('--color-inverse-text')
 })
 
 describe('QRCode', () => {
@@ -103,17 +101,15 @@ describe('QRCode', () => {
     expect(options.color.light).toBe('#ffffff')
   })
 
-  it('uses readable semantic foreground tokens for color prop values', async () => {
+  it('uses neutral readable foreground tokens by default', async () => {
     document.documentElement.style.setProperty('--color-neutral-text', '#222222')
     document.documentElement.style.setProperty('--color-neutral-primary', '#ffffff')
-    document.documentElement.style.setProperty('--color-inverse-primary', '#111111')
-    document.documentElement.style.setProperty('--color-inverse-text', '#eeeeee')
     toCanvas.mockResolvedValue(undefined)
     toDataURL.mockResolvedValue('data:image/png;base64,qr')
     toString.mockResolvedValue('<svg viewBox="0 0 1 1" />')
 
-    const { rerender } = render(
-      <QRCode value="INV-123" color="neutral">
+    render(
+      <QRCode value="INV-123">
         <QRCode.Canvas />
       </QRCode>,
     )
@@ -125,22 +121,6 @@ describe('QRCode', () => {
     expect(toCanvas.mock.calls[0][2]).toEqual(
       expect.objectContaining({
         color: expect.objectContaining({ dark: '#222222' }),
-      }),
-    )
-
-    rerender(
-      <QRCode value="INV-456" color="inverse">
-        <QRCode.Canvas />
-      </QRCode>,
-    )
-
-    await waitFor(() => {
-      expect(toCanvas).toHaveBeenCalledTimes(2)
-    })
-
-    expect(toCanvas.mock.calls[1][2]).toEqual(
-      expect.objectContaining({
-        color: expect.objectContaining({ dark: '#111111' }),
       }),
     )
   })

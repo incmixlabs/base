@@ -12,7 +12,7 @@ const meta: Meta<typeof QRCode> = {
     level: 'M',
     margin: 1,
     radius: 'md',
-    color: 'slate',
+    color: 'neutral',
     backgroundColor: '#ffffff',
   },
   argTypes: {
@@ -22,7 +22,7 @@ const meta: Meta<typeof QRCode> = {
     },
     color: {
       control: 'select',
-      options: ['slate', 'primary', 'secondary', 'accent', 'neutral', 'info', 'success', 'warning', 'error', 'inverse'],
+      options: ['slate', 'primary', 'secondary', 'accent', 'neutral', 'info', 'success', 'warning', 'error'],
     },
   },
 }

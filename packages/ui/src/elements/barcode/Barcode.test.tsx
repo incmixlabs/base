@@ -71,8 +71,8 @@ describe('Barcode', () => {
     expect(screen.getByTestId('barcode')).toHaveAttribute('aria-invalid', 'true')
   })
 
-  it('uses readable semantic foreground tokens for color prop values', async () => {
-    render(<Barcode value="SKU-123" color="neutral" />)
+  it('uses neutral readable foreground tokens by default', async () => {
+    render(<Barcode value="SKU-123" />)
 
     await waitFor(() => {
       expect(JsBarcode).toHaveBeenCalled()

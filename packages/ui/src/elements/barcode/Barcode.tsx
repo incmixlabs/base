@@ -72,7 +72,7 @@ const Barcode = React.forwardRef<SVGSVGElement, BarcodeProps>(
     {
       value,
       format = 'CODE128',
-      color,
+      color = 'neutral',
       foregroundColor,
       backgroundColor = '#ffffff',
       width = 2,

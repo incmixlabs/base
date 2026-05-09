@@ -272,7 +272,7 @@ const QRCodeRoot = React.forwardRef<HTMLDivElement, QRCodeRootProps>(
       level = 'M',
       margin = 1,
       radius: radiusProp = 'none',
-      color,
+      color = 'neutral',
       foregroundColor,
       backgroundColor = '#ffffff',
       onError,
