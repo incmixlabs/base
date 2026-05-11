@@ -21,13 +21,17 @@ export interface DateFormatters {
 }
 
 /** Shared locale-aware formatters for date calendar components. */
-export function useDateFormatters(): DateFormatters {
-  const [locale, setLocale] = useState('en-US')
+export function useDateFormatters(initialLocale?: string): DateFormatters {
+  const [locale, setLocale] = useState(() => resolveLocale(initialLocale))
 
   useEffect(() => {
+    if (initialLocale) {
+      setLocale(resolveLocale(initialLocale))
+      return
+    }
     const detected = resolveLocale(document.documentElement.lang)
     setLocale(detected)
-  }, [])
+  }, [initialLocale])
 
   const weekStartsOn = useMemo(() => getWeekStartsOn(locale), [locale])
   const monthHeadingFormatter = useMemo(

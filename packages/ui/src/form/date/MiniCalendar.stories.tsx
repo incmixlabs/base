@@ -64,6 +64,12 @@ export const Bounds: Story = {
 export const Playground: Story = {
   render: args => {
     const [value, setValue] = React.useState<Date>((args.value as Date) ?? new Date(2026, 0, 15))
+    React.useEffect(() => {
+      if (args.value instanceof Date) {
+        setValue(args.value)
+      }
+    }, [args.value])
+
     return <MiniCalendar {...args} value={value} onChange={setValue} />
   },
   args: {

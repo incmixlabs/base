@@ -25,6 +25,8 @@ export const dateNavButtonVariantValues = ['soft', 'outline', 'ghost'] as const
 export const dateMiniCalendarSizeValues = dateSizeValues
 
 export type DateSize = (typeof dateSizeValues)[number]
+/** @deprecated Use DateSize. */
+export type DateNextSize = DateSize
 export type DateVariant = (typeof dateVariantValues)[number]
 export type DateColor = (typeof dateColorValues)[number]
 export type DateRadius = (typeof dateRadiusValues)[number]

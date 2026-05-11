@@ -185,6 +185,7 @@ export const AppointmentPicker = forwardRef<HTMLDivElement, AppointmentPickerPro
       if (disabled) return
       setSelectedDate(date)
       setSelectedTime(undefined)
+      onChange?.(undefined)
     }
 
     const handleTimeSelect = (time: string) => {

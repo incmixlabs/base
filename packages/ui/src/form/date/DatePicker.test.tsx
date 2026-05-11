@@ -325,6 +325,24 @@ describe('DatePicker', () => {
     })
   })
 
+  it('closes text-entry calendar when clicking outside', async () => {
+    const user = userEvent.setup()
+    render(
+      <>
+        <DatePicker ariaLabel="Start date" entryMode="text" />
+        <button type="button">Outside</button>
+      </>,
+    )
+
+    await user.click(screen.getByRole('button', { name: /open calendar/i }))
+    expect(await screen.findByRole('dialog')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Outside' }))
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+  })
+
   it.each([
     'ar-EG',
     'fa-IR-u-ca-gregory',

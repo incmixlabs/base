@@ -21,6 +21,7 @@ export { DateInput, type DateInputProps } from './DateInput'
 export { DatePicker, type DatePickerProps } from './DatePicker'
 export { DateRangePicker, type DateRangePickerProps } from './DateRangePicker'
 export { DateTimePicker, type DateTimePickerProps } from './DateTimePicker'
+export type { DateNextSize, DateSize } from './date.props'
 export { type DateRangeValue, fromDateRangeValue, toDateRangeValue } from './date-range-value-boundary'
 export { fromDateValue, toDateValue } from './date-value-boundary'
 export type {

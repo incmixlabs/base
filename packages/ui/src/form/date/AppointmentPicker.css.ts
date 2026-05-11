@@ -42,12 +42,12 @@ const appointmentSlotWidthBySize: Record<DateSize, string> = {
 }
 
 const appointmentSlotHeightBySize: Record<DateSize, string> = {
-  xs: '180px',
-  sm: '200px',
-  md: '220px',
-  lg: '240px',
-  xl: '260px',
-  '2x': '280px',
+  xs: '11.25rem',
+  sm: '12.5rem',
+  md: '13.75rem',
+  lg: '15rem',
+  xl: '16.25rem',
+  '2x': '17.5rem',
 }
 
 /* ── Root ── */

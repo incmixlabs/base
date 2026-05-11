@@ -28,6 +28,7 @@ describe('MiniCalendar', () => {
     }
 
     await user.click(dayButton)
-    expect(onChange).toHaveBeenCalled()
+    expect(onChange).toHaveBeenCalledTimes(1)
+    expect(onChange).toHaveBeenCalledWith(new Date(2026, 0, 16))
   })
 })

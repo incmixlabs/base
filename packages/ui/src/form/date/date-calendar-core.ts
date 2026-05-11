@@ -12,11 +12,15 @@ export const getWeekStartsOn = (locale: string): WeekStartsOn => {
     }
   ).Locale
   if (!LocaleCtor) return 0
-  const localeInfo = new LocaleCtor(locale) as { weekInfo?: { firstDay?: number } }
-  const firstDay = localeInfo.weekInfo?.firstDay
-  if (typeof firstDay !== 'number') return 0
-  if (firstDay === 7) return 0
-  if (firstDay >= 1 && firstDay <= 6) return firstDay as 1 | 2 | 3 | 4 | 5 | 6
+  try {
+    const localeInfo = new LocaleCtor(locale) as { weekInfo?: { firstDay?: number } }
+    const firstDay = localeInfo.weekInfo?.firstDay
+    if (typeof firstDay !== 'number') return 0
+    if (firstDay === 7) return 0
+    if (firstDay >= 1 && firstDay <= 6) return firstDay as 1 | 2 | 3 | 4 | 5 | 6
+  } catch {
+    return 0
+  }
   return 0
 }
 

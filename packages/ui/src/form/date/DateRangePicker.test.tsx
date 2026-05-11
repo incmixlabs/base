@@ -403,7 +403,7 @@ describe('DateRangePicker', () => {
   })
 
   it(
-    'keeps right month stable when navigating previous from the left month in dual mode',
+    'keeps dual-month panels contiguous when navigating previous',
     () => {
       render(
         <DateRangePicker
@@ -422,7 +422,34 @@ describe('DateRangePicker', () => {
       fireEvent.click(screen.getByRole('button', { name: /previous month/i }))
 
       expect(screen.getByText('January 2026')).toBeInTheDocument()
+      expect(screen.getByText('February 2026')).toBeInTheDocument()
+      expect(screen.queryByText('March 2026')).not.toBeInTheDocument()
+    },
+    DUAL_MONTH_INTERACTION_TEST_TIMEOUT_MS,
+  )
+
+  it(
+    'keeps dual-month panels contiguous when navigating next',
+    () => {
+      render(
+        <DateRangePicker
+          ariaLabel="Travel dates"
+          visibleMonths={2}
+          value={{ from: new Date(2026, 1, 10), to: new Date(2026, 2, 12) }}
+          onChange={vi.fn()}
+        />,
+      )
+
+      fireEvent.click(screen.getByRole('button', { name: /open calendar/i }))
+
+      expect(screen.getByText('February 2026')).toBeInTheDocument()
       expect(screen.getByText('March 2026')).toBeInTheDocument()
+
+      fireEvent.click(screen.getByRole('button', { name: /next month/i }))
+
+      expect(screen.queryByText('February 2026')).not.toBeInTheDocument()
+      expect(screen.getByText('March 2026')).toBeInTheDocument()
+      expect(screen.getByText('April 2026')).toBeInTheDocument()
     },
     DUAL_MONTH_INTERACTION_TEST_TIMEOUT_MS,
   )

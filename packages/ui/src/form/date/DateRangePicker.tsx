@@ -245,15 +245,13 @@ export function DateRangePicker({
   /* ── Navigation (dual mode — single mode uses panel's built-in nav) ── */
   const handlePrevMonth = () => {
     if (effectiveIsDisabled) return
-    const normalizedMonths = normalizeDualMonths(subMonths(leftMonth, 1), rightMonth)
-    setLeftMonth(normalizedMonths.left)
-    setRightMonth(normalizedMonths.right)
+    setLeftMonth(prev => subMonths(prev, 1))
+    setRightMonth(prev => subMonths(prev, 1))
   }
   const handleNextMonth = () => {
     if (effectiveIsDisabled) return
-    const normalizedMonths = normalizeDualMonths(leftMonth, addMonths(rightMonth, 1))
-    setLeftMonth(normalizedMonths.left)
-    setRightMonth(normalizedMonths.right)
+    setLeftMonth(prev => addMonths(prev, 1))
+    setRightMonth(prev => addMonths(prev, 1))
   }
 
   /* ── renderDay for range selection ── */
@@ -547,6 +545,7 @@ export function DateRangePicker({
       textFieldSize={textFieldSize}
       labelId={labelId}
       className={className}
+      floatingActive={Boolean(selectedRange?.from || selectedRange?.to)}
     >
       {picker}
     </DateFieldWrapper>

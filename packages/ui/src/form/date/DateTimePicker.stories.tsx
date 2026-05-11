@@ -91,7 +91,7 @@ export const Disabled: Story = {
   render: () => {
     return (
       <div className="w-[320px]">
-        <DateTimePicker value={new Date()} isDisabled />
+        <DateTimePicker value={new Date()} onChange={() => {}} isDisabled />
       </div>
     )
   },

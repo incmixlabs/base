@@ -15,6 +15,7 @@ import {
   type ChangeEvent,
   type CSSProperties,
   type KeyboardEvent,
+  type Ref,
   useCallback,
   useEffect,
   useId,
@@ -89,6 +90,7 @@ export interface DatePickerProps {
   isDisabled?: boolean
   ariaLabel?: string
   className?: string
+  inputRef?: Ref<HTMLInputElement>
 }
 
 const ambiguousRelativePhrases = new Set(['next', 'last', 'this'])
@@ -172,6 +174,7 @@ export function DatePicker({
   isDisabled,
   ariaLabel = 'Date',
   className,
+  inputRef,
 }: DatePickerProps) {
   const fieldGroup = useFieldGroup()
   const inheritedSize = sizeProp ?? fieldGroup.size
@@ -186,6 +189,7 @@ export function DatePicker({
   const labelId = label ? generatedLabelId : undefined
   const generatedErrorId = useId()
   const textInputAnchorRef = useRef<HTMLDivElement | null>(null)
+  const textCalendarPopoverRef = useRef<HTMLDivElement | null>(null)
   const [uncontrolledValue, setUncontrolledValue] = useState<Date | undefined>(defaultValue)
   const [inputValue, setInputValue] = useState('')
   const [inputValidationError, setInputValidationError] = useState<string | undefined>()
@@ -258,10 +262,19 @@ export function DatePicker({
     updateTextCalendarPosition()
     window.addEventListener('resize', updateTextCalendarPosition)
     window.addEventListener('scroll', updateTextCalendarPosition, true)
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target as Node | null
+      if (!target) return
+      if (textInputAnchorRef.current?.contains(target)) return
+      if (textCalendarPopoverRef.current?.contains(target)) return
+      setIsOpen(false)
+    }
+    document.addEventListener('pointerdown', handlePointerDown)
 
     return () => {
       window.removeEventListener('resize', updateTextCalendarPosition)
       window.removeEventListener('scroll', updateTextCalendarPosition, true)
+      document.removeEventListener('pointerdown', handlePointerDown)
     }
   }, [isOpen, resolvedEntryMode, updateTextCalendarPosition])
 
@@ -366,8 +379,11 @@ export function DatePicker({
         data-date-picker-calendar-button=""
         disabled={effectiveIsDisabled}
         onClick={() => {
-          setIsOpen(true)
-          setDisplayMonth(startOfMonth(selectedDate ?? new Date()))
+          setIsOpen(prev => {
+            const next = !prev
+            if (next) setDisplayMonth(startOfMonth(selectedDate ?? new Date()))
+            return next
+          })
         }}
         className={cn(
           datePickerCalendarButton,
@@ -412,6 +428,7 @@ export function DatePicker({
       isOpen && textCalendarPosition && typeof document !== 'undefined'
         ? createPortal(
             <div
+              ref={textCalendarPopoverRef}
               role="dialog"
               aria-label="Calendar"
               aria-modal="false"
@@ -451,9 +468,9 @@ export function DatePicker({
         <div className="flex w-full min-w-0 flex-col gap-2">
           <div ref={textInputAnchorRef} className="w-full min-w-0">
             {inputMask ? (
-              <InputMask {...textInputProps} mask={inputMask} maskOptions={maskOptions} />
+              <InputMask ref={inputRef} {...textInputProps} mask={inputMask} maskOptions={maskOptions} />
             ) : (
-              <TextField {...textInputProps} />
+              <TextField ref={inputRef} {...textInputProps} />
             )}
           </div>
           {inputValidationError ? (
@@ -549,6 +566,7 @@ export function DatePicker({
       textFieldSize={textFieldSize}
       labelId={labelId}
       className={className}
+      floatingActive={Boolean(selectedDate)}
     >
       {picker}
     </DateFieldWrapper>

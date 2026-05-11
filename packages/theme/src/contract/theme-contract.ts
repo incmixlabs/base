@@ -436,6 +436,9 @@ export type DateComponentTokens = {
   >
 }
 
+/** @deprecated Use DateComponentTokens. */
+export type DateNextComponentTokens = DateComponentTokens
+
 export type AppShellComponentTokens = {
   content?: Partial<{
     paddingInline: string
@@ -556,6 +559,24 @@ function isObject(value: unknown): value is Record<string, unknown> {
   return prototype === Object.prototype || prototype === null
 }
 
+export function migrateThemeContract(input: unknown): unknown {
+  if (!isObject(input)) return input
+
+  const component = input.component
+  if (!isObject(component)) return input
+  if (component.date !== undefined || component.dateNext === undefined) return input
+
+  const { dateNext, ...nextComponent } = component
+
+  return {
+    ...input,
+    component: {
+      ...nextComponent,
+      date: dateNext,
+    },
+  }
+}
+
 function hasString(obj: Record<string, unknown>, key: string): boolean {
   return typeof obj[key] === 'string' && (obj[key] as string).trim().length > 0
 }
@@ -648,12 +669,17 @@ function isFontSourceMap(value: unknown): value is ThemeFontSourceMap {
 
 export function validateThemeContract(input: unknown): ThemeContractValidation {
   const errors: string[] = []
+  const inputComponent = isObject(input) ? input.component : undefined
+  if (isObject(inputComponent) && inputComponent.date !== undefined && inputComponent.dateNext !== undefined) {
+    errors.push('Provide only one of component.date or component.dateNext (component.dateNext is deprecated)')
+  }
+  const migratedInput = migrateThemeContract(input)
 
-  if (!isObject(input)) {
+  if (!isObject(migratedInput)) {
     return { ok: false, errors: ['Theme contract must be an object'] }
   }
 
-  const root = input as Record<string, unknown>
+  const root = migratedInput as Record<string, unknown>
   const metadataRaw = root.metadata
   const globalRaw = root.global
   const semanticRaw = root.semantic

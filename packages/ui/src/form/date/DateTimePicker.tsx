@@ -180,16 +180,9 @@ export function DateTimePicker({
     setHoursState(snap.hours)
     setMinutesState(snap.minutes)
     setSecondsState(snap.seconds)
-    // Revert the value if a date is selected
-    if (value) {
-      let reverted = setHours(new Date(value), snap.hours)
-      reverted = setMinutes(reverted, snap.minutes)
-      if (showSeconds) reverted = setSeconds(reverted, snap.seconds)
-      onChange?.(reverted)
-    }
     setShowTimePicker(false)
     clockTriggerRef.current?.focus()
-  }, [effectiveIsDisabled, value, showSeconds, onChange])
+  }, [effectiveIsDisabled])
 
   /* ── Date selection ── */
   const unavailableDateKeys = useMemo(
@@ -231,8 +224,10 @@ export function DateTimePicker({
     }
 
     if (value) {
+      const snapped = snapMinute(minutes, minuteStep)
+      setMinutesState(snapped)
       let newDate = setHours(new Date(value), hours)
-      newDate = setMinutes(newDate, snapMinute(minutes, minuteStep))
+      newDate = setMinutes(newDate, snapped)
       if (showSeconds) newDate = setSeconds(newDate, seconds)
       onChange?.(newDate)
     }
@@ -468,6 +463,7 @@ export function DateTimePicker({
       textFieldSize={textFieldSize}
       labelId={labelId}
       className={className}
+      floatingActive={Boolean(value)}
     >
       {picker}
     </DateFieldWrapper>

@@ -1,4 +1,4 @@
-import type * as React from 'react'
+import * as React from 'react'
 import { Label } from '@/form/Label'
 import {
   floatingInputBaseCls,
@@ -12,7 +12,7 @@ import {
 import type { FloatingStyle } from '@/form/text-field-variant'
 import { resolveSurfaceVariant } from '@/form/text-field-variant'
 import { cn } from '@/lib/utils'
-import type { Color, TextFieldVariant } from '@/theme/tokens'
+import type { Color, Radius, TextFieldVariant } from '@/theme/tokens'
 import { datePickerTriggerGroupRadiusStyles } from './DatePicker.css'
 
 export const dateSegmentInputClassName = cn(
@@ -71,7 +71,7 @@ export function getDateFieldSurfaceClassName({
   textFieldSize,
 }: {
   color: Color
-  radius: string
+  radius: Radius
   variant?: TextFieldVariant
   floatingStyle: FloatingStyle | null
   textFieldSize: TextFieldSize
@@ -118,6 +118,7 @@ export function DateFieldWrapper({
   textFieldSize,
   labelId,
   className,
+  floatingActive,
   children,
 }: {
   label?: React.ReactNode
@@ -127,11 +128,21 @@ export function DateFieldWrapper({
   textFieldSize: TextFieldSize
   labelId?: string
   className?: string
+  floatingActive?: boolean
   children: React.ReactNode
 }) {
+  const [hasFocusWithin, setHasFocusWithin] = React.useState(false)
+  const isFloatingActive = Boolean(floatingActive || hasFocusWithin)
+
   if (floatingStyle) {
     return (
       <div
+        onFocusCapture={() => setHasFocusWithin(true)}
+        onBlurCapture={event => {
+          const nextTarget = event.relatedTarget
+          if (nextTarget instanceof Node && event.currentTarget.contains(nextTarget)) return
+          setHasFocusWithin(false)
+        }}
         className={cn(
           'relative w-full',
           textFieldSizeVariants[textFieldSize],
@@ -141,9 +152,14 @@ export function DateFieldWrapper({
       >
         <div className="w-full min-w-0">{children}</div>
         {label ? (
-          <label id={labelId} className={getDateFloatingLabelClassName(floatingStyle, true)}>
+          <Label
+            id={labelId}
+            size={textFieldSize}
+            disabled={disabled}
+            className={getDateFloatingLabelClassName(floatingStyle, isFloatingActive)}
+          >
             {label}
-          </label>
+          </Label>
         ) : null}
       </div>
     )

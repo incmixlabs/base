@@ -153,10 +153,9 @@ export function TimePicker({
       setSeconds(snap.seconds ?? 0)
       setPeriod(snap.hours >= 12 ? 'PM' : 'AM')
     }
-    onChange?.(snap)
     setIsOpen(false)
     triggerRef.current?.focus()
-  }, [onChange])
+  }, [])
 
   /* ── Escape key ── */
   useEffect(() => {
@@ -206,6 +205,7 @@ export function TimePicker({
 
   const applyPicker = useCallback(() => {
     const snapped = snapMinute(minutes, minuteStep)
+    setMinutes(snapped)
     const tv: TimeValue = { hours, minutes: snapped }
     if (showSeconds) tv.seconds = seconds
     onChange?.(tv)

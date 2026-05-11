@@ -2,7 +2,7 @@
 
 import { isSameMonth, startOfMonth } from 'date-fns'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { type KeyboardEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, type KeyboardEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   iconButtonBase,
   iconButtonColorVariants,
@@ -376,17 +376,21 @@ export function DateCalendarPanel({
           const isFocusTarget = dayKey === defaultFocusableDayKey
 
           if (renderDay) {
-            return renderDay({
-              normalized,
-              dayKey,
-              unavailable,
-              outsideMonth,
-              selected,
-              today,
-              isFocusTarget,
-              dayNumberFormatter,
-              dayLabelFormatter,
-            })
+            return (
+              <Fragment key={dayKey}>
+                {renderDay({
+                  normalized,
+                  dayKey,
+                  unavailable,
+                  outsideMonth,
+                  selected,
+                  today,
+                  isFocusTarget,
+                  dayNumberFormatter,
+                  dayLabelFormatter,
+                })}
+              </Fragment>
+            )
           }
 
           return (

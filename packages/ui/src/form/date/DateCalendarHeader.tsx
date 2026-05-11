@@ -108,6 +108,7 @@ export function DateCalendarHeader({
   const [portalPos, setPortalPos] = React.useState({ top: 0, left: 0 })
   const titleRef = React.useRef<HTMLElement>(null)
   const overlayRef = React.useRef<HTMLDivElement>(null)
+  const pickerWrapperRef = React.useRef<HTMLDivElement>(null)
   const pickerDialogId = React.useId()
   const hasMonthYearPicker = Boolean(onMonthYearChange)
 
@@ -131,27 +132,65 @@ export function DateCalendarHeader({
   )
   const yearOptions = React.useMemo(() => buildYearOptions(startYear, endYear), [startYear, endYear])
 
+  const closePicker = React.useCallback(() => {
+    setPickerOpen(false)
+    window.requestAnimationFrame(() => titleRef.current?.focus())
+  }, [])
+
   React.useEffect(() => {
     if (!pickerOpen) return
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setPickerOpen(false)
+        closePicker()
       }
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [pickerOpen])
+  }, [closePicker, pickerOpen])
 
   React.useEffect(() => {
     if (pickerOpen) {
-      overlayRef.current?.focus()
+      pickerWrapperRef.current?.focus()
     }
   }, [pickerOpen])
+
+  const handleDialogKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== 'Tab') return
+
+    const dialog = overlayRef.current
+    if (!dialog) return
+    const focusable = Array.from(
+      dialog.querySelectorAll<HTMLElement>(
+        'button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])',
+      ),
+    ).filter(element => !element.hasAttribute('disabled') && element.tabIndex !== -1)
+
+    if (focusable.length === 0) {
+      event.preventDefault()
+      pickerWrapperRef.current?.focus()
+      return
+    }
+
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+    if (!first || !last) return
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault()
+      last.focus()
+      return
+    }
+
+    if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault()
+      first.focus()
+    }
+  }
 
   const handleTitleClick = () => {
     if (!hasMonthYearPicker) return
     if (pickerOpen) {
-      setPickerOpen(false)
+      closePicker()
       return
     }
     if (titleRef.current) {
@@ -267,15 +306,22 @@ export function DateCalendarHeader({
               id={pickerDialogId}
               role="dialog"
               aria-modal="true"
+              aria-label="Select month and year"
               tabIndex={-1}
               className="fixed inset-0 z-50"
-              onMouseDown={event => {
+              onClick={event => {
                 if (event.target === event.currentTarget) {
-                  setPickerOpen(false)
+                  closePicker()
                 }
               }}
+              onKeyDown={handleDialogKeyDown}
             >
-              <div className="absolute" style={{ top: portalPos.top, left: portalPos.left }}>
+              <div
+                ref={pickerWrapperRef}
+                tabIndex={-1}
+                className="absolute outline-none"
+                style={{ top: portalPos.top, left: portalPos.left }}
+              >
                 <WheelPickerWrapper>
                   <div className="flex gap-2 rounded-md border bg-background p-2 shadow-lg">
                     <WheelPicker
