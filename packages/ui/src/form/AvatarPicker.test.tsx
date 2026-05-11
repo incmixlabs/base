@@ -126,7 +126,13 @@ describe('AvatarPicker', () => {
       />,
     )
 
-    await user.click(screen.getByRole('button', { name: /John Doe/i }))
+    const getPickerTrigger = () => {
+      const trigger = screen.getAllByRole('button', { name: /John Doe/i })[0]
+      expect(trigger).toBeInTheDocument()
+      return trigger as HTMLElement
+    }
+
+    await user.click(getPickerTrigger())
 
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
@@ -134,7 +140,7 @@ describe('AvatarPicker', () => {
     await user.click(screen.getByRole('button', { name: 'Cancel' }))
     expect(onCancel).toHaveBeenCalledTimes(1)
 
-    await user.click(screen.getByRole('button', { name: /John Doe/i }))
+    await user.click(getPickerTrigger())
     await user.click(screen.getByRole('button', { name: 'Save' }))
     expect(onApply).toHaveBeenCalledTimes(1)
   })
