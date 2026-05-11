@@ -63,6 +63,14 @@ export interface AvatarPickerProps {
   onValueChange?: (value: string | string[]) => void
   /** Called when user confirms multi-selection (shows "Add" button when provided in multiple mode) */
   onApply?: (selectedItems: AvatarItem[]) => void
+  /** Label for the multi-selection confirm action. */
+  applyLabel?: string
+  /** Allows confirming multi-selection when no values are selected. */
+  allowEmptyApply?: boolean
+  /** Called when user cancels multi-selection. */
+  onCancel?: () => void
+  /** Label for the multi-selection cancel action. */
+  cancelLabel?: string
   /** Called when the picker wants to close itself (inline mode). Forwarded to MultiSelect. */
   onClose?: () => void
   /** Render only the dropdown content (no trigger button). Useful when embedding inside another component. */
@@ -120,6 +128,10 @@ export const AvatarPicker = React.forwardRef<HTMLDivElement, AvatarPickerProps>(
       value,
       onValueChange,
       onApply,
+      applyLabel,
+      allowEmptyApply,
+      onCancel,
+      cancelLabel,
       onClose,
       inline = false,
       placeholder = 'Select...',
@@ -213,6 +225,10 @@ export const AvatarPicker = React.forwardRef<HTMLDivElement, AvatarPickerProps>(
               disabled={disabled}
               defaultSearch={defaultSearch}
               onClose={onClose}
+              onCancel={onCancel}
+              cancelLabel={cancelLabel}
+              applyLabel={applyLabel}
+              allowEmptyApply={allowEmptyApply}
               onApply={
                 onApply
                   ? () => {
@@ -237,6 +253,10 @@ export const AvatarPicker = React.forwardRef<HTMLDivElement, AvatarPickerProps>(
           onMultiChange={handleMultiChange}
           onClear={handleClear}
           onApply={onApply}
+          applyLabel={applyLabel}
+          allowEmptyApply={allowEmptyApply}
+          onCancel={onCancel}
+          cancelLabel={cancelLabel}
           onClose={onClose}
           size={size}
           avatarSize={avatarSize}
@@ -305,6 +325,10 @@ interface AvatarPickerMultiTriggerProps {
   onMultiChange: (ids: string[]) => void
   onClear: (e: React.MouseEvent) => void
   onApply?: (selectedItems: AvatarItem[]) => void
+  applyLabel?: string
+  allowEmptyApply?: boolean
+  onCancel?: () => void
+  cancelLabel?: string
   onClose?: () => void
   size: FormSize
   avatarSize: AvatarSize
@@ -331,6 +355,10 @@ const AvatarPickerMultiTrigger = React.forwardRef<HTMLDivElement, AvatarPickerMu
       onMultiChange,
       onClear,
       onApply,
+      applyLabel,
+      allowEmptyApply,
+      onCancel,
+      cancelLabel,
       onClose,
       size,
       avatarSize,
@@ -581,7 +609,14 @@ const AvatarPickerMultiTrigger = React.forwardRef<HTMLDivElement, AvatarPickerMu
               searchPlaceholder={searchPlaceholder}
               disabled={disabled}
               defaultSearch={defaultSearch}
-              onClose={onClose}
+              onClose={() => {
+                setIsOpen(false)
+                onClose?.()
+              }}
+              onCancel={onCancel}
+              cancelLabel={cancelLabel}
+              applyLabel={applyLabel}
+              allowEmptyApply={allowEmptyApply}
               onApply={
                 onApply
                   ? () => {

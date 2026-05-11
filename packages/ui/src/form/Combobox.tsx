@@ -2,6 +2,7 @@
 
 import { ChevronDown } from 'lucide-react'
 import * as React from 'react'
+import { Badge, type BadgeProps } from '@/elements/badge/Badge'
 import { cn } from '@/lib/utils'
 import type { Color, Radius, Size, TextFieldVariant } from '@/theme/tokens'
 import { useFieldGroup } from './FieldGroupContext'
@@ -10,7 +11,9 @@ import { TextField } from './TextField'
 export interface ComboboxOption {
   value: string
   label: string
+  color?: Color
   disabled?: boolean
+  variant?: BadgeProps['variant']
 }
 
 export interface ComboboxProps {
@@ -28,6 +31,7 @@ export interface ComboboxProps {
   variant?: TextFieldVariant
   color?: Color
   radius?: Radius
+  optionBadgeRadius?: Radius
   error?: boolean
   disabled?: boolean
   readOnly?: boolean
@@ -39,7 +43,9 @@ type ComboboxListItem = {
   id: string
   value: string
   label: string
+  color?: Color
   disabled?: boolean
+  variant?: BadgeProps['variant']
 }
 
 function getNextEnabledItemIndex(items: readonly ComboboxListItem[], currentIndex: number, direction: 1 | -1) {
@@ -70,6 +76,7 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
       variant,
       color,
       radius,
+      optionBadgeRadius,
       error = false,
       disabled = false,
       readOnly = false,
@@ -129,7 +136,9 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
         id: `${listboxId}-option-${index}`,
         value: option.value,
         label: option.label,
+        color: option.color,
         disabled: option.disabled,
+        variant: option.variant,
       }))
 
       if (canCreate) {
@@ -168,7 +177,6 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
       },
       [onValueChange, options],
     )
-
     return (
       <div ref={ref} className={cn('relative w-full', className)}>
         <TextField
@@ -273,7 +281,13 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
                   if (!item.disabled) selectValue(item.value)
                 }}
               >
-                {item.label}
+                {item.color ? (
+                  <Badge size="xs" color={item.color} variant={item.variant ?? 'soft'} radius={optionBadgeRadius}>
+                    {item.label}
+                  </Badge>
+                ) : (
+                  item.label
+                )}
               </button>
             ))}
 

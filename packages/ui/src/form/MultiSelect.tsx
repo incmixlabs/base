@@ -3,7 +3,7 @@
 import { ChevronDown } from 'lucide-react'
 import * as React from 'react'
 import { Button } from '@/elements'
-import { Badge } from '@/elements/badge/Badge'
+import { Badge, type BadgeProps } from '@/elements/badge/Badge'
 import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
 import { Flex } from '@/layouts/flex/Flex'
 import { isActivationKey, KEYBOARD_KEYS } from '@/lib/keyboard-keys'
@@ -57,10 +57,14 @@ export interface MultiSelectOption {
   value: string
   /** Display label for the option */
   label: string
+  /** Optional option color */
+  color?: Color
   /** Optional icon */
   icon?: React.ReactNode
   /** Whether the option is disabled */
   disabled?: boolean
+  /** Optional label variant */
+  variant?: BadgeProps['variant']
 }
 
 export interface MultiSelectProps {
@@ -94,6 +98,8 @@ export interface MultiSelectProps {
   color?: Color
   /** The border radius */
   radius?: Radius
+  /** Border radius for colored option badges in the dropdown. */
+  optionBadgeRadius?: Radius
   /** Whether the field has an error */
   error?: boolean
   /** Whether the input is disabled */
@@ -120,6 +126,14 @@ export interface MultiSelectProps {
   popup?: boolean
   /** Called when user confirms selection. Shows "Add" button in inline mode. Selections accumulate until confirmed. */
   onApply?: (selectedValues: string[]) => void
+  /** Label for the inline apply action. */
+  applyLabel?: string
+  /** Allows the inline apply action when no values are selected. */
+  allowEmptyApply?: boolean
+  /** Called when user cancels inline selection. */
+  onCancel?: () => void
+  /** Label for the inline cancel action. */
+  cancelLabel?: string
   /** Called when the picker wants to close itself (inline mode). */
   onClose?: () => void
   /** External search text (e.g. from a trigger query). Used until the user types in the search input. */
@@ -145,6 +159,7 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
       variant: variantProp,
       color,
       radius: radiusProp,
+      optionBadgeRadius,
       error = false,
       disabled: disabledProp = false,
       readOnly = false,
@@ -158,6 +173,10 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
       inline = false,
       popup = false,
       onApply,
+      applyLabel = 'Add',
+      allowEmptyApply = false,
+      onCancel,
+      cancelLabel = 'Cancel',
       onClose,
       defaultSearch,
     },
@@ -272,6 +291,15 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
         Create "{trimmedSearch}"
       </Button>
     ) : null
+
+    const renderOptionLabel = (option: MultiSelectOption) =>
+      option.color ? (
+        <Badge size={badgeSize} color={option.color} variant={option.variant ?? 'soft'} radius={optionBadgeRadius}>
+          {option.label}
+        </Badge>
+      ) : (
+        <span>{option.label}</span>
+      )
 
     const searchField = searchable ? (
       <div className="flex w-full items-center gap-2">
@@ -424,7 +452,7 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                         )}
                       />
                       {option.icon}
-                      <span>{option.label}</span>
+                      {renderOptionLabel(option)}
                     </Flex>
                   </Flex>
                 )
@@ -438,9 +466,9 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
               </Text>
             </div>
           )}
-          {onApply && (
+          {(onApply || onCancel) && (
             <div className={cn(pickerFooterActionsBase, pickerFooterBySize[size])}>
-              {selectedValues.length > 0 && (
+              {selectedValues.length > 0 && !onCancel && (
                 <Button
                   type="button"
                   variant="ghost"
@@ -457,26 +485,43 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                   Clear
                 </Button>
               )}
-              <Button
-                type="button"
-                variant="solid"
-                size="xs"
-                color="primary"
-                disabled={disabled || selectedValues.length === 0}
-                onClick={e => {
-                  e.stopPropagation()
-                  onApply(selectedValues)
-                  onClose?.()
-                }}
-              >
-                Add
-              </Button>
+              {onCancel && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="xs"
+                  color="neutral"
+                  disabled={disabled}
+                  onClick={e => {
+                    e.stopPropagation()
+                    onCancel()
+                    onClose?.()
+                  }}
+                >
+                  {cancelLabel}
+                </Button>
+              )}
+              {onApply && (
+                <Button
+                  type="button"
+                  variant="solid"
+                  size="xs"
+                  color="primary"
+                  disabled={disabled || (!allowEmptyApply && selectedValues.length === 0)}
+                  onClick={e => {
+                    e.stopPropagation()
+                    onApply(selectedValues)
+                    onClose?.()
+                  }}
+                >
+                  {applyLabel}
+                </Button>
+              )}
             </div>
           )}
         </div>
       )
     }
-
     const triggerContent = (
       <>
         <span id={summaryId} className="sr-only">
@@ -495,8 +540,8 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                   <Badge
                     key={option.value}
                     size={badgeSize}
-                    variant="soft"
-                    color={effectiveColor}
+                    variant={option.variant ?? 'soft'}
+                    color={option.color ?? effectiveColor}
                     className={cn(option.icon && 'gap-1')}
                     onDelete={disabled ? undefined : () => handleRemove(option.value)}
                     deleteLabel={`Remove ${option.label}`}
@@ -551,8 +596,8 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                           <li key={option.value}>
                             <Badge
                               size={badgeSize}
-                              variant="soft"
-                              color={effectiveColor}
+                              variant={option.variant ?? 'soft'}
+                              color={option.color ?? effectiveColor}
                               className={cn(option.icon && 'gap-1')}
                               onDelete={disabled ? undefined : () => handleRemove(option.value)}
                               deleteLabel={`Remove ${option.label}`}
@@ -774,7 +819,7 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                           )}
                         />
                         {option.icon}
-                        <span>{option.label}</span>
+                        {renderOptionLabel(option)}
                       </Flex>
                     </Flex>
                   )

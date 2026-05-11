@@ -1,6 +1,6 @@
 import { cleanup, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { AvatarPicker } from './AvatarPicker'
 
 afterEach(() => {
@@ -103,5 +103,39 @@ describe('AvatarPicker', () => {
     expect(hoverCard).toHaveTextContent('John Doe')
     expect(hoverCard).toHaveTextContent('Jane Smith')
     expect(hoverCard).toHaveTextContent('Omar Bell')
+  })
+
+  it('renders configurable multi-select footer actions', async () => {
+    const user = userEvent.setup()
+    const onApply = vi.fn()
+    const onCancel = vi.fn()
+
+    render(
+      <AvatarPicker
+        multiple
+        value={['john']}
+        items={[
+          { id: 'john', name: 'John Doe' },
+          { id: 'jane', name: 'Jane Smith' },
+        ]}
+        onApply={onApply}
+        onCancel={onCancel}
+        applyLabel="Save"
+        cancelLabel="Cancel"
+        allowEmptyApply
+      />,
+    )
+
+    await user.click(screen.getByRole('button', { name: /John Doe/i }))
+
+    expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Cancel' }))
+    expect(onCancel).toHaveBeenCalledTimes(1)
+
+    await user.click(screen.getByRole('button', { name: /John Doe/i }))
+    await user.click(screen.getByRole('button', { name: 'Save' }))
+    expect(onApply).toHaveBeenCalledTimes(1)
   })
 })
