@@ -117,7 +117,7 @@ const AvatarBase = React.forwardRef<HTMLSpanElement, AvatarBaseProps>(
         flexShrink="0"
         align="center"
         justify="center"
-        id={idProp}
+        id={normalizedId || undefined}
         className={cn(
           AVATAR_SIZE_CLASS,
           avatarSizeBySize[size],
@@ -139,7 +139,7 @@ const AvatarBase = React.forwardRef<HTMLSpanElement, AvatarBaseProps>(
           {showImage && (
             <img
               src={src}
-              alt={alt || normalizedName || 'Avatar'}
+              alt={alt !== undefined ? alt : normalizedName || 'Avatar'}
               className={cn('h-full w-full object-cover', isLoading && 'opacity-0')}
               onLoad={() => setIsLoading(false)}
               onError={() => {
