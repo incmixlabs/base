@@ -201,11 +201,9 @@ describe('DatePickerNext', () => {
     expect(hiddenInput?.value).toBe('2026-01-15')
   })
 
-  it('parses natural-language input and updates hidden value when valid', async () => {
+  it('parses natural-language input and updates the named textbox when valid', () => {
     const onChange = vi.fn()
-    const { container } = render(
-      <DatePickerNext ariaLabel="Start date" name="startDate" onChange={onChange} enableNaturalLanguage />,
-    )
+    render(<DatePickerNext ariaLabel="Start date" name="startDate" onChange={onChange} enableNaturalLanguage />)
 
     const input = screen.getByRole('textbox', { name: /start date/i })
     fireEvent.change(input, { target: { value: 'March 16, 2026' } })
@@ -214,48 +212,44 @@ describe('DatePickerNext', () => {
     const latest = onChange.mock.calls[onChange.mock.calls.length - 1]?.[0] as Date | undefined
     expect(latest).toBeInstanceOf(Date)
 
-    const hiddenInput = container.querySelector<HTMLInputElement>('input[type="text"][hidden][name="startDate"]')
-    expect(hiddenInput?.value).toBe('2026-03-16')
+    expect(input).toHaveAttribute('name', 'startDate')
+    expect(input).toHaveValue('2026-03-16')
   })
 
-  it('does not commit ambiguous natural-language prefix like "next "', async () => {
+  it('does not commit ambiguous natural-language prefix like "next "', () => {
     const onChange = vi.fn()
-    const { container } = render(
-      <DatePickerNext ariaLabel="Start date" name="startDate" onChange={onChange} enableNaturalLanguage />,
-    )
+    render(<DatePickerNext ariaLabel="Start date" name="startDate" onChange={onChange} enableNaturalLanguage />)
 
     const input = screen.getByRole('textbox', { name: /start date/i })
     fireEvent.change(input, { target: { value: 'next ' } })
 
     expect(onChange).not.toHaveBeenCalled()
-    const hiddenInput = container.querySelector<HTMLInputElement>('input[type="text"][hidden][name="startDate"]')
-    expect(hiddenInput?.value).toBe('')
+    expect(input).toHaveAttribute('name', 'startDate')
+    expect(input).toHaveValue('next ')
   })
 
-  it('commits natural-language phrase "next w"', async () => {
+  it('commits natural-language phrase "next w"', () => {
     vi.useFakeTimers()
     try {
       vi.setSystemTime(new Date(2026, 0, 15, 9, 0, 0))
 
       const onChange = vi.fn()
-      const { container } = render(
-        <DatePickerNext ariaLabel="Start date" name="startDate" onChange={onChange} enableNaturalLanguage />,
-      )
+      render(<DatePickerNext ariaLabel="Start date" name="startDate" onChange={onChange} enableNaturalLanguage />)
 
       const input = screen.getByRole('textbox', { name: /start date/i })
       fireEvent.change(input, { target: { value: 'next w' } })
 
       expect(onChange).toHaveBeenCalled()
-      const hiddenInput = container.querySelector<HTMLInputElement>('input[type="text"][hidden][name="startDate"]')
-      expect(hiddenInput?.value).toBe('2026-01-22')
+      expect(input).toHaveAttribute('name', 'startDate')
+      expect(input).toHaveValue('2026-01-22')
     } finally {
       vi.useRealTimers()
     }
   })
 
-  it('does not commit natural-language input when parsed date is outside bounds', async () => {
+  it('does not commit natural-language input when parsed date is outside bounds', () => {
     const onChange = vi.fn()
-    const { container } = render(
+    render(
       <DatePickerNext
         ariaLabel="Start date"
         name="startDate"
@@ -270,8 +264,41 @@ describe('DatePickerNext', () => {
     fireEvent.change(input, { target: { value: 'January 1, 2020' } })
 
     expect(onChange).not.toHaveBeenCalled()
-    const hiddenInput = container.querySelector<HTMLInputElement>('input[type="text"][hidden][name="startDate"]')
-    expect(hiddenInput?.value).toBe('')
+    expect(input).toHaveAttribute('name', 'startDate')
+    expect(input).toHaveValue('January 1, 2020')
+  })
+
+  it('keeps invalid strict text input in the named textbox without committing it', () => {
+    const onChange = vi.fn()
+    render(<DatePickerNext ariaLabel="Start date" name="startDate" onChange={onChange} entryMode="text" />)
+
+    const input = screen.getByRole('textbox', { name: /start date/i })
+    fireEvent.change(input, { target: { value: '2026-02-31' } })
+
+    expect(onChange).not.toHaveBeenCalled()
+    expect(input).toHaveAttribute('name', 'startDate')
+    expect(input).toHaveValue('2026-02-31')
+  })
+
+  it('keeps out-of-bounds strict text input from becoming the selected date', () => {
+    const onChange = vi.fn()
+    render(
+      <DatePickerNext
+        ariaLabel="Start date"
+        name="startDate"
+        onChange={onChange}
+        entryMode="text"
+        minValue={new Date(2026, 0, 10)}
+        maxValue={new Date(2026, 0, 20)}
+      />,
+    )
+
+    const input = screen.getByRole('textbox', { name: /start date/i })
+    fireEvent.change(input, { target: { value: '2026-01-01' } })
+
+    expect(onChange).not.toHaveBeenCalled()
+    expect(input).toHaveAttribute('name', 'startDate')
+    expect(input).toHaveValue('2026-01-01')
   })
 
   it('opens natural-language calendar when pressing ArrowDown in the textbox', async () => {

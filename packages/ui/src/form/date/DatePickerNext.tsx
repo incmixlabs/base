@@ -213,7 +213,7 @@ export function DatePickerNext({
         : parseDateStringInput(nextInput, dateFormat)
     if (!parsed) return
     const normalizedParsed = normalizeDay(parsed)
-    if (resolvedEntryMode === 'natural' && !isDateAllowed(normalizedParsed)) return
+    if (!isDateAllowed(normalizedParsed)) return
     if (!isControlled) {
       setUncontrolledValue(normalizedParsed)
     }
@@ -264,7 +264,6 @@ export function DatePickerNext({
         className={className}
       >
         <div className="flex w-full min-w-0 flex-col gap-2">
-          {name ? <input type="text" hidden readOnly name={name} value={hiddenValue} /> : null}
           <Group
             className={cn(
               datePickerTriggerGroupBase,
@@ -274,6 +273,7 @@ export function DatePickerNext({
           >
             <input
               type="text"
+              name={name}
               value={inputValue}
               placeholder={placeholder}
               aria-label={label ? undefined : ariaLabel}
