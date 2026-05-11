@@ -1,5 +1,5 @@
 import type { WheelPickerOption } from '@/elements/wheel-picker/wheel-picker'
-import type { DateNextSize } from './date-next.props'
+import type { DateSize } from './date.props'
 
 export function normalizeMinuteStep(step: number): number {
   if (!Number.isFinite(step)) return 1
@@ -42,7 +42,7 @@ export function snapMinute(minutes: number, step: number): number {
   return options.reduce((prev, curr) => (Math.abs(curr - minutes) < Math.abs(prev - minutes) ? curr : prev))
 }
 
-export const buttonSizeByDateNextSize: Record<DateNextSize, 'sm' | 'md'> = {
+export const buttonSizeByDateSize: Record<DateSize, 'sm' | 'md'> = {
   xs: 'sm',
   sm: 'sm',
   md: 'md',

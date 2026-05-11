@@ -408,7 +408,7 @@ export type MentionTextareaComponentTokens = Partial<{
   previewFontSize: string
 }>
 
-export type DateNextComponentTokens = {
+export type DateComponentTokens = {
   size?: Record<
     string,
     Partial<{
@@ -515,7 +515,7 @@ export type ThemeContract = {
     pickerPopup: PickerPopupComponentTokens
     fileUpload: FileUploadComponentTokens
     mentionTextarea: MentionTextareaComponentTokens
-    dateNext: DateNextComponentTokens
+    date: DateComponentTokens
     textField: TextFieldComponentTokens
     checkbox: CheckboxComponentTokens
     checkboxGroup: CheckboxGroupComponentTokens
@@ -708,7 +708,7 @@ export function validateThemeContract(input: unknown): ThemeContractValidation {
     'pickerPopup',
     'fileUpload',
     'mentionTextarea',
-    'dateNext',
+    'date',
     'textField',
     'checkbox',
     'checkboxGroup',

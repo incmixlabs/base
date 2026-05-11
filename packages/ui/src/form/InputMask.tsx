@@ -71,6 +71,10 @@ export interface InputMaskProps extends Omit<React.InputHTMLAttributes<HTMLInput
   leftIcon?: React.ReactNode
   /** Icon to display on the right */
   rightIcon?: React.ReactNode
+  /** Interactive element on the left */
+  leftElement?: React.ReactNode
+  /** Interactive element on the right */
+  rightElement?: React.ReactNode
 }
 
 // Helper to get the actual mask pattern
@@ -94,6 +98,8 @@ export const InputMask = React.forwardRef<HTMLInputElement, InputMaskProps>(
       error = false,
       leftIcon,
       rightIcon,
+      leftElement,
+      rightElement,
       className,
       disabled,
       ...props
@@ -132,6 +138,8 @@ export const InputMask = React.forwardRef<HTMLInputElement, InputMaskProps>(
         disabled={disabled}
         leftIcon={leftIcon}
         rightIcon={rightIcon}
+        leftElement={leftElement}
+        rightElement={rightElement}
         className={cn(className)}
         {...props}
       />

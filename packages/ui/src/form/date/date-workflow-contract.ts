@@ -11,7 +11,7 @@ export type DateWorkflowState =
   | { isSelectable: false; reason: DateConstraintReason }
 
 /**
- * Thin workflow seam so date-next UI can consume domain decisions
+ * Thin workflow seam so date UI can consume domain decisions
  * without hard-coupling to a specific state-machine runtime.
  */
 export interface DateWorkflowAdapter {

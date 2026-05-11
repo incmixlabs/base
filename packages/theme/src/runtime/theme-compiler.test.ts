@@ -36,7 +36,7 @@ function createTheme(): ThemeContract {
       pickerPopup: { size: { md: { viewportMaxHeight: '16rem' } } },
       fileUpload: { size: { md: { iconSize: '1.5rem' } } },
       mentionTextarea: { previewMinHeight: '96px' },
-      dateNext: { size: { md: { calendarDaySize: '2.75rem' } } },
+      date: { size: { md: { calendarDaySize: '2.75rem' } } },
       textField: { size: { sm: { paddingInline: '0.75rem' } } },
       checkbox: { size: { sm: { boxSize: '1rem' } } },
       checkboxGroup: { gap: '0.5rem', inlineGap: '1rem', itemGap: '0.5rem' },
