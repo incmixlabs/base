@@ -23,16 +23,16 @@ import {
 } from 'react-aria-components'
 import { useThemeRadius } from '@/elements/utils'
 import { useFieldGroup } from '@/form/FieldGroupContext'
+import { TextField } from '@/form/TextField'
 import { KEYBOARD_KEYS } from '@/lib/keyboard-keys'
 import { cn } from '@/lib/utils'
 import type { Color, Radius, TextFieldVariant } from '@/theme/tokens'
-import { getFloatingStyle } from '../text-field-variant'
+import { getFloatingStyle, toBaseTextFieldVariant } from '../text-field-variant'
 import { DateNextCalendarPanel } from './DateNextCalendarPanel'
 import {
   datePickerCalendarButton,
   datePickerCalendarIcon,
   datePickerCalendarPopover,
-  datePickerInput,
   datePickerTriggerGroupBase,
   datePickerTriggerGroupRadiusStyles,
   datePickerTriggerGroupSizeStyles,
@@ -264,46 +264,39 @@ export function DatePickerNext({
         className={className}
       >
         <div className="flex w-full min-w-0 flex-col gap-2">
-          <Group
-            className={cn(
-              datePickerTriggerGroupBase,
-              datePickerTriggerGroupSizeStyles[size],
-              getDateNextFieldSurfaceClassName({ color, radius, variant, floatingStyle: null, textFieldSize }),
-            )}
-          >
-            <input
-              type="text"
-              name={name}
-              value={inputValue}
-              placeholder={placeholder}
-              aria-label={label ? undefined : ariaLabel}
-              aria-labelledby={labelId}
-              disabled={effectiveIsDisabled}
-              onChange={event => handleTextInputChange(event.currentTarget.value)}
-              onKeyDown={handleTextInputKeyDown}
-              className={cn(
-                datePickerInput,
-                'w-full text-foreground outline-none',
-                'placeholder:text-muted-foreground',
-                'disabled:cursor-not-allowed disabled:opacity-50',
-              )}
-            />
-            <button
-              type="button"
-              aria-label="Open calendar"
-              disabled={effectiveIsDisabled}
-              onClick={() => {
-                setIsOpen(true)
-                setDisplayMonth(startOfMonth(selectedDate ?? new Date()))
-              }}
-              className={cn(
-                datePickerCalendarButton,
-                'text-muted-foreground transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-50',
-              )}
-            >
-              <CalendarIcon className={datePickerCalendarIcon} />
-            </button>
-          </Group>
+          <TextField
+            type="text"
+            name={name}
+            value={inputValue}
+            placeholder={placeholder}
+            aria-label={label ? undefined : ariaLabel}
+            aria-labelledby={labelId}
+            disabled={effectiveIsDisabled}
+            size={textFieldSize}
+            color={color}
+            radius={radius}
+            variant={toBaseTextFieldVariant(variant)}
+            className={datePickerTriggerGroupSizeStyles[size]}
+            onChange={event => handleTextInputChange(event.currentTarget.value)}
+            onKeyDown={handleTextInputKeyDown}
+            rightElement={
+              <button
+                type="button"
+                aria-label="Open calendar"
+                disabled={effectiveIsDisabled}
+                onClick={() => {
+                  setIsOpen(true)
+                  setDisplayMonth(startOfMonth(selectedDate ?? new Date()))
+                }}
+                className={cn(
+                  datePickerCalendarButton,
+                  'text-muted-foreground transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-50',
+                )}
+              >
+                <CalendarIcon className={datePickerCalendarIcon} />
+              </button>
+            }
+          />
 
           {isOpen ? (
             <div
