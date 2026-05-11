@@ -29,6 +29,7 @@ export function useDateFormatters(initialLocale?: string): DateFormatters {
       setLocale(resolveLocale(initialLocale))
       return
     }
+    if (typeof document === 'undefined') return
     const detected = resolveLocale(document.documentElement.lang)
     setLocale(detected)
   }, [initialLocale])

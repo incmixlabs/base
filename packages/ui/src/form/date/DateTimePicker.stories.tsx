@@ -102,7 +102,7 @@ export const Sizes: Story = {
     const [dateTime, setDateTime] = React.useState<Date | undefined>(new Date())
     return (
       <div className="flex flex-col gap-4 w-[400px]">
-        {(['xs', 'sm', 'md', 'lg', 'xl', '2x'] as const).map(s => (
+        {dateSizeValues.map(s => (
           <div key={s}>
             <Label className="mb-1 block">Size {s}</Label>
             <DateTimePicker value={dateTime} onChange={setDateTime} size={s} />
@@ -118,7 +118,7 @@ export const Colors: Story = {
     const [dateTime, setDateTime] = React.useState<Date | undefined>(new Date())
     return (
       <div className="flex flex-col gap-4 w-[320px]">
-        {(['slate', 'primary', 'success', 'warning', 'error'] as const).map(c => (
+        {dateColorValues.map(c => (
           <div key={c}>
             <Label className="mb-1 block capitalize">{c}</Label>
             <DateTimePicker value={dateTime} onChange={setDateTime} color={c} />

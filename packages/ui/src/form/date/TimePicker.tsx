@@ -152,6 +152,11 @@ export function TimePicker({
       setMinutes(snap.minutes)
       setSeconds(snap.seconds ?? 0)
       setPeriod(snap.hours >= 12 ? 'PM' : 'AM')
+    } else {
+      setHours(0)
+      setMinutes(0)
+      setSeconds(0)
+      setPeriod('AM')
     }
     setIsOpen(false)
     triggerRef.current?.focus()
