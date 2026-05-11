@@ -97,10 +97,6 @@
       "types": "./dist/form/date/index.d.ts",
       "import": "./dist/form/date.js"
     },
-    "./form/date-next": {
-      "types": "./dist/form/date/index.d.ts",
-      "import": "./dist/form/date.js"
-    },
     "./form/file-upload": {
       "types": "./dist/form/file-upload.d.ts",
       "import": "./dist/form/file-upload.js"

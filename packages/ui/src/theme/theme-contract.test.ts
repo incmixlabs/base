@@ -40,7 +40,7 @@ function createValidTheme() {
       pickerPopup: { size: { md: { viewportMaxHeight: '16rem' } } },
       fileUpload: { size: { md: { iconSize: '1.5rem' } } },
       mentionTextarea: { previewMinHeight: '96px' },
-      dateNext: { size: { md: { calendarDaySize: '2.75rem' } } },
+      date: { size: { md: { calendarDaySize: '2.75rem' } } },
       textField: { size: { sm: { paddingInline: '0.75rem' } } },
       checkbox: { size: { sm: { boxSize: '1rem' } } },
       checkboxGroup: { gap: '0.5rem', inlineGap: '1rem', itemGap: '0.5rem' },
@@ -244,7 +244,7 @@ describe('theme-contract', () => {
     delete (theme.component as Record<string, unknown>).fieldGroup
     delete (theme.component as Record<string, unknown>).iconButton
     delete (theme.component as Record<string, unknown>).mentionTextarea
-    delete (theme.component as Record<string, unknown>).dateNext
+    delete (theme.component as Record<string, unknown>).date
     delete (theme.component as Record<string, unknown>).pickerPopup
     delete (theme.component as Record<string, unknown>).popover
     delete (theme.component as Record<string, unknown>).tooltip
@@ -277,7 +277,7 @@ describe('theme-contract', () => {
       expect(result.value.component.fieldGroup).toEqual({})
       expect(result.value.component.iconButton).toEqual({})
       expect(result.value.component.mentionTextarea).toEqual({})
-      expect(result.value.component.dateNext).toEqual({})
+      expect(result.value.component.date).toEqual({})
       expect(result.value.component.pickerPopup).toEqual({})
       expect(result.value.component.popover).toEqual({})
       expect(result.value.component.tooltip).toEqual({})
