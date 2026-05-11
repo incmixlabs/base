@@ -79,7 +79,7 @@ export const defaultTimeSlotsList: TimeSlot[] = [
 export interface AppointmentPickerProps {
   /** Selected appointment value */
   value?: AppointmentValue
-  /** Callback when appointment changes */
+  /** Callback when appointment changes. Receives undefined when a date-only selection resets the time. */
   onChange?: (value: AppointmentValue | undefined) => void
   /** Title displayed at the top */
   title?: string
