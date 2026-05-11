@@ -7,7 +7,8 @@ import { cn } from '@/lib/utils'
 import type { Color, Radius } from '@/theme/tokens'
 import { Text } from '@/typography'
 import type { PopoverContentVariant } from '../popover/popover.props'
-import { Avatar, type AvatarProps, type AvatarSize } from './Avatar'
+import { AvatarBase } from './AvatarBase'
+import type { AvatarProps, AvatarSize } from './avatar.props'
 import { avatarListTitleSizeByAvatarSize, getHoverCardContentSize } from './avatar-hover-card.shared'
 import { avatarListItemBase, avatarListItemBySize } from './avatar-list.css'
 
@@ -49,7 +50,7 @@ export function AvatarCard({ title, email, description, presence, managerId, ava
     <Flex align="center" className={cn('min-w-0 w-full', avatarListItemBase, avatarListItemBySize[resolvedSize])}>
       {avatar ? (
         <span className="shrink-0">
-          <Avatar
+          <AvatarBase
             id={avatar.id}
             src={avatar.src}
             name={avatar.name}
@@ -57,7 +58,6 @@ export function AvatarCard({ title, email, description, presence, managerId, ava
             radius={avatar.radius}
             presence={presence}
             showPresence={Boolean(presence)}
-            hoverCard={false}
           />
         </span>
       ) : null}
