@@ -190,7 +190,13 @@ export function DateTimePicker({
     [disabledDates],
   )
   const isDateUnavailable = useMemo(
-    () => (unavailableDateKeys.size > 0 ? (date: DateValue) => unavailableDateKeys.has(date.toString()) : undefined),
+    () =>
+      unavailableDateKeys.size > 0
+        ? (date: DateValue) => {
+            const day = fromDateValue(date)
+            return day ? unavailableDateKeys.has(toDayKey(normalizeDay(day))) : false
+          }
+        : undefined,
     [unavailableDateKeys],
   )
 
@@ -223,14 +229,12 @@ export function DateTimePicker({
       return
     }
 
-    if (value) {
-      const snapped = snapMinute(minutes, minuteStep)
-      setMinutesState(snapped)
-      let newDate = setHours(new Date(value), hours)
-      newDate = setMinutes(newDate, snapped)
-      if (showSeconds) newDate = setSeconds(newDate, seconds)
-      onChange?.(newDate)
-    }
+    const snapped = snapMinute(minutes, minuteStep)
+    setMinutesState(snapped)
+    let newDate = setHours(value ? new Date(value) : normalizeDay(new Date()), hours)
+    newDate = setMinutes(newDate, snapped)
+    if (showSeconds) newDate = setSeconds(newDate, seconds)
+    onChange?.(newDate)
     setShowTimePicker(false)
     clockTriggerRef.current?.focus()
   }, [effectiveIsDisabled, value, hours, minutes, seconds, minuteStep, showSeconds, onChange])
