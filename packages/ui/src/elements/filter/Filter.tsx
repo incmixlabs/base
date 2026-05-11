@@ -8,20 +8,20 @@ import { AvatarList } from '@/elements/avatar/AvatarList'
 import { Badge } from '@/elements/badge/Badge'
 import { Button } from '@/elements/button/Button'
 import { Checkbox } from '@/form/Checkbox'
-import { DateNextCalendarPanel, type DateRangeValue, MiniCalendarNext } from '@/form/date'
+import { DateCalendarPanel, type DateRangeValue, MiniCalendar } from '@/form/date'
 import {
   datePickerCalendarCell,
   datePickerCalendarCellRadiusStyles,
   datePickerCalendarCellSizeStyles,
   datePickerCalendarDayInteractive,
   datePickerCalendarSelectedColorStyles,
-} from '@/form/date/DatePickerNext.css'
+} from '@/form/date/DatePicker.css'
 import {
   rangeCalendarCell,
   rangeCalendarDayInteractive,
   rangeCalendarSelectedColorStyles,
-} from '@/form/date/DateRangePickerNext.css'
-import { normalizeDay } from '@/form/date/date-next-calendar-core'
+} from '@/form/date/DateRangePicker.css'
+import { normalizeDay } from '@/form/date/date-calendar-core'
 import { Slider } from '@/form/Slider'
 import { TextField } from '@/form/TextField'
 import { Flex } from '@/layouts/flex/Flex'
@@ -271,7 +271,7 @@ function FilterCalendarField<TData>({
   if (showMiniCalendar) {
     return (
       <Flex direction="column" style={{ gap: '0.125rem', padding: '0.25rem 0' }}>
-        <MiniCalendarNext
+        <MiniCalendar
           value={filterValue instanceof Date ? filterValue : undefined}
           onChange={date => onChange(date)}
           minDate={field.minDate}
@@ -314,7 +314,7 @@ function FilterCalendarField<TData>({
 
   return (
     <Flex direction="column" style={{ gap: '0.125rem', padding: '0.25rem 0' }}>
-      <DateNextCalendarPanel
+      <DateCalendarPanel
         value={filterValue instanceof Date ? filterValue : undefined}
         onChange={handleSingleChange}
         minValue={field.minDate}

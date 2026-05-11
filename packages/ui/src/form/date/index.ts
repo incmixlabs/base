@@ -1,25 +1,27 @@
 export {
-  AppointmentPickerNext,
-  type AppointmentPickerNextProps,
-  type AppointmentValueNext,
+  AppointmentPicker,
+  type AppointmentPickerProps,
+  type AppointmentValue,
   defaultTimeSlotsList,
-  type TimeSlotNext,
-} from './AppointmentPickerNext'
+  type TimeSlot,
+} from './AppointmentPicker'
 export {
-  CalendarWithPresetsNext,
-  type CalendarWithPresetsNextProps,
-  type DateRangePresetNext,
-  defaultPresetsNext,
-} from './CalendarWithPresetsNext'
+  CalendarWithPresets,
+  type CalendarWithPresetsProps,
+  type DateRangePreset,
+  defaultPresets,
+} from './CalendarWithPresets'
 export {
-  CalendarWithPricingNext,
-  type CalendarWithPricingNextProps,
-  type DayPriceNext,
-} from './CalendarWithPricingNext'
-export { DateNextCalendarPanel, type DateNextCalendarPanelProps, type DayRenderState } from './DateNextCalendarPanel'
-export { DatePickerNext, type DatePickerNextProps } from './DatePickerNext'
-export { DateRangePickerNext, type DateRangePickerNextProps } from './DateRangePickerNext'
-export { DateTimePickerNext, type DateTimePickerNextProps } from './DateTimePickerNext'
+  CalendarWithPricing,
+  type CalendarWithPricingProps,
+  type DayPrice,
+} from './CalendarWithPricing'
+export { DateCalendarPanel, type DateCalendarPanelProps, type DayRenderState } from './DateCalendarPanel'
+export { DateInput, type DateInputProps } from './DateInput'
+export { DatePicker, type DatePickerProps } from './DatePicker'
+export { DateRangePicker, type DateRangePickerProps } from './DateRangePicker'
+export { DateTimePicker, type DateTimePickerProps } from './DateTimePicker'
+export type { DateNextSize, DateSize } from './date.props'
 export { type DateRangeValue, fromDateRangeValue, toDateRangeValue } from './date-range-value-boundary'
 export { fromDateValue, toDateValue } from './date-value-boundary'
 export type {
@@ -28,10 +30,10 @@ export type {
   DateWorkflowState,
   EvaluateDateInput,
 } from './date-workflow-contract'
-export { MiniCalendarNext, type MiniCalendarNextProps } from './MiniCalendarNext'
-export { TimePickerNext, type TimePickerNextProps, type TimeValueNext } from './TimePickerNext'
+export { MiniCalendar, type MiniCalendarProps } from './MiniCalendar'
+export { TimePicker, type TimePickerProps, type TimeValue } from './TimePicker'
 export {
-  type UseDateNextCalendarOptions,
-  type UseDateNextCalendarReturn,
-  useDateNextCalendar,
-} from './useDateNextCalendar'
+  type UseDateCalendarOptions,
+  type UseDateCalendarReturn,
+  useDateCalendar,
+} from './useDateCalendar'
