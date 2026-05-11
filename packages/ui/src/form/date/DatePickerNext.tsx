@@ -218,9 +218,7 @@ export function DatePickerNext({
       setUncontrolledValue(normalizedParsed)
     }
     onChange?.(normalizedParsed)
-    if (isDateAllowed(normalizedParsed)) {
-      setDisplayMonth(startOfMonth(normalizedParsed))
-    }
+    setDisplayMonth(startOfMonth(normalizedParsed))
   }
   const handleTextInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === KEYBOARD_KEYS.escape) {
