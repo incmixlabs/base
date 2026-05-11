@@ -2,7 +2,14 @@
 
 import type { DateValue } from '@internationalized/date'
 import { parseDate } from 'chrono-node'
-import { format as formatDate, isAfter, isBefore, startOfMonth } from 'date-fns'
+import {
+  format as formatDate,
+  isAfter,
+  isBefore,
+  isValid as isValidDate,
+  parse as parseFormattedDate,
+  startOfMonth,
+} from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import { type KeyboardEvent, useEffect, useId, useMemo, useState } from 'react'
 import {
@@ -47,6 +54,7 @@ export interface DatePickerNextProps {
   defaultValue?: Date
   onChange?: (value: Date | undefined) => void
   placeholder?: string
+  entryMode?: 'segmented' | 'text' | 'natural'
   enableNaturalLanguage?: boolean
   dateFormat?: string
   minValue?: Date
@@ -71,12 +79,46 @@ export interface DatePickerNextProps {
 const ambiguousRelativePhrases = new Set(['next', 'last', 'this'])
 const isAmbiguousNaturalPhrase = (value: string) => ambiguousRelativePhrases.has(value.trim().toLowerCase())
 
+function parseDateStringInput(value: string, dateFormat: string): Date | undefined {
+  const trimmedValue = value.trim()
+  if (!trimmedValue) return undefined
+
+  if (dateFormat === 'yyyy-MM-dd') {
+    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(trimmedValue)
+    if (!match) return undefined
+
+    const [, yearText, monthText, dayText] = match
+    const year = Number(yearText)
+    const month = Number(monthText)
+    const day = Number(dayText)
+    const parsed = new Date(year, month - 1, day)
+    if (
+      Number.isNaN(parsed.getTime()) ||
+      parsed.getFullYear() !== year ||
+      parsed.getMonth() !== month - 1 ||
+      parsed.getDate() !== day
+    ) {
+      return undefined
+    }
+    return parsed
+  }
+
+  try {
+    const parsed = parseFormattedDate(trimmedValue, dateFormat, new Date())
+    if (!isValidDate(parsed)) return undefined
+    return formatDate(parsed, dateFormat) === trimmedValue ? parsed : undefined
+  } catch {
+    return undefined
+  }
+}
+
 /** Private spike component for Issue #179. */
 export function DatePickerNext({
   value,
   defaultValue,
   onChange,
   placeholder = 'Pick a date',
+  entryMode,
   enableNaturalLanguage = false,
   dateFormat = 'yyyy-MM-dd',
   minValue,
@@ -108,6 +150,7 @@ export function DatePickerNext({
   const [isOpen, setIsOpen] = useState(false)
   const isControlled = value !== undefined
   const selectedDate = isControlled ? value : uncontrolledValue
+  const resolvedEntryMode = entryMode ?? (enableNaturalLanguage ? 'natural' : 'segmented')
   const controlledValue = toDateValue(selectedDate)
   const [displayMonth, setDisplayMonth] = useState<Date>(() => startOfMonth(selectedDate ?? new Date()))
 
@@ -132,9 +175,9 @@ export function DatePickerNext({
   const maxDay = maxValue ? normalizeDay(maxValue) : undefined
 
   useEffect(() => {
-    if (!enableNaturalLanguage || isOpen) return
+    if (resolvedEntryMode === 'segmented' || isOpen) return
     setInputValue(selectedDate ? hiddenValue : '')
-  }, [enableNaturalLanguage, hiddenValue, isOpen, selectedDate])
+  }, [hiddenValue, isOpen, resolvedEntryMode, selectedDate])
 
   const commitDate = (nextDate: Date) => {
     if (!isControlled) {
@@ -142,7 +185,7 @@ export function DatePickerNext({
     }
     onChange?.(nextDate)
     setIsOpen(false)
-    if (enableNaturalLanguage) {
+    if (resolvedEntryMode !== 'segmented') {
       try {
         setInputValue(formatDate(nextDate, dateFormat))
       } catch {
@@ -157,25 +200,29 @@ export function DatePickerNext({
     return unavailableDateKeys.has(toDayKey(day))
   }
   const isDateAllowed = (date: Date) => !isDayUnavailable(normalizeDay(date))
-  const handleNaturalInputChange = (nextInput: string) => {
+  const handleTextInputChange = (nextInput: string) => {
     setInputValue(nextInput)
     if (!nextInput.trim()) {
       if (!isControlled) setUncontrolledValue(undefined)
       onChange?.(undefined)
       return
     }
-    if (isAmbiguousNaturalPhrase(nextInput)) return
-    const parsed = parseDate(nextInput)
+    const parsed =
+      resolvedEntryMode === 'natural' && !isAmbiguousNaturalPhrase(nextInput)
+        ? parseDate(nextInput)
+        : parseDateStringInput(nextInput, dateFormat)
     if (!parsed) return
     const normalizedParsed = normalizeDay(parsed)
-    if (!isDateAllowed(normalizedParsed)) return
+    if (resolvedEntryMode === 'natural' && !isDateAllowed(normalizedParsed)) return
     if (!isControlled) {
       setUncontrolledValue(normalizedParsed)
     }
     onChange?.(normalizedParsed)
-    setDisplayMonth(startOfMonth(normalizedParsed))
+    if (isDateAllowed(normalizedParsed)) {
+      setDisplayMonth(startOfMonth(normalizedParsed))
+    }
   }
-  const handleNaturalInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+  const handleTextInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === KEYBOARD_KEYS.escape) {
       event.preventDefault()
       setIsOpen(false)
@@ -203,7 +250,7 @@ export function DatePickerNext({
     />
   )
 
-  if (enableNaturalLanguage) {
+  if (resolvedEntryMode !== 'segmented') {
     // Free-form text entry behaves like a standard text field rather than a segmented floating field.
     // Keep this path non-floating until a dedicated natural-language floating design exists.
     return (
@@ -232,8 +279,9 @@ export function DatePickerNext({
               aria-label={label ? undefined : ariaLabel}
               aria-labelledby={labelId}
               disabled={effectiveIsDisabled}
-              onChange={event => handleNaturalInputChange(event.currentTarget.value)}
-              onKeyDown={handleNaturalInputKeyDown}
+              inputMode={resolvedEntryMode === 'text' ? 'numeric' : undefined}
+              onChange={event => handleTextInputChange(event.currentTarget.value)}
+              onKeyDown={handleTextInputKeyDown}
               className={cn(
                 datePickerInput,
                 'w-full text-foreground outline-none',
