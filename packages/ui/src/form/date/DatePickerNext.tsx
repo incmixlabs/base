@@ -279,7 +279,6 @@ export function DatePickerNext({
               aria-label={label ? undefined : ariaLabel}
               aria-labelledby={labelId}
               disabled={effectiveIsDisabled}
-              inputMode={resolvedEntryMode === 'text' ? 'numeric' : undefined}
               onChange={event => handleTextInputChange(event.currentTarget.value)}
               onKeyDown={handleTextInputKeyDown}
               className={cn(
