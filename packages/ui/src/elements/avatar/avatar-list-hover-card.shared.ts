@@ -1,7 +1,7 @@
 import * as React from 'react'
 import type { Radius } from '@/theme/tokens'
-import type { AvatarProps, AvatarSize } from './Avatar'
 import type { AvatarCardProps } from './AvatarHoverCard'
+import type { AvatarProps, AvatarSize } from './avatar.props'
 
 export interface AvatarListEntry extends AvatarCardProps {
   key: React.Key
