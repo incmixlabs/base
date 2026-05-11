@@ -124,7 +124,7 @@ export type MentionTextareaTokenSlot =
   | 'previewPaddingInline'
   | 'previewPaddingBlock'
   | 'previewFontSize'
-export type DateSizeTokenSlot =
+export type DateNextSizeTokenSlot =
   | 'controlHeight'
   | 'controlFontSize'
   | 'controlLineHeight'
@@ -224,8 +224,8 @@ export function mentionTextareaVar(slot: MentionTextareaTokenSlot, fallback: str
   return withFallback(`--component-mention-textarea-${toKebabCase(slot)}`, fallback)
 }
 
-export function dateSizeVar(size: string, slot: DateSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-date-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
+export function dateNextSizeVar(size: string, slot: DateNextSizeTokenSlot, fallback: string): string {
+  return withFallback(`--component-date-next-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function badgeSizeVar(size: string, slot: BadgeSizeTokenSlot, fallback: string): string {

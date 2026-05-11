@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Clock, CreditCard, Globe, Hash, Phone } from 'lucide-react'
+import { Calendar, Clock, CreditCard, Globe, Hash, Phone } from 'lucide-react'
 import { getPropDefValues } from '@/theme/props/prop-def'
 import { radiusPropDef } from '@/theme/props/radius.prop'
-import { DateInput as CalendarDateInput } from './date/DateInput'
 import { InputMask, maskPresets } from './InputMask'
 import { Label } from './Label'
 
@@ -68,41 +67,20 @@ export const InternationalPhone: Story = {
 
 // Date input
 export const DateInput: Story = {
-  render: () => {
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-
-    return (
-      <div className="w-80">
-        <CalendarDateInput
-          label="Date of Birth"
-          name="date"
-          dateFormat="MM/dd/yyyy"
-          placeholder="MM/DD/YYYY"
-          minValue={new Date(1900, 0, 1)}
-          maxValue={today}
-          color="neutral"
-          radius="md"
-          variant="outline"
-        />
-      </div>
-    )
-  },
+  render: () => (
+    <div className="w-80 space-y-2">
+      <Label htmlFor="date">Date of Birth</Label>
+      <InputMask id="date" mask="date" placeholder="MM/DD/YYYY" leftIcon={<Calendar />} />
+    </div>
+  ),
 }
 
 // ISO Date
 export const ISODate: Story = {
   render: () => (
-    <div className="w-80">
-      <CalendarDateInput
-        label="ISO Date"
-        name="iso-date"
-        dateFormat="yyyy-MM-dd"
-        placeholder="YYYY-MM-DD"
-        color="neutral"
-        radius="md"
-        variant="outline"
-      />
+    <div className="w-80 space-y-2">
+      <Label htmlFor="iso-date">ISO Date</Label>
+      <InputMask id="iso-date" mask="dateISO" placeholder="YYYY-MM-DD" leftIcon={<Calendar />} />
     </div>
   ),
 }

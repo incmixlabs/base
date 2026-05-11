@@ -9,8 +9,13 @@ import { Flex } from '@/layouts/flex/Flex'
 import { KEYBOARD_KEYS } from '@/lib/keyboard-keys'
 import { semanticColorVar } from '@/theme/props/color.prop'
 import type { Color } from '@/theme/tokens'
-import { type DateSize, dateCalendarDaySizeBySize, dateControlFontSizeBySize, dateHeaderGapBySize } from './date.props'
-import { buttonSizeByDateSize } from './time-wheel-utils'
+import {
+  type DateNextSize,
+  dateNextCalendarDaySizeBySize,
+  dateNextControlFontSizeBySize,
+  dateNextHeaderGapBySize,
+} from './date-next.props'
+import { buttonSizeByDateNextSize } from './time-wheel-utils'
 
 function buildMonthOptions(
   localeCode: string,
@@ -63,7 +68,7 @@ export interface MonthYearPickerProps {
   /** Maximum selectable month. */
   maxValue?: Date
   /** Size variant — controls width, font size, and top offset. */
-  size?: DateSize
+  size?: DateNextSize
   /** Color variant — controls highlight and button colors. */
   color?: Color
 }
@@ -158,10 +163,10 @@ export function MonthYearPicker({
     else focusable[focusable.length - 1]?.focus()
   }
 
-  const cellSize = dateCalendarDaySizeBySize[size]
-  const fontSize = dateControlFontSizeBySize[size]
-  const gap = dateHeaderGapBySize[size]
-  const buttonSize = buttonSizeByDateSize[size]
+  const cellSize = dateNextCalendarDaySizeBySize[size]
+  const fontSize = dateNextControlFontSizeBySize[size]
+  const gap = dateNextHeaderGapBySize[size]
+  const buttonSize = buttonSizeByDateNextSize[size]
 
   return (
     <>

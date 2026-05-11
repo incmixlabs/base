@@ -4,7 +4,7 @@ import { Button } from '@/elements/button/Button'
 import { Separator } from '@/elements/separator/Separator'
 import { Tabs } from '@/elements/tabs/Tabs'
 import { Box } from '@/layouts/box/Box'
-import { DateTimePicker } from './date'
+import { DateTimePickerNext } from './date'
 import { FieldGroup } from './FieldGroup'
 import { Fieldset } from './Fieldset'
 import { LocationInput } from './LocationInput'
@@ -535,7 +535,7 @@ export const InheritedMixedControls: Story = {
           statePlaceholder="Select state"
           showStateSelector={false}
         />
-        <DateTimePicker ariaLabel="Departure" label="Departure" />
+        <DateTimePickerNext ariaLabel="Departure" label="Departure" />
         <div className="col-span-full">
           <Textarea placeholder="Notes" />
         </div>
@@ -556,7 +556,7 @@ export const NestedInheritanceWithoutFieldset: Story = {
         <TextField label="Primary contact" placeholder="Jane Doe" />
         <FieldGroup layout="grid" columns="2">
           <TextField label="Email" placeholder="name@example.com" />
-          <DateTimePicker ariaLabel="Departure time" />
+          <DateTimePickerNext ariaLabel="Departure time" />
           <div className="col-span-full">
             <Textarea placeholder="Internal note" />
           </div>
