@@ -28,7 +28,7 @@ function entriesFromDirectory(directory: string, outputPrefix: string) {
 
 const lightEntries = {
   index: 'src/index.ts',
-  dashboard: 'src/layouts/dashboard/index.ts',
+  dashboard: 'src/dashboard.ts',
   elements: 'src/elements/index.ts',
   'elements/avatar/Avatar': 'src/elements/avatar/Avatar.tsx',
   'elements/badge/Badge': 'src/elements/badge/Badge.tsx',

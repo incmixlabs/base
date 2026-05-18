@@ -1,16 +1,13 @@
 'use client'
 
 export {
-  DashboardBuilder,
-  type DashboardBuilderGapOption,
-  type DashboardBuilderLayoutChangeDetails,
-  type DashboardBuilderProps,
-} from './DashboardBuilder'
-export {
+  areLayoutItemsEqual,
+  clamp,
   createDashboardItemsFromPreset,
   createDashboardItemsFromPresetForColumns,
   createDashboardLayoutsFromPreset,
   createDashboardPresetFromItems,
+  DASHBOARD_LAYOUT_TRANSITION,
   type DashboardBreakpointConfig,
   type DashboardColumnConfig,
   DashboardLayout as Dashboard,
@@ -32,6 +29,7 @@ export {
   DashboardPresetPreview,
   type DashboardPresetPreviewProps,
   type DashboardResizeHandle,
+  type DashboardResolvedResizeHandle,
   type DashboardResponsiveLayoutItems,
   type DashboardResponsiveLayoutOptions,
   dashboardLayoutBreakpoints,
@@ -40,23 +38,17 @@ export {
   getDashboardColumnsForBreakpoint,
   getDashboardColumnsForWidth,
   getDashboardLayoutBreakpoint,
+  getGridHeight,
+  getItemLabel,
   isDashboardLayoutPresetDirty,
+  normalizeDashboardLayoutItem,
   normalizeDashboardLayoutItems,
   normalizeDashboardResponsiveLayouts,
   packDashboardLayoutItems,
+  packDashboardLayoutItemsWithPinned,
   updateDashboardLayoutsWithItems,
+  useElementWidth,
 } from './DashboardLayout'
-export {
-  EditableDashboard,
-  type EditableDashboardGapOption,
-  EditableDashboardLayoutPanel,
-  type EditableDashboardLayoutPanelProps,
-  type EditableDashboardProps,
-  EditableDashboardSecondaryPanel,
-  type EditableDashboardSecondaryPanelProps,
-  type EditableDashboardSecondaryTab,
-  type EditableDashboardViewportOption,
-} from './EditableDashboard'
 export {
   type DashboardRglBreakpoint,
   type DashboardRglBreakpoints,
