@@ -122,6 +122,8 @@ export interface DashboardPresetPickerProps extends Omit<React.ComponentPropsWit
   value?: string
   onValueChange?: (preset: DashboardLayoutPreset) => void
   previewHeight?: number
+  buttonClassName?: string
+  nameClassName?: string
 }
 
 export interface DashboardPresetPreviewProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -880,6 +882,8 @@ export function DashboardPresetPicker({
   value,
   onValueChange,
   previewHeight = 96,
+  buttonClassName,
+  nameClassName,
   className,
   ...props
 }: DashboardPresetPickerProps) {
@@ -893,11 +897,11 @@ export function DashboardPresetPicker({
             type="button"
             role="radio"
             aria-checked={selected}
-            className={cn(presetButton, selected && presetButtonSelected)}
+            className={cn(presetButton, selected && presetButtonSelected, buttonClassName)}
             onClick={() => onValueChange?.(preset)}
           >
             <DashboardPresetPreview preset={preset} style={{ height: previewHeight }} />
-            <span className={presetName}>{preset.name}</span>
+            <span className={cn(presetName, nameClassName)}>{preset.name}</span>
           </button>
         )
       })}
