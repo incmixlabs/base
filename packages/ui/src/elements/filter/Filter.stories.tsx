@@ -72,6 +72,9 @@ const filterFields: FilterField<RequestRecord>[] = [
   },
 ]
 
+const avatarListFilterFields = filterFields.filter(field => field.id === 'assigneeId')
+const calendarFilterFields = filterFields.filter(field => field.id === 'date')
+
 const filterSchema: FilterJsonSchema = {
   type: 'object',
   properties: {
@@ -193,15 +196,17 @@ function applyFilters(rows: RequestRecord[], filters: FilterState) {
 
 function FilterPageDemo({
   applyMode = 'immediate',
+  fields = filterFields,
   source = 'fields',
 }: {
   applyMode?: FilterApplyMode
+  fields?: FilterField<RequestRecord>[]
   source?: 'fields' | 'schema'
 }) {
   const [filters, setFilters] = React.useState<FilterState>([])
   const filteredRows = React.useMemo(() => applyFilters(sampleRows, filters), [filters])
   const filterProps =
-    source === 'schema' ? { schema: filterSchema, schemaOptions: filterSchemaOptions } : { filterFields }
+    source === 'schema' ? { schema: filterSchema, schemaOptions: filterSchemaOptions } : { filterFields: fields }
 
   return (
     <div
@@ -334,10 +339,10 @@ export const JsonSchemaDriven: Story = {
 
 export const AvatarListFilter: Story = {
   name: 'Avatar List Field',
-  render: () => <FilterPageDemo applyMode="manual" />,
+  render: () => <FilterPageDemo applyMode="manual" fields={avatarListFilterFields} />,
 }
 
 export const CalendarFilter: Story = {
   name: 'Calendar Field',
-  render: () => <FilterPageDemo applyMode="manual" />,
+  render: () => <FilterPageDemo applyMode="manual" fields={calendarFilterFields} />,
 }

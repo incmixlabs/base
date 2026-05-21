@@ -86,4 +86,49 @@ describe('getFilterFieldsFromSchema', () => {
     expect(fields[0]).toMatchObject({ label: 'Lifecycle', type: 'select' })
     expect(fields[1]).toMatchObject({ operators: ['greaterThan'], defaultOperator: 'greaterThan' })
   })
+
+  it('falls back when the requested default operator is not available', () => {
+    const schema: FilterJsonSchema = {
+      type: 'object',
+      properties: {
+        amount: { type: 'number' },
+      },
+    }
+
+    const fields = getFilterFieldsFromSchema(schema, {
+      fields: {
+        amount: { operators: ['greaterThan'], defaultOperator: 'between' },
+      },
+    })
+
+    expect(fields[0]).toMatchObject({ operators: ['greaterThan'], defaultOperator: 'greaterThan' })
+  })
+
+  it('requires avatar-list items when schema overrides emit an avatar-list field', () => {
+    const schema: FilterJsonSchema = {
+      type: 'object',
+      properties: {
+        ownerId: { type: 'string' },
+        reviewerId: { type: 'string' },
+      },
+    }
+
+    const fields = getFilterFieldsFromSchema(schema, {
+      fields: {
+        ownerId: { type: 'avatar-list' },
+        reviewerId: {
+          type: 'avatar-list',
+          field: {
+            items: [{ id: 'annie', name: 'Annie Case' }],
+          },
+        },
+      },
+    })
+
+    expect(fields.map(field => field.id)).toEqual(['reviewerId'])
+    expect(fields[0]).toMatchObject({
+      type: 'avatar-list',
+      items: [{ id: 'annie', name: 'Annie Case' }],
+    })
+  })
 })

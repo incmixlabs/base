@@ -73,37 +73,55 @@ export interface FilterProps<TData = Record<string, unknown>> {
   className?: string
 }
 
-function normalizeFilterValue(value: unknown): unknown {
-  if (Array.isArray(value)) {
-    return [...value].map(entry => normalizeFilterValue(entry)).sort()
+function areFilterValuesEqual(left: unknown, right: unknown): boolean {
+  if (Object.is(left, right)) return true
+
+  if (left instanceof Date || right instanceof Date) {
+    return left instanceof Date && right instanceof Date && left.getTime() === right.getTime()
   }
 
-  if (value instanceof Date) {
-    return value.getTime()
+  if (Array.isArray(left) || Array.isArray(right)) {
+    if (!Array.isArray(left) || !Array.isArray(right) || left.length !== right.length) return false
+
+    const unmatched = [...right]
+    return left.every(leftEntry => {
+      const matchIndex = unmatched.findIndex(rightEntry => areFilterValuesEqual(leftEntry, rightEntry))
+      if (matchIndex === -1) return false
+      unmatched.splice(matchIndex, 1)
+      return true
+    })
   }
 
-  if (value && typeof value === 'object') {
-    return Object.fromEntries(
-      Object.entries(value)
-        .sort(([left], [right]) => left.localeCompare(right))
-        .map(([key, entryValue]) => [key, normalizeFilterValue(entryValue)]),
-    )
+  if (left && right && typeof left === 'object' && typeof right === 'object') {
+    if (Object.getPrototypeOf(left) !== Object.getPrototypeOf(right)) return false
+
+    const leftEntries = Object.entries(left).sort(([leftKey], [rightKey]) => leftKey.localeCompare(rightKey))
+    const rightEntries = Object.entries(right).sort(([leftKey], [rightKey]) => leftKey.localeCompare(rightKey))
+    if (leftEntries.length !== rightEntries.length) return false
+
+    return leftEntries.every(([leftKey, leftValue], index) => {
+      const [rightKey, rightValue] = rightEntries[index]
+      return leftKey === rightKey && areFilterValuesEqual(leftValue, rightValue)
+    })
   }
 
-  return value
+  return false
 }
 
 function areFilterStatesEqual(a: FilterState, b: FilterState) {
   if (a.length !== b.length) return false
 
-  const normalizedA = [...a]
-    .map(filter => ({ id: filter.id, operator: filter.operator, value: normalizeFilterValue(filter.value) }))
-    .sort((left, right) => left.id.localeCompare(right.id))
-  const normalizedB = [...b]
-    .map(filter => ({ id: filter.id, operator: filter.operator, value: normalizeFilterValue(filter.value) }))
-    .sort((left, right) => left.id.localeCompare(right.id))
+  const normalizedA = [...a].sort((left, right) => left.id.localeCompare(right.id))
+  const normalizedB = [...b].sort((left, right) => left.id.localeCompare(right.id))
 
-  return JSON.stringify(normalizedA) === JSON.stringify(normalizedB)
+  return normalizedA.every((filter, index) => {
+    const comparison = normalizedB[index]
+    return (
+      filter.id === comparison.id &&
+      filter.operator === comparison.operator &&
+      areFilterValuesEqual(filter.value, comparison.value)
+    )
+  })
 }
 
 function hasFilterValue(value: unknown): boolean {
@@ -144,6 +162,7 @@ function setFilterStateValue(filterState: FilterState, id: string, value: unknow
 }
 
 function setFilterStateOperator(filterState: FilterState, id: string, operator: FilterOperator) {
+  if (!filterState.some(filter => filter.id === id)) return filterState
   return filterState.map(filter => (filter.id === id ? { ...filter, operator } : filter))
 }
 
@@ -486,7 +505,14 @@ function FilterCalendarField<TData>({
   onChange: (value: FilterCalendarValue | undefined) => void
   color: Color
 }) {
-  const mode: FilterCalendarMode = operator ? (operator === 'between' ? 'range' : 'single') : (field.mode ?? 'single')
+  const mode: FilterCalendarMode =
+    field.mode === 'multiple'
+      ? 'multiple'
+      : operator === 'between'
+        ? 'range'
+        : operator
+          ? 'single'
+          : (field.mode ?? 'single')
   const display = field.display ?? 'mini'
   const showMiniCalendar = display === 'mini' && mode === 'single'
   const size = 'xs'
@@ -845,9 +871,10 @@ export function Filter<TData>({
   }, [value])
 
   React.useEffect(() => {
-    setOperatorDraft(
-      Object.fromEntries(value.flatMap(filter => (filter.operator ? [[filter.id, filter.operator]] : []))),
-    )
+    setOperatorDraft(current => ({
+      ...current,
+      ...Object.fromEntries(value.flatMap(filter => (filter.operator ? [[filter.id, filter.operator]] : []))),
+    }))
   }, [value])
 
   const displayedValue = isManual ? draftValue : value
@@ -889,6 +916,8 @@ export function Filter<TData>({
   )
 
   const handleResetAll = React.useCallback(() => {
+    setOperatorDraft({})
+
     if (isManual) {
       setDraftValue([])
       return

@@ -148,7 +148,10 @@ export function getFilterFieldsFromSchema<TData = Record<string, unknown>>(
     const label = override?.label ?? property.title ?? humanizeFieldName(key)
     const description = override?.description ?? property.description
     const operators = override?.operators ?? defaultOperatorsFor(type)
-    const defaultOperator = override?.defaultOperator ?? defaultOperatorFor(type)
+    const requestedDefaultOperator = override?.defaultOperator ?? defaultOperatorFor(type)
+    const defaultOperator = operators.includes(requestedDefaultOperator)
+      ? requestedDefaultOperator
+      : (operators[0] ?? 'equals')
     const base = {
       id: key,
       label,
@@ -234,8 +237,12 @@ export function getFilterFieldsFromSchema<TData = Record<string, unknown>>(
     }
 
     if (type === 'avatar-list') {
+      type AvatarListField = Extract<FilterField<TData>, { type: 'avatar-list' }>
+      const items = (override?.field as Partial<AvatarListField> | undefined)?.items
+      if (!items) continue
+
       fields.push({
-        field: { ...base, type } as FilterField<TData>,
+        field: { ...base, type, items } as FilterField<TData>,
         index,
         order,
       })
