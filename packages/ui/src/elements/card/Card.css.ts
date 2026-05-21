@@ -1,7 +1,8 @@
 import { style, styleVariants } from '@vanilla-extract/css'
+import { containerBreakpointQuery } from '@/theme/helpers/responsive/breakpoints'
 import { cardSizeVar } from '@/theme/runtime/component-vars'
 import { panelSizeTokens } from '@/theme/token-maps'
-import { type ContainerBreakpoint, containerBreakpointKeys, containerBreakpoints } from '@/theme/tokens'
+import { type ContainerBreakpoint, containerBreakpointKeys } from '@/theme/tokens'
 import { cardSizes } from './card.props'
 
 const cardPaddingBySize = {
@@ -65,7 +66,7 @@ export const cardRootSizeResponsiveVariants = Object.fromEntries(
           size,
           {
             '@container': {
-              [`(min-width: ${containerBreakpoints[bp]})`]: {
+              [containerBreakpointQuery.up(bp)]: {
                 vars: {
                   '--inset-padding': `var(--theme-rhythm-card-padding-${size}, ${cardSizeVar(size, 'padding', cardPaddingBySize[size])})`,
                   '--inset-border-width': '0px',

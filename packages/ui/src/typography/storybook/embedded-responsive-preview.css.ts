@@ -1,5 +1,5 @@
 import { createVar, style } from '@vanilla-extract/css'
-import { typographyBreakpoints } from '@/theme/tokens'
+import { typographyBreakpointQuery } from '@/theme/helpers/responsive/breakpoints'
 
 export const storyTypographyFormFactorVar = createVar()
 export const storyTypographyActiveBreakpointVar = createVar()
@@ -11,13 +11,13 @@ export const embeddedResponsiveShell = style({
     [storyTypographyActiveBreakpointVar]: 'initial',
   },
   '@container': {
-    [`(min-width: ${typographyBreakpoints.sm})`]: {
+    [typographyBreakpointQuery.up('sm')]: {
       vars: {
         [storyTypographyFormFactorVar]: 'medium',
         [storyTypographyActiveBreakpointVar]: 'sm',
       },
     },
-    [`(min-width: ${typographyBreakpoints.md})`]: {
+    [typographyBreakpointQuery.up('md')]: {
       vars: {
         [storyTypographyFormFactorVar]: 'wide',
         [storyTypographyActiveBreakpointVar]: 'md',

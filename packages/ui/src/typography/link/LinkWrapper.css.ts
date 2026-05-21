@@ -1,6 +1,7 @@
 import { SPACING_TO_PIXELS } from '@incmix/theme'
 import { style, styleVariants } from '@vanilla-extract/css'
-import { type ContainerBreakpoint, containerBreakpointKeys, containerBreakpoints } from '@/theme/tokens'
+import { containerBreakpointQuery } from '@/theme/helpers/responsive/breakpoints'
+import { type ContainerBreakpoint, containerBreakpointKeys } from '@/theme/tokens'
 
 const gapValues = Object.keys(SPACING_TO_PIXELS) as Array<keyof typeof SPACING_TO_PIXELS>
 
@@ -27,7 +28,7 @@ export const linkWrapperGapResponsive = Object.fromEntries(
           gap,
           {
             '@container': {
-              [`(min-width: ${containerBreakpoints[bp]})`]: {
+              [containerBreakpointQuery.up(bp)]: {
                 gap: SPACING_TO_PIXELS[gap],
               },
             },
