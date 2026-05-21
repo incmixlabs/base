@@ -2,6 +2,7 @@ import { asChildPropDef } from '@/theme/props/as-child.prop'
 import { colorPropDef } from '@/theme/props/color.prop'
 import { highContrastPropDef } from '@/theme/props/high-contrast.prop'
 import type { PropDef } from '@/theme/props/prop-def'
+import { radiusPropDef } from '@/theme/props/radius.prop'
 import { formSizes } from './form-size'
 
 const checkboxCardsSizes = formSizes
@@ -14,12 +15,16 @@ const checkboxCardsRootPropDefs = {
   size: { type: 'enum', values: checkboxCardsSizes, default: 'sm', responsive: true },
   variant: { type: 'enum', values: checkboxCardsVariants, default: 'surface' },
   ...colorPropDef,
+  ...radiusPropDef,
   ...highContrastPropDef,
+  showCheckbox: { type: 'boolean', default: true },
   columns: { type: 'enum', values: checkboxCardsColumnValues, default: 'auto' },
   gap: { type: 'enum', values: checkboxCardsGapValues, default: '4' },
 } satisfies {
   size: PropDef<(typeof checkboxCardsSizes)[number]>
   variant: PropDef<(typeof checkboxCardsVariants)[number]>
+  radius: PropDef<(typeof radiusPropDef.radius.values)[number]>
+  showCheckbox: PropDef<boolean>
   columns: PropDef<(typeof checkboxCardsColumnValues)[number]>
   gap: PropDef<(typeof checkboxCardsGapValues)[number]>
 }
