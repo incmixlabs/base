@@ -3,7 +3,7 @@ import { isSameDay } from 'date-fns'
 import * as React from 'react'
 import type { AvatarListItem } from '@/elements/avatar/avatar-list.props'
 import { Filter } from './Filter'
-import type { FilterApplyMode, FilterField, FilterState } from './filter.props'
+import type { FilterApplyMode, FilterField, FilterJsonSchema, FilterSchemaOptions, FilterState } from './filter.props'
 
 type RequestRecord = {
   id: string
@@ -53,7 +53,8 @@ const filterFields: FilterField<RequestRecord>[] = [
   {
     id: 'method',
     label: 'Method',
-    type: 'checkbox',
+    type: 'select',
+    placeholder: 'Any method',
     options: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD'].map(value => ({ label: value, value })),
   },
   {
@@ -70,6 +71,50 @@ const filterFields: FilterField<RequestRecord>[] = [
     step: 50,
   },
 ]
+
+const filterSchema: FilterJsonSchema = {
+  type: 'object',
+  properties: {
+    date: {
+      type: 'string',
+      title: 'Date',
+      format: 'date',
+      description: 'Request date range.',
+      'x-filter-order': 1,
+    },
+    method: {
+      type: 'string',
+      title: 'Method',
+      enum: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD'],
+      'x-filter-order': 2,
+    },
+    host: {
+      type: 'string',
+      title: 'Host',
+      description: 'Search by host name.',
+      'x-filter-order': 3,
+    },
+    latency: {
+      type: 'number',
+      title: 'Latency',
+      minimum: 0,
+      maximum: 4000,
+      multipleOf: 50,
+      description: 'Latency in milliseconds.',
+      'x-filter-order': 4,
+    },
+  },
+}
+
+const filterSchemaOptions: FilterSchemaOptions<RequestRecord> = {
+  fields: {
+    date: {
+      calendarDisplay: 'full',
+      calendarMode: 'range',
+      defaultOperator: 'between',
+    },
+  },
+}
 
 const meta: Meta = {
   title: 'Elements/Filter',
@@ -107,20 +152,38 @@ function applyFilters(rows: RequestRecord[], filters: FilterState) {
   return rows.filter(row =>
     filters.every(filter => {
       switch (filter.id) {
-        case 'date':
+        case 'date': {
+          if (filter.value && typeof filter.value === 'object' && 'from' in filter.value) {
+            const range = filter.value as { from?: Date; to?: Date }
+            const fromMatches = range.from ? row.date >= range.from : true
+            const toMatches = range.to ? row.date <= range.to : true
+            return fromMatches && toMatches
+          }
           return filter.value instanceof Date ? isSameDay(row.date, filter.value) : true
+        }
         case 'assigneeId':
           return Array.isArray(filter.value) && filter.value.length > 0 ? filter.value.includes(row.assigneeId) : true
         case 'method':
+          if (typeof filter.value === 'string' && filter.value.length > 0) return row.method === filter.value
           return Array.isArray(filter.value) && filter.value.length > 0 ? filter.value.includes(row.method) : true
-        case 'host':
-          return typeof filter.value === 'string' && filter.value.length > 0
-            ? row.host.toLowerCase().includes(filter.value.toLowerCase())
-            : true
-        case 'latency':
+        case 'host': {
+          if (typeof filter.value !== 'string' || filter.value.length === 0) return true
+          const normalizedHost = row.host.toLowerCase()
+          const normalizedValue = filter.value.toLowerCase()
+          if (filter.operator === 'equals') return normalizedHost === normalizedValue
+          if (filter.operator === 'startsWith') return normalizedHost.startsWith(normalizedValue)
+          return normalizedHost.includes(normalizedValue)
+        }
+        case 'latency': {
+          if (typeof filter.value === 'number') {
+            if (filter.operator === 'greaterThan') return row.latency > filter.value
+            if (filter.operator === 'lessThan') return row.latency < filter.value
+            return row.latency === filter.value
+          }
           return Array.isArray(filter.value) && filter.value.length >= 2
             ? row.latency >= Number(filter.value[0]) && row.latency <= Number(filter.value[1])
             : true
+        }
         default:
           return true
       }
@@ -128,9 +191,17 @@ function applyFilters(rows: RequestRecord[], filters: FilterState) {
   )
 }
 
-function FilterPageDemo({ applyMode = 'immediate' }: { applyMode?: FilterApplyMode }) {
+function FilterPageDemo({
+  applyMode = 'immediate',
+  source = 'fields',
+}: {
+  applyMode?: FilterApplyMode
+  source?: 'fields' | 'schema'
+}) {
   const [filters, setFilters] = React.useState<FilterState>([])
   const filteredRows = React.useMemo(() => applyFilters(sampleRows, filters), [filters])
+  const filterProps =
+    source === 'schema' ? { schema: filterSchema, schemaOptions: filterSchemaOptions } : { filterFields }
 
   return (
     <div
@@ -149,13 +220,7 @@ function FilterPageDemo({ applyMode = 'immediate' }: { applyMode?: FilterApplyMo
           overflow: 'hidden',
         }}
       >
-        <Filter
-          filterFields={filterFields}
-          value={filters}
-          onValueChange={setFilters}
-          applyMode={applyMode}
-          className="h-full"
-        />
+        <Filter {...filterProps} value={filters} onValueChange={setFilters} applyMode={applyMode} className="h-full" />
       </aside>
 
       <main
@@ -260,6 +325,11 @@ export const ImmediateApply: Story = {
 export const ManualApply: Story = {
   name: 'Example Layout - Manual Apply',
   render: () => <FilterPageDemo applyMode="manual" />,
+}
+
+export const JsonSchemaDriven: Story = {
+  name: 'JSON Schema Driven',
+  render: () => <FilterPageDemo applyMode="manual" source="schema" />,
 }
 
 export const AvatarListFilter: Story = {
