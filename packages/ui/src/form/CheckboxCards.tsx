@@ -9,15 +9,21 @@ import {
   surfaceHighContrastByVariant,
   surfaceHoverEnabledClass,
 } from '@/elements/surface/surface.css'
+import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
+import { getSpacingClasses } from '@/layouts/layout-utils'
 import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
-import type { Color, Size } from '@/theme/tokens'
+import type { Color, Radius, Size } from '@/theme/tokens'
 import { checkboxColorVariants, checkboxHighContrastByVariant } from './checkbox.css'
 import { type CheckboxCardSize, checkboxCardSizeVariants } from './checkbox-cards.css'
-import { checkboxCardsRootPropDefs } from './checkbox-cards.props'
+import {
+  checkboxCardsColumnValues,
+  type checkboxCardsGapValues,
+  checkboxCardsRootPropDefs,
+} from './checkbox-cards.props'
 import { useFieldGroup } from './FieldGroupContext'
 import { resolveFormSize } from './form-size'
 
@@ -31,7 +37,9 @@ interface CheckboxCardsContextValue {
   size: Size
   variant: CardVariant
   color: Color
+  radius?: Radius
   highContrast: boolean
+  showCheckbox: boolean
   disabled?: boolean
 }
 
@@ -40,29 +48,27 @@ const CheckboxCardsContext = React.createContext<CheckboxCardsContextValue>({
   variant: 'surface',
   color: SemanticColor.neutral,
   highContrast: false,
+  showCheckbox: true,
 })
 
 // Column options for responsive grid
-type Columns = '1' | '2' | '3' | '4' | 'auto'
-
-const columnStyles: Record<Columns, string> = {
-  '1': 'grid-cols-1',
-  '2': 'grid-cols-1 sm:grid-cols-2',
-  '3': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
-  '4': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
-  auto: 'grid-cols-[repeat(auto-fit,minmax(200px,1fr))]',
-}
+type Columns = number | string
+type TokenColumns = (typeof checkboxCardsColumnValues)[number]
 
 // Gap options
-type Gap = '1' | '2' | '3' | '4' | '5' | '6'
+type Gap = (typeof checkboxCardsGapValues)[number]
 
-const gapStyles: Record<Gap, string> = {
-  '1': 'gap-1',
-  '2': 'gap-2',
-  '3': 'gap-3',
-  '4': 'gap-4',
-  '5': 'gap-5',
-  '6': 'gap-6',
+function resolveCheckboxCardsColumns(columns: Columns) {
+  if (typeof columns === 'number') return `repeat(${columns}, minmax(0, 1fr))`
+
+  const normalizedColumns = columns.trim()
+  const tokenColumns = checkboxCardsColumnValues.includes(normalizedColumns as TokenColumns)
+    ? (normalizedColumns as TokenColumns)
+    : undefined
+  if (tokenColumns === 'auto') return 'repeat(auto-fit, minmax(200px, 1fr))'
+  if (tokenColumns) return `repeat(${tokenColumns}, minmax(0, 1fr))`
+
+  return normalizedColumns
 }
 
 export interface CheckboxCardsRootProps extends MarginProps {
@@ -72,6 +78,8 @@ export interface CheckboxCardsRootProps extends MarginProps {
   variant?: CardVariant
   /** The accent color */
   color?: Color
+  /** Card corner radius */
+  radius?: Radius
   /** Number of columns (responsive) */
   columns?: Columns
   /** Gap between cards */
@@ -86,6 +94,8 @@ export interface CheckboxCardsRootProps extends MarginProps {
   disabled?: boolean
   /** Whether to apply high-contrast styles */
   highContrast?: boolean
+  /** Whether to show the checkbox indicator inside each card */
+  showCheckbox?: boolean
   /** Additional class names */
   className?: string
   /** Inline styles */
@@ -100,6 +110,7 @@ const CheckboxCardsRoot = React.forwardRef<HTMLDivElement, CheckboxCardsRootProp
       size: sizeProp,
       variant = 'surface',
       color = SemanticColor.neutral,
+      radius: radiusProp,
       columns = 'auto',
       gap = '4',
       value,
@@ -107,6 +118,7 @@ const CheckboxCardsRoot = React.forwardRef<HTMLDivElement, CheckboxCardsRootProp
       onValueChange,
       disabled,
       highContrast = false,
+      showCheckbox = true,
       className,
       style,
       m,
@@ -126,13 +138,20 @@ const CheckboxCardsRoot = React.forwardRef<HTMLDivElement, CheckboxCardsRootProp
     const safeVariant =
       normalizeEnumPropValue(checkboxCardsRootPropDefs.variant, variant) ?? checkboxCardsRootPropDefs.variant.default
     const safeColor = normalizeEnumPropValue(checkboxCardsRootPropDefs.color, color) ?? SemanticColor.neutral
-    const safeColumns =
-      normalizeEnumPropValue(checkboxCardsRootPropDefs.columns, columns) ?? checkboxCardsRootPropDefs.columns.default
     const safeGap = normalizeEnumPropValue(checkboxCardsRootPropDefs.gap, gap) ?? checkboxCardsRootPropDefs.gap.default
+    const safeRadius = normalizeEnumPropValue(checkboxCardsRootPropDefs.radius, radiusProp) as Radius | undefined
     const safeHighContrast = normalizeBooleanPropValue(checkboxCardsRootPropDefs.highContrast, highContrast) ?? false
+    const safeShowCheckbox =
+      normalizeBooleanPropValue(checkboxCardsRootPropDefs.showCheckbox, showCheckbox) ??
+      checkboxCardsRootPropDefs.showCheckbox.default
     const safeDisabled = typeof disabled === 'boolean' ? disabled : false
     const effectiveDisabled = safeDisabled || fieldGroup.disabled
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
+    const gridStyle: React.CSSProperties = {
+      ...marginProps.style,
+      ...style,
+      gridTemplateColumns: resolveCheckboxCardsColumns(columns),
+    }
 
     return (
       <CheckboxCardsContext.Provider
@@ -140,7 +159,9 @@ const CheckboxCardsRoot = React.forwardRef<HTMLDivElement, CheckboxCardsRootProp
           size,
           variant: safeVariant,
           color: safeColor,
+          radius: safeRadius,
           highContrast: safeHighContrast,
+          showCheckbox: safeShowCheckbox,
           disabled: effectiveDisabled,
         }}
       >
@@ -150,8 +171,8 @@ const CheckboxCardsRoot = React.forwardRef<HTMLDivElement, CheckboxCardsRootProp
           defaultValue={defaultValue}
           onValueChange={onValueChange}
           disabled={effectiveDisabled}
-          className={cn('grid', columnStyles[safeColumns], gapStyles[safeGap], marginProps.className, className)}
-          style={{ ...marginProps.style, ...style }}
+          className={cn('grid', getSpacingClasses(safeGap, 'gap'), marginProps.className, className)}
+          style={gridStyle}
           {...props}
         >
           {children}
@@ -163,7 +184,7 @@ const CheckboxCardsRoot = React.forwardRef<HTMLDivElement, CheckboxCardsRootProp
 
 CheckboxCardsRoot.displayName = 'CheckboxCards.Root'
 
-export interface CheckboxCardsItemProps {
+export interface CheckboxCardsItemProps extends Omit<React.LabelHTMLAttributes<HTMLLabelElement>, 'children'> {
   /** Unique value for this card */
   value: string
   /** Whether this card is disabled */
@@ -175,40 +196,79 @@ export interface CheckboxCardsItemProps {
 }
 
 const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemProps>(
-  ({ value, disabled, className, children, ...props }, ref) => {
+  ({ value, disabled, className, children, onClick, onKeyDown, style, ...props }, ref) => {
     const context = React.useContext(CheckboxCardsContext)
     const id = React.useId()
+    const checkboxRef = React.useRef<HTMLButtonElement>(null)
     const resolvedSize = resolveFormSize(context.size)
+    const radius = useThemeRadius(context.radius)
     const isDisabled = disabled || context.disabled
+    const handleClick = React.useCallback(
+      (event: React.MouseEvent<HTMLLabelElement>) => {
+        onClick?.(event)
+        if (event.defaultPrevented || isDisabled) return
+
+        const target = event.target as HTMLElement | null
+        if (target?.closest('[data-checkbox-card-control]')) return
+
+        event.preventDefault()
+        checkboxRef.current?.click()
+      },
+      [isDisabled, onClick],
+    )
+    const handleKeyDown = React.useCallback(
+      (event: React.KeyboardEvent<HTMLLabelElement>) => {
+        onKeyDown?.(event)
+        if (event.defaultPrevented || isDisabled) return
+        if (event.key !== 'Enter' && event.key !== ' ') return
+
+        const target = event.target as HTMLElement | null
+        if (target?.closest('[data-checkbox-card-control]')) return
+
+        event.preventDefault()
+        checkboxRef.current?.click()
+      },
+      [isDisabled, onKeyDown],
+    )
 
     return (
       <label
         ref={ref}
+        {...props}
         htmlFor={id}
+        onClick={handleClick}
+        onKeyDown={handleKeyDown}
         className={cn(
-          'group relative flex cursor-pointer select-none rounded-xl',
+          'group relative flex cursor-pointer select-none rounded-[var(--element-border-radius)]',
           checkboxCardSizeVariants[resolvedSize],
           'p-[var(--cbc-padding)] gap-[var(--cbc-gap)]',
           isDisabled && 'cursor-not-allowed opacity-50',
           className,
         )}
+        style={{ ...getRadiusStyles(radius), ...style }}
         data-disabled={isDisabled || undefined}
-        {...props}
       >
         <CheckboxPrimitive.Root
+          ref={checkboxRef}
           id={id}
           name={value}
           value={value}
           disabled={isDisabled}
+          data-checkbox-card-control=""
           className={cn(
-            'peer relative z-10 inline-flex shrink-0 items-center justify-center rounded',
-            'w-[var(--cbc-cb-size)] h-[var(--cbc-cb-size)]',
-            'transition-all duration-150',
-            // Keep checkbox token mapping stable for legibility; card `variant` styles the container span.
-            checkboxColorVariants[context.color].solid,
-            context.highContrast && 'af-high-contrast',
-            context.highContrast && checkboxHighContrastByVariant.solid,
-            'disabled:cursor-not-allowed disabled:opacity-50',
+            'peer',
+            context.showCheckbox
+              ? [
+                  'relative z-10 inline-flex shrink-0 items-center justify-center rounded',
+                  'w-[var(--cbc-cb-size)] h-[var(--cbc-cb-size)]',
+                  'transition-all duration-150',
+                  // Keep checkbox token mapping stable for legibility; card `variant` styles the container span.
+                  checkboxColorVariants[context.color].solid,
+                  context.highContrast && 'af-high-contrast',
+                  context.highContrast && checkboxHighContrastByVariant.solid,
+                  'disabled:cursor-not-allowed disabled:opacity-50',
+                ]
+              : 'sr-only',
           )}
         >
           <CheckboxPrimitive.Indicator className="flex items-center justify-center text-inherit w-[var(--cbc-icon-size)] h-[var(--cbc-icon-size)]">
@@ -219,12 +279,13 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
         {/* Background span - uses peer modifier to respond to checkbox state */}
         <span
           className={cn(
-            'absolute inset-0 rounded-xl border transition-all duration-150 -z-0',
+            'absolute inset-0 rounded-[var(--element-border-radius)] border transition-all duration-150 -z-0',
             surfaceColorVariants[context.color][context.variant === 'surface' ? 'surface' : 'outline'],
             !isDisabled && surfaceHoverEnabledClass,
             context.highContrast && 'af-high-contrast',
             context.highContrast && surfaceHighContrastByVariant[context.variant === 'surface' ? 'surface' : 'outline'],
             'peer-data-[checked]:ring-2 peer-data-[checked]:ring-ring/40',
+            'peer-focus-visible:ring-2 peer-focus-visible:ring-ring/60',
           )}
           aria-hidden="true"
         />
