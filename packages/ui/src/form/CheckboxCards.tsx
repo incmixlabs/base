@@ -285,6 +285,7 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
             context.highContrast && 'af-high-contrast',
             context.highContrast && surfaceHighContrastByVariant[context.variant === 'surface' ? 'surface' : 'outline'],
             'peer-data-[checked]:ring-2 peer-data-[checked]:ring-ring/40',
+            'peer-focus-visible:ring-2 peer-focus-visible:ring-ring/60',
           )}
           aria-hidden="true"
         />

@@ -37,7 +37,10 @@ describe('CheckboxCards', () => {
     const user = userEvent.setup()
     render(<ControlledCheckboxCards showCheckbox={false} />)
 
-    expect(screen.getAllByRole('checkbox')[0]).toHaveClass('sr-only')
+    const checkboxes = screen.getAllByRole('checkbox')
+    checkboxes.forEach(checkbox => {
+      expect(checkbox).toHaveClass('sr-only')
+    })
 
     await user.click(screen.getByText('Widgets'))
     expect(screen.getByTestId('selected')).toHaveTextContent('widgets')
