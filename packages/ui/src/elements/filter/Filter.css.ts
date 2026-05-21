@@ -1,15 +1,27 @@
 import { style } from '@vanilla-extract/css'
 
 export const filterHeaderClass = style({
-  paddingInline: '0.75rem',
-  paddingBlock: '0.5rem',
+  paddingBlockEnd: '0.75rem',
   borderBottom: '1px solid var(--color-neutral-border)',
-  fontSize: 'var(--font-size-xs)',
-  lineHeight: 'var(--line-height-xs)',
-  fontWeight: 600,
-  color: 'var(--color-neutral-text)',
-  textTransform: 'uppercase',
-  letterSpacing: '0.05em',
+})
+
+export const filterBodyClass = style({
+  minHeight: 0,
+  overflowX: 'hidden',
+  overflowY: 'auto',
+  paddingBlock: '0.25rem',
+})
+
+export const filterAppliedClass = style({
+  borderBottom: '1px solid var(--color-neutral-border)',
+  paddingBlock: '0.75rem',
+})
+
+export const filterFooterClass = style({
+  background: 'var(--color-neutral-surface)',
+  borderTop: '1px solid var(--color-neutral-border)',
+  marginBlockStart: 'auto',
+  paddingBlockStart: '0.75rem',
 })
 
 export const filterSliderValueRowClass = style({

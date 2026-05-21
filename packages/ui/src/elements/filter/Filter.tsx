@@ -1,12 +1,12 @@
 'use client'
 
 import { isAfter, isBefore, isSameDay } from 'date-fns'
-import { X } from 'lucide-react'
 import * as React from 'react'
 import { Accordion } from '@/elements/accordion/Accordion'
 import { AvatarList } from '@/elements/avatar/AvatarList'
 import { Badge } from '@/elements/badge/Badge'
 import { Button } from '@/elements/button/Button'
+import { IconButton } from '@/elements/button/IconButton'
 import { Checkbox } from '@/form/Checkbox'
 import { DateCalendarPanel, type DateRangeValue, MiniCalendar } from '@/form/date'
 import {
@@ -22,74 +22,181 @@ import {
   rangeCalendarSelectedColorStyles,
 } from '@/form/date/DateRangePicker.css'
 import { normalizeDay } from '@/form/date/date-calendar-core'
+import { NumberInput } from '@/form/NumberInput'
+import { Select, SelectItem } from '@/form/Select'
 import { Slider } from '@/form/Slider'
 import { TextField } from '@/form/TextField'
-import { Flex } from '@/layouts/flex/Flex'
+import { Box } from '@/layouts/box/Box'
+import { Column, Row } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
 import { controlSizeTokens } from '@/theme/token-maps'
 import type { Color } from '@/theme/tokens'
-import { filterHeaderClass, filterSliderValueRowClass } from './Filter.css'
+import { Text } from '@/typography/text/Text'
+import {
+  filterAppliedClass,
+  filterBodyClass,
+  filterFooterClass,
+  filterHeaderClass,
+  filterSliderValueRowClass,
+} from './Filter.css'
 import type {
   FilterApplyMode,
   FilterCalendarMode,
   FilterCalendarValue,
   FilterField,
+  FilterJsonSchema,
+  FilterNumberValue,
+  FilterOperator,
   FilterOption,
+  FilterSchemaOptions,
   FilterState,
 } from './filter.props'
+import { filterOperatorLabels } from './filter.props'
+import { getFilterFieldsFromSchema } from './filter-schema'
 
 export type FilterSize = 'xs' | 'sm' | 'md' | 'lg'
 
-export interface FilterProps<TData> {
-  filterFields: FilterField<TData>[]
+export interface FilterProps<TData = Record<string, unknown>> {
+  filterFields?: FilterField<TData>[]
+  schema?: FilterJsonSchema
+  schemaOptions?: FilterSchemaOptions<TData>
   value: FilterState
   onValueChange: (value: FilterState) => void
+  title?: React.ReactNode
+  description?: React.ReactNode
   size?: FilterSize
   color?: Color
   applyMode?: FilterApplyMode
+  showAppliedFilters?: boolean
+  addFilterLabel?: React.ReactNode
+  onAddFilter?: () => void
   className?: string
 }
 
-function normalizeFilterValue(value: unknown): unknown {
-  if (Array.isArray(value)) {
-    return [...value].map(entry => normalizeFilterValue(entry)).sort()
+function areFilterValuesEqual(left: unknown, right: unknown): boolean {
+  if (Object.is(left, right)) return true
+
+  if (left instanceof Date || right instanceof Date) {
+    return left instanceof Date && right instanceof Date && left.getTime() === right.getTime()
   }
 
-  if (value instanceof Date) {
-    return value.getTime()
+  if (Array.isArray(left) || Array.isArray(right)) {
+    if (!Array.isArray(left) || !Array.isArray(right) || left.length !== right.length) return false
+
+    const unmatched = [...right]
+    return left.every(leftEntry => {
+      const matchIndex = unmatched.findIndex(rightEntry => areFilterValuesEqual(leftEntry, rightEntry))
+      if (matchIndex === -1) return false
+      unmatched.splice(matchIndex, 1)
+      return true
+    })
   }
 
-  if (value && typeof value === 'object') {
-    return Object.fromEntries(
-      Object.entries(value)
-        .sort(([left], [right]) => left.localeCompare(right))
-        .map(([key, entryValue]) => [key, normalizeFilterValue(entryValue)]),
-    )
+  if (left && right && typeof left === 'object' && typeof right === 'object') {
+    if (Object.getPrototypeOf(left) !== Object.getPrototypeOf(right)) return false
+
+    const leftEntries = Object.entries(left).sort(([leftKey], [rightKey]) => leftKey.localeCompare(rightKey))
+    const rightEntries = Object.entries(right).sort(([leftKey], [rightKey]) => leftKey.localeCompare(rightKey))
+    if (leftEntries.length !== rightEntries.length) return false
+
+    return leftEntries.every(([leftKey, leftValue], index) => {
+      const [rightKey, rightValue] = rightEntries[index]
+      return leftKey === rightKey && areFilterValuesEqual(leftValue, rightValue)
+    })
   }
 
-  return value
+  return false
 }
 
 function areFilterStatesEqual(a: FilterState, b: FilterState) {
   if (a.length !== b.length) return false
 
-  const normalizedA = [...a]
-    .map(filter => ({ id: filter.id, value: normalizeFilterValue(filter.value) }))
-    .sort((left, right) => left.id.localeCompare(right.id))
-  const normalizedB = [...b]
-    .map(filter => ({ id: filter.id, value: normalizeFilterValue(filter.value) }))
-    .sort((left, right) => left.id.localeCompare(right.id))
+  const normalizedA = [...a].sort((left, right) => left.id.localeCompare(right.id))
+  const normalizedB = [...b].sort((left, right) => left.id.localeCompare(right.id))
 
-  return JSON.stringify(normalizedA) === JSON.stringify(normalizedB)
+  return normalizedA.every((filter, index) => {
+    const comparison = normalizedB[index]
+    return (
+      filter.id === comparison.id &&
+      filter.operator === comparison.operator &&
+      areFilterValuesEqual(filter.value, comparison.value)
+    )
+  })
+}
+
+function hasFilterValue(value: unknown): boolean {
+  if (value == null) return false
+  if (typeof value === 'string') return value.trim().length > 0
+  if (Array.isArray(value)) return value.some(entry => hasFilterValue(entry))
+  if (value && typeof value === 'object' && 'from' in value) {
+    const range = value as { from?: unknown; to?: unknown }
+    return hasFilterValue(range.from) || hasFilterValue(range.to)
+  }
+  return true
+}
+
+function getFilterItem(filterState: FilterState, id: string) {
+  return filterState.find(filter => filter.id === id)
 }
 
 function getFilterValue(filterState: FilterState, id: string) {
-  return filterState.find(filter => filter.id === id)?.value
+  return getFilterItem(filterState, id)?.value
 }
 
-function setFilterStateValue(filterState: FilterState, id: string, value: unknown) {
+function getDefaultOperator<TData>(field: FilterField<TData>) {
+  return field.defaultOperator ?? field.operators?.[0]
+}
+
+function getFilterOperator<TData>(
+  filterState: FilterState,
+  field: FilterField<TData>,
+  operatorDraft: Record<string, FilterOperator | undefined>,
+) {
+  return getFilterItem(filterState, field.id)?.operator ?? operatorDraft[field.id] ?? getDefaultOperator(field)
+}
+
+function setFilterStateValue(filterState: FilterState, id: string, value: unknown, operator?: FilterOperator) {
+  const existing = getFilterItem(filterState, id)
   const next = filterState.filter(filter => filter.id !== id)
-  return value == null ? next : [...next, { id, value }]
+  return hasFilterValue(value) ? [...next, { id, operator: operator ?? existing?.operator, value }] : next
+}
+
+function setFilterStateOperator(filterState: FilterState, id: string, operator: FilterOperator) {
+  if (!filterState.some(filter => filter.id === id)) return filterState
+  return filterState.map(filter => (filter.id === id ? { ...filter, operator } : filter))
+}
+
+function formatFilterDisplayValue(value: unknown): string {
+  if (value instanceof Date) return value.toLocaleDateString()
+  if (Array.isArray(value)) return value.map(formatFilterDisplayValue).join(', ')
+  if (value && typeof value === 'object' && 'from' in value) {
+    const range = value as { from?: Date | string; to?: Date | string }
+    const from = range.from ? formatFilterDisplayValue(new Date(range.from)) : ''
+    const to = range.to ? formatFilterDisplayValue(new Date(range.to)) : ''
+    return [from, to].filter(Boolean).join(' to ')
+  }
+
+  return String(value)
+}
+
+function formatFilterDisplayValueForField<TData>(field: FilterField<TData> | undefined, value: unknown): string {
+  if (!field) return formatFilterDisplayValue(value)
+
+  if ((field.type === 'checkbox' || field.type === 'select') && field.options) {
+    const labelForValue = (optionValue: unknown) =>
+      field.options?.find(option => option.value === optionValue)?.label ?? formatFilterDisplayValue(optionValue)
+
+    if (Array.isArray(value)) return value.map(labelForValue).join(', ')
+    return labelForValue(value)
+  }
+
+  return formatFilterDisplayValue(value)
+}
+
+function formatAppliedFilterLabel<TData>(field: FilterField<TData> | undefined, operator?: FilterOperator) {
+  const label = field?.label ?? ''
+  if (!operator || operator === 'equals') return label
+  return `${label} ${filterOperatorLabels[operator].toLowerCase()}`
 }
 
 function FilterCheckboxField<TData>({
@@ -113,10 +220,17 @@ function FilterCheckboxField<TData>({
   }
 
   return (
-    <Flex direction="column" style={{ gap: '0.125rem', padding: '0.25rem 0' }}>
+    <Column gap="1" py="1">
       {options.map(option => (
-        <label key={option.value}>
-          <Flex as="span" align="center" gap="2" py="1" className="cursor-pointer">
+        <Row
+          key={option.value}
+          asChild
+          align="center"
+          gap="2"
+          py="1"
+          style={{ cursor: 'pointer', minHeight: '1.75rem' }}
+        >
+          <label>
             <Checkbox
               checked={filterValue.includes(option.value)}
               onCheckedChange={() => handleToggle(option.value)}
@@ -124,16 +238,87 @@ function FilterCheckboxField<TData>({
               color={color}
             />
             {option.icon ?? null}
-            <span>{option.label}</span>
+            <Box flexGrow="1" minWidth="0">
+              <Text size="sm" color="slate" truncate>
+                {option.label}
+              </Text>
+            </Box>
             {option.count != null ? (
-              <Badge size="xs" variant="soft" color="slate" className="ml-auto tabular-nums">
+              <Badge size="xs" variant="soft" color="slate">
                 {option.count}
               </Badge>
             ) : null}
-          </Flex>
-        </label>
+          </label>
+        </Row>
       ))}
-    </Flex>
+    </Column>
+  )
+}
+
+function FilterSelectField<TData>({
+  field,
+  filterValue,
+  onChange,
+  size,
+  color,
+}: {
+  field: Extract<FilterField<TData>, { type: 'select' }>
+  filterValue?: string
+  onChange: (value: string | undefined) => void
+  size: FilterSize
+  color: Color
+}) {
+  const options: FilterOption[] = field.options ?? []
+
+  return (
+    <Column gap="1" py="1">
+      <Select
+        size={size}
+        color={color}
+        value={filterValue}
+        placeholder={field.placeholder ?? `Select ${field.label}...`}
+        onValueChange={value => onChange(value || undefined)}
+      >
+        {options.map(option => (
+          <SelectItem key={option.value} value={option.value}>
+            {option.label}
+          </SelectItem>
+        ))}
+      </Select>
+    </Column>
+  )
+}
+
+function FilterOperatorSelect<TData>({
+  field,
+  operator,
+  onChange,
+  size,
+  color,
+}: {
+  field: FilterField<TData>
+  operator?: FilterOperator
+  onChange: (operator: FilterOperator) => void
+  size: FilterSize
+  color: Color
+}) {
+  const operators = field.operators ?? []
+  if (operators.length <= 1) return null
+
+  return (
+    <Select
+      size={size}
+      color={color}
+      value={operator ?? operators[0]}
+      placeholder="Rule"
+      onValueChange={value => onChange(value as FilterOperator)}
+    >
+      {operators.map(operatorValue => (
+        <SelectItem key={operatorValue} value={operatorValue}>
+          {filterOperatorLabels[operatorValue]}
+        </SelectItem>
+      ))}
+    </Select>
   )
 }
 
@@ -151,15 +336,91 @@ function FilterInputField<TData>({
   color: Color
 }) {
   return (
-    <Flex direction="column" style={{ gap: '0.125rem', padding: '0.25rem 0' }}>
+    <Column gap="1" py="1">
       <TextField
         size={size}
         color={color}
-        placeholder={`Filter ${field.label}...`}
+        placeholder={field.placeholder ?? `Filter ${field.label}...`}
         value={filterValue}
         onChange={event => onChange(event.target.value || undefined)}
       />
-    </Flex>
+    </Column>
+  )
+}
+
+function FilterNumberField<TData>({
+  field,
+  filterValue,
+  operator,
+  onChange,
+  size,
+  color,
+}: {
+  field: Extract<FilterField<TData>, { type: 'number' }>
+  filterValue?: FilterNumberValue
+  operator?: FilterOperator
+  onChange: (value: FilterNumberValue | undefined) => void
+  size: FilterSize
+  color: Color
+}) {
+  const min = field.min
+  const max = field.max
+  const step = field.step ?? 1
+  const allowDecimal = field.allowDecimal ?? true
+  const isBetween = operator === 'between'
+
+  if (isBetween) {
+    const [from, to] = Array.isArray(filterValue) ? filterValue : [undefined, undefined]
+    const updateRange = (nextFrom: number | undefined, nextTo: number | undefined) => {
+      onChange(nextFrom == null && nextTo == null ? undefined : [nextFrom, nextTo])
+    }
+
+    return (
+      <Row gap="2" py="1">
+        <NumberInput
+          variant="icon"
+          size={size}
+          color={color}
+          label="Min"
+          min={min}
+          max={max}
+          step={step}
+          allowDecimal={allowDecimal}
+          value={from ?? ''}
+          onValueChange={value => updateRange(value === '' ? undefined : value, to)}
+        />
+        <NumberInput
+          variant="icon"
+          size={size}
+          color={color}
+          label="Max"
+          min={min}
+          max={max}
+          step={step}
+          allowDecimal={allowDecimal}
+          value={to ?? ''}
+          onValueChange={value => updateRange(from, value === '' ? undefined : value)}
+        />
+      </Row>
+    )
+  }
+
+  return (
+    <Column gap="1" py="1">
+      <NumberInput
+        variant="icon"
+        size={size}
+        color={color}
+        label="Value"
+        min={min}
+        max={max}
+        step={step}
+        allowDecimal={allowDecimal}
+        value={typeof filterValue === 'number' ? filterValue : ''}
+        placeholder={field.placeholder}
+        onValueChange={value => onChange(value === '' ? undefined : value)}
+      />
+    </Column>
   )
 }
 
@@ -180,7 +441,7 @@ function FilterSliderField<TData>({
   const max = field.max ?? 100
 
   return (
-    <Flex direction="column" style={{ gap: '0.125rem', padding: '0.25rem 0' }}>
+    <Column gap="2" py="1">
       <Slider
         size={size}
         color={color}
@@ -195,11 +456,15 @@ function FilterSliderField<TData>({
           onChange(nextValue[0] === min && nextValue[1] === max ? undefined : nextValue)
         }}
       />
-      <Flex justify="between" className={filterSliderValueRowClass}>
-        <span>{filterValue[0]}</span>
-        <span>{filterValue[1]}</span>
-      </Flex>
-    </Flex>
+      <Row justify="between" className={filterSliderValueRowClass}>
+        <Text size="xs" color="slate">
+          {filterValue[0]}
+        </Text>
+        <Text size="xs" color="slate">
+          {filterValue[1]}
+        </Text>
+      </Row>
+    </Column>
   )
 }
 
@@ -215,7 +480,7 @@ function FilterAvatarListField<TData>({
   size: FilterSize
 }) {
   return (
-    <Flex direction="column" style={{ gap: '0.125rem', padding: '0.25rem 0' }}>
+    <Column gap="1" py="1">
       <AvatarList
         items={field.items}
         size={size === 'lg' ? 'sm' : 'xs'}
@@ -223,22 +488,31 @@ function FilterAvatarListField<TData>({
         selectedIds={filterValue}
         onSelectedIdsChange={value => onChange(value.length > 0 ? value : undefined)}
       />
-    </Flex>
+    </Column>
   )
 }
 
 function FilterCalendarField<TData>({
   field,
   filterValue,
+  operator,
   onChange,
   color,
 }: {
   field: Extract<FilterField<TData>, { type: 'calendar' }>
   filterValue?: FilterCalendarValue
+  operator?: FilterOperator
   onChange: (value: FilterCalendarValue | undefined) => void
   color: Color
 }) {
-  const mode: FilterCalendarMode = field.mode ?? 'single'
+  const mode: FilterCalendarMode =
+    field.mode === 'multiple'
+      ? 'multiple'
+      : operator === 'between'
+        ? 'range'
+        : operator
+          ? 'single'
+          : (field.mode ?? 'single')
   const display = field.display ?? 'mini'
   const showMiniCalendar = display === 'mini' && mode === 'single'
   const size = 'xs'
@@ -270,7 +544,7 @@ function FilterCalendarField<TData>({
 
   if (showMiniCalendar) {
     return (
-      <Flex direction="column" style={{ gap: '0.125rem', padding: '0.25rem 0' }}>
+      <Column gap="1" py="1">
         <MiniCalendar
           value={filterValue instanceof Date ? filterValue : undefined}
           onChange={date => onChange(date)}
@@ -280,7 +554,7 @@ function FilterCalendarField<TData>({
           radius={radius}
           size={size}
         />
-      </Flex>
+      </Column>
     )
   }
 
@@ -313,7 +587,7 @@ function FilterCalendarField<TData>({
   const currentRange = mode === 'range' && rangeDraft && 'from' in rangeDraft ? rangeDraft : undefined
 
   return (
-    <Flex direction="column" style={{ gap: '0.125rem', padding: '0.25rem 0' }}>
+    <Column gap="1" py="1">
       <DateCalendarPanel
         value={filterValue instanceof Date ? filterValue : undefined}
         onChange={handleSingleChange}
@@ -412,204 +686,400 @@ function FilterCalendarField<TData>({
               }
         }
       />
-    </Flex>
+    </Column>
+  )
+}
+
+function FilterAppliedFilters<TData>({
+  filters,
+  filterFields,
+  color,
+  onRemove,
+}: {
+  filters: FilterState
+  filterFields: FilterField<TData>[]
+  color: Color
+  onRemove: (fieldId: string) => void
+}) {
+  const visibleFilters = filters.filter(filter => hasFilterValue(filter.value))
+
+  if (visibleFilters.length === 0) {
+    return (
+      <Text size="xs" color="slate" variant="muted">
+        No applied filters
+      </Text>
+    )
+  }
+
+  return (
+    <Row wrap="wrap" gap="2">
+      {visibleFilters.map(filter => {
+        const field = filterFields.find(candidate => candidate.id === filter.id)
+        const label = field ? formatAppliedFilterLabel(field, filter.operator) : filter.id
+        return (
+          <Badge
+            key={filter.id}
+            size="sm"
+            variant="soft"
+            color={color}
+            radius="full"
+            onDelete={() => onRemove(filter.id)}
+            deleteLabel={`Remove ${label} filter`}
+          >
+            {label}: {formatFilterDisplayValueForField(field, filter.value)}
+          </Badge>
+        )
+      })}
+    </Row>
   )
 }
 
 function FilterFieldComponent<TData>({
   field,
   value,
+  operator,
   onFilterChange,
+  onOperatorChange,
   size,
   color,
 }: {
   field: FilterField<TData>
   value: FilterState
+  operator?: FilterOperator
   onFilterChange: (fieldId: string, value: unknown) => void
+  onOperatorChange: (fieldId: string, operator: FilterOperator) => void
   size: FilterSize
   color: Color
 }) {
-  switch (field.type) {
-    case 'checkbox':
-      return (
-        <FilterCheckboxField
-          field={field}
-          filterValue={(getFilterValue(value, field.id) as string[]) ?? []}
-          onChange={nextValue => onFilterChange(field.id, nextValue)}
-          size={size}
-          color={color}
-        />
-      )
-    case 'input':
-      return (
-        <FilterInputField
-          field={field}
-          filterValue={(getFilterValue(value, field.id) as string) ?? ''}
-          onChange={nextValue => onFilterChange(field.id, nextValue)}
-          size={size}
-          color={color}
-        />
-      )
-    case 'slider':
-      return (
-        <FilterSliderField
-          field={field}
-          filterValue={(getFilterValue(value, field.id) as [number, number]) ?? [field.min ?? 0, field.max ?? 100]}
-          onChange={nextValue => onFilterChange(field.id, nextValue)}
-          size={size}
-          color={color}
-        />
-      )
-    case 'avatar-list':
-      return (
-        <FilterAvatarListField
-          field={field}
-          filterValue={(getFilterValue(value, field.id) as string[]) ?? []}
-          onChange={nextValue => onFilterChange(field.id, nextValue)}
-          size={size}
-        />
-      )
-    case 'calendar':
-      return (
-        <FilterCalendarField
-          field={field}
-          filterValue={getFilterValue(value, field.id) as FilterCalendarValue | undefined}
-          onChange={nextValue => onFilterChange(field.id, nextValue)}
-          color={color}
-        />
-      )
-    default:
-      return null
-  }
+  const control = (() => {
+    switch (field.type) {
+      case 'checkbox':
+        return (
+          <FilterCheckboxField
+            field={field}
+            filterValue={(getFilterValue(value, field.id) as string[]) ?? []}
+            onChange={nextValue => onFilterChange(field.id, nextValue)}
+            size={size}
+            color={color}
+          />
+        )
+      case 'input':
+        return (
+          <FilterInputField
+            field={field}
+            filterValue={(getFilterValue(value, field.id) as string) ?? ''}
+            onChange={nextValue => onFilterChange(field.id, nextValue)}
+            size={size}
+            color={color}
+          />
+        )
+      case 'select':
+        return (
+          <FilterSelectField
+            field={field}
+            filterValue={getFilterValue(value, field.id) as string | undefined}
+            onChange={nextValue => onFilterChange(field.id, nextValue)}
+            size={size}
+            color={color}
+          />
+        )
+      case 'number':
+        return (
+          <FilterNumberField
+            field={field}
+            filterValue={getFilterValue(value, field.id) as FilterNumberValue | undefined}
+            operator={operator}
+            onChange={nextValue => onFilterChange(field.id, nextValue)}
+            size={size}
+            color={color}
+          />
+        )
+      case 'slider':
+        return (
+          <FilterSliderField
+            field={field}
+            filterValue={(getFilterValue(value, field.id) as [number, number]) ?? [field.min ?? 0, field.max ?? 100]}
+            onChange={nextValue => onFilterChange(field.id, nextValue)}
+            size={size}
+            color={color}
+          />
+        )
+      case 'avatar-list':
+        return (
+          <FilterAvatarListField
+            field={field}
+            filterValue={(getFilterValue(value, field.id) as string[]) ?? []}
+            onChange={nextValue => onFilterChange(field.id, nextValue)}
+            size={size}
+          />
+        )
+      case 'calendar':
+        return (
+          <FilterCalendarField
+            field={field}
+            filterValue={getFilterValue(value, field.id) as FilterCalendarValue | undefined}
+            operator={operator}
+            onChange={nextValue => onFilterChange(field.id, nextValue)}
+            color={color}
+          />
+        )
+      default:
+        return null
+    }
+  })()
+
+  return (
+    <Column gap="2">
+      <FilterOperatorSelect
+        field={field}
+        operator={operator}
+        onChange={nextOperator => onOperatorChange(field.id, nextOperator)}
+        size={size}
+        color={color}
+      />
+      {control}
+    </Column>
+  )
 }
 
 export function Filter<TData>({
   filterFields,
+  schema,
+  schemaOptions,
   value,
   onValueChange,
+  title = 'Filters',
+  description,
   size = 'sm',
   color = 'primary',
   applyMode = 'immediate',
+  showAppliedFilters = true,
+  addFilterLabel = 'Add filter',
+  onAddFilter,
   className,
 }: FilterProps<TData>) {
   const isManual = applyMode === 'manual'
+  const resolvedFilterFields = React.useMemo(
+    () => filterFields ?? (schema ? getFilterFieldsFromSchema<TData>(schema, schemaOptions) : []),
+    [filterFields, schema, schemaOptions],
+  )
   const [draftValue, setDraftValue] = React.useState<FilterState>(value)
+  const [operatorDraft, setOperatorDraft] = React.useState<Record<string, FilterOperator | undefined>>({})
 
   React.useEffect(() => {
     setDraftValue(value)
   }, [value])
 
+  React.useEffect(() => {
+    setOperatorDraft(current => ({
+      ...current,
+      ...Object.fromEntries(value.flatMap(filter => (filter.operator ? [[filter.id, filter.operator]] : []))),
+    }))
+  }, [value])
+
   const displayedValue = isManual ? draftValue : value
-  const hasFilters = value.length > 0
+  const hasFilters = displayedValue.some(filter => hasFilterValue(filter.value))
   const hasDraftChanges = isManual && !areFilterStatesEqual(draftValue, value)
-  const canResetAll = isManual ? hasDraftChanges : hasFilters
-  const defaultOpenItems = filterFields.filter(f => f.defaultOpen !== false).map(f => f.id)
+  const canResetAll = hasFilters
+  const hasHeader = title != null || description != null || onAddFilter
+  const defaultOpenItems = resolvedFilterFields.filter(f => f.defaultOpen !== false).map(f => f.id)
 
   const handleFilterChange = React.useCallback(
     (fieldId: string, nextValue: unknown) => {
+      const field = resolvedFilterFields.find(candidate => candidate.id === fieldId)
+      const operator = field ? getFilterOperator(displayedValue, field, operatorDraft) : operatorDraft[fieldId]
+
       if (isManual) {
-        setDraftValue(current => setFilterStateValue(current, fieldId, nextValue))
+        setDraftValue(current => setFilterStateValue(current, fieldId, nextValue, operator))
         return
       }
 
-      onValueChange(setFilterStateValue(value, fieldId, nextValue))
+      onValueChange(setFilterStateValue(value, fieldId, nextValue, operator))
     },
-    [isManual, onValueChange, value],
+    [displayedValue, isManual, onValueChange, operatorDraft, resolvedFilterFields, value],
+  )
+
+  const handleOperatorChange = React.useCallback(
+    (fieldId: string, nextOperator: FilterOperator) => {
+      setOperatorDraft(current => ({ ...current, [fieldId]: nextOperator }))
+
+      if (!hasFilterValue(getFilterValue(displayedValue, fieldId))) return
+
+      if (isManual) {
+        setDraftValue(current => setFilterStateOperator(current, fieldId, nextOperator))
+        return
+      }
+
+      onValueChange(setFilterStateOperator(value, fieldId, nextOperator))
+    },
+    [displayedValue, isManual, onValueChange, value],
   )
 
   const handleResetAll = React.useCallback(() => {
+    setOperatorDraft({})
+
     if (isManual) {
-      setDraftValue(value)
+      setDraftValue([])
       return
     }
 
     onValueChange([])
-  }, [isManual, onValueChange, value])
+  }, [isManual, onValueChange])
 
   const handleApply = React.useCallback(() => {
     onValueChange(draftValue)
   }, [draftValue, onValueChange])
 
-  if (filterFields.length === 0) return null
+  if (resolvedFilterFields.length === 0) return null
 
   return (
-    <div className={className} style={{ fontSize: controlSizeTokens[size].fontSize }}>
-      <Flex align="center" justify="between" gap="3" className={filterHeaderClass}>
-        <span>Filters</span>
-        {isManual ? (
-          <Flex align="center" gap="2">
-            <Button
-              type="button"
-              variant="ghost"
-              color="slate"
-              size="xs"
-              onClick={handleResetAll}
-              disabled={!canResetAll}
-            >
-              Reset all
-            </Button>
-            <Button
-              type="button"
-              variant="solid"
-              color="primary"
-              size="xs"
-              onClick={handleApply}
-              disabled={!hasDraftChanges}
-            >
-              Apply
-            </Button>
-          </Flex>
-        ) : hasFilters ? (
-          <Button type="button" variant="ghost" color="slate" size="sm" onClick={handleResetAll}>
+    <Column
+      height="100%"
+      minHeight="0"
+      gap="3"
+      className={className}
+      style={{ fontSize: controlSizeTokens[size].fontSize }}
+    >
+      {hasHeader ? (
+        <Column gap="3" className={filterHeaderClass}>
+          <Row align="start" justify="between" gap="3">
+            <Column gap="1" minWidth="0">
+              {title != null ? (
+                <Text size="sm" weight="bold" color="slate">
+                  {title}
+                </Text>
+              ) : null}
+              {description ? (
+                <Text size="xs" color="slate" variant="muted">
+                  {description}
+                </Text>
+              ) : null}
+            </Column>
+            {onAddFilter ? (
+              <Button type="button" variant="soft" color={color} size="xs" iconStart="plus" onClick={onAddFilter}>
+                {addFilterLabel}
+              </Button>
+            ) : null}
+          </Row>
+        </Column>
+      ) : null}
+
+      {showAppliedFilters ? (
+        <Column gap="2" className={filterAppliedClass}>
+          <Row align="center" justify="between" gap="2">
+            <Text size="xs" weight="bold" color="slate">
+              Applied
+            </Text>
+            {!isManual ? (
+              <Button
+                type="button"
+                variant="ghost"
+                color="slate"
+                size="xs"
+                onClick={handleResetAll}
+                disabled={!canResetAll}
+              >
+                Reset all
+              </Button>
+            ) : null}
+          </Row>
+          <FilterAppliedFilters
+            filters={displayedValue}
+            filterFields={resolvedFilterFields}
+            color={color}
+            onRemove={fieldId => handleFilterChange(fieldId, undefined)}
+          />
+        </Column>
+      ) : null}
+
+      <Column flexGrow="1" flexBasis="0" minHeight="0" gap="3" className={filterBodyClass}>
+        <Accordion.Root
+          multiple
+          size="xs"
+          border={false}
+          triggerPadding={false}
+          contentPadding={false}
+          defaultValue={defaultOpenItems}
+        >
+          {resolvedFilterFields.map((field, index) => {
+            const hasValue = hasFilterValue(getFilterValue(displayedValue, field.id))
+            const operator = getFilterOperator(displayedValue, field, operatorDraft)
+            return (
+              <Box
+                key={field.id}
+                asChild
+                color="neutral"
+                variant={index % 2 === 0 ? 'surface' : 'soft'}
+                text="text"
+                borderColor="neutral-border"
+                radius="md"
+                p="3"
+              >
+                <Accordion.Item value={field.id}>
+                  <Row align="center" width="100%" gap="2">
+                    <Accordion.Trigger style={{ flex: 1 }}>
+                      <Text size="sm" weight="bold" color="slate">
+                        {field.label}
+                      </Text>
+                    </Accordion.Trigger>
+                    {hasValue ? (
+                      <IconButton
+                        type="button"
+                        variant="ghost"
+                        color="slate"
+                        size="xs"
+                        icon="close"
+                        title={`Reset ${field.label} filter`}
+                        onClick={event => {
+                          event.stopPropagation()
+                          handleFilterChange(field.id, undefined)
+                        }}
+                      />
+                    ) : null}
+                  </Row>
+                  <Accordion.Content>
+                    <FilterFieldComponent
+                      field={field}
+                      value={displayedValue}
+                      operator={operator}
+                      onFilterChange={handleFilterChange}
+                      onOperatorChange={handleOperatorChange}
+                      size={size}
+                      color={color}
+                    />
+                  </Accordion.Content>
+                </Accordion.Item>
+              </Box>
+            )
+          })}
+        </Accordion.Root>
+      </Column>
+
+      {isManual ? (
+        <Row justify="end" gap="2" className={filterFooterClass}>
+          <Button
+            type="button"
+            variant="ghost"
+            color="slate"
+            size="xs"
+            onClick={handleResetAll}
+            disabled={!canResetAll}
+          >
             Reset all
           </Button>
-        ) : null}
-      </Flex>
-      <Accordion.Root
-        multiple
-        size="xs"
-        border={false}
-        triggerPadding={false}
-        contentPadding={false}
-        defaultValue={defaultOpenItems}
-      >
-        {filterFields.map(field => {
-          const hasValue = getFilterValue(displayedValue, field.id) != null
-          return (
-            <Accordion.Item key={field.id} value={field.id}>
-              <Flex align="center" width="100%">
-                <Accordion.Trigger style={{ flex: 1 }}>{field.label}</Accordion.Trigger>
-                {hasValue ? (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    color="slate"
-                    size="sm"
-                    onClick={event => {
-                      event.stopPropagation()
-                      handleFilterChange(field.id, undefined)
-                    }}
-                    aria-label={`Reset ${field.label} filter`}
-                    style={{ paddingInline: '0.5rem', flexShrink: 0 }}
-                  >
-                    <X style={{ width: '0.75rem', height: '0.75rem' }} />
-                  </Button>
-                ) : null}
-              </Flex>
-              <Accordion.Content>
-                <FilterFieldComponent
-                  field={field}
-                  value={displayedValue}
-                  onFilterChange={handleFilterChange}
-                  size={size}
-                  color={color}
-                />
-              </Accordion.Content>
-            </Accordion.Item>
-          )
-        })}
-      </Accordion.Root>
-    </div>
+          <Button
+            type="button"
+            variant="solid"
+            color={color}
+            size="xs"
+            onClick={handleApply}
+            disabled={!hasDraftChanges}
+          >
+            Apply
+          </Button>
+        </Row>
+      ) : null}
+    </Column>
   )
 }
 
