@@ -149,8 +149,8 @@ const CheckboxCardsRoot = React.forwardRef<HTMLDivElement, CheckboxCardsRootProp
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
     const gridStyle: React.CSSProperties = {
       ...marginProps.style,
-      gridTemplateColumns: resolveCheckboxCardsColumns(columns),
       ...style,
+      gridTemplateColumns: resolveCheckboxCardsColumns(columns),
     }
 
     return (
@@ -234,6 +234,7 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
     return (
       <label
         ref={ref}
+        {...props}
         htmlFor={id}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
@@ -246,7 +247,6 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
         )}
         style={{ ...getRadiusStyles(radius), ...style }}
         data-disabled={isDisabled || undefined}
-        {...props}
       >
         <CheckboxPrimitive.Root
           ref={checkboxRef}
