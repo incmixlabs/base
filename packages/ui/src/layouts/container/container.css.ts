@@ -1,5 +1,6 @@
 import { style, styleVariants } from '@vanilla-extract/css'
-import { type ContainerBreakpoint, containerBreakpointKeys, containerBreakpoints } from '@/theme/tokens'
+import { containerBreakpointQuery } from '@/theme/helpers/responsive/breakpoints'
+import { type ContainerBreakpoint, containerBreakpointKeys } from '@/theme/tokens'
 import type { ContainerAlign, ContainerSize } from '../layout-utils'
 import type { ContainerDisplay } from './container.props'
 
@@ -38,12 +39,12 @@ export const containerDisplayResponsive = Object.fromEntries(
     styleVariants({
       none: {
         '@container': {
-          [`(min-width: ${containerBreakpoints[bp]})`]: { display: 'none' },
+          [containerBreakpointQuery.up(bp)]: { display: 'none' },
         },
       },
       initial: {
         '@container': {
-          [`(min-width: ${containerBreakpoints[bp]})`]: { display: 'flex' },
+          [containerBreakpointQuery.up(bp)]: { display: 'flex' },
         },
       },
     }),
@@ -56,17 +57,17 @@ export const containerAlignResponsive = Object.fromEntries(
     styleVariants({
       left: {
         '@container': {
-          [`(min-width: ${containerBreakpoints[bp]})`]: { alignItems: 'flex-start' },
+          [containerBreakpointQuery.up(bp)]: { alignItems: 'flex-start' },
         },
       },
       center: {
         '@container': {
-          [`(min-width: ${containerBreakpoints[bp]})`]: { alignItems: 'center' },
+          [containerBreakpointQuery.up(bp)]: { alignItems: 'center' },
         },
       },
       right: {
         '@container': {
-          [`(min-width: ${containerBreakpoints[bp]})`]: { alignItems: 'flex-end' },
+          [containerBreakpointQuery.up(bp)]: { alignItems: 'flex-end' },
         },
       },
     }),
@@ -79,22 +80,22 @@ export const containerSizeResponsive = Object.fromEntries(
     styleVariants({
       '1': {
         '@container': {
-          [`(min-width: ${containerBreakpoints[bp]})`]: containerMaxWidthVars('1'),
+          [containerBreakpointQuery.up(bp)]: containerMaxWidthVars('1'),
         },
       },
       '2': {
         '@container': {
-          [`(min-width: ${containerBreakpoints[bp]})`]: containerMaxWidthVars('2'),
+          [containerBreakpointQuery.up(bp)]: containerMaxWidthVars('2'),
         },
       },
       '3': {
         '@container': {
-          [`(min-width: ${containerBreakpoints[bp]})`]: containerMaxWidthVars('3'),
+          [containerBreakpointQuery.up(bp)]: containerMaxWidthVars('3'),
         },
       },
       '4': {
         '@container': {
-          [`(min-width: ${containerBreakpoints[bp]})`]: containerMaxWidthVars('4'),
+          [containerBreakpointQuery.up(bp)]: containerMaxWidthVars('4'),
         },
       },
     }),

@@ -1,5 +1,6 @@
 import { style, styleVariants } from '@vanilla-extract/css'
-import { type ContainerBreakpoint, containerBreakpointKeys, containerBreakpoints } from '@/theme/tokens'
+import { containerBreakpointQuery } from '@/theme/helpers/responsive/breakpoints'
+import { type ContainerBreakpoint, containerBreakpointKeys } from '@/theme/tokens'
 
 export const sectionBaseCls = 'box-border'
 
@@ -50,7 +51,7 @@ function buildResponsiveVariants<T extends Record<string, Record<string, string>
       key,
       {
         '@container': {
-          [`(min-width: ${containerBreakpoints[breakpoint]})`]: value,
+          [containerBreakpointQuery.up(breakpoint)]: value,
         },
       },
     ]),

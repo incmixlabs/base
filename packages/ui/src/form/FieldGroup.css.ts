@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css'
-import { containerBreakpoints } from '@/theme/tokens'
+import { containerBreakpointQuery } from '@/theme/helpers/responsive/breakpoints'
 
 export const fieldGroupSideLabelsBase = style({
   containerType: 'inline-size',
@@ -14,7 +14,7 @@ export const fieldGroupRowBase = style({
 
 export const fieldGroupRowResponsive = style({
   '@container': {
-    [`(min-width: ${containerBreakpoints.md})`]: {
+    [containerBreakpointQuery.up('md')]: {
       gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 2fr)',
       columnGap: 'var(--theme-rhythm-field-group-column-gap, var(--field-group-row-column-gap))',
     },

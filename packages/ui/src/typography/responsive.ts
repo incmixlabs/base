@@ -1,22 +1,19 @@
 import type { Responsive } from '@/layouts/layout-utils'
-import {
-  type TypographyBreakpoint,
-  typographyBreakpointKeys as themeTypographyBreakpointKeys,
-  typographyBreakpoints,
-} from '@/theme/tokens'
+import { typographyBreakpointQuery } from '@/theme/helpers/responsive/breakpoints'
+import { type TypographyBreakpoint, typographyBreakpointKeys as themeTypographyBreakpointKeys } from '@/theme/tokens'
 
 export const typographyBreakpointKeys = themeTypographyBreakpointKeys
 
 export function buildContainerResponsiveVariants<T extends Record<string, Record<string, string>>>(
   styles: T,
-  breakpoint: keyof typeof typographyBreakpoints,
+  breakpoint: TypographyBreakpoint,
 ): { [K in keyof T]: { '@container': { [query: string]: T[K] } } } {
   return Object.fromEntries(
     Object.entries(styles).map(([key, value]) => [
       key,
       {
         '@container': {
-          [`(min-width: ${typographyBreakpoints[breakpoint]})`]: value,
+          [typographyBreakpointQuery.up(breakpoint)]: value,
         },
       },
     ]),

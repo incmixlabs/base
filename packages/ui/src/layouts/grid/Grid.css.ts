@@ -1,5 +1,6 @@
 import { style, styleVariants } from '@vanilla-extract/css'
-import { type ContainerBreakpoint, containerBreakpointKeys, containerBreakpoints } from '@/theme/tokens'
+import { containerBreakpointQuery } from '@/theme/helpers/responsive/breakpoints'
+import { type ContainerBreakpoint, containerBreakpointKeys } from '@/theme/tokens'
 
 export const gridBaseCls = 'box-border'
 
@@ -113,7 +114,7 @@ export const gridColumnsResponsive = Object.fromEntries(
           key,
           {
             '@container': {
-              [`(min-width: ${containerBreakpoints[bp]})`]: {
+              [containerBreakpointQuery.up(bp)]: {
                 gridTemplateColumns: value,
               },
             },
@@ -133,7 +134,7 @@ export const gridRowsResponsive = Object.fromEntries(
           key,
           {
             '@container': {
-              [`(min-width: ${containerBreakpoints[bp]})`]: {
+              [containerBreakpointQuery.up(bp)]: {
                 gridTemplateRows: value,
               },
             },
@@ -149,7 +150,7 @@ export const gridTemplateAreasCustomResponsive = Object.fromEntries(
     bp,
     style({
       '@container': {
-        [`(min-width: ${containerBreakpoints[bp]})`]: {
+        [containerBreakpointQuery.up(bp)]: {
           gridTemplateAreas: `var(--grid-template-areas-${bp})`,
         },
       },
@@ -162,7 +163,7 @@ export const gridTemplateColumnsCustomResponsive = Object.fromEntries(
     bp,
     style({
       '@container': {
-        [`(min-width: ${containerBreakpoints[bp]})`]: {
+        [containerBreakpointQuery.up(bp)]: {
           gridTemplateColumns: `var(--grid-template-columns-${bp})`,
         },
       },
@@ -175,7 +176,7 @@ export const gridTemplateRowsCustomResponsive = Object.fromEntries(
     bp,
     style({
       '@container': {
-        [`(min-width: ${containerBreakpoints[bp]})`]: {
+        [containerBreakpointQuery.up(bp)]: {
           gridTemplateRows: `var(--grid-template-rows-${bp})`,
         },
       },
