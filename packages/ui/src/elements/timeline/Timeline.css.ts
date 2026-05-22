@@ -156,11 +156,11 @@ export const timelineSeparatorPosition = styleVariants({
     height: '2px',
     left: `calc(${indicatorSizeVar} + 0.25rem)`,
     right: 0,
-    top: `calc(-1 * ${itemOffsetVar} + ${indicatorSizeVar} / 2 - 1px)`,
+    top: `calc(-1 * ${itemOffsetVar} + ${indicatorSizeVar} - 1px)`,
   },
   vertical: {
     bottom: 0,
-    left: `calc(-1 * ${itemOffsetVar} + ${indicatorSizeVar} / 2 - 1px)`,
+    left: `calc(-1 * ${itemOffsetVar} + ${indicatorSizeVar} - 1px)`,
     top: `calc(${indicatorSizeVar} + 0.25rem)`,
     width: '2px',
   },

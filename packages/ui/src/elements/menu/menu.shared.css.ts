@@ -51,6 +51,7 @@ export const menuContentBase = style({
   color: semanticColorVar('neutral', 'text'),
   minWidth: '12rem',
   maxWidth: '22rem',
+  maxHeight: 'var(--available-height)',
 })
 
 export const menuContentByVariant = styleVariants({
@@ -79,6 +80,7 @@ export const menuContentBySize = byMenuSize(size => ({
 
 export const menuViewportBase = style({
   minWidth: '100%',
+  minHeight: 0,
 })
 
 export const menuViewportBySize = byMenuSize(size => {

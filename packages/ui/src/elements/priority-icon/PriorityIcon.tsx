@@ -67,9 +67,10 @@ export const PriorityIcon = React.forwardRef<HTMLSpanElement, PriorityIconProps>
           icon={lucideIcon}
           size={size}
           className="shrink-0"
+          fill={priority === 'blocker'}
           style={{ color: tone.color }}
           aria-hidden="true"
-          iconProps={priority === 'blocker' ? { fill: 'currentColor', strokeWidth: 0 } : undefined}
+          iconProps={priority === 'blocker' ? { strokeWidth: 0 } : undefined}
         />
       </span>
     )
