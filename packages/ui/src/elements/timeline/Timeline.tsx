@@ -1,26 +1,24 @@
 'use client'
 
 import * as React from 'react'
+import { Column } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color } from '@/theme/tokens'
+import { Heading, type HeadingProps, Text, type TextProps } from '@/typography'
 import {
   timelineColorVars,
-  timelineContent as timelineContentStyle,
-  timelineDate as timelineDateStyle,
-  timelineHeader as timelineHeaderStyle,
   timelineIndicatorBase,
   timelineIndicatorPosition,
   timelineIndicatorVariant,
-  timelineItemBase,
+  timelineItemGapVar,
   timelineItemOrientation,
   timelineRoot,
   timelineSeparatorBase,
   timelineSeparatorCompleted,
   timelineSeparatorPosition,
   timelineSizeVars,
-  timelineTitle as timelineTitleStyle,
 } from './Timeline.css'
 import { timelinePropDefs } from './timeline.props'
 
@@ -34,6 +32,7 @@ type TimelineVariant = (typeof timelinePropDefs.variant.values)[number]
 
 type TimelineContextValue = {
   orientation: TimelineOrientation
+  size: TimelineSize
   variant: TimelineVariant
   activeStep?: number
   setActiveStep: (step: number) => void
@@ -43,6 +42,20 @@ type TimelineItemContextValue = {
   isCompleted: boolean | undefined
   isActive: boolean | undefined
   separatorCompleted: boolean
+}
+
+const timelineTitleSize: Record<TimelineSize, HeadingProps['size']> = {
+  xs: 'xs',
+  sm: 'sm',
+  md: 'sm',
+  lg: 'md',
+}
+
+const timelineTextSize: Record<TimelineSize, TextProps['size']> = {
+  xs: 'xs',
+  sm: 'xs',
+  md: 'sm',
+  lg: 'sm',
 }
 
 const TimelineContext = React.createContext<TimelineContextValue | undefined>(undefined)
@@ -112,8 +125,14 @@ const TimelineRoot = React.forwardRef<HTMLDivElement, TimelineRootProps>(
     )
 
     const ctxValue = React.useMemo(
-      () => ({ orientation: resolvedOrientation, variant: resolvedVariant, activeStep, setActiveStep }),
-      [resolvedOrientation, resolvedVariant, activeStep, setActiveStep],
+      () => ({
+        orientation: resolvedOrientation,
+        size: resolvedSize,
+        variant: resolvedVariant,
+        activeStep,
+        setActiveStep,
+      }),
+      [resolvedOrientation, resolvedSize, resolvedVariant, activeStep, setActiveStep],
     )
 
     return (
@@ -164,16 +183,18 @@ const TimelineItem = React.forwardRef<HTMLDivElement, TimelineItemProps>(
 
     return (
       <TimelineItemContext.Provider value={itemCtx}>
-        <div
+        <Column
           ref={ref}
-          className={cn(timelineItemBase, timelineItemOrientation[orientation], className)}
+          gap={timelineItemGapVar}
+          position="relative"
+          className={cn(timelineItemOrientation[orientation], className)}
           data-completed={isCompleted || undefined}
           data-active={isActive || undefined}
           aria-current={isActive ? 'step' : undefined}
           {...props}
         >
           {children}
-        </div>
+        </Column>
       </TimelineItemContext.Provider>
     )
   },
@@ -248,23 +269,32 @@ export type TimelineHeaderProps = React.ComponentProps<'div'>
 
 const TimelineHeader = React.forwardRef<HTMLDivElement, TimelineHeaderProps>(
   ({ className, children, ...props }, ref) => (
-    <div ref={ref} className={cn(timelineHeaderStyle, className)} {...props}>
+    <Column ref={ref} gap="0.125rem" className={className} {...props}>
       {children}
-    </div>
+    </Column>
   ),
 )
 TimelineHeader.displayName = 'Timeline.Header'
 
 // ─── Title ───────────────────────────────────────────────────────────────────
 
-export type TimelineTitleProps = React.ComponentProps<'h3'>
+export interface TimelineTitleProps extends Omit<HeadingProps, 'as'> {}
 
 const TimelineTitle = React.forwardRef<HTMLHeadingElement, TimelineTitleProps>(
-  ({ className, children, ...props }, ref) => {
+  ({ className, children, size: sizeProp, weight = 'medium', ...props }, ref) => {
+    const { size } = useTimeline()
+
     return (
-      <h3 ref={ref} className={cn(timelineTitleStyle, className)} {...props}>
+      <Heading
+        ref={ref}
+        as="h3"
+        size={sizeProp ?? timelineTitleSize[size]}
+        weight={weight}
+        className={className}
+        {...props}
+      >
         {children}
-      </h3>
+      </Heading>
     )
   },
 )
@@ -275,24 +305,37 @@ TimelineTitle.displayName = 'Timeline.Title'
 export type TimelineDateProps = React.ComponentProps<'time'>
 
 const TimelineDate = React.forwardRef<HTMLTimeElement, TimelineDateProps>(({ className, children, ...props }, ref) => {
+  const { size } = useTimeline()
+
   return (
-    <time ref={ref} className={cn(timelineDateStyle, className)} {...props}>
-      {children}
-    </time>
+    <Text asChild size={timelineTextSize[size]} weight="medium" color="neutral" variant="muted">
+      <time ref={ref} className={className} {...props}>
+        {children}
+      </time>
+    </Text>
   )
 })
 TimelineDate.displayName = 'Timeline.Date'
 
 // ─── Content ─────────────────────────────────────────────────────────────────
 
-export type TimelineContentProps = React.ComponentProps<'div'>
+export interface TimelineContentProps extends Omit<React.ComponentProps<'div'>, 'color'> {}
 
 const TimelineContent = React.forwardRef<HTMLDivElement, TimelineContentProps>(
   ({ className, children, ...props }, ref) => {
+    const { size } = useTimeline()
+
     return (
-      <div ref={ref} className={cn(timelineContentStyle, className)} {...props}>
+      <Text
+        ref={ref as React.Ref<HTMLElement>}
+        as="div"
+        size={timelineTextSize[size]}
+        color="neutral"
+        className={className}
+        {...props}
+      >
         {children}
-      </div>
+      </Text>
     )
   },
 )
