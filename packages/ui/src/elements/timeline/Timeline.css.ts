@@ -1,12 +1,17 @@
 import { createVar, style, styleVariants } from '@vanilla-extract/css'
-import { connectorIndicatorBase, connectorSeparatorColor, connectorSeparatorCompleted } from '@/shared/connector.css'
-import { semanticColorVar } from '@/theme/props/color.prop'
+import { connectorIndicatorBase, connectorSeparatorColor } from '@/shared/connector.css'
+import { semanticColorKeys, semanticColorVar } from '@/theme/props/color.prop'
 import { timelineSizeVar } from '@/theme/runtime/component-vars'
+import type { Color } from '@/theme/tokens'
 
 // ─── CSS Variables (set on root, cascaded to children) ───────────────────────
 
 export const indicatorSizeVar = createVar()
 export const itemOffsetVar = createVar()
+const activeIndicatorBgVar = createVar()
+const activeIndicatorBorderVar = createVar()
+const activeIndicatorColorVar = createVar()
+const activeSeparatorColorVar = createVar()
 const itemGapVar = createVar()
 const itemPaddingInlineEndVar = createVar()
 const itemPaddingBlockEndVar = createVar()
@@ -67,6 +72,20 @@ export const timelineSizeVars = styleVariants({
   },
 })
 
+export const timelineColorVars: Record<Color, string> = Object.fromEntries(
+  semanticColorKeys.map(color => [
+    color,
+    style({
+      vars: {
+        [activeIndicatorBorderVar]: semanticColorVar(color, 'primary'),
+        [activeIndicatorBgVar]: semanticColorVar(color, 'primary'),
+        [activeIndicatorColorVar]: semanticColorVar(color, 'contrast'),
+        [activeSeparatorColorVar]: semanticColorVar(color, 'primary'),
+      },
+    }),
+  ]),
+) as Record<Color, string>
+
 // ─── Root ────────────────────────────────────────────────────────────────────
 
 export const timelineRoot = styleVariants({
@@ -107,21 +126,44 @@ export const timelineIndicatorBase = style([
   connectorIndicatorBase,
   {
     border: `2px solid ${semanticColorVar('neutral', 'border')}`,
+    color: semanticColorVar('neutral', 'text'),
     height: indicatorSizeVar,
     position: 'absolute',
-    transition: 'border-color 150ms ease, background-color 150ms ease',
+    transition: 'border-color 150ms ease, background-color 150ms ease, color 150ms ease',
     width: indicatorSizeVar,
+  },
+])
+
+export const timelineIndicatorVariant = styleVariants({
+  solid: {
     selectors: {
       '&[data-state="completed"]': {
-        borderColor: semanticColorVar('primary', 'primary'),
+        backgroundColor: activeIndicatorBgVar,
+        borderColor: activeIndicatorBorderVar,
+        color: activeIndicatorColorVar,
       },
       '&[data-state="active"]': {
-        borderColor: semanticColorVar('primary', 'primary'),
-        backgroundColor: semanticColorVar('primary', 'soft'),
+        backgroundColor: activeIndicatorBgVar,
+        borderColor: activeIndicatorBorderVar,
+        color: activeIndicatorColorVar,
       },
     },
   },
-])
+  outline: {
+    selectors: {
+      '&[data-state="completed"]': {
+        backgroundColor: 'transparent',
+        borderColor: activeIndicatorBorderVar,
+        color: activeIndicatorBorderVar,
+      },
+      '&[data-state="active"]': {
+        backgroundColor: 'transparent',
+        borderColor: activeIndicatorBorderVar,
+        color: activeIndicatorBorderVar,
+      },
+    },
+  },
+})
 
 export const timelineIndicatorPosition = styleVariants({
   horizontal: {
@@ -166,7 +208,9 @@ export const timelineSeparatorPosition = styleVariants({
   },
 })
 
-export { connectorSeparatorCompleted as timelineSeparatorCompleted }
+export const timelineSeparatorCompleted = style({
+  backgroundColor: activeSeparatorColorVar,
+})
 
 // ─── Text ────────────────────────────────────────────────────────────────────
 

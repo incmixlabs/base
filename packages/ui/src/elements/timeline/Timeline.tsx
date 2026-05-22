@@ -2,13 +2,17 @@
 
 import * as React from 'react'
 import { cn } from '@/lib/utils'
+import { SemanticColor } from '@/theme/props/color.prop'
 import { normalizeEnumPropValue } from '@/theme/props/prop-def'
+import type { Color } from '@/theme/tokens'
 import {
+  timelineColorVars,
   timelineContent as timelineContentStyle,
   timelineDate as timelineDateStyle,
   timelineHeader as timelineHeaderStyle,
   timelineIndicatorBase,
   timelineIndicatorPosition,
+  timelineIndicatorVariant,
   timelineItemBase,
   timelineItemOrientation,
   timelineRoot,
@@ -24,11 +28,13 @@ import { timelinePropDefs } from './timeline.props'
 
 type TimelineOrientation = (typeof timelinePropDefs.orientation.values)[number]
 type TimelineSize = (typeof timelinePropDefs.size.values)[number]
+type TimelineVariant = (typeof timelinePropDefs.variant.values)[number]
 
 // ─── Context ─────────────────────────────────────────────────────────────────
 
 type TimelineContextValue = {
   orientation: TimelineOrientation
+  variant: TimelineVariant
   activeStep?: number
   setActiveStep: (step: number) => void
 }
@@ -57,8 +63,10 @@ function useTimelineItem() {
 // ─── Root ────────────────────────────────────────────────────────────────────
 
 export interface TimelineRootProps extends React.ComponentProps<'div'> {
+  color?: Color
   orientation?: TimelineOrientation
   size?: TimelineSize
+  variant?: TimelineVariant
   value?: number
   defaultValue?: number
   onValueChange?: (value: number) => void
@@ -67,8 +75,10 @@ export interface TimelineRootProps extends React.ComponentProps<'div'> {
 const TimelineRoot = React.forwardRef<HTMLDivElement, TimelineRootProps>(
   (
     {
+      color = timelinePropDefs.color.default,
       orientation = timelinePropDefs.orientation.default,
       size = timelinePropDefs.size.default,
+      variant = timelinePropDefs.variant.default,
       value,
       defaultValue,
       onValueChange,
@@ -87,6 +97,11 @@ const TimelineRoot = React.forwardRef<HTMLDivElement, TimelineRootProps>(
       timelinePropDefs.orientation.default
     const resolvedSize =
       (normalizeEnumPropValue(timelinePropDefs.size, size) as TimelineSize | undefined) ?? timelinePropDefs.size.default
+    const resolvedColor =
+      (normalizeEnumPropValue(timelinePropDefs.color, color) as Color | undefined) ?? SemanticColor.primary
+    const resolvedVariant =
+      (normalizeEnumPropValue(timelinePropDefs.variant, variant) as TimelineVariant | undefined) ??
+      timelinePropDefs.variant.default
 
     const setActiveStep = React.useCallback(
       (step: number) => {
@@ -97,16 +112,23 @@ const TimelineRoot = React.forwardRef<HTMLDivElement, TimelineRootProps>(
     )
 
     const ctxValue = React.useMemo(
-      () => ({ orientation: resolvedOrientation, activeStep, setActiveStep }),
-      [resolvedOrientation, activeStep, setActiveStep],
+      () => ({ orientation: resolvedOrientation, variant: resolvedVariant, activeStep, setActiveStep }),
+      [resolvedOrientation, resolvedVariant, activeStep, setActiveStep],
     )
 
     return (
       <TimelineContext.Provider value={ctxValue}>
         <div
           ref={ref}
-          className={cn(timelineRoot[resolvedOrientation], timelineSizeVars[resolvedSize], className)}
+          className={cn(
+            timelineRoot[resolvedOrientation],
+            timelineSizeVars[resolvedSize],
+            timelineColorVars[resolvedColor],
+            className,
+          )}
+          data-color={resolvedColor}
           data-orientation={resolvedOrientation}
+          data-variant={resolvedVariant}
           {...props}
         >
           {children}
@@ -164,7 +186,7 @@ export type TimelineIndicatorProps = React.ComponentProps<'div'>
 
 const TimelineIndicator = React.forwardRef<HTMLDivElement, TimelineIndicatorProps>(
   ({ className, children, ...props }, ref) => {
-    const { orientation } = useTimeline()
+    const { orientation, variant } = useTimeline()
     const { isCompleted, isActive } = useTimelineItem()
 
     const state =
@@ -181,7 +203,12 @@ const TimelineIndicator = React.forwardRef<HTMLDivElement, TimelineIndicatorProp
         ref={ref}
         aria-hidden
         data-state={state}
-        className={cn(timelineIndicatorBase, timelineIndicatorPosition[orientation], className)}
+        className={cn(
+          timelineIndicatorBase,
+          timelineIndicatorVariant[variant],
+          timelineIndicatorPosition[orientation],
+          className,
+        )}
         {...props}
       >
         {children}
