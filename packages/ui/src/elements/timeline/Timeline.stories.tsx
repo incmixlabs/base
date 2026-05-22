@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { cn } from '@/lib/utils'
+import { colorPropDef } from '@/theme/props/color.prop'
+import { getPropDefValues } from '@/theme/props/prop-def'
 import { Timeline, type TimelineRootProps } from './Timeline'
 import { TimelineWrapper, type TimelineWrapperProps } from './TimelineWrapper'
+import { timelineVariants } from './timeline.props'
 
 // ─── Compound component stories ──────────────────────────────────────────────
 
@@ -55,9 +58,21 @@ const meta: Meta<typeof Timeline.Root> = {
   title: 'Elements/Timeline',
   component: Timeline.Root,
   args: {
+    color: 'primary',
     orientation: 'vertical',
     size: 'md',
+    variant: 'solid',
     value: 2,
+  },
+  argTypes: {
+    color: {
+      control: 'select',
+      options: getPropDefValues(colorPropDef.color),
+    },
+    variant: {
+      control: 'inline-radio',
+      options: timelineVariants,
+    },
   },
   parameters: {
     layout: 'centered',
@@ -76,6 +91,13 @@ export const Horizontal: Story = {
     orientation: 'horizontal',
   },
   render: args => <CompoundDemo {...args} className="max-w-3xl" />,
+}
+
+export const Outline: Story = {
+  args: {
+    variant: 'outline',
+  },
+  render: args => <CompoundDemo {...args} />,
 }
 
 export const NoActiveStep: Story = {

@@ -1,18 +1,20 @@
 import { createVar, style, styleVariants } from '@vanilla-extract/css'
-import { connectorIndicatorBase, connectorSeparatorColor, connectorSeparatorCompleted } from '@/shared/connector.css'
-import { semanticColorVar } from '@/theme/props/color.prop'
+import { connectorIndicatorBase, connectorSeparatorColor } from '@/shared/connector.css'
+import { semanticColorKeys, semanticColorVar } from '@/theme/props/color.prop'
 import { timelineSizeVar } from '@/theme/runtime/component-vars'
+import type { Color } from '@/theme/tokens'
 
 // ─── CSS Variables (set on root, cascaded to children) ───────────────────────
 
 export const indicatorSizeVar = createVar()
 export const itemOffsetVar = createVar()
-const itemGapVar = createVar()
+const activeIndicatorBgVar = createVar()
+const activeIndicatorBorderVar = createVar()
+const activeIndicatorColorVar = createVar()
+const activeSeparatorColorVar = createVar()
+export const timelineItemGapVar = createVar()
 const itemPaddingInlineEndVar = createVar()
 const itemPaddingBlockEndVar = createVar()
-const titleFontSizeVar = createVar()
-const dateFontSizeVar = createVar()
-const contentFontSizeVar = createVar()
 
 // ─── Size tokens (applied to root) ──────────────────────────────────────────
 
@@ -21,51 +23,53 @@ export const timelineSizeVars = styleVariants({
     vars: {
       [indicatorSizeVar]: timelineSizeVar('xs', 'indicatorSize', '0.75rem'),
       [itemOffsetVar]: timelineSizeVar('xs', 'itemOffset', '1.75rem'),
-      [itemGapVar]: timelineSizeVar('xs', 'itemGap', '0.25rem'),
+      [timelineItemGapVar]: timelineSizeVar('xs', 'itemGap', '0.25rem'),
       [itemPaddingInlineEndVar]: timelineSizeVar('xs', 'itemPaddingInlineEnd', '2rem'),
       [itemPaddingBlockEndVar]: timelineSizeVar('xs', 'itemPaddingBlockEnd', '1.5rem'),
-      [titleFontSizeVar]: timelineSizeVar('xs', 'titleFontSize', '0.75rem'),
-      [dateFontSizeVar]: timelineSizeVar('xs', 'dateFontSize', '0.6875rem'),
-      [contentFontSizeVar]: timelineSizeVar('xs', 'contentFontSize', '0.6875rem'),
     },
   },
   sm: {
     vars: {
       [indicatorSizeVar]: timelineSizeVar('sm', 'indicatorSize', '1rem'),
       [itemOffsetVar]: timelineSizeVar('sm', 'itemOffset', '2rem'),
-      [itemGapVar]: timelineSizeVar('sm', 'itemGap', '0.25rem'),
+      [timelineItemGapVar]: timelineSizeVar('sm', 'itemGap', '0.25rem'),
       [itemPaddingInlineEndVar]: timelineSizeVar('sm', 'itemPaddingInlineEnd', '2rem'),
       [itemPaddingBlockEndVar]: timelineSizeVar('sm', 'itemPaddingBlockEnd', '1.5rem'),
-      [titleFontSizeVar]: timelineSizeVar('sm', 'titleFontSize', '0.875rem'),
-      [dateFontSizeVar]: timelineSizeVar('sm', 'dateFontSize', '0.75rem'),
-      [contentFontSizeVar]: timelineSizeVar('sm', 'contentFontSize', '0.75rem'),
     },
   },
   md: {
     vars: {
       [indicatorSizeVar]: timelineSizeVar('md', 'indicatorSize', '1.125rem'),
       [itemOffsetVar]: timelineSizeVar('md', 'itemOffset', '2.25rem'),
-      [itemGapVar]: timelineSizeVar('md', 'itemGap', '0.25rem'),
+      [timelineItemGapVar]: timelineSizeVar('md', 'itemGap', '0.25rem'),
       [itemPaddingInlineEndVar]: timelineSizeVar('md', 'itemPaddingInlineEnd', '2rem'),
       [itemPaddingBlockEndVar]: timelineSizeVar('md', 'itemPaddingBlockEnd', '1.5rem'),
-      [titleFontSizeVar]: timelineSizeVar('md', 'titleFontSize', '0.9375rem'),
-      [dateFontSizeVar]: timelineSizeVar('md', 'dateFontSize', '0.8125rem'),
-      [contentFontSizeVar]: timelineSizeVar('md', 'contentFontSize', '0.8125rem'),
     },
   },
   lg: {
     vars: {
       [indicatorSizeVar]: timelineSizeVar('lg', 'indicatorSize', '1.25rem'),
       [itemOffsetVar]: timelineSizeVar('lg', 'itemOffset', '2.5rem'),
-      [itemGapVar]: timelineSizeVar('lg', 'itemGap', '0.25rem'),
+      [timelineItemGapVar]: timelineSizeVar('lg', 'itemGap', '0.25rem'),
       [itemPaddingInlineEndVar]: timelineSizeVar('lg', 'itemPaddingInlineEnd', '2rem'),
       [itemPaddingBlockEndVar]: timelineSizeVar('lg', 'itemPaddingBlockEnd', '1.5rem'),
-      [titleFontSizeVar]: timelineSizeVar('lg', 'titleFontSize', '1rem'),
-      [dateFontSizeVar]: timelineSizeVar('lg', 'dateFontSize', '0.875rem'),
-      [contentFontSizeVar]: timelineSizeVar('lg', 'contentFontSize', '0.875rem'),
     },
   },
 })
+
+export const timelineColorVars: Record<Color, string> = Object.fromEntries(
+  semanticColorKeys.map(color => [
+    color,
+    style({
+      vars: {
+        [activeIndicatorBorderVar]: semanticColorVar(color, 'primary'),
+        [activeIndicatorBgVar]: semanticColorVar(color, 'primary'),
+        [activeIndicatorColorVar]: semanticColorVar(color, 'contrast'),
+        [activeSeparatorColorVar]: semanticColorVar(color, 'primary'),
+      },
+    }),
+  ]),
+) as Record<Color, string>
 
 // ─── Root ────────────────────────────────────────────────────────────────────
 
@@ -75,13 +79,6 @@ export const timelineRoot = styleVariants({
 })
 
 // ─── Item ────────────────────────────────────────────────────────────────────
-
-export const timelineItemBase = style({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: itemGapVar,
-  position: 'relative',
-})
 
 export const timelineItemOrientation = styleVariants({
   horizontal: {
@@ -107,21 +104,44 @@ export const timelineIndicatorBase = style([
   connectorIndicatorBase,
   {
     border: `2px solid ${semanticColorVar('neutral', 'border')}`,
+    color: semanticColorVar('neutral', 'text'),
     height: indicatorSizeVar,
     position: 'absolute',
-    transition: 'border-color 150ms ease, background-color 150ms ease',
+    transition: 'border-color 150ms ease, background-color 150ms ease, color 150ms ease',
     width: indicatorSizeVar,
+  },
+])
+
+export const timelineIndicatorVariant = styleVariants({
+  solid: {
     selectors: {
       '&[data-state="completed"]': {
-        borderColor: semanticColorVar('primary', 'primary'),
+        backgroundColor: activeIndicatorBgVar,
+        borderColor: activeIndicatorBorderVar,
+        color: activeIndicatorColorVar,
       },
       '&[data-state="active"]': {
-        borderColor: semanticColorVar('primary', 'primary'),
-        backgroundColor: semanticColorVar('primary', 'soft'),
+        backgroundColor: activeIndicatorBgVar,
+        borderColor: activeIndicatorBorderVar,
+        color: activeIndicatorColorVar,
       },
     },
   },
-])
+  outline: {
+    selectors: {
+      '&[data-state="completed"]': {
+        backgroundColor: 'transparent',
+        borderColor: activeIndicatorBorderVar,
+        color: activeIndicatorBorderVar,
+      },
+      '&[data-state="active"]': {
+        backgroundColor: 'transparent',
+        borderColor: activeIndicatorBorderVar,
+        color: activeIndicatorBorderVar,
+      },
+    },
+  },
+})
 
 export const timelineIndicatorPosition = styleVariants({
   horizontal: {
@@ -156,41 +176,16 @@ export const timelineSeparatorPosition = styleVariants({
     height: '2px',
     left: `calc(${indicatorSizeVar} + 0.25rem)`,
     right: 0,
-    top: `calc(-1 * ${itemOffsetVar} + ${indicatorSizeVar} / 2 - 1px)`,
+    top: `calc(-1 * ${itemOffsetVar} + ${indicatorSizeVar} - 1px)`,
   },
   vertical: {
     bottom: 0,
-    left: `calc(-1 * ${itemOffsetVar} + ${indicatorSizeVar} / 2 - 1px)`,
+    left: `calc(-1 * ${itemOffsetVar} + ${indicatorSizeVar} - 1px)`,
     top: `calc(${indicatorSizeVar} + 0.25rem)`,
     width: '2px',
   },
 })
 
-export { connectorSeparatorCompleted as timelineSeparatorCompleted }
-
-// ─── Text ────────────────────────────────────────────────────────────────────
-
-export const timelineHeader = style({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '0.125rem',
-})
-
-export const timelineTitle = style({
-  fontSize: titleFontSizeVar,
-  fontWeight: 500,
-  lineHeight: 1.4,
-})
-
-export const timelineDate = style({
-  color: semanticColorVar('neutral', 'text'),
-  fontSize: dateFontSizeVar,
-  fontWeight: 500,
-  opacity: 0.6,
-})
-
-export const timelineContent = style({
-  color: semanticColorVar('neutral', 'text'),
-  fontSize: contentFontSizeVar,
-  opacity: 0.72,
+export const timelineSeparatorCompleted = style({
+  backgroundColor: activeSeparatorColorVar,
 })
