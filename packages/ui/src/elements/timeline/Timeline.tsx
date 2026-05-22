@@ -3,7 +3,6 @@
 import * as React from 'react'
 import { Column } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
-import { SemanticColor } from '@/theme/props/color.prop'
 import { normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color } from '@/theme/tokens'
 import { Heading, type HeadingProps, Text, type TextProps } from '@/typography'
@@ -111,7 +110,7 @@ const TimelineRoot = React.forwardRef<HTMLDivElement, TimelineRootProps>(
     const resolvedSize =
       (normalizeEnumPropValue(timelinePropDefs.size, size) as TimelineSize | undefined) ?? timelinePropDefs.size.default
     const resolvedColor =
-      (normalizeEnumPropValue(timelinePropDefs.color, color) as Color | undefined) ?? SemanticColor.primary
+      (normalizeEnumPropValue(timelinePropDefs.color, color) as Color | undefined) ?? timelinePropDefs.color.default
     const resolvedVariant =
       (normalizeEnumPropValue(timelinePropDefs.variant, variant) as TimelineVariant | undefined) ??
       timelinePropDefs.variant.default
