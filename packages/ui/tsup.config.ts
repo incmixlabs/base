@@ -45,6 +45,8 @@ const lightEntries = {
   'layouts/app-shell/AppShell': 'src/layouts/app-shell/AppShell.tsx',
   'layouts/dashboard': 'src/layouts/dashboard/index.ts',
   'layouts/masonry': 'src/layouts/masonry/Masonry.tsx',
+  'layouts/resizable': 'src/layouts/resizable/index.ts',
+  'layouts/resizable/Resizable': 'src/layouts/resizable/Resizable.tsx',
   'layouts/section/Section': 'src/layouts/section/Section.tsx',
   'layouts/sidebar/Sidebar': 'src/layouts/sidebar/Sidebar.tsx',
   'layouts/sidebar/SidebarWrapperShell': 'src/layouts/sidebar/SidebarWrapperShell.tsx',

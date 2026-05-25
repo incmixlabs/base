@@ -131,6 +131,14 @@ export {
   spacingScale,
 } from './layout-utils'
 export { Masonry, type MasonryProps } from './masonry/Masonry'
+export {
+  ResizableHandle,
+  type ResizableHandleProps,
+  ResizablePanel,
+  ResizablePanelGroup,
+  type ResizablePanelGroupProps,
+  type ResizablePanelProps,
+} from './resizable/Resizable'
 export { Section, type SectionProps } from './section/Section'
 export { Sidebar, useIconCollapsed, useSidebar } from './sidebar/Sidebar'
 export {
