@@ -316,6 +316,12 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
             value={search}
             onChange={event => setSearchInput(event.target.value)}
             onClick={event => event.stopPropagation()}
+            onKeyDown={event => {
+              if (event.key !== KEYBOARD_KEYS.enter || !canCreate) return
+              event.preventDefault()
+              event.stopPropagation()
+              createOption()
+            }}
             className="w-full"
           />
         </Flex>
@@ -394,11 +400,12 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
       }
     }, [open])
 
-    // Auto-focus in inline mode: search input when searchable
+    // Auto-focus the search box as soon as the option surface opens.
     React.useEffect(() => {
-      if (!inline || !searchable) return
+      if (!searchable) return
+      if (!inline && !open) return
       setTimeout(() => searchInputRef.current?.focus(), 0)
-    }, [inline, searchable])
+    }, [inline, open, searchable])
 
     // ── Inline mode: render dropdown content directly ──
     if (inline) {
