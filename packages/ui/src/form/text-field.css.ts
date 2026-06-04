@@ -13,7 +13,7 @@ export const textFieldRootCls = 'relative w-full'
 
 export const textFieldInputBaseCls = 'w-full outline-none transition-all duration-150 ease-in-out'
 
-export const textFieldIconContainerCls = 'absolute top-1/2 -translate-y-1/2 flex items-center justify-center z-10'
+export const textFieldIconContainerCls = 'absolute top-1/2 -translate-y-1/2 z-10'
 
 const defaultSlotWidth = 'calc(var(--tf-padding-x) * 2 + var(--tf-icon-size))'
 
@@ -38,10 +38,10 @@ export const textFieldInputWithRightElementCls = style({
 
 type TextFieldVariant = SurfaceVariant
 
-const placeholderStyle = (color: Color, variant: TextFieldVariant) => ({
+const placeholderStyle = (color: Color) => ({
   '&::placeholder': {
-    color: semanticColorVar(color, variant === 'classic' || variant === 'solid' ? 'contrast' : 'text'),
-    opacity: variant === 'classic' || variant === 'solid' ? '0.68' : '0.5',
+    color: semanticColorVar(color, 'text'),
+    opacity: '0.5',
   },
 })
 
@@ -88,7 +88,7 @@ const createTextFieldEnhancements = (color: Color): Record<TextFieldVariant, str
             }
           : {}),
         selectors: {
-          ...placeholderStyle(color, variant),
+          ...placeholderStyle(color),
           ...focusRing(color),
           ...(variant === 'outline' ? outlineNoHoverBackground() : {}),
           ...(variant === 'ghost' ? ghostHoverAsFocusedOutline(color) : {}),

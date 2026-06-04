@@ -1,6 +1,6 @@
 import { type SurfaceVariant, surfaceVariants } from '@/elements/surface/surface.props'
 import { hasOwnProperty as hasOwn } from '@/theme/helpers/has-own-property'
-import type { BaseTextFieldVariant, TextFieldVariant } from '@/theme/tokens'
+import { type BaseTextFieldVariant, type TextFieldVariant, textFieldTokens } from '@/theme/tokens'
 
 export type FloatingStyle = 'filled' | 'standard' | 'outlined'
 
@@ -33,8 +33,12 @@ export const resolveSurfaceVariant = (
   return surfaceVariants.includes(runtimeVariant as SurfaceVariant) ? (runtimeVariant as SurfaceVariant) : 'outline'
 }
 
+const isBaseTextFieldVariant = (variant: string): variant is BaseTextFieldVariant =>
+  (textFieldTokens.baseVariant as readonly string[]).includes(variant)
+
 export const toBaseTextFieldVariant = (variant?: TextFieldVariant): BaseTextFieldVariant => {
   const runtimeVariant = variant ?? 'outline'
   if (isFloatingVariant(runtimeVariant)) return 'outline'
-  return runtimeVariant
+  const resolvedVariant = resolveSurfaceVariant(runtimeVariant, { allowLegacy: true })
+  return isBaseTextFieldVariant(resolvedVariant) ? resolvedVariant : 'outline'
 }

@@ -122,27 +122,30 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           style={{ ...marginProps.style, ...radiusStyles, ...style }}
         >
           {leftIcon && (
-            <div
+            <Flex
+              align="center"
+              justify="center"
               className={clsx(
                 cn(textFieldIconContainerCls, 'left-0 pointer-events-none'),
                 textFieldLeftIconContainerCls,
                 textFieldIconCls,
+                'text-muted-foreground',
               )}
               style={floatingIconStyle}
             >
-              <Flex align="center" justify="center" className="text-muted-foreground">
-                {leftIcon}
-              </Flex>
-            </div>
+              {leftIcon}
+            </Flex>
           )}
 
           {leftElement && (
-            <div
+            <Flex
+              align="center"
+              justify="center"
               className={clsx(cn(textFieldIconContainerCls, 'left-0'), textFieldLeftIconContainerCls)}
               style={floatingIconStyle}
             >
               {leftElement}
-            </div>
+            </Flex>
           )}
 
           <input
@@ -198,27 +201,30 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           )}
 
           {rightIcon && (
-            <div
+            <Flex
+              align="center"
+              justify="center"
               className={clsx(
                 cn(textFieldIconContainerCls, 'right-0 pointer-events-none'),
                 textFieldRightIconContainerCls,
                 textFieldIconCls,
+                'text-muted-foreground',
               )}
               style={floatingIconStyle}
             >
-              <Flex align="center" justify="center" className="text-muted-foreground">
-                {rightIcon}
-              </Flex>
-            </div>
+              {rightIcon}
+            </Flex>
           )}
 
           {rightElement && (
-            <div
+            <Flex
+              align="center"
+              justify="center"
               className={clsx(cn(textFieldIconContainerCls, 'right-0'), textFieldRightIconContainerCls)}
               style={floatingIconStyle}
             >
               {rightElement}
-            </div>
+            </Flex>
           )}
         </div>
       )
@@ -230,23 +236,28 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     const control = (
       <div className={clsx(cn(textFieldRootCls), textFieldSizeVariants[size])} style={regularStyles}>
         {leftIcon && (
-          <div
+          <Flex
+            align="center"
+            justify="center"
             className={clsx(
               cn(textFieldIconContainerCls, 'left-0 pointer-events-none'),
               textFieldLeftIconContainerCls,
               textFieldIconCls,
+              'text-muted-foreground',
             )}
           >
-            <Flex align="center" justify="center" className="text-muted-foreground">
-              {leftIcon}
-            </Flex>
-          </div>
+            {leftIcon}
+          </Flex>
         )}
 
         {leftElement && (
-          <div className={clsx(cn(textFieldIconContainerCls, 'left-0'), textFieldLeftIconContainerCls)}>
+          <Flex
+            align="center"
+            justify="center"
+            className={clsx(cn(textFieldIconContainerCls, 'left-0'), textFieldLeftIconContainerCls)}
+          >
             {leftElement}
-          </div>
+          </Flex>
         )}
 
         <input
@@ -280,23 +291,28 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
         />
 
         {rightIcon && (
-          <div
+          <Flex
+            align="center"
+            justify="center"
             className={clsx(
               cn(textFieldIconContainerCls, 'right-0 pointer-events-none'),
               textFieldRightIconContainerCls,
               textFieldIconCls,
+              'text-muted-foreground',
             )}
           >
-            <Flex align="center" justify="center" className="text-muted-foreground">
-              {rightIcon}
-            </Flex>
-          </div>
+            {rightIcon}
+          </Flex>
         )}
 
         {rightElement && (
-          <div className={clsx(cn(textFieldIconContainerCls, 'right-0'), textFieldRightIconContainerCls)}>
+          <Flex
+            align="center"
+            justify="center"
+            className={clsx(cn(textFieldIconContainerCls, 'right-0'), textFieldRightIconContainerCls)}
+          >
             {rightElement}
-          </div>
+          </Flex>
         )}
       </div>
     )
