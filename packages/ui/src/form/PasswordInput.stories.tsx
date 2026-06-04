@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Lock } from 'lucide-react'
 import { useState } from 'react'
 import { Label } from './Label'
 import { PasswordInput } from './PasswordInput'
@@ -79,7 +78,7 @@ export const WithLeftIcon: Story = {
   render: () => (
     <div className="w-80 space-y-2">
       <Label htmlFor="icon-password">Password</Label>
-      <PasswordInput id="icon-password" leftIcon={<Lock />} placeholder="Enter password" />
+      <PasswordInput id="icon-password" leftIcon="lock" placeholder="Enter password" />
     </div>
   ),
 }

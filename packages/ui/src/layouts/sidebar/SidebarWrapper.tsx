@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronRight, ChevronsUpDown, Search } from 'lucide-react'
+import { ChevronRight, ChevronsUpDown } from 'lucide-react'
 import { AnimatePresence } from 'motion/react'
 import * as m from 'motion/react-m'
 import * as React from 'react'
@@ -86,7 +86,7 @@ function SearchSection({ search }: { search: SidebarWrapperSearch }) {
     <Sidebar.Group>
       <Sidebar.Input
         placeholder={search.placeholder ?? 'Search...'}
-        leftIcon={<Search />}
+        leftIcon="search"
         onChange={e => search.onChange?.((e.target as HTMLInputElement).value)}
       />
     </Sidebar.Group>

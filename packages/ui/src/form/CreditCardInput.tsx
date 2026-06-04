@@ -1,6 +1,6 @@
 'use client'
 
-import { CreditCard, Lock } from 'lucide-react'
+import { CreditCard } from 'lucide-react'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import type { Color, Radius, Size, TextFieldVariant } from '@/theme/tokens'
@@ -391,7 +391,7 @@ export const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputP
             maxLength={4}
             autoComplete="cc-csc"
             className="flex-1"
-            rightIcon={<Lock className="h-4 w-4 text-muted-foreground" aria-hidden="true" />}
+            rightIcon="lock"
           />
         </div>
 

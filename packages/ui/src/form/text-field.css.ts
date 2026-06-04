@@ -15,22 +15,27 @@ export const textFieldInputBaseCls = 'w-full outline-none transition-all duratio
 
 export const textFieldIconContainerCls = 'absolute top-1/2 -translate-y-1/2 z-10'
 
-const defaultSlotWidth = 'calc(var(--tf-padding-x) * 2 + var(--tf-icon-size))'
+const iconInset = 'calc(var(--tf-padding-x) + var(--tf-gap))'
+const iconTextOffset = `calc(${iconInset} + var(--tf-icon-size) + var(--tf-gap))`
 
 export const textFieldLeftIconContainerCls = style({
-  width: `var(--tf-left-slot-width, ${defaultSlotWidth})`,
+  left: iconInset,
+  width: 'var(--tf-icon-size)',
+  height: 'var(--tf-icon-size)',
 })
 
 export const textFieldRightIconContainerCls = style({
-  width: `var(--tf-right-slot-width, ${defaultSlotWidth})`,
+  right: iconInset,
+  width: 'var(--tf-icon-size)',
+  height: 'var(--tf-icon-size)',
 })
 
 export const textFieldInputWithLeftElementCls = style({
-  paddingLeft: `var(--tf-left-slot-width, ${defaultSlotWidth})`,
+  paddingLeft: `var(--tf-left-slot-width, ${iconTextOffset})`,
 })
 
 export const textFieldInputWithRightElementCls = style({
-  paddingRight: `var(--tf-right-slot-width, ${defaultSlotWidth})`,
+  paddingRight: `var(--tf-right-slot-width, ${iconTextOffset})`,
 })
 
 // ── Color × Variant styles ──
@@ -216,11 +221,11 @@ export const floatingInputStyleVariants: Record<FloatingStyle, string> = {
 
 // Icon/element padding overrides for floating input
 export const floatingInputWithLeftIconCls = style({
-  paddingLeft: 'calc(var(--tf-padding-x) * 2 + var(--tf-icon-size))',
+  paddingLeft: `var(--tf-left-slot-width, ${iconTextOffset})`,
 })
 
 export const floatingInputWithRightIconCls = style({
-  paddingRight: 'calc(var(--tf-padding-x) * 2 + var(--tf-icon-size))',
+  paddingRight: `var(--tf-right-slot-width, ${iconTextOffset})`,
 })
 
 // ── Floating label layout variants ──
@@ -389,8 +394,8 @@ export const floatingLabelStyleVariants: Record<FloatingStyle, string> = {
 
 // Left icon/element offset — overrides `left` for labels with leftIcon/leftElement
 export const floatingLabelWithLeftIconCls = style({
-  left: 'calc(var(--tf-padding-x) * 2 + var(--tf-icon-size))',
-  maxWidth: 'calc(100% - (var(--tf-padding-x) * 3 + var(--tf-icon-size)))',
+  left: `var(--tf-left-slot-width, ${iconTextOffset})`,
+  maxWidth: `calc(100% - (var(--tf-left-slot-width, ${iconTextOffset}) + var(--tf-padding-x)))`,
 })
 
 // ── Size variants ──

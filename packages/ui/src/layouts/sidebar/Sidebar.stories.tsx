@@ -161,7 +161,7 @@ function SidebarDemo({
                 </Sidebar.MenuSub>
               </Sidebar.MenuItem>
             </Sidebar.Menu>
-            <Sidebar.Input placeholder="Search" leftIcon={<Search />} className="mt-2" />
+            <Sidebar.Input placeholder="Search" leftIcon="search" className="mt-2" />
           </Sidebar.Group>
           <Sidebar.Group anchor="bottom">
             <Sidebar.Separator />

@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Clock, CreditCard, Globe, Hash, Phone } from 'lucide-react'
 import { getPropDefValues } from '@/theme/props/prop-def'
 import { radiusPropDef } from '@/theme/props/radius.prop'
 import { DateInput as CalendarDateInput } from './date/DateInput'
@@ -51,7 +50,7 @@ export const PhoneNumber: Story = {
   render: () => (
     <div className="w-80 space-y-2">
       <Label htmlFor="phone">Phone Number</Label>
-      <InputMask id="phone" mask="phone" placeholder="(555) 555-5555" leftIcon={<Phone />} />
+      <InputMask id="phone" mask="phone" placeholder="(555) 555-5555" leftIcon="phone" />
     </div>
   ),
 }
@@ -61,7 +60,7 @@ export const InternationalPhone: Story = {
   render: () => (
     <div className="w-80 space-y-2">
       <Label htmlFor="intl-phone">International Phone</Label>
-      <InputMask id="intl-phone" mask="phoneInternational" placeholder="+1 (555) 555-5555" leftIcon={<Globe />} />
+      <InputMask id="intl-phone" mask="phoneInternational" placeholder="+1 (555) 555-5555" leftIcon="globe" />
     </div>
   ),
 }
@@ -112,7 +111,7 @@ export const TimeInput: Story = {
   render: () => (
     <div className="w-80 space-y-2">
       <Label htmlFor="time">Time (24h)</Label>
-      <InputMask id="time" mask="time" placeholder="HH:MM" leftIcon={<Clock />} />
+      <InputMask id="time" mask="time" placeholder="HH:MM" leftIcon="clock" />
     </div>
   ),
 }
@@ -122,7 +121,7 @@ export const CreditCardInput: Story = {
   render: () => (
     <div className="w-80 space-y-2">
       <Label htmlFor="card">Card Number</Label>
-      <InputMask id="card" mask="creditCard" placeholder="1234 5678 9012 3456" leftIcon={<CreditCard />} />
+      <InputMask id="card" mask="creditCard" placeholder="1234 5678 9012 3456" leftIcon="credit-card" />
     </div>
   ),
 }
@@ -152,7 +151,7 @@ export const SSN: Story = {
   render: () => (
     <div className="w-80 space-y-2">
       <Label htmlFor="ssn">Social Security Number</Label>
-      <InputMask id="ssn" mask="ssn" placeholder="123-45-6789" leftIcon={<Hash />} />
+      <InputMask id="ssn" mask="ssn" placeholder="123-45-6789" leftIcon="hash" />
     </div>
   ),
 }
@@ -182,7 +181,7 @@ export const IPAddress: Story = {
   render: () => (
     <div className="w-80 space-y-2">
       <Label htmlFor="ip">IP Address</Label>
-      <InputMask id="ip" mask="ipAddress" placeholder="192.168.1.1" leftIcon={<Globe />} />
+      <InputMask id="ip" mask="ipAddress" placeholder="192.168.1.1" leftIcon="globe" />
     </div>
   ),
 }
@@ -231,7 +230,7 @@ export const WithError: Story = {
   render: () => (
     <div className="w-80 space-y-2">
       <Label htmlFor="phone-error">Phone Number</Label>
-      <InputMask id="phone-error" mask="phone" placeholder="(555) 555-5555" error leftIcon={<Phone />} />
+      <InputMask id="phone-error" mask="phone" placeholder="(555) 555-5555" error leftIcon="phone" />
       <p className="text-sm text-destructive">Please enter a valid phone number</p>
     </div>
   ),
@@ -242,7 +241,7 @@ export const Disabled: Story = {
   render: () => (
     <div className="w-80 space-y-2">
       <Label htmlFor="phone-disabled">Phone Number</Label>
-      <InputMask id="phone-disabled" mask="phone" placeholder="(555) 555-5555" disabled leftIcon={<Phone />} />
+      <InputMask id="phone-disabled" mask="phone" placeholder="(555) 555-5555" disabled leftIcon="phone" />
     </div>
   ),
 }
@@ -255,7 +254,7 @@ export const PaymentForm: Story = {
 
       <div className="space-y-2">
         <Label htmlFor="pay-card">Card Number</Label>
-        <InputMask id="pay-card" mask="creditCard" placeholder="1234 5678 9012 3456" leftIcon={<CreditCard />} />
+        <InputMask id="pay-card" mask="creditCard" placeholder="1234 5678 9012 3456" leftIcon="credit-card" />
       </div>
 
       <div className="grid grid-cols-2 gap-4">

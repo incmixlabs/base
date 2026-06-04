@@ -4,7 +4,7 @@ import * as React from 'react'
 import { withMask } from 'use-mask-input'
 import { cn } from '@/lib/utils'
 import type { Color, Radius, Size, TextFieldVariant } from '@/theme/tokens'
-import { TextField } from './TextField'
+import { TextField, type TextFieldProps } from './TextField'
 
 // Common mask presets
 /** maskPresets export. */
@@ -67,10 +67,10 @@ export interface InputMaskProps extends Omit<React.InputHTMLAttributes<HTMLInput
   radius?: Radius
   /** Whether the field has an error */
   error?: boolean
-  /** Icon to display on the left */
-  leftIcon?: React.ReactNode
-  /** Icon to display on the right */
-  rightIcon?: React.ReactNode
+  /** Icon name to display on the left */
+  leftIcon?: TextFieldProps['leftIcon']
+  /** Icon name to display on the right */
+  rightIcon?: TextFieldProps['rightIcon']
   /** Interactive element on the left */
   leftElement?: React.ReactNode
   /** Interactive element on the right */

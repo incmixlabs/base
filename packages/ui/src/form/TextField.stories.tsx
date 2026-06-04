@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Eye, Lock, Mail, Phone, Search, User } from 'lucide-react'
 import { Box } from '@/layouts/box/Box'
 import { colorPropDef, SemanticColor } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
@@ -239,30 +238,12 @@ export const FloatingRegressionStates: Story = {
 export const FloatingWithIcons: Story = {
   render: args => (
     <Box display="flex" className="flex-col gap-6 max-w-md">
-      <TextField {...args} label="Email" variant="floating-filled" leftIcon={<Mail />} />
-      <TextField {...args} label="Email" variant="floating-outlined" leftIcon={<Mail />} />
-      <TextField {...args} label="Search" variant="floating-standard" leftIcon={<Search />} />
-      <TextField
-        {...args}
-        defaultValue="john@example.com"
-        label="Email"
-        variant="floating-filled"
-        leftIcon={<Mail />}
-      />
-      <TextField
-        {...args}
-        defaultValue="john@example.com"
-        label="Email"
-        variant="floating-outlined"
-        leftIcon={<Mail />}
-      />
-      <TextField
-        {...args}
-        defaultValue="Search query"
-        label="Search"
-        variant="floating-standard"
-        leftIcon={<Search />}
-      />
+      <TextField {...args} label="Email" variant="floating-filled" leftIcon="mail" />
+      <TextField {...args} label="Email" variant="floating-outlined" leftIcon="mail" />
+      <TextField {...args} label="Search" variant="floating-standard" leftIcon="search" />
+      <TextField {...args} defaultValue="john@example.com" label="Email" variant="floating-filled" leftIcon="mail" />
+      <TextField {...args} defaultValue="john@example.com" label="Email" variant="floating-outlined" leftIcon="mail" />
+      <TextField {...args} defaultValue="Search query" label="Search" variant="floating-standard" leftIcon="search" />
     </Box>
   ),
 }
@@ -290,7 +271,7 @@ export const FloatingWithColors: Story = {
 export const WithLeftIcon: Story = {
   args: {
     placeholder: 'Search...',
-    leftIcon: <Search />,
+    leftIcon: 'search',
   },
 }
 
@@ -298,15 +279,15 @@ export const WithRightIcon: Story = {
   args: {
     placeholder: 'Enter password',
     type: 'password',
-    rightIcon: <Eye />,
+    rightIcon: 'eye',
   },
 }
 
 export const WithBothIcons: Story = {
   args: {
     placeholder: 'Enter password',
-    leftIcon: <Lock />,
-    rightIcon: <Eye />,
+    leftIcon: 'lock',
+    rightIcon: 'eye',
   },
 }
 
@@ -355,8 +336,8 @@ export const LoginForm: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-4 max-w-sm p-6 border rounded-lg">
       <h2 className="text-xl font-semibold mb-2">Sign In</h2>
-      <TextField label="Email" variant="floating-outlined" leftIcon={<Mail />} type="email" />
-      <TextField label="Password" variant="floating-outlined" leftIcon={<Lock />} rightIcon={<Eye />} type="password" />
+      <TextField label="Email" variant="floating-outlined" leftIcon="mail" type="email" />
+      <TextField label="Password" variant="floating-outlined" leftIcon="lock" rightIcon="eye" type="password" />
     </Box>
   ),
 }
@@ -365,9 +346,9 @@ export const ContactForm: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-4 max-w-sm p-6 border rounded-lg">
       <h2 className="text-xl font-semibold mb-2">Contact Us</h2>
-      <TextField label="Full Name" variant="floating-filled" leftIcon={<User />} />
-      <TextField label="Email" variant="floating-filled" leftIcon={<Mail />} type="email" />
-      <TextField label="Phone" variant="floating-filled" leftIcon={<Phone />} type="tel" />
+      <TextField label="Full Name" variant="floating-filled" leftIcon="user" />
+      <TextField label="Email" variant="floating-filled" leftIcon="mail" type="email" />
+      <TextField label="Phone" variant="floating-filled" leftIcon="phone" type="tel" />
     </Box>
   ),
 }

@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Building, Calendar, CreditCard, Lock, Mail, MapPin, Phone, User } from 'lucide-react'
 import { Button } from '@/elements/button/Button'
 import { Separator } from '@/elements/separator/Separator'
 import { Tabs } from '@/elements/tabs/Tabs'
@@ -244,9 +243,9 @@ export const WithIcons: Story = {
   },
   render: args => (
     <FieldGroup {...args} className="max-w-md">
-      <TextField placeholder="Full name" leftIcon={<User />} />
-      <TextField placeholder="Email" leftIcon={<Mail />} type="email" />
-      <TextField placeholder="Phone" leftIcon={<Phone />} type="tel" />
+      <TextField placeholder="Full name" leftIcon="user" />
+      <TextField placeholder="Email" leftIcon="mail" type="email" />
+      <TextField placeholder="Phone" leftIcon="phone" type="tel" />
     </FieldGroup>
   ),
 }
@@ -258,9 +257,9 @@ export const FloatingWithIcons: Story = {
   },
   render: args => (
     <FieldGroup {...args} className="max-w-md">
-      <TextField label="Full name" leftIcon={<User />} />
-      <TextField label="Email" leftIcon={<Mail />} type="email" />
-      <TextField label="Phone" leftIcon={<Phone />} type="tel" />
+      <TextField label="Full name" leftIcon="user" />
+      <TextField label="Email" leftIcon="mail" type="email" />
+      <TextField label="Phone" leftIcon="phone" type="tel" />
     </FieldGroup>
   ),
 }
@@ -298,8 +297,8 @@ export const LoginForm: Story = {
     <Box className="max-w-sm p-6 border rounded-lg">
       <h2 className="text-xl font-semibold mb-4">Sign In</h2>
       <FieldGroup {...args}>
-        <TextField label="Email" leftIcon={<Mail />} type="email" />
-        <TextField label="Password" leftIcon={<Lock />} type="password" />
+        <TextField label="Email" leftIcon="mail" type="email" />
+        <TextField label="Password" leftIcon="lock" type="password" />
       </FieldGroup>
     </Box>
   ),
@@ -315,9 +314,9 @@ export const ContactForm: Story = {
     <Box className="max-w-sm p-6 border rounded-lg">
       <h2 className="text-xl font-semibold mb-4">Contact Us</h2>
       <FieldGroup {...args}>
-        <TextField label="Full Name" leftIcon={<User />} />
-        <TextField label="Email" leftIcon={<Mail />} type="email" />
-        <TextField label="Phone" leftIcon={<Phone />} type="tel" />
+        <TextField label="Full Name" leftIcon="user" />
+        <TextField label="Email" leftIcon="mail" type="email" />
+        <TextField label="Phone" leftIcon="phone" type="tel" />
       </FieldGroup>
     </Box>
   ),
@@ -614,13 +613,13 @@ export const SideLabelsLayout: Story = {
   render: args => (
     <FieldGroup {...args} className="max-w-3xl">
       <FieldGroup.Row label="Personal Information" description="Your basic contact details">
-        <TextField placeholder="Full name" leftIcon={<User />} />
-        <TextField placeholder="Email address" leftIcon={<Mail />} type="email" />
-        <TextField placeholder="Phone number" leftIcon={<Phone />} type="tel" />
+        <TextField placeholder="Full name" leftIcon="user" />
+        <TextField placeholder="Email address" leftIcon="mail" type="email" />
+        <TextField placeholder="Phone number" leftIcon="phone" type="tel" />
       </FieldGroup.Row>
       <Separator />
       <FieldGroup.Row label="Address" description="Where should we ship to?">
-        <TextField placeholder="Street address" leftIcon={<MapPin />} />
+        <TextField placeholder="Street address" leftIcon="map-pin" />
         <TextField placeholder="City" />
         <TextField placeholder="State / Province" />
         <TextField placeholder="ZIP / Postal code" />
@@ -655,8 +654,8 @@ export const EmbeddedSideLabels: Story = {
                     label="Contact"
                     description="This row should only switch into the two-column side-label layout when the preview container is wide enough."
                   >
-                    <TextField placeholder="Email" leftIcon={<Mail />} type="email" />
-                    <TextField placeholder="Phone" leftIcon={<Phone />} type="tel" />
+                    <TextField placeholder="Email" leftIcon="mail" type="email" />
+                    <TextField placeholder="Phone" leftIcon="phone" type="tel" />
                   </FieldGroup.Row>
                 </FieldGroup>
               </Box>
@@ -677,16 +676,16 @@ export const SectionedLayout: Story = {
   render: args => (
     <FieldGroup {...args} className="max-w-lg">
       <FieldGroup.Section title="Account Details" description="Basic account information" separator={false}>
-        <TextField label="Username" leftIcon={<User />} />
-        <TextField label="Email" leftIcon={<Mail />} type="email" />
+        <TextField label="Username" leftIcon="user" />
+        <TextField label="Email" leftIcon="mail" type="email" />
       </FieldGroup.Section>
       <FieldGroup.Section title="Personal Information" description="Tell us about yourself">
         <TextField label="Full name" />
-        <TextField label="Phone" leftIcon={<Phone />} type="tel" />
+        <TextField label="Phone" leftIcon="phone" type="tel" />
       </FieldGroup.Section>
       <FieldGroup.Section title="Billing" description="Payment details">
-        <TextField label="Card number" leftIcon={<CreditCard />} />
-        <TextField label="Expiry date" leftIcon={<Calendar />} />
+        <TextField label="Card number" leftIcon="credit-card" />
+        <TextField label="Expiry date" leftIcon="calendar" />
       </FieldGroup.Section>
     </FieldGroup>
   ),
@@ -729,8 +728,8 @@ export const AllLayoutsComparison: Story = {
         <h3 className="text-lg font-semibold mb-4">Side Labels Layout</h3>
         <FieldGroup layout="side-labels" size="md" variant="outline" gap="4" className="max-w-3xl">
           <FieldGroup.Row label="Contact" description="How can we reach you?">
-            <TextField placeholder="Email" leftIcon={<Mail />} type="email" />
-            <TextField placeholder="Phone" leftIcon={<Phone />} type="tel" />
+            <TextField placeholder="Email" leftIcon="mail" type="email" />
+            <TextField placeholder="Phone" leftIcon="phone" type="tel" />
           </FieldGroup.Row>
         </FieldGroup>
       </Box>
@@ -739,10 +738,10 @@ export const AllLayoutsComparison: Story = {
         <h3 className="text-lg font-semibold mb-4">Sectioned Layout</h3>
         <FieldGroup layout="sectioned" size="md" variant="outline" className="max-w-lg">
           <FieldGroup.Section title="Personal" separator={false}>
-            <TextField placeholder="Name" leftIcon={<User />} />
+            <TextField placeholder="Name" leftIcon="user" />
           </FieldGroup.Section>
           <FieldGroup.Section title="Work">
-            <TextField placeholder="Company" leftIcon={<Building />} />
+            <TextField placeholder="Company" leftIcon="building" />
           </FieldGroup.Section>
         </FieldGroup>
       </Box>
@@ -763,16 +762,16 @@ export const CheckoutForm: Story = {
           <FieldGroup layout="grid" columns="2" gap="4">
             <TextField label="First name" />
             <TextField label="Last name" />
-            <TextField label="Address" className="col-span-full" leftIcon={<MapPin />} />
+            <TextField label="Address" className="col-span-full" leftIcon="map-pin" />
             <TextField label="City" />
             <TextField label="ZIP Code" />
           </FieldGroup>
         </FieldGroup.Section>
         <FieldGroup.Section title="Payment Information">
           <FieldGroup layout="grid" columns="2" gap="4">
-            <TextField label="Card number" className="col-span-full" leftIcon={<CreditCard />} />
-            <TextField label="Expiry date" leftIcon={<Calendar />} />
-            <TextField label="CVV" type="password" leftIcon={<Lock />} />
+            <TextField label="Card number" className="col-span-full" leftIcon="credit-card" />
+            <TextField label="Expiry date" leftIcon="calendar" />
+            <TextField label="CVV" type="password" leftIcon="lock" />
           </FieldGroup>
         </FieldGroup.Section>
       </FieldGroup>
@@ -802,17 +801,17 @@ export const SettingsForm: Story = {
       <h2 className="text-xl font-semibold mb-6">Account Settings</h2>
       <FieldGroup {...args} layout="side-labels">
         <FieldGroup.Row label="Profile" description="Your public profile information">
-          <TextField placeholder="Display name" leftIcon={<User />} />
+          <TextField placeholder="Display name" leftIcon="user" />
           <TextField placeholder="Bio" />
         </FieldGroup.Row>
         <Separator />
         <FieldGroup.Row label="Contact" description="How others can reach you">
-          <TextField placeholder="Email" leftIcon={<Mail />} type="email" />
-          <TextField placeholder="Phone" leftIcon={<Phone />} type="tel" />
+          <TextField placeholder="Email" leftIcon="mail" type="email" />
+          <TextField placeholder="Phone" leftIcon="phone" type="tel" />
         </FieldGroup.Row>
         <Separator />
         <FieldGroup.Row label="Company" description="Your organization details">
-          <TextField placeholder="Company name" leftIcon={<Building />} />
+          <TextField placeholder="Company name" leftIcon="building" />
           <TextField placeholder="Job title" />
         </FieldGroup.Row>
       </FieldGroup>

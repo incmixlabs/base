@@ -1,6 +1,5 @@
 import { Select, SelectItem, Textarea, TextField } from '@incmix/ui/form'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Mail, Search, User } from 'lucide-react'
 import * as React from 'react'
 
 type InputChangeEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -197,37 +196,37 @@ export const WithIcons: Story = {
       <div>
         <h3 className="text-lg font-medium mb-4">TextField with Icons - Size sm</h3>
         <div className="space-y-4">
-          <TextField size="sm" leftIcon={<Mail />} placeholder="Email address" />
-          <TextField size="sm" leftIcon={<Search />} placeholder="Search..." />
-          <TextField size="sm" leftIcon={<User />} rightIcon={<Search />} placeholder="Search users" />
+          <TextField size="sm" leftIcon="mail" placeholder="Email address" />
+          <TextField size="sm" leftIcon="search" placeholder="Search..." />
+          <TextField size="sm" leftIcon="user" rightIcon="search" placeholder="Search users" />
         </div>
       </div>
 
       <div>
         <h3 className="text-lg font-medium mb-4">TextField with Icons - Size md (Default)</h3>
         <div className="space-y-4">
-          <TextField size="md" leftIcon={<Mail />} placeholder="Email address" />
-          <TextField size="md" leftIcon={<Search />} placeholder="Search..." />
-          <TextField size="md" leftIcon={<User />} rightIcon={<Search />} placeholder="Search users" />
+          <TextField size="md" leftIcon="mail" placeholder="Email address" />
+          <TextField size="md" leftIcon="search" placeholder="Search..." />
+          <TextField size="md" leftIcon="user" rightIcon="search" placeholder="Search users" />
         </div>
       </div>
 
       <div>
         <h3 className="text-lg font-medium mb-4">TextField with Icons - Size lg</h3>
         <div className="space-y-4">
-          <TextField size="lg" leftIcon={<Mail />} placeholder="Email address" />
-          <TextField size="lg" leftIcon={<Search />} placeholder="Search..." />
-          <TextField size="lg" leftIcon={<User />} rightIcon={<Search />} placeholder="Search users" />
+          <TextField size="lg" leftIcon="mail" placeholder="Email address" />
+          <TextField size="lg" leftIcon="search" placeholder="Search..." />
+          <TextField size="lg" leftIcon="user" rightIcon="search" placeholder="Search users" />
         </div>
       </div>
 
       <div>
         <h3 className="text-lg font-medium mb-4">All Variants with Icons</h3>
         <div className="space-y-4">
-          <TextField variant="outline" leftIcon={<Mail />} placeholder="Outline with icon" />
-          <TextField variant="soft" leftIcon={<Mail />} placeholder="Soft with icon" />
-          <TextField variant="surface" leftIcon={<Mail />} placeholder="Surface with icon" />
-          <TextField variant="ghost" leftIcon={<Mail />} placeholder="Ghost with icon" />
+          <TextField variant="outline" leftIcon="mail" placeholder="Outline with icon" />
+          <TextField variant="soft" leftIcon="mail" placeholder="Soft with icon" />
+          <TextField variant="surface" leftIcon="mail" placeholder="Surface with icon" />
+          <TextField variant="ghost" leftIcon="mail" placeholder="Ghost with icon" />
         </div>
       </div>
     </div>
@@ -249,9 +248,9 @@ export const FloatingLabels: Story = {
       <div>
         <h3 className="text-lg font-medium mb-4">Floating Labels with Icons</h3>
         <div className="space-y-6">
-          <TextField label="Email" variant="floating-outlined" leftIcon={<Mail />} />
-          <TextField label="Search" variant="floating-filled" leftIcon={<Search />} />
-          <TextField label="Username" variant="floating-standard" leftIcon={<User />} />
+          <TextField label="Email" variant="floating-outlined" leftIcon="mail" />
+          <TextField label="Search" variant="floating-filled" leftIcon="search" />
+          <TextField label="Username" variant="floating-standard" leftIcon="user" />
         </div>
       </div>
 
@@ -319,7 +318,7 @@ export const FormExample: Story = {
         <TextField
           label="Full Name"
           variant="floating-outlined"
-          leftIcon={<User />}
+          leftIcon="user"
           value={formData.name}
           onChange={(e: InputChangeEvent) => setFormData({ ...formData, name: e.target.value })}
         />
@@ -327,7 +326,7 @@ export const FormExample: Story = {
         <TextField
           label="Email Address"
           variant="floating-outlined"
-          leftIcon={<Mail />}
+          leftIcon="mail"
           type="email"
           value={formData.email}
           onChange={(e: InputChangeEvent) => setFormData({ ...formData, email: e.target.value })}
