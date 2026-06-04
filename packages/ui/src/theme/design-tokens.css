@@ -3,6 +3,7 @@
   /* Primary Colors (semantic teal lane, independent from theme accent) */
   --color-primary-border: var(--teal-9);
   --color-primary-border-subtle: var(--teal-7);
+  --color-primary-surface-subtle: var(--teal-2);
   --color-primary-surface: var(--teal-4);
   --color-primary-surface-hover: var(--teal-5);
   --color-primary-soft: var(--teal-6);
@@ -16,6 +17,7 @@
   /* Default (Gray) Colors */
   --color-slate-border: var(--gray-7);
   --color-slate-border-subtle: var(--gray-6);
+  --color-slate-surface-subtle: var(--gray-2);
   --color-slate-surface: var(--gray-4);
   --color-slate-surface-hover: var(--gray-5);
   --color-slate-soft: var(--gray-6);
@@ -28,6 +30,7 @@
   /* Neutral (alias of Light surface lane) */
   --color-neutral-border: var(--color-light-border);
   --color-neutral-border-subtle: var(--color-light-border-subtle);
+  --color-neutral-surface-subtle: var(--color-light-surface-subtle);
   --color-neutral-surface: var(--color-light-surface);
   --color-neutral-surface-hover: var(--color-light-surface-hover);
   --color-neutral-soft: var(--color-light-soft);
@@ -41,6 +44,7 @@
   /* Static light surface lane */
   --color-light-border: color-mix(in oklch, black 12%, white);
   --color-light-border-subtle: color-mix(in oklch, black 8%, white);
+  --color-light-surface-subtle: oklch(0.99 0 0);
   --color-light-surface: oklch(1 0 0);
   --color-light-surface-hover: oklch(0.975 0 0);
   --color-light-soft: oklch(0.975 0 0);
@@ -54,6 +58,7 @@
   /* Static dark surface lane */
   --color-dark-border: color-mix(in oklch, white 20%, black);
   --color-dark-border-subtle: color-mix(in oklch, white 14%, black);
+  --color-dark-surface-subtle: oklch(0.18 0 0);
   --color-dark-surface: oklch(0.23 0 0);
   --color-dark-surface-hover: oklch(0.27 0 0);
   --color-dark-soft: oklch(0.27 0 0);
@@ -67,6 +72,7 @@
   /* Inverse lane: theme-flip (dark in light mode, light in dark mode) */
   --color-inverse-border: var(--color-dark-border);
   --color-inverse-border-subtle: var(--color-dark-border-subtle);
+  --color-inverse-surface-subtle: var(--color-dark-surface-subtle);
   --color-inverse-surface: var(--color-dark-surface);
   --color-inverse-surface-hover: var(--color-dark-surface-hover);
   --color-inverse-soft: var(--color-dark-soft);
@@ -80,6 +86,7 @@
   /* Secondary (Blue) Colors */
   --color-secondary-border: var(--blue-7);
   --color-secondary-border-subtle: var(--blue-6);
+  --color-secondary-surface-subtle: var(--blue-2);
   --color-secondary-surface: var(--blue-4);
   --color-secondary-surface-hover: var(--blue-5);
   --color-secondary-soft: var(--blue-6);
@@ -93,6 +100,7 @@
   /* Accent (Purple) Colors */
   --color-accent-border: var(--purple-7);
   --color-accent-border-subtle: var(--purple-6);
+  --color-accent-surface-subtle: var(--purple-2);
   --color-accent-surface: var(--purple-4);
   --color-accent-surface-hover: var(--purple-5);
   --color-accent-soft: var(--purple-6);
@@ -106,6 +114,7 @@
   /* Info (Blue) Colors */
   --color-info-border: var(--blue-7);
   --color-info-border-subtle: var(--blue-6);
+  --color-info-surface-subtle: var(--blue-2);
   --color-info-surface: var(--blue-4);
   --color-info-surface-hover: var(--blue-5);
   --color-info-soft: var(--blue-6);
@@ -119,6 +128,7 @@
   /* Success (Green) Colors */
   --color-success-border: var(--green-7);
   --color-success-border-subtle: var(--green-6);
+  --color-success-surface-subtle: var(--green-2);
   --color-success-surface: var(--green-4);
   --color-success-surface-hover: var(--green-5);
   --color-success-soft: var(--green-6);
@@ -132,6 +142,7 @@
   /* Warning (Orange/Yellow) Colors */
   --color-warning-border: var(--amber-7);
   --color-warning-border-subtle: var(--amber-6);
+  --color-warning-surface-subtle: var(--amber-2);
   --color-warning-surface: var(--amber-4);
   --color-warning-surface-hover: var(--amber-5);
   --color-warning-soft: var(--amber-6);
@@ -145,6 +156,7 @@
   /* Error (Red) Colors */
   --color-error-border: var(--red-7);
   --color-error-border-subtle: var(--red-6);
+  --color-error-surface-subtle: var(--red-2);
   --color-error-surface: var(--red-4);
   --color-error-surface-hover: var(--red-5);
   --color-error-soft: var(--red-6);
@@ -165,6 +177,7 @@
     /* Primary Colors (semantic teal lane) — Dark */
     --color-primary-border: var(--teal-9);
     --color-primary-border-subtle: var(--teal-7);
+    --color-primary-surface-subtle: var(--teal-2);
     --color-primary-surface: var(--teal-4);
     --color-primary-surface-hover: var(--teal-5);
     --color-primary-soft: var(--teal-6);
@@ -178,6 +191,7 @@
     /* Default (Gray) Colors — Dark */
     --color-slate-border: var(--gray-7);
     --color-slate-border-subtle: var(--gray-6);
+    --color-slate-surface-subtle: var(--gray-2);
     --color-slate-surface: var(--gray-4);
     --color-slate-surface-hover: var(--gray-5);
     --color-slate-soft: var(--gray-6);
@@ -190,6 +204,7 @@
     /* Neutral (alias of theme surface lane) — Dark */
     --color-neutral-border: var(--color-dark-border);
     --color-neutral-border-subtle: var(--color-dark-border-subtle);
+    --color-neutral-surface-subtle: var(--color-dark-surface-subtle);
     --color-neutral-surface: var(--color-dark-surface);
     --color-neutral-surface-hover: var(--color-dark-surface-hover);
     --color-neutral-soft: var(--color-dark-soft);
@@ -203,6 +218,7 @@
     /* Inverse lane: theme-flip (light in dark mode) */
     --color-inverse-border: var(--color-light-border);
     --color-inverse-border-subtle: var(--color-light-border-subtle);
+    --color-inverse-surface-subtle: var(--color-light-surface-subtle);
     --color-inverse-surface: var(--color-light-surface);
     --color-inverse-surface-hover: var(--color-light-surface-hover);
     --color-inverse-soft: var(--color-light-soft);
@@ -216,6 +232,7 @@
     /* Secondary (Blue) Colors — Dark */
     --color-secondary-border: var(--blue-7);
     --color-secondary-border-subtle: var(--blue-6);
+    --color-secondary-surface-subtle: var(--blue-2);
     --color-secondary-surface: var(--blue-4);
     --color-secondary-surface-hover: var(--blue-5);
     --color-secondary-soft: var(--blue-6);
@@ -229,6 +246,7 @@
     /* Accent (Purple) Colors — Dark */
     --color-accent-border: var(--purple-7);
     --color-accent-border-subtle: var(--purple-6);
+    --color-accent-surface-subtle: var(--purple-2);
     --color-accent-surface: var(--purple-4);
     --color-accent-surface-hover: var(--purple-5);
     --color-accent-soft: var(--purple-6);
@@ -242,6 +260,7 @@
     /* Info (Blue) Colors — Dark */
     --color-info-border: var(--blue-7);
     --color-info-border-subtle: var(--blue-6);
+    --color-info-surface-subtle: var(--blue-2);
     --color-info-surface: var(--blue-4);
     --color-info-surface-hover: var(--blue-5);
     --color-info-soft: var(--blue-6);
@@ -255,6 +274,7 @@
     /* Success (Green) Colors — Dark */
     --color-success-border: var(--green-7);
     --color-success-border-subtle: var(--green-6);
+    --color-success-surface-subtle: var(--green-2);
     --color-success-surface: var(--green-4);
     --color-success-surface-hover: var(--green-5);
     --color-success-soft: var(--green-6);
@@ -268,6 +288,7 @@
     /* Warning (Orange) Colors — Dark */
     --color-warning-border: var(--amber-7);
     --color-warning-border-subtle: var(--amber-6);
+    --color-warning-surface-subtle: var(--amber-2);
     --color-warning-surface: var(--amber-4);
     --color-warning-surface-hover: var(--amber-5);
     --color-warning-soft: var(--amber-6);
@@ -281,6 +302,7 @@
     /* Error (Red) Colors — Dark */
     --color-error-border: var(--red-7);
     --color-error-border-subtle: var(--red-6);
+    --color-error-surface-subtle: var(--red-2);
     --color-error-surface: var(--red-4);
     --color-error-surface-hover: var(--red-5);
     --color-error-soft: var(--red-6);
@@ -300,6 +322,7 @@
   /* Primary Colors (semantic teal lane) — Dark */
   --color-primary-border: var(--teal-9);
   --color-primary-border-subtle: var(--teal-7);
+  --color-primary-surface-subtle: var(--teal-2);
   --color-primary-surface: var(--teal-4);
   --color-primary-surface-hover: var(--teal-5);
   --color-primary-soft: var(--teal-6);
@@ -313,6 +336,7 @@
   /* Default (Gray) Colors — Dark */
   --color-slate-border: var(--gray-7);
   --color-slate-border-subtle: var(--gray-6);
+  --color-slate-surface-subtle: var(--gray-2);
   --color-slate-surface: var(--gray-4);
   --color-slate-surface-hover: var(--gray-5);
   --color-slate-soft: var(--gray-6);
@@ -325,6 +349,7 @@
   /* Neutral (alias of theme surface lane) — Dark */
   --color-neutral-border: var(--color-dark-border);
   --color-neutral-border-subtle: var(--color-dark-border-subtle);
+  --color-neutral-surface-subtle: var(--color-dark-surface-subtle);
   --color-neutral-surface: var(--color-dark-surface);
   --color-neutral-surface-hover: var(--color-dark-surface-hover);
   --color-neutral-soft: var(--color-dark-soft);
@@ -338,6 +363,7 @@
   /* Inverse lane: theme-flip (light in dark mode) */
   --color-inverse-border: var(--color-light-border);
   --color-inverse-border-subtle: var(--color-light-border-subtle);
+  --color-inverse-surface-subtle: var(--color-light-surface-subtle);
   --color-inverse-surface: var(--color-light-surface);
   --color-inverse-surface-hover: var(--color-light-surface-hover);
   --color-inverse-soft: var(--color-light-soft);
@@ -351,6 +377,7 @@
   /* Secondary (Blue) Colors — Dark */
   --color-secondary-border: var(--blue-7);
   --color-secondary-border-subtle: var(--blue-6);
+  --color-secondary-surface-subtle: var(--blue-2);
   --color-secondary-surface: var(--blue-4);
   --color-secondary-surface-hover: var(--blue-5);
   --color-secondary-soft: var(--blue-6);
@@ -364,6 +391,7 @@
   /* Accent (Purple) Colors — Dark */
   --color-accent-border: var(--purple-7);
   --color-accent-border-subtle: var(--purple-6);
+  --color-accent-surface-subtle: var(--purple-2);
   --color-accent-surface: var(--purple-4);
   --color-accent-surface-hover: var(--purple-5);
   --color-accent-soft: var(--purple-6);
@@ -377,6 +405,7 @@
   /* Info (Blue) Colors — Dark */
   --color-info-border: var(--blue-7);
   --color-info-border-subtle: var(--blue-6);
+  --color-info-surface-subtle: var(--blue-2);
   --color-info-surface: var(--blue-4);
   --color-info-surface-hover: var(--blue-5);
   --color-info-soft: var(--blue-6);
@@ -390,6 +419,7 @@
   /* Success (Green) Colors — Dark */
   --color-success-border: var(--green-7);
   --color-success-border-subtle: var(--green-6);
+  --color-success-surface-subtle: var(--green-2);
   --color-success-surface: var(--green-4);
   --color-success-surface-hover: var(--green-5);
   --color-success-soft: var(--green-6);
@@ -403,6 +433,7 @@
   /* Warning (Orange) Colors — Dark */
   --color-warning-border: var(--amber-7);
   --color-warning-border-subtle: var(--amber-6);
+  --color-warning-surface-subtle: var(--amber-2);
   --color-warning-surface: var(--amber-4);
   --color-warning-surface-hover: var(--amber-5);
   --color-warning-soft: var(--amber-6);
@@ -416,6 +447,7 @@
   /* Error (Red) Colors — Dark */
   --color-error-border: var(--red-7);
   --color-error-border-subtle: var(--red-6);
+  --color-error-surface-subtle: var(--red-2);
   --color-error-surface: var(--red-4);
   --color-error-surface-hover: var(--red-5);
   --color-error-soft: var(--red-6);

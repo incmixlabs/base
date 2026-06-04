@@ -36,6 +36,7 @@ const semanticColorKeys = semanticColors
 export type SemanticColorToken =
   | 'border'
   | 'surface'
+  | 'surface-subtle'
   | 'surface-hover'
   | 'soft'
   | 'soft-hover'

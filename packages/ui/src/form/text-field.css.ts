@@ -81,6 +81,12 @@ const createTextFieldEnhancements = (color: Color): Record<TextFieldVariant, str
     textFieldVariantKeys.map(variant => [
       variant,
       style({
+        ...(variant === 'soft'
+          ? {
+              backgroundColor: semanticColorVar(color, 'surface-subtle'),
+              borderColor: semanticColorVar(color, 'border-subtle'),
+            }
+          : {}),
         selectors: {
           ...placeholderStyle(color, variant),
           ...focusRing(color),
@@ -130,7 +136,7 @@ type FloatingStyle = 'filled' | 'outlined' | 'standard'
 const createFloatingColorStyles = (color: Color): Record<FloatingStyle, string> => ({
   filled: style({
     borderColor: semanticColorVar(color, 'primary'),
-    backgroundColor: semanticColorVar(color, 'surface'),
+    backgroundColor: semanticColorVar(color, 'surface-subtle'),
     selectors: {
       '&:focus': {
         borderColor: semanticColorVar(color, 'primary'),

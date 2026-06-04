@@ -71,7 +71,7 @@ export const AllVariants: Story = {
         <div className="space-y-4">
           <TextField variant="outline" placeholder="Outline variant (default)" />
           <TextField variant="soft" placeholder="Soft variant" />
-          <TextField variant="solid" placeholder="Solid variant" />
+          <TextField variant="surface" placeholder="Surface variant" />
           <TextField variant="ghost" placeholder="Ghost variant" />
         </div>
       </div>
@@ -226,7 +226,7 @@ export const WithIcons: Story = {
         <div className="space-y-4">
           <TextField variant="outline" leftIcon={<Mail />} placeholder="Outline with icon" />
           <TextField variant="soft" leftIcon={<Mail />} placeholder="Soft with icon" />
-          <TextField variant="solid" leftIcon={<Mail />} placeholder="Solid with icon" />
+          <TextField variant="surface" leftIcon={<Mail />} placeholder="Surface with icon" />
           <TextField variant="ghost" leftIcon={<Mail />} placeholder="Ghost with icon" />
         </div>
       </div>

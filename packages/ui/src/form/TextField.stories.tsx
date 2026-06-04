@@ -104,13 +104,6 @@ export const VariantSoft: Story = {
   },
 }
 
-export const VariantSolid: Story = {
-  args: {
-    variant: 'solid',
-    placeholder: 'Solid variant',
-  },
-}
-
 export const VariantGhost: Story = {
   args: {
     variant: 'ghost',
@@ -123,7 +116,7 @@ export const AllVariants: Story = {
     <Box display="flex" className="flex-col gap-4 max-w-md">
       <TextField variant="outline" placeholder="Outline" />
       <TextField variant="soft" placeholder="Soft" />
-      <TextField variant="solid" placeholder="Solid" />
+      <TextField variant="surface" placeholder="Surface" />
       <TextField variant="ghost" placeholder="Ghost" />
     </Box>
   ),

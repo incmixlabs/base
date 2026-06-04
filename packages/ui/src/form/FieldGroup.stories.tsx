@@ -395,8 +395,8 @@ export const AllVariantsComparison: Story = {
         </FieldGroup>
       </Box>
       <Box>
-        <h3 className="text-sm font-medium mb-2">Solid</h3>
-        <FieldGroup size="md" variant="solid" className="max-w-md">
+        <h3 className="text-sm font-medium mb-2">Surface</h3>
+        <FieldGroup size="md" variant="surface" className="max-w-md">
           <TextField placeholder="First name" />
           <TextField placeholder="Last name" />
         </FieldGroup>

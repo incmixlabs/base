@@ -8,6 +8,7 @@ import {
 export const SEMANTIC_LANE_VAR_TOKENS = [
   'border',
   'border-subtle',
+  'surface-subtle',
   'surface',
   'surface-hover',
   'soft',
@@ -62,6 +63,7 @@ const STATIC_SURFACE_LANES: Record<'light' | 'dark', Record<SemanticLaneToken, s
   light: {
     border: 'color-mix(in oklch, black 12%, white)',
     'border-subtle': 'color-mix(in oklch, black 8%, white)',
+    'surface-subtle': 'oklch(0.99 0 0)',
     surface: 'oklch(1 0 0)',
     'surface-hover': 'oklch(0.975 0 0)',
     soft: 'oklch(0.975 0 0)',
@@ -75,6 +77,7 @@ const STATIC_SURFACE_LANES: Record<'light' | 'dark', Record<SemanticLaneToken, s
   dark: {
     border: 'color-mix(in oklch, white 20%, black)',
     'border-subtle': 'color-mix(in oklch, white 14%, black)',
+    'surface-subtle': 'oklch(0.18 0 0)',
     surface: 'oklch(0.23 0 0)',
     'surface-hover': 'oklch(0.27 0 0)',
     soft: 'oklch(0.27 0 0)',
@@ -172,6 +175,7 @@ export function buildSemanticLaneVars(
     const borderSubtleShade = lane === 'primary' ? variantSteps.border : variantSteps.borderSubtle
     result[`--color-${lane}-border`] = getHueToken(hue, borderShade)
     result[`--color-${lane}-border-subtle`] = getHueToken(hue, borderSubtleShade)
+    result[`--color-${lane}-surface-subtle`] = getHueToken(hue, variantSteps.surfaceSubtle)
     result[`--color-${lane}-surface`] = getHueToken(hue, variantSteps.surface)
     result[`--color-${lane}-surface-hover`] = getHueToken(hue, variantSteps.surfaceHover)
     result[`--color-${lane}-soft`] = getHueToken(hue, variantSteps.soft)
