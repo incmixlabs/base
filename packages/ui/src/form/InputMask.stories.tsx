@@ -18,7 +18,7 @@ const meta: Meta<typeof InputMask> = {
     },
     variant: {
       control: 'select',
-      options: ['classic', 'solid', 'soft', 'surface', 'outline', 'ghost'],
+      options: ['soft', 'surface', 'outline', 'ghost'],
     },
     radius: {
       control: 'select',
@@ -215,7 +215,7 @@ export const Sizes: Story = {
 export const Variants: Story = {
   render: () => (
     <div className="w-80 space-y-4">
-      {(['classic', 'solid', 'soft', 'surface', 'outline', 'ghost'] as const).map(variant => (
+      {(['soft', 'surface', 'outline', 'ghost'] as const).map(variant => (
         <div key={variant}>
           <p className="text-sm text-muted-foreground mb-2 capitalize">{variant}</p>
           <InputMask variant={variant} mask="phone" placeholder="(555) 555-5555" />

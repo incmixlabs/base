@@ -382,7 +382,7 @@ const AvatarPickerMultiTrigger = React.forwardRef<HTMLDivElement, AvatarPickerMu
 
     React.useImperativeHandle(ref, () => triggerRef.current as HTMLDivElement)
 
-    const surfaceVariant = resolveSurfaceVariant(useFieldGroup().variant ?? 'outline', { allowLegacy: true })
+    const surfaceVariant = resolveSurfaceVariant(useFieldGroup().variant ?? 'outline')
 
     const { visibleItems: visibleSelectedItems, overflowCount: hiddenSelectedCount } = React.useMemo(
       () => partitionVisibleOverflow(selectedItems, AVATAR_PICKER_MAX_VISIBLE_AVATARS),
@@ -709,7 +709,7 @@ const AvatarPickerSingle = React.forwardRef<HTMLDivElement, AvatarPickerSinglePr
 
     React.useImperativeHandle(ref, () => triggerRef.current as HTMLDivElement)
 
-    const surfaceVariant = resolveSurfaceVariant(useFieldGroup().variant ?? 'outline', { allowLegacy: true })
+    const surfaceVariant = resolveSurfaceVariant(useFieldGroup().variant ?? 'outline')
 
     const filteredItems = React.useMemo(() => {
       if (!searchTerm) return items

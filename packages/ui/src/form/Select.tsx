@@ -166,7 +166,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
     }
 
     // Regular (non-floating) render path
-    const surfaceVariant = resolveSurfaceVariant(variant, { allowLegacy: true })
+    const surfaceVariant = resolveSurfaceVariant(variant)
 
     return (
       <SelectPrimitive.Root

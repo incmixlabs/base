@@ -76,7 +76,7 @@ export function getDateFieldSurfaceClassName({
   floatingStyle: FloatingStyle | null
   textFieldSize: TextFieldSize
 }) {
-  const surfaceVariant = resolveSurfaceVariant(variant ?? 'outline', { allowLegacy: true })
+  const surfaceVariant = resolveSurfaceVariant(variant ?? 'outline')
   return cn(
     'relative box-border flex w-full min-w-0 items-center overflow-hidden text-foreground transition-all duration-150 ease-in-out',
     textFieldSizeVariants[textFieldSize],

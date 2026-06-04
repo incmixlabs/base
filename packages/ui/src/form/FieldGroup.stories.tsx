@@ -29,17 +29,7 @@ const meta: Meta<typeof FieldGroup> = {
     },
     variant: {
       control: 'select',
-      options: [
-        'classic',
-        'solid',
-        'soft',
-        'surface',
-        'outline',
-        'ghost',
-        'floating-filled',
-        'floating-standard',
-        'floating-outlined',
-      ],
+      options: ['soft', 'surface', 'outline', 'ghost', 'floating-filled', 'floating-standard', 'floating-outlined'],
       description: 'Variant applied to all child form fields',
     },
     gap: {
@@ -142,10 +132,10 @@ export const LargeSize: Story = {
 // Variant Variations
 // ============================================================================
 
-export const SolidVariant: Story = {
+export const SurfaceVariant: Story = {
   args: {
     size: 'md',
-    variant: 'solid',
+    variant: 'surface',
   },
   render: args => (
     <FieldGroup {...args} className="max-w-md">
