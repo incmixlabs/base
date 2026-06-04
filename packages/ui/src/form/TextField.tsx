@@ -69,8 +69,8 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
   ) => {
     // Get context values from FieldGroup (if wrapped)
     const fieldGroup = useFieldGroup()
-    const size = (sizeProp ?? fieldGroup.size) as ExtendedFormSize
-    const variant = variantProp ?? fieldGroup.variant
+    const size = (sizeProp ?? fieldGroup.size ?? 'md') as ExtendedFormSize
+    const variant = variantProp ?? fieldGroup.variant ?? 'outline'
     const effectiveDisabled = disabled || fieldGroup.disabled
     const effectiveReadOnly = readOnly === true || fieldGroup.readOnly
 
@@ -92,19 +92,25 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
 
     // For floating variants, use placeholder as label if no label provided
     // Strip placeholder from props for floating variants to prevent text collision with label
-    const { placeholder, ...inputProps } = props
+    const { placeholder, defaultValue, onBlur, onChange, onFocus, value, ...inputProps } = props
     const effectiveLabel = label || (isFloatingVariant(variant) ? placeholder : undefined)
+    const [floatingFocused, setFloatingFocused] = React.useState(false)
+    const [floatingHasValue, setFloatingHasValue] = React.useState(() => hasInputValue(value ?? defaultValue))
+
+    React.useEffect(() => {
+      if (value !== undefined) {
+        setFloatingHasValue(hasInputValue(value))
+      }
+    }, [value])
 
     // If floating variant, render the floating version
     if (isFloatingVariant(variant)) {
       return (
         <div
-          className={cn(
-            textFieldRootCls,
+          className={clsx(
+            cn(textFieldRootCls, marginProps.className, className),
             textFieldSizeVariants[size],
             textFieldFloatingWrapperColorVariants[effectiveColor],
-            marginProps.className,
-            className,
           )}
           style={{ ...marginProps.style, ...radiusStyles, ...style }}
         >
@@ -131,9 +137,13 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             ref={ref}
             id={inputId}
             placeholder=" "
+            value={value}
+            defaultValue={value === undefined ? defaultValue : undefined}
             disabled={effectiveDisabled}
             aria-invalid={error || undefined}
             readOnly={effectiveReadOnly}
+            data-filled={floatingHasValue ? '' : undefined}
+            data-focused={floatingFocused ? '' : undefined}
             className={clsx(
               cn(textFieldInputBaseCls, 'peer', floatingInputBaseCls),
               // VE classes must be joined outside tailwind-merge or one generated class can be dropped.
@@ -143,20 +153,31 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
               (rightIcon || rightElement) && floatingInputWithRightIconCls,
             )}
             {...inputProps}
+            onBlur={event => {
+              setFloatingFocused(false)
+              onBlur?.(event)
+            }}
+            onChange={event => {
+              setFloatingHasValue(hasInputValue(event.currentTarget.value))
+              onChange?.(event)
+            }}
+            onFocus={event => {
+              setFloatingFocused(true)
+              onFocus?.(event)
+            }}
           />
 
           {effectiveLabel && (
             <label
               htmlFor={inputId}
-              className={cn(
-                // TW: static label styles
-                'absolute duration-300 origin-[0]',
-                'pointer-events-none select-none',
-
-                // VE: floating style positioning (top, left, translate, scale, peer-* selectors)
+              className={clsx(
+                cn(
+                  // TW: static label styles
+                  'absolute duration-300 origin-[0]',
+                  'pointer-events-none select-none',
+                ),
+                // VE classes must be joined outside tailwind-merge or generated positioning can be dropped.
                 floatingStyle && floatingLabelStyleVariants[floatingStyle],
-
-                // VE: left icon/element offset
                 (leftIcon || leftElement) && floatingLabelWithLeftIconCls,
               )}
             >
@@ -192,7 +213,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     const surfaceVariant = resolveSurfaceVariant(variant)
 
     const control = (
-      <div className={cn(textFieldRootCls, textFieldSizeVariants[size])} style={regularStyles}>
+      <div className={clsx(cn(textFieldRootCls), textFieldSizeVariants[size])} style={regularStyles}>
         {leftIcon && (
           <div
             className={cn(
@@ -278,3 +299,8 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
 )
 
 TextField.displayName = 'TextField'
+
+function hasInputValue(value: React.InputHTMLAttributes<HTMLInputElement>['value'] | undefined): boolean {
+  if (Array.isArray(value)) return value.length > 0
+  return value != null && String(value).length > 0
+}

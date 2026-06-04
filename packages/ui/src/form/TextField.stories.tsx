@@ -215,25 +215,25 @@ export const AllFloatingVariants: Story = {
 }
 
 export const FloatingRegressionStates: Story = {
-  render: () => (
+  render: args => (
     <Box display="flex" className="flex-col gap-8 max-w-xl">
       <Box display="flex" className="flex-col gap-3">
         <p className="text-sm font-medium">Empty State</p>
-        <TextField label="Filled" variant="floating-filled" />
-        <TextField label="Outlined" variant="floating-outlined" />
-        <TextField label="Standard" variant="floating-standard" />
+        <TextField {...args} label="Filled" variant="floating-filled" />
+        <TextField {...args} label="Outlined" variant="floating-outlined" />
+        <TextField {...args} label="Standard" variant="floating-standard" />
       </Box>
       <Box display="flex" className="flex-col gap-3">
         <p className="text-sm font-medium">With Value</p>
-        <TextField label="Filled" variant="floating-filled" defaultValue="john@example.com" />
-        <TextField label="Outlined" variant="floating-outlined" defaultValue="john@example.com" />
-        <TextField label="Standard" variant="floating-standard" defaultValue="john@example.com" />
+        <TextField {...args} label="Filled" variant="floating-filled" defaultValue="john@example.com" />
+        <TextField {...args} label="Outlined" variant="floating-outlined" defaultValue="john@example.com" />
+        <TextField {...args} label="Standard" variant="floating-standard" defaultValue="john@example.com" />
       </Box>
       <Box display="flex" className="flex-col gap-3">
         <p className="text-sm font-medium">Focused State</p>
-        <TextField label="Filled (focused)" variant="floating-filled" autoFocus />
-        <TextField label="Outlined (focus manually)" variant="floating-outlined" />
-        <TextField label="Standard (focus manually)" variant="floating-standard" />
+        <TextField {...args} label="Filled (focused)" variant="floating-filled" autoFocus />
+        <TextField {...args} label="Outlined (focus manually)" variant="floating-outlined" />
+        <TextField {...args} label="Standard (focus manually)" variant="floating-standard" />
       </Box>
     </Box>
   ),
