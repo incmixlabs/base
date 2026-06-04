@@ -105,6 +105,13 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
 
     // If floating variant, render the floating version
     if (isFloatingVariant(variant)) {
+      const floatingIconStyle = {
+        top:
+          floatingStyle === 'standard'
+            ? 'calc(0.75rem + (var(--tf-line-height) / 2))'
+            : 'calc(1rem + (var(--tf-line-height) / 2))',
+      } as React.CSSProperties
+
       return (
         <div
           className={clsx(
@@ -116,12 +123,12 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
         >
           {leftIcon && (
             <div
-              className={cn(
-                textFieldIconContainerCls,
+              className={clsx(
+                cn(textFieldIconContainerCls, 'left-0 pointer-events-none'),
                 textFieldLeftIconContainerCls,
                 textFieldIconCls,
-                'left-0 pointer-events-none',
               )}
+              style={floatingIconStyle}
             >
               <Flex align="center" justify="center" className="text-muted-foreground">
                 {leftIcon}
@@ -130,7 +137,12 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           )}
 
           {leftElement && (
-            <div className={cn(textFieldIconContainerCls, textFieldLeftIconContainerCls, 'left-0')}>{leftElement}</div>
+            <div
+              className={clsx(cn(textFieldIconContainerCls, 'left-0'), textFieldLeftIconContainerCls)}
+              style={floatingIconStyle}
+            >
+              {leftElement}
+            </div>
           )}
 
           <input
@@ -187,12 +199,12 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
 
           {rightIcon && (
             <div
-              className={cn(
-                textFieldIconContainerCls,
+              className={clsx(
+                cn(textFieldIconContainerCls, 'right-0 pointer-events-none'),
                 textFieldRightIconContainerCls,
                 textFieldIconCls,
-                'right-0 pointer-events-none',
               )}
+              style={floatingIconStyle}
             >
               <Flex align="center" justify="center" className="text-muted-foreground">
                 {rightIcon}
@@ -201,7 +213,10 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           )}
 
           {rightElement && (
-            <div className={cn(textFieldIconContainerCls, textFieldRightIconContainerCls, 'right-0')}>
+            <div
+              className={clsx(cn(textFieldIconContainerCls, 'right-0'), textFieldRightIconContainerCls)}
+              style={floatingIconStyle}
+            >
               {rightElement}
             </div>
           )}
@@ -216,11 +231,10 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
       <div className={clsx(cn(textFieldRootCls), textFieldSizeVariants[size])} style={regularStyles}>
         {leftIcon && (
           <div
-            className={cn(
-              textFieldIconContainerCls,
+            className={clsx(
+              cn(textFieldIconContainerCls, 'left-0 pointer-events-none'),
               textFieldLeftIconContainerCls,
               textFieldIconCls,
-              'left-0 pointer-events-none',
             )}
           >
             <Flex align="center" justify="center" className="text-muted-foreground">
@@ -230,7 +244,9 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
         )}
 
         {leftElement && (
-          <div className={cn(textFieldIconContainerCls, textFieldLeftIconContainerCls, 'left-0')}>{leftElement}</div>
+          <div className={clsx(cn(textFieldIconContainerCls, 'left-0'), textFieldLeftIconContainerCls)}>
+            {leftElement}
+          </div>
         )}
 
         <input
@@ -260,11 +276,10 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
 
         {rightIcon && (
           <div
-            className={cn(
-              textFieldIconContainerCls,
+            className={clsx(
+              cn(textFieldIconContainerCls, 'right-0 pointer-events-none'),
               textFieldRightIconContainerCls,
               textFieldIconCls,
-              'right-0 pointer-events-none',
             )}
           >
             <Flex align="center" justify="center" className="text-muted-foreground">
@@ -274,7 +289,9 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
         )}
 
         {rightElement && (
-          <div className={cn(textFieldIconContainerCls, textFieldRightIconContainerCls, 'right-0')}>{rightElement}</div>
+          <div className={clsx(cn(textFieldIconContainerCls, 'right-0'), textFieldRightIconContainerCls)}>
+            {rightElement}
+          </div>
         )}
       </div>
     )

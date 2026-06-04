@@ -244,11 +244,32 @@ export const FloatingRegressionStates: Story = {
 // ============================================================================
 
 export const FloatingWithIcons: Story = {
-  render: () => (
+  render: args => (
     <Box display="flex" className="flex-col gap-6 max-w-md">
-      <TextField label="Email" variant="floating-filled" leftIcon={<Mail />} />
-      <TextField label="Email" variant="floating-outlined" leftIcon={<Mail />} />
-      <TextField label="Search" variant="floating-standard" leftIcon={<Search />} />
+      <TextField {...args} label="Email" variant="floating-filled" leftIcon={<Mail />} />
+      <TextField {...args} label="Email" variant="floating-outlined" leftIcon={<Mail />} />
+      <TextField {...args} label="Search" variant="floating-standard" leftIcon={<Search />} />
+      <TextField
+        {...args}
+        defaultValue="john@example.com"
+        label="Email"
+        variant="floating-filled"
+        leftIcon={<Mail />}
+      />
+      <TextField
+        {...args}
+        defaultValue="john@example.com"
+        label="Email"
+        variant="floating-outlined"
+        leftIcon={<Mail />}
+      />
+      <TextField
+        {...args}
+        defaultValue="Search query"
+        label="Search"
+        variant="floating-standard"
+        leftIcon={<Search />}
+      />
     </Box>
   ),
 }

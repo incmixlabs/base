@@ -425,7 +425,7 @@ export const textFieldSizeVariants: Record<TextFieldSize, string> = styleVariant
 
 export const textFieldIconCls = style({})
 
-globalStyle(`${textFieldIconCls} > svg`, {
+globalStyle(`${textFieldIconCls} svg`, {
   width: 'var(--tf-icon-size)',
   height: 'var(--tf-icon-size)',
   flexShrink: 0,
