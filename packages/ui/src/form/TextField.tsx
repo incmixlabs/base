@@ -271,7 +271,12 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             effectiveDisabled && 'opacity-50 cursor-not-allowed',
           )}
           placeholder={placeholder}
+          value={value}
+          defaultValue={value === undefined ? defaultValue : undefined}
           {...inputProps}
+          onBlur={onBlur}
+          onChange={onChange}
+          onFocus={onFocus}
         />
 
         {rightIcon && (
