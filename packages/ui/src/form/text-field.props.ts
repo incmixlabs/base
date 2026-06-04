@@ -1,4 +1,5 @@
 import type * as React from 'react'
+import type { IconProps } from '@/elements/button/Icon'
 import { flexPropDefs } from '@/layouts/flex/flex.props'
 import { colorPropDef } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
@@ -20,10 +21,10 @@ export interface TextFieldProps extends Omit<React.InputHTMLAttributes<HTMLInput
   radius?: Radius
   /** Whether the field has an error */
   error?: boolean
-  /** Icon to display on the left (decorative, non-interactive) */
-  leftIcon?: React.ReactNode
-  /** Icon to display on the right (decorative, non-interactive) */
-  rightIcon?: React.ReactNode
+  /** Icon name to display on the left (decorative, non-interactive) */
+  leftIcon?: IconProps['icon']
+  /** Icon name to display on the right (decorative, non-interactive) */
+  rightIcon?: IconProps['icon']
   /** Interactive element on the left (e.g., button) */
   leftElement?: React.ReactNode
   /** Interactive element on the right (e.g., toggle button) */
@@ -42,8 +43,8 @@ const textFieldRootPropDefs = {
   label: { type: 'string' },
   error: { type: 'boolean', default: false },
   disabled: { type: 'boolean', default: false },
-  leftIcon: { type: 'ReactNode' },
-  rightIcon: { type: 'ReactNode' },
+  leftIcon: { type: 'string' },
+  rightIcon: { type: 'string' },
   leftElement: { type: 'ReactNode' },
   rightElement: { type: 'ReactNode' },
   ...colorPropDef,
@@ -54,8 +55,8 @@ const textFieldRootPropDefs = {
   label: PropDef<string>
   error: PropDef<boolean>
   disabled: PropDef<boolean>
-  leftIcon: PropDef<React.ReactNode>
-  rightIcon: PropDef<React.ReactNode>
+  leftIcon: PropDef<string>
+  rightIcon: PropDef<string>
   leftElement: PropDef<React.ReactNode>
   rightElement: PropDef<React.ReactNode>
 }

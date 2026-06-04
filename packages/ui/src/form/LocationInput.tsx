@@ -160,12 +160,6 @@ function SearchableSelect<T>({
                   'rounded-[var(--element-border-radius)]',
                   'text-[var(--color-text)]',
 
-                  variant === 'solid' && [
-                    'border-0',
-                    'bg-primary text-primary-foreground',
-                    'hover:bg-primary/90',
-                    'focus:ring-2 focus:ring-ring focus:ring-offset-2',
-                  ],
                   variant === 'outline' && [
                     'border border-input',
                     'bg-background',

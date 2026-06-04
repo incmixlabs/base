@@ -1,6 +1,5 @@
 import { Select, SelectItem, Textarea, TextField } from '@incmix/ui/form'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Lock, Mail, User } from 'lucide-react'
 import * as React from 'react'
 import { Label } from '@/form'
 import { SemanticColor } from '@/theme/props/color.prop'
@@ -105,7 +104,7 @@ export const UserRegistrationForm: Story = {
               size="sm"
               variant="outline"
               color={errors.firstName ? SemanticColor.error : SemanticColor.slate}
-              leftIcon={<User />}
+              leftIcon="user"
               placeholder="John"
               value={formData.firstName}
               onChange={(e: InputChangeEvent) => setFormData({ ...formData, firstName: e.target.value })}
@@ -133,7 +132,7 @@ export const UserRegistrationForm: Story = {
             size="sm"
             variant="outline"
             color={errors.email ? SemanticColor.error : SemanticColor.info}
-            leftIcon={<Mail />}
+            leftIcon="mail"
             type="email"
             placeholder="john@example.com"
             value={formData.email}
@@ -148,7 +147,7 @@ export const UserRegistrationForm: Story = {
             size="sm"
             variant="outline"
             color={errors.password ? SemanticColor.error : SemanticColor.slate}
-            leftIcon={<Lock />}
+            leftIcon="lock"
             type="password"
             placeholder="Enter password"
             value={formData.password}
@@ -163,7 +162,7 @@ export const UserRegistrationForm: Story = {
             size="sm"
             variant="outline"
             color={errors.confirmPassword ? SemanticColor.error : SemanticColor.slate}
-            leftIcon={<Lock />}
+            leftIcon="lock"
             type="password"
             placeholder="Confirm password"
             value={formData.confirmPassword}
@@ -267,7 +266,7 @@ export const ContactForm: Story = {
               size="sm"
               variant="outline"
               color="slate"
-              leftIcon={<User />}
+              leftIcon="user"
               placeholder="Enter your name"
               value={contactData.name}
               onChange={(e: InputChangeEvent) => setContactData({ ...contactData, name: e.target.value })}
@@ -281,7 +280,7 @@ export const ContactForm: Story = {
               size="sm"
               variant="outline"
               color="info"
-              leftIcon={<Mail />}
+              leftIcon="mail"
               type="email"
               placeholder="your@email.com"
               value={contactData.email}

@@ -18,17 +18,7 @@ const meta: Meta<typeof Textarea> = {
     },
     variant: {
       control: 'select',
-      options: [
-        'classic',
-        'solid',
-        'soft',
-        'surface',
-        'outline',
-        'ghost',
-        'floating-filled',
-        'floating-standard',
-        'floating-outlined',
-      ],
+      options: ['soft', 'surface', 'outline', 'ghost', 'floating-filled', 'floating-standard', 'floating-outlined'],
     },
     radius: {
       control: 'select',
@@ -83,7 +73,7 @@ export const Sizes: Story = {
 export const Variants: Story = {
   render: () => (
     <div className="w-80 space-y-4">
-      {(['classic', 'solid', 'soft', 'surface', 'outline', 'ghost'] as const).map(variant => (
+      {(['soft', 'surface', 'outline', 'ghost'] as const).map(variant => (
         <div key={variant}>
           <p className="text-sm text-muted-foreground mb-2 capitalize">{variant}</p>
           <Textarea variant={variant} placeholder={`${variant} variant`} />
@@ -327,7 +317,7 @@ export const AutoSizeWithMinMax: Story = {
 export const AutoSizeVariants: Story = {
   render: () => (
     <div className="w-80 space-y-4">
-      {(['classic', 'surface', 'outline', 'soft'] as const).map(variant => (
+      {(['surface', 'outline', 'soft'] as const).map(variant => (
         <div key={variant}>
           <p className="text-sm text-muted-foreground mb-2 capitalize">{variant} (autoSize)</p>
           <Textarea variant={variant} autoSize minRows={1} placeholder={`Auto-sizing ${variant} variant`} />

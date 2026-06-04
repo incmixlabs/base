@@ -65,7 +65,7 @@ export const AllVariants: Story = {
     <Box display="flex" className="max-w-md flex-col gap-4">
       <SearchInput variant="outline" placeholder="Outline search" />
       <SearchInput variant="soft" placeholder="Soft search" />
-      <SearchInput variant="solid" placeholder="Solid search" />
+      <SearchInput variant="surface" placeholder="Surface search" />
       <SearchInput variant="ghost" placeholder="Ghost search" />
       <SearchInput variant="floating-filled" label="Filled search" />
       <SearchInput variant="floating-outlined" label="Outlined search" />

@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Lock } from 'lucide-react'
 import { useState } from 'react'
 import { Label } from './Label'
 import { PasswordInput } from './PasswordInput'
@@ -17,7 +16,7 @@ const meta: Meta<typeof PasswordInput> = {
     },
     variant: {
       control: 'select',
-      options: ['classic', 'solid', 'soft', 'surface', 'outline', 'ghost'],
+      options: ['soft', 'surface', 'outline', 'ghost'],
     },
   },
 }
@@ -79,7 +78,7 @@ export const WithLeftIcon: Story = {
   render: () => (
     <div className="w-80 space-y-2">
       <Label htmlFor="icon-password">Password</Label>
-      <PasswordInput id="icon-password" leftIcon={<Lock />} placeholder="Enter password" />
+      <PasswordInput id="icon-password" leftIcon="lock" placeholder="Enter password" />
     </div>
   ),
 }
@@ -126,7 +125,7 @@ export const Sizes: Story = {
 export const Variants: Story = {
   render: () => (
     <div className="w-80 space-y-6">
-      {(['classic', 'solid', 'soft', 'surface', 'outline', 'ghost'] as const).map(variant => (
+      {(['soft', 'surface', 'outline', 'ghost'] as const).map(variant => (
         <div key={variant} className="space-y-2">
           <Label className="capitalize">{variant}</Label>
           <PasswordInput variant={variant} placeholder="Password" />

@@ -6,8 +6,6 @@ import type { Size, TextFieldVariant } from '@/theme/tokens'
 
 export const dateSizeValues = ['xs', 'sm', 'md', 'lg', 'xl', '2x'] as const satisfies readonly Size[]
 export const dateVariantValues = [
-  'classic',
-  'solid',
   'soft',
   'surface',
   'outline',
@@ -150,8 +148,6 @@ export const normalizeDateVariant = (variant: TextFieldVariant | undefined): Dat
 }
 
 const variantColorModeByVariant: Record<DateVariant, DateVariantColorMode> = {
-  classic: 'border',
-  solid: 'solid',
   soft: 'soft',
   surface: 'border',
   outline: 'border',

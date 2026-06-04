@@ -2,6 +2,7 @@
 
 import { clsx } from 'clsx'
 import * as React from 'react'
+import { Icon, type IconProps } from '@/elements/button/Icon'
 import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
 import { Flex } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
@@ -37,6 +38,8 @@ import { getFloatingStyle, isFloatingVariant, resolveSurfaceVariant } from './te
 export type { TextFieldVariant } from '@/theme/tokens'
 export type { TextFieldProps } from './text-field.props'
 
+type TextFieldIconSize = NonNullable<IconProps['size']>
+
 /** TextField export. */
 export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
   (
@@ -69,12 +72,15 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
   ) => {
     // Get context values from FieldGroup (if wrapped)
     const fieldGroup = useFieldGroup()
-    const size = (sizeProp ?? fieldGroup.size) as ExtendedFormSize
-    const variant = variantProp ?? fieldGroup.variant
+    const size = (sizeProp ?? fieldGroup.size ?? 'md') as ExtendedFormSize
+    const iconSize = textFieldIconSize(size)
+    const variant = variantProp ?? fieldGroup.variant ?? 'outline'
     const effectiveDisabled = disabled || fieldGroup.disabled
     const effectiveReadOnly = readOnly === true || fieldGroup.readOnly
 
-    const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
+    const floatingStyle = getFloatingStyle(variant)
+    const rawRadius = useThemeRadius(radiusProp ?? fieldGroup.radius)
+    const radius = rawRadius === 'full' && floatingStyle === 'filled' ? 'lg' : rawRadius
     const radiusStyles = getRadiusStyles(radius)
     const generatedId = React.useId()
     const inputId = id || generatedId
@@ -88,52 +94,83 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     } as React.CSSProperties
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
 
-    const floatingStyle = getFloatingStyle(variant)
-
     // For floating variants, use placeholder as label if no label provided
     // Strip placeholder from props for floating variants to prevent text collision with label
-    const { placeholder, ...inputProps } = props
+    const { placeholder, defaultValue, onBlur, onChange, onFocus, value, ...inputProps } = props
     const effectiveLabel = label || (isFloatingVariant(variant) ? placeholder : undefined)
+    const [floatingFocused, setFloatingFocused] = React.useState(false)
+    const [floatingHasValue, setFloatingHasValue] = React.useState(() => hasInputValue(value ?? defaultValue))
+
+    React.useEffect(() => {
+      if (value !== undefined) {
+        setFloatingHasValue(hasInputValue(value))
+      }
+    }, [value])
 
     // If floating variant, render the floating version
     if (isFloatingVariant(variant)) {
+      const floatingIconStyle = {
+        top:
+          floatingStyle === 'standard'
+            ? 'calc(0.75rem + (var(--tf-line-height) / 2))'
+            : 'calc(1rem + (var(--tf-line-height) / 2))',
+      } as React.CSSProperties
+      const leftSlotStyle = {
+        ...floatingIconStyle,
+        left: 'calc(var(--tf-padding-x) + var(--tf-gap))',
+      } as React.CSSProperties
+      const rightSlotStyle = {
+        ...floatingIconStyle,
+        right: 'calc(var(--tf-padding-x) + var(--tf-gap))',
+      } as React.CSSProperties
+
       return (
         <div
-          className={cn(
-            textFieldRootCls,
+          className={clsx(
+            cn(textFieldRootCls, marginProps.className, className),
             textFieldSizeVariants[size],
             textFieldFloatingWrapperColorVariants[effectiveColor],
-            marginProps.className,
-            className,
           )}
           style={{ ...marginProps.style, ...radiusStyles, ...style }}
         >
           {leftIcon && (
-            <div
-              className={cn(
-                textFieldIconContainerCls,
+            <Flex
+              align="center"
+              justify="center"
+              className={clsx(
+                cn(textFieldIconContainerCls, 'pointer-events-none'),
                 textFieldLeftIconContainerCls,
                 textFieldIconCls,
-                'left-0 pointer-events-none',
+                'text-muted-foreground',
               )}
+              style={leftSlotStyle}
             >
-              <Flex align="center" justify="center" className="text-muted-foreground">
-                {leftIcon}
-              </Flex>
-            </div>
+              <Icon aria-hidden color={effectiveColor} icon={leftIcon} size={iconSize} />
+            </Flex>
           )}
 
           {leftElement && (
-            <div className={cn(textFieldIconContainerCls, textFieldLeftIconContainerCls, 'left-0')}>{leftElement}</div>
+            <Flex
+              align="center"
+              justify="center"
+              className={clsx(cn(textFieldIconContainerCls), textFieldLeftIconContainerCls)}
+              style={leftSlotStyle}
+            >
+              {leftElement}
+            </Flex>
           )}
 
           <input
             ref={ref}
             id={inputId}
             placeholder=" "
+            value={value}
+            defaultValue={value === undefined ? defaultValue : undefined}
             disabled={effectiveDisabled}
             aria-invalid={error || undefined}
             readOnly={effectiveReadOnly}
+            data-filled={floatingHasValue ? '' : undefined}
+            data-focused={floatingFocused ? '' : undefined}
             className={clsx(
               cn(textFieldInputBaseCls, 'peer', floatingInputBaseCls),
               // VE classes must be joined outside tailwind-merge or one generated class can be dropped.
@@ -143,20 +180,31 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
               (rightIcon || rightElement) && floatingInputWithRightIconCls,
             )}
             {...inputProps}
+            onBlur={event => {
+              setFloatingFocused(false)
+              onBlur?.(event)
+            }}
+            onChange={event => {
+              setFloatingHasValue(hasInputValue(event.currentTarget.value))
+              onChange?.(event)
+            }}
+            onFocus={event => {
+              setFloatingFocused(true)
+              onFocus?.(event)
+            }}
           />
 
           {effectiveLabel && (
             <label
               htmlFor={inputId}
-              className={cn(
-                // TW: static label styles
-                'absolute duration-300 origin-[0]',
-                'pointer-events-none select-none',
-
-                // VE: floating style positioning (top, left, translate, scale, peer-* selectors)
+              className={clsx(
+                cn(
+                  // TW: static label styles
+                  'absolute duration-300 origin-[0]',
+                  'pointer-events-none select-none',
+                ),
+                // VE classes must be joined outside tailwind-merge or generated positioning can be dropped.
                 floatingStyle && floatingLabelStyleVariants[floatingStyle],
-
-                // VE: left icon/element offset
                 (leftIcon || leftElement) && floatingLabelWithLeftIconCls,
               )}
             >
@@ -165,24 +213,30 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           )}
 
           {rightIcon && (
-            <div
-              className={cn(
-                textFieldIconContainerCls,
+            <Flex
+              align="center"
+              justify="center"
+              className={clsx(
+                cn(textFieldIconContainerCls, 'pointer-events-none'),
                 textFieldRightIconContainerCls,
                 textFieldIconCls,
-                'right-0 pointer-events-none',
+                'text-muted-foreground',
               )}
+              style={rightSlotStyle}
             >
-              <Flex align="center" justify="center" className="text-muted-foreground">
-                {rightIcon}
-              </Flex>
-            </div>
+              <Icon aria-hidden color={effectiveColor} icon={rightIcon} size={iconSize} />
+            </Flex>
           )}
 
           {rightElement && (
-            <div className={cn(textFieldIconContainerCls, textFieldRightIconContainerCls, 'right-0')}>
+            <Flex
+              align="center"
+              justify="center"
+              className={clsx(cn(textFieldIconContainerCls), textFieldRightIconContainerCls)}
+              style={rightSlotStyle}
+            >
               {rightElement}
-            </div>
+            </Flex>
           )}
         </div>
       )
@@ -192,24 +246,30 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     const surfaceVariant = resolveSurfaceVariant(variant)
 
     const control = (
-      <div className={cn(textFieldRootCls, textFieldSizeVariants[size])} style={regularStyles}>
+      <div className={clsx(cn(textFieldRootCls), textFieldSizeVariants[size])} style={regularStyles}>
         {leftIcon && (
-          <div
-            className={cn(
-              textFieldIconContainerCls,
+          <Flex
+            align="center"
+            justify="center"
+            className={clsx(
+              cn(textFieldIconContainerCls, 'pointer-events-none'),
               textFieldLeftIconContainerCls,
               textFieldIconCls,
-              'left-0 pointer-events-none',
+              'text-muted-foreground',
             )}
           >
-            <Flex align="center" justify="center" className="text-muted-foreground">
-              {leftIcon}
-            </Flex>
-          </div>
+            <Icon aria-hidden color={effectiveColor} icon={leftIcon} size={iconSize} />
+          </Flex>
         )}
 
         {leftElement && (
-          <div className={cn(textFieldIconContainerCls, textFieldLeftIconContainerCls, 'left-0')}>{leftElement}</div>
+          <Flex
+            align="center"
+            justify="center"
+            className={clsx(cn(textFieldIconContainerCls), textFieldLeftIconContainerCls)}
+          >
+            {leftElement}
+          </Flex>
         )}
 
         <input
@@ -234,26 +294,37 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             effectiveDisabled && 'opacity-50 cursor-not-allowed',
           )}
           placeholder={placeholder}
+          value={value}
+          defaultValue={value === undefined ? defaultValue : undefined}
           {...inputProps}
+          onBlur={onBlur}
+          onChange={onChange}
+          onFocus={onFocus}
         />
 
         {rightIcon && (
-          <div
-            className={cn(
-              textFieldIconContainerCls,
+          <Flex
+            align="center"
+            justify="center"
+            className={clsx(
+              cn(textFieldIconContainerCls, 'pointer-events-none'),
               textFieldRightIconContainerCls,
               textFieldIconCls,
-              'right-0 pointer-events-none',
+              'text-muted-foreground',
             )}
           >
-            <Flex align="center" justify="center" className="text-muted-foreground">
-              {rightIcon}
-            </Flex>
-          </div>
+            <Icon aria-hidden color={effectiveColor} icon={rightIcon} size={iconSize} />
+          </Flex>
         )}
 
         {rightElement && (
-          <div className={cn(textFieldIconContainerCls, textFieldRightIconContainerCls, 'right-0')}>{rightElement}</div>
+          <Flex
+            align="center"
+            justify="center"
+            className={clsx(cn(textFieldIconContainerCls), textFieldRightIconContainerCls)}
+          >
+            {rightElement}
+          </Flex>
         )}
       </div>
     )
@@ -278,3 +349,12 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
 )
 
 TextField.displayName = 'TextField'
+
+function hasInputValue(value: React.InputHTMLAttributes<HTMLInputElement>['value'] | undefined): boolean {
+  if (Array.isArray(value)) return value.length > 0
+  return value != null && String(value).length > 0
+}
+
+function textFieldIconSize(size: ExtendedFormSize): TextFieldIconSize {
+  return size === '2x' ? 'xl' : size
+}

@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Eye, Lock, Mail, Phone, Search, User } from 'lucide-react'
 import { Box } from '@/layouts/box/Box'
 import { colorPropDef, SemanticColor } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
@@ -104,13 +103,6 @@ export const VariantSoft: Story = {
   },
 }
 
-export const VariantSolid: Story = {
-  args: {
-    variant: 'solid',
-    placeholder: 'Solid variant',
-  },
-}
-
 export const VariantGhost: Story = {
   args: {
     variant: 'ghost',
@@ -123,7 +115,7 @@ export const AllVariants: Story = {
     <Box display="flex" className="flex-col gap-4 max-w-md">
       <TextField variant="outline" placeholder="Outline" />
       <TextField variant="soft" placeholder="Soft" />
-      <TextField variant="solid" placeholder="Solid" />
+      <TextField variant="surface" placeholder="Surface" />
       <TextField variant="ghost" placeholder="Ghost" />
     </Box>
   ),
@@ -205,35 +197,35 @@ export const FloatingStandardWithValue: Story = {
 // ============================================================================
 
 export const AllFloatingVariants: Story = {
-  render: () => (
+  render: args => (
     <Box display="flex" className="flex-col gap-6 max-w-md">
-      <TextField label="Filled Label" variant="floating-filled" />
-      <TextField label="Outlined Label" variant="floating-outlined" />
-      <TextField label="Standard Label" variant="floating-standard" />
+      <TextField {...args} label="Filled Label" variant="floating-filled" />
+      <TextField {...args} label="Outlined Label" variant="floating-outlined" />
+      <TextField {...args} label="Standard Label" variant="floating-standard" />
     </Box>
   ),
 }
 
 export const FloatingRegressionStates: Story = {
-  render: () => (
+  render: args => (
     <Box display="flex" className="flex-col gap-8 max-w-xl">
       <Box display="flex" className="flex-col gap-3">
         <p className="text-sm font-medium">Empty State</p>
-        <TextField label="Filled" variant="floating-filled" />
-        <TextField label="Outlined" variant="floating-outlined" />
-        <TextField label="Standard" variant="floating-standard" />
+        <TextField {...args} label="Filled" variant="floating-filled" />
+        <TextField {...args} label="Outlined" variant="floating-outlined" />
+        <TextField {...args} label="Standard" variant="floating-standard" />
       </Box>
       <Box display="flex" className="flex-col gap-3">
         <p className="text-sm font-medium">With Value</p>
-        <TextField label="Filled" variant="floating-filled" defaultValue="john@example.com" />
-        <TextField label="Outlined" variant="floating-outlined" defaultValue="john@example.com" />
-        <TextField label="Standard" variant="floating-standard" defaultValue="john@example.com" />
+        <TextField {...args} label="Filled" variant="floating-filled" defaultValue="john@example.com" />
+        <TextField {...args} label="Outlined" variant="floating-outlined" defaultValue="john@example.com" />
+        <TextField {...args} label="Standard" variant="floating-standard" defaultValue="john@example.com" />
       </Box>
       <Box display="flex" className="flex-col gap-3">
         <p className="text-sm font-medium">Focused State</p>
-        <TextField label="Filled (focused)" variant="floating-filled" autoFocus />
-        <TextField label="Outlined (focus manually)" variant="floating-outlined" />
-        <TextField label="Standard (focus manually)" variant="floating-standard" />
+        <TextField {...args} label="Filled (focused)" variant="floating-filled" autoFocus />
+        <TextField {...args} label="Outlined (focus manually)" variant="floating-outlined" />
+        <TextField {...args} label="Standard (focus manually)" variant="floating-standard" />
       </Box>
     </Box>
   ),
@@ -244,11 +236,14 @@ export const FloatingRegressionStates: Story = {
 // ============================================================================
 
 export const FloatingWithIcons: Story = {
-  render: () => (
+  render: args => (
     <Box display="flex" className="flex-col gap-6 max-w-md">
-      <TextField label="Email" variant="floating-filled" leftIcon={<Mail />} />
-      <TextField label="Email" variant="floating-outlined" leftIcon={<Mail />} />
-      <TextField label="Search" variant="floating-standard" leftIcon={<Search />} />
+      <TextField {...args} label="Email" variant="floating-filled" leftIcon="mail" />
+      <TextField {...args} label="Email" variant="floating-outlined" leftIcon="mail" />
+      <TextField {...args} label="Search" variant="floating-standard" leftIcon="search" />
+      <TextField {...args} defaultValue="john@example.com" label="Email" variant="floating-filled" leftIcon="mail" />
+      <TextField {...args} defaultValue="john@example.com" label="Email" variant="floating-outlined" leftIcon="mail" />
+      <TextField {...args} defaultValue="Search query" label="Search" variant="floating-standard" leftIcon="search" />
     </Box>
   ),
 }
@@ -276,7 +271,7 @@ export const FloatingWithColors: Story = {
 export const WithLeftIcon: Story = {
   args: {
     placeholder: 'Search...',
-    leftIcon: <Search />,
+    leftIcon: 'search',
   },
 }
 
@@ -284,15 +279,15 @@ export const WithRightIcon: Story = {
   args: {
     placeholder: 'Enter password',
     type: 'password',
-    rightIcon: <Eye />,
+    rightIcon: 'eye',
   },
 }
 
 export const WithBothIcons: Story = {
   args: {
     placeholder: 'Enter password',
-    leftIcon: <Lock />,
-    rightIcon: <Eye />,
+    leftIcon: 'lock',
+    rightIcon: 'eye',
   },
 }
 
@@ -341,8 +336,8 @@ export const LoginForm: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-4 max-w-sm p-6 border rounded-lg">
       <h2 className="text-xl font-semibold mb-2">Sign In</h2>
-      <TextField label="Email" variant="floating-outlined" leftIcon={<Mail />} type="email" />
-      <TextField label="Password" variant="floating-outlined" leftIcon={<Lock />} rightIcon={<Eye />} type="password" />
+      <TextField label="Email" variant="floating-outlined" leftIcon="mail" type="email" />
+      <TextField label="Password" variant="floating-outlined" leftIcon="lock" rightIcon="eye" type="password" />
     </Box>
   ),
 }
@@ -351,9 +346,9 @@ export const ContactForm: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-4 max-w-sm p-6 border rounded-lg">
       <h2 className="text-xl font-semibold mb-2">Contact Us</h2>
-      <TextField label="Full Name" variant="floating-filled" leftIcon={<User />} />
-      <TextField label="Email" variant="floating-filled" leftIcon={<Mail />} type="email" />
-      <TextField label="Phone" variant="floating-filled" leftIcon={<Phone />} type="tel" />
+      <TextField label="Full Name" variant="floating-filled" leftIcon="user" />
+      <TextField label="Email" variant="floating-filled" leftIcon="mail" type="email" />
+      <TextField label="Phone" variant="floating-filled" leftIcon="phone" type="tel" />
     </Box>
   ),
 }

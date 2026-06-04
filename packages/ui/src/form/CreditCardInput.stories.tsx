@@ -23,7 +23,7 @@ const meta: Meta<typeof CreditCardInput> = {
     },
     variant: {
       control: 'select',
-      options: ['classic', 'solid', 'soft', 'surface', 'outline', 'ghost'],
+      options: ['soft', 'surface', 'outline', 'ghost'],
     },
     disabled: {
       control: 'boolean',
@@ -148,7 +148,7 @@ export const Sizes: Story = {
 export const Variants: Story = {
   render: () => (
     <div className="w-80 space-y-6">
-      {(['classic', 'solid', 'soft', 'surface', 'outline', 'ghost'] as const).map(variant => (
+      {(['soft', 'surface', 'outline', 'ghost'] as const).map(variant => (
         <div key={variant} className="space-y-2">
           <Label className="capitalize">{variant}</Label>
           <CreditCardInput variant={variant} />

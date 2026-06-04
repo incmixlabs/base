@@ -264,6 +264,7 @@ export const semanticColorScale = Object.keys(designTokens.color) as readonly Co
 export const SEMANTIC_COLOR_VAR_TOKENS = [
   'border',
   'border-subtle',
+  'surface-subtle',
   'surface',
   'surface-hover',
   'soft',
@@ -434,6 +435,7 @@ export type HueNumberStep = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 export interface ThemeColorVariantSteps {
   soft: HueNumberStep
   softHover: HueNumberStep
+  surfaceSubtle: HueNumberStep
   surface: HueNumberStep
   surfaceHover: HueNumberStep
   solid: HueNumberStep
@@ -455,6 +457,7 @@ export interface ThemeVarsTokens {
 export const THEME_COLOR_VARIANT_DEFAULTS: ThemeColorVariantSteps = {
   soft: 6,
   softHover: 7,
+  surfaceSubtle: 2,
   surface: 4,
   surfaceHover: 5,
   solid: 9,
@@ -575,7 +578,7 @@ export type GridColumns = (typeof fieldGroupTokens.gridColumns)[number]
 // TextField variant tokens
 /** textFieldTokens export. */
 export const textFieldTokens = {
-  baseVariant: ['classic', 'solid', 'soft', 'surface', 'outline', 'ghost'] as const,
+  baseVariant: ['soft', 'surface', 'outline', 'ghost'] as const,
   floatingVariant: ['floating-filled', 'floating-standard', 'floating-outlined'] as const,
   get variant() {
     return [...this.baseVariant, ...this.floatingVariant] as const

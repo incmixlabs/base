@@ -4,7 +4,7 @@ import { Eye, EyeOff } from 'lucide-react'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import type { Color, Radius, Size, TextFieldVariant } from '@/theme/tokens'
-import { TextField } from './TextField'
+import { TextField, type TextFieldProps } from './TextField'
 
 // ============================================================================
 // Types
@@ -21,8 +21,8 @@ export interface PasswordInputProps extends Omit<React.InputHTMLAttributes<HTMLI
   radius?: Radius
   /** Whether the field has an error */
   error?: boolean
-  /** Icon to display on the left */
-  leftIcon?: React.ReactNode
+  /** Icon name to display on the left */
+  leftIcon?: TextFieldProps['leftIcon']
   /** Whether to show password strength indicator */
   showStrength?: boolean
   /** Custom strength calculator (returns 0-4) */
