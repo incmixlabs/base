@@ -145,7 +145,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
               )}
               style={leftSlotStyle}
             >
-              <Icon aria-hidden color="neutral" icon={leftIcon} size={iconSize} />
+              <Icon aria-hidden color={effectiveColor} icon={leftIcon} size={iconSize} />
             </Flex>
           )}
 
@@ -224,7 +224,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
               )}
               style={rightSlotStyle}
             >
-              <Icon aria-hidden color="neutral" icon={rightIcon} size={iconSize} />
+              <Icon aria-hidden color={effectiveColor} icon={rightIcon} size={iconSize} />
             </Flex>
           )}
 
@@ -258,7 +258,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
               'text-muted-foreground',
             )}
           >
-            <Icon aria-hidden color="neutral" icon={leftIcon} size={iconSize} />
+            <Icon aria-hidden color={effectiveColor} icon={leftIcon} size={iconSize} />
           </Flex>
         )}
 
@@ -313,7 +313,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
               'text-muted-foreground',
             )}
           >
-            <Icon aria-hidden color="neutral" icon={rightIcon} size={iconSize} />
+            <Icon aria-hidden color={effectiveColor} icon={rightIcon} size={iconSize} />
           </Flex>
         )}
 
