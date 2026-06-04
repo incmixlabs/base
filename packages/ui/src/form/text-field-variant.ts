@@ -15,15 +15,6 @@ const legacyVariantMap = {
   standard: 'surface',
 } as const
 
-const baseVariantMap: Record<string, BaseTextFieldVariant> = {
-  ghost: 'ghost',
-  outline: 'outline',
-  soft: 'soft',
-  solid: 'soft',
-  surface: 'surface',
-  classic: 'surface',
-}
-
 export const isFloatingVariant = (variant?: string): variant is keyof typeof floatingVariantMap =>
   !!variant && hasOwn(floatingVariantMap, variant)
 
@@ -45,5 +36,5 @@ export const resolveSurfaceVariant = (
 export const toBaseTextFieldVariant = (variant?: TextFieldVariant): BaseTextFieldVariant => {
   const runtimeVariant = variant ?? 'outline'
   if (isFloatingVariant(runtimeVariant)) return 'outline'
-  return baseVariantMap[runtimeVariant] ?? 'outline'
+  return runtimeVariant
 }
