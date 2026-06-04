@@ -205,11 +205,11 @@ export const FloatingStandardWithValue: Story = {
 // ============================================================================
 
 export const AllFloatingVariants: Story = {
-  render: () => (
+  render: args => (
     <Box display="flex" className="flex-col gap-6 max-w-md">
-      <TextField label="Filled Label" variant="floating-filled" />
-      <TextField label="Outlined Label" variant="floating-outlined" />
-      <TextField label="Standard Label" variant="floating-standard" />
+      <TextField {...args} label="Filled Label" variant="floating-filled" />
+      <TextField {...args} label="Outlined Label" variant="floating-outlined" />
+      <TextField {...args} label="Standard Label" variant="floating-standard" />
     </Box>
   ),
 }

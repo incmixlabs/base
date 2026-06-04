@@ -74,7 +74,9 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     const effectiveDisabled = disabled || fieldGroup.disabled
     const effectiveReadOnly = readOnly === true || fieldGroup.readOnly
 
-    const radius = useThemeRadius(radiusProp ?? fieldGroup.radius)
+    const floatingStyle = getFloatingStyle(variant)
+    const rawRadius = useThemeRadius(radiusProp ?? fieldGroup.radius)
+    const radius = rawRadius === 'full' && floatingStyle === 'filled' ? 'lg' : rawRadius
     const radiusStyles = getRadiusStyles(radius)
     const generatedId = React.useId()
     const inputId = id || generatedId
@@ -87,8 +89,6 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
       ...style,
     } as React.CSSProperties
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
-
-    const floatingStyle = getFloatingStyle(variant)
 
     // For floating variants, use placeholder as label if no label provided
     // Strip placeholder from props for floating variants to prevent text collision with label
