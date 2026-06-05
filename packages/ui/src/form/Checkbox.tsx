@@ -11,7 +11,6 @@ import { Text } from '@/typography'
 import {
   checkboxBase,
   checkboxBaseCls,
-  checkboxCheckVariants,
   checkboxColorVariants,
   checkboxHighContrastByVariant,
   checkboxIndicator,
@@ -94,40 +93,21 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
         )}
         {...props}
       >
-        <CheckboxPrimitive.Indicator
-          keepMounted
-          render={
-            <m.svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="3.5"
-              stroke="currentColor"
-              initial="unchecked"
-              animate={isChecked || indeterminate ? 'checked' : 'unchecked'}
-            />
-          }
+        <svg
+          aria-hidden="true"
           className={checkboxIndicator}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3.5"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
         >
           {indeterminate ? (
-            <m.line
-              x1="5"
-              y1="12"
-              x2="19"
-              y2="12"
-              strokeLinecap="round"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1, transition: { duration: 0.2 } }}
-            />
-          ) : (
-            <m.path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4.5 12.75l6 6 9-13.5"
-              variants={checkboxCheckVariants}
-            />
-          )}
-        </CheckboxPrimitive.Indicator>
+            <line strokeLinecap="round" x1="5" x2="19" y1="12" y2="12" />
+          ) : isChecked ? (
+            <path d="M4.5 12.75l6 6 9-13.5" strokeLinecap="round" strokeLinejoin="round" />
+          ) : null}
+        </svg>
       </CheckboxPrimitive.Root>
     )
   },

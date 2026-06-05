@@ -88,6 +88,9 @@ describe('IconButton', () => {
   it('resolves icon aliases for dynamically loaded icons', () => {
     expect(resolveIconExport('close')).not.toBeNull()
     expect(resolveIconExport('copy')).not.toBeNull()
+    expect(resolveIconExport('rotate-ccw')).not.toBeNull()
+    expect(resolveIconExport('square-pen')).not.toBeNull()
+    expect(resolveIconExport('trash')).not.toBeNull()
     expect(resolveIconExport('copy-check')).not.toBeNull()
     expect(resolveIconExport('refresh-cw')).not.toBeNull()
     expect(resolveIconExport('chevron-up')).not.toBeNull()
