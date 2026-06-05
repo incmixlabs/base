@@ -50,6 +50,7 @@ describe('semantic lane vars', () => {
     const vars = buildSemanticLaneVars(SEMANTIC_COLOR_DEFAULTS, {
       soft: 5,
       softHover: 6,
+      surfaceSubtle: 1,
       surface: 2,
       surfaceHover: 7,
       solid: 8,
@@ -61,6 +62,7 @@ describe('semantic lane vars', () => {
       darkText: 11,
     })
 
+    expect(vars['--color-info-surface-subtle']).toBe('var(--blue-1)')
     expect(vars['--color-info-surface']).toBe('var(--blue-2)')
     expect(vars['--color-info-surface-hover']).toBe('var(--blue-7)')
     expect(vars['--color-info-soft']).toBe('var(--blue-5)')

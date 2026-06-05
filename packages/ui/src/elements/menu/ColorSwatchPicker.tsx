@@ -19,11 +19,14 @@ export interface ColorSwatchPickerProps {
   onChange: (value: string) => void
   size?: 'sm' | 'md' | 'lg'
   showLabel?: boolean
+  disabled?: boolean
+  placeholder?: string
 }
 
 interface SwatchTooltipButtonProps {
   swatch: ColorSwatchOption
   active: boolean
+  disabled?: boolean
   onSelect: (value: string) => void
   onHoverChange: (swatch: ColorSwatchOption | null) => void
 }
@@ -31,6 +34,7 @@ interface SwatchTooltipButtonProps {
 function SwatchTooltipButton({
   swatch,
   active,
+  disabled = false,
   onSelect,
   onHoverChange,
   size = 'sm',
@@ -43,6 +47,7 @@ function SwatchTooltipButton({
       role="option"
       aria-selected={active}
       aria-label={swatch.label}
+      disabled={disabled}
       onMouseEnter={() => onHoverChange(swatch)}
       onMouseLeave={() => onHoverChange(null)}
       onFocus={() => onHoverChange(swatch)}
@@ -51,7 +56,11 @@ function SwatchTooltipButton({
       className={cn(
         sizeClass,
         'rounded-full border transition-transform',
-        active ? 'border-foreground scale-110' : 'border-border hover:scale-105',
+        disabled
+          ? 'cursor-not-allowed opacity-50'
+          : active
+            ? 'border-foreground scale-110'
+            : 'border-border hover:scale-105',
       )}
       style={{ backgroundColor: swatch.swatchColor ?? `hsl(${swatch.value})` }}
     />
@@ -65,12 +74,16 @@ export function ColorSwatchPicker({
   onChange,
   size = 'sm',
   showLabel = true,
+  disabled = false,
+  placeholder = 'Select color',
 }: ColorSwatchPickerProps) {
   const [open, setOpen] = React.useState(false)
   const [hoveredSwatch, setHoveredSwatch] = React.useState<ColorSwatchOption | null>(null)
   const containerRef = React.useRef<HTMLDivElement>(null)
   const listboxId = React.useId()
   const activeSwatch = options.find(swatch => swatch.value === value)
+  const selectedLabel = activeSwatch?.label ?? (value ? 'Custom' : placeholder)
+  const selectedSwatchColor = activeSwatch?.swatchColor ?? (value ? `hsl(${value})` : 'transparent')
   const triggerSwatchClass = size === 'lg' ? 'h-6 w-6' : size === 'md' ? 'h-5 w-5' : 'h-4 w-4'
   const gridColumns = size === 'lg' ? '5' : '6'
   const popupWidthClass = size === 'lg' ? 'w-[248px]' : 'w-[220px]'
@@ -80,6 +93,12 @@ export function ColorSwatchPicker({
       : size === 'md'
         ? 'min-h-10 min-w-[10rem] px-3 py-2 text-sm'
         : 'px-2 py-1 text-xs'
+
+  React.useEffect(() => {
+    if (disabled) {
+      setOpen(false)
+    }
+  }, [disabled])
 
   React.useEffect(() => {
     const onPointerDown = (event: PointerEvent) => {
@@ -114,20 +133,22 @@ export function ColorSwatchPicker({
           aria-expanded={open}
           aria-controls={listboxId}
           aria-label={`Choose hue for ${label}`}
-          onClick={() => setOpen(previous => !previous)}
+          disabled={disabled}
+          onClick={() => setOpen(previous => (disabled ? false : !previous))}
           className={cn(
             'inline-flex items-center justify-between gap-3 rounded-xl border border-input bg-background',
+            disabled && 'cursor-not-allowed opacity-60',
             triggerClass,
           )}
         >
           <Flex as="span" align="center" gap="3">
             <span
               className={cn(triggerSwatchClass, 'inline-block rounded-full border border-border')}
-              style={{ backgroundColor: activeSwatch?.swatchColor ?? `hsl(${value})` }}
+              style={{ backgroundColor: selectedSwatchColor }}
               aria-hidden
             />
             <Text as="span" size={size === 'lg' ? 'lg' : 'md'}>
-              {activeSwatch?.label ?? 'Custom'}
+              {selectedLabel}
             </Text>
           </Flex>
         </button>
@@ -146,7 +167,7 @@ export function ColorSwatchPicker({
             <Flex align="center" gap="3" className="rounded-lg border border-border/70 bg-muted/20 px-3 py-2">
               <span
                 className="inline-block h-4 w-4 shrink-0 rounded-full border border-border"
-                style={{ backgroundColor: (hoveredSwatch ?? activeSwatch)?.swatchColor }}
+                style={{ backgroundColor: (hoveredSwatch ?? activeSwatch)?.swatchColor ?? selectedSwatchColor }}
                 aria-hidden
               />
               <Flex direction="column" gap="0">
@@ -154,7 +175,7 @@ export function ColorSwatchPicker({
                   {label}
                 </Text>
                 <Text size="sm" weight="medium">
-                  {hoveredSwatch?.label ?? activeSwatch?.label ?? 'Select color'}
+                  {hoveredSwatch?.label ?? selectedLabel}
                 </Text>
               </Flex>
             </Flex>
@@ -166,9 +187,11 @@ export function ColorSwatchPicker({
                     key={swatch.label}
                     swatch={swatch}
                     active={active}
+                    disabled={disabled}
                     size={size}
                     onHoverChange={setHoveredSwatch}
                     onSelect={nextValue => {
+                      if (disabled) return
                       onChange(nextValue)
                       setOpen(false)
                       setHoveredSwatch(null)
