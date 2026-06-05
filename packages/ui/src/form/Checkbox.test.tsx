@@ -18,4 +18,17 @@ describe('Checkbox', () => {
     expect(checkbox).toHaveClass('af-high-contrast')
     expect(checkbox).toHaveClass(checkboxHighContrastByVariant.soft)
   })
+
+  it('renders visible checked and indeterminate indicators from component state', () => {
+    const { rerender } = render(<Checkbox checked data-testid="checkbox" onCheckedChange={() => undefined} />)
+
+    const checkbox = screen.getByTestId('checkbox')
+    expect(checkbox.querySelector('path')).toBeInTheDocument()
+    expect(checkbox.querySelector('line')).not.toBeInTheDocument()
+
+    rerender(<Checkbox checked={false} indeterminate data-testid="checkbox" onCheckedChange={() => undefined} />)
+
+    expect(checkbox.querySelector('line')).toBeInTheDocument()
+    expect(checkbox.querySelector('path')).not.toBeInTheDocument()
+  })
 })
