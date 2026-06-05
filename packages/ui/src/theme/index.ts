@@ -122,6 +122,8 @@ export {
   containerBreakpoints,
   type GrayColor,
   type GridColumns,
+  HUE_NAMES,
+  type HueName,
   possibleSizes,
   type Radius,
   resolveThemeColorToken,

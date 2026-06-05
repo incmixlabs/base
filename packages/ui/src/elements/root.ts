@@ -98,6 +98,11 @@ export {
 } from './gradient-background/gradient-presets'
 export { HoverCard } from './hover-card/HoverCard'
 export { Image, type ImageObjectFit, type ImageProps } from './image/Image'
+export {
+  type ColorSwatchOption,
+  ColorSwatchPicker,
+  type ColorSwatchPickerProps,
+} from './menu/ColorSwatchPicker'
 // Menu
 export { ContextMenu } from './menu/ContextMenu'
 export { DropdownMenu } from './menu/DropdownMenu'
