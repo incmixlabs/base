@@ -85,7 +85,12 @@ export function ColorSwatchPicker({
 }: ColorSwatchPickerProps) {
   const [open, setOpen] = React.useState(false)
   const [hoveredSwatch, setHoveredSwatch] = React.useState<ColorSwatchOption | null>(null)
-  const [portalPosition, setPortalPosition] = React.useState<{ left: number; top: number; width: number } | null>(null)
+  const [portalPosition, setPortalPosition] = React.useState<{
+    left: number
+    maxHeight: number
+    top: number
+    width: number
+  } | null>(null)
   const containerRef = React.useRef<HTMLDivElement>(null)
   const popupRef = React.useRef<HTMLDivElement>(null)
   const themePortalContainer = useThemePortalContainer()
@@ -96,8 +101,9 @@ export function ColorSwatchPicker({
   const activeSwatch = options.find(swatch => swatch.value === value)
   const selectedLabel = activeSwatch?.label ?? (value ? 'Custom' : placeholder)
   const selectedSwatchColor = activeSwatch?.swatchColor ?? (value ? `hsl(${value})` : 'transparent')
+  const gridColumnCount = size === 'lg' ? 5 : 6
   const triggerSwatchClass = size === 'lg' ? 'h-6 w-6' : size === 'md' ? 'h-5 w-5' : 'h-4 w-4'
-  const gridColumns = size === 'lg' ? '5' : '6'
+  const gridColumns = String(gridColumnCount)
   const popupWidthClass = size === 'lg' ? 'w-[248px]' : 'w-[220px]'
   const triggerClass =
     size === 'lg'
@@ -113,13 +119,29 @@ export function ColorSwatchPicker({
     const rect = containerRef.current?.getBoundingClientRect()
     if (!rect) return
     const viewportPadding = 8
+    const triggerGap = 4
     const maxLeft = window.innerWidth - portalPopupWidth - viewportPadding
+    const swatchSize = size === 'lg' ? 32 : size === 'md' ? 28 : 24
+    const fallbackPopupHeight = Math.min(320, 96 + Math.ceil(options.length / gridColumnCount) * (swatchSize + 8))
+    const popupHeight = Math.min(
+      popupRef.current?.offsetHeight ?? fallbackPopupHeight,
+      window.innerHeight - viewportPadding * 2,
+    )
+    const availableBelow = window.innerHeight - rect.bottom - viewportPadding - triggerGap
+    const availableAbove = rect.top - viewportPadding - triggerGap
+    const placeAbove = availableBelow < popupHeight && availableAbove > availableBelow
+    const availableHeight = placeAbove ? availableAbove : availableBelow
+    const maxHeight = Math.max(120, Math.min(popupHeight, availableHeight, window.innerHeight - viewportPadding * 2))
+
     setPortalPosition({
       left: Math.max(viewportPadding, Math.min(rect.right - portalPopupWidth, maxLeft)),
-      top: rect.bottom + 4,
+      maxHeight,
+      top: placeAbove
+        ? Math.max(viewportPadding, rect.top - triggerGap - maxHeight)
+        : Math.min(rect.bottom + triggerGap, window.innerHeight - viewportPadding - maxHeight),
       width: portalPopupWidth,
     })
-  }, [portal, portalPopupWidth])
+  }, [gridColumnCount, options.length, portal, portalPopupWidth, size])
 
   const toggleOpen = React.useCallback(() => {
     if (disabled) return
@@ -132,6 +154,12 @@ export function ColorSwatchPicker({
       setOpen(false)
     }
   }, [disabled])
+
+  React.useEffect(() => {
+    if (!open) {
+      setHoveredSwatch(null)
+    }
+  }, [open])
 
   React.useEffect(() => {
     if (!open || !portal) return
@@ -174,6 +202,7 @@ export function ColorSwatchPicker({
       className={cn(
         portal ? 'fixed z-[1000]' : 'absolute right-0 top-full z-50 mt-1',
         'rounded-lg border border-border bg-background p-3 shadow-lg',
+        portal ? 'overflow-y-auto' : undefined,
         portal ? undefined : popupWidthClass,
       )}
       style={portal && portalPosition ? portalPosition : undefined}
