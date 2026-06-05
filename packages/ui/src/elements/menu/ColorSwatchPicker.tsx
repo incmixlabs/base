@@ -95,6 +95,12 @@ export function ColorSwatchPicker({
         : 'px-2 py-1 text-xs'
 
   React.useEffect(() => {
+    if (disabled) {
+      setOpen(false)
+    }
+  }, [disabled])
+
+  React.useEffect(() => {
     const onPointerDown = (event: PointerEvent) => {
       if (!containerRef.current?.contains(event.target as Node)) {
         setOpen(false)
