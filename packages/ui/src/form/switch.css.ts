@@ -53,11 +53,13 @@ export const switchSegmentedLabelBase = style({
   position: 'relative',
   zIndex: 10,
   paddingInline: '0.5rem',
+  color: 'color-mix(in oklch, var(--fc-text) 55%, transparent)',
   textAlign: 'center',
   transition: 'color var(--af-motion-fast) var(--af-ease-standard)',
 })
 
 export const switchSegmentedUncheckedLabel = style({
+  color: 'var(--fc-text)',
   selectors: {
     '.peer[data-checked] ~ &': {
       color: 'color-mix(in oklch, var(--fc-contrast) 80%, transparent)',
@@ -66,6 +68,7 @@ export const switchSegmentedUncheckedLabel = style({
 })
 
 export const switchSegmentedCheckedLabel = style({
+  color: 'color-mix(in oklch, var(--fc-text) 55%, transparent)',
   selectors: {
     '.peer[data-checked] ~ &': {
       color: 'var(--fc-text)',
