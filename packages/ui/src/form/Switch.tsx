@@ -2,15 +2,22 @@
 
 import { Switch as SwitchPrimitive } from '@base-ui/react/switch'
 import * as React from 'react'
+import { Flex } from '@/layouts'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import { radiusStyleVariants } from '@/theme/radius.css'
+import { Text, type TextProps } from '@/typography'
 import { useFieldGroup } from './FieldGroupContext'
 import { formColorVars } from './form-color'
 import { resolveFormSize } from './form-size'
 import { Label } from './Label'
-import { switchSizeVariants } from './switch.css'
+import {
+  switchSegmentedCheckedLabel,
+  switchSegmentedLabelBase,
+  switchSegmentedUncheckedLabel,
+  switchSizeVariants,
+} from './switch.css'
 import type { SwitchProps, SwitchSegmentedProps, SwitchSize, SwitchWithLabelProps } from './switch.props'
 import { switchPropDefs } from './switch.props'
 
@@ -111,10 +118,17 @@ const SwitchWithLabel = React.forwardRef<HTMLButtonElement, SwitchWithLabelProps
 SwitchWithLabel.displayName = 'SwitchWithLabel'
 
 const segmentedSizeClasses: Record<SwitchSize, string> = {
-  xs: 'h-6 min-w-20 text-[10px]',
-  sm: 'h-7 min-w-24 text-xs',
-  md: 'h-8 min-w-28 text-xs',
-  lg: 'h-9 min-w-32 text-sm',
+  xs: 'h-6 min-w-20',
+  sm: 'h-7 min-w-24',
+  md: 'h-8 min-w-28',
+  lg: 'h-9 min-w-32',
+}
+
+const segmentedLabelSize: Record<SwitchSize, TextProps['size']> = {
+  xs: 'xs',
+  sm: 'xs',
+  md: 'xs',
+  lg: 'sm',
 }
 
 const SwitchSegmented = React.forwardRef<HTMLButtonElement, SwitchSegmentedProps>(
@@ -132,6 +146,8 @@ const SwitchSegmented = React.forwardRef<HTMLButtonElement, SwitchSegmentedProps
       disabled,
       highContrast = false,
       className,
+      'aria-label': ariaLabel,
+      'aria-labelledby': ariaLabelledBy,
       ...props
     },
     ref,
@@ -145,6 +161,10 @@ const SwitchSegmented = React.forwardRef<HTMLButtonElement, SwitchSegmentedProps
     const safeHighContrast = normalizeBooleanPropValue(switchPropDefs.highContrast, highContrast) ?? false
     const safeDisabled = normalizeBooleanPropValue(switchPropDefs.disabled, disabled) ?? false
     const effectiveDisabled = safeDisabled || fieldGroup.disabled
+    const uncheckedLabelId = React.useId()
+    const checkedLabelId = React.useId()
+    const resolvedAriaLabelledBy =
+      ariaLabelledBy ?? (ariaLabel == null ? `${uncheckedLabelId} ${checkedLabelId}` : undefined)
 
     return (
       <div
@@ -156,6 +176,8 @@ const SwitchSegmented = React.forwardRef<HTMLButtonElement, SwitchSegmentedProps
       >
         <SwitchPrimitive.Root
           ref={ref as React.Ref<HTMLElement>}
+          aria-label={ariaLabel}
+          aria-labelledby={resolvedAriaLabelledBy}
           checked={checked}
           defaultChecked={defaultChecked}
           onCheckedChange={onCheckedChange}
@@ -182,12 +204,30 @@ const SwitchSegmented = React.forwardRef<HTMLButtonElement, SwitchSegmentedProps
             )}
           />
         </SwitchPrimitive.Root>
-        <span className="pointer-events-none relative z-10 flex items-center justify-center px-2 text-center text-foreground transition-colors peer-data-[checked]:text-background/80">
-          {uncheckedLabel}
-        </span>
-        <span className="pointer-events-none relative z-10 flex items-center justify-center px-2 text-center text-muted-foreground transition-colors peer-data-[checked]:text-foreground">
-          {checkedLabel}
-        </span>
+        <Flex asChild align="center" justify="center">
+          <Text
+            as="span"
+            id={uncheckedLabelId}
+            color="neutral"
+            size={segmentedLabelSize[size]}
+            variant="solid"
+            className={cn(switchSegmentedLabelBase, switchSegmentedUncheckedLabel)}
+          >
+            {uncheckedLabel}
+          </Text>
+        </Flex>
+        <Flex asChild align="center" justify="center">
+          <Text
+            as="span"
+            id={checkedLabelId}
+            color="neutral"
+            size={segmentedLabelSize[size]}
+            variant="muted"
+            className={cn(switchSegmentedLabelBase, switchSegmentedCheckedLabel)}
+          >
+            {checkedLabel}
+          </Text>
+        </Flex>
       </div>
     )
   },

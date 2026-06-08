@@ -161,7 +161,7 @@ const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
       () => clampSheetWidth(parsedStyleWidth ?? resizeMinWidth, resizeMinWidth, resizeMaxWidth),
       [parsedStyleWidth, resizeMaxWidth, resizeMinWidth],
     )
-    const [resizedWidth, setResizedWidth] = React.useState<number | null>(() => initialResizeWidth)
+    const [resizedWidth, setResizedWidth] = React.useState<number | null>(null)
     const [isResizing, setIsResizing] = React.useState(false)
     const currentResizeWidth = resizedWidth ?? initialResizeWidth
 
@@ -293,7 +293,11 @@ const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
       }
       setResizedWidth(currentWidth =>
         currentWidth == null || !hasUserResizedRef.current
-          ? initialResizeWidth
+          ? clampSheetWidth(
+              popupRef.current?.getBoundingClientRect().width ?? initialResizeWidth,
+              resizeMinWidth,
+              resizeMaxWidth,
+            )
           : clampSheetWidth(currentWidth, resizeMinWidth, resizeMaxWidth),
       )
     }, [initialResizeWidth, isHorizontal, resize, resizeMaxWidth, resizeMinWidth])
