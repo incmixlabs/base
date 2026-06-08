@@ -36,6 +36,7 @@ import {
   menuPanelTransition,
   menuPanelVariants,
   menuPopupBaseCls,
+  menuPositionerBase,
   menuSeparatorBase,
   menuSeparatorBySize,
   menuShortcutBase,
@@ -163,7 +164,7 @@ const ContextMenuContent = React.forwardRef<HTMLDivElement, ContextMenuContentPr
         <AnimatePresence>
           {isOpen && (
             <ContextMenuPrimitive.Portal keepMounted container={portalContainer}>
-              <ContextMenuPrimitive.Positioner>
+              <ContextMenuPrimitive.Positioner className={menuPositionerBase}>
                 <ContextMenuPrimitive.Popup
                   ref={ref}
                   render={
@@ -623,7 +624,12 @@ const ContextMenuSubContent = React.forwardRef<HTMLDivElement, ContextMenuSubCon
 
     return (
       <ContextMenuPrimitive.Portal container={portalContainer}>
-        <ContextMenuPrimitive.Positioner sideOffset={sideOffset} side="right" align="start">
+        <ContextMenuPrimitive.Positioner
+          className={menuPositionerBase}
+          sideOffset={sideOffset}
+          side="right"
+          align="start"
+        >
           <ContextMenuPrimitive.Popup
             ref={ref}
             className={cn(

@@ -1,4 +1,4 @@
-import { styleVariants } from '@vanilla-extract/css'
+import { style, styleVariants } from '@vanilla-extract/css'
 import { getControlSizeValues } from '@/elements/control-size'
 import { switchGroupVar, switchSizeVar } from '@/theme/runtime/component-vars'
 import { type FormSize, formSizes } from './form-size'
@@ -45,5 +45,33 @@ export const switchGroupRootOrientation = styleVariants({
   horizontal: {
     flexDirection: 'row',
     gap: switchGroupVar('inlineGap', '1rem'),
+  },
+})
+
+export const switchSegmentedLabelBase = style({
+  pointerEvents: 'none',
+  position: 'relative',
+  zIndex: 10,
+  paddingInline: '0.5rem',
+  color: 'color-mix(in oklch, var(--fc-text) 55%, transparent)',
+  textAlign: 'center',
+  transition: 'color var(--af-motion-fast) var(--af-ease-standard)',
+})
+
+export const switchSegmentedUncheckedLabel = style({
+  color: 'var(--fc-text)',
+  selectors: {
+    '.peer[data-checked] ~ &': {
+      color: 'color-mix(in oklch, var(--fc-contrast) 80%, transparent)',
+    },
+  },
+})
+
+export const switchSegmentedCheckedLabel = style({
+  color: 'color-mix(in oklch, var(--fc-text) 55%, transparent)',
+  selectors: {
+    '.peer[data-checked] ~ &': {
+      color: 'var(--fc-text)',
+    },
   },
 })

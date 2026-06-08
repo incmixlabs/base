@@ -139,7 +139,15 @@ export {
   type SignatureInputProps,
 } from './SignatureInput'
 export { Slider, type SliderProps, type SliderSize } from './Slider'
-export { Switch, type SwitchProps, type SwitchSize, SwitchWithLabel, type SwitchWithLabelProps } from './Switch'
+export {
+  Switch,
+  type SwitchProps,
+  SwitchSegmented,
+  type SwitchSegmentedProps,
+  type SwitchSize,
+  SwitchWithLabel,
+  type SwitchWithLabelProps,
+} from './Switch'
 export { SwitchGroup, type SwitchGroupProps, type SwitchGroupSize } from './SwitchGroup'
 export {
   SwitchGroupWrapper,
