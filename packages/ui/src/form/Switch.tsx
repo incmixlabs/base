@@ -11,10 +11,10 @@ import { formColorVars } from './form-color'
 import { resolveFormSize } from './form-size'
 import { Label } from './Label'
 import { switchSizeVariants } from './switch.css'
-import type { SwitchProps, SwitchSize, SwitchWithLabelProps } from './switch.props'
+import type { SwitchProps, SwitchSegmentedProps, SwitchSize, SwitchWithLabelProps } from './switch.props'
 import { switchPropDefs } from './switch.props'
 
-export type { SwitchProps, SwitchWithLabelProps } from './switch.props'
+export type { SwitchProps, SwitchSegmentedProps, SwitchWithLabelProps } from './switch.props'
 export type { SwitchSize }
 
 // Static checked color class — references --fc-primary set via formColorVars
@@ -110,4 +110,89 @@ const SwitchWithLabel = React.forwardRef<HTMLButtonElement, SwitchWithLabelProps
 
 SwitchWithLabel.displayName = 'SwitchWithLabel'
 
-export { Switch, SwitchWithLabel }
+const segmentedSizeClasses: Record<SwitchSize, string> = {
+  xs: 'h-6 min-w-20 text-[10px]',
+  sm: 'h-7 min-w-24 text-xs',
+  md: 'h-8 min-w-28 text-xs',
+  lg: 'h-9 min-w-32 text-sm',
+}
+
+const SwitchSegmented = React.forwardRef<HTMLButtonElement, SwitchSegmentedProps>(
+  (
+    {
+      checked,
+      defaultChecked,
+      onCheckedChange,
+      uncheckedLabel,
+      checkedLabel,
+      size: sizeProp,
+      variant = 'surface',
+      color = SemanticColor.primary,
+      radius: radiusProp,
+      disabled,
+      highContrast = false,
+      className,
+      ...props
+    },
+    ref,
+  ) => {
+    const fieldGroup = useFieldGroup()
+    const size = resolveFormSize(sizeProp ?? fieldGroup.size)
+    const radius = radiusProp ?? fieldGroup.radius ?? 'md'
+    const safeVariant = normalizeEnumPropValue(switchPropDefs.variant, variant) ?? switchPropDefs.variant.default
+    const safeColor = normalizeEnumPropValue(switchPropDefs.color, color) ?? SemanticColor.primary
+    const safeRadius = normalizeEnumPropValue(switchPropDefs.radius, radius) ?? 'md'
+    const safeHighContrast = normalizeBooleanPropValue(switchPropDefs.highContrast, highContrast) ?? false
+    const safeDisabled = normalizeBooleanPropValue(switchPropDefs.disabled, disabled) ?? false
+    const effectiveDisabled = safeDisabled || fieldGroup.disabled
+
+    return (
+      <div
+        className={cn(
+          'relative inline-grid grid-cols-[1fr_1fr] items-center font-medium',
+          segmentedSizeClasses[size],
+          className,
+        )}
+      >
+        <SwitchPrimitive.Root
+          ref={ref as React.Ref<HTMLElement>}
+          checked={checked}
+          defaultChecked={defaultChecked}
+          onCheckedChange={onCheckedChange}
+          disabled={effectiveDisabled}
+          style={formColorVars[safeColor] as React.CSSProperties}
+          className={cn(
+            'peer group/switch absolute inset-0 h-[inherit] w-auto cursor-pointer overflow-hidden border transition-colors',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+            'disabled:cursor-not-allowed disabled:opacity-50',
+            radiusStyleVariants[safeRadius],
+            checkedColorCls,
+            safeVariant === 'surface' && 'border-border bg-input',
+            safeVariant === 'classic' && 'border-border bg-input',
+            safeVariant === 'soft' && 'border-transparent bg-secondary/50',
+            safeHighContrast && 'data-[checked]:shadow-md',
+          )}
+          {...props}
+        >
+          <SwitchPrimitive.Thumb
+            className={cn(
+              'pointer-events-none block h-full w-1/2 bg-background shadow-sm ring-0 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
+              'data-[checked]:translate-x-full data-[checked]:rtl:-translate-x-full',
+              radiusStyleVariants[safeRadius],
+            )}
+          />
+        </SwitchPrimitive.Root>
+        <span className="pointer-events-none relative z-10 flex items-center justify-center px-2 text-center text-foreground transition-colors peer-data-[checked]:text-background/80">
+          {uncheckedLabel}
+        </span>
+        <span className="pointer-events-none relative z-10 flex items-center justify-center px-2 text-center text-muted-foreground transition-colors peer-data-[checked]:text-foreground">
+          {checkedLabel}
+        </span>
+      </div>
+    )
+  },
+)
+
+SwitchSegmented.displayName = 'SwitchSegmented'
+
+export { Switch, SwitchSegmented, SwitchWithLabel }

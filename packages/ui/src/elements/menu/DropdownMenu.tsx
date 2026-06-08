@@ -38,6 +38,7 @@ import {
   menuPanelVariants,
   menuPopupBaseCls,
   menuPopupOverflowVisibleCls,
+  menuPositionerBase,
   menuSeparatorBase,
   menuSeparatorBySize,
   menuShortcutBase,
@@ -296,7 +297,12 @@ const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContent
         <AnimatePresence>
           {isOpen && (
             <MenuPrimitive.Portal keepMounted container={portalContainer}>
-              <MenuPrimitive.Positioner side={side} align={align} sideOffset={sideOffset}>
+              <MenuPrimitive.Positioner
+                className={menuPositionerBase}
+                side={side}
+                align={align}
+                sideOffset={sideOffset}
+              >
                 <MenuPrimitive.Popup
                   ref={ref}
                   render={
@@ -782,7 +788,7 @@ const DropdownMenuSubContent = React.forwardRef<HTMLDivElement, DropdownMenuSubC
       <AnimatePresence>
         {isSubOpen && (
           <MenuPrimitive.Portal keepMounted container={portalContainer}>
-            <MenuPrimitive.Positioner sideOffset={sideOffset} side={side} align="start">
+            <MenuPrimitive.Positioner className={menuPositionerBase} sideOffset={sideOffset} side={side} align="start">
               <MenuPrimitive.Popup
                 ref={ref}
                 render={

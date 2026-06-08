@@ -43,6 +43,13 @@ export interface SwitchWithLabelProps extends SwitchProps {
   labelPosition?: 'left' | 'right'
 }
 
+export interface SwitchSegmentedProps extends SwitchProps {
+  /** Label shown for the unchecked side. */
+  uncheckedLabel: React.ReactNode
+  /** Label shown for the checked side. */
+  checkedLabel: React.ReactNode
+}
+
 const switchPropDefs = {
   size: { type: 'enum', values: switchSizes, default: 'sm', responsive: true },
   variant: { type: 'enum', values: switchVariants, default: 'surface' },

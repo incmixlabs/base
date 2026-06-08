@@ -18,8 +18,12 @@ const menuSubtriggerIconColorVar = createVar()
 // ---------------------------------------------------------------------------
 // Tailwind utility class constants
 // ---------------------------------------------------------------------------
-export const menuPopupBaseCls = 'z-50 flex flex-col overflow-hidden box-border outline-none'
+export const menuPopupBaseCls = 'flex flex-col overflow-hidden box-border outline-none'
 export const menuPopupOverflowVisibleCls = 'overflow-visible'
+
+export const menuPositionerBase = style({
+  zIndex: 1000,
+})
 
 export const menuViewportBaseCls = 'flex flex-1 flex-col overflow-auto box-border'
 
