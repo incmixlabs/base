@@ -15,7 +15,9 @@ import {
 } from 'lucide-react'
 import * as React from 'react'
 import { type Accept, type FileRejection, useDropzone } from 'react-dropzone'
+import { Button } from '@/elements/button/Button'
 import { IconButton } from '@/elements/button/IconButton'
+import { AlertDialog } from '@/elements/dialog/AlertDialog'
 import { Image } from '@/elements/image/Image'
 import { Progress } from '@/elements/progress/Progress'
 import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
@@ -23,10 +25,11 @@ import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { fileUploadSizeVar } from '@/theme/runtime/component-vars'
 import { useFieldGroup } from './FieldGroupContext'
-import type { FileUploadProps, UploadedFile } from './file-upload.props'
+import type { FileUploadFileListDisplay, FileUploadProps, UploadedFile } from './file-upload.props'
 import { resolveFormSize } from './form-size'
 
 export {
+  type FileUploadFileListDisplay,
   type FileUploadProps,
   type FileUploadVariant,
   type UploadedFile,
@@ -85,15 +88,27 @@ interface FileItemProps {
   file: UploadedFile
   onRemove: () => void
   disabled?: boolean
+  display?: FileUploadFileListDisplay
 }
 
-const FileItem: React.FC<FileItemProps> = ({ file, onRemove, disabled }) => {
+const FileItem: React.FC<FileItemProps> = ({ file, onRemove, disabled, display = 'full' }) => {
   const isImage = file.file.type.startsWith('image/')
+  const isThumbnailDisplay = display === 'thumbnail'
 
   return (
-    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg group">
+    <div
+      className={cn(
+        'group flex items-center rounded-lg',
+        isThumbnailDisplay ? 'gap-1 bg-transparent p-1' : 'gap-3 bg-muted/50 p-3',
+      )}
+    >
       {/* Preview or Icon */}
-      <div className="flex-shrink-0 w-10 h-10 rounded-md bg-background border flex items-center justify-center overflow-hidden">
+      <div
+        className={cn(
+          'flex flex-shrink-0 items-center justify-center overflow-hidden rounded-md border bg-background',
+          isThumbnailDisplay ? 'h-12 w-12' : 'h-10 w-10',
+        )}
+      >
         {isImage && file.preview ? (
           <Image src={file.preview} alt={file.file.name} objectFit="cover" className="h-full w-full" />
         ) : (
@@ -102,23 +117,28 @@ const FileItem: React.FC<FileItemProps> = ({ file, onRemove, disabled }) => {
       </div>
 
       {/* File Info */}
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium truncate">{file.file.name}</p>
-        <p className="text-xs text-muted-foreground">
-          {formatFileSize(file.file.size)}
-          {file.status === 'error' && file.error && <span className="text-destructive ml-2">{file.error}</span>}
-        </p>
+      {!isThumbnailDisplay ? (
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-medium">{file.file.name}</p>
+          <p className="text-xs text-muted-foreground">
+            {formatFileSize(file.file.size)}
+            {file.status === 'error' && file.error && <span className="ml-2 text-destructive">{file.error}</span>}
+          </p>
 
-        {/* Progress bar */}
-        {file.status === 'uploading' && <Progress value={file.progress} size="xs" className="mt-1.5" />}
-      </div>
+          {/* Progress bar */}
+          {file.status === 'uploading' && <Progress value={file.progress} size="xs" className="mt-1.5" />}
+        </div>
+      ) : null}
 
       {/* Status Icon / Remove Button */}
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 flex items-center gap-1">
         {file.status === 'uploading' && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
         {file.status === 'success' && <CheckCircle2 className="h-4 w-4 text-green-500" />}
         {file.status === 'error' && <AlertCircle className="h-4 w-4 text-destructive" />}
-        {(file.status === 'pending' || file.status === 'success' || file.status === 'error') && (
+        {(file.status === 'pending' ||
+          file.status === 'uploading' ||
+          file.status === 'success' ||
+          file.status === 'error') && (
           <IconButton
             onClick={onRemove}
             disabled={disabled}
@@ -130,7 +150,8 @@ const FileItem: React.FC<FileItemProps> = ({ file, onRemove, disabled }) => {
             color={SemanticColor.primary}
             radius="full"
             size="xs"
-            aria-label={`Remove ${file.file.name}`}
+            title={file.status === 'uploading' ? `Cancel upload ${file.file.name}` : `Remove ${file.file.name}`}
+            aria-label={file.status === 'uploading' ? `Cancel upload ${file.file.name}` : `Remove ${file.file.name}`}
           >
             <X className="h-3 w-3" />
           </IconButton>
@@ -148,9 +169,10 @@ interface FileListWithSectionsProps {
   files: UploadedFile[]
   onRemove: (file: UploadedFile) => void
   disabled?: boolean
+  display?: FileUploadFileListDisplay
 }
 
-const FileListWithSections: React.FC<FileListWithSectionsProps> = ({ files, onRemove, disabled }) => {
+const FileListWithSections: React.FC<FileListWithSectionsProps> = ({ files, onRemove, disabled, display }) => {
   const uploadingFiles = files.filter(f => f.status === 'pending' || f.status === 'uploading')
   const completedFiles = files.filter(f => f.status === 'success' || f.status === 'error')
 
@@ -165,7 +187,13 @@ const FileListWithSections: React.FC<FileListWithSectionsProps> = ({ files, onRe
           </div>
           <div className="space-y-2">
             {uploadingFiles.map(file => (
-              <FileItem key={file.id} file={file} onRemove={() => onRemove(file)} disabled={disabled} />
+              <FileItem
+                key={file.id}
+                file={file}
+                onRemove={() => onRemove(file)}
+                disabled={disabled}
+                display={display}
+              />
             ))}
           </div>
         </div>
@@ -180,7 +208,13 @@ const FileListWithSections: React.FC<FileListWithSectionsProps> = ({ files, onRe
           </div>
           <div className="space-y-2">
             {completedFiles.map(file => (
-              <FileItem key={file.id} file={file} onRemove={() => onRemove(file)} disabled={disabled} />
+              <FileItem
+                key={file.id}
+                file={file}
+                onRemove={() => onRemove(file)}
+                disabled={disabled}
+                display={display}
+              />
             ))}
           </div>
         </div>
@@ -211,10 +245,13 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
       onFilesAdded,
       onFileRemove,
       onUpload,
+      confirmBeforeUpload = false,
+      confirmBeforeRemove = false,
       placeholder,
       description,
       icon,
       showFileList = true,
+      fileListDisplay = 'full',
       hideDropzoneWhenFull = false,
       showStatusSections = false,
       className,
@@ -234,12 +271,26 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
     const radiusStyles = getRadiusStyles(radius)
     const disabled = disabledProp || fieldGroup.disabled
     const [files, setFiles] = React.useState<UploadedFile[]>(() => value ?? [])
-    const filesRef = React.useRef<UploadedFile[]>(files)
+    const [pendingUploadFiles, setPendingUploadFiles] = React.useState<File[] | null>(null)
+    const [pendingRemoveFile, setPendingRemoveFile] = React.useState<UploadedFile | null>(null)
+    const isControlled = value !== undefined
+    const resolvedFiles = value ?? files
+    const filesRef = React.useRef<UploadedFile[]>(resolvedFiles)
+
+    const commitFiles = React.useCallback(
+      (nextFiles: UploadedFile[]) => {
+        if (!isControlled) {
+          setFiles(nextFiles)
+        }
+        onChange?.(nextFiles)
+      },
+      [isControlled, onChange],
+    )
 
     // Keep ref in sync with state for cleanup
     React.useEffect(() => {
-      filesRef.current = files
-    }, [files])
+      filesRef.current = resolvedFiles
+    }, [resolvedFiles])
 
     // Sync with controlled value (only when explicitly provided)
     React.useEffect(() => {
@@ -258,7 +309,11 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
     const handleFilesAdded = React.useCallback(
       async (acceptedFiles: File[]) => {
         // Calculate available slots to prevent uploading files that won't be tracked
-        const availableSlots = multiple ? Math.max(0, maxFiles - files.length) : files.length >= 1 ? 0 : 1
+        const availableSlots = multiple
+          ? Math.max(0, maxFiles - resolvedFiles.length)
+          : resolvedFiles.length >= 1
+            ? 0
+            : 1
         const accepted = availableSlots > 0 ? acceptedFiles.slice(0, availableSlots) : []
         if (accepted.length === 0) return
 
@@ -271,9 +326,8 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
           status: 'pending' as const,
         }))
 
-        const updatedFiles = [...files, ...newFiles]
-        setFiles(updatedFiles)
-        onChange?.(updatedFiles)
+        const updatedFiles = [...resolvedFiles, ...newFiles]
+        commitFiles(updatedFiles)
         onFilesAdded?.(accepted)
 
         // If onUpload is provided, handle upload automatically
@@ -314,40 +368,54 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
           }
         }
       },
-      [files, maxFiles, multiple, onChange, onFilesAdded, onUpload],
+      [commitFiles, maxFiles, multiple, onChange, onFilesAdded, onUpload, resolvedFiles],
     )
 
-    const handleRemove = React.useCallback(
+    const handleRemoveConfirmed = React.useCallback(
       (fileToRemove: UploadedFile) => {
         if (fileToRemove.preview) {
           URL.revokeObjectURL(fileToRemove.preview)
         }
-        const updatedFiles = files.filter(f => f.id !== fileToRemove.id)
-        setFiles(updatedFiles)
-        onChange?.(updatedFiles)
+        const updatedFiles = resolvedFiles.filter(f => f.id !== fileToRemove.id)
+        commitFiles(updatedFiles)
         onFileRemove?.(fileToRemove)
       },
-      [files, onChange, onFileRemove],
+      [commitFiles, onFileRemove, resolvedFiles],
     )
 
-    const isPickerDisabled = disabled || (!multiple && files.length >= 1) || files.length >= maxFiles
+    const handleRemove = React.useCallback(
+      (fileToRemove: UploadedFile) => {
+        if (confirmBeforeRemove) {
+          setPendingRemoveFile(fileToRemove)
+          return
+        }
+        handleRemoveConfirmed(fileToRemove)
+      },
+      [confirmBeforeRemove, handleRemoveConfirmed],
+    )
+
+    const isPickerDisabled = disabled || (!multiple && resolvedFiles.length >= 1) || resolvedFiles.length >= maxFiles
     const shouldHideDropzone = hideDropzoneWhenFull && isPickerDisabled && !disabled
 
     const onDrop = React.useCallback(
       (acceptedFiles: File[], _nextRejectedFiles: FileRejection[]) => {
         if (isPickerDisabled) return
         if (acceptedFiles.length > 0) {
+          if (confirmBeforeUpload) {
+            setPendingUploadFiles(acceptedFiles)
+            return
+          }
           handleFilesAdded(acceptedFiles)
         }
       },
-      [handleFilesAdded, isPickerDisabled],
+      [confirmBeforeUpload, handleFilesAdded, isPickerDisabled],
     )
 
     const { getRootProps, getInputProps, inputRef, isDragActive, isDragReject } = useDropzone({
       onDrop,
       accept,
       maxSize,
-      maxFiles: multiple ? Math.max(0, maxFiles - files.length) : 1,
+      maxFiles: multiple ? Math.max(0, maxFiles - resolvedFiles.length) : 1,
       multiple,
       noClick: true,
       disabled,
@@ -533,18 +601,84 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
         </div>
 
         {/* File List */}
-        {showFileList && files.length > 0 && !showStatusSections && (
+        {showFileList && resolvedFiles.length > 0 && !showStatusSections && (
           <div className="mt-4 space-y-2">
-            {files.map(file => (
-              <FileItem key={file.id} file={file} onRemove={() => handleRemove(file)} disabled={disabled} />
+            {resolvedFiles.map(file => (
+              <FileItem
+                key={file.id}
+                file={file}
+                onRemove={() => handleRemove(file)}
+                disabled={disabled}
+                display={fileListDisplay}
+              />
             ))}
           </div>
         )}
 
         {/* File List with Status Sections */}
-        {showFileList && files.length > 0 && showStatusSections && (
-          <FileListWithSections files={files} onRemove={handleRemove} disabled={disabled} />
+        {showFileList && resolvedFiles.length > 0 && showStatusSections && (
+          <FileListWithSections
+            files={resolvedFiles}
+            onRemove={handleRemove}
+            disabled={disabled}
+            display={fileListDisplay}
+          />
         )}
+
+        <AlertDialog.Root open={pendingUploadFiles != null} onOpenChange={open => !open && setPendingUploadFiles(null)}>
+          <AlertDialog.Content size="sm">
+            <AlertDialog.Title>
+              {pendingUploadFiles?.length === 1
+                ? 'Upload this file?'
+                : `Upload ${pendingUploadFiles?.length ?? 0} files?`}
+            </AlertDialog.Title>
+            <AlertDialog.Description>
+              {pendingUploadFiles?.length === 1
+                ? `Add "${pendingUploadFiles[0]?.name}" to this upload field?`
+                : 'Add these files to this upload field?'}
+            </AlertDialog.Description>
+            <AlertDialog.Footer>
+              <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+              <Button
+                size="xs"
+                onClick={() => {
+                  const filesToUpload = pendingUploadFiles
+                  setPendingUploadFiles(null)
+                  if (filesToUpload) void handleFilesAdded(filesToUpload)
+                }}
+              >
+                Upload
+              </Button>
+            </AlertDialog.Footer>
+          </AlertDialog.Content>
+        </AlertDialog.Root>
+
+        <AlertDialog.Root open={pendingRemoveFile != null} onOpenChange={open => !open && setPendingRemoveFile(null)}>
+          <AlertDialog.Content size="sm">
+            <AlertDialog.Title>
+              {pendingRemoveFile?.status === 'uploading' ? 'Cancel this upload?' : 'Remove this file?'}
+            </AlertDialog.Title>
+            <AlertDialog.Description>
+              {pendingRemoveFile
+                ? `${pendingRemoveFile.status === 'uploading' ? 'Cancel upload' : 'Remove'} "${pendingRemoveFile.file.name}" from this field?`
+                : 'Remove this file from this field?'}
+            </AlertDialog.Description>
+            <AlertDialog.Footer>
+              <AlertDialog.Cancel>Keep file</AlertDialog.Cancel>
+              <Button
+                size="xs"
+                color="error"
+                onClick={() => {
+                  const fileToRemove = pendingRemoveFile
+                  setPendingRemoveFile(null)
+                  if (fileToRemove) handleRemoveConfirmed(fileToRemove)
+                }}
+              >
+                {pendingRemoveFile?.status === 'uploading' ? 'Cancel upload' : 'Remove'}
+              </Button>
+            </AlertDialog.Footer>
+          </AlertDialog.Content>
+        </AlertDialog.Root>
       </div>
     )
   },

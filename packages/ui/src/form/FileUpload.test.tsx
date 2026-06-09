@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { FieldGroupProvider } from './FieldGroupContext'
 import { FileUpload, type UploadedFile } from './FileUpload'
@@ -66,5 +67,50 @@ describe('FileUpload', () => {
 
     expect(screen.getByText('hero.png')).toBeInTheDocument()
     expect(dropzone).toHaveClass('hidden')
+  })
+
+  it('asks for confirmation before accepting uploaded files when enabled', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+    render(<FileUpload confirmBeforeUpload onChange={onChange} />)
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement | null
+    const file = new File(['image'], 'hero.png', { type: 'image/png' })
+    await user.upload(input!, file)
+
+    expect(screen.getByText('Upload this file?')).toBeInTheDocument()
+    expect(onChange).not.toHaveBeenCalled()
+
+    await user.click(screen.getByRole('button', { name: 'Upload' }))
+
+    expect(onChange).toHaveBeenCalledWith([
+      expect.objectContaining({
+        file,
+        status: 'pending',
+      }),
+    ])
+  })
+
+  it('asks for confirmation before removing files when enabled', async () => {
+    const user = userEvent.setup()
+    const file = new File(['image'], 'hero.png', { type: 'image/png' })
+    const uploadedFile: UploadedFile = {
+      id: 'upload-1',
+      file,
+      progress: 100,
+      status: 'success',
+    }
+    const onChange = vi.fn()
+
+    render(<FileUpload value={[uploadedFile]} confirmBeforeRemove onChange={onChange} />)
+
+    await user.click(screen.getByRole('button', { name: 'Remove hero.png' }))
+
+    expect(screen.getByText('Remove this file?')).toBeInTheDocument()
+    expect(onChange).not.toHaveBeenCalled()
+
+    await user.click(screen.getByRole('button', { name: 'Remove' }))
+
+    expect(onChange).toHaveBeenCalledWith([])
   })
 })
