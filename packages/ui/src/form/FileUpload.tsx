@@ -21,9 +21,11 @@ import { AlertDialog } from '@/elements/dialog/AlertDialog'
 import { Image } from '@/elements/image/Image'
 import { Progress } from '@/elements/progress/Progress'
 import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
+import { Flex } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { fileUploadSizeVar } from '@/theme/runtime/component-vars'
+import { Text } from '@/typography/text/Text'
 import { useFieldGroup } from './FieldGroupContext'
 import type {
   FileUploadConfirmationConfig,
@@ -111,45 +113,71 @@ const FileItem: React.FC<FileItemProps> = ({ file, onRemove, disabled, display =
   const isThumbnailDisplay = display === 'thumbnail'
 
   return (
-    <div
-      className={cn(
-        'group flex items-center rounded-lg',
-        isThumbnailDisplay ? 'gap-1 bg-transparent p-1' : 'gap-3 bg-muted/50 p-3',
-      )}
+    <Flex
+      align="center"
+      bg={isThumbnailDisplay ? undefined : 'neutral-surface'}
+      gap={isThumbnailDisplay ? '1' : '3'}
+      p={isThumbnailDisplay ? '1' : '3'}
+      radius="lg"
+      className="group"
     >
       {/* Preview or Icon */}
-      <div
-        className={cn(
-          'flex flex-shrink-0 items-center justify-center overflow-hidden rounded-md border bg-background',
-          isThumbnailDisplay ? 'h-12 w-12' : 'h-10 w-10',
-        )}
+      <Flex
+        align="center"
+        justify="center"
+        flexShrink="0"
+        overflow="hidden"
+        radius="md"
+        bg="neutral-background"
+        borderColor="neutral-border-subtle"
+        className={cn(isThumbnailDisplay ? 'h-12 w-12' : 'h-10 w-10')}
       >
         {isImage && file.preview ? (
           <Image src={file.preview} alt={file.file.name} objectFit="cover" className="h-full w-full" />
         ) : (
-          <span className="text-muted-foreground">{getFileIcon(file.file)}</span>
+          <Text as="span" color="neutral" variant="muted">
+            {getFileIcon(file.file)}
+          </Text>
         )}
-      </div>
+      </Flex>
 
       {/* File Info */}
       {!isThumbnailDisplay ? (
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium">{file.file.name}</p>
-          <p className="text-xs text-muted-foreground">
+        <Flex direction="column" flexBasis="0%" flexGrow="1" className="min-w-0">
+          <Text size="sm" weight="medium" truncate>
+            {file.file.name}
+          </Text>
+          <Text as="p" size="xs" color="neutral" variant="muted">
             {formatFileSize(file.file.size)}
-            {file.status === 'error' && file.error && <span className="ml-2 text-destructive">{file.error}</span>}
-          </p>
+            {file.status === 'error' && file.error && (
+              <Text as="span" size="xs" color="error" ml="2">
+                {file.error}
+              </Text>
+            )}
+          </Text>
 
           {/* Progress bar */}
           {file.status === 'uploading' && <Progress value={file.progress} size="xs" className="mt-1.5" />}
-        </div>
+        </Flex>
       ) : null}
 
       {/* Status Icon / Remove Button */}
-      <div className="flex-shrink-0 flex items-center gap-1">
-        {file.status === 'uploading' && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
-        {file.status === 'success' && <CheckCircle2 className="h-4 w-4 text-green-500" />}
-        {file.status === 'error' && <AlertCircle className="h-4 w-4 text-destructive" />}
+      <Flex align="center" gap="1" flexShrink="0">
+        {file.status === 'uploading' && (
+          <Text asChild color="neutral" variant="muted">
+            <Loader2 className="h-4 w-4 animate-spin" />
+          </Text>
+        )}
+        {file.status === 'success' && (
+          <Text asChild color="success" variant="soft">
+            <CheckCircle2 className="h-4 w-4" />
+          </Text>
+        )}
+        {file.status === 'error' && (
+          <Text asChild color="error">
+            <AlertCircle className="h-4 w-4" />
+          </Text>
+        )}
         {(file.status === 'pending' ||
           file.status === 'uploading' ||
           file.status === 'success' ||
@@ -171,8 +199,8 @@ const FileItem: React.FC<FileItemProps> = ({ file, onRemove, disabled, display =
             <X className="h-3 w-3" />
           </IconButton>
         )}
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   )
 }
 
@@ -192,15 +220,19 @@ const FileListWithSections: React.FC<FileListWithSectionsProps> = ({ files, onRe
   const completedFiles = files.filter(f => f.status === 'success' || f.status === 'error')
 
   return (
-    <div className="mt-4 space-y-4">
+    <Flex direction="column" gap="4" mt="4">
       {/* Uploading Section */}
       {uploadingFiles.length > 0 && (
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <Loader2 className="h-4 w-4 animate-spin text-primary" />
-            <h4 className="text-sm font-medium text-muted-foreground">Uploading ({uploadingFiles.length})</h4>
-          </div>
-          <div className="space-y-2">
+        <Flex direction="column" gap="2">
+          <Flex align="center" gap="2">
+            <Text asChild color="primary">
+              <Loader2 className="h-4 w-4 animate-spin" />
+            </Text>
+            <Text size="sm" weight="medium" color="neutral" variant="muted">
+              Uploading ({uploadingFiles.length})
+            </Text>
+          </Flex>
+          <Flex direction="column" gap="2">
             {uploadingFiles.map(file => (
               <FileItem
                 key={file.id}
@@ -210,18 +242,22 @@ const FileListWithSections: React.FC<FileListWithSectionsProps> = ({ files, onRe
                 display={display}
               />
             ))}
-          </div>
-        </div>
+          </Flex>
+        </Flex>
       )}
 
       {/* Completed Section */}
       {completedFiles.length > 0 && (
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 text-green-500" />
-            <h4 className="text-sm font-medium text-muted-foreground">Completed ({completedFiles.length})</h4>
-          </div>
-          <div className="space-y-2">
+        <Flex direction="column" gap="2">
+          <Flex align="center" gap="2">
+            <Text asChild color="success" variant="soft">
+              <CheckCircle2 className="h-4 w-4" />
+            </Text>
+            <Text size="sm" weight="medium" color="neutral" variant="muted">
+              Completed ({completedFiles.length})
+            </Text>
+          </Flex>
+          <Flex direction="column" gap="2">
             {completedFiles.map(file => (
               <FileItem
                 key={file.id}
@@ -231,10 +267,10 @@ const FileListWithSections: React.FC<FileListWithSectionsProps> = ({ files, onRe
                 display={display}
               />
             ))}
-          </div>
-        </div>
+          </Flex>
+        </Flex>
       )}
-    </div>
+    </Flex>
   )
 }
 
@@ -587,31 +623,33 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
             variant === 'default' && [
               'border-2 border-dashed rounded-[var(--element-border-radius)]',
               'p-[var(--file-upload-container-padding)]',
-              !error && 'hover:border-primary/50 hover:bg-muted/50',
-              isDragActive && 'border-primary bg-primary/5',
-              isDragReject && 'border-destructive bg-destructive/5',
+              !error &&
+                'hover:border-[color:var(--color-primary-border)] hover:bg-[var(--color-neutral-surface-hover)]',
+              isDragActive && 'border-[color:var(--color-primary-border)] bg-[var(--color-primary-surface)]',
+              isDragReject && 'border-[color:var(--color-error-border)] bg-[var(--color-error-surface)]',
               error &&
                 !isDragActive &&
                 !isDragReject &&
-                'border-destructive bg-destructive/5 hover:border-destructive/60',
-              isPickerDisabled && 'opacity-50 cursor-not-allowed hover:border-input hover:bg-transparent',
+                'border-[color:var(--color-error-border)] bg-[var(--color-error-surface)] hover:border-[color:var(--color-error-border)]',
+              isPickerDisabled &&
+                'opacity-50 cursor-not-allowed hover:border-[color:var(--color-neutral-border)] hover:bg-transparent',
             ],
 
             variant === 'minimal' && [
-              'border border-input rounded-[var(--element-border-radius)]',
+              'border border-[color:var(--color-neutral-border)] rounded-[var(--element-border-radius)]',
               'p-[var(--file-upload-container-padding)]',
-              !error && 'hover:bg-muted/50',
-              isDragActive && 'border-primary bg-primary/5',
-              error && !isDragActive && 'border-destructive bg-destructive/5',
+              !error && 'hover:bg-[var(--color-neutral-surface-hover)]',
+              isDragActive && 'border-[color:var(--color-primary-border)] bg-[var(--color-primary-surface)]',
+              error && !isDragActive && 'border-[color:var(--color-error-border)] bg-[var(--color-error-surface)]',
               isPickerDisabled && 'opacity-50 cursor-not-allowed',
             ],
 
             variant === 'card' && [
-              'border rounded-[var(--element-border-radius)] bg-card shadow-sm',
+              'border rounded-[var(--element-border-radius)] bg-[var(--color-neutral-background)] shadow-sm',
               'p-[var(--file-upload-container-padding)]',
-              !error && 'hover:shadow-md hover:border-primary/30',
-              isDragActive && 'border-primary shadow-md',
-              error && !isDragActive && 'border-destructive bg-destructive/5',
+              !error && 'hover:shadow-md hover:border-[color:var(--color-primary-border)]',
+              isDragActive && 'border-[color:var(--color-primary-border)] shadow-md',
+              error && !isDragActive && 'border-[color:var(--color-error-border)] bg-[var(--color-error-surface)]',
               isPickerDisabled && 'opacity-50 cursor-not-allowed hover:shadow-sm',
             ],
           )}
@@ -622,44 +660,47 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
             })}
           />
 
-          <div className="flex flex-col items-center justify-center text-center gap-2">
-            <div
+          <Flex direction="column" align="center" justify="center" gap="2" className="text-center">
+            <Flex
+              align="center"
+              justify="center"
+              bg={isDragActive ? 'primary-soft' : 'neutral-surface'}
+              radius="full"
               className={cn(
                 'p-[var(--file-upload-icon-shell-padding)]',
-                'rounded-full bg-muted transition-colors',
-                !isPickerDisabled && 'hover:bg-muted/80',
-                isDragActive && 'bg-primary/10',
+                'transition-colors',
+                !isPickerDisabled && 'hover:bg-[var(--color-neutral-surface-hover)]',
               )}
               aria-hidden="true"
             >
               {icon ?? (
-                <Upload
-                  className={cn(
-                    'h-[var(--file-upload-icon-size)] w-[var(--file-upload-icon-size)]',
-                    'text-muted-foreground',
-                    isDragActive && 'text-primary',
-                  )}
-                />
+                <Text asChild color={isDragActive ? 'primary' : 'neutral'} variant={isDragActive ? 'soft' : 'muted'}>
+                  <Upload className="h-[var(--file-upload-icon-size)] w-[var(--file-upload-icon-size)]" />
+                </Text>
               )}
-            </div>
+            </Flex>
 
-            <div>
-              <p id={titleId} className="text-[length:var(--file-upload-title-font-size)] font-medium">
+            <Flex direction="column">
+              <Text id={titleId} as="p" weight="medium" className="text-[length:var(--file-upload-title-font-size)]">
                 {placeholder || defaultPlaceholder}
-              </p>
-              <p
+              </Text>
+              <Text
                 id={descriptionId}
-                className="mt-1 text-[length:var(--file-upload-description-font-size)] text-muted-foreground"
+                as="p"
+                color="neutral"
+                variant="muted"
+                mt="1"
+                className="text-[length:var(--file-upload-description-font-size)]"
               >
                 {description || defaultDescription}
-              </p>
-            </div>
-          </div>
+              </Text>
+            </Flex>
+          </Flex>
         </div>
 
         {/* File List */}
         {showFileList && resolvedFiles.length > 0 && !showStatusSections && (
-          <div className="mt-4 space-y-2">
+          <Flex direction="column" gap="2" mt="4">
             {resolvedFiles.map(file => (
               <FileItem
                 key={file.id}
@@ -669,7 +710,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
                 display={fileListDisplay}
               />
             ))}
-          </div>
+          </Flex>
         )}
 
         {/* File List with Status Sections */}

@@ -17,7 +17,7 @@ describe('FileUpload', () => {
       '[data-slot="file-upload-dropzone"][data-invalid="true"]',
     ) as HTMLElement | null
     expect(dropzone).toBeInTheDocument()
-    expect(dropzone?.className).toContain('border-destructive')
+    expect(dropzone?.className).toContain('border-[color:var(--color-error-border)]')
     expect(dropzone).toHaveAttribute('aria-invalid', 'true')
   })
 
