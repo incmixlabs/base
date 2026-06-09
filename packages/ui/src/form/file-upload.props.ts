@@ -3,11 +3,24 @@ import type { Accept } from 'react-dropzone'
 import type { Radius, Size } from '@/theme/tokens'
 
 export type FileUploadVariant = 'default' | 'minimal' | 'card'
-export type FileUploadFileListDisplay = 'full' | 'thumbnail'
+export type FileUploadFileListDisplay = 'full' | 'list' | 'thumbnail'
 
 export const uploadedFileStatuses = ['pending', 'uploading', 'success', 'error'] as const
 
 export type UploadedFileStatus = (typeof uploadedFileStatuses)[number]
+
+export type FileUploadConfirmationConfig = {
+  /** Whether confirmation should be shown. Defaults to true when a config object is provided. */
+  ask?: boolean
+  /** Dialog title */
+  title?: string
+  /** Dialog message */
+  message?: string
+  /** Confirm button label */
+  confirmLabel?: string
+  /** Cancel button label */
+  cancelLabel?: string
+}
 
 export interface UploadedFile {
   /** Unique identifier */
@@ -53,10 +66,10 @@ export interface FileUploadProps {
   onFileRemove?: (file: UploadedFile) => void
   /** Custom upload function - if provided, handles upload automatically */
   onUpload?: (file: File, onProgress: (progress: number) => void) => Promise<void>
-  /** Ask for confirmation before accepted files are added */
-  confirmBeforeUpload?: boolean
-  /** Ask for confirmation before an uploaded/staged file is removed */
-  confirmBeforeRemove?: boolean
+  /** Ask for confirmation before removing a file */
+  confirmBeforeRemove?: boolean | FileUploadConfirmationConfig
+  /** Ask for confirmation before accepting newly selected files */
+  confirmBeforeUpload?: boolean | FileUploadConfirmationConfig
   /** Placeholder text */
   placeholder?: string
   /** Description text */
@@ -65,7 +78,7 @@ export interface FileUploadProps {
   icon?: React.ReactNode
   /** Show file list */
   showFileList?: boolean
-  /** File list display density */
+  /** File list display style */
   fileListDisplay?: FileUploadFileListDisplay
   /** Hide the dropzone when the max file count has been reached */
   hideDropzoneWhenFull?: boolean

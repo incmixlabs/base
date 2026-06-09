@@ -17,7 +17,7 @@ describe('FileUpload', () => {
       '[data-slot="file-upload-dropzone"][data-invalid="true"]',
     ) as HTMLElement | null
     expect(dropzone).toBeInTheDocument()
-    expect(dropzone?.className).toContain('border-destructive')
+    expect(dropzone?.className).toContain('border-[color:var(--color-error-border)]')
     expect(dropzone).toHaveAttribute('aria-invalid', 'true')
   })
 
@@ -93,7 +93,7 @@ describe('FileUpload', () => {
     )
   })
 
-  it('asks for confirmation before removing files when enabled', async () => {
+  it('confirms before removing a file when configured', async () => {
     const user = userEvent.setup()
     const file = new File(['image'], 'hero.png', { type: 'image/png' })
     const uploadedFile: UploadedFile = {
@@ -103,17 +103,34 @@ describe('FileUpload', () => {
       status: 'success',
     }
     const onChange = vi.fn()
+    const onFileRemove = vi.fn()
 
-    render(<FileUpload value={[uploadedFile]} confirmBeforeRemove onChange={onChange} />)
+    render(<FileUpload value={[uploadedFile]} confirmBeforeRemove onChange={onChange} onFileRemove={onFileRemove} />)
 
     await user.click(screen.getByRole('button', { name: 'Remove hero.png' }))
 
-    expect(screen.getByText('Remove this file?')).toBeInTheDocument()
+    expect(await screen.findByText('Remove file?')).toBeInTheDocument()
+    expect(screen.getByText('Remove "hero.png"? This action cannot be undone.')).toBeInTheDocument()
     expect(onChange).not.toHaveBeenCalled()
 
-    await user.click(screen.getByRole('button', { name: 'Remove' }))
+    await user.click(screen.getByRole('button', { name: 'Keep file' }))
+
+    await waitFor(() => expect(screen.queryByText('Remove file?')).not.toBeInTheDocument())
+    expect(onChange).not.toHaveBeenCalled()
+
+    await user.click(screen.getByRole('button', { name: 'Remove hero.png' }))
+    expect(await screen.findByText('Remove file?')).toBeInTheDocument()
+
+    await user.keyboard('{Escape}')
+
+    await waitFor(() => expect(screen.queryByText('Remove file?')).not.toBeInTheDocument())
+    expect(onChange).not.toHaveBeenCalled()
+
+    await user.click(screen.getByRole('button', { name: 'Remove hero.png' }))
+    await user.click(await screen.findByRole('button', { name: 'Remove' }))
 
     expect(onChange).toHaveBeenCalledWith([])
+    expect(onFileRemove).toHaveBeenCalledWith(uploadedFile)
   })
 
   it('keeps the uploaded file in controlled onUpload success changes', async () => {
@@ -128,6 +145,8 @@ describe('FileUpload', () => {
 
     const input = document.querySelector('input[type="file"]') as HTMLInputElement | null
     await user.upload(input!, file)
+
+    expect(onUpload).toHaveBeenCalledWith(file, expect.any(Function))
 
     await waitFor(() =>
       expect(onChange).toHaveBeenLastCalledWith([
@@ -152,6 +171,8 @@ describe('FileUpload', () => {
 
     const input = document.querySelector('input[type="file"]') as HTMLInputElement | null
     await user.upload(input!, file)
+
+    expect(onUpload).toHaveBeenCalledWith(file, expect.any(Function))
 
     await waitFor(() =>
       expect(onChange).toHaveBeenLastCalledWith([
