@@ -60,6 +60,8 @@ export interface FileUploadProps {
   icon?: React.ReactNode
   /** Show file list */
   showFileList?: boolean
+  /** Hide the dropzone when the max file count has been reached */
+  hideDropzoneWhenFull?: boolean
   /** Group files by status (Uploading / Completed sections) */
   showStatusSections?: boolean
   /** Additional class name */

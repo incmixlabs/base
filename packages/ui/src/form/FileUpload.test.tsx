@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { FieldGroupProvider } from './FieldGroupContext'
-import { FileUpload } from './FileUpload'
+import { FileUpload, type UploadedFile } from './FileUpload'
 
 afterEach(() => {
   cleanup()
@@ -48,5 +48,23 @@ describe('FileUpload', () => {
 
     expect(inputClick).toHaveBeenCalled()
     inputClick.mockRestore()
+  })
+
+  it('hides the dropzone when the controlled file list is full', () => {
+    const file = new File(['image'], 'hero.png', { type: 'image/png' })
+    const uploadedFile: UploadedFile = {
+      id: 'upload-1',
+      file,
+      progress: 100,
+      status: 'success',
+    }
+    const { container } = render(
+      <FileUpload value={[uploadedFile]} maxFiles={1} multiple={false} hideDropzoneWhenFull />,
+    )
+
+    const dropzone = container.querySelector('[data-slot="file-upload-dropzone"]') as HTMLElement | null
+
+    expect(screen.getByText('hero.png')).toBeInTheDocument()
+    expect(dropzone).toHaveClass('hidden')
   })
 })

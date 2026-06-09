@@ -215,6 +215,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
       description,
       icon,
       showFileList = true,
+      hideDropzoneWhenFull = false,
       showStatusSections = false,
       className,
       style,
@@ -330,6 +331,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
     )
 
     const isPickerDisabled = disabled || (!multiple && files.length >= 1) || files.length >= maxFiles
+    const shouldHideDropzone = hideDropzoneWhenFull && isPickerDisabled && !disabled
 
     const onDrop = React.useCallback(
       (acceptedFiles: File[], _nextRejectedFiles: FileRejection[]) => {
@@ -453,6 +455,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
           style={dropzoneStyles}
           className={cn(
             'relative transition-all duration-200',
+            shouldHideDropzone && 'hidden',
             isPickerDisabled ? 'cursor-not-allowed' : 'cursor-pointer',
 
             // Variant styles
