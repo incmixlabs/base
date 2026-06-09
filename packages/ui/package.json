@@ -76,6 +76,10 @@
       "types": "./dist/elements/card/Card.d.ts",
       "import": "./dist/elements/card/Card.js"
     },
+    "./elements/navigation-menu/NavigationMenu": {
+      "types": "./dist/elements/navigation-menu/NavigationMenu.d.ts",
+      "import": "./dist/elements/navigation-menu/NavigationMenu.js"
+    },
     "./elements/qr-code": {
       "types": "./dist/elements/qr-code/index.d.ts",
       "import": "./dist/elements/qr-code.js"
