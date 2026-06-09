@@ -97,6 +97,30 @@ function resolveConfirmationConfig(
   return { ...defaults, ...value }
 }
 
+function buildUploadConfirmationDefaults(files: File[]): Required<FileUploadConfirmationConfig> {
+  return {
+    ask: true,
+    cancelLabel: 'Cancel',
+    confirmLabel: 'Upload',
+    message:
+      files.length === 1 ? `Add "${files[0]?.name}" to this upload field?` : 'Add these files to this upload field?',
+    title: files.length === 1 ? 'Upload this file?' : `Upload ${files.length} files?`,
+  }
+}
+
+function buildRemoveConfirmationDefaults(file: UploadedFile): Required<FileUploadConfirmationConfig> {
+  return {
+    ask: true,
+    cancelLabel: 'Keep file',
+    confirmLabel: file.status === 'uploading' ? 'Cancel upload' : 'Remove',
+    message:
+      file.status === 'uploading'
+        ? `Cancel upload "${file.file.name}" from this field?`
+        : `Remove "${file.file.name}"? This action cannot be undone.`,
+    title: file.status === 'uploading' ? 'Cancel this upload?' : 'Remove file?',
+  }
+}
+
 // ============================================================================
 // File Item Component
 // ============================================================================
@@ -432,16 +456,10 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
 
     const requestRemove = React.useCallback(
       (fileToRemove: UploadedFile) => {
-        const confirmation = resolveConfirmationConfig(confirmBeforeRemove, {
-          ask: true,
-          cancelLabel: 'Keep file',
-          confirmLabel: fileToRemove.status === 'uploading' ? 'Cancel upload' : 'Remove',
-          message:
-            fileToRemove.status === 'uploading'
-              ? `Cancel upload "${fileToRemove.file.name}" from this field?`
-              : `Remove "${fileToRemove.file.name}"? This action cannot be undone.`,
-          title: fileToRemove.status === 'uploading' ? 'Cancel this upload?' : 'Remove file?',
-        })
+        const confirmation = resolveConfirmationConfig(
+          confirmBeforeRemove,
+          buildRemoveConfirmationDefaults(fileToRemove),
+        )
         if (!confirmation) {
           handleRemoveConfirmed(fileToRemove)
           return
@@ -458,16 +476,10 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
       (acceptedFiles: File[], _nextRejectedFiles: FileRejection[]) => {
         if (isPickerDisabled) return
         if (acceptedFiles.length > 0) {
-          const confirmation = resolveConfirmationConfig(confirmBeforeUpload, {
-            ask: true,
-            cancelLabel: 'Cancel',
-            confirmLabel: 'Upload',
-            message:
-              acceptedFiles.length === 1
-                ? `Add "${acceptedFiles[0]?.name}" to this upload field?`
-                : 'Add these files to this upload field?',
-            title: acceptedFiles.length === 1 ? 'Upload this file?' : `Upload ${acceptedFiles.length} files?`,
-          })
+          const confirmation = resolveConfirmationConfig(
+            confirmBeforeUpload,
+            buildUploadConfirmationDefaults(acceptedFiles),
+          )
           if (confirmation) {
             setPendingUploadFiles(acceptedFiles)
             return
@@ -567,29 +579,11 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
     } as React.CSSProperties
 
     const uploadConfirmation = pendingUploadFiles
-      ? resolveConfirmationConfig(confirmBeforeUpload, {
-          ask: true,
-          cancelLabel: 'Cancel',
-          confirmLabel: 'Upload',
-          message:
-            pendingUploadFiles.length === 1
-              ? `Add "${pendingUploadFiles[0]?.name}" to this upload field?`
-              : 'Add these files to this upload field?',
-          title: pendingUploadFiles.length === 1 ? 'Upload this file?' : `Upload ${pendingUploadFiles.length} files?`,
-        })
+      ? resolveConfirmationConfig(confirmBeforeUpload, buildUploadConfirmationDefaults(pendingUploadFiles))
       : null
 
     const removeConfirmation = pendingRemoveFile
-      ? resolveConfirmationConfig(confirmBeforeRemove, {
-          ask: true,
-          cancelLabel: 'Keep file',
-          confirmLabel: pendingRemoveFile.status === 'uploading' ? 'Cancel upload' : 'Remove',
-          message:
-            pendingRemoveFile.status === 'uploading'
-              ? `Cancel upload "${pendingRemoveFile.file.name}" from this field?`
-              : `Remove "${pendingRemoveFile.file.name}"? This action cannot be undone.`,
-          title: pendingRemoveFile.status === 'uploading' ? 'Cancel this upload?' : 'Remove file?',
-        })
+      ? resolveConfirmationConfig(confirmBeforeRemove, buildRemoveConfirmationDefaults(pendingRemoveFile))
       : null
 
     return (
@@ -640,6 +634,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
               'p-[var(--file-upload-container-padding)]',
               !error && 'hover:bg-[var(--color-neutral-surface-hover)]',
               isDragActive && 'border-[color:var(--color-primary-border)] bg-[var(--color-primary-surface)]',
+              isDragReject && 'border-[color:var(--color-error-border)] bg-[var(--color-error-surface)]',
               error && !isDragActive && 'border-[color:var(--color-error-border)] bg-[var(--color-error-surface)]',
               isPickerDisabled && 'opacity-50 cursor-not-allowed',
             ],
@@ -649,6 +644,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
               'p-[var(--file-upload-container-padding)]',
               !error && 'hover:shadow-md hover:border-[color:var(--color-primary-border)]',
               isDragActive && 'border-[color:var(--color-primary-border)] shadow-md',
+              isDragReject && 'border-[color:var(--color-error-border)] bg-[var(--color-error-surface)]',
               error && !isDragActive && 'border-[color:var(--color-error-border)] bg-[var(--color-error-surface)]',
               isPickerDisabled && 'opacity-50 cursor-not-allowed hover:shadow-sm',
             ],
