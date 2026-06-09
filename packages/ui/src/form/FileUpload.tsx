@@ -25,7 +25,12 @@ import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { fileUploadSizeVar } from '@/theme/runtime/component-vars'
 import { useFieldGroup } from './FieldGroupContext'
-import type { FileUploadFileListDisplay, FileUploadProps, UploadedFile } from './file-upload.props'
+import type {
+  FileUploadConfirmationConfig,
+  FileUploadFileListDisplay,
+  FileUploadProps,
+  UploadedFile,
+} from './file-upload.props'
 import { resolveFormSize } from './form-size'
 
 export {
@@ -78,6 +83,16 @@ function getAcceptDescription(accept?: Accept): string {
     else if (extensions.length > 0) types.push(extensions.join(', ').toUpperCase())
   }
   return [...new Set(types)].join(', ') || 'All files'
+}
+
+function resolveConfirmationConfig(
+  value: boolean | FileUploadConfirmationConfig | undefined,
+  defaults: Required<FileUploadConfirmationConfig>,
+): Required<FileUploadConfirmationConfig> | null {
+  if (value === undefined || value === false) return null
+  if (value === true) return defaults
+  if (value.ask === false) return null
+  return { ...defaults, ...value }
 }
 
 // ============================================================================
@@ -379,13 +394,23 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
       [commitFiles, onFileRemove, resolvedFiles],
     )
 
-    const handleRemove = React.useCallback(
+    const requestRemove = React.useCallback(
       (fileToRemove: UploadedFile) => {
-        if (confirmBeforeRemove) {
-          setPendingRemoveFile(fileToRemove)
+        const confirmation = resolveConfirmationConfig(confirmBeforeRemove, {
+          ask: true,
+          cancelLabel: 'Keep file',
+          confirmLabel: fileToRemove.status === 'uploading' ? 'Cancel upload' : 'Remove',
+          message:
+            fileToRemove.status === 'uploading'
+              ? `Cancel upload "${fileToRemove.file.name}" from this field?`
+              : `Remove "${fileToRemove.file.name}"? This action cannot be undone.`,
+          title: fileToRemove.status === 'uploading' ? 'Cancel this upload?' : 'Remove file?',
+        })
+        if (!confirmation) {
+          handleRemoveConfirmed(fileToRemove)
           return
         }
-        handleRemoveConfirmed(fileToRemove)
+        setPendingRemoveFile(fileToRemove)
       },
       [confirmBeforeRemove, handleRemoveConfirmed],
     )
@@ -397,7 +422,17 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
       (acceptedFiles: File[], _nextRejectedFiles: FileRejection[]) => {
         if (isPickerDisabled) return
         if (acceptedFiles.length > 0) {
-          if (confirmBeforeUpload) {
+          const confirmation = resolveConfirmationConfig(confirmBeforeUpload, {
+            ask: true,
+            cancelLabel: 'Cancel',
+            confirmLabel: 'Upload',
+            message:
+              acceptedFiles.length === 1
+                ? `Add "${acceptedFiles[0]?.name}" to this upload field?`
+                : 'Add these files to this upload field?',
+            title: acceptedFiles.length === 1 ? 'Upload this file?' : `Upload ${acceptedFiles.length} files?`,
+          })
+          if (confirmation) {
             setPendingUploadFiles(acceptedFiles)
             return
           }
@@ -494,6 +529,32 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
       ...radiusStyles,
       ...style,
     } as React.CSSProperties
+
+    const uploadConfirmation = pendingUploadFiles
+      ? resolveConfirmationConfig(confirmBeforeUpload, {
+          ask: true,
+          cancelLabel: 'Cancel',
+          confirmLabel: 'Upload',
+          message:
+            pendingUploadFiles.length === 1
+              ? `Add "${pendingUploadFiles[0]?.name}" to this upload field?`
+              : 'Add these files to this upload field?',
+          title: pendingUploadFiles.length === 1 ? 'Upload this file?' : `Upload ${pendingUploadFiles.length} files?`,
+        })
+      : null
+
+    const removeConfirmation = pendingRemoveFile
+      ? resolveConfirmationConfig(confirmBeforeRemove, {
+          ask: true,
+          cancelLabel: 'Keep file',
+          confirmLabel: pendingRemoveFile.status === 'uploading' ? 'Cancel upload' : 'Remove',
+          message:
+            pendingRemoveFile.status === 'uploading'
+              ? `Cancel upload "${pendingRemoveFile.file.name}" from this field?`
+              : `Remove "${pendingRemoveFile.file.name}"? This action cannot be undone.`,
+          title: pendingRemoveFile.status === 'uploading' ? 'Cancel this upload?' : 'Remove file?',
+        })
+      : null
 
     return (
       <div className={cn('w-full', className)}>
@@ -603,7 +664,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
               <FileItem
                 key={file.id}
                 file={file}
-                onRemove={() => handleRemove(file)}
+                onRemove={() => requestRemove(file)}
                 disabled={disabled}
                 display={fileListDisplay}
               />
@@ -615,26 +676,20 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
         {showFileList && resolvedFiles.length > 0 && showStatusSections && (
           <FileListWithSections
             files={resolvedFiles}
-            onRemove={handleRemove}
+            onRemove={requestRemove}
             disabled={disabled}
             display={fileListDisplay}
           />
         )}
 
-        <AlertDialog.Root open={pendingUploadFiles != null} onOpenChange={open => !open && setPendingUploadFiles(null)}>
+        <AlertDialog.Root open={uploadConfirmation != null} onOpenChange={open => !open && setPendingUploadFiles(null)}>
           <AlertDialog.Content size="sm">
-            <AlertDialog.Title>
-              {pendingUploadFiles?.length === 1
-                ? 'Upload this file?'
-                : `Upload ${pendingUploadFiles?.length ?? 0} files?`}
-            </AlertDialog.Title>
-            <AlertDialog.Description>
-              {pendingUploadFiles?.length === 1
-                ? `Add "${pendingUploadFiles[0]?.name}" to this upload field?`
-                : 'Add these files to this upload field?'}
-            </AlertDialog.Description>
+            <AlertDialog.Title>{uploadConfirmation?.title}</AlertDialog.Title>
+            {uploadConfirmation?.message ? (
+              <AlertDialog.Description>{uploadConfirmation.message}</AlertDialog.Description>
+            ) : null}
             <AlertDialog.Footer>
-              <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+              <AlertDialog.Cancel>{uploadConfirmation?.cancelLabel ?? 'Cancel'}</AlertDialog.Cancel>
               <Button
                 size="xs"
                 onClick={() => {
@@ -643,24 +698,20 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
                   if (filesToUpload) void handleFilesAdded(filesToUpload)
                 }}
               >
-                Upload
+                {uploadConfirmation?.confirmLabel ?? 'Upload'}
               </Button>
             </AlertDialog.Footer>
           </AlertDialog.Content>
         </AlertDialog.Root>
 
-        <AlertDialog.Root open={pendingRemoveFile != null} onOpenChange={open => !open && setPendingRemoveFile(null)}>
+        <AlertDialog.Root open={removeConfirmation != null} onOpenChange={open => !open && setPendingRemoveFile(null)}>
           <AlertDialog.Content size="sm">
-            <AlertDialog.Title>
-              {pendingRemoveFile?.status === 'uploading' ? 'Cancel this upload?' : 'Remove this file?'}
-            </AlertDialog.Title>
-            <AlertDialog.Description>
-              {pendingRemoveFile
-                ? `${pendingRemoveFile.status === 'uploading' ? 'Cancel upload' : 'Remove'} "${pendingRemoveFile.file.name}" from this field?`
-                : 'Remove this file from this field?'}
-            </AlertDialog.Description>
+            <AlertDialog.Title>{removeConfirmation?.title}</AlertDialog.Title>
+            {removeConfirmation?.message ? (
+              <AlertDialog.Description>{removeConfirmation.message}</AlertDialog.Description>
+            ) : null}
             <AlertDialog.Footer>
-              <AlertDialog.Cancel>Keep file</AlertDialog.Cancel>
+              <AlertDialog.Cancel>{removeConfirmation?.cancelLabel ?? 'Keep file'}</AlertDialog.Cancel>
               <Button
                 size="xs"
                 color="error"
@@ -670,7 +721,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
                   if (fileToRemove) handleRemoveConfirmed(fileToRemove)
                 }}
               >
-                {pendingRemoveFile?.status === 'uploading' ? 'Cancel upload' : 'Remove'}
+                {removeConfirmation?.confirmLabel ?? 'Remove'}
               </Button>
             </AlertDialog.Footer>
           </AlertDialog.Content>
