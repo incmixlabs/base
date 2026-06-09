@@ -119,6 +119,14 @@ describe('FileUpload', () => {
     expect(onChange).not.toHaveBeenCalled()
 
     await user.click(screen.getByRole('button', { name: 'Remove hero.png' }))
+    expect(await screen.findByText('Remove file?')).toBeInTheDocument()
+
+    await user.keyboard('{Escape}')
+
+    await waitFor(() => expect(screen.queryByText('Remove file?')).not.toBeInTheDocument())
+    expect(onChange).not.toHaveBeenCalled()
+
+    await user.click(screen.getByRole('button', { name: 'Remove hero.png' }))
     await user.click(await screen.findByRole('button', { name: 'Remove' }))
 
     expect(onChange).toHaveBeenCalledWith([])
@@ -137,6 +145,8 @@ describe('FileUpload', () => {
 
     const input = document.querySelector('input[type="file"]') as HTMLInputElement | null
     await user.upload(input!, file)
+
+    expect(onUpload).toHaveBeenCalledWith(file, expect.any(Function))
 
     await waitFor(() =>
       expect(onChange).toHaveBeenLastCalledWith([
@@ -161,6 +171,8 @@ describe('FileUpload', () => {
 
     const input = document.querySelector('input[type="file"]') as HTMLInputElement | null
     await user.upload(input!, file)
+
+    expect(onUpload).toHaveBeenCalledWith(file, expect.any(Function))
 
     await waitFor(() =>
       expect(onChange).toHaveBeenLastCalledWith([
