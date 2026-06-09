@@ -4,6 +4,7 @@ import { GripVertical } from 'lucide-react'
 import type * as React from 'react'
 import * as ResizablePrimitive from 'react-resizable-panels'
 import { cn } from '@/lib/utils'
+import { Flex } from '../flex/Flex'
 
 export type ResizablePanelGroupProps = React.ComponentProps<typeof ResizablePrimitive.Group>
 export type ResizablePanelProps = React.ComponentProps<typeof ResizablePrimitive.Panel>
@@ -29,9 +30,9 @@ function ResizableHandle({ withHandle, className, children, ...props }: Resizabl
       {...props}
     >
       {withHandle ? (
-        <div className="z-10 flex h-4 w-3 items-center justify-center rounded-sm border bg-border">
+        <Flex align="center" className="z-10 border bg-border" height="4" justify="center" radius="sm" width="3">
           <GripVertical className="h-2.5 w-2.5" />
-        </div>
+        </Flex>
       ) : (
         children
       )}

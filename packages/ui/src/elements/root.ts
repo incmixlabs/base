@@ -123,6 +123,25 @@ export {
   type MenuWrapperSeparator,
   type MenuWrapperSubmenu,
 } from './menu/MenuWrapper'
+export {
+  NavigationMenu,
+  type NavigationMenuArrowProps,
+  type NavigationMenuBackdropProps,
+  type NavigationMenuContentProps,
+  type NavigationMenuIconProps,
+  type NavigationMenuItemProps,
+  type NavigationMenuLinkProps,
+  type NavigationMenuListProps,
+  type NavigationMenuPopupProps,
+  type NavigationMenuPortalProps,
+  type NavigationMenuPositionerProps,
+  type NavigationMenuRootProps,
+  type NavigationMenuSize,
+  type NavigationMenuTriggerProps,
+  type NavigationMenuValue,
+  type NavigationMenuVariant,
+  type NavigationMenuViewportProps,
+} from './navigation-menu/NavigationMenu'
 export { Popover } from './popover/Popover'
 export {
   PopoverWrapper,
