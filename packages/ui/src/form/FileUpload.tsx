@@ -326,49 +326,45 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
           status: 'pending' as const,
         }))
 
-        const updatedFiles = [...resolvedFiles, ...newFiles]
-        commitFiles(updatedFiles)
+        let currentFiles = [...resolvedFiles, ...newFiles]
+        commitFiles(currentFiles)
         onFilesAdded?.(accepted)
 
         // If onUpload is provided, handle upload automatically
         if (onUpload) {
           for (const uploadFile of newFiles) {
             // Update status to uploading
-            setFiles(prev => prev.map(f => (f.id === uploadFile.id ? { ...f, status: 'uploading' as const } : f)))
+            currentFiles = currentFiles.map(f => (f.id === uploadFile.id ? { ...f, status: 'uploading' as const } : f))
+            commitFiles(currentFiles)
 
             try {
               await onUpload(uploadFile.file, progress => {
-                setFiles(prev => prev.map(f => (f.id === uploadFile.id ? { ...f, progress } : f)))
+                currentFiles = currentFiles.map(f => (f.id === uploadFile.id ? { ...f, progress } : f))
+                commitFiles(currentFiles)
               })
 
               // Success
-              setFiles(prev => {
-                const updated = prev.map(f =>
-                  f.id === uploadFile.id ? { ...f, status: 'success' as const, progress: 100 } : f,
-                )
-                onChange?.(updated)
-                return updated
-              })
+              currentFiles = currentFiles.map(f =>
+                f.id === uploadFile.id ? { ...f, status: 'success' as const, progress: 100 } : f,
+              )
+              commitFiles(currentFiles)
             } catch (error) {
               // Error
-              setFiles(prev => {
-                const updated = prev.map(f =>
-                  f.id === uploadFile.id
-                    ? {
-                        ...f,
-                        status: 'error' as const,
-                        error: error instanceof Error ? error.message : 'Upload failed',
-                      }
-                    : f,
-                )
-                onChange?.(updated)
-                return updated
-              })
+              currentFiles = currentFiles.map(f =>
+                f.id === uploadFile.id
+                  ? {
+                      ...f,
+                      status: 'error' as const,
+                      error: error instanceof Error ? error.message : 'Upload failed',
+                    }
+                  : f,
+              )
+              commitFiles(currentFiles)
             }
           }
         }
       },
-      [commitFiles, maxFiles, multiple, onChange, onFilesAdded, onUpload, resolvedFiles],
+      [commitFiles, maxFiles, multiple, onFilesAdded, onUpload, resolvedFiles],
     )
 
     const handleRemoveConfirmed = React.useCallback(

@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest'
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { FieldGroupProvider } from './FieldGroupContext'
@@ -83,12 +83,14 @@ describe('FileUpload', () => {
 
     await user.click(screen.getByRole('button', { name: 'Upload' }))
 
-    expect(onChange).toHaveBeenCalledWith([
-      expect.objectContaining({
-        file,
-        status: 'pending',
-      }),
-    ])
+    await waitFor(() =>
+      expect(onChange).toHaveBeenCalledWith([
+        expect.objectContaining({
+          file,
+          status: 'pending',
+        }),
+      ]),
+    )
   })
 
   it('asks for confirmation before removing files when enabled', async () => {
@@ -112,5 +114,53 @@ describe('FileUpload', () => {
     await user.click(screen.getByRole('button', { name: 'Remove' }))
 
     expect(onChange).toHaveBeenCalledWith([])
+  })
+
+  it('keeps the uploaded file in controlled onUpload success changes', async () => {
+    const user = userEvent.setup()
+    const file = new File(['image'], 'hero.png', { type: 'image/png' })
+    const onChange = vi.fn()
+    const onUpload = vi.fn(async (_file: File, onProgress: (progress: number) => void) => {
+      onProgress(50)
+    })
+
+    render(<FileUpload value={[]} onChange={onChange} onUpload={onUpload} />)
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement | null
+    await user.upload(input!, file)
+
+    await waitFor(() =>
+      expect(onChange).toHaveBeenLastCalledWith([
+        expect.objectContaining({
+          file,
+          progress: 100,
+          status: 'success',
+        }),
+      ]),
+    )
+  })
+
+  it('keeps the uploaded file in controlled onUpload error changes', async () => {
+    const user = userEvent.setup()
+    const file = new File(['image'], 'hero.png', { type: 'image/png' })
+    const onChange = vi.fn()
+    const onUpload = vi.fn(async () => {
+      throw new Error('Upload failed on server')
+    })
+
+    render(<FileUpload value={[]} onChange={onChange} onUpload={onUpload} />)
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement | null
+    await user.upload(input!, file)
+
+    await waitFor(() =>
+      expect(onChange).toHaveBeenLastCalledWith([
+        expect.objectContaining({
+          error: 'Upload failed on server',
+          file,
+          status: 'error',
+        }),
+      ]),
+    )
   })
 })
