@@ -84,6 +84,14 @@
       "types": "./dist/elements/qr-code/index.d.ts",
       "import": "./dist/elements/qr-code.js"
     },
+    "./resizable": {
+      "types": "./dist/resizable/index.d.ts",
+      "import": "./dist/resizable.js"
+    },
+    "./resizable/Resizable": {
+      "types": "./dist/resizable/Resizable.d.ts",
+      "import": "./dist/resizable/Resizable.js"
+    },
     "./elements/tour": {
       "types": "./dist/elements/tour/index.d.ts",
       "import": "./dist/elements/tour.js"

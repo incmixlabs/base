@@ -40,6 +40,8 @@ const lightEntries = {
   'elements/qr-code': 'src/elements/qr-code/index.ts',
   'elements/navigation-menu/NavigationMenu': 'src/elements/navigation-menu/NavigationMenu.tsx',
   'elements/tour': 'src/elements/tour/index.ts',
+  resizable: 'src/resizable/index.ts',
+  'resizable/Resizable': 'src/resizable/Resizable.tsx',
   form: 'src/form/index.ts',
   hooks: 'src/hooks/index.ts',
   layouts: 'src/layouts/index.ts',
