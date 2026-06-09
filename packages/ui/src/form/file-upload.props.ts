@@ -3,6 +3,7 @@ import type { Accept } from 'react-dropzone'
 import type { Radius, Size } from '@/theme/tokens'
 
 export type FileUploadVariant = 'default' | 'minimal' | 'card'
+export type FileUploadFileListDisplay = 'full' | 'thumbnail'
 
 export const uploadedFileStatuses = ['pending', 'uploading', 'success', 'error'] as const
 
@@ -52,6 +53,10 @@ export interface FileUploadProps {
   onFileRemove?: (file: UploadedFile) => void
   /** Custom upload function - if provided, handles upload automatically */
   onUpload?: (file: File, onProgress: (progress: number) => void) => Promise<void>
+  /** Ask for confirmation before accepted files are added */
+  confirmBeforeUpload?: boolean
+  /** Ask for confirmation before an uploaded/staged file is removed */
+  confirmBeforeRemove?: boolean
   /** Placeholder text */
   placeholder?: string
   /** Description text */
@@ -60,6 +65,8 @@ export interface FileUploadProps {
   icon?: React.ReactNode
   /** Show file list */
   showFileList?: boolean
+  /** File list display density */
+  fileListDisplay?: FileUploadFileListDisplay
   /** Hide the dropzone when the max file count has been reached */
   hideDropzoneWhenFull?: boolean
   /** Group files by status (Uploading / Completed sections) */
