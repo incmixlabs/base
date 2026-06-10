@@ -106,7 +106,7 @@ ConfettiComponent.displayName = 'Confetti'
 
 export const Confetti = ConfettiComponent
 
-export type ConfettiButtonOptions = ConfettiOptions & ConfettiGlobalOptions & { canvas?: HTMLCanvasElement }
+export type ConfettiButtonOptions = ConfettiOptions
 
 export interface ConfettiButtonProps extends Omit<React.ComponentProps<typeof Button>, 'onClick'> {
   options?: ConfettiButtonOptions
