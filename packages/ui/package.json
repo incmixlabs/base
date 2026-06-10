@@ -76,6 +76,10 @@
       "types": "./dist/elements/card/Card.d.ts",
       "import": "./dist/elements/card/Card.js"
     },
+    "./elements/confetti": {
+      "types": "./dist/elements/confetti/index.d.ts",
+      "import": "./dist/elements/confetti.js"
+    },
     "./elements/navigation-menu/NavigationMenu": {
       "types": "./dist/elements/navigation-menu/NavigationMenu.d.ts",
       "import": "./dist/elements/navigation-menu/NavigationMenu.js"
@@ -250,10 +254,12 @@
     "@internationalized/date": "^3.11.0",
     "@ncdai/react-wheel-picker": "^1.2.0",
     "@tanstack/react-query": "^5.91.2",
+    "@types/canvas-confetti": "^1.9.0",
     "@vanilla-extract/dynamic": "catalog:",
     "@xstate/react": "catalog:",
     "@xstate/store": "catalog:",
     "@xstate/store-react": "catalog:",
+    "canvas-confetti": "^1.9.4",
     "chrono-node": "^2.9.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
