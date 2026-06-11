@@ -82,6 +82,9 @@ export interface AppShellSecondarySidebarProps extends Omit<AppShellSecondaryPro
   title: React.ReactNode
   description?: React.ReactNode
   contentClassName?: string
+  footer?: React.ReactNode
+  footerClassName?: string
+  headerClassName?: string
 }
 
 export type AppShellSecondaryContentProps = FlexProps
