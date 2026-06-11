@@ -132,6 +132,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
       children
     )
     const nativeTitle = tooltipContent ? undefined : tooltipText || undefined
+    const tooltipContainer = typeof document === 'undefined' ? undefined : document.body
 
     const button = (
       <button
@@ -187,7 +188,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     }
 
     return (
-      <SimpleTooltip content={tooltipContent} size={tooltipSize}>
+      <SimpleTooltip content={tooltipContent} size={tooltipSize} container={tooltipContainer}>
         <Flex as="span" display="inline-flex" className={marginProps.className} style={marginProps.style}>
           {button}
         </Flex>
