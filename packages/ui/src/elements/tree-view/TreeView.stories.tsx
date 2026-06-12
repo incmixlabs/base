@@ -9,6 +9,12 @@ const meta = {
   title: 'Elements/TreeView',
   component: TreeViewWrapper,
   parameters: { layout: 'centered' },
+  argTypes: {
+    showIndentGuides: {
+      control: 'boolean',
+      description: 'Shows vertical indent guide lines for expanded branch groups.',
+    },
+  },
 } satisfies Meta<typeof TreeViewWrapper>
 
 export default meta
@@ -67,6 +73,15 @@ export const ExpandAll: Story = {
     className: 'w-[320px]',
     data: fileTreeData,
     expandAll: true,
+  },
+}
+
+export const WithoutIndentGuides: Story = {
+  args: {
+    className: 'w-[320px]',
+    data: fileTreeData,
+    expandAll: true,
+    showIndentGuides: false,
   },
 }
 
