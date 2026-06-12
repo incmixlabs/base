@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { AppShell } from './AppShell'
 
 let originalMatchMedia: typeof window.matchMedia
@@ -71,6 +71,10 @@ describe('AppShell', () => {
     })
   })
 
+  beforeEach(() => {
+    document.cookie = 'sidebar_state=; path=/; max-age=0'
+  })
+
   afterEach(() => {
     cleanup()
     vi.clearAllMocks()
@@ -83,11 +87,11 @@ describe('AppShell', () => {
     })
   })
 
-  it('uses the header trigger to expand primary mini navigation before toggling secondary', async () => {
+  it('uses the header trigger to toggle secondary while primary stays mini', async () => {
     const { container } = renderShell({ secondary: true })
 
     await waitFor(() => {
-      expect(screen.getByTestId('app-shell-trigger')).toHaveAccessibleName('Expand navigation')
+      expect(screen.getByTestId('app-shell-trigger')).toHaveAccessibleName('Toggle secondary panel')
     })
     expect(container.querySelector('[data-slot="app-shell-primary-expand"]')).toBeInTheDocument()
     expect(container.querySelector('[data-slot="app-shell-sidebar-trigger"]')).toBeInTheDocument()
@@ -96,28 +100,27 @@ describe('AppShell', () => {
     fireEvent.click(screen.getByTestId('app-shell-trigger'))
 
     await waitFor(() => {
-      expect(screen.getByTestId('app-shell-trigger')).toHaveAccessibleName('Toggle secondary panel')
+      expect(screen.queryByText('Component list')).not.toBeInTheDocument()
     })
 
-    expect(container.querySelector('[data-slot="app-shell-primary-expand"]')).not.toBeInTheDocument()
-    expect(screen.getByLabelText('Collapse navigation')).toBeInTheDocument()
-    expect(screen.getByText('Component list')).toBeInTheDocument()
+    expect(container.querySelector('[data-slot="app-shell-primary-expand"]')).toBeInTheDocument()
+    expect(screen.getByLabelText('Close navigation')).toBeInTheDocument()
 
     fireEvent.click(screen.getByTestId('app-shell-trigger'))
 
     await waitFor(() => {
-      expect(screen.queryByText('Component list')).not.toBeInTheDocument()
+      expect(screen.getByText('Component list')).toBeInTheDocument()
     })
   })
 
   it('uses the bottom primary action to go from expanded to mini mode', async () => {
-    renderShell({ secondary: true })
+    const { container } = renderShell({ secondary: true })
 
     await waitFor(() => {
-      expect(screen.getByTestId('app-shell-trigger')).toHaveAccessibleName('Expand navigation')
+      expect(container.querySelector('[data-slot="app-shell-primary-expand"]')).toBeInTheDocument()
     })
 
-    fireEvent.click(screen.getByTestId('app-shell-trigger'))
+    fireEvent.click(container.querySelector('[data-slot="app-shell-primary-expand"]') as Element)
 
     await waitFor(() => {
       expect(screen.getByLabelText('Collapse navigation')).toBeInTheDocument()
@@ -125,20 +128,28 @@ describe('AppShell', () => {
 
     fireEvent.click(screen.getByLabelText('Collapse navigation'))
 
-    expect(screen.getByTestId('app-shell-trigger')).toHaveAccessibleName('Expand navigation')
+    expect(screen.getByTestId('app-shell-trigger')).toHaveAccessibleName('Toggle secondary panel')
     expect(screen.getByLabelText('Close navigation')).toBeInTheDocument()
   })
 
-  it('can collapse primary mini navigation and restore all collapsed panels', () => {
-    renderShell({ secondary: true })
+  it('restores both collapsed sidebars with primary in mini mode', async () => {
+    const { container } = renderShell({ secondary: true })
+
+    await waitFor(() => {
+      expect(screen.getByTestId('app-shell-trigger')).toHaveAccessibleName('Toggle secondary panel')
+    })
+
+    fireEvent.click(screen.getByTestId('app-shell-trigger'))
+    expect(screen.queryByText('Component list')).not.toBeInTheDocument()
 
     fireEvent.click(screen.getByLabelText('Close navigation'))
     expect(screen.queryByLabelText('Expand navigation')).not.toBeInTheDocument()
 
-    fireEvent.click(screen.getByLabelText('Open navigation'))
+    fireEvent.click(screen.getByLabelText('Open navigation and secondary panel'))
 
     expect(screen.getByTestId('app-shell-trigger')).toHaveAccessibleName('Toggle secondary panel')
-    expect(screen.queryByLabelText('Expand navigation')).not.toBeInTheDocument()
+    expect(container.querySelector('[data-slot="app-shell-primary-expand"]')).toBeInTheDocument()
+    expect(screen.getByLabelText('Close navigation')).toBeInTheDocument()
     expect(screen.getByText('Component list')).toBeInTheDocument()
   })
 

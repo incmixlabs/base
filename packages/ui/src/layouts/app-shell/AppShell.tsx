@@ -482,7 +482,7 @@ export function AppShellSidebar({
     setOpen,
   ])
 
-  if (overlay) return null
+  if (overlay || !primarySidebarVisible) return null
 
   return (
     <Sidebar.Root
@@ -490,7 +490,6 @@ export function AppShellSidebar({
       collapsible={effectiveCollapsible}
       color={color}
       variant={variant}
-      hidden={!primarySidebarVisible}
       className={className}
       {...props}
     >
@@ -514,7 +513,7 @@ function AppShellPrimaryExpandButton() {
   if (open || !primarySidebarVisible) return null
 
   return (
-    <Sidebar.Group>
+    <Sidebar.Group style={{ paddingTop: '0.75rem' }}>
       <Sidebar.Menu>
         <Sidebar.MenuItem>
           <Sidebar.MenuButton
@@ -596,8 +595,7 @@ export function AppShellSecondary({
   style,
   ...props
 }: AppShellProps.Secondary) {
-  const { overlay, secondaryOpen, setSecondaryContent, setSecondaryOpen, setSecondaryRegistered, setSecondarySide } =
-    useAppShell()
+  const { overlay, secondaryOpen, setSecondaryContent, setSecondaryRegistered, setSecondarySide } = useAppShell()
   const secondaryRef = React.useRef<HTMLElement | null>(null)
   const cleanupResizeRef = React.useRef<(() => void) | null>(null)
   const hasUserResizedRef = React.useRef(false)
@@ -768,22 +766,6 @@ export function AppShellSecondary({
           onKeyDown={handleResizeKeyDown}
         />
       ) : null}
-      {!overlay ? (
-        <Flex
-          data-slot="app-shell-secondary-collapse"
-          align="center"
-          className="sticky top-0 z-10 h-8 shrink-0 bg-background px-2"
-        >
-          <IconButton
-            variant="ghost"
-            size="sm"
-            icon="panel-left-close"
-            title="Collapse secondary panel"
-            aria-label="Collapse secondary panel"
-            onClick={() => setSecondaryOpen(false)}
-          />
-        </Flex>
-      ) : null}
       {children}
     </aside>
   )
@@ -909,8 +891,9 @@ function useAppShellNavigationTrigger(onClick?: React.ComponentProps<typeof Icon
     primaryOpenInitialized,
   })
   const primarySidebarMini = !overlay && primarySidebarVisible && !open
-  const icon = primarySidebarMini ? 'panel-left-open' : navigationIcon
-  const label = primarySidebarMini ? 'Expand navigation' : navigationLabel
+  const primaryOnlyMini = primarySidebarMini && !secondaryRegistered
+  const icon = primaryOnlyMini ? 'panel-left-open' : navigationIcon
+  const label = primaryOnlyMini ? 'Expand navigation' : navigationLabel
 
   const handleClick = React.useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -925,17 +908,17 @@ function useAppShellNavigationTrigger(onClick?: React.ComponentProps<typeof Icon
       if (bothInlinePanelsCollapsed) {
         setPrimarySidebarVisible(true)
         setSecondaryOpen(true)
-        setOpen(true)
+        setOpen(false)
         return
       }
 
       if (primarySidebarHidden) {
         setPrimarySidebarVisible(true)
-        setOpen(true)
+        setOpen(!secondaryRegistered)
         return
       }
 
-      if (primarySidebarMini) {
+      if (primaryOnlyMini) {
         setOpen(true)
         return
       }
@@ -952,7 +935,7 @@ function useAppShellNavigationTrigger(onClick?: React.ComponentProps<typeof Icon
       secondaryRegistered,
       primarySidebarHidden,
       bothInlinePanelsCollapsed,
-      primarySidebarMini,
+      primaryOnlyMini,
       setDrawerOpen,
       setDrawerTab,
       setPrimarySidebarVisible,
