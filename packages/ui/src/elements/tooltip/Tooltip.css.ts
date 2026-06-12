@@ -22,6 +22,10 @@ export const tooltipContentBase = style({
   lineHeight: tooltipLineHeightVar,
 })
 
+export const tooltipPositionerBase = style({
+  zIndex: 1000,
+})
+
 export const tooltipContentBySize = styleVariants({
   xs: {
     vars: {

@@ -482,7 +482,7 @@ export function AppShellSidebar({
     setOpen,
   ])
 
-  if (overlay) return null
+  if (overlay || !primarySidebarVisible) return null
 
   return (
     <Sidebar.Root
@@ -490,13 +490,12 @@ export function AppShellSidebar({
       collapsible={effectiveCollapsible}
       color={color}
       variant={variant}
-      hidden={!primarySidebarVisible}
       className={className}
       {...props}
     >
       {effectiveCollapsible === 'icon' ? (
         <>
-          <AppShellSecondaryToggleButton />
+          <AppShellPrimaryExpandButton />
           {children}
           <AppShellPrimaryCollapseButton />
         </>
@@ -507,25 +506,21 @@ export function AppShellSidebar({
   )
 }
 
-function AppShellSecondaryToggleButton() {
-  const { open } = useSidebar()
-  const { secondaryOpen, secondaryRegistered, setSecondaryOpen } = useAppShell()
+function AppShellPrimaryExpandButton() {
+  const { open, setOpen } = useSidebar()
+  const { primarySidebarVisible } = useAppShell()
 
-  if (open || !secondaryRegistered) return null
-  const label = secondaryOpen ? 'Close secondary panel' : 'Open secondary panel'
-  const handleClick = () => {
-    setSecondaryOpen(current => !current)
-  }
+  if (open || !primarySidebarVisible) return null
 
   return (
-    <Sidebar.Group>
+    <Sidebar.Group style={{ paddingTop: '0.75rem' }}>
       <Sidebar.Menu>
         <Sidebar.MenuItem>
           <Sidebar.MenuButton
-            data-slot="app-shell-secondary-toggle"
-            tooltip={label}
-            aria-label={label}
-            onClick={handleClick}
+            data-slot="app-shell-primary-expand"
+            tooltip="Expand navigation"
+            aria-label="Expand navigation"
+            onClick={() => setOpen(true)}
           >
             <MenuIcon className="size-4" aria-hidden="true" />
           </Sidebar.MenuButton>
@@ -536,10 +531,16 @@ function AppShellSecondaryToggleButton() {
 }
 
 function AppShellPrimaryCollapseButton() {
-  const { open } = useSidebar()
+  const { open, setOpen } = useSidebar()
   const { setPrimarySidebarVisible } = useAppShell()
-
-  if (open) return null
+  const label = open ? 'Collapse navigation' : 'Close navigation'
+  const handleClick = () => {
+    if (open) {
+      setOpen(false)
+      return
+    }
+    setPrimarySidebarVisible(false)
+  }
 
   return (
     <Sidebar.Group anchor="bottom">
@@ -547,11 +548,12 @@ function AppShellPrimaryCollapseButton() {
         <Sidebar.MenuItem>
           <Sidebar.MenuButton
             data-slot="app-shell-primary-collapse"
-            tooltip="Close navigation"
-            aria-label="Close navigation"
-            onClick={() => setPrimarySidebarVisible(false)}
+            tooltip={label}
+            aria-label={label}
+            onClick={handleClick}
           >
             <PanelLeftCloseIcon className="size-4" aria-hidden="true" />
+            <span>{label}</span>
           </Sidebar.MenuButton>
         </Sidebar.MenuItem>
       </Sidebar.Menu>
@@ -593,8 +595,7 @@ export function AppShellSecondary({
   style,
   ...props
 }: AppShellProps.Secondary) {
-  const { overlay, secondaryOpen, setSecondaryContent, setSecondaryOpen, setSecondaryRegistered, setSecondarySide } =
-    useAppShell()
+  const { overlay, secondaryOpen, setSecondaryContent, setSecondaryRegistered, setSecondarySide } = useAppShell()
   const secondaryRef = React.useRef<HTMLElement | null>(null)
   const cleanupResizeRef = React.useRef<(() => void) | null>(null)
   const hasUserResizedRef = React.useRef(false)
@@ -765,22 +766,6 @@ export function AppShellSecondary({
           onKeyDown={handleResizeKeyDown}
         />
       ) : null}
-      {!overlay ? (
-        <Flex
-          data-slot="app-shell-secondary-collapse"
-          align="center"
-          className="sticky top-0 z-10 h-8 shrink-0 bg-background px-2"
-        >
-          <IconButton
-            variant="ghost"
-            size="sm"
-            icon="panel-left-close"
-            title="Collapse secondary panel"
-            aria-label="Collapse secondary panel"
-            onClick={() => setSecondaryOpen(false)}
-          />
-        </Flex>
-      ) : null}
       {children}
     </aside>
   )
@@ -814,13 +799,16 @@ export function AppShellSecondarySidebar({
   description,
   className,
   contentClassName,
+  footer,
+  footerClassName,
+  headerClassName,
   children,
   ...props
 }: AppShellProps.SecondarySidebar) {
   return (
-    <AppShellSecondary className={className} {...props}>
+    <AppShellSecondary className={className} scroll="hidden" {...props}>
       <AppShellSecondaryContent gap="4">
-        <Column gap="4" pt="0">
+        <Column data-slot="app-shell-secondary-sidebar-header" className={headerClassName} gap="4" pt="0">
           <Flex align="center" gap="2" className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             {title}
           </Flex>
@@ -832,7 +820,17 @@ export function AppShellSecondarySidebar({
             </div>
           ) : null}
         </Column>
-        <div className={cn('min-h-0 flex-1 overflow-x-hidden overflow-y-auto', contentClassName)}>{children}</div>
+        <div
+          data-slot="app-shell-secondary-sidebar-body"
+          className={cn('min-h-0 flex-1 overflow-x-hidden overflow-y-auto', contentClassName)}
+        >
+          {children}
+        </div>
+        {footer ? (
+          <div data-slot="app-shell-secondary-sidebar-footer" className={cn('shrink-0', footerClassName)}>
+            {footer}
+          </div>
+        ) : null}
       </AppShellSecondaryContent>
     </AppShellSecondary>
   )
@@ -874,8 +872,13 @@ function useAppShellNavigationTrigger(onClick?: React.ComponentProps<typeof Icon
     drawerOpen,
     drawerTab,
   } = useAppShell()
-  const { toggleSidebar, setOpen } = useSidebar()
-  const { bothInlinePanelsCollapsed, icon, label, primarySidebarHidden } = getAppShellNavigationState({
+  const { open, toggleSidebar, setOpen } = useSidebar()
+  const {
+    bothInlinePanelsCollapsed,
+    icon: navigationIcon,
+    label: navigationLabel,
+    primarySidebarHidden,
+  } = getAppShellNavigationState({
     overlay,
     secondaryOpen,
     secondaryRegistered,
@@ -886,6 +889,10 @@ function useAppShellNavigationTrigger(onClick?: React.ComponentProps<typeof Icon
     primaryOpenBeforeSecondary,
     primaryOpenInitialized,
   })
+  const primarySidebarMini = !overlay && primarySidebarVisible && !open
+  const primaryOnlyMini = primarySidebarMini && !secondaryRegistered
+  const icon = primaryOnlyMini ? 'panel-left-open' : navigationIcon
+  const label = primaryOnlyMini ? 'Expand navigation' : navigationLabel
 
   const handleClick = React.useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -900,12 +907,18 @@ function useAppShellNavigationTrigger(onClick?: React.ComponentProps<typeof Icon
       if (bothInlinePanelsCollapsed) {
         setPrimarySidebarVisible(true)
         setSecondaryOpen(true)
+        setOpen(false)
         return
       }
 
       if (primarySidebarHidden) {
         setPrimarySidebarVisible(true)
         setOpen(!secondaryRegistered)
+        return
+      }
+
+      if (primaryOnlyMini) {
+        setOpen(true)
         return
       }
 
@@ -921,6 +934,7 @@ function useAppShellNavigationTrigger(onClick?: React.ComponentProps<typeof Icon
       secondaryRegistered,
       primarySidebarHidden,
       bothInlinePanelsCollapsed,
+      primaryOnlyMini,
       setDrawerOpen,
       setDrawerTab,
       setPrimarySidebarVisible,

@@ -105,8 +105,10 @@ const Icon = React.forwardRef<HTMLSpanElement, IconProps>(
 
     if (!tooltipContent) return iconNode
 
+    const tooltipContainer = typeof document === 'undefined' ? undefined : document.body
+
     return (
-      <SimpleTooltip content={tooltipContent} size={tooltipSize}>
+      <SimpleTooltip content={tooltipContent} size={tooltipSize} container={tooltipContainer}>
         <Flex as="span" display="inline-flex" className={marginProps.className} style={marginProps.style}>
           {iconNode}
         </Flex>

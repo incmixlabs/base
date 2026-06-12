@@ -662,10 +662,14 @@ function SidebarMenuButton({
     return comp
   }
 
+  const tooltipContainer = typeof document === 'undefined' ? undefined : document.body
+
   return (
     <Tooltip.Root>
       <Tooltip.Trigger render={comp} />
-      <Tooltip.Content side="right">{tooltip}</Tooltip.Content>
+      <Tooltip.Content container={tooltipContainer} side="right">
+        {tooltip}
+      </Tooltip.Content>
     </Tooltip.Root>
   )
 }

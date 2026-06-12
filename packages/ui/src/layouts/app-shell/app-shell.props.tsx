@@ -78,10 +78,13 @@ export interface AppShellSecondaryProps extends React.ComponentPropsWithoutRef<'
   scroll?: AppShellScrollMode
 }
 
-export interface AppShellSecondarySidebarProps extends Omit<AppShellSecondaryProps, 'title'> {
+export interface AppShellSecondarySidebarProps extends Omit<AppShellSecondaryProps, 'title' | 'scroll'> {
   title: React.ReactNode
   description?: React.ReactNode
   contentClassName?: string
+  footer?: React.ReactNode
+  footerClassName?: string
+  headerClassName?: string
 }
 
 export type AppShellSecondaryContentProps = FlexProps

@@ -25,6 +25,7 @@ import {
   tooltipContentMaxWidth,
   tooltipPanelTransition,
   tooltipPanelVariants,
+  tooltipPositionerBase,
 } from './Tooltip.css'
 import { tooltipContentPropDefs, tooltipProviderPropDefs } from './tooltip.props'
 
@@ -283,7 +284,13 @@ const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentProps>(
             keepMounted
             container={container ?? portalContext?.portalContainer ?? themePortalContainer}
           >
-            <TooltipPrimitive.Positioner side={side} align={align} sideOffset={sideOffset} alignOffset={alignOffset}>
+            <TooltipPrimitive.Positioner
+              className={tooltipPositionerBase}
+              side={side}
+              align={align}
+              sideOffset={sideOffset}
+              alignOffset={alignOffset}
+            >
               <TooltipVisualContext.Provider value={contextValue}>
                 <TooltipPrimitive.Popup
                   ref={ref}
@@ -385,6 +392,8 @@ export interface SimpleTooltipProps {
   maxWidth?: TooltipMaxWidth
   /** Whether to render the tooltip arrow */
   showArrow?: boolean
+  /** Portal container element. */
+  container?: HTMLElement | null
   /** Trigger element */
   children: React.ReactElement
 }
@@ -402,6 +411,7 @@ const SimpleTooltip: React.FC<SimpleTooltipProps> = ({
   size = tooltipContentPropDefs.size.default as TooltipSize,
   maxWidth = tooltipContentPropDefs.maxWidthToken.default as TooltipMaxWidth,
   showArrow = true,
+  container,
   children,
 }) => {
   return (
@@ -418,6 +428,7 @@ const SimpleTooltip: React.FC<SimpleTooltipProps> = ({
         alignOffset={alignOffset}
         size={size}
         maxWidth={maxWidth}
+        container={container}
       >
         {showArrow ? <TooltipArrow /> : null}
         {content}
