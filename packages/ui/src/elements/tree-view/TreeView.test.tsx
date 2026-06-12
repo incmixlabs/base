@@ -66,4 +66,13 @@ describe('TreeView', () => {
       expect.objectContaining({ id: 'folder-b', name: 'Folder B' }),
     )
   })
+
+  it('can hide indent guides', () => {
+    const { container } = render(<TreeView.Root data={data} expandAll showIndentGuides={false} />)
+
+    const branchContent = container.querySelector('[role="group"] > div')
+
+    expect(branchContent).toBeTruthy()
+    expect(branchContent).not.toHaveAttribute('class')
+  })
 })
