@@ -56,6 +56,7 @@ interface TreeViewContextValue {
   selectedItemId: string | undefined
   onSelectChange: (item: TreeDataItem | undefined) => void
   expandedItemIds: string[]
+  showIndentGuides: boolean
   draggedItemRef: React.RefObject<TreeDataItem | null>
   onDragStart: (item: TreeDataItem) => void
   onDragEnd: () => void
@@ -71,6 +72,7 @@ const TreeViewContext = React.createContext<TreeViewContextValue>({
   selectedItemId: undefined,
   onSelectChange: () => {},
   expandedItemIds: [],
+  showIndentGuides: true,
   draggedItemRef: { current: null },
   onDragStart: () => {},
   onDragEnd: () => {},
@@ -123,6 +125,7 @@ export interface TreeViewRootProps extends React.HTMLAttributes<HTMLDivElement> 
   onSelectChange?: (item: TreeDataItem | undefined) => void
   expandAll?: boolean
   autoExpandSelected?: boolean
+  showIndentGuides?: boolean
   defaultNodeIcon?: React.ComponentType<{ className?: string }>
   defaultLeafIcon?: React.ComponentType<{ className?: string }>
   onItemDrag?: (sourceItem: TreeDataItem, targetItem: TreeDataItem) => void
@@ -140,6 +143,7 @@ const TreeViewRoot = React.forwardRef<HTMLDivElement, TreeViewRootProps>(
       onSelectChange: onSelectChangeProp,
       expandAll = false,
       autoExpandSelected = true,
+      showIndentGuides = true,
       defaultNodeIcon,
       defaultLeafIcon,
       onItemDrag,
@@ -206,6 +210,7 @@ const TreeViewRoot = React.forwardRef<HTMLDivElement, TreeViewRootProps>(
         selectedItemId,
         onSelectChange: handleSelectChange,
         expandedItemIds,
+        showIndentGuides,
         draggedItemRef,
         onDragStart: handleDragStart,
         onDragEnd: handleDragEnd,
@@ -220,6 +225,7 @@ const TreeViewRoot = React.forwardRef<HTMLDivElement, TreeViewRootProps>(
         selectedItemId,
         handleSelectChange,
         expandedItemIds,
+        showIndentGuides,
         handleDragStart,
         handleDragEnd,
         canDropOnItem,
@@ -399,7 +405,7 @@ function TreeViewBranch({ item, level }: TreeViewBranchProps) {
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
           >
-            <div className={treeViewIndentGuide}>
+            <div className={ctx.showIndentGuides ? treeViewIndentGuide : undefined}>
               {item.children?.map(child =>
                 child.children?.length ? (
                   <TreeViewBranch key={child.id} item={child} level={level + 1} />
