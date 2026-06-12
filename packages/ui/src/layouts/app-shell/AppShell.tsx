@@ -803,7 +803,6 @@ export function AppShellSecondarySidebar({
   footerClassName,
   headerClassName,
   children,
-  scroll: _scroll,
   ...props
 }: AppShellProps.SecondarySidebar) {
   return (

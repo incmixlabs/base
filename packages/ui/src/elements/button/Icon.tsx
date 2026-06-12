@@ -79,7 +79,6 @@ const Icon = React.forwardRef<HTMLSpanElement, IconProps>(
       children
     )
     const nativeTitle = tooltipContent ? undefined : tooltipText || undefined
-    const tooltipContainer = typeof document === 'undefined' ? undefined : document.body
 
     const iconNode = (
       <Flex
@@ -105,6 +104,8 @@ const Icon = React.forwardRef<HTMLSpanElement, IconProps>(
     )
 
     if (!tooltipContent) return iconNode
+
+    const tooltipContainer = typeof document === 'undefined' ? undefined : document.body
 
     return (
       <SimpleTooltip content={tooltipContent} size={tooltipSize} container={tooltipContainer}>

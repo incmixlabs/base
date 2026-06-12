@@ -40,12 +40,7 @@ function renderSecondarySidebarShell() {
         <AppShell.Main>
           <AppShell.Content>Page content</AppShell.Content>
         </AppShell.Main>
-        <AppShell.SecondarySidebar
-          aria-label="Builder"
-          footer={<button type="button">Save</button>}
-          scroll="auto"
-          title="Path"
-        >
+        <AppShell.SecondarySidebar aria-label="Builder" footer={<button type="button">Save</button>} title="Path">
           <div>Scrollable body</div>
         </AppShell.SecondarySidebar>
       </AppShell.Body>
