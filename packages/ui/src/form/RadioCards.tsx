@@ -17,9 +17,14 @@ import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props
 import type { Color } from '@/theme/tokens'
 import { useFieldGroup } from './FieldGroupContext'
 import { resolveFormSize } from './form-size'
-import { type RadioCardSize, radioCardSizeVariants } from './radio-cards.css'
+import {
+  type RadioCardSize,
+  radioCardIndicatorColorVariants,
+  radioCardRootColorVariants,
+  radioCardSizeVariants,
+} from './radio-cards.css'
 import { type RadioCardsGap, radioCardsGapValues, radioCardsRootPropDefs } from './radio-cards.props'
-import { radioColorVariants, radioHighContrastByVariant } from './radio-group.css'
+import { radioHighContrastByVariant } from './radio-group.css'
 
 export type { RadioCardSize }
 
@@ -207,9 +212,9 @@ const RadioCardsItem = React.forwardRef<HTMLButtonElement, RadioCardsItemProps>(
           !isDisabled && surfaceHoverEnabledClass,
           context.highContrast && 'af-high-contrast',
           context.highContrast && surfaceHighContrastByVariant[context.variant === 'surface' ? 'surface' : 'classic'],
+          radioCardRootColorVariants[context.color],
           // Selected styles
           'data-[checked]:ring-2',
-          'data-[checked]:ring-ring/40',
           // Focus state
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
           // Disabled state
@@ -226,8 +231,7 @@ const RadioCardsItem = React.forwardRef<HTMLButtonElement, RadioCardsItemProps>(
               'w-[var(--rc-indicator-size)] h-[var(--rc-indicator-size)]',
               'border-2',
               'transition-all duration-150',
-              // Keep indicator styling stable for contrast; card `variant` is applied on the outer card surface.
-              radioColorVariants[context.color].surface,
+              radioCardIndicatorColorVariants[context.color],
               context.highContrast && 'af-high-contrast',
               context.highContrast && radioHighContrastByVariant.surface,
             )}
