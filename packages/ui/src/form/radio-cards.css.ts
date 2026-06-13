@@ -1,6 +1,8 @@
 import { styleVariants } from '@vanilla-extract/css'
 import { getControlSizeValues } from '@/elements/control-size'
+import { semanticColorKeys, semanticColorVar } from '@/theme/props/color.prop'
 import { radioCardsSizeVar } from '@/theme/runtime/component-vars'
+import type { Color } from '@/theme/tokens'
 import { type FormSize, formSizes } from './form-size'
 
 export type RadioCardSize = FormSize
@@ -34,3 +36,50 @@ export const radioCardSizeVariants: Record<RadioCardSize, string> = styleVariant
     }),
   ),
 )
+
+export const radioCardIndicatorColorVariants: Record<Color, string> = styleVariants(
+  Object.fromEntries(
+    semanticColorKeys.map(color => {
+      const selectedColor = color === 'neutral' ? 'primary' : color
+
+      return [
+        color,
+        {
+          borderColor: semanticColorVar(color, 'border'),
+          backgroundColor: semanticColorVar(color, 'surface'),
+          color: semanticColorVar(selectedColor, 'primary'),
+          selectors: {
+            '[data-checked] &': {
+              borderColor: semanticColorVar(selectedColor, 'primary'),
+              backgroundColor: semanticColorVar(selectedColor, 'primary'),
+            },
+          },
+        },
+      ]
+    }),
+  ),
+) as Record<Color, string>
+
+export const radioCardRootColorVariants: Record<Color, string> = styleVariants(
+  Object.fromEntries(
+    semanticColorKeys.map(color => {
+      const selectedColor = color === 'neutral' ? 'primary' : color
+
+      return [
+        color,
+        {
+          selectors: {
+            '&[data-checked]': {
+              borderColor: semanticColorVar(selectedColor, 'primary'),
+              backgroundColor: semanticColorVar(selectedColor, 'soft'),
+              boxShadow: `0 0 0 2px ${semanticColorVar(selectedColor, 'primary-alpha')}`,
+            },
+            '&[data-checked]:hover': {
+              backgroundColor: semanticColorVar(selectedColor, 'soft-hover'),
+            },
+          },
+        },
+      ]
+    }),
+  ),
+) as Record<Color, string>
