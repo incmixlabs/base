@@ -2,6 +2,7 @@
 
 import {
   AlertTriangle,
+  ArrowRight,
   Bell,
   Bookmark,
   Bug,
@@ -85,6 +86,7 @@ type LucideIconComponent = LucideIcon
 
 const iconAliasMap: Record<string, string[]> = {
   'alert-triangle': ['AlertTriangle', 'TriangleAlert'],
+  'arrow-right': ['ArrowRight'],
   bell: ['Bell'],
   bookmark: ['Bookmark'],
   building: ['Building'],
@@ -165,6 +167,7 @@ const iconAliasMap: Record<string, string[]> = {
 
 const SafeListIcons: Record<string, LucideIconComponent> = {
   AlertTriangle,
+  ArrowRight,
   Bell,
   Bookmark,
   Bug,
