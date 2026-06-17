@@ -62,6 +62,7 @@ const lightEntries = {
   'typography/heading/Heading': 'src/typography/heading/Heading.tsx',
   'typography/text/Text': 'src/typography/text/Text.tsx',
   'utils/date': 'src/utils/date.ts',
+  'utils/uuid': 'src/utils/uuid.ts',
   ...entriesFromDirectory('src/hooks', 'hooks'),
   ...entriesFromDirectory('src/lib', 'lib'),
 }
