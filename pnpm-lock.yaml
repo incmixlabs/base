@@ -114,6 +114,9 @@ catalogs:
     typescript:
       specifier: ^5.4.5
       version: 5.9.3
+    uuid:
+      specifier: ^14.0.0
+      version: 14.0.0
     vite:
       specifier: ^7.3.2
       version: 7.3.2
@@ -324,6 +327,9 @@ importers:
       use-mask-input:
         specifier: ^3.6.1
         version: 3.10.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      uuid:
+        specifier: 'catalog:'
+        version: 14.0.0
       xstate:
         specifier: 'catalog:'
         version: 5.31.0
@@ -3026,6 +3032,10 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
+  uuid@14.0.0:
+    resolution: {integrity: sha512-Qo+uWgilfSmAhXCMav1uYFynlQO7fMFiMVZsQqZRMIXp0O7rR7qjkj+cPvBHLgBqi960QCoo/PH2/6ZtVqKvrg==}
+    hasBin: true
+
   vite-node@3.2.4:
     resolution: {integrity: sha512-EbKSKh+bh1E1IFxeO0pg1n4dvoOTt0UDiXMd/qn++r98+jPO1xtJilvXldeuQ8giIB5IkpjCgMleHMNEsGH6pg==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
@@ -5582,6 +5592,8 @@ snapshots:
   use-sync-external-store@1.6.0(react@19.2.4):
     dependencies:
       react: 19.2.4
+
+  uuid@14.0.0: {}
 
   vite-node@3.2.4(@types/node@25.6.0)(jiti@2.6.1)(lightningcss@1.32.0)(tsx@4.21.0):
     dependencies:
