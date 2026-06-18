@@ -34,6 +34,10 @@ export interface TreeDataItem {
   children?: TreeDataItem[]
   actions?: React.ReactNode
   onClick?: () => void
+  onContextMenu?: (
+    event: React.KeyboardEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>,
+    item: TreeDataItem,
+  ) => void
   draggable?: boolean
   droppable?: boolean
   disabled?: boolean
@@ -54,6 +58,8 @@ export interface TreeRenderItemParams {
 interface TreeViewContextValue {
   size: TreeViewSize
   selectedItemId: string | undefined
+  activeItemId: string | undefined
+  onActiveItem: (item: TreeDataItem | undefined) => void
   onSelectChange: (item: TreeDataItem | undefined) => void
   expandedItemIds: string[]
   showIndentGuides: boolean
@@ -70,6 +76,8 @@ interface TreeViewContextValue {
 const TreeViewContext = React.createContext<TreeViewContextValue>({
   size: treeViewRootPropDefs.size.default,
   selectedItemId: undefined,
+  activeItemId: undefined,
+  onActiveItem: () => {},
   onSelectChange: () => {},
   expandedItemIds: [],
   showIndentGuides: true,
@@ -160,8 +168,13 @@ const TreeViewRoot = React.forwardRef<HTMLDivElement, TreeViewRootProps>(
     const [uncontrolledSelectedItemId, setUncontrolledSelectedItemId] = React.useState<string | undefined>(
       initialSelectedItemId,
     )
+    const [activeItemId, setActiveItemId] = React.useState<string | undefined>(initialSelectedItemId)
     const draggedItemRef = React.useRef<TreeDataItem | null>(null)
     const selectedItemId = selectedItemIdProp ?? uncontrolledSelectedItemId
+
+    React.useEffect(() => {
+      setActiveItemId(selectedItemId)
+    }, [selectedItemId])
 
     const expandedItemIds = React.useMemo(() => {
       if (expandAll) return collectExpandedIds(data, '', true)
@@ -171,6 +184,7 @@ const TreeViewRoot = React.forwardRef<HTMLDivElement, TreeViewRootProps>(
 
     const handleSelectChange = React.useCallback(
       (item: TreeDataItem | undefined) => {
+        setActiveItemId(item?.id)
         if (selectedItemIdProp === undefined) {
           setUncontrolledSelectedItemId(item?.id)
         }
@@ -178,6 +192,10 @@ const TreeViewRoot = React.forwardRef<HTMLDivElement, TreeViewRootProps>(
       },
       [onSelectChangeProp, selectedItemIdProp],
     )
+
+    const handleActiveItem = React.useCallback((item: TreeDataItem | undefined) => {
+      setActiveItemId(item?.id)
+    }, [])
 
     const handleDragStart = React.useCallback((item: TreeDataItem) => {
       draggedItemRef.current = item
@@ -208,6 +226,8 @@ const TreeViewRoot = React.forwardRef<HTMLDivElement, TreeViewRootProps>(
       () => ({
         size: safeSize,
         selectedItemId,
+        activeItemId,
+        onActiveItem: handleActiveItem,
         onSelectChange: handleSelectChange,
         expandedItemIds,
         showIndentGuides,
@@ -223,6 +243,8 @@ const TreeViewRoot = React.forwardRef<HTMLDivElement, TreeViewRootProps>(
       [
         safeSize,
         selectedItemId,
+        activeItemId,
+        handleActiveItem,
         handleSelectChange,
         expandedItemIds,
         showIndentGuides,
@@ -273,6 +295,8 @@ function TreeViewBranch({ item, level }: TreeViewBranchProps) {
   const ctx = React.useContext(TreeViewContext)
   const [isDragOver, setIsDragOver] = React.useState(false)
   const isSelected = ctx.selectedItemId === item.id
+  const isActive = ctx.activeItemId === item.id
+  const isVisuallySelected = isSelected && (!ctx.activeItemId || ctx.activeItemId === ctx.selectedItemId)
   const hasChildren = !!item.children?.length
 
   const shouldBeOpen = ctx.expandedItemIds.includes(item.id)
@@ -335,20 +359,39 @@ function TreeViewBranch({ item, level }: TreeViewBranchProps) {
         tabIndex={isSelected ? 0 : -1}
         className={cn(treeViewItemBase, item.className)}
         style={{ paddingInlineStart: `calc(0.5rem + ${level} * 1rem)` }}
-        data-selected={isSelected ? '' : undefined}
+        data-selected={isVisuallySelected ? '' : undefined}
+        data-active={isActive ? '' : undefined}
         data-disabled={item.disabled ? '' : undefined}
         data-drag-over={isDragOver ? '' : undefined}
         data-tree-item-id={item.id}
+        onFocus={() => {
+          if (item.disabled) return
+          ctx.onActiveItem(item)
+        }}
+        onPointerDown={() => {
+          if (item.disabled) return
+          ctx.onActiveItem(item)
+        }}
         onClick={() => {
           if (item.disabled) return
+          ctx.onActiveItem(item)
           toggleOpen()
           ctx.onSelectChange(item)
           item.onClick?.()
         }}
+        onContextMenu={e => {
+          if (item.disabled) return
+          ctx.onActiveItem(item)
+          item.onContextMenu?.(e, item)
+        }}
         onKeyDown={e => {
           if (item.disabled) return
-          if (e.key === 'Enter' || e.key === ' ') {
+          if (e.key === 'ContextMenu' || (e.shiftKey && e.key === 'F10')) {
+            ctx.onActiveItem(item)
+            item.onContextMenu?.(e, item)
+          } else if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault()
+            ctx.onActiveItem(item)
             toggleOpen()
             ctx.onSelectChange(item)
             item.onClick?.()
@@ -432,6 +475,8 @@ function TreeViewLeaf({ item, level }: TreeViewLeafProps) {
   const ctx = React.useContext(TreeViewContext)
   const [isDragOver, setIsDragOver] = React.useState(false)
   const isSelected = ctx.selectedItemId === item.id
+  const isActive = ctx.activeItemId === item.id
+  const isVisuallySelected = isSelected && (!ctx.activeItemId || ctx.activeItemId === ctx.selectedItemId)
 
   const handleDragStart = (e: React.DragEvent) => {
     if (!item.draggable || item.disabled) {
@@ -479,18 +524,38 @@ function TreeViewLeaf({ item, level }: TreeViewLeafProps) {
       tabIndex={isSelected ? 0 : -1}
       className={cn(treeViewItemBase, item.className)}
       style={{ paddingInlineStart: `calc(0.5rem + ${level} * 1rem)` }}
-      data-selected={isSelected ? '' : undefined}
+      data-selected={isVisuallySelected ? '' : undefined}
+      data-active={isActive ? '' : undefined}
       data-disabled={item.disabled ? '' : undefined}
       data-drag-over={isDragOver ? '' : undefined}
       data-tree-item-id={item.id}
+      onFocus={() => {
+        if (item.disabled) return
+        ctx.onActiveItem(item)
+      }}
+      onPointerDown={() => {
+        if (item.disabled) return
+        ctx.onActiveItem(item)
+      }}
       onClick={() => {
         if (item.disabled) return
+        ctx.onActiveItem(item)
         ctx.onSelectChange(item)
         item.onClick?.()
       }}
+      onContextMenu={e => {
+        if (item.disabled) return
+        ctx.onActiveItem(item)
+        item.onContextMenu?.(e, item)
+      }}
       onKeyDown={e => {
-        if ((e.key === 'Enter' || e.key === ' ') && !item.disabled) {
+        if (item.disabled) return
+        if (e.key === 'ContextMenu' || (e.shiftKey && e.key === 'F10')) {
+          ctx.onActiveItem(item)
+          item.onContextMenu?.(e, item)
+        } else if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
+          ctx.onActiveItem(item)
           ctx.onSelectChange(item)
           item.onClick?.()
         }

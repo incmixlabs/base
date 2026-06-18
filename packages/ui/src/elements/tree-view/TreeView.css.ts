@@ -51,12 +51,16 @@ export const treeViewItemBase = style({
       background: `var(${treeViewItemHoverBgVar}, ${semanticColorVar('slate', 'soft')})`,
     },
     '&:focus-visible': {
+      backgroundColor: `var(${treeViewItemSelectedBgVar}, ${semanticColorVar('primary', 'soft-hover')})`,
+      color: `var(${treeViewItemSelectedColorVar}, ${semanticColorVar('primary', 'text')})`,
+      boxShadow: `inset 3px 0 0 ${semanticColorVar('primary', 'primary')}`,
       outline: `2px solid ${semanticColorVar('primary', 'primary')}`,
       outlineOffset: '-2px',
     },
-    '&[data-selected]': {
-      background: `var(${treeViewItemSelectedBgVar}, ${semanticColorVar('slate', 'soft')})`,
-      color: `var(${treeViewItemSelectedColorVar}, ${semanticColorVar('slate', 'text')})`,
+    '&[data-selected], &[data-active]': {
+      backgroundColor: `var(${treeViewItemSelectedBgVar}, ${semanticColorVar('primary', 'soft-hover')})`,
+      color: `var(${treeViewItemSelectedColorVar}, ${semanticColorVar('primary', 'text')})`,
+      boxShadow: `inset 3px 0 0 ${semanticColorVar('primary', 'primary')}`,
     },
     '&[data-disabled]': {
       opacity: 0.5,
@@ -100,10 +104,13 @@ export const treeViewActions = style({
   opacity: 0,
   transition: 'opacity 120ms ease',
   selectors: {
-    [`${treeViewItemBase}:hover + &, &:hover`]: {
+    [`${treeViewItemBase}:hover &, &:hover`]: {
       opacity: 1,
     },
-    [`${treeViewItemBase}[data-selected] + &`]: {
+    [`${treeViewItemBase}:focus &, ${treeViewItemBase}:focus-visible &`]: {
+      opacity: 1,
+    },
+    [`${treeViewItemBase}[data-selected] &, ${treeViewItemBase}[data-active] &`]: {
       opacity: 1,
     },
   },
