@@ -86,6 +86,7 @@ describe('TreeView', () => {
 
     expect(selected).toHaveAttribute('aria-selected', 'true')
     expect(selected).not.toHaveAttribute('data-selected')
+    expect(active).not.toHaveAttribute('aria-selected', 'true')
     expect(active).toHaveAttribute('data-active')
   })
 })
