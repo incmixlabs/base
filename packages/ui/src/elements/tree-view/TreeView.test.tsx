@@ -75,4 +75,18 @@ describe('TreeView', () => {
     expect(branchContent).toBeTruthy()
     expect(branchContent).not.toHaveAttribute('class')
   })
+
+  it('visually marks only the active item when controlled selection points elsewhere', () => {
+    render(<TreeView.Root data={data} expandAll selectedItemId="folder-a" />)
+
+    const selected = screen.getByRole('treeitem', { name: /Folder A/i })
+    const active = screen.getByRole('treeitem', { name: /File B/i })
+
+    fireEvent.pointerDown(active)
+
+    expect(selected).toHaveAttribute('aria-selected', 'true')
+    expect(selected).not.toHaveAttribute('data-selected')
+    expect(active).not.toHaveAttribute('aria-selected', 'true')
+    expect(active).toHaveAttribute('data-active')
+  })
 })

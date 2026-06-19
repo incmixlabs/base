@@ -50,10 +50,10 @@ function createSidebarColorStyle(panelColor: Color, variant: SidebarVisualVarian
     variant === 'surface' ? semanticColorVar('neutral', 'text') : semanticColorVar(panelColor, 'text')
   const activeBackground = semanticColorVar(
     panelColor,
-    variant === 'solid' ? 'primary' : variant === 'surface' ? 'surface-hover' : 'soft-hover',
+    variant === 'solid' ? 'primary' : variant === 'surface' ? 'soft' : 'soft-hover',
   )
   const activeForeground =
-    variant === 'solid' ? semanticColorVar(panelColor, 'contrast') : semanticColorVar('neutral', 'text')
+    variant === 'solid' ? semanticColorVar(panelColor, 'contrast') : semanticColorVar(panelColor, 'text')
   const ringColor = semanticColorVar(panelColor, 'primary')
 
   return style({
@@ -91,6 +91,10 @@ const interactiveToneSelectors = {
     backgroundColor: 'var(--sidebar-hover)',
     color: 'var(--sidebar-hover-foreground)',
   },
+  '&:focus-visible:not(:disabled):not([aria-disabled=true])': {
+    backgroundColor: 'var(--sidebar-hover)',
+    color: 'var(--sidebar-hover-foreground)',
+  },
   '&[data-active], &[data-active=true], &[data-active="true"], &[aria-current=page]': {
     backgroundColor: 'var(--sidebar-active)',
     color: 'var(--sidebar-active-foreground)',
@@ -105,6 +109,7 @@ export const sidebarMenuButtonTone = style({
 
 const interactiveToneHighlightSelectors = {
   '&:is(:hover, :focus-visible, :active):not(:disabled):not([aria-disabled=true])': {
+    backgroundColor: 'var(--sidebar-hover)',
     color: 'var(--sidebar-hover-foreground)',
   },
   '&[data-active], &[data-active=true], &[data-active="true"], &[aria-current=page]': {
