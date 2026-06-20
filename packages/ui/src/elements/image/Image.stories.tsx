@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { AspectRatio } from '@/layouts'
+import { getPropDefValues } from '@/theme/props/prop-def'
+import { radiusPropDef } from '@/theme/props/radius.prop'
 import { Image } from './Image'
 
 const meta: Meta<typeof Image> = {
@@ -11,11 +13,16 @@ const meta: Meta<typeof Image> = {
   args: {
     alt: 'Sample image',
     objectFit: 'cover',
+    radius: 'md',
   },
   argTypes: {
     objectFit: {
       control: 'select',
       options: ['contain', 'cover', 'fill', 'none', 'scale-down'],
+    },
+    radius: {
+      control: 'select',
+      options: getPropDefValues(radiusPropDef.radius),
     },
   },
 }
@@ -30,7 +37,7 @@ export const Default: Story = {
   args: {
     src: sampleSrc,
   },
-  render: args => <Image {...args} className="h-64 w-full rounded-xl border" />,
+  render: args => <Image {...args} className="h-64 w-full border" />,
 }
 
 export const WithAspectRatio: Story = {

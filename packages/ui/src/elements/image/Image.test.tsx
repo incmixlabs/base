@@ -1,6 +1,8 @@
 import '@testing-library/jest-dom/vitest'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
+import { Theme } from '@/theme'
+import { designTokens } from '@/theme/tokens'
 import { Image } from './Image'
 
 describe('Image', () => {
@@ -26,6 +28,26 @@ describe('Image', () => {
     render(<Image src="https://example.com/photo.jpg" alt="Contained sample" objectFit="contain" />)
 
     expect(screen.getByAltText('Contained sample')).toHaveClass('object-contain')
+  })
+
+  it('applies an explicit radius token', () => {
+    render(<Image src="https://example.com/photo.jpg" alt="Rounded sample" radius="lg" />)
+
+    const image = screen.getByAltText('Rounded sample')
+    expect(image).toHaveClass('rounded-[var(--element-border-radius)]')
+    expect(image.style.getPropertyValue('--element-border-radius')).toBe(designTokens.radius.lg)
+  })
+
+  it('defaults radius to the Theme radius', () => {
+    render(
+      <Theme radius="sm">
+        <Image src="https://example.com/photo.jpg" alt="Theme rounded sample" />
+      </Theme>,
+    )
+
+    expect(screen.getByAltText('Theme rounded sample').style.getPropertyValue('--element-border-radius')).toBe(
+      designTokens.radius.sm,
+    )
   })
 
   it('switches to fallbackSrc on error and clears responsive source attributes', () => {
