@@ -1,4 +1,5 @@
 import type { PropDef } from '@/theme/props/prop-def'
+import { radiusPropDef } from '@/theme/props/radius.prop'
 
 const loadingValues = ['eager', 'lazy'] as const
 const decodingValues = ['async', 'auto', 'sync'] as const
@@ -15,6 +16,7 @@ const imagePropDefs = {
   loading: { type: 'enum', values: loadingValues, required: false, default: undefined },
   decoding: { type: 'enum', values: decodingValues, required: false, default: undefined },
   objectFit: { type: 'enum', values: objectFitValues, required: false, default: 'cover' },
+  ...radiusPropDef,
 } satisfies {
   src: PropDef<string>
   alt: PropDef<string>
@@ -26,6 +28,7 @@ const imagePropDefs = {
   loading: PropDef<(typeof loadingValues)[number]>
   decoding: PropDef<(typeof decodingValues)[number]>
   objectFit: PropDef<(typeof objectFitValues)[number]>
+  radius: typeof radiusPropDef.radius
 }
 
 export {

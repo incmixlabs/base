@@ -2,6 +2,8 @@
 
 import * as React from 'react'
 import { cn } from '@/lib/utils'
+import type { Radius } from '@/theme/tokens'
+import { getRadiusStyles, useThemeRadius } from '../utils'
 
 export type ImageObjectFit = 'contain' | 'cover' | 'fill' | 'none' | 'scale-down'
 
@@ -16,12 +18,30 @@ const objectFitClassName: Record<ImageObjectFit, string> = {
 export interface ImageProps extends Omit<React.ComponentPropsWithoutRef<'img'>, 'children'> {
   fallbackSrc?: string
   objectFit?: ImageObjectFit
+  radius?: Radius
 }
 
 const Image = React.forwardRef<HTMLImageElement, ImageProps>(
-  ({ className, objectFit = 'cover', alt = '', src, srcSet, sizes, fallbackSrc, onError, ...props }, ref) => {
+  (
+    {
+      className,
+      objectFit = 'cover',
+      alt = '',
+      src,
+      srcSet,
+      sizes,
+      fallbackSrc,
+      onError,
+      radius: radiusProp,
+      style,
+      ...props
+    },
+    ref,
+  ) => {
     const [resolvedSrc, setResolvedSrc] = React.useState(src)
     const [usingFallback, setUsingFallback] = React.useState(false)
+    const radius = useThemeRadius(radiusProp)
+    const resolvedStyle = { ...getRadiusStyles(radius), ...style }
 
     React.useEffect(() => {
       setResolvedSrc(src)
@@ -35,7 +55,13 @@ const Image = React.forwardRef<HTMLImageElement, ImageProps>(
         src={resolvedSrc}
         srcSet={usingFallback ? undefined : srcSet}
         sizes={usingFallback ? undefined : sizes}
-        className={cn('block max-w-full', objectFitClassName[objectFit], className)}
+        className={cn(
+          'block max-w-full',
+          'rounded-[var(--element-border-radius)]',
+          objectFitClassName[objectFit],
+          className,
+        )}
+        style={resolvedStyle}
         onError={event => {
           if (!usingFallback && fallbackSrc) {
             setResolvedSrc(fallbackSrc)
