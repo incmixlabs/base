@@ -519,9 +519,12 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
         : 'Drag & drop a file here, or click to select'
 
     const defaultDescription = `${getAcceptDescription(accept)} up to ${formatFileSize(maxSize)}${multiple ? ` (max ${maxFiles} files)` : ''}`
+    const resolvedDescription = description ?? defaultDescription
+    const hasDescription = resolvedDescription.length > 0
     const titleId = `${id ?? reactId}-title`
     const descriptionId = `${id ?? reactId}-description`
-    const describedBy = [ariaDescribedBy, descriptionId].filter(Boolean).join(' ') || undefined
+    const describedBy =
+      [ariaDescribedBy, hasDescription ? descriptionId : undefined].filter(Boolean).join(' ') || undefined
 
     const containerPaddingByVariant = {
       default: { xs: '1rem', sm: '1.25rem', md: '2rem', lg: '2.5rem' },
@@ -680,16 +683,18 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
               <Text id={titleId} as="p" weight="medium" className="text-[length:var(--file-upload-title-font-size)]">
                 {placeholder || defaultPlaceholder}
               </Text>
-              <Text
-                id={descriptionId}
-                as="p"
-                color="neutral"
-                variant="muted"
-                mt="1"
-                className="text-[length:var(--file-upload-description-font-size)]"
-              >
-                {description || defaultDescription}
-              </Text>
+              {hasDescription ? (
+                <Text
+                  id={descriptionId}
+                  as="p"
+                  color="neutral"
+                  variant="muted"
+                  mt="1"
+                  className="text-[length:var(--file-upload-description-font-size)]"
+                >
+                  {resolvedDescription}
+                </Text>
+              ) : null}
             </Flex>
           </Flex>
         </div>

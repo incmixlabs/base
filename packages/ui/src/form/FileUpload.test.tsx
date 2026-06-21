@@ -40,6 +40,15 @@ describe('FileUpload', () => {
     expect(dropzone?.style.getPropertyValue('--file-upload-title-font-size')).toBeTruthy()
   })
 
+  it('hides helper text when description is intentionally empty', () => {
+    const { container } = render(<FileUpload description="" />)
+
+    const dropzone = container.querySelector('[data-slot="file-upload-dropzone"]') as HTMLElement | null
+
+    expect(screen.queryByText(/All files up to/i)).not.toBeInTheDocument()
+    expect(dropzone).not.toHaveAttribute('aria-describedby')
+  })
+
   it('opens the file picker when clicking the dropzone trigger', () => {
     const inputClick = vi.spyOn(HTMLInputElement.prototype, 'click').mockImplementation(() => {})
 
