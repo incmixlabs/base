@@ -6,6 +6,11 @@ import { space } from '@/theme/token-maps'
 import { marginResponsiveClasses, marginResponsiveVars } from './margin-responsive.css'
 import { resolveSpacingValue } from './resolve-spacing-value'
 import { type ResponsiveBreakpoint, responsiveBreakpointsArray } from './responsive/breakpoints'
+import {
+  getResponsiveSpacingUtilityClasses,
+  getSpacingUtilityClass,
+  type SpacingUtilityPrefix,
+} from './token-class-maps'
 
 const responsiveBreakpoints: readonly ResponsiveBreakpoint[] = responsiveBreakpointsArray
 
@@ -82,6 +87,12 @@ export function getMarginProps(props: MarginProps): { className?: string; style?
     if (value === undefined) continue
 
     if (isResponsiveObject(value)) {
+      const utilityClasses = getResponsiveSpacingUtilityClasses(property as SpacingUtilityPrefix, value)
+      if (utilityClasses) {
+        classNames.push(utilityClasses)
+        continue
+      }
+
       classNames.push(marginResponsiveClasses[property])
       let inheritedValue: string | undefined
 
@@ -94,6 +105,12 @@ export function getMarginProps(props: MarginProps): { className?: string; style?
           assignStyleValue(style, variableName, inheritedValue)
         }
       }
+      continue
+    }
+
+    const utilityClass = getSpacingUtilityClass(property as SpacingUtilityPrefix, value as string | undefined)
+    if (utilityClass) {
+      classNames.push(utilityClass)
       continue
     }
 

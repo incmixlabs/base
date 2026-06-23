@@ -6,60 +6,55 @@ export const gridBaseCls = 'box-border'
 
 export const gridBase = style({
   containerType: 'inline-size',
-  display: 'grid',
-  alignItems: 'stretch',
-  justifyContent: 'flex-start',
-  gridTemplateColumns: 'minmax(0, 1fr)',
-  gridTemplateRows: 'none',
 })
 
-export const gridByDisplay = styleVariants({
-  none: { display: 'none' },
-  grid: { display: 'grid' },
-  'inline-grid': { display: 'inline-grid' },
-})
+export const gridByDisplay = {
+  none: 'hidden',
+  grid: 'grid',
+  'inline-grid': 'inline-grid',
+} as const
 
-export const gridByFlow = styleVariants({
-  row: { gridAutoFlow: 'row' },
-  column: { gridAutoFlow: 'column' },
-  dense: { gridAutoFlow: 'dense' },
-  'row-dense': { gridAutoFlow: 'row dense' },
-  'column-dense': { gridAutoFlow: 'column dense' },
-})
+export const gridByFlow = {
+  row: 'grid-flow-row',
+  column: 'grid-flow-col',
+  dense: 'grid-flow-dense',
+  'row-dense': 'grid-flow-row-dense',
+  'column-dense': 'grid-flow-col-dense',
+} as const
 
-export const gridByAlign = styleVariants({
-  start: { alignItems: 'flex-start' },
-  center: { alignItems: 'center' },
-  end: { alignItems: 'flex-end' },
-  baseline: { alignItems: 'baseline' },
-  stretch: { alignItems: 'stretch' },
-})
+export const gridByAlign = {
+  start: 'items-start',
+  center: 'items-center',
+  end: 'items-end',
+  baseline: 'items-baseline',
+  stretch: 'items-stretch',
+} as const
 
-export const gridByAlignContent = styleVariants({
-  start: { alignContent: 'flex-start' },
-  center: { alignContent: 'center' },
-  end: { alignContent: 'flex-end' },
-  baseline: { alignContent: 'baseline' },
-  between: { alignContent: 'space-between' },
-  around: { alignContent: 'space-around' },
-  evenly: { alignContent: 'space-evenly' },
-  stretch: { alignContent: 'stretch' },
-})
+export const gridByAlignContent = {
+  start: 'content-start',
+  center: 'content-center',
+  end: 'content-end',
+  baseline: '[align-content:baseline]',
+  between: 'content-between',
+  around: 'content-around',
+  evenly: 'content-evenly',
+  stretch: 'content-stretch',
+} as const
 
-export const gridByJustify = styleVariants({
-  start: { justifyContent: 'flex-start' },
-  center: { justifyContent: 'center' },
-  end: { justifyContent: 'flex-end' },
-  between: { justifyContent: 'space-between' },
-})
+export const gridByJustify = {
+  start: 'justify-start',
+  center: 'justify-center',
+  end: 'justify-end',
+  between: 'justify-between',
+} as const
 
-export const gridByJustifyItems = styleVariants({
-  start: { justifyItems: 'start' },
-  center: { justifyItems: 'center' },
-  end: { justifyItems: 'end' },
-  baseline: { justifyItems: 'baseline' },
-  stretch: { justifyItems: 'stretch' },
-})
+export const gridByJustifyItems = {
+  start: 'justify-items-start',
+  center: 'justify-items-center',
+  end: 'justify-items-end',
+  baseline: '[justify-items:baseline]',
+  stretch: 'justify-items-stretch',
+} as const
 
 const breakpointKeys = containerBreakpointKeys
 type GridBreakpoint = ContainerBreakpoint
@@ -93,17 +88,13 @@ const gridRowTemplates = {
 type GridColumnValue = keyof typeof gridColumnTemplates
 type GridRowValue = keyof typeof gridRowTemplates
 
-export const gridColumns = styleVariants(
-  Object.fromEntries(
-    Object.entries(gridColumnTemplates).map(([key, value]) => [key, { gridTemplateColumns: value }]),
-  ) as Record<GridColumnValue, { gridTemplateColumns: string }>,
-)
+export const gridColumns = Object.fromEntries(
+  Object.keys(gridColumnTemplates).map(key => [key, key === 'none' ? 'grid-cols-none' : `grid-cols-${key}`]),
+) as Record<GridColumnValue, string>
 
-export const gridRows = styleVariants(
-  Object.fromEntries(
-    Object.entries(gridRowTemplates).map(([key, value]) => [key, { gridTemplateRows: value }]),
-  ) as Record<GridRowValue, { gridTemplateRows: string }>,
-)
+export const gridRows = Object.fromEntries(
+  Object.keys(gridRowTemplates).map(key => [key, key === 'none' ? 'grid-rows-none' : `grid-rows-${key}`]),
+) as Record<GridRowValue, string>
 
 export const gridColumnsResponsive = Object.fromEntries(
   breakpointKeys.map(bp => [

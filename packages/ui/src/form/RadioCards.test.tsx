@@ -71,6 +71,6 @@ describe('RadioCards', () => {
       </RadioCards.Root>,
     )
 
-    expect(screen.getByTestId('radio-cards')).toHaveClass('gap-8')
+    expect(screen.getByTestId('radio-cards')).toHaveClass('gap-7')
   })
 })

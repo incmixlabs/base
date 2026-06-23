@@ -1,6 +1,5 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
-import { paddingResponsiveClasses, paddingResponsiveVars } from '@/theme/helpers/padding-responsive.css'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { ScrollArea } from './ScrollArea'
 import {
@@ -16,11 +15,6 @@ import {
 afterEach(() => {
   cleanup()
 })
-
-function customPropertyName(value: string): string {
-  const match = /^var\((--[^)]+)\)$/.exec(value)
-  return match?.[1] ?? value
-}
 
 describe('ScrollArea', () => {
   it('normalizes variant, color, and trackColor props', () => {
@@ -149,9 +143,6 @@ describe('ScrollArea', () => {
 
     const root = screen.getByTestId('scroll-area')
 
-    expect(root.className).toContain(paddingResponsiveClasses.py)
-    const style = root.getAttribute('style') ?? ''
-    expect(style).toContain(`${customPropertyName(paddingResponsiveVars.py.initial)}: var(--space-1, 4px)`)
-    expect(style).toContain(`${customPropertyName(paddingResponsiveVars.py.md)}: var(--space-3, 12px)`)
+    expect(root).toHaveClass('py-1', 'md:py-3')
   })
 })

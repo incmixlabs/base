@@ -3,8 +3,6 @@ import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { gapResponsiveClasses, gapResponsiveVars } from '@/theme/helpers/gap-responsive.css'
 import { heightResponsiveClasses, heightResponsiveVars } from '@/theme/helpers/height-responsive.css'
-import { marginResponsiveClasses, marginResponsiveVars } from '@/theme/helpers/margin-responsive.css'
-import { paddingResponsiveClasses, paddingResponsiveVars } from '@/theme/helpers/padding-responsive.css'
 import { widthResponsiveClasses, widthResponsiveVars } from '@/theme/helpers/width-responsive.css'
 import { Theme } from '@/theme/ThemeProvider'
 import { designTokens } from '@/theme/tokens'
@@ -45,12 +43,9 @@ describe('Box', () => {
 
     const box = screen.getByTestId('box')
 
-    expect(box.className).toContain(paddingResponsiveClasses.p)
-    expect(box.className).toContain(marginResponsiveClasses.mx)
+    expect(box).toHaveClass('p-2', 'md:p-4', 'mx-1', 'lg:mx-3')
     expect(box.className).toContain(widthResponsiveClasses.width)
     expect(box.className).toContain(heightResponsiveClasses.height)
-    expect(box.className).not.toContain('p-2')
-    expect(box.className).not.toContain('md:p-4')
     expect(box.getAttribute('style')).toContain(customPropertyName(widthResponsiveVars.width.initial))
     expect(box.getAttribute('style')).toContain(customPropertyName(heightResponsiveVars.height.initial))
   })
@@ -64,10 +59,7 @@ describe('Box', () => {
 
     const box = screen.getByTestId('box')
 
-    expect(box.className).toContain(paddingResponsiveClasses.p)
-    expect(box.className).toContain(marginResponsiveClasses.m)
-    expect(box.getAttribute('style')).toContain(customPropertyName(paddingResponsiveVars.p.initial))
-    expect(box.getAttribute('style')).toContain(customPropertyName(marginResponsiveVars.m.initial))
+    expect(box).toHaveClass('p-2', 'md:p-4', 'm-1', 'lg:m-3')
     expect(box).not.toHaveAttribute('padding')
     expect(box).not.toHaveAttribute('margin')
   })

@@ -15,7 +15,6 @@ catalog:
   '@vanilla-extract/dynamic': 2.1.5
   '@vanilla-extract/esbuild-plugin': 2.3.19
   '@vanilla-extract/recipes': 0.5.7
-  '@vanilla-extract/sprinkles': 1.6.2
   '@vanilla-extract/vite-plugin': 5.1.4
   '@vitejs/plugin-react': ^5.0.4
   '@hookform/resolvers': ^5.2.2
