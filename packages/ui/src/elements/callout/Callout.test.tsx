@@ -2,7 +2,6 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen, waitFor } from '@testing-library/react'
 import { Info } from 'lucide-react'
 import { afterEach, describe, expect, it } from 'vitest'
-import { paddingResponsiveClasses } from '@/theme/helpers/padding-responsive.css'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { designTokens } from '@/theme/tokens'
 import { Callout } from './Callout'
@@ -140,7 +139,6 @@ describe('Callout', () => {
 
     const root = screen.getByTestId('callout')
 
-    expect(root.className).toContain(paddingResponsiveClasses.px)
-    expect(root.getAttribute('style')).toContain('--')
+    expect(root).toHaveClass('px-2', 'lg:px-5')
   })
 })

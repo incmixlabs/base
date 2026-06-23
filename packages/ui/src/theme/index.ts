@@ -47,7 +47,7 @@ export {
   semanticColorVar,
 } from './props/color.prop'
 export * from './runtime/theme-compiler'
-export * from './sprinkles.css'
+export * from './sprinkles'
 export { ThemePanel, type ThemePanelProps } from './ThemePanel'
 export {
   type PanelBackground,
