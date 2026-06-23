@@ -13,6 +13,7 @@
     "./vite-tanstack-start.js": "./vite-tanstack-start.js",
     "./vite-aliases.js": "./vite-aliases.js",
     "./tailwind.config": "./tailwind.config.cjs",
+    "./uno.config": "./uno.config.ts",
     "./vite-app.json": "./vite-app.json",
     "./*.json": "./*.json"
   }

@@ -1,9 +1,4 @@
-@import "tailwindcss";
 @import "@incmix/ui/globals.css";
-
-@source "../.storybook/**/*.{ts,tsx}";
-@source "../../../packages/ajv/stories/**/*.{ts,tsx}";
-@source "../../../packages/ui/src/**/*.{ts,tsx,mdx}";
 
 .storybook-outline-wrapper {
   --outline-box-color: rgb(0 102 255 / 0.9);
