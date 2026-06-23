@@ -28,6 +28,36 @@ const spacingUtilityPrefixes = [
 ] as const
 const negativeSpacingUtilityPrefixes = ['m', 'mx', 'my', 'mt', 'mr', 'mb', 'ml'] as const
 const radiusUtilities = ['rounded-none', 'rounded-sm', 'rounded-md', 'rounded-lg', 'rounded-full'] as const
+const sizeTokens = ['xs', 'sm', 'md', 'lg', 'xl', '2x', '3x', '4x', '5x'] as const
+const semanticColorUtilities = [
+  'background',
+  'foreground',
+  'muted',
+  'muted-foreground',
+  'border',
+  'primary',
+  'primary-foreground',
+  'accent',
+  'accent-foreground',
+  'secondary',
+] as const
+const stateColorUtilities = [
+  '[var(--color-neutral-primary)]',
+  '[var(--color-info-primary)]',
+  '[var(--color-success-primary)]',
+  '[var(--color-warning-primary)]',
+  '[var(--color-error-primary)]',
+] as const
+const stateBorderColorUtilities = [
+  '[var(--color-primary-border)]',
+  '[var(--color-secondary-border)]',
+  '[var(--color-accent-border)]',
+  '[var(--color-neutral-border)]',
+  '[var(--color-info-border)]',
+  '[var(--color-success-border)]',
+  '[var(--color-warning-border)]',
+  '[var(--color-error-border)]',
+] as const
 
 const responsiveClasses = (classes: readonly string[]) =>
   responsivePrefixes.flatMap(prefix => classes.map(className => `${prefix}${className}`))
@@ -42,8 +72,47 @@ const negativeSpacingSafelist = responsiveClasses(
 
 const radiusSafelist = responsiveClasses(radiusUtilities)
 
+const sprinklesClasses = [
+  'hidden',
+  'block',
+  'inline-block',
+  'flex',
+  'inline-flex',
+  'grid',
+  'flex-row',
+  'flex-col',
+  'items-stretch',
+  'items-start',
+  'items-center',
+  'items-end',
+  'justify-start',
+  'justify-center',
+  'justify-end',
+  'justify-between',
+  'w-auto',
+  'w-full',
+  'h-auto',
+  'h-full',
+  ...[...semanticColorUtilities, ...stateColorUtilities].map(color => `text-${color}`),
+  ...[...semanticColorUtilities, ...stateColorUtilities].map(color => `bg-${color}`),
+  ...[...semanticColorUtilities, ...stateColorUtilities, ...stateBorderColorUtilities].map(color => `border-${color}`),
+  ...sizeTokens.map(size => `[font-size:var(--font-size-${size})]`),
+  ...sizeTokens.map(size => `leading-[var(--line-height-${size})]`),
+  ...sizeTokens.map(size => `tracking-[var(--letter-spacing-${size})]`),
+  'shadow-none',
+  ...['1', '2', '3', '4', '5', '6'].map(shadow => `shadow-[var(--shadow-${shadow})]`),
+]
+
+const sprinklesSafelist = responsiveClasses(sprinklesClasses)
+
 export const baseUnoConfig = {
-  presets: [presetWind4()],
+  presets: [
+    presetWind4({
+      preflights: {
+        theme: true,
+      },
+    }),
+  ],
   transformers: [transformerDirectives(), transformerVariantGroup()],
   theme: {
     colors: {
@@ -98,7 +167,7 @@ export const baseUnoConfig = {
         ring: 'var(--sidebar-ring)',
       },
     },
-    borderRadius: {
+    radius: {
       none: '0',
       sm: 'calc(var(--radius) - 4px)',
       md: 'calc(var(--radius) - 2px)',
@@ -121,7 +190,7 @@ export const baseUnoConfig = {
       8: 'var(--space-8)',
       9: 'var(--space-9)',
     },
-    fontSize: {
+    text: {
       xs: ['0.75rem', '1rem'],
       sm: ['0.875rem', '1.25rem'],
       base: ['1rem', '1.5rem'],
@@ -137,12 +206,12 @@ export const baseUnoConfig = {
       xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
       '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
     },
-    fontFamily: {
+    font: {
       sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       serif: ['var(--font-serif)', 'ui-serif', 'Georgia', 'serif'],
       mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
     },
-    breakpoints: {
+    breakpoint: {
       xs: '520px',
       sm: '768px',
       md: '1024px',
@@ -178,6 +247,7 @@ export const baseUnoConfig = {
     ...spacingSafelist,
     ...negativeSpacingSafelist,
     ...radiusSafelist,
+    ...sprinklesSafelist,
   ],
 }
 

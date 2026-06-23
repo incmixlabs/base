@@ -41,15 +41,15 @@ const justifyContentClassByValue = {
 } as const
 
 const fontSizeClassByValue = {
-  xs: 'text-[var(--font-size-xs)]',
-  sm: 'text-[var(--font-size-sm)]',
-  md: 'text-[var(--font-size-md)]',
-  lg: 'text-[var(--font-size-lg)]',
-  xl: 'text-[var(--font-size-xl)]',
-  '2x': 'text-[var(--font-size-2x)]',
-  '3x': 'text-[var(--font-size-3x)]',
-  '4x': 'text-[var(--font-size-4x)]',
-  '5x': 'text-[var(--font-size-5x)]',
+  xs: '[font-size:var(--font-size-xs)]',
+  sm: '[font-size:var(--font-size-sm)]',
+  md: '[font-size:var(--font-size-md)]',
+  lg: '[font-size:var(--font-size-lg)]',
+  xl: '[font-size:var(--font-size-xl)]',
+  '2x': '[font-size:var(--font-size-2x)]',
+  '3x': '[font-size:var(--font-size-3x)]',
+  '4x': '[font-size:var(--font-size-4x)]',
+  '5x': '[font-size:var(--font-size-5x)]',
 } as const
 
 const lineHeightClassByValue = {
