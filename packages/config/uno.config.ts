@@ -1,5 +1,47 @@
 import { defineConfig, presetWind4, transformerDirectives, transformerVariantGroup } from 'unocss'
 
+const responsivePrefixes = ['', 'xs:', 'sm:', 'md:', 'lg:', 'xl:'] as const
+const spacingTokens = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] as const
+const spacingUtilityPrefixes = [
+  'p',
+  'px',
+  'py',
+  'pt',
+  'pr',
+  'pb',
+  'pl',
+  'm',
+  'mx',
+  'my',
+  'mt',
+  'mr',
+  'mb',
+  'ml',
+  'gap',
+  'gap-x',
+  'gap-y',
+  'inset',
+  'top',
+  'right',
+  'bottom',
+  'left',
+] as const
+const negativeSpacingUtilityPrefixes = ['m', 'mx', 'my', 'mt', 'mr', 'mb', 'ml'] as const
+const radiusUtilities = ['rounded-none', 'rounded-sm', 'rounded-md', 'rounded-lg', 'rounded-full'] as const
+
+const responsiveClasses = (classes: readonly string[]) =>
+  responsivePrefixes.flatMap(prefix => classes.map(className => `${prefix}${className}`))
+
+const spacingSafelist = responsiveClasses(
+  spacingUtilityPrefixes.flatMap(prefix => spacingTokens.map(token => `${prefix}-${token}`)),
+)
+
+const negativeSpacingSafelist = responsiveClasses(
+  negativeSpacingUtilityPrefixes.flatMap(prefix => spacingTokens.slice(1).map(token => `-${prefix}-${token}`)),
+)
+
+const radiusSafelist = responsiveClasses(radiusUtilities)
+
 export const baseUnoConfig = {
   presets: [presetWind4()],
   transformers: [transformerDirectives(), transformerVariantGroup()],
@@ -79,6 +121,22 @@ export const baseUnoConfig = {
       8: 'var(--space-8)',
       9: 'var(--space-9)',
     },
+    fontSize: {
+      xs: ['0.75rem', '1rem'],
+      sm: ['0.875rem', '1.25rem'],
+      base: ['1rem', '1.5rem'],
+      lg: ['1.125rem', '1.75rem'],
+      xl: ['1.25rem', '1.75rem'],
+    },
+    boxShadow: {
+      '2xs': '0 1px rgb(0 0 0 / 0.05)',
+      xs: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+      sm: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+      md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+      lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+      xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+      '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    },
     fontFamily: {
       sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       serif: ['var(--font-serif)', 'ui-serif', 'Georgia', 'serif'],
@@ -117,6 +175,9 @@ export const baseUnoConfig = {
     ...Array.from({ length: 12 }, (_, i) => `sm:col-span-${i + 1}`),
     ...Array.from({ length: 12 }, (_, i) => `md:col-span-${i + 1}`),
     ...Array.from({ length: 12 }, (_, i) => `lg:col-span-${i + 1}`),
+    ...spacingSafelist,
+    ...negativeSpacingSafelist,
+    ...radiusSafelist,
   ],
 }
 
