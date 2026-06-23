@@ -221,7 +221,6 @@
   "devDependencies": {
     "@incmix/config": "workspace:*",
     "@radix-ui/colors": "^3.0.0",
-    "@tailwindcss/postcss": "catalog:",
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
     "@testing-library/user-event": "catalog:",
@@ -246,6 +245,11 @@
     "tailwind-merge": "catalog:",
     "tsup": "catalog:",
     "tsx": "catalog:",
+    "unocss": "catalog:",
+    "@unocss/postcss": "catalog:",
+    "@unocss/preset-wind4": "catalog:",
+    "@unocss/transformer-directives": "catalog:",
+    "@unocss/transformer-variant-group": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
     "vitest": "catalog:"
