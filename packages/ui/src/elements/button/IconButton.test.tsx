@@ -2,6 +2,7 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { resolveIconExport } from './dynamic-icon'
+import { Icon } from './Icon'
 import { IconButton } from './IconButton'
 import { iconButtonColorVariants, iconButtonSizeVariants, iconSizeVariants } from './IconButton.css'
 
@@ -128,6 +129,32 @@ describe('IconButton', () => {
       expect(path).not.toHaveAttribute('style')
       expect(path).not.toHaveAttribute('xlink:href')
       expect(container.querySelector('script')).not.toBeInTheDocument()
+      expect(fetchMock).toHaveBeenCalledWith(`/api/icons/lucide/${iconName}`, {
+        headers: {
+          accept: 'image/svg+xml',
+        },
+      })
+    } finally {
+      globalThis.fetch = originalFetch
+    }
+  })
+
+  it('fetches non-safelisted lucide icons when rendered through Icon directly', async () => {
+    const iconName = 'direct-icon-bff-fallback-test'
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      text: () =>
+        Promise.resolve(`<svg data-lucide="${iconName}" stroke="currentColor"><path d="M2 2h4"></path></svg>`),
+    })
+    const originalFetch = globalThis.fetch
+    globalThis.fetch = fetchMock as unknown as typeof fetch
+
+    try {
+      const { container } = render(<Icon icon={iconName} aria-label="Direct icon" />)
+
+      await waitFor(() => {
+        expect(container.querySelector(`svg[data-lucide="${iconName}"]`)).toBeInTheDocument()
+      })
       expect(fetchMock).toHaveBeenCalledWith(`/api/icons/lucide/${iconName}`, {
         headers: {
           accept: 'image/svg+xml',
