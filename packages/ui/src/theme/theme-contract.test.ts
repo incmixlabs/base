@@ -17,7 +17,7 @@ function createValidTheme() {
     global: {
       color: { hue: { teal: { '9': 'oklch(0.6 0.12 180)' } } },
       size: { sm: { height: '1.75rem' } },
-      fontWeight: { light: '300', regular: '400', medium: '500', bold: '700' },
+      fontWeight: { light: '300', regular: '400', medium: '500', semibold: '600', bold: '700' },
       borderRadius: { none: '0', sm: '4px', md: '6px', lg: '8px', full: '9999px' },
       spacing: { '0': '0px', '1': '4px' },
       breakpoint: { xs: '520px', sm: '768px', md: '1024px', lg: '1280px', xl: '1640px' },

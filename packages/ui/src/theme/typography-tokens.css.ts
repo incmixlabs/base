@@ -14,6 +14,7 @@ globalStyle(':root, .af-themes', {
     '--font-weight-light': '300',
     '--font-weight-regular': '400',
     '--font-weight-medium': '500',
+    '--font-weight-semibold': '600',
     '--font-weight-bold': '700',
     '--line-height-xs': 'calc(16px * var(--scaling))',
     '--line-height-sm': 'calc(20px * var(--scaling))',

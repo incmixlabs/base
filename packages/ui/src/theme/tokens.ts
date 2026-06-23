@@ -252,7 +252,7 @@ export const sizeScale = Object.values(possibleSizes)
 export type Size = (typeof sizeScale)[number]
 
 // Font weight
-export type Weight = 'light' | 'regular' | 'medium' | 'bold'
+export type Weight = 'light' | 'regular' | 'medium' | 'semibold' | 'bold'
 
 // Variants (derived from designTokens.variant keys)
 export type Variant = keyof typeof designTokens.variant
