@@ -27,7 +27,17 @@ const spacingUtilityPrefixes = [
   'left',
 ] as const
 const negativeSpacingUtilityPrefixes = ['m', 'mx', 'my', 'mt', 'mr', 'mb', 'ml'] as const
-const radiusUtilities = ['rounded-none', 'rounded-sm', 'rounded-md', 'rounded-lg', 'rounded-full'] as const
+const radiusUtilities = [
+  'rounded-none',
+  'rounded-sm',
+  'rounded-md',
+  'rounded-lg',
+  'rounded-xl',
+  'rounded-2xl',
+  'rounded-3xl',
+  'rounded-4xl',
+  'rounded-full',
+] as const
 const sizeTokens = ['xs', 'sm', 'md', 'lg', 'xl', '2x', '3x', '4x', '5x'] as const
 const semanticColorUtilities = [
   'background',

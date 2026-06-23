@@ -185,6 +185,8 @@
   --radius-DEFAULT: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
   --fontWeight-normal: var(--font-weight-regular, 400);
   --fontWeight-medium: var(--font-weight-medium, 500);
   --fontWeight-semibold: var(--font-weight-semibold, 600);
@@ -205,6 +207,17 @@
   --text-3xl-lineHeight: var(--line-height-3x, 2.25rem);
   --text-4xl-fontSize: var(--font-size-4x, 2.25rem);
   --text-4xl-lineHeight: var(--line-height-4x, 2.5rem);
+  --text-5xl-fontSize: var(--font-size-5x, 3rem);
+  --text-5xl-lineHeight: var(--line-height-5x, 3.5rem);
+  --letter-spacing-xs: 0.0025em;
+  --letter-spacing-sm: 0em;
+  --letter-spacing-md: 0em;
+  --letter-spacing-lg: -0.0025em;
+  --letter-spacing-xl: -0.005em;
+  --letter-spacing-2x: -0.01em;
+  --letter-spacing-3x: -0.015em;
+  --letter-spacing-4x: -0.02em;
+  --letter-spacing-5x: -0.025em;
   --shadow-2xs: 0 1px rgb(0 0 0 / 0.05);
   --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
