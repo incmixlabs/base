@@ -6,6 +6,11 @@ import { space } from '@/theme/token-maps'
 import { paddingResponsiveClasses, paddingResponsiveVars } from './padding-responsive.css'
 import { resolveSpacingValue } from './resolve-spacing-value'
 import { type ResponsiveBreakpoint, responsiveBreakpointsArray } from './responsive/breakpoints'
+import {
+  getResponsiveSpacingUtilityClasses,
+  getSpacingUtilityClass,
+  type SpacingUtilityPrefix,
+} from './token-class-maps'
 
 const responsiveBreakpoints: readonly ResponsiveBreakpoint[] = responsiveBreakpointsArray
 
@@ -77,6 +82,12 @@ export function getPaddingProps(props: PaddingProps): { className?: string; styl
     if (value === undefined) continue
 
     if (isResponsiveObject(value)) {
+      const utilityClasses = getResponsiveSpacingUtilityClasses(property as SpacingUtilityPrefix, value)
+      if (utilityClasses) {
+        classNames.push(utilityClasses)
+        continue
+      }
+
       classNames.push(paddingResponsiveClasses[property])
       let inheritedValue: string | undefined
 
@@ -89,6 +100,12 @@ export function getPaddingProps(props: PaddingProps): { className?: string; styl
           assignStyleValue(style, variableName, inheritedValue)
         }
       }
+      continue
+    }
+
+    const utilityClass = getSpacingUtilityClass(property as SpacingUtilityPrefix, value as string | undefined)
+    if (utilityClass) {
+      classNames.push(utilityClass)
       continue
     }
 

@@ -117,9 +117,9 @@ export const spacingScale: Record<Spacing, string> = {
   '4': '4',
   '5': '5',
   '6': '6',
-  '7': '8',
-  '8': '10',
-  '9': '12',
+  '7': '7',
+  '8': '8',
+  '9': '9',
 }
 
 // Imported from shared theme package (single source of truth).

@@ -7,7 +7,6 @@ import {
   gridTemplateColumnsCustomResponsive,
   gridTemplateRowsCustomResponsive,
 } from '@/layouts/grid/Grid.css'
-import { paddingResponsiveClasses } from '@/theme/helpers/padding-responsive.css'
 import { Theme } from '@/theme/ThemeProvider'
 import { designTokens } from '@/theme/tokens'
 import { Card } from './Card'
@@ -59,8 +58,7 @@ describe('Card', () => {
 
     const root = screen.getByTestId('card')
 
-    expect(root.className).toContain(paddingResponsiveClasses.p)
-    expect(root.getAttribute('style')).toContain('--')
+    expect(root).toHaveClass('p-2', 'md:p-4')
   })
 
   it('does not apply size padding classes when explicit padding props are provided', () => {
@@ -72,7 +70,7 @@ describe('Card', () => {
 
     const root = screen.getByTestId('card')
 
-    expect(root.className).toContain(paddingResponsiveClasses.p)
+    expect(root).toHaveClass('p-2', 'md:p-4')
     expect(root.className).not.toContain(cardRootSizeResponsiveVariants.md.lg)
   })
 

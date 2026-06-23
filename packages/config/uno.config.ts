@@ -57,6 +57,7 @@ export const baseUnoConfig = {
       },
     },
     borderRadius: {
+      none: '0',
       sm: 'calc(var(--radius) - 4px)',
       md: 'calc(var(--radius) - 2px)',
       lg: 'var(--radius)',
@@ -64,6 +65,19 @@ export const baseUnoConfig = {
       '2xl': 'calc(var(--radius) + 8px)',
       '3xl': 'calc(var(--radius) + 12px)',
       '4xl': 'calc(var(--radius) + 16px)',
+      full: '9999px',
+    },
+    spacing: {
+      0: '0',
+      1: 'var(--space-1)',
+      2: 'var(--space-2)',
+      3: 'var(--space-3)',
+      4: 'var(--space-4)',
+      5: 'var(--space-5)',
+      6: 'var(--space-6)',
+      7: 'var(--space-7)',
+      8: 'var(--space-8)',
+      9: 'var(--space-9)',
     },
     fontFamily: {
       sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
