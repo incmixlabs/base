@@ -1,6 +1,6 @@
 import type { PropDef } from './prop-def'
 
-const weights = ['light', 'regular', 'medium', 'bold'] as const
+const weights = ['light', 'regular', 'medium', 'semibold', 'bold'] as const
 
 const weightPropDef = {
   weight: {
