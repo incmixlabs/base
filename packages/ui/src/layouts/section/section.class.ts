@@ -1,8 +1,8 @@
-import { type ContainerBreakpoint, containerBreakpointKeys } from '@/theme/tokens'
+import type { Breakpoint } from '@/theme/tokens'
 import type { SectionDisplay, SectionSize } from './section.props'
 
 export const sectionBaseCls = 'box-border'
-export const sectionBase = '[container-type:inline-size] shrink-0'
+export const sectionBase = 'shrink-0'
 
 export const sectionBySize = {
   '1': 'af-section-size-1',
@@ -16,7 +16,7 @@ export const sectionByDisplay = {
   initial: 'af-section-display-initial',
 } as const satisfies Record<SectionDisplay, string>
 
-const breakpointKeys = containerBreakpointKeys
+const breakpointKeys = ['xs', 'sm', 'md', 'lg', 'xl'] as const
 
 export const sectionDisplayResponsive = Object.fromEntries(
   breakpointKeys.map(bp => [
@@ -26,7 +26,7 @@ export const sectionDisplayResponsive = Object.fromEntries(
       initial: `af-section-${bp}-display-initial`,
     },
   ]),
-) as Record<ContainerBreakpoint, Record<SectionDisplay, string>>
+) as Record<Breakpoint, Record<SectionDisplay, string>>
 
 export const sectionSizeResponsive = Object.fromEntries(
   breakpointKeys.map(bp => [
@@ -38,4 +38,4 @@ export const sectionSizeResponsive = Object.fromEntries(
       '4': `af-section-${bp}-size-4`,
     },
   ]),
-) as Record<ContainerBreakpoint, Record<SectionSize, string>>
+) as Record<Breakpoint, Record<SectionSize, string>>
