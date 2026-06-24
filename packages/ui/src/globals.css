@@ -1035,6 +1035,7 @@
     text-align: start;
     --af-datalist-leading-trim-start: initial;
     --af-datalist-leading-trim-end: initial;
+
     gap: var(--af-datalist-gap);
   }
 
