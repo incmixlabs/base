@@ -1,6 +1,9 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
+import { Theme } from '@/theme'
+import { radiusClassByToken } from '@/theme/helpers'
+import { designTokens } from '@/theme/tokens'
 import { Surface } from './Surface'
 import { surfaceColorVariants, surfaceHoverEnabledClass } from './surface.css'
 
@@ -71,5 +74,19 @@ describe('Surface', () => {
     } else {
       expect(surface.className).not.toContain(surfaceHoverEnabledClass)
     }
+  })
+
+  it('uses shared token classes for the resolved theme radius', () => {
+    render(
+      <Theme radius="lg">
+        <Surface data-testid="surface">Surface</Surface>
+      </Theme>,
+    )
+
+    const surface = screen.getByTestId('surface')
+
+    expect(surface.className).toContain(radiusClassByToken.lg)
+    expect(surface.className).not.toContain('rounded-[var(--element-border-radius)]')
+    expect(surface).toHaveStyle({ '--element-border-radius': designTokens.radius.lg })
   })
 })
