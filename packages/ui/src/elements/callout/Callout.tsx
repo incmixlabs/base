@@ -21,7 +21,7 @@ import {
   calloutSizeVars,
   calloutTextBase,
   calloutTextBySize,
-} from './Callout.css'
+} from './callout.class'
 import { calloutRootPropDefs } from './callout.props'
 
 // Callout-specific variant type (different from Button variants)
@@ -115,7 +115,6 @@ const CalloutRoot = React.forwardRef<HTMLDivElement, CalloutRootProps>(
             calloutColorVariants[safeColor][safeVariant],
             safeInverse && supportsInverse && calloutInverseByVariant[safeColor][safeVariant],
             safeHover && calloutHoverByVariant[safeVariant],
-            safeHover && 'callout-hover-enabled',
             safeHover && 'cursor-pointer',
             // High contrast mode
             safeHighContrast && calloutHighContrastByVariant[safeVariant],

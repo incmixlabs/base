@@ -1,9 +1,14 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
-import { iconSizeVariants } from '@/elements/button/IconButton.css'
+import { iconSizeVariants } from '@/elements/button/icon-button.class'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { Badge } from './Badge'
-import { badgeColorVariants, badgeHighContrastByVariant, badgeHoverEnabledClass, badgeSizeVariants } from './Badge.css'
+import {
+  badgeColorVariants,
+  badgeHighContrastByVariant,
+  badgeHoverEnabledClass,
+  badgeSizeVariants,
+} from './badge.class'
 
 afterEach(() => {
   cleanup()

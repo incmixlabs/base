@@ -12,18 +12,19 @@ import type { MarginProps } from '@/theme/props/margin.props'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color, Radius, Responsive, Variant } from '@/theme/tokens'
 import { getInteractiveElementBaseClasses } from '@/theme/tokens'
-import { getRadiusStyles, useThemeRadius } from '../utils'
+import { getRadiusStyles, resolveResponsiveEnumProp, useThemeRadius } from '../utils'
 import {
   buttonBaseCls,
   buttonColorVariants,
   buttonInverseVariants,
   buttonLoading,
+  buttonLoadingContentCls,
   buttonLoadingOverlayCls,
   buttonMotion,
   buttonSizeIconScope,
   buttonSizeVariants,
   highContrastByVariant,
-} from './Button.css'
+} from './button.class'
 import { buttonPropDefs } from './button.props'
 import { Icon } from './Icon'
 
@@ -44,13 +45,6 @@ export interface ButtonProps extends Omit<React.ComponentPropsWithoutRef<'button
   iconEnd?: string
   /** Fill button icons using the current icon color */
   fill?: boolean
-}
-
-function getResolvedSize(size: Responsive<ButtonSize>): ButtonSize {
-  if (typeof size === 'string') {
-    return (normalizeEnumPropValue(buttonPropDefs.size, size) ?? buttonPropDefs.size.default) as ButtonSize
-  }
-  return (normalizeEnumPropValue(buttonPropDefs.size, size.initial) ?? buttonPropDefs.size.default) as ButtonSize
 }
 
 export function Button({
@@ -79,7 +73,7 @@ export function Button({
   ml,
   ...props
 }: ButtonProps & { ref?: React.Ref<HTMLButtonElement> }) {
-  const resolvedSize = getResolvedSize(size)
+  const resolvedSize = resolveResponsiveEnumProp(size, buttonPropDefs.size)
   const safeVariant = (normalizeEnumPropValue(buttonPropDefs.variant, variant) ??
     buttonPropDefs.variant.default) as Variant
   const safeColor = (normalizeEnumPropValue(buttonPropDefs.color, color) ??
@@ -145,6 +139,13 @@ export function Button({
       children?: React.ReactNode
     }
     const childRef = childElement.ref
+    const childContent = (
+      <>
+        {startIcon}
+        {childProps.children}
+        {endIcon}
+      </>
+    )
 
     return React.cloneElement(childElement, {
       ...props,
@@ -156,13 +157,19 @@ export function Button({
       children: (
         <>
           {loadingOverlay}
-          {startIcon}
-          {childProps.children}
-          {endIcon}
+          {safeLoading ? <span className={buttonLoadingContentCls}>{childContent}</span> : childContent}
         </>
       ),
     } as Record<string, unknown>)
   }
+
+  const buttonContent = (
+    <>
+      {startIcon}
+      {children}
+      {endIcon}
+    </>
+  )
 
   return (
     <ButtonPrimitive
@@ -174,9 +181,7 @@ export function Button({
       {...props}
     >
       {loadingOverlay}
-      {startIcon}
-      {children}
-      {endIcon}
+      {safeLoading ? <span className={buttonLoadingContentCls}>{buttonContent}</span> : buttonContent}
     </ButtonPrimitive>
   )
 }

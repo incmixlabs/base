@@ -22,7 +22,7 @@ import {
   calloutSizeVars,
   calloutTextBase,
   calloutTextBySize,
-} from '../callout/Callout.css'
+} from '../callout/callout.class'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import { type ToastApi, ToastApiContext, useToastApiContext } from './toast.context'
 import { type ToastDismissable, type ToastViewportSide, toastRootPropDefs, toastViewportPropDefs } from './toast.props'

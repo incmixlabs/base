@@ -19,7 +19,7 @@ import {
   iconButtonColorVariants,
   iconButtonSizeIconScope,
   iconButtonSizeVariants,
-} from '@/elements/button/IconButton.css'
+} from '@/elements/button/icon-button.class'
 import { useThemeRadius } from '@/elements/utils'
 import { WheelPicker, WheelPickerWrapper } from '@/elements/wheel-picker/wheel-picker'
 import { useFieldGroup } from '@/form/FieldGroupContext'

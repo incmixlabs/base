@@ -5,8 +5,16 @@ import { SemanticColor } from '@/theme/props/color.prop'
 import { Theme } from '@/theme/ThemeProvider'
 import { designTokens } from '@/theme/tokens'
 import { Button } from './Button'
-import { buttonColorVariants, buttonInverseVariants, buttonSizeVariants, highContrastByVariant } from './Button.css'
-import { iconSizeVariants } from './IconButton.css'
+import {
+  buttonColorVariants,
+  buttonInverseVariants,
+  buttonLoading,
+  buttonLoadingContentCls,
+  buttonLoadingOverlayCls,
+  buttonSizeVariants,
+  highContrastByVariant,
+} from './button.class'
+import { iconSizeVariants } from './icon-button.class'
 
 afterEach(() => {
   cleanup()
@@ -66,6 +74,18 @@ describe('Button', () => {
     expect(button.className).not.toContain('af-high-contrast')
     expect(button).not.toBeDisabled()
     expect(button).not.toHaveAttribute('aria-busy')
+  })
+
+  it('keeps loading spinner separate from hidden button content', () => {
+    render(<Button loading>Saving</Button>)
+
+    const button = screen.getByRole('button', { name: 'Saving' })
+    const loadingOverlayClass = buttonLoadingOverlayCls.split(' ')[0]
+    const loadingContentClass = buttonLoadingContentCls.split(' ')[0]
+
+    expect(button).toHaveClass(buttonLoading)
+    expect(button.querySelector(`.${loadingOverlayClass}`)).toBeInTheDocument()
+    expect(button.querySelector(`.${loadingContentClass}`)).toHaveTextContent('Saving')
   })
 
   it('keeps grayscale semantic lanes on the readable primary fill in high-contrast solid mode', () => {
