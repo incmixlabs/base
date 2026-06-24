@@ -97,10 +97,6 @@ export function getMergedSlotClassName(children: React.ReactNode, className?: st
 // Grid types
 export type GridFlow = 'row' | 'column' | 'dense' | 'row-dense' | 'column-dense'
 
-// Container types
-export type ContainerSize = '1' | '2' | '3' | '4'
-export type ContainerAlign = 'left' | 'center' | 'right'
-
 // Section types
 export type SectionSize = '1' | '2' | '3' | '4'
 

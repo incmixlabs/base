@@ -1,6 +1,5 @@
 import { type ContainerBreakpoint, containerBreakpointKeys } from '@/theme/tokens'
-import type { ContainerAlign, ContainerSize } from '../layout-utils'
-import type { ContainerDisplay } from './container.props'
+import type { ContainerAlign, ContainerDisplay, ContainerSize } from './container.props'
 
 export const containerBase = '[container-type:inline-size]'
 export const containerInnerMaxWidth = 'af-container-inner-max-width'

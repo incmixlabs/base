@@ -6,7 +6,6 @@ import { cn } from '@/lib/utils'
 import { getHeightProps } from '@/theme/helpers/get-height-styles'
 import { getWidthProps } from '@/theme/helpers/get-width-styles'
 import {
-  type ContainerAlign,
   extractSharedLayoutProps,
   getLayoutCompositionClasses,
   getLayoutCompositionStyles,
@@ -25,9 +24,20 @@ import {
   containerInnerMaxWidth,
   containerSizeResponsive,
 } from './container.class'
-import type { ContainerDisplay, ContainerProps } from './container.props'
+import type { ContainerAlign, ContainerDisplay, ContainerProps } from './container.props'
 
-export type { ContainerDisplay, ContainerOwnProps, ContainerProps } from './container.props'
+export type {
+  ContainerAlign,
+  ContainerDisplay,
+  ContainerOwnProps,
+  ContainerProps,
+  ContainerSize,
+} from './container.props'
+export {
+  containerAlignValues,
+  containerDisplayValues,
+  containerSizes,
+} from './container.props'
 
 // ============================================================================
 // Container Class Maps

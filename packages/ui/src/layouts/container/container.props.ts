@@ -3,19 +3,16 @@ import { asChildPropDef } from '@/theme/props/as-child.prop'
 import { layoutPropDefs } from '@/theme/props/layout.props'
 import { layoutCompositionPropDefs } from '@/theme/props/layout-composition.props'
 import type { PropDef } from '@/theme/props/prop-def'
-import type {
-  ContainerAlign,
-  ContainerSize,
-  LayoutCompositionProps,
-  Responsive,
-  SharedLayoutProps,
-} from '../layout-utils'
+import type { LayoutCompositionProps, Responsive, SharedLayoutProps } from '../layout-utils'
 
-const sizes = ['1', '2', '3', '4'] as const
-const displayValues = ['none', 'initial'] as const
-const alignValues = ['left', 'center', 'right'] as const
+export const containerSizes = ['1', '2', '3', '4'] as const
+export type ContainerSize = (typeof containerSizes)[number]
 
-export type ContainerDisplay = (typeof displayValues)[number]
+export const containerDisplayValues = ['none', 'initial'] as const
+export type ContainerDisplay = (typeof containerDisplayValues)[number]
+
+export const containerAlignValues = ['left', 'center', 'right'] as const
+export type ContainerAlign = (typeof containerAlignValues)[number]
 
 export interface ContainerOwnProps extends SharedLayoutProps {
   /** Merge props onto child element */
@@ -66,7 +63,7 @@ const containerPropDefs = {
   size: {
     type: 'enum',
     className: 'af-size',
-    values: sizes,
+    values: containerSizes,
     default: '4',
     responsive: true,
   },
@@ -81,7 +78,7 @@ const containerPropDefs = {
   display: {
     type: 'enum',
     className: 'af-display',
-    values: displayValues,
+    values: containerDisplayValues,
     parseValue: parseDisplayValue,
     responsive: true,
   },
@@ -95,7 +92,7 @@ const containerPropDefs = {
   align: {
     type: 'enum',
     className: 'af-ai',
-    values: alignValues,
+    values: containerAlignValues,
     parseValue: parseAlignValue,
     responsive: true,
   },
@@ -105,9 +102,9 @@ const containerPropDefs = {
     typeFullName: "Omit<LayoutCompositionProps, 'layout'>",
   },
 } satisfies {
-  size: PropDef<(typeof sizes)[number]>
-  display: PropDef<(typeof displayValues)[number]>
-  align: PropDef<(typeof alignValues)[number]>
+  size: PropDef<(typeof containerSizes)[number]>
+  display: PropDef<(typeof containerDisplayValues)[number]>
+  align: PropDef<(typeof containerAlignValues)[number]>
   layout: typeof layoutCompositionPropDefs.layout
   layoutProps: PropDef<Omit<LayoutCompositionProps, 'layout'>>
 }
