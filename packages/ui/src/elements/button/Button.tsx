@@ -18,6 +18,7 @@ import {
   buttonColorVariants,
   buttonInverseVariants,
   buttonLoading,
+  buttonLoadingContentCls,
   buttonLoadingOverlayCls,
   buttonMotion,
   buttonSizeIconScope,
@@ -138,6 +139,13 @@ export function Button({
       children?: React.ReactNode
     }
     const childRef = childElement.ref
+    const childContent = (
+      <>
+        {startIcon}
+        {childProps.children}
+        {endIcon}
+      </>
+    )
 
     return React.cloneElement(childElement, {
       ...props,
@@ -149,13 +157,19 @@ export function Button({
       children: (
         <>
           {loadingOverlay}
-          {startIcon}
-          {childProps.children}
-          {endIcon}
+          {safeLoading ? <span className={buttonLoadingContentCls}>{childContent}</span> : childContent}
         </>
       ),
     } as Record<string, unknown>)
   }
+
+  const buttonContent = (
+    <>
+      {startIcon}
+      {children}
+      {endIcon}
+    </>
+  )
 
   return (
     <ButtonPrimitive
@@ -167,9 +181,7 @@ export function Button({
       {...props}
     >
       {loadingOverlay}
-      {startIcon}
-      {children}
-      {endIcon}
+      {safeLoading ? <span className={buttonLoadingContentCls}>{buttonContent}</span> : buttonContent}
     </ButtonPrimitive>
   )
 }

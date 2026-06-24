@@ -482,13 +482,17 @@
   }
 
   .af-button-loading {
-    color: transparent !important;
+    cursor: wait;
   }
 
-  .af-button-inverse-solid {
+  .af-button-loading-content {
+    opacity: 0;
+  }
+
+  .surface-variant-solid.af-button-inverse-solid {
     color: var(--surface-contrast);
   }
-  .af-button-inverse-soft {
+  .surface-variant-soft.af-button-inverse-soft {
     color: var(--surface-text);
   }
 
@@ -577,7 +581,7 @@
   }
 
   /* IconSwapButton Styles */
-  @keyframes iconSwapRotateForward {
+  @keyframes icon-swap-rotate-forward {
     0% {
       transform: rotate(-120deg);
     }
@@ -585,7 +589,7 @@
       transform: rotate(0deg);
     }
   }
-  @keyframes iconSwapRotateBackward {
+  @keyframes icon-swap-rotate-backward {
     0% {
       transform: rotate(120deg);
     }
@@ -608,7 +612,7 @@
     }
   }
   .af-icon-swap-button-motion-forward {
-    animation: iconSwapRotateForward 280ms var(--af-ease-standard) both;
+    animation: icon-swap-rotate-forward 280ms var(--af-ease-standard) both;
   }
   @media (prefers-reduced-motion: reduce) {
     .af-icon-swap-button-motion-forward {
@@ -616,7 +620,7 @@
     }
   }
   .af-icon-swap-button-motion-backward {
-    animation: iconSwapRotateBackward 280ms var(--af-ease-standard) both;
+    animation: icon-swap-rotate-backward 280ms var(--af-ease-standard) both;
   }
   @media (prefers-reduced-motion: reduce) {
     .af-icon-swap-button-motion-backward {
@@ -836,10 +840,10 @@
     line-height: var(--component-callout-size-2x-line-height, 2.25rem);
   }
 
-  .af-callout-split {
-    padding: 0 !important;
-    column-gap: 0 !important;
-    row-gap: 0 !important;
+  .af-callout-root-base.af-callout-split {
+    padding: 0;
+    column-gap: 0;
+    row-gap: 0;
     overflow: hidden;
     color: var(--color-neutral-text);
     background-color: var(--callout-split-bg, var(--background));
@@ -878,7 +882,7 @@
     border-color: var(--callout-visible-border, var(--surface-border));
   }
 
-  .af-callout-inverse-soft {
+  .surface-variant-soft.af-callout-inverse-soft {
     color: var(--surface-contrast);
   }
 

@@ -5,7 +5,9 @@ import type { Color, Variant } from '@/theme/tokens'
 export const buttonBaseCls =
   'relative inline-flex items-center justify-center select-none border outline-none box-border'
 
-export const buttonLoadingOverlayCls = 'absolute inset-0 flex items-center justify-center'
+export const buttonLoadingContentCls = 'af-button-loading-content inline-flex items-center justify-center gap-[inherit]'
+
+export const buttonLoadingOverlayCls = 'af-button-loading-overlay absolute inset-0 flex items-center justify-center'
 
 export const buttonSizeIconScope = 'af-button-icon-scope'
 
