@@ -32,13 +32,7 @@ import { cn } from '@/lib/utils'
 import { controlSizeTokens } from '@/theme/token-maps'
 import type { Color } from '@/theme/tokens'
 import { Text } from '@/typography/text/Text'
-import {
-  filterAppliedClass,
-  filterBodyClass,
-  filterFooterClass,
-  filterHeaderClass,
-  filterSliderValueRowClass,
-} from './Filter.css'
+import { filterApplied, filterBody, filterFooter, filterHeader, filterSliderValueRow } from './filter.class'
 import type {
   FilterApplyMode,
   FilterCalendarMode,
@@ -456,7 +450,7 @@ function FilterSliderField<TData>({
           onChange(nextValue[0] === min && nextValue[1] === max ? undefined : nextValue)
         }}
       />
-      <Row justify="between" className={filterSliderValueRowClass}>
+      <Row justify="between" className={filterSliderValueRow}>
         <Text size="xs" color="slate">
           {filterValue[0]}
         </Text>
@@ -941,7 +935,7 @@ export function Filter<TData>({
       style={{ fontSize: controlSizeTokens[size].fontSize }}
     >
       {hasHeader ? (
-        <Column gap="3" className={filterHeaderClass}>
+        <Column gap="3" className={filterHeader}>
           <Row align="start" justify="between" gap="3">
             <Column gap="1" minWidth="0">
               {title != null ? (
@@ -965,7 +959,7 @@ export function Filter<TData>({
       ) : null}
 
       {showAppliedFilters ? (
-        <Column gap="2" className={filterAppliedClass}>
+        <Column gap="2" className={filterApplied}>
           <Row align="center" justify="between" gap="2">
             <Text size="xs" weight="bold" color="slate">
               Applied
@@ -992,7 +986,7 @@ export function Filter<TData>({
         </Column>
       ) : null}
 
-      <Column flexGrow="1" flexBasis="0" minHeight="0" gap="3" className={filterBodyClass}>
+      <Column flexGrow="1" flexBasis="0" minHeight="0" gap="3" className={filterBody}>
         <Accordion.Root
           multiple
           size="xs"
@@ -1056,7 +1050,7 @@ export function Filter<TData>({
       </Column>
 
       {isManual ? (
-        <Row justify="end" gap="2" className={filterFooterClass}>
+        <Row justify="end" gap="2" className={filterFooter}>
           <Button
             type="button"
             variant="ghost"
