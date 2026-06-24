@@ -17,7 +17,7 @@ import {
   dataListRootByTrim,
   dataListRootSizeResponsive,
   dataListValueBase,
-} from './DataList.css'
+} from './data-list.class'
 import type { DataListAlign, DataListOrientation, DataListSize, DataListTrim } from './data-list.props'
 
 // Context for sharing props

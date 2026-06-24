@@ -25,7 +25,7 @@ import {
   accordionSizeVars,
   accordionTriggerBase,
   accordionTriggerPaddingless,
-} from './Accordion.css'
+} from './accordion.class'
 import { accordionRootPropDefs } from './accordion.props'
 
 type AccordionSize = (typeof accordionRootPropDefs.size.values)[number]

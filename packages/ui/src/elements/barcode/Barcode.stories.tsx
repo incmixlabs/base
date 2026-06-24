@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Barcode, type BarcodeFormat, barcodeFormats } from '@/elements/barcode'
+import { Barcode, type BarcodeFormat, barcodeFormats, barcodePropDefs } from '@/elements/barcode'
+import { getPropDefValues } from '@/theme/props/prop-def'
 
 const meta: Meta<typeof Barcode> = {
   title: 'Elements/Barcode',
@@ -21,7 +22,7 @@ const meta: Meta<typeof Barcode> = {
     },
     color: {
       control: 'select',
-      options: ['slate', 'primary', 'secondary', 'accent', 'neutral', 'info', 'success', 'warning', 'error'],
+      options: getPropDefValues(barcodePropDefs.color),
     },
   },
 }

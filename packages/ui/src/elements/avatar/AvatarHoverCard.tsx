@@ -8,9 +8,9 @@ import type { Color, Radius } from '@/theme/tokens'
 import { Text } from '@/typography'
 import type { PopoverContentVariant } from '../popover/popover.props'
 import { AvatarBase } from './AvatarBase'
+import { avatarListItemBase, avatarListItemBySize } from './avatar.class'
 import type { AvatarProps, AvatarSize } from './avatar.props'
 import { avatarListTitleSizeByAvatarSize, getHoverCardContentSize } from './avatar-hover-card.shared'
-import { avatarListItemBase, avatarListItemBySize } from './avatar-list.css'
 
 export type AvatarPresence = 'offline' | 'unknown' | 'busy' | 'online'
 

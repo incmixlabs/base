@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import type * as React from 'react'
 import { Avatar, AvatarPie } from '@/elements'
+import { avatarPropDefs } from './avatar.props'
+import { getPropDefValues } from '@/theme/props/prop-def'
 
 type StoryAvatar = {
   id: string
@@ -79,7 +81,7 @@ const meta: Meta<AvatarPieStoryArgs> = {
   argTypes: {
     size: {
       control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl', '2x'],
+      options: getPropDefValues(avatarPropDefs.size),
     },
     avatarCount: {
       control: 'number',
@@ -223,7 +225,7 @@ export const HoverCardList: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="flex items-center gap-4">
-      {(['xs', 'sm', 'md', 'lg', 'xl', '2x'] as const).map(size => (
+      {avatarPropDefs.size.values.map(size => (
         <AvatarPie key={size} size={size}>
           <Avatar name="Maya" src={imageAvatars[0].src} />
           <Avatar name="Nora" src={imageAvatars[1].src} />

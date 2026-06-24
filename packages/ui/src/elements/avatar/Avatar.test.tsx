@@ -5,12 +5,7 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { HUE_NAMES } from '@/theme/tokens'
 import { Avatar } from './Avatar'
 import { AVATAR_SIZE_CLASS, AvatarProvider, avatarSizeStyles } from './avatar.context'
-import {
-  avatarFallbackMuted,
-  avatarRadiusByRadius,
-  avatarSoftFallbackByHueTone,
-  avatarSolidFallbackByHueTone,
-} from './avatar.css'
+import { avatarFallbackMuted, avatarRadiusByRadius } from './avatar.class'
 import { stringToAvatarSoftTone, stringToAvatarSolidTone, stringToHue } from './avatar.shared'
 
 afterEach(() => {
@@ -231,7 +226,10 @@ describe('Avatar', () => {
       const avatar = container.firstChild as HTMLElement
       const hue = stringToHue('Alice')
       const tone = stringToAvatarSoftTone('Alice')
-      expect(avatar).toHaveClass(avatarSoftFallbackByHueTone[`${hue}-${tone}`])
+      expect(avatar).toHaveStyle({
+        backgroundColor: `var(--${hue}-${tone})`,
+        color: `var(--${hue}-11)`,
+      })
     })
 
     it('applies solid hue styles via provider', () => {
@@ -243,7 +241,10 @@ describe('Avatar', () => {
       const avatar = container.querySelector(`.${AVATAR_SIZE_CLASS}`) as HTMLElement
       const hue = stringToHue('Alice')
       const tone = stringToAvatarSolidTone('Alice')
-      expect(avatar).toHaveClass(avatarSolidFallbackByHueTone[`${hue}-${tone}`])
+      expect(avatar).toHaveStyle({
+        backgroundColor: `var(--${hue}-${tone})`,
+        color: `var(--${hue}-contrast)`,
+      })
     })
 
     it('falls back to muted when no name is given', () => {
@@ -257,7 +258,10 @@ describe('Avatar', () => {
       const avatar = container.firstChild as HTMLElement
       const hue = stringToHue('user-1:Alice')
       const tone = stringToAvatarSoftTone('user-1:Alice')
-      expect(avatar).toHaveClass(avatarSoftFallbackByHueTone[`${hue}-${tone}`])
+      expect(avatar).toHaveStyle({
+        backgroundColor: `var(--${hue}-${tone})`,
+        color: `var(--${hue}-11)`,
+      })
     })
 
     it('uses id as deterministic hue seed when name is missing', () => {
@@ -265,7 +269,10 @@ describe('Avatar', () => {
       const avatar = container.firstChild as HTMLElement
       const hue = stringToHue('user-1:')
       const tone = stringToAvatarSoftTone('user-1:')
-      expect(avatar).toHaveClass(avatarSoftFallbackByHueTone[`${hue}-${tone}`])
+      expect(avatar).toHaveStyle({
+        backgroundColor: `var(--${hue}-${tone})`,
+        color: `var(--${hue}-11)`,
+      })
     })
 
     it('shows image and hides fallback after image loads', async () => {
@@ -381,7 +388,10 @@ describe('Avatar', () => {
       const avatar = container.querySelector(`.${AVATAR_SIZE_CLASS}`) as HTMLElement
       const hue = stringToHue('Alice')
       const tone = stringToAvatarSolidTone('Alice')
-      expect(avatar).toHaveClass(avatarSolidFallbackByHueTone[`${hue}-${tone}`])
+      expect(avatar).toHaveStyle({
+        backgroundColor: `var(--${hue}-${tone})`,
+        color: `var(--${hue}-contrast)`,
+      })
     })
 
     it('provides default radius to children', () => {
@@ -409,7 +419,10 @@ describe('Avatar', () => {
       const avatar = container.firstChild as HTMLElement
       const hue = stringToHue('Alice')
       const tone = stringToAvatarSoftTone('Alice')
-      expect(avatar).toHaveClass(avatarSoftFallbackByHueTone[`${hue}-${tone}`])
+      expect(avatar).toHaveStyle({
+        backgroundColor: `var(--${hue}-${tone})`,
+        color: `var(--${hue}-11)`,
+      })
     })
   })
 

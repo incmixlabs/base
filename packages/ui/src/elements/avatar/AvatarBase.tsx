@@ -3,7 +3,6 @@
 import * as React from 'react'
 import { Flex } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
-import { AVATAR_SIZE_CLASS, useAvatarContext } from './avatar.context'
 import {
   avatarDefaultIcon,
   avatarFallbackMuted,
@@ -14,11 +13,10 @@ import {
   avatarPresenceByState,
   avatarRadiusByRadius,
   avatarSizeBySize,
-  avatarSoftFallbackByHueTone,
-  avatarSolidFallbackByHueTone,
-} from './avatar.css'
+} from './avatar.class'
+import { AVATAR_SIZE_CLASS, useAvatarContext } from './avatar.context'
 import type { AvatarProps } from './avatar.props'
-import { stringToAvatarSoftTone, stringToAvatarSolidTone, stringToHue } from './avatar.shared'
+import { getAvatarColorStyle, stringToAvatarSoftTone, stringToAvatarSolidTone, stringToHue } from './avatar.shared'
 
 type AvatarBaseOwnProps = Pick<
   AvatarProps,
@@ -99,14 +97,13 @@ const AvatarBase = React.forwardRef<HTMLSpanElement, AvatarBaseProps>(
     const resolvedHue = colorSeed ? stringToHue(colorSeed) : undefined
     const resolvedSoftTone = colorSeed ? stringToAvatarSoftTone(colorSeed) : undefined
     const resolvedSolidTone = colorSeed ? stringToAvatarSolidTone(colorSeed) : undefined
-    const softToneClass =
-      fallbackVariant === 'soft' && resolvedHue && resolvedSoftTone
-        ? avatarSoftFallbackByHueTone[`${resolvedHue}-${resolvedSoftTone}`]
-        : undefined
-    const solidToneClass =
-      fallbackVariant === 'solid' && resolvedHue && resolvedSolidTone
-        ? avatarSolidFallbackByHueTone[`${resolvedHue}-${resolvedSolidTone}`]
-        : undefined
+
+    const colorStyle = React.useMemo(() => {
+      if (!resolvedHue || !showFallback) return undefined
+      const variant = fallbackVariant === 'solid' ? 'solid' : 'soft'
+      const tone = variant === 'soft' ? resolvedSoftTone : resolvedSolidTone
+      return getAvatarColorStyle(resolvedHue, variant, tone)
+    }, [fallbackVariant, resolvedHue, resolvedSoftTone, resolvedSolidTone, showFallback])
 
     return (
       <Flex
@@ -123,11 +120,9 @@ const AvatarBase = React.forwardRef<HTMLSpanElement, AvatarBaseProps>(
           avatarSizeBySize[size],
           avatarRadiusByRadius[radius],
           showFallback && !resolvedHue && avatarFallbackMuted,
-          softToneClass,
-          solidToneClass,
           className,
         )}
-        style={style}
+        style={{ ...colorStyle, ...style }}
         {...props}
       >
         <Flex

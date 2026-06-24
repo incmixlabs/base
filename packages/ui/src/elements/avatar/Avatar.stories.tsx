@@ -64,7 +64,7 @@ export const WithName: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="flex items-end gap-4">
-      {(['xs', 'sm', 'md', 'lg', 'xl', '2x'] as const).map(size => (
+      {avatarPropDefs.size.values.map(size => (
         <Avatar
           key={size}
           size={size}
@@ -78,7 +78,7 @@ export const Sizes: Story = {
 export const FallbackSizes: Story = {
   render: () => (
     <div className="flex items-end gap-4">
-      {(['xs', 'sm', 'md', 'lg', 'xl', '2x'] as const).map(size => (
+      {avatarPropDefs.size.values.map(size => (
         <Avatar key={size} size={size} name="John Doe" />
       ))}
     </div>
@@ -114,7 +114,7 @@ export const SolidMode: Story = {
 export const Radius: Story = {
   render: () => (
     <div className="flex items-center gap-4">
-      {(['none', 'sm', 'md', 'lg', 'full'] as const).map(radius => (
+      {avatarPropDefs.radius.values.map(radius => (
         <Avatar key={radius} radius={radius} name="John Doe" size="lg" />
       ))}
     </div>
@@ -125,7 +125,7 @@ export const RadiusFromProvider: Story = {
   name: 'Radius from Provider',
   render: () => (
     <div className="flex flex-col gap-4">
-      {(['none', 'sm', 'md', 'lg', 'full'] as const).map(radius => (
+      {avatarPropDefs.radius.values.map(radius => (
         <div key={radius} className="flex items-center gap-4">
           <span className="text-sm w-12 text-muted-foreground">{radius}</span>
           <AvatarProvider radius={radius}>

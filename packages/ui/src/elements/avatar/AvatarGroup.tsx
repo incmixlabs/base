@@ -8,15 +8,15 @@ import type { Color, Radius } from '@/theme/tokens'
 import type { PopoverContentVariant } from '../popover/popover.props'
 import { Avatar, type AvatarProps, type AvatarSize, type AvatarVariant } from './Avatar'
 import { AvatarListHoverCard, type AvatarListHoverCardRenderer } from './AvatarListHoverCard'
-import { AVATAR_SIZE_CLASS, AvatarProvider, avatarSizeStyles, useAvatarContext } from './avatar.context'
-import { avatarOverflowSoftByHue, avatarOverflowSolidByHue, avatarRadiusByRadius } from './avatar.css'
-import { stringToHue } from './avatar.shared'
 import {
   avatarGroupOverflowStackMarginBySize,
   avatarGroupSpreadBySize,
   avatarGroupStackBySize,
   avatarGroupStackItem,
-} from './avatar-group.css'
+  avatarRadiusByRadius,
+} from './avatar.class'
+import { AVATAR_SIZE_CLASS, AvatarProvider, avatarSizeStyles, useAvatarContext } from './avatar.context'
+import { getAvatarColorStyle, stringToHue } from './avatar.shared'
 import { getAvatarListEntry } from './avatar-list-hover-card.shared'
 
 type AvatarGroupLayout = 'spread' | 'stack'
@@ -160,6 +160,10 @@ function AvatarGroup({
     </Flex>
   ) : null
 
+  const overflowColorStyle = React.useMemo(() => {
+    return getAvatarColorStyle(overflowHue, groupVariant === 'solid' ? 'solid' : 'soft')
+  }, [groupVariant, overflowHue])
+
   const overflowNode =
     remainingCount > 0
       ? (() => {
@@ -167,7 +171,6 @@ function AvatarGroup({
             'relative inline-flex items-center justify-center font-medium border border-solid transition-[opacity,background-color,color,border-color] duration-150 ease-in-out',
             avatarSizeStyles[size],
             avatarRadiusByRadius[groupRadius],
-            groupVariant === 'solid' ? avatarOverflowSolidByHue[overflowHue] : avatarOverflowSoftByHue[overflowHue],
             isStack && avatarGroupStackItem,
             isStack && !overflowHoverCard && avatarGroupOverflowStackMarginBySize[size],
             onOverflowClick && 'cursor-pointer hover:opacity-90',
@@ -181,12 +184,18 @@ function AvatarGroup({
               type="button"
               onClick={handleOverflowClick}
               className={cn(overflowTriggerClassName, 'appearance-none p-0 border-0 bg-transparent')}
+              style={overflowColorStyle}
               aria-label={`${remainingCount} more`}
             >
               {overflowContent}
             </button>
           ) : (
-            <span className={overflowTriggerClassName} aria-label={`${remainingCount} more`} role="img">
+            <span
+              className={overflowTriggerClassName}
+              style={overflowColorStyle}
+              aria-label={`${remainingCount} more`}
+              role="img"
+            >
               {overflowContent}
             </span>
           )

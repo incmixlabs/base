@@ -5,9 +5,6 @@ import { Flex } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
 import type { AvatarProps, AvatarSize } from './Avatar'
 import { AvatarListHoverCard } from './AvatarListHoverCard'
-import { useAvatarContext } from './avatar.context'
-import { avatarPropDefs } from './avatar.props'
-import { getAvatarListEntry } from './avatar-list-hover-card.shared'
 import {
   avatarPieOverflowLabel,
   avatarPieRoot,
@@ -17,7 +14,10 @@ import {
   avatarPieSliceThreeThird,
   avatarPieSliceTwoFirst,
   avatarPieSliceTwoSecond,
-} from './avatar-pie.css'
+} from './avatar.class'
+import { useAvatarContext } from './avatar.context'
+import { avatarPropDefs } from './avatar.props'
+import { getAvatarListEntry } from './avatar-list-hover-card.shared'
 
 const avatarPieSliceClassesByCount = {
   1: ['inset-0'],

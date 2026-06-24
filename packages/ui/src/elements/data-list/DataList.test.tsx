@@ -15,7 +15,7 @@ import {
   dataListRootByTrim,
   dataListRootSizeResponsive,
   dataListValueBase,
-} from './DataList.css'
+} from './data-list.class'
 
 describe('DataList', () => {
   it('applies VE size and typography classes on the root', () => {

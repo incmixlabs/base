@@ -38,3 +38,27 @@ export function stringToAvatarSolidTone(str: string): AvatarSolidTone {
   const index = finalizeHash(hashString(`${str}:solid-tone`)) % AVATAR_SOLID_TONES.length
   return (AVATAR_SOLID_TONES[index] ?? '9') as AvatarSolidTone
 }
+
+export interface AvatarColorStyle {
+  backgroundColor: string
+  color: string
+  borderColor?: string
+}
+
+export function getAvatarColorStyle(hue: HueName, variant: 'soft' | 'solid', tone?: string): AvatarColorStyle {
+  if (variant === 'soft') {
+    const softTone = tone ?? '6'
+    return {
+      backgroundColor: `var(--${hue}-${softTone})`,
+      color: `var(--${hue}-11)`,
+      borderColor: `var(--${hue}-${softTone})`,
+    }
+  }
+
+  const solidTone = tone ?? '9'
+  return {
+    backgroundColor: `var(--${hue}-${solidTone})`,
+    color: `var(--${hue}-contrast)`,
+    borderColor: `var(--${hue}-${solidTone})`,
+  }
+}

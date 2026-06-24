@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Avatar, AvatarGroup } from '@/elements'
 import { SemanticColor } from '@/theme/props/color.prop'
+import { avatarGroupPropDefs, avatarGroupSizes } from './avatar-group.props'
+import { getPropDefValues } from '@/theme/props/prop-def'
 
 const meta: Meta<typeof AvatarGroup> = {
   title: 'Elements/AvatarGroup',
@@ -11,11 +13,11 @@ const meta: Meta<typeof AvatarGroup> = {
   argTypes: {
     size: {
       control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl', '2x'],
+      options: getPropDefValues(avatarGroupPropDefs.size),
     },
     layout: {
       control: 'select',
-      options: ['stack', 'spread'],
+      options: getPropDefValues(avatarGroupPropDefs.layout),
     },
     max: {
       control: 'number',
@@ -148,7 +150,7 @@ export const Sizes: Story = {
     <div className="grid grid-cols-2 gap-8">
       <div className="space-y-4">
         <p className="text-sm font-medium">Stack Layout</p>
-        {(['xs', 'sm', 'md', 'lg', 'xl', '2x'] as const).map(size => (
+        {avatarGroupSizes.map(size => (
           <div key={size} className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground w-12">{size}</span>
             <AvatarGroup size={size} layout="stack" max={4}>
@@ -163,7 +165,7 @@ export const Sizes: Story = {
       </div>
       <div className="space-y-4">
         <p className="text-sm font-medium">Spread Layout</p>
-        {(['xs', 'sm', 'md', 'lg', 'xl', '2x'] as const).map(size => (
+        {avatarGroupSizes.map(size => (
           <div key={size} className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground w-12">{size}</span>
             <AvatarGroup size={size} layout="spread" max={4}>

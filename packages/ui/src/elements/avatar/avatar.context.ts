@@ -1,6 +1,6 @@
 import * as React from 'react'
 import type { Radius } from '@/theme/tokens'
-import { avatarSizeBySize } from './avatar.css'
+import { avatarSizeBySize } from './avatar.class'
 import type { AvatarVariant } from './avatar.props'
 
 export const AVATAR_SIZE_CLASS = 'af-avatar-size'
