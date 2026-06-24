@@ -13,6 +13,7 @@ import { getHeightProps } from '@/theme/helpers/get-height-styles'
 import { getWidthProps } from '@/theme/helpers/get-width-styles'
 import { normalizeEnumPropValue } from '@/theme/props/prop-def'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
+import { createComposedCloseRender, createComposedTriggerRender } from '@/utils/trigger'
 import {
   dialogBackdropBase,
   dialogBackdropBaseCls,
@@ -29,7 +30,7 @@ import {
   dialogPopupTransition,
   dialogPopupVariants,
   dialogTitle,
-} from './dialog.css'
+} from './dialog.class'
 import {
   type DialogBodyProps,
   type DialogCloseProps,
@@ -44,7 +45,6 @@ import {
   type DialogTriggerProps,
   dialogContentPropDefs,
 } from './dialog.props'
-import { createComposedCloseRender, createComposedTriggerRender } from './trigger.utils'
 
 export type { DialogProps } from './dialog.props'
 

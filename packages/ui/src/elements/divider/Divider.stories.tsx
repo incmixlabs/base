@@ -158,16 +158,7 @@ export const Sizes: Story = {
 export const Colors: Story = {
   render: () => (
     <div className="flex w-full flex-col gap-4">
-      {[
-        SemanticColor.neutral,
-        SemanticColor.primary,
-        SemanticColor.secondary,
-        SemanticColor.accent,
-        SemanticColor.info,
-        SemanticColor.success,
-        SemanticColor.warning,
-        SemanticColor.error,
-      ].map(color => (
+      {semanticColors.map(color => (
         <Divider key={color} color={color}>
           {color}
         </Divider>

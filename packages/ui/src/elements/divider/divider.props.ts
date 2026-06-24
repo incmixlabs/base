@@ -22,3 +22,7 @@ const dividerPropDefs = {
 }
 
 export { dividerAlignments, dividerOrientations, dividerPropDefs, dividerSizes }
+
+export type DividerAlign = (typeof dividerPropDefs.align.values)[number]
+export type DividerOrientation = (typeof dividerPropDefs.orientation.values)[number]
+export type DividerSize = (typeof dividerPropDefs.size.values)[number]
