@@ -9,6 +9,7 @@ import { Row } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
 import { normalizeEnumPropValue } from '@/theme/props/prop-def'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
+import { createComposedCloseRender, createComposedTriggerRender } from '@/utils/trigger'
 import {
   type AlertDialogActionProps,
   type AlertDialogCancelProps,
@@ -37,8 +38,7 @@ import {
   dialogPopupTransition,
   dialogPopupVariants,
   dialogTitle,
-} from './dialog.css'
-import { createComposedCloseRender, createComposedTriggerRender } from './trigger.utils'
+} from './dialog.class'
 
 export type { AlertDialogProps } from './alert-dialog.props'
 

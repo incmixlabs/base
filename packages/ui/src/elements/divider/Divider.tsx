@@ -5,19 +5,15 @@ import { cn } from '@/lib/utils'
 import { normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color } from '@/theme/tokens'
 import {
-  type DividerAlign,
-  type DividerOrientation,
-  type DividerSize,
   dividerAlignEnd,
   dividerAlignStart,
   dividerBase,
-  dividerColorVariants,
   dividerHorizontal,
   dividerSizeVariants,
   dividerVertical,
   dividerWithContent,
-} from './divider.css'
-import { dividerPropDefs } from './divider.props'
+} from './divider.class'
+import { type DividerAlign, type DividerOrientation, type DividerSize, dividerPropDefs } from './divider.props'
 
 export type { DividerAlign, DividerOrientation, DividerSize }
 
@@ -43,6 +39,7 @@ const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
       align = dividerPropDefs.align.default,
       color,
       className,
+      style,
       children,
       ...props
     },
@@ -59,6 +56,13 @@ const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
     const safeColor = normalizeEnumPropValue(dividerPropDefs.color, color) as Color | undefined
     const hasContent = React.Children.count(children) > 0
 
+    const colorStyle = React.useMemo(() => {
+      if (!safeColor) return undefined
+      return {
+        '--af-divider-color': `var(--color-${safeColor}-primary)`,
+      } as React.CSSProperties
+    }, [safeColor])
+
     return (
       // biome-ignore lint/a11y/useFocusableInteractive: Static separators are not keyboard-interactive widgets.
       <div
@@ -71,12 +75,12 @@ const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
           dividerBase,
           safeOrientation === 'vertical' ? dividerVertical : dividerHorizontal,
           dividerSizeVariants[safeSize],
-          safeColor && dividerColorVariants[safeColor],
           hasContent && dividerWithContent,
           safeAlign === 'start' && dividerAlignStart,
           safeAlign === 'end' && dividerAlignEnd,
           className,
         )}
+        style={{ ...colorStyle, ...style }}
         {...props}
       >
         {children}

@@ -9,7 +9,7 @@ import {
   dialogBackdropBaseCls,
   dialogPopupBase,
   dialogPopupBaseCls,
-} from '@/elements/dialog/dialog.css'
+} from '@/elements/dialog/dialog.class'
 import { cn } from '@/lib/utils'
 import type { Color } from '@/theme/tokens'
 import { Kbd } from '@/typography/kbd/Kbd'

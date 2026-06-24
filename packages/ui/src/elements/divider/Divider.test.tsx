@@ -4,12 +4,11 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { Divider } from './Divider'
 import {
   dividerAlignStart,
-  dividerColorVariants,
   dividerHorizontal,
   dividerSizeVariants,
   dividerVertical,
   dividerWithContent,
-} from './divider.css'
+} from './divider.class'
 
 afterEach(() => {
   cleanup()
@@ -51,7 +50,7 @@ describe('Divider', () => {
     expect(divider).toHaveAttribute('aria-orientation', 'vertical')
     expect(divider.className).toContain(dividerVertical)
     expect(divider.className).toContain(dividerSizeVariants.lg)
-    expect(divider.className).toContain(dividerColorVariants.primary)
+    expect(divider).toHaveStyle({ '--af-divider-color': 'var(--color-primary-primary)' })
     expect(divider.className).toContain(dividerAlignStart)
   })
 })
