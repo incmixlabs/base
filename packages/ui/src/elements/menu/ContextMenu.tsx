@@ -1,16 +1,18 @@
 'use client'
 
+import './menu.css'
+
 import { ContextMenu as ContextMenuPrimitive } from '@base-ui/react/context-menu'
 import { Check, ChevronRight, Circle } from 'lucide-react'
 import { AnimatePresence } from 'motion/react'
 import * as m from 'motion/react-m'
 import * as React from 'react'
+import { getSemanticColorStyles } from '@/elements/utils'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color } from '@/theme/tokens'
 import { getShortcutAccessibleLabel } from './menu.a11y'
-import type { MenuSize, MenuVariant } from './menu.props'
 import {
   menuContentBase,
   menuContentBySize,
@@ -23,7 +25,6 @@ import {
   menuItemBySize,
   menuItemByVariant,
   menuItemByVariantHighlight,
-  menuItemColor,
   menuItemIndicatorBySize,
   menuItemMotion,
   menuItemTextBold,
@@ -47,7 +48,8 @@ import {
   menuViewportBase,
   menuViewportBaseCls,
   menuViewportBySize,
-} from './menu.shared.css'
+} from './menu.class'
+import type { MenuSize, MenuVariant } from './menu.props'
 import { MenuHighlight } from './menu-highlight'
 
 // Context for sharing props across components
@@ -189,7 +191,7 @@ const ContextMenuContent = React.forwardRef<HTMLDivElement, ContextMenuContentPr
                   {...props}
                 >
                   {animated ? (
-                    <MenuHighlight className={cn(menuHighlightBgByVariant[variant], menuItemColor[color])}>
+                    <MenuHighlight className={menuHighlightBgByVariant[variant]} style={getSemanticColorStyles(color)}>
                       {viewport}
                     </MenuHighlight>
                   ) : (
@@ -211,7 +213,11 @@ ContextMenuContent.displayName = 'ContextMenu.Content'
 // Item
 // ============================================================================
 
-export interface ContextMenuItemProps {
+export interface ContextMenuItemProps
+  extends Omit<
+    React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Item>,
+    'color' | 'children' | 'className' | 'onClick'
+  > {
   /** Color override for this item */
   color?: Color
   /** Keyboard shortcut to display */
@@ -250,10 +256,10 @@ const ContextMenuItem = React.forwardRef<HTMLDivElement, ContextMenuItemProps>(
           menuItemBase,
           menuItemBySize[context.size],
           menuItemMotion,
-          menuItemColor[itemColor],
           variantCls,
           className,
         )}
+        style={{ ...getSemanticColorStyles(itemColor), ...props.style }}
         {...props}
       >
         <span
@@ -282,7 +288,11 @@ ContextMenuItem.displayName = 'ContextMenu.Item'
 // CheckboxItem
 // ============================================================================
 
-export interface ContextMenuCheckboxItemProps {
+export interface ContextMenuCheckboxItemProps
+  extends Omit<
+    React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.CheckboxItem>,
+    'color' | 'children' | 'className' | 'checked' | 'onCheckedChange'
+  > {
   /** Whether the item is checked */
   checked?: boolean
   /** Callback when checked state changes */
@@ -328,10 +338,10 @@ const ContextMenuCheckboxItem = React.forwardRef<HTMLDivElement, ContextMenuChec
           menuItemBySize[context.size],
           menuItemMotion,
           menuItemWithIndicatorBySize[context.size],
-          menuItemColor[itemColor],
           variantCls,
           className,
         )}
+        style={{ ...getSemanticColorStyles(itemColor), ...props.style }}
         {...props}
       >
         <span className={cn(menuIndicatorBaseCls, menuItemIndicatorBySize[context.size])}>
@@ -390,7 +400,11 @@ ContextMenuRadioGroup.displayName = 'ContextMenu.RadioGroup'
 // RadioItem
 // ============================================================================
 
-export interface ContextMenuRadioItemProps {
+export interface ContextMenuRadioItemProps
+  extends Omit<
+    React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.RadioItem>,
+    'color' | 'children' | 'className' | 'value'
+  > {
   /** Value of this radio item */
   value: string
   /** Color override */
@@ -426,10 +440,10 @@ const ContextMenuRadioItem = React.forwardRef<HTMLDivElement, ContextMenuRadioIt
           menuItemBySize[context.size],
           menuItemMotion,
           menuItemWithIndicatorBySize[context.size],
-          menuItemColor[itemColor],
           variantCls,
           className,
         )}
+        style={{ ...getSemanticColorStyles(itemColor), ...props.style }}
         {...props}
       >
         <span className={cn(menuIndicatorBaseCls, menuItemIndicatorBySize[context.size])}>
@@ -548,7 +562,11 @@ ContextMenuSub.displayName = 'ContextMenu.Sub'
 // SubTrigger
 // ============================================================================
 
-export interface ContextMenuSubTriggerProps {
+export interface ContextMenuSubTriggerProps
+  extends Omit<
+    React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.SubmenuTrigger>,
+    'color' | 'children' | 'className'
+  > {
   /** Color override */
   color?: Color
   /** Whether disabled */
@@ -580,10 +598,10 @@ const ContextMenuSubTrigger = React.forwardRef<HTMLDivElement, ContextMenuSubTri
           menuItemBase,
           menuItemBySize[context.size],
           menuItemMotion,
-          menuItemColor[itemColor],
           variantCls,
           className,
         )}
+        style={{ ...getSemanticColorStyles(itemColor), ...props.style }}
         {...props}
       >
         <span
@@ -642,7 +660,10 @@ const ContextMenuSubContent = React.forwardRef<HTMLDivElement, ContextMenuSubCon
             {...props}
           >
             {context.animated ? (
-              <MenuHighlight className={cn(menuHighlightBgByVariant[context.variant], menuItemColor[context.color])}>
+              <MenuHighlight
+                className={menuHighlightBgByVariant[context.variant]}
+                style={getSemanticColorStyles(context.color)}
+              >
                 <div className={cn(menuViewportBaseCls, menuViewportBase, menuViewportBySize[context.size])}>
                   {children}
                 </div>
