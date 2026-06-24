@@ -13,12 +13,13 @@ import {
   dataListRootByOrientation,
   dataListRootBySize,
   dataListRootByTrim,
+  dataListRootContainer,
   dataListRootSizeResponsive,
   dataListValueBase,
 } from './data-list.class'
 
 describe('DataList', () => {
-  it('applies VE size and typography classes on the root', () => {
+  it('applies size and typography classes on the root', () => {
     render(
       <DataList.Root size="md">
         <DataList.Item>
@@ -29,12 +30,13 @@ describe('DataList', () => {
     )
 
     const root = screen.getByText('ID').closest('dl')
+    expect(root?.parentElement).toHaveClass(dataListRootContainer)
     expect(root).toHaveClass(dataListRootBase, dataListRootByOrientation.horizontal, dataListRootByTrim.normal)
     expect(root).toHaveClass(dataListRootBySize.md)
     expect(root).toHaveClass(getTextSizeClasses('md'))
   })
 
-  it('supports responsive size classes and VE item composition', () => {
+  it('supports responsive size classes and item composition', () => {
     render(
       <DataList.Root size={{ initial: 'sm', md: 'lg' }} orientation="vertical" trim="both">
         <DataList.Item align="center">

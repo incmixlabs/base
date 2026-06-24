@@ -3,6 +3,7 @@ export type DataListOrientation = 'horizontal' | 'vertical'
 export type DataListTrim = 'normal' | 'start' | 'end' | 'both'
 export type DataListAlign = 'baseline' | 'start' | 'center' | 'end' | 'stretch' | 'between'
 
+export const dataListRootContainer = 'af-datalist-root-container'
 export const dataListRootBase = 'af-datalist-root-base'
 
 export const dataListRootBySize = {

@@ -15,6 +15,7 @@ import {
   dataListRootByOrientation,
   dataListRootBySize,
   dataListRootByTrim,
+  dataListRootContainer,
   dataListRootSizeResponsive,
   dataListValueBase,
 } from './data-list.class'
@@ -57,26 +58,27 @@ interface DataListRootProps extends React.HTMLAttributes<HTMLDListElement> {
 }
 
 const DataListRoot = React.forwardRef<HTMLDListElement, DataListRootProps>(
-  ({ size = 'sm', orientation = 'horizontal', trim = 'normal', className, children, ...props }, ref) => {
+  ({ size = 'sm', orientation = 'horizontal', trim = 'normal', className, children, style, ...props }, ref) => {
     const sizeClasses = getDataListSizeClasses(size)
     const textSizeClasses = getTextSizeClasses(size, 'sm')
 
     return (
       <DataListContext.Provider value={{ orientation }}>
-        <dl
-          ref={ref}
-          className={cn(
-            dataListRootBase,
-            dataListRootByOrientation[orientation],
-            dataListRootByTrim[trim],
-            sizeClasses,
-            textSizeClasses,
-            className,
-          )}
-          {...props}
-        >
-          {children}
-        </dl>
+        <div className={cn(dataListRootContainer, className)} style={style}>
+          <dl
+            ref={ref}
+            className={cn(
+              dataListRootBase,
+              dataListRootByOrientation[orientation],
+              dataListRootByTrim[trim],
+              sizeClasses,
+              textSizeClasses,
+            )}
+            {...props}
+          >
+            {children}
+          </dl>
+        </div>
       </DataListContext.Provider>
     )
   },
