@@ -1,4 +1,14 @@
-import type { Radius, Spacing, ThemeColorToken } from '@/theme/tokens'
+import {
+  CHART_COLOR_KEYS,
+  HUE_NAMES,
+  HUE_STEPS,
+  type Radius,
+  resolveThemeColorToken,
+  SEMANTIC_COLOR_VAR_TOKENS,
+  type Spacing,
+  semanticColorScale,
+  type ThemeColorToken,
+} from '@/theme/tokens'
 
 export const spacingClassValueByToken = {
   '0': '0',
@@ -106,6 +116,12 @@ const semanticColorUtilityByToken = {
   'error-contrast': 'destructive-foreground',
 } as const satisfies Partial<Record<ThemeColorToken | 'background' | 'foreground', string>>
 
+const arbitraryThemeColorTokenSet = new Set<string>([
+  ...HUE_NAMES.flatMap(hue => HUE_STEPS.map(step => `${hue}-${step}`)),
+  ...semanticColorScale.flatMap(color => SEMANTIC_COLOR_VAR_TOKENS.map(token => `${color}-${token}`)),
+  ...CHART_COLOR_KEYS,
+])
+
 export function getThemeColorUtilityClass(
   prefix: 'bg' | 'text' | 'border',
   token: ThemeColorToken | 'background' | 'foreground' | undefined,
@@ -113,5 +129,9 @@ export function getThemeColorUtilityClass(
   if (!token) return undefined
 
   const utilityValue = semanticColorUtilityByToken[token as keyof typeof semanticColorUtilityByToken]
-  return utilityValue ? `${prefix}-${utilityValue}` : undefined
+  if (utilityValue) return `${prefix}-${utilityValue}`
+
+  if (!arbitraryThemeColorTokenSet.has(token)) return undefined
+
+  return `${prefix}-[${resolveThemeColorToken(token as ThemeColorToken)}]`
 }

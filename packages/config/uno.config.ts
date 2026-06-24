@@ -1,3 +1,4 @@
+import { CHART_COLOR_KEYS, HUE_NAMES, HUE_STEPS, SEMANTIC_COLOR_NAMES, SEMANTIC_COLOR_VAR_TOKENS } from '@incmix/theme'
 import { defineConfig, presetWind4, transformerDirectives, transformerVariantGroup } from 'unocss'
 
 const responsivePrefixes = ['', 'xs:', 'sm:', 'md:', 'lg:', 'xl:'] as const
@@ -68,6 +69,7 @@ const stateBorderColorUtilities = [
   '[var(--color-warning-border)]',
   '[var(--color-error-border)]',
 ] as const
+const colorUtilityPrefixes = ['bg', 'text', 'border'] as const
 
 const responsiveClasses = (classes: readonly string[]) =>
   responsivePrefixes.flatMap(prefix => classes.map(className => `${prefix}${className}`))
@@ -114,6 +116,14 @@ const sprinklesClasses = [
 ]
 
 const sprinklesSafelist = responsiveClasses(sprinklesClasses)
+
+const arbitraryThemeColorUtilities = colorUtilityPrefixes.flatMap(prefix => [
+  ...HUE_NAMES.flatMap(hue => HUE_STEPS.map(step => `${prefix}-[var(--${hue}-${step})]`)),
+  ...SEMANTIC_COLOR_NAMES.flatMap(color =>
+    SEMANTIC_COLOR_VAR_TOKENS.map(token => `${prefix}-[var(--color-${color}-${token})]`),
+  ),
+  ...CHART_COLOR_KEYS.map(chart => `${prefix}-[var(--chart-${chart.slice('chart'.length)})]`),
+])
 
 const textSizeUtilities = {
   xs: ['var(--font-size-xs)', 'var(--line-height-xs)'],
@@ -302,6 +312,7 @@ export const baseUnoConfig = {
     ...negativeSpacingSafelist,
     ...radiusSafelist,
     ...sprinklesSafelist,
+    ...arbitraryThemeColorUtilities,
   ],
 }
 

@@ -7,6 +7,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "@incmix/theme": "workspace:*"
+  },
   "exports": {
     "./react-compiler-health.js": "./react-compiler-health.js",
     "./react-compiler.js": "./react-compiler.js",

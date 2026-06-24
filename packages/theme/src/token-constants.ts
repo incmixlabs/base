@@ -144,3 +144,66 @@ export const BORDER_RADIUS_TO_PIXELS = {
   lg: '20px',
   full: '9999px',
 } as const
+
+export const HUE_NAMES = [
+  'orange',
+  'tomato',
+  'red',
+  'crimson',
+  'pink',
+  'plum',
+  'purple',
+  'violet',
+  'indigo',
+  'blue',
+  'sky',
+  'cyan',
+  'teal',
+  'green',
+  'lime',
+  'mint',
+  'yellow',
+  'amber',
+  'brown',
+  'gray',
+] as const
+
+export type HueName = (typeof HUE_NAMES)[number]
+
+export const HUE_STEPS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 'contrast'] as const
+
+export type HueStep = (typeof HUE_STEPS)[number]
+
+export const SEMANTIC_COLOR_NAMES = [
+  'slate',
+  'primary',
+  'secondary',
+  'accent',
+  'neutral',
+  'info',
+  'success',
+  'warning',
+  'error',
+  'inverse',
+  'light',
+  'dark',
+] as const
+
+export type SemanticColorName = (typeof SEMANTIC_COLOR_NAMES)[number]
+
+export const SEMANTIC_COLOR_VAR_TOKENS = [
+  'border',
+  'border-subtle',
+  'surface-subtle',
+  'surface',
+  'surface-hover',
+  'soft',
+  'soft-hover',
+  'primary',
+  'primary-alpha',
+  'text',
+  'contrast',
+  'background',
+] as const
+
+export type SemanticColorVarToken = (typeof SEMANTIC_COLOR_VAR_TOKENS)[number]

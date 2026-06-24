@@ -4,6 +4,10 @@ import {
   type ChartColorAlias,
   type ChartColorToken,
   SPACING_SCALE_VALUES,
+  HUE_NAMES as themeHueNames,
+  HUE_STEPS as themeHueSteps,
+  SEMANTIC_COLOR_NAMES as themeSemanticColorNames,
+  SEMANTIC_COLOR_VAR_TOKENS as themeSemanticColorVarTokens,
   themeSizeTokens,
 } from '@incmix/theme'
 import type { accentColors, grayColors } from './props/color.prop'
@@ -260,48 +264,14 @@ export type Variant = keyof typeof designTokens.variant
 export type Radius = 'none' | 'sm' | 'md' | 'lg' | 'full'
 
 export type Color = keyof typeof designTokens.color
-export const semanticColorScale = Object.keys(designTokens.color) as readonly Color[]
-export const SEMANTIC_COLOR_VAR_TOKENS = [
-  'border',
-  'border-subtle',
-  'surface-subtle',
-  'surface',
-  'surface-hover',
-  'soft',
-  'soft-hover',
-  'primary',
-  'primary-alpha',
-  'text',
-  'contrast',
-  'background',
-] as const
+const sharedSemanticColorScale = themeSemanticColorNames satisfies readonly Color[]
+export const semanticColorScale = sharedSemanticColorScale
+export const SEMANTIC_COLOR_VAR_TOKENS = themeSemanticColorVarTokens
 export type SemanticColorVarToken = (typeof SEMANTIC_COLOR_VAR_TOKENS)[number]
 
-export const HUE_NAMES = [
-  'orange',
-  'tomato',
-  'red',
-  'crimson',
-  'pink',
-  'plum',
-  'purple',
-  'violet',
-  'indigo',
-  'blue',
-  'sky',
-  'cyan',
-  'teal',
-  'green',
-  'lime',
-  'mint',
-  'yellow',
-  'amber',
-  'brown',
-  'gray',
-] as const
-
+export const HUE_NAMES = themeHueNames
 export type HueName = (typeof HUE_NAMES)[number]
-export const HUE_STEPS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 'contrast'] as const
+export const HUE_STEPS = themeHueSteps
 export type HueStep = (typeof HUE_STEPS)[number]
 export type PaletteColorToken = `${HueName}-${HueStep}`
 export type SemanticColorToken = `${Color}-${SemanticColorVarToken}`
