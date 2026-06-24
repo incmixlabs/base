@@ -1,16 +1,14 @@
 import { cn } from '@/lib/utils'
-import { getResponsiveSpacingUtilityClasses, getSpacingUtilityClass, radiusClassByToken } from './helpers'
+import {
+  getResponsiveMappedUtilityClasses,
+  getResponsiveSpacingUtilityClasses,
+  getSpacingUtilityClass,
+  type ResponsiveUtilityValue,
+  radiusClassByToken,
+} from './helpers'
 import type { Radius, Spacing } from './tokens'
 
-type SprinkleBreakpoint = 'initial' | 'sm' | 'md' | 'lg'
-type ResponsiveSprinkleValue<T extends string> = T | Partial<Record<SprinkleBreakpoint, T>>
-
-const responsivePrefixByBreakpoint = {
-  initial: '',
-  sm: 'sm:',
-  md: 'md:',
-  lg: 'lg:',
-} as const satisfies Record<SprinkleBreakpoint, string>
+type ResponsiveSprinkleValue<T extends string> = ResponsiveUtilityValue<T>
 
 const displayClassByValue = {
   none: 'hidden',
@@ -123,29 +121,6 @@ const borderColorClassByValue = {
 
 type MappedValue<T extends Record<string, string>> = keyof T & string
 
-function responsiveMappedClasses<T extends Record<string, string>>(
-  value: ResponsiveSprinkleValue<MappedValue<T>> | undefined,
-  map: T,
-  formatClass: (classValue: string) => string = classValue => classValue,
-): string | undefined {
-  if (!value) return undefined
-  if (typeof value === 'string') {
-    const classValue = map[value]
-    return classValue ? formatClass(classValue) : undefined
-  }
-
-  const classes: string[] = []
-  for (const breakpoint of Object.keys(responsivePrefixByBreakpoint) as SprinkleBreakpoint[]) {
-    const breakpointValue = value[breakpoint]
-    if (!breakpointValue) continue
-
-    const classValue = map[breakpointValue]
-    if (classValue) classes.push(`${responsivePrefixByBreakpoint[breakpoint]}${formatClass(classValue)}`)
-  }
-
-  return classes.length > 0 ? classes.join(' ') : undefined
-}
-
 function responsiveSpacingClasses(
   prefix: Parameters<typeof getSpacingUtilityClass>[0],
   value: ResponsiveSprinkleValue<Spacing> | undefined,
@@ -214,10 +189,10 @@ export interface Sprinkles {
 
 export function sprinkles(props: Sprinkles): string {
   return cn(
-    responsiveMappedClasses(props.display, displayClassByValue),
-    responsiveMappedClasses(props.flexDirection, flexDirectionClassByValue),
-    responsiveMappedClasses(props.alignItems, alignItemsClassByValue),
-    responsiveMappedClasses(props.justifyContent, justifyContentClassByValue),
+    getResponsiveMappedUtilityClasses(props.display, displayClassByValue),
+    getResponsiveMappedUtilityClasses(props.flexDirection, flexDirectionClassByValue),
+    getResponsiveMappedUtilityClasses(props.alignItems, alignItemsClassByValue),
+    getResponsiveMappedUtilityClasses(props.justifyContent, justifyContentClassByValue),
     responsiveSpacingClasses('gap', props.gap),
     responsiveSpacingClasses('gap-y', props.rowGap),
     responsiveSpacingClasses('gap-x', props.columnGap),
@@ -235,15 +210,19 @@ export function sprinkles(props: Sprinkles): string {
     responsiveSpacingClasses('mr', props.marginRight ?? props.mr),
     responsiveSpacingClasses('mx', props.mx),
     responsiveSpacingClasses('my', props.my),
-    responsiveMappedClasses(props.color, colorClassByValue, classValue => `text-${classValue}`),
-    responsiveMappedClasses(props.backgroundColor ?? props.bg, colorClassByValue, classValue => `bg-${classValue}`),
-    responsiveMappedClasses(props.borderColor, borderColorClassByValue, classValue => `border-${classValue}`),
-    responsiveMappedClasses(props.borderRadius, radiusClassByToken),
-    responsiveMappedClasses(props.fontSize, fontSizeClassByValue),
-    responsiveMappedClasses(props.lineHeight, lineHeightClassByValue),
-    responsiveMappedClasses(props.letterSpacing, letterSpacingClassByValue),
-    responsiveMappedClasses(props.boxShadow, shadowClassByValue),
-    responsiveMappedClasses(props.width, sizeClassByValue, classValue => `w-${classValue}`),
-    responsiveMappedClasses(props.height, sizeClassByValue, classValue => `h-${classValue}`),
+    getResponsiveMappedUtilityClasses(props.color, colorClassByValue, classValue => `text-${classValue}`),
+    getResponsiveMappedUtilityClasses(
+      props.backgroundColor ?? props.bg,
+      colorClassByValue,
+      classValue => `bg-${classValue}`,
+    ),
+    getResponsiveMappedUtilityClasses(props.borderColor, borderColorClassByValue, classValue => `border-${classValue}`),
+    getResponsiveMappedUtilityClasses(props.borderRadius, radiusClassByToken),
+    getResponsiveMappedUtilityClasses(props.fontSize, fontSizeClassByValue),
+    getResponsiveMappedUtilityClasses(props.lineHeight, lineHeightClassByValue),
+    getResponsiveMappedUtilityClasses(props.letterSpacing, letterSpacingClassByValue),
+    getResponsiveMappedUtilityClasses(props.boxShadow, shadowClassByValue),
+    getResponsiveMappedUtilityClasses(props.width, sizeClassByValue, classValue => `w-${classValue}`),
+    getResponsiveMappedUtilityClasses(props.height, sizeClassByValue, classValue => `h-${classValue}`),
   )
 }

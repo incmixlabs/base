@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { getThemeColorUtilityClass } from './token-class-maps'
+import {
+  getResponsiveMappedUtilityClasses,
+  getResponsiveSpacingUtilityClasses,
+  getThemeColorUtilityClass,
+} from './token-class-maps'
 
 describe('theme token class maps', () => {
   it('maps common semantic color tokens to clean utility classes', () => {
@@ -21,5 +25,22 @@ describe('theme token class maps', () => {
 
   it('does not emit classes for missing tokens', () => {
     expect(getThemeColorUtilityClass('bg', undefined)).toBeUndefined()
+  })
+
+  it('maps responsive token classes with shared breakpoint prefixes', () => {
+    expect(
+      getResponsiveMappedUtilityClasses(
+        { initial: 'hidden', md: 'block', xl: 'grid' },
+        {
+          block: 'block',
+          grid: 'grid',
+          hidden: 'hidden',
+        },
+      ),
+    ).toBe('hidden md:block xl:grid')
+  })
+
+  it('returns undefined when responsive spacing contains a custom value', () => {
+    expect(getResponsiveSpacingUtilityClasses('p', { initial: '2', md: '1.5rem' })).toBeUndefined()
   })
 })

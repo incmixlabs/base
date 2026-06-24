@@ -66,6 +66,39 @@ const responsiveUtilityPrefixByBreakpoint = {
   xl: 'xl:',
 } as const satisfies Record<ResponsiveUtilityBreakpoint, string>
 
+export type ResponsiveUtilityValue<T extends string> = T | Partial<Record<ResponsiveUtilityBreakpoint, T>>
+
+export type UtilityClassFormatter = (classValue: string) => string
+
+export function getMappedUtilityClass<T extends string>(
+  value: T | undefined,
+  map: Record<T, string>,
+  formatClass: UtilityClassFormatter = classValue => classValue,
+): string | undefined {
+  if (!value) return undefined
+
+  const classValue = map[value]
+  return classValue ? formatClass(classValue) : undefined
+}
+
+export function getResponsiveMappedUtilityClasses<T extends string>(
+  value: ResponsiveUtilityValue<T> | undefined,
+  map: Record<T, string>,
+  formatClass: UtilityClassFormatter = classValue => classValue,
+): string | undefined {
+  if (!value) return undefined
+  if (typeof value === 'string') return getMappedUtilityClass(value, map, formatClass)
+
+  const classes: string[] = []
+  for (const breakpoint of Object.keys(responsiveUtilityPrefixByBreakpoint) as ResponsiveUtilityBreakpoint[]) {
+    const breakpointValue = value[breakpoint]
+    const utilityClass = getMappedUtilityClass(breakpointValue, map, formatClass)
+    if (utilityClass) classes.push(`${responsiveUtilityPrefixByBreakpoint[breakpoint]}${utilityClass}`)
+  }
+
+  return classes.length > 0 ? classes.join(' ') : undefined
+}
+
 const spacingTokenSet = new Set<string>(Object.keys(spacingClassValueByToken))
 
 export function getSpacingUtilityClass(prefix: SpacingUtilityPrefix, value: string | undefined): string | undefined {
