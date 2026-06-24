@@ -160,7 +160,7 @@ export const Section = React.forwardRef<HTMLElement, SectionProps>(
       sectionBaseCls,
       sectionBase,
       getResponsiveLayoutClasses(display, sectionByDisplay, sectionDisplayResponsive),
-      !hasPaddingOverride && getResponsiveLayoutClasses(size || '3', sectionBySize, sectionSizeResponsive),
+      !hasPaddingOverride && getResponsiveLayoutClasses(size, sectionBySize, sectionSizeResponsive, '3'),
       borderColor && !hasBorderWidthUtility(effectiveClassName) && 'border',
       getSharedLayoutClasses(sharedLayoutProps),
       className,
