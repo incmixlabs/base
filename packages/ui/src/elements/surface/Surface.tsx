@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { Slot } from '@/layouts/layout-utils'
 import { cn } from '@/lib/utils'
+import { radiusClassByToken } from '@/theme/helpers'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Radius, SurfaceColorKey } from '@/theme/tokens'
@@ -64,7 +65,8 @@ export const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(
       <Comp
         ref={ref}
         className={cn(
-          'relative box-border border rounded-[var(--element-border-radius)]',
+          'relative box-border border',
+          radiusClassByToken[radius],
           surfaceColorVariants[safeColor][safeVariant],
           safeHover && surfaceHoverEnabledClass,
           safeHighContrast && 'af-high-contrast',
