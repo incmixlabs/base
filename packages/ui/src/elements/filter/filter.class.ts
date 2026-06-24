@@ -1,0 +1,5 @@
+export const filterHeader = 'af-filter-header'
+export const filterBody = 'af-filter-body'
+export const filterApplied = 'af-filter-applied'
+export const filterFooter = 'af-filter-footer'
+export const filterSliderValueRow = 'af-filter-slider-value-row'
