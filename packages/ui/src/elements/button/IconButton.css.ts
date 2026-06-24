@@ -1,6 +1,6 @@
 import { createVar, globalStyle, style, styleVariants } from '@vanilla-extract/css'
 import { getControlSizeValues } from '@/elements/control-size'
-import { surfaceColorVariants, surfaceHighContrastByVariant } from '@/elements/surface/surface.css'
+import { surfaceColorVariants, surfaceHighContrastByVariant } from '@/elements/surface/surface.class'
 import { iconButtonSizeVar } from '@/theme/runtime/component-vars'
 import { iconButtonPropDefs } from './icon-button.props'
 

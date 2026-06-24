@@ -2,6 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { iconButtonColorVariants } from '@/elements/button/IconButton.css'
 import { NumberInput } from './NumberInput'
 
 afterEach(() => {
@@ -78,7 +79,7 @@ describe('NumberInput', () => {
 
     const buttons = screen.getAllByRole('button')
     for (const button of buttons) {
-      expect(button.className).toContain('_soft')
+      expect(button.className).toContain(iconButtonColorVariants.slate.soft)
     }
   })
 })

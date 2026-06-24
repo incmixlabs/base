@@ -16,7 +16,7 @@ import type {
   PopoverContentVariant as TooltipVariant,
 } from '../popover/popover.props'
 import { FloatingArrowSvg } from '../surface/FloatingArrowSvg'
-import { floatingArrowBase, surfaceColorVariants, surfaceHighContrastByVariant } from '../surface/surface.css'
+import { floatingArrowBase, surfaceColorVariants, surfaceHighContrastByVariant } from '../surface/surface.class'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
   tooltipArrowColorByVariant,

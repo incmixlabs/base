@@ -3,7 +3,7 @@ import type { Transition, Variants } from 'motion/react'
 import { tooltipMaxWidthVar, tooltipSizeVar } from '@/theme/runtime/component-vars'
 import { floatingSurfaceSizeTokens } from '@/theme/token-maps'
 
-export { surfaceArrowFillVariants as tooltipArrowColorByVariant } from '../surface/surface.css'
+export { surfaceArrowFillVariants as tooltipArrowColorByVariant } from '../surface/surface.class'
 
 const tooltipPaddingVar = createVar()
 const tooltipFontSizeVar = createVar()

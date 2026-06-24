@@ -3,7 +3,7 @@ import {
   surfaceColorVariants,
   surfaceHighContrastByVariant,
   surfaceHoverEnabledClass,
-} from '@/elements/surface/surface.css'
+} from '@/elements/surface/surface.class'
 import { semanticColorKeys, semanticColorVar } from '@/theme/props/color.prop'
 import { calloutSizeVar } from '@/theme/runtime/component-vars'
 import { panelSizeTokens } from '@/theme/token-maps'

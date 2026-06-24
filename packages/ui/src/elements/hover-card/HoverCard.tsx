@@ -21,7 +21,7 @@ import {
   popoverPanelVariants,
 } from '../popover/Popover.css'
 import { type PopoverContentVariant, popoverContentPropDefs } from '../popover/popover.props'
-import { surfaceColorVariants, surfaceHighContrastByVariant } from '../surface/surface.css'
+import { surfaceColorVariants, surfaceHighContrastByVariant } from '../surface/surface.class'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 
 // ============================================================================

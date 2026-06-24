@@ -4,7 +4,7 @@ import {
   surfaceColorVariants,
   surfaceHighContrastByVariant,
   surfaceHoverEnabledClass,
-} from '@/elements/surface/surface.css'
+} from '@/elements/surface/surface.class'
 import { badgeSizeVar } from '@/theme/runtime/component-vars'
 import type { Color } from '@/theme/tokens'
 import type { BadgeVariant } from './badge.props'

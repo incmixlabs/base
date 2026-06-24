@@ -1,7 +1,7 @@
 import { style, styleVariants } from '@vanilla-extract/css'
 import type { Variants } from 'motion/react'
 import { getControlSizeValues } from '@/elements/control-size'
-import { surfaceHighContrastByVariant } from '@/elements/surface/surface.css'
+import { surfaceHighContrastByVariant } from '@/elements/surface/surface.class'
 import { semanticColorKeys, semanticColorVar } from '@/theme/props/color.prop'
 import { checkboxSizeVar } from '@/theme/runtime/component-vars'
 import type { Color } from '@/theme/tokens'

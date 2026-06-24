@@ -3,7 +3,7 @@
 import { Button as ButtonPrimitive } from '@base-ui/react/button'
 import { Loader2 } from 'lucide-react'
 import * as React from 'react'
-import { surfaceHoverEnabledClass } from '@/elements/surface/surface.css'
+import { surfaceHoverEnabledClass } from '@/elements/surface/surface.class'
 import { composeRefs } from '@/lib/compose-refs'
 import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
