@@ -38,10 +38,9 @@ import type {
   ThemeColorToken,
 } from '@/theme/tokens'
 import { designTokens, resolveThemeColorToken } from '@/theme/tokens'
+import { gridColumns, gridRows } from './grid/Grid.classes'
 import {
-  gridColumns,
   gridColumnsResponsive,
-  gridRows,
   gridRowsResponsive,
   gridTemplateAreasCustomResponsive,
   gridTemplateColumnsCustomResponsive,
