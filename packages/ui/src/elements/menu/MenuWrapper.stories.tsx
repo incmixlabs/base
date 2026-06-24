@@ -5,6 +5,9 @@ import { ContextMenu } from './ContextMenu'
 import { DropdownMenu } from './DropdownMenu'
 import { MenuWrapper } from './MenuWrapper'
 import type { MenuWrapperData, MenuWrapperEntry, MenuWrapperProps } from './menu-wrapper.types'
+import { colorPropDef } from '@/theme/props/color.prop'
+import { getPropDefValues } from '@/theme/props/prop-def'
+import { contentSizes, contentVariants } from './menu.props'
 
 const demoData: MenuWrapperData = [
   {
@@ -109,9 +112,9 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     mode: { control: 'inline-radio', options: ['dropdown', 'context'] },
-    variant: { control: 'select', options: ['solid', 'soft', 'surface'] },
-    color: { control: 'select' },
-    size: { control: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl', '2x'] },
+    variant: { control: 'select', options: contentVariants },
+    color: { control: 'select', options: getPropDefValues(colorPropDef.color) },
+    size: { control: 'select', options: contentSizes },
   },
 } satisfies Meta<MenuWrapperProps>
 

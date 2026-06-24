@@ -1,17 +1,18 @@
 'use client'
 
+import './menu.css'
+
 import { Menu as MenuPrimitive } from '@base-ui/react/menu'
 import { Check, ChevronDown, ChevronRight, ChevronsUpDown, Circle } from 'lucide-react'
 import { AnimatePresence } from 'motion/react'
 import * as m from 'motion/react-m'
 import * as React from 'react'
-import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
+import { getRadiusStyles, getSemanticColorStyles, useThemeRadius } from '@/elements/utils'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
 import { getShortcutAccessibleLabel } from './menu.a11y'
-import type { MenuSize, MenuVariant } from './menu.props'
 import {
   menuContentBase,
   menuContentBySize,
@@ -24,7 +25,6 @@ import {
   menuItemBySize,
   menuItemByVariant,
   menuItemByVariantHighlight,
-  menuItemColor,
   menuItemIndicatorBySize,
   menuItemMotion,
   menuItemTextBold,
@@ -49,7 +49,8 @@ import {
   menuViewportBase,
   menuViewportBaseCls,
   menuViewportBySize,
-} from './menu.shared.css'
+} from './menu.class'
+import type { MenuSize, MenuVariant } from './menu.props'
 import { MenuHighlight } from './menu-highlight'
 
 // Context for sharing props
@@ -322,13 +323,14 @@ const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContent
                     menuContentBase,
                     menuContentByVariant[variant],
                     menuContentBySize[size],
+                    `surface-color-${color}`,
                     className,
                   )}
                   style={getRadiusStyles(radius)}
                   {...props}
                 >
                   {animated ? (
-                    <MenuHighlight className={cn(menuHighlightBgByVariant[variant], menuItemColor[color])}>
+                    <MenuHighlight className={menuHighlightBgByVariant[variant]} style={getSemanticColorStyles(color)}>
                       {viewport}
                     </MenuHighlight>
                   ) : (
@@ -350,7 +352,11 @@ DropdownMenuContent.displayName = 'DropdownMenu.Content'
 // Item
 // ============================================================================
 
-export interface DropdownMenuItemProps {
+export interface DropdownMenuItemProps
+  extends Omit<
+    React.ComponentPropsWithoutRef<typeof MenuPrimitive.Item>,
+    'color' | 'children' | 'className' | 'title' | 'subtitle' | 'onClick'
+  > {
   /** Color override for this item */
   color?: Color
   /** Primary title; defaults to children when omitted */
@@ -396,10 +402,10 @@ const DropdownMenuItem = React.forwardRef<HTMLDivElement, DropdownMenuItemProps>
           menuItemBase,
           menuItemBySize[context.size],
           menuItemMotion,
-          menuItemColor[itemColor],
           variantCls,
           className,
         )}
+        style={{ ...getSemanticColorStyles(itemColor), ...props.style }}
         {...props}
       >
         <DropdownMenuItemLabel
@@ -427,7 +433,11 @@ DropdownMenuItem.displayName = 'DropdownMenu.Item'
 // CheckboxItem
 // ============================================================================
 
-export interface DropdownMenuCheckboxItemProps {
+export interface DropdownMenuCheckboxItemProps
+  extends Omit<
+    React.ComponentPropsWithoutRef<typeof MenuPrimitive.CheckboxItem>,
+    'color' | 'children' | 'className' | 'checked' | 'onCheckedChange'
+  > {
   /** Whether the item is checked */
   checked?: boolean
   /** Callback when checked state changes */
@@ -473,10 +483,10 @@ const DropdownMenuCheckboxItem = React.forwardRef<HTMLDivElement, DropdownMenuCh
           menuItemBySize[context.size],
           menuItemMotion,
           menuItemWithIndicatorBySize[context.size],
-          menuItemColor[itemColor],
           variantCls,
           className,
         )}
+        style={{ ...getSemanticColorStyles(itemColor), ...props.style }}
         {...props}
       >
         <span className={cn(menuIndicatorBaseCls, menuItemIndicatorBySize[context.size])}>
@@ -528,7 +538,11 @@ DropdownMenuRadioGroup.displayName = 'DropdownMenu.RadioGroup'
 // RadioItem
 // ============================================================================
 
-export interface DropdownMenuRadioItemProps {
+export interface DropdownMenuRadioItemProps
+  extends Omit<
+    React.ComponentPropsWithoutRef<typeof MenuPrimitive.RadioItem>,
+    'color' | 'children' | 'className' | 'value'
+  > {
   /** Value of this radio item */
   value: string
   /** Color override */
@@ -564,10 +578,10 @@ const DropdownMenuRadioItem = React.forwardRef<HTMLDivElement, DropdownMenuRadio
           menuItemBySize[context.size],
           menuItemMotion,
           menuItemWithIndicatorBySize[context.size],
-          menuItemColor[itemColor],
           variantCls,
           className,
         )}
+        style={{ ...getSemanticColorStyles(itemColor), ...props.style }}
         {...props}
       >
         <span className={cn(menuIndicatorBaseCls, menuItemIndicatorBySize[context.size])}>
@@ -739,10 +753,10 @@ const DropdownMenuSubTrigger = React.forwardRef<HTMLDivElement, DropdownMenuSubT
           menuItemBase,
           menuItemBySize[context.size],
           menuItemMotion,
-          menuItemColor[itemColor],
           variantCls,
           className,
         )}
+        style={{ ...getSemanticColorStyles(itemColor), ...props.style }}
         {...props}
       >
         <DropdownMenuItemLabel bold={bold} italic={italic} strikethrough={strikethrough}>
@@ -815,7 +829,8 @@ const DropdownMenuSubContent = React.forwardRef<HTMLDivElement, DropdownMenuSubC
               >
                 {context.animated ? (
                   <MenuHighlight
-                    className={cn(menuHighlightBgByVariant[context.variant], menuItemColor[context.color])}
+                    className={menuHighlightBgByVariant[context.variant]}
+                    style={getSemanticColorStyles(context.color)}
                   >
                     <div
                       className={cn(

@@ -1,5 +1,7 @@
 'use client'
 
+import './navigation-menu.css'
+
 import { NavigationMenu as NavigationMenuPrimitive } from '@base-ui/react/navigation-menu'
 import { ChevronDown } from 'lucide-react'
 import * as React from 'react'
@@ -10,11 +12,10 @@ import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
 import { FloatingArrowSvg } from '../surface/FloatingArrowSvg'
 import { floatingArrowBase } from '../surface/surface.class'
-import { getRadiusStyles, useThemeRadius } from '../utils'
+import { getRadiusStyles, getSemanticColorStyles, useThemeRadius } from '../utils'
 import {
   navigationMenuArrowByVariant,
   navigationMenuBackdropBase,
-  navigationMenuColor,
   navigationMenuContentBase,
   navigationMenuContentBaseCls,
   navigationMenuContentBySize,
@@ -44,7 +45,7 @@ import {
   navigationMenuTriggerBySize,
   navigationMenuViewportBase,
   navigationMenuViewportBaseCls,
-} from './NavigationMenu.css'
+} from './navigation-menu.class'
 import { type NavigationMenuSize, type NavigationMenuVariant, navigationMenuPropDefs } from './navigation-menu.props'
 
 type NavigationMenuValue = string | null
@@ -179,6 +180,7 @@ const NavigationMenuRoot = React.forwardRef<HTMLElement, NavigationMenuRootProps
             navigationMenuRootBase,
             orientation === 'vertical' && navigationMenuRootVerticalCls,
             safeHighContrast && 'af-high-contrast',
+            `surface-color-${safeColor}`,
             className,
           )}
           style={style}
@@ -299,10 +301,10 @@ const NavigationMenuTrigger = React.forwardRef<HTMLButtonElement, NavigationMenu
           navigationMenuTriggerBaseCls,
           navigationMenuTriggerBase,
           navigationMenuTriggerBySize[size],
-          navigationMenuColor[color],
           highContrast && 'af-high-contrast',
           className,
         )}
+        style={{ ...getSemanticColorStyles(color), ...props.style }}
         {...props}
       >
         {children}
@@ -377,10 +379,10 @@ const NavigationMenuLink = React.forwardRef<HTMLAnchorElement, NavigationMenuLin
           navigationMenuLinkBaseCls,
           navigationMenuLinkBase,
           navigationMenuLinkBySize[size],
-          navigationMenuColor[color],
           highContrast && 'af-high-contrast',
           className,
         )}
+        style={{ ...getSemanticColorStyles(color), ...props.style }}
         {...props}
       >
         {hasStructuredContent ? (
@@ -541,6 +543,8 @@ const NavigationMenuPopup = React.forwardRef<HTMLElement, NavigationMenuPopupPro
       | Radius
       | undefined
     const radius = useThemeRadius(safeRadius)
+    const safeColor = (normalizeEnumPropValue(navigationMenuPropDefs.Root.color, context.color) ??
+      SemanticColor.slate) as Color
 
     return (
       <NavigationMenuPrimitive.Popup
@@ -550,6 +554,7 @@ const NavigationMenuPopup = React.forwardRef<HTMLElement, NavigationMenuPopupPro
           navigationMenuPopupBase,
           navigationMenuPopupByVariant[safeVariant],
           safeHighContrast && navigationMenuPopupHighContrast,
+          `surface-color-${safeColor}`,
           className,
         )}
         style={{ ...getRadiusStyles(radius), ...style }}
