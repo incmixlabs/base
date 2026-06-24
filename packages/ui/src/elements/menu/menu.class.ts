@@ -28,11 +28,6 @@ export const menuItemMotion = 'af-menu-item-motion'
 
 export const menuSubTriggerIcon = 'af-menu-subtrigger-icon'
 
-export const menuItemByVariant: Record<MenuVariant, string> = {
-  solid: 'af-menu-item-solid',
-  soft: 'af-menu-item-soft',
-}
-
 export const menuShortcutBase = 'af-menu-shortcut-base'
 
 export const menuLabelBase = 'af-menu-label-base'

@@ -19,7 +19,6 @@ import {
   menuIndicatorBaseCls,
   menuItemBase,
   menuItemBaseCls,
-  menuItemByVariant,
   menuItemMotion,
   menuItemTextBold,
   menuItemTextItalic,
@@ -60,10 +59,6 @@ const DropdownMenuContext = React.createContext<DropdownMenuContextValue>({
 })
 
 const DropdownMenuOpenContext = React.createContext<boolean>(false)
-
-function getMenuItemVariantCls(context: DropdownMenuContextValue) {
-  return menuItemByVariant[context.variant]
-}
 
 type ItemTextStyleProps = {
   children: React.ReactNode
@@ -370,7 +365,6 @@ const DropdownMenuItem = React.forwardRef<HTMLDivElement, DropdownMenuItemProps>
     const context = React.useContext(DropdownMenuContext)
     const itemColor = color || context.color
     const ariaLabel = getShortcutAccessibleLabel(title ?? children, shortcut)
-    const variantCls = getMenuItemVariantCls(context)
 
     return (
       <MenuPrimitive.Item
@@ -378,14 +372,7 @@ const DropdownMenuItem = React.forwardRef<HTMLDivElement, DropdownMenuItemProps>
         aria-label={ariaLabel}
         disabled={disabled}
         onClick={onClick}
-        className={cn(
-          menuItemBaseCls,
-          menuItemBase,
-          menuItemMotion,
-          variantCls,
-          `surface-color-${itemColor}`,
-          className,
-        )}
+        className={cn(menuItemBaseCls, menuItemBase, menuItemMotion, `surface-color-${itemColor}`, className)}
         style={{ ...getSizeStyles(context.size), ...props.style }}
         {...props}
       >
@@ -445,7 +432,6 @@ const DropdownMenuCheckboxItem = React.forwardRef<HTMLDivElement, DropdownMenuCh
     const context = React.useContext(DropdownMenuContext)
     const itemColor = color || context.color
     const ariaLabel = getShortcutAccessibleLabel(children, shortcut)
-    const variantCls = getMenuItemVariantCls(context)
 
     return (
       <MenuPrimitive.CheckboxItem
@@ -454,14 +440,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<HTMLDivElement, DropdownMenuCh
         checked={checked}
         onCheckedChange={onCheckedChange}
         disabled={disabled}
-        className={cn(
-          menuItemBaseCls,
-          menuItemBase,
-          menuItemMotion,
-          variantCls,
-          `surface-color-${itemColor}`,
-          className,
-        )}
+        className={cn(menuItemBaseCls, menuItemBase, menuItemMotion, `surface-color-${itemColor}`, className)}
         style={{ ...getSizeStyles(context.size), ...props.style }}
         {...props}
       >
@@ -537,21 +516,13 @@ const DropdownMenuRadioItem = React.forwardRef<HTMLDivElement, DropdownMenuRadio
   ({ value, color, disabled, className, children, bold, italic, strikethrough, ...props }, ref) => {
     const context = React.useContext(DropdownMenuContext)
     const itemColor = color || context.color
-    const variantCls = getMenuItemVariantCls(context)
 
     return (
       <MenuPrimitive.RadioItem
         ref={ref}
         value={value}
         disabled={disabled}
-        className={cn(
-          menuItemBaseCls,
-          menuItemBase,
-          menuItemMotion,
-          variantCls,
-          `surface-color-${itemColor}`,
-          className,
-        )}
+        className={cn(menuItemBaseCls, menuItemBase, menuItemMotion, `surface-color-${itemColor}`, className)}
         style={{ ...getSizeStyles(context.size), ...props.style }}
         {...props}
       >
@@ -701,20 +672,12 @@ const DropdownMenuSubTrigger = React.forwardRef<HTMLDivElement, DropdownMenuSubT
   ({ color, disabled, className, children, bold, italic, strikethrough, ...props }, ref) => {
     const context = React.useContext(DropdownMenuContext)
     const itemColor = color || context.color
-    const variantCls = getMenuItemVariantCls(context)
 
     return (
       <MenuPrimitive.SubmenuTrigger
         ref={ref}
         disabled={disabled}
-        className={cn(
-          menuItemBaseCls,
-          menuItemBase,
-          menuItemMotion,
-          variantCls,
-          `surface-color-${itemColor}`,
-          className,
-        )}
+        className={cn(menuItemBaseCls, menuItemBase, menuItemMotion, `surface-color-${itemColor}`, className)}
         style={{ ...getSizeStyles(context.size), ...props.style }}
         {...props}
       >
