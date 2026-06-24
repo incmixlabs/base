@@ -1,6 +1,6 @@
 import { createVar, globalStyle, style, styleVariants } from '@vanilla-extract/css'
 import { getControlSizeValues } from '@/elements/control-size'
-import { surfaceColorVariants, surfaceHighContrastByVariant } from '@/elements/surface/surface.css'
+import { surfaceColorVariants, surfaceHighContrastByVariant } from '@/elements/surface/surface.class'
 import { semanticColorKeys, semanticColorVar } from '@/theme/props/color.prop'
 import { buttonMotionVar, buttonSizeVar } from '@/theme/runtime/component-vars'
 import type { Color, Variant } from '@/theme/tokens'

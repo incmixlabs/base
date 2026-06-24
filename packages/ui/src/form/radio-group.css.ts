@@ -1,6 +1,6 @@
 import { styleVariants } from '@vanilla-extract/css'
 import { getControlSizeValues } from '@/elements/control-size'
-import { surfaceHighContrastByVariant } from '@/elements/surface/surface.css'
+import { surfaceHighContrastByVariant } from '@/elements/surface/surface.class'
 import { semanticColorKeys, semanticColorVar } from '@/theme/props/color.prop'
 import { radioGroupVar, radioSizeVar } from '@/theme/runtime/component-vars'
 import type { Color } from '@/theme/tokens'

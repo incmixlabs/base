@@ -7,7 +7,7 @@ import {
   surfaceColorVariants,
   surfaceHighContrastByVariant,
   surfaceHoverEnabledClass,
-} from '@/elements/surface/surface.css'
+} from '@/elements/surface/surface.class'
 import { getSpacingClasses } from '@/layouts/layout-utils'
 import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'

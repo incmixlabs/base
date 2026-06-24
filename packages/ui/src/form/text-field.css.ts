@@ -1,6 +1,6 @@
 import { globalStyle, style, styleVariants } from '@vanilla-extract/css'
 import { getControlSizeValues } from '@/elements/control-size'
-import { surfaceColorVariants } from '@/elements/surface/surface.css'
+import { surfaceColorVariants } from '@/elements/surface/surface.class'
 import { type SurfaceVariant, surfaceVariants } from '@/elements/surface/surface.props'
 import { semanticColorKeys, semanticColorVar } from '@/theme/props/color.prop'
 import { textFieldSizeVar } from '@/theme/runtime/component-vars'
@@ -39,7 +39,7 @@ export const textFieldInputWithRightElementCls = style({
 })
 
 // ── Color × Variant styles ──
-// One VE class per color+variant combo (same pattern as surface.css.ts).
+// One VE class per color+variant combo (same pattern as surface.class.ts).
 
 type TextFieldVariant = SurfaceVariant
 

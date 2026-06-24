@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
-import { surfaceColorVariants } from '@/elements/surface/surface.css'
+import { surfaceColorVariants } from '@/elements/surface/surface.class'
 import { radiusClassByToken } from '@/theme/helpers'
 import {
   gridTemplateAreasCustomResponsive,

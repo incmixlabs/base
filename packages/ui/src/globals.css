@@ -476,6 +476,2396 @@
       );
     }
   }
+
+  /* Surface class maps. Keep selectors aligned with elements/surface/surface.class.ts. */
+
+  .surface-square,
+  .surface-shape-square,
+  .surface-shape-circle {
+    aspect-ratio: 1 / 1;
+  }
+
+  .surface-shape-ellipse {
+    border-radius: var(--component-surface-shape-ellipse-radius, 50%);
+  }
+
+  .surface-shape-circle {
+    border-radius: var(--component-surface-shape-circle-radius, 9999px);
+  }
+
+  .surface-shape-hexagon {
+    clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%);
+  }
+
+  .surface-shape-pill {
+    border-radius: var(--component-surface-shape-pill-radius, 9999px);
+  }
+
+  .surface-high-contrast-classic,
+  .surface-high-contrast-solid {
+    filter: saturate(1.1) brightness(0.95);
+  }
+
+  .surface-high-contrast-soft {
+    filter: saturate(1.2);
+  }
+
+  .surface-high-contrast-outline,
+  .surface-high-contrast-ghost {
+    font-weight: 600;
+  }
+
+  .surface-color-slate-classic {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--color-slate-primary) 88%, white),
+      var(--color-slate-primary)
+    );
+    border-color: var(--color-slate-text);
+    color: var(--color-slate-contrast);
+  }
+
+  .surface-color-slate-classic.af-high-contrast {
+    background-color: var(--color-slate-text);
+    background-image: none;
+    border-color: var(--color-slate-text);
+    color: var(--color-slate-contrast);
+  }
+
+  .surface-color-slate-solid {
+    background-color: var(--color-slate-primary);
+    border-color: var(--color-slate-text);
+    color: var(--color-slate-contrast);
+  }
+
+  .surface-color-slate-solid.af-high-contrast {
+    background-color: var(--color-slate-text);
+    border-color: var(--color-slate-text);
+    color: var(--color-slate-contrast);
+  }
+
+  .surface-color-slate-soft {
+    background-color: var(--color-slate-soft);
+    border-color: transparent;
+    color: var(--color-slate-text);
+  }
+
+  .surface-color-slate-soft.af-high-contrast {
+    background-color: var(--color-slate-soft-hover);
+    color: var(--color-slate-text);
+  }
+
+  .surface-color-slate-surface {
+    background-color: var(--color-slate-surface);
+    border-color: var(--color-slate-border);
+    box-shadow: var(--component-surface-variant-surface-box-shadow, var(--shadow-xs));
+    color: var(--color-slate-text);
+  }
+
+  .surface-color-slate-surface.af-high-contrast {
+    border-color: var(--color-slate-text);
+    color: var(--color-slate-text);
+  }
+
+  .surface-color-slate-outline {
+    background-color: transparent;
+    border-color: var(--color-slate-border);
+    color: var(--color-slate-text);
+  }
+
+  .surface-color-slate-outline.af-high-contrast {
+    border-color: var(--color-slate-border);
+    color: var(--color-slate-text);
+  }
+
+  .surface-color-slate-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-slate-text);
+  }
+
+  .surface-color-slate-ghost.af-high-contrast {
+    color: var(--color-slate-text);
+  }
+
+  .surface-color-slate-classic.surface-hover-enabled:hover,
+  .surface-color-slate-solid.surface-hover-enabled:hover {
+    filter: brightness(0.96);
+  }
+
+  .surface-color-slate-classic.surface-hover-enabled:active,
+  .surface-color-slate-solid.surface-hover-enabled:active {
+    filter: brightness(0.92);
+  }
+
+  .surface-color-slate-soft.surface-hover-enabled:hover {
+    background-color: var(--color-slate-soft-hover);
+  }
+
+  .surface-color-slate-soft.surface-hover-enabled:active,
+  .surface-color-slate-surface.surface-hover-enabled:active {
+    filter: brightness(0.98);
+  }
+
+  .surface-color-slate-surface.surface-hover-enabled:hover {
+    background-color: var(--color-slate-surface-hover);
+  }
+
+  .surface-color-slate-outline.surface-hover-enabled:hover,
+  .surface-color-slate-outline.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-slate-ghost.surface-hover-enabled:hover {
+    background-color: var(--color-slate-soft);
+  }
+
+  .surface-color-slate-outline.surface-hover-enabled:active,
+  .surface-color-slate-outline.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-slate-ghost.surface-hover-enabled:active {
+    background-color: var(--color-slate-soft-hover);
+  }
+
+  .surface-color-slate-classic.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-slate-solid.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-slate-soft.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-slate-surface.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-slate-ghost.surface-hover-enabled.af-high-contrast:hover {
+    filter: contrast(1.1) saturate(1.2);
+  }
+
+  .surface-color-slate-classic.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-slate-solid.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-slate-soft.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-slate-surface.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-slate-ghost.surface-hover-enabled.af-high-contrast:active {
+    filter: contrast(1.15) saturate(1.25);
+  }
+
+  .surface-arrow-slate-solid {
+    color: var(--color-slate-primary);
+    fill: var(--color-slate-primary);
+  }
+
+  .surface-arrow-slate-soft {
+    color: transparent;
+    fill: var(--color-slate-soft);
+  }
+
+  .surface-arrow-slate-surface {
+    color: var(--color-slate-border);
+    fill: var(--color-slate-surface);
+  }
+
+  .surface-arrow-slate-outline {
+    color: var(--color-slate-border);
+    fill: transparent;
+  }
+
+  .surface-color-primary-classic {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--color-primary-primary) 88%, white),
+      var(--color-primary-primary)
+    );
+    border-color: var(--color-primary-text);
+    color: var(--color-primary-contrast);
+  }
+
+  .surface-color-primary-classic.af-high-contrast {
+    background-color: var(--color-primary-text);
+    background-image: none;
+    border-color: var(--color-primary-text);
+    color: var(--color-primary-contrast);
+  }
+
+  .surface-color-primary-solid {
+    background-color: var(--color-primary-primary);
+    border-color: var(--color-primary-text);
+    color: var(--color-primary-contrast);
+  }
+
+  .surface-color-primary-solid.af-high-contrast {
+    background-color: var(--color-primary-text);
+    border-color: var(--color-primary-text);
+    color: var(--color-primary-contrast);
+  }
+
+  .surface-color-primary-soft {
+    background-color: var(--color-primary-soft);
+    border-color: transparent;
+    color: var(--color-primary-text);
+  }
+
+  .surface-color-primary-soft.af-high-contrast {
+    background-color: var(--color-primary-soft-hover);
+    color: var(--color-primary-text);
+  }
+
+  .surface-color-primary-surface {
+    background-color: var(--color-primary-surface);
+    border-color: var(--color-primary-border);
+    box-shadow: var(--component-surface-variant-surface-box-shadow, var(--shadow-xs));
+    color: var(--color-primary-text);
+  }
+
+  .surface-color-primary-surface.af-high-contrast {
+    border-color: var(--color-primary-text);
+    color: var(--color-primary-text);
+  }
+
+  .surface-color-primary-outline {
+    background-color: transparent;
+    border-color: var(--color-primary-border);
+    color: var(--color-primary-text);
+  }
+
+  .surface-color-primary-outline.af-high-contrast {
+    border-color: var(--color-primary-border);
+    color: var(--color-primary-text);
+  }
+
+  .surface-color-primary-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-primary-text);
+  }
+
+  .surface-color-primary-ghost.af-high-contrast {
+    color: var(--color-primary-text);
+  }
+
+  .surface-color-primary-classic.surface-hover-enabled:hover,
+  .surface-color-primary-solid.surface-hover-enabled:hover {
+    filter: brightness(0.96);
+  }
+
+  .surface-color-primary-classic.surface-hover-enabled:active,
+  .surface-color-primary-solid.surface-hover-enabled:active {
+    filter: brightness(0.92);
+  }
+
+  .surface-color-primary-soft.surface-hover-enabled:hover {
+    background-color: var(--color-primary-soft-hover);
+  }
+
+  .surface-color-primary-soft.surface-hover-enabled:active,
+  .surface-color-primary-surface.surface-hover-enabled:active {
+    filter: brightness(0.98);
+  }
+
+  .surface-color-primary-surface.surface-hover-enabled:hover {
+    background-color: var(--color-primary-surface-hover);
+  }
+
+  .surface-color-primary-outline.surface-hover-enabled:hover,
+  .surface-color-primary-outline.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-primary-ghost.surface-hover-enabled:hover {
+    background-color: var(--color-primary-soft);
+  }
+
+  .surface-color-primary-outline.surface-hover-enabled:active,
+  .surface-color-primary-outline.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-primary-ghost.surface-hover-enabled:active {
+    background-color: var(--color-primary-soft-hover);
+  }
+
+  .surface-color-primary-classic.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-primary-solid.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-primary-soft.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-primary-surface.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-primary-ghost.surface-hover-enabled.af-high-contrast:hover {
+    filter: contrast(1.1) saturate(1.2);
+  }
+
+  .surface-color-primary-classic.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-primary-solid.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-primary-soft.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-primary-surface.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-primary-ghost.surface-hover-enabled.af-high-contrast:active {
+    filter: contrast(1.15) saturate(1.25);
+  }
+
+  .surface-arrow-primary-solid {
+    color: var(--color-primary-primary);
+    fill: var(--color-primary-primary);
+  }
+
+  .surface-arrow-primary-soft {
+    color: transparent;
+    fill: var(--color-primary-soft);
+  }
+
+  .surface-arrow-primary-surface {
+    color: var(--color-primary-border);
+    fill: var(--color-primary-surface);
+  }
+
+  .surface-arrow-primary-outline {
+    color: var(--color-primary-border);
+    fill: transparent;
+  }
+
+  .surface-color-secondary-classic {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--color-secondary-primary) 88%, white),
+      var(--color-secondary-primary)
+    );
+    border-color: var(--color-secondary-text);
+    color: var(--color-secondary-contrast);
+  }
+
+  .surface-color-secondary-classic.af-high-contrast {
+    background-color: var(--color-secondary-text);
+    background-image: none;
+    border-color: var(--color-secondary-text);
+    color: var(--color-secondary-contrast);
+  }
+
+  .surface-color-secondary-solid {
+    background-color: var(--color-secondary-primary);
+    border-color: var(--color-secondary-text);
+    color: var(--color-secondary-contrast);
+  }
+
+  .surface-color-secondary-solid.af-high-contrast {
+    background-color: var(--color-secondary-text);
+    border-color: var(--color-secondary-text);
+    color: var(--color-secondary-contrast);
+  }
+
+  .surface-color-secondary-soft {
+    background-color: var(--color-secondary-soft);
+    border-color: transparent;
+    color: var(--color-secondary-text);
+  }
+
+  .surface-color-secondary-soft.af-high-contrast {
+    background-color: var(--color-secondary-soft-hover);
+    color: var(--color-secondary-text);
+  }
+
+  .surface-color-secondary-surface {
+    background-color: var(--color-secondary-surface);
+    border-color: var(--color-secondary-border);
+    box-shadow: var(--component-surface-variant-surface-box-shadow, var(--shadow-xs));
+    color: var(--color-secondary-text);
+  }
+
+  .surface-color-secondary-surface.af-high-contrast {
+    border-color: var(--color-secondary-text);
+    color: var(--color-secondary-text);
+  }
+
+  .surface-color-secondary-outline {
+    background-color: transparent;
+    border-color: var(--color-secondary-border);
+    color: var(--color-secondary-text);
+  }
+
+  .surface-color-secondary-outline.af-high-contrast {
+    border-color: var(--color-secondary-border);
+    color: var(--color-secondary-text);
+  }
+
+  .surface-color-secondary-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-secondary-text);
+  }
+
+  .surface-color-secondary-ghost.af-high-contrast {
+    color: var(--color-secondary-text);
+  }
+
+  .surface-color-secondary-classic.surface-hover-enabled:hover,
+  .surface-color-secondary-solid.surface-hover-enabled:hover {
+    filter: brightness(0.96);
+  }
+
+  .surface-color-secondary-classic.surface-hover-enabled:active,
+  .surface-color-secondary-solid.surface-hover-enabled:active {
+    filter: brightness(0.92);
+  }
+
+  .surface-color-secondary-soft.surface-hover-enabled:hover {
+    background-color: var(--color-secondary-soft-hover);
+  }
+
+  .surface-color-secondary-soft.surface-hover-enabled:active,
+  .surface-color-secondary-surface.surface-hover-enabled:active {
+    filter: brightness(0.98);
+  }
+
+  .surface-color-secondary-surface.surface-hover-enabled:hover {
+    background-color: var(--color-secondary-surface-hover);
+  }
+
+  .surface-color-secondary-outline.surface-hover-enabled:hover,
+  .surface-color-secondary-outline.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-secondary-ghost.surface-hover-enabled:hover {
+    background-color: var(--color-secondary-soft);
+  }
+
+  .surface-color-secondary-outline.surface-hover-enabled:active,
+  .surface-color-secondary-outline.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-secondary-ghost.surface-hover-enabled:active {
+    background-color: var(--color-secondary-soft-hover);
+  }
+
+  .surface-color-secondary-classic.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-secondary-solid.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-secondary-soft.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-secondary-surface.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-secondary-ghost.surface-hover-enabled.af-high-contrast:hover {
+    filter: contrast(1.1) saturate(1.2);
+  }
+
+  .surface-color-secondary-classic.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-secondary-solid.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-secondary-soft.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-secondary-surface.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-secondary-ghost.surface-hover-enabled.af-high-contrast:active {
+    filter: contrast(1.15) saturate(1.25);
+  }
+
+  .surface-arrow-secondary-solid {
+    color: var(--color-secondary-primary);
+    fill: var(--color-secondary-primary);
+  }
+
+  .surface-arrow-secondary-soft {
+    color: transparent;
+    fill: var(--color-secondary-soft);
+  }
+
+  .surface-arrow-secondary-surface {
+    color: var(--color-secondary-border);
+    fill: var(--color-secondary-surface);
+  }
+
+  .surface-arrow-secondary-outline {
+    color: var(--color-secondary-border);
+    fill: transparent;
+  }
+
+  .surface-color-accent-classic {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--color-accent-primary) 88%, white),
+      var(--color-accent-primary)
+    );
+    border-color: var(--color-accent-text);
+    color: var(--color-accent-contrast);
+  }
+
+  .surface-color-accent-classic.af-high-contrast {
+    background-color: var(--color-accent-text);
+    background-image: none;
+    border-color: var(--color-accent-text);
+    color: var(--color-accent-contrast);
+  }
+
+  .surface-color-accent-solid {
+    background-color: var(--color-accent-primary);
+    border-color: var(--color-accent-text);
+    color: var(--color-accent-contrast);
+  }
+
+  .surface-color-accent-solid.af-high-contrast {
+    background-color: var(--color-accent-text);
+    border-color: var(--color-accent-text);
+    color: var(--color-accent-contrast);
+  }
+
+  .surface-color-accent-soft {
+    background-color: var(--color-accent-soft);
+    border-color: transparent;
+    color: var(--color-accent-text);
+  }
+
+  .surface-color-accent-soft.af-high-contrast {
+    background-color: var(--color-accent-soft-hover);
+    color: var(--color-accent-text);
+  }
+
+  .surface-color-accent-surface {
+    background-color: var(--color-accent-surface);
+    border-color: var(--color-accent-border);
+    box-shadow: var(--component-surface-variant-surface-box-shadow, var(--shadow-xs));
+    color: var(--color-accent-text);
+  }
+
+  .surface-color-accent-surface.af-high-contrast {
+    border-color: var(--color-accent-text);
+    color: var(--color-accent-text);
+  }
+
+  .surface-color-accent-outline {
+    background-color: transparent;
+    border-color: var(--color-accent-border);
+    color: var(--color-accent-text);
+  }
+
+  .surface-color-accent-outline.af-high-contrast {
+    border-color: var(--color-accent-border);
+    color: var(--color-accent-text);
+  }
+
+  .surface-color-accent-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-accent-text);
+  }
+
+  .surface-color-accent-ghost.af-high-contrast {
+    color: var(--color-accent-text);
+  }
+
+  .surface-color-accent-classic.surface-hover-enabled:hover,
+  .surface-color-accent-solid.surface-hover-enabled:hover {
+    filter: brightness(0.96);
+  }
+
+  .surface-color-accent-classic.surface-hover-enabled:active,
+  .surface-color-accent-solid.surface-hover-enabled:active {
+    filter: brightness(0.92);
+  }
+
+  .surface-color-accent-soft.surface-hover-enabled:hover {
+    background-color: var(--color-accent-soft-hover);
+  }
+
+  .surface-color-accent-soft.surface-hover-enabled:active,
+  .surface-color-accent-surface.surface-hover-enabled:active {
+    filter: brightness(0.98);
+  }
+
+  .surface-color-accent-surface.surface-hover-enabled:hover {
+    background-color: var(--color-accent-surface-hover);
+  }
+
+  .surface-color-accent-outline.surface-hover-enabled:hover,
+  .surface-color-accent-outline.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-accent-ghost.surface-hover-enabled:hover {
+    background-color: var(--color-accent-soft);
+  }
+
+  .surface-color-accent-outline.surface-hover-enabled:active,
+  .surface-color-accent-outline.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-accent-ghost.surface-hover-enabled:active {
+    background-color: var(--color-accent-soft-hover);
+  }
+
+  .surface-color-accent-classic.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-accent-solid.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-accent-soft.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-accent-surface.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-accent-ghost.surface-hover-enabled.af-high-contrast:hover {
+    filter: contrast(1.1) saturate(1.2);
+  }
+
+  .surface-color-accent-classic.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-accent-solid.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-accent-soft.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-accent-surface.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-accent-ghost.surface-hover-enabled.af-high-contrast:active {
+    filter: contrast(1.15) saturate(1.25);
+  }
+
+  .surface-arrow-accent-solid {
+    color: var(--color-accent-primary);
+    fill: var(--color-accent-primary);
+  }
+
+  .surface-arrow-accent-soft {
+    color: transparent;
+    fill: var(--color-accent-soft);
+  }
+
+  .surface-arrow-accent-surface {
+    color: var(--color-accent-border);
+    fill: var(--color-accent-surface);
+  }
+
+  .surface-arrow-accent-outline {
+    color: var(--color-accent-border);
+    fill: transparent;
+  }
+
+  .surface-color-neutral-classic {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--color-neutral-primary) 88%, white),
+      var(--color-neutral-primary)
+    );
+    border-color: var(--color-neutral-text);
+    color: var(--color-neutral-contrast);
+  }
+
+  .surface-color-neutral-classic.af-high-contrast {
+    background-color: var(--color-neutral-primary);
+    background-image: none;
+    border-color: var(--color-neutral-primary);
+    color: var(--color-neutral-contrast);
+  }
+
+  .surface-color-neutral-solid {
+    background-color: var(--color-neutral-primary);
+    border-color: var(--color-neutral-text);
+    color: var(--color-neutral-contrast);
+  }
+
+  .surface-color-neutral-solid.af-high-contrast {
+    background-color: var(--color-neutral-primary);
+    border-color: var(--color-neutral-primary);
+    color: var(--color-neutral-contrast);
+  }
+
+  .surface-color-neutral-soft {
+    background-color: var(--color-neutral-soft);
+    border-color: transparent;
+    color: var(--color-neutral-text);
+  }
+
+  .surface-color-neutral-soft.af-high-contrast {
+    background-color: var(--color-neutral-soft-hover);
+    color: var(--color-neutral-text);
+  }
+
+  .surface-color-neutral-surface {
+    background-color: var(--color-neutral-surface);
+    border-color: var(--color-neutral-border);
+    box-shadow: var(--component-surface-variant-surface-box-shadow, var(--shadow-xs));
+    color: var(--color-neutral-text);
+  }
+
+  .surface-color-neutral-surface.af-high-contrast {
+    border-color: var(--color-neutral-text);
+    color: var(--color-neutral-text);
+  }
+
+  .surface-color-neutral-outline {
+    background-color: transparent;
+    border-color: var(--color-neutral-border);
+    color: var(--color-neutral-text);
+  }
+
+  .surface-color-neutral-outline.af-high-contrast {
+    border-color: var(--color-neutral-border);
+    color: var(--color-neutral-text);
+  }
+
+  .surface-color-neutral-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-neutral-text);
+  }
+
+  .surface-color-neutral-ghost.af-high-contrast {
+    color: var(--color-neutral-text);
+  }
+
+  .surface-color-neutral-classic.surface-hover-enabled:hover,
+  .surface-color-neutral-solid.surface-hover-enabled:hover {
+    filter: brightness(0.96);
+  }
+
+  .surface-color-neutral-classic.surface-hover-enabled:active,
+  .surface-color-neutral-solid.surface-hover-enabled:active {
+    filter: brightness(0.92);
+  }
+
+  .surface-color-neutral-soft.surface-hover-enabled:hover {
+    background-color: var(--color-neutral-soft-hover);
+  }
+
+  .surface-color-neutral-soft.surface-hover-enabled:active,
+  .surface-color-neutral-surface.surface-hover-enabled:active {
+    filter: brightness(0.98);
+  }
+
+  .surface-color-neutral-surface.surface-hover-enabled:hover {
+    background-color: var(--color-neutral-surface-hover);
+  }
+
+  .surface-color-neutral-outline.surface-hover-enabled:hover,
+  .surface-color-neutral-outline.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-neutral-ghost.surface-hover-enabled:hover {
+    background-color: var(--color-neutral-soft);
+  }
+
+  .surface-color-neutral-outline.surface-hover-enabled:active,
+  .surface-color-neutral-outline.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-neutral-ghost.surface-hover-enabled:active {
+    background-color: var(--color-neutral-soft-hover);
+  }
+
+  .surface-color-neutral-classic.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-neutral-solid.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-neutral-soft.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-neutral-surface.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-neutral-ghost.surface-hover-enabled.af-high-contrast:hover {
+    filter: contrast(1.1) saturate(1.2);
+  }
+
+  .surface-color-neutral-classic.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-neutral-solid.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-neutral-soft.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-neutral-surface.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-neutral-ghost.surface-hover-enabled.af-high-contrast:active {
+    filter: contrast(1.15) saturate(1.25);
+  }
+
+  .surface-arrow-neutral-solid {
+    color: var(--color-inverse-primary);
+    fill: var(--color-inverse-primary);
+  }
+
+  .surface-arrow-neutral-soft {
+    color: transparent;
+    fill: var(--color-inverse-soft);
+  }
+
+  .surface-arrow-neutral-surface {
+    color: var(--color-inverse-border);
+    fill: var(--color-inverse-surface);
+  }
+
+  .surface-arrow-neutral-outline {
+    color: var(--color-neutral-border);
+    fill: transparent;
+  }
+
+  .surface-color-info-classic {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--color-info-primary) 88%, white),
+      var(--color-info-primary)
+    );
+    border-color: var(--color-info-text);
+    color: var(--color-info-contrast);
+  }
+
+  .surface-color-info-classic.af-high-contrast {
+    background-color: var(--color-info-text);
+    background-image: none;
+    border-color: var(--color-info-text);
+    color: var(--color-info-contrast);
+  }
+
+  .surface-color-info-solid {
+    background-color: var(--color-info-primary);
+    border-color: var(--color-info-text);
+    color: var(--color-info-contrast);
+  }
+
+  .surface-color-info-solid.af-high-contrast {
+    background-color: var(--color-info-text);
+    border-color: var(--color-info-text);
+    color: var(--color-info-contrast);
+  }
+
+  .surface-color-info-soft {
+    background-color: var(--color-info-soft);
+    border-color: transparent;
+    color: var(--color-info-text);
+  }
+
+  .surface-color-info-soft.af-high-contrast {
+    background-color: var(--color-info-soft-hover);
+    color: var(--color-info-text);
+  }
+
+  .surface-color-info-surface {
+    background-color: var(--color-info-surface);
+    border-color: var(--color-info-border);
+    box-shadow: var(--component-surface-variant-surface-box-shadow, var(--shadow-xs));
+    color: var(--color-info-text);
+  }
+
+  .surface-color-info-surface.af-high-contrast {
+    border-color: var(--color-info-text);
+    color: var(--color-info-text);
+  }
+
+  .surface-color-info-outline {
+    background-color: transparent;
+    border-color: var(--color-info-border);
+    color: var(--color-info-text);
+  }
+
+  .surface-color-info-outline.af-high-contrast {
+    border-color: var(--color-info-border);
+    color: var(--color-info-text);
+  }
+
+  .surface-color-info-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-info-text);
+  }
+
+  .surface-color-info-ghost.af-high-contrast {
+    color: var(--color-info-text);
+  }
+
+  .surface-color-info-classic.surface-hover-enabled:hover,
+  .surface-color-info-solid.surface-hover-enabled:hover {
+    filter: brightness(0.96);
+  }
+
+  .surface-color-info-classic.surface-hover-enabled:active,
+  .surface-color-info-solid.surface-hover-enabled:active {
+    filter: brightness(0.92);
+  }
+
+  .surface-color-info-soft.surface-hover-enabled:hover {
+    background-color: var(--color-info-soft-hover);
+  }
+
+  .surface-color-info-soft.surface-hover-enabled:active,
+  .surface-color-info-surface.surface-hover-enabled:active {
+    filter: brightness(0.98);
+  }
+
+  .surface-color-info-surface.surface-hover-enabled:hover {
+    background-color: var(--color-info-surface-hover);
+  }
+
+  .surface-color-info-outline.surface-hover-enabled:hover,
+  .surface-color-info-outline.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-info-ghost.surface-hover-enabled:hover {
+    background-color: var(--color-info-soft);
+  }
+
+  .surface-color-info-outline.surface-hover-enabled:active,
+  .surface-color-info-outline.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-info-ghost.surface-hover-enabled:active {
+    background-color: var(--color-info-soft-hover);
+  }
+
+  .surface-color-info-classic.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-info-solid.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-info-soft.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-info-surface.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-info-ghost.surface-hover-enabled.af-high-contrast:hover {
+    filter: contrast(1.1) saturate(1.2);
+  }
+
+  .surface-color-info-classic.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-info-solid.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-info-soft.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-info-surface.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-info-ghost.surface-hover-enabled.af-high-contrast:active {
+    filter: contrast(1.15) saturate(1.25);
+  }
+
+  .surface-arrow-info-solid {
+    color: var(--color-info-primary);
+    fill: var(--color-info-primary);
+  }
+
+  .surface-arrow-info-soft {
+    color: transparent;
+    fill: var(--color-info-soft);
+  }
+
+  .surface-arrow-info-surface {
+    color: var(--color-info-border);
+    fill: var(--color-info-surface);
+  }
+
+  .surface-arrow-info-outline {
+    color: var(--color-info-border);
+    fill: transparent;
+  }
+
+  .surface-color-success-classic {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--color-success-primary) 88%, white),
+      var(--color-success-primary)
+    );
+    border-color: var(--color-success-text);
+    color: var(--color-success-contrast);
+  }
+
+  .surface-color-success-classic.af-high-contrast {
+    background-color: var(--color-success-text);
+    background-image: none;
+    border-color: var(--color-success-text);
+    color: var(--color-success-contrast);
+  }
+
+  .surface-color-success-solid {
+    background-color: var(--color-success-primary);
+    border-color: var(--color-success-text);
+    color: var(--color-success-contrast);
+  }
+
+  .surface-color-success-solid.af-high-contrast {
+    background-color: var(--color-success-text);
+    border-color: var(--color-success-text);
+    color: var(--color-success-contrast);
+  }
+
+  .surface-color-success-soft {
+    background-color: var(--color-success-soft);
+    border-color: transparent;
+    color: var(--color-success-text);
+  }
+
+  .surface-color-success-soft.af-high-contrast {
+    background-color: var(--color-success-soft-hover);
+    color: var(--color-success-text);
+  }
+
+  .surface-color-success-surface {
+    background-color: var(--color-success-surface);
+    border-color: var(--color-success-border);
+    box-shadow: var(--component-surface-variant-surface-box-shadow, var(--shadow-xs));
+    color: var(--color-success-text);
+  }
+
+  .surface-color-success-surface.af-high-contrast {
+    border-color: var(--color-success-text);
+    color: var(--color-success-text);
+  }
+
+  .surface-color-success-outline {
+    background-color: transparent;
+    border-color: var(--color-success-border);
+    color: var(--color-success-text);
+  }
+
+  .surface-color-success-outline.af-high-contrast {
+    border-color: var(--color-success-border);
+    color: var(--color-success-text);
+  }
+
+  .surface-color-success-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-success-text);
+  }
+
+  .surface-color-success-ghost.af-high-contrast {
+    color: var(--color-success-text);
+  }
+
+  .surface-color-success-classic.surface-hover-enabled:hover,
+  .surface-color-success-solid.surface-hover-enabled:hover {
+    filter: brightness(0.96);
+  }
+
+  .surface-color-success-classic.surface-hover-enabled:active,
+  .surface-color-success-solid.surface-hover-enabled:active {
+    filter: brightness(0.92);
+  }
+
+  .surface-color-success-soft.surface-hover-enabled:hover {
+    background-color: var(--color-success-soft-hover);
+  }
+
+  .surface-color-success-soft.surface-hover-enabled:active,
+  .surface-color-success-surface.surface-hover-enabled:active {
+    filter: brightness(0.98);
+  }
+
+  .surface-color-success-surface.surface-hover-enabled:hover {
+    background-color: var(--color-success-surface-hover);
+  }
+
+  .surface-color-success-outline.surface-hover-enabled:hover,
+  .surface-color-success-outline.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-success-ghost.surface-hover-enabled:hover {
+    background-color: var(--color-success-soft);
+  }
+
+  .surface-color-success-outline.surface-hover-enabled:active,
+  .surface-color-success-outline.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-success-ghost.surface-hover-enabled:active {
+    background-color: var(--color-success-soft-hover);
+  }
+
+  .surface-color-success-classic.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-success-solid.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-success-soft.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-success-surface.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-success-ghost.surface-hover-enabled.af-high-contrast:hover {
+    filter: contrast(1.1) saturate(1.2);
+  }
+
+  .surface-color-success-classic.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-success-solid.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-success-soft.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-success-surface.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-success-ghost.surface-hover-enabled.af-high-contrast:active {
+    filter: contrast(1.15) saturate(1.25);
+  }
+
+  .surface-arrow-success-solid {
+    color: var(--color-success-primary);
+    fill: var(--color-success-primary);
+  }
+
+  .surface-arrow-success-soft {
+    color: transparent;
+    fill: var(--color-success-soft);
+  }
+
+  .surface-arrow-success-surface {
+    color: var(--color-success-border);
+    fill: var(--color-success-surface);
+  }
+
+  .surface-arrow-success-outline {
+    color: var(--color-success-border);
+    fill: transparent;
+  }
+
+  .surface-color-warning-classic {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--color-warning-primary) 88%, white),
+      var(--color-warning-primary)
+    );
+    border-color: var(--color-warning-text);
+    color: var(--color-warning-contrast);
+  }
+
+  .surface-color-warning-classic.af-high-contrast {
+    background-color: var(--color-warning-text);
+    background-image: none;
+    border-color: var(--color-warning-text);
+    color: var(--color-warning-contrast);
+  }
+
+  .surface-color-warning-solid {
+    background-color: var(--color-warning-primary);
+    border-color: var(--color-warning-text);
+    color: var(--color-warning-contrast);
+  }
+
+  .surface-color-warning-solid.af-high-contrast {
+    background-color: var(--color-warning-text);
+    border-color: var(--color-warning-text);
+    color: var(--color-warning-contrast);
+  }
+
+  .surface-color-warning-soft {
+    background-color: var(--color-warning-soft);
+    border-color: transparent;
+    color: var(--color-warning-text);
+  }
+
+  .surface-color-warning-soft.af-high-contrast {
+    background-color: var(--color-warning-soft-hover);
+    color: var(--color-warning-text);
+  }
+
+  .surface-color-warning-surface {
+    background-color: var(--color-warning-surface);
+    border-color: var(--color-warning-border);
+    box-shadow: var(--component-surface-variant-surface-box-shadow, var(--shadow-xs));
+    color: var(--color-warning-text);
+  }
+
+  .surface-color-warning-surface.af-high-contrast {
+    border-color: var(--color-warning-text);
+    color: var(--color-warning-text);
+  }
+
+  .surface-color-warning-outline {
+    background-color: transparent;
+    border-color: var(--color-warning-border);
+    color: var(--color-warning-text);
+  }
+
+  .surface-color-warning-outline.af-high-contrast {
+    border-color: var(--color-warning-border);
+    color: var(--color-warning-text);
+  }
+
+  .surface-color-warning-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-warning-text);
+  }
+
+  .surface-color-warning-ghost.af-high-contrast {
+    color: var(--color-warning-text);
+  }
+
+  .surface-color-warning-classic.surface-hover-enabled:hover,
+  .surface-color-warning-solid.surface-hover-enabled:hover {
+    filter: brightness(0.96);
+  }
+
+  .surface-color-warning-classic.surface-hover-enabled:active,
+  .surface-color-warning-solid.surface-hover-enabled:active {
+    filter: brightness(0.92);
+  }
+
+  .surface-color-warning-soft.surface-hover-enabled:hover {
+    background-color: var(--color-warning-soft-hover);
+  }
+
+  .surface-color-warning-soft.surface-hover-enabled:active,
+  .surface-color-warning-surface.surface-hover-enabled:active {
+    filter: brightness(0.98);
+  }
+
+  .surface-color-warning-surface.surface-hover-enabled:hover {
+    background-color: var(--color-warning-surface-hover);
+  }
+
+  .surface-color-warning-outline.surface-hover-enabled:hover,
+  .surface-color-warning-outline.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-warning-ghost.surface-hover-enabled:hover {
+    background-color: var(--color-warning-soft);
+  }
+
+  .surface-color-warning-outline.surface-hover-enabled:active,
+  .surface-color-warning-outline.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-warning-ghost.surface-hover-enabled:active {
+    background-color: var(--color-warning-soft-hover);
+  }
+
+  .surface-color-warning-classic.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-warning-solid.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-warning-soft.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-warning-surface.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-warning-ghost.surface-hover-enabled.af-high-contrast:hover {
+    filter: contrast(1.1) saturate(1.2);
+  }
+
+  .surface-color-warning-classic.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-warning-solid.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-warning-soft.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-warning-surface.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-warning-ghost.surface-hover-enabled.af-high-contrast:active {
+    filter: contrast(1.15) saturate(1.25);
+  }
+
+  .surface-arrow-warning-solid {
+    color: var(--color-warning-primary);
+    fill: var(--color-warning-primary);
+  }
+
+  .surface-arrow-warning-soft {
+    color: transparent;
+    fill: var(--color-warning-soft);
+  }
+
+  .surface-arrow-warning-surface {
+    color: var(--color-warning-border);
+    fill: var(--color-warning-surface);
+  }
+
+  .surface-arrow-warning-outline {
+    color: var(--color-warning-border);
+    fill: transparent;
+  }
+
+  .surface-color-error-classic {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--color-error-primary) 88%, white),
+      var(--color-error-primary)
+    );
+    border-color: var(--color-error-text);
+    color: var(--color-error-contrast);
+  }
+
+  .surface-color-error-classic.af-high-contrast {
+    background-color: var(--color-error-text);
+    background-image: none;
+    border-color: var(--color-error-text);
+    color: var(--color-error-contrast);
+  }
+
+  .surface-color-error-solid {
+    background-color: var(--color-error-primary);
+    border-color: var(--color-error-text);
+    color: var(--color-error-contrast);
+  }
+
+  .surface-color-error-solid.af-high-contrast {
+    background-color: var(--color-error-text);
+    border-color: var(--color-error-text);
+    color: var(--color-error-contrast);
+  }
+
+  .surface-color-error-soft {
+    background-color: var(--color-error-soft);
+    border-color: transparent;
+    color: var(--color-error-text);
+  }
+
+  .surface-color-error-soft.af-high-contrast {
+    background-color: var(--color-error-soft-hover);
+    color: var(--color-error-text);
+  }
+
+  .surface-color-error-surface {
+    background-color: var(--color-error-surface);
+    border-color: var(--color-error-border);
+    box-shadow: var(--component-surface-variant-surface-box-shadow, var(--shadow-xs));
+    color: var(--color-error-text);
+  }
+
+  .surface-color-error-surface.af-high-contrast {
+    border-color: var(--color-error-text);
+    color: var(--color-error-text);
+  }
+
+  .surface-color-error-outline {
+    background-color: transparent;
+    border-color: var(--color-error-border);
+    color: var(--color-error-text);
+  }
+
+  .surface-color-error-outline.af-high-contrast {
+    border-color: var(--color-error-border);
+    color: var(--color-error-text);
+  }
+
+  .surface-color-error-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-error-text);
+  }
+
+  .surface-color-error-ghost.af-high-contrast {
+    color: var(--color-error-text);
+  }
+
+  .surface-color-error-classic.surface-hover-enabled:hover,
+  .surface-color-error-solid.surface-hover-enabled:hover {
+    filter: brightness(0.96);
+  }
+
+  .surface-color-error-classic.surface-hover-enabled:active,
+  .surface-color-error-solid.surface-hover-enabled:active {
+    filter: brightness(0.92);
+  }
+
+  .surface-color-error-soft.surface-hover-enabled:hover {
+    background-color: var(--color-error-soft-hover);
+  }
+
+  .surface-color-error-soft.surface-hover-enabled:active,
+  .surface-color-error-surface.surface-hover-enabled:active {
+    filter: brightness(0.98);
+  }
+
+  .surface-color-error-surface.surface-hover-enabled:hover {
+    background-color: var(--color-error-surface-hover);
+  }
+
+  .surface-color-error-outline.surface-hover-enabled:hover,
+  .surface-color-error-outline.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-error-ghost.surface-hover-enabled:hover {
+    background-color: var(--color-error-soft);
+  }
+
+  .surface-color-error-outline.surface-hover-enabled:active,
+  .surface-color-error-outline.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-error-ghost.surface-hover-enabled:active {
+    background-color: var(--color-error-soft-hover);
+  }
+
+  .surface-color-error-classic.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-error-solid.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-error-soft.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-error-surface.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-error-ghost.surface-hover-enabled.af-high-contrast:hover {
+    filter: contrast(1.1) saturate(1.2);
+  }
+
+  .surface-color-error-classic.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-error-solid.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-error-soft.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-error-surface.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-error-ghost.surface-hover-enabled.af-high-contrast:active {
+    filter: contrast(1.15) saturate(1.25);
+  }
+
+  .surface-arrow-error-solid {
+    color: var(--color-error-primary);
+    fill: var(--color-error-primary);
+  }
+
+  .surface-arrow-error-soft {
+    color: transparent;
+    fill: var(--color-error-soft);
+  }
+
+  .surface-arrow-error-surface {
+    color: var(--color-error-border);
+    fill: var(--color-error-surface);
+  }
+
+  .surface-arrow-error-outline {
+    color: var(--color-error-border);
+    fill: transparent;
+  }
+
+  .surface-color-inverse-classic {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--color-inverse-primary) 88%, white),
+      var(--color-inverse-primary)
+    );
+    border-color: var(--color-inverse-text);
+    color: var(--color-inverse-contrast);
+  }
+
+  .surface-color-inverse-classic.af-high-contrast {
+    background-color: var(--color-inverse-primary);
+    background-image: none;
+    border-color: var(--color-inverse-primary);
+    color: var(--color-inverse-contrast);
+  }
+
+  .surface-color-inverse-solid {
+    background-color: var(--color-inverse-primary);
+    border-color: var(--color-inverse-text);
+    color: var(--color-inverse-contrast);
+  }
+
+  .surface-color-inverse-solid.af-high-contrast {
+    background-color: var(--color-inverse-primary);
+    border-color: var(--color-inverse-primary);
+    color: var(--color-inverse-contrast);
+  }
+
+  .surface-color-inverse-soft {
+    background-color: var(--color-inverse-soft);
+    border-color: transparent;
+    color: var(--color-inverse-text);
+  }
+
+  .surface-color-inverse-soft.af-high-contrast {
+    background-color: var(--color-inverse-soft-hover);
+    color: var(--color-inverse-text);
+  }
+
+  .surface-color-inverse-surface {
+    background-color: var(--color-inverse-surface);
+    border-color: var(--color-inverse-border);
+    box-shadow: var(--component-surface-variant-surface-box-shadow, var(--shadow-xs));
+    color: var(--color-inverse-text);
+  }
+
+  .surface-color-inverse-surface.af-high-contrast {
+    border-color: var(--color-inverse-text);
+    color: var(--color-inverse-text);
+  }
+
+  .surface-color-inverse-outline {
+    background-color: transparent;
+    border-color: var(--color-inverse-border);
+    color: var(--color-inverse-primary);
+  }
+
+  .surface-color-inverse-outline.af-high-contrast {
+    border-color: var(--color-inverse-border);
+    color: var(--color-inverse-primary);
+  }
+
+  .surface-color-inverse-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-inverse-primary);
+  }
+
+  .surface-color-inverse-ghost.af-high-contrast {
+    color: var(--color-inverse-primary);
+  }
+
+  .surface-color-inverse-classic.surface-hover-enabled:hover,
+  .surface-color-inverse-solid.surface-hover-enabled:hover {
+    filter: brightness(0.96);
+  }
+
+  .surface-color-inverse-classic.surface-hover-enabled:active,
+  .surface-color-inverse-solid.surface-hover-enabled:active {
+    filter: brightness(0.92);
+  }
+
+  .surface-color-inverse-soft.surface-hover-enabled:hover {
+    background-color: var(--color-inverse-soft-hover);
+  }
+
+  .surface-color-inverse-soft.surface-hover-enabled:active,
+  .surface-color-inverse-surface.surface-hover-enabled:active {
+    filter: brightness(0.98);
+  }
+
+  .surface-color-inverse-surface.surface-hover-enabled:hover {
+    background-color: var(--color-inverse-surface-hover);
+  }
+
+  .surface-color-inverse-outline.surface-hover-enabled:hover,
+  .surface-color-inverse-outline.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-inverse-ghost.surface-hover-enabled:hover {
+    background-color: var(--color-inverse-soft);
+  }
+
+  .surface-color-inverse-outline.surface-hover-enabled:active,
+  .surface-color-inverse-outline.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-inverse-ghost.surface-hover-enabled:active {
+    background-color: var(--color-inverse-soft-hover);
+  }
+
+  .surface-color-inverse-classic.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-inverse-solid.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-inverse-soft.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-inverse-surface.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-inverse-ghost.surface-hover-enabled.af-high-contrast:hover {
+    filter: contrast(1.1) saturate(1.2);
+  }
+
+  .surface-color-inverse-classic.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-inverse-solid.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-inverse-soft.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-inverse-surface.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-inverse-ghost.surface-hover-enabled.af-high-contrast:active {
+    filter: contrast(1.15) saturate(1.25);
+  }
+
+  .surface-arrow-inverse-solid {
+    color: var(--color-inverse-primary);
+    fill: var(--color-inverse-primary);
+  }
+
+  .surface-arrow-inverse-soft {
+    color: transparent;
+    fill: var(--color-inverse-soft);
+  }
+
+  .surface-arrow-inverse-surface {
+    color: var(--color-inverse-border);
+    fill: var(--color-inverse-surface);
+  }
+
+  .surface-arrow-inverse-outline {
+    color: var(--color-inverse-border);
+    fill: transparent;
+  }
+
+  .surface-color-light-classic {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--color-light-primary) 88%, white),
+      var(--color-light-primary)
+    );
+    border-color: var(--color-light-text);
+    color: var(--color-light-contrast);
+  }
+
+  .surface-color-light-classic.af-high-contrast {
+    background-color: var(--color-light-primary);
+    background-image: none;
+    border-color: var(--color-light-primary);
+    color: var(--color-light-contrast);
+  }
+
+  .surface-color-light-solid {
+    background-color: var(--color-light-primary);
+    border-color: var(--color-light-text);
+    color: var(--color-light-contrast);
+  }
+
+  .surface-color-light-solid.af-high-contrast {
+    background-color: var(--color-light-primary);
+    border-color: var(--color-light-primary);
+    color: var(--color-light-contrast);
+  }
+
+  .surface-color-light-soft {
+    background-color: var(--color-light-soft);
+    border-color: transparent;
+    color: var(--color-light-text);
+  }
+
+  .surface-color-light-soft.af-high-contrast {
+    background-color: var(--color-light-soft-hover);
+    color: var(--color-light-text);
+  }
+
+  .surface-color-light-surface {
+    background-color: var(--color-light-surface);
+    border-color: var(--color-light-border);
+    box-shadow: var(--component-surface-variant-surface-box-shadow, var(--shadow-xs));
+    color: var(--color-light-text);
+  }
+
+  .surface-color-light-surface.af-high-contrast {
+    border-color: var(--color-light-text);
+    color: var(--color-light-text);
+  }
+
+  .surface-color-light-outline {
+    background-color: transparent;
+    border-color: var(--color-neutral-border);
+    color: var(--color-neutral-text);
+  }
+
+  .surface-color-light-outline.af-high-contrast {
+    border-color: var(--color-neutral-border);
+    color: var(--color-neutral-text);
+  }
+
+  .surface-color-light-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-neutral-text);
+  }
+
+  .surface-color-light-ghost.af-high-contrast {
+    color: var(--color-neutral-text);
+  }
+
+  .surface-color-light-classic.surface-hover-enabled:hover,
+  .surface-color-light-solid.surface-hover-enabled:hover {
+    filter: brightness(0.96);
+  }
+
+  .surface-color-light-classic.surface-hover-enabled:active,
+  .surface-color-light-solid.surface-hover-enabled:active {
+    filter: brightness(0.92);
+  }
+
+  .surface-color-light-soft.surface-hover-enabled:hover {
+    background-color: var(--color-light-soft-hover);
+  }
+
+  .surface-color-light-soft.surface-hover-enabled:active,
+  .surface-color-light-surface.surface-hover-enabled:active {
+    filter: brightness(0.98);
+  }
+
+  .surface-color-light-surface.surface-hover-enabled:hover {
+    background-color: var(--color-light-surface-hover);
+  }
+
+  .surface-color-light-outline.surface-hover-enabled:hover,
+  .surface-color-light-outline.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-light-ghost.surface-hover-enabled:hover {
+    background-color: var(--color-neutral-soft);
+  }
+
+  .surface-color-light-outline.surface-hover-enabled:active,
+  .surface-color-light-outline.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-light-ghost.surface-hover-enabled:active {
+    background-color: var(--color-neutral-soft-hover);
+  }
+
+  .surface-color-light-classic.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-light-solid.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-light-soft.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-light-surface.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-light-ghost.surface-hover-enabled.af-high-contrast:hover {
+    filter: contrast(1.1) saturate(1.2);
+  }
+
+  .surface-color-light-classic.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-light-solid.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-light-soft.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-light-surface.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-light-ghost.surface-hover-enabled.af-high-contrast:active {
+    filter: contrast(1.15) saturate(1.25);
+  }
+
+  .surface-arrow-light-solid {
+    color: var(--color-light-primary);
+    fill: var(--color-light-primary);
+  }
+
+  .surface-arrow-light-soft {
+    color: transparent;
+    fill: var(--color-light-soft);
+  }
+
+  .surface-arrow-light-surface {
+    color: var(--color-light-border);
+    fill: var(--color-light-surface);
+  }
+
+  .surface-arrow-light-outline {
+    color: var(--color-neutral-border);
+    fill: transparent;
+  }
+
+  .surface-color-dark-classic {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--color-dark-primary) 88%, white),
+      var(--color-dark-primary)
+    );
+    border-color: var(--color-dark-text);
+    color: var(--color-dark-contrast);
+  }
+
+  .surface-color-dark-classic.af-high-contrast {
+    background-color: var(--color-dark-primary);
+    background-image: none;
+    border-color: var(--color-dark-primary);
+    color: var(--color-dark-contrast);
+  }
+
+  .surface-color-dark-solid {
+    background-color: var(--color-dark-primary);
+    border-color: var(--color-dark-text);
+    color: var(--color-dark-contrast);
+  }
+
+  .surface-color-dark-solid.af-high-contrast {
+    background-color: var(--color-dark-primary);
+    border-color: var(--color-dark-primary);
+    color: var(--color-dark-contrast);
+  }
+
+  .surface-color-dark-soft {
+    background-color: var(--color-dark-soft);
+    border-color: transparent;
+    color: var(--color-dark-text);
+  }
+
+  .surface-color-dark-soft.af-high-contrast {
+    background-color: var(--color-dark-soft-hover);
+    color: var(--color-dark-text);
+  }
+
+  .surface-color-dark-surface {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+    box-shadow: var(--component-surface-variant-surface-box-shadow, var(--shadow-xs));
+    color: var(--color-dark-text);
+  }
+
+  .surface-color-dark-surface.af-high-contrast {
+    border-color: var(--color-dark-text);
+    color: var(--color-dark-text);
+  }
+
+  .surface-color-dark-outline {
+    background-color: transparent;
+    border-color: var(--color-neutral-border);
+    color: var(--color-neutral-text);
+  }
+
+  .surface-color-dark-outline.af-high-contrast {
+    border-color: var(--color-neutral-border);
+    color: var(--color-neutral-text);
+  }
+
+  .surface-color-dark-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-neutral-text);
+  }
+
+  .surface-color-dark-ghost.af-high-contrast {
+    color: var(--color-neutral-text);
+  }
+
+  .surface-color-dark-classic.surface-hover-enabled:hover,
+  .surface-color-dark-solid.surface-hover-enabled:hover {
+    filter: brightness(0.96);
+  }
+
+  .surface-color-dark-classic.surface-hover-enabled:active,
+  .surface-color-dark-solid.surface-hover-enabled:active {
+    filter: brightness(0.92);
+  }
+
+  .surface-color-dark-soft.surface-hover-enabled:hover {
+    background-color: var(--color-dark-soft-hover);
+  }
+
+  .surface-color-dark-soft.surface-hover-enabled:active,
+  .surface-color-dark-surface.surface-hover-enabled:active {
+    filter: brightness(0.98);
+  }
+
+  .surface-color-dark-surface.surface-hover-enabled:hover {
+    background-color: var(--color-dark-surface-hover);
+  }
+
+  .surface-color-dark-outline.surface-hover-enabled:hover,
+  .surface-color-dark-outline.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-dark-ghost.surface-hover-enabled:hover {
+    background-color: var(--color-neutral-soft);
+  }
+
+  .surface-color-dark-outline.surface-hover-enabled:active,
+  .surface-color-dark-outline.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-dark-ghost.surface-hover-enabled:active {
+    background-color: var(--color-neutral-soft-hover);
+  }
+
+  .surface-color-dark-classic.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-dark-solid.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-dark-soft.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-dark-surface.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-dark-ghost.surface-hover-enabled.af-high-contrast:hover {
+    filter: contrast(1.1) saturate(1.2);
+  }
+
+  .surface-color-dark-classic.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-dark-solid.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-dark-soft.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-dark-surface.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-dark-ghost.surface-hover-enabled.af-high-contrast:active {
+    filter: contrast(1.15) saturate(1.25);
+  }
+
+  .surface-arrow-dark-solid {
+    color: var(--color-dark-primary);
+    fill: var(--color-dark-primary);
+  }
+
+  .surface-arrow-dark-soft {
+    color: transparent;
+    fill: var(--color-dark-soft);
+  }
+
+  .surface-arrow-dark-surface {
+    color: var(--color-dark-border);
+    fill: var(--color-dark-surface);
+  }
+
+  .surface-arrow-dark-outline {
+    color: var(--color-neutral-border);
+    fill: transparent;
+  }
+
+  .surface-color-chart1-classic {
+    background-image: linear-gradient(to bottom, color-mix(in oklch, var(--chart-1) 88%, white), var(--chart-1));
+    border-color: var(--chart-1);
+    color: var(--chart-1-contrast);
+  }
+
+  .surface-color-chart1-classic.af-high-contrast {
+    background-color: var(--chart-1);
+    background-image: none;
+    border-color: var(--chart-1);
+    color: var(--chart-1-contrast);
+  }
+
+  .surface-color-chart1-solid {
+    background-color: var(--chart-1);
+    border-color: var(--chart-1);
+    color: var(--chart-1-contrast);
+  }
+
+  .surface-color-chart1-solid.af-high-contrast {
+    background-color: var(--chart-1);
+    border-color: var(--chart-1);
+    color: var(--chart-1-contrast);
+  }
+
+  .surface-color-chart1-soft {
+    background-color: color-mix(in oklch, var(--chart-1) 28%, var(--color-light-surface));
+    border-color: transparent;
+    color: color-mix(in oklch, var(--chart-1) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart1-soft.af-high-contrast {
+    background-color: color-mix(in oklch, var(--chart-1) 36%, var(--color-light-surface));
+    color: color-mix(in oklch, var(--chart-1) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart1-surface {
+    background-color: color-mix(in oklch, var(--chart-1) 12%, var(--color-light-surface));
+    border-color: color-mix(in oklch, var(--chart-1) 28%, var(--color-light-border));
+    box-shadow: var(--component-surface-variant-surface-box-shadow, var(--shadow-xs));
+    color: color-mix(in oklch, var(--chart-1) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart1-surface.af-high-contrast {
+    border-color: color-mix(in oklch, var(--chart-1) 40%, var(--color-light-border));
+    color: color-mix(in oklch, var(--chart-1) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart1-outline {
+    background-color: transparent;
+    border-color: color-mix(in oklch, var(--chart-1) 28%, var(--color-light-border));
+    color: color-mix(in oklch, var(--chart-1) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart1-outline.af-high-contrast {
+    border-color: color-mix(in oklch, var(--chart-1) 40%, var(--color-light-border));
+    color: color-mix(in oklch, var(--chart-1) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart1-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: color-mix(in oklch, var(--chart-1) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart1-ghost.af-high-contrast {
+    color: color-mix(in oklch, var(--chart-1) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart1-classic.surface-hover-enabled:hover,
+  .surface-color-chart1-solid.surface-hover-enabled:hover {
+    filter: brightness(0.96);
+  }
+
+  .surface-color-chart1-classic.surface-hover-enabled:active,
+  .surface-color-chart1-solid.surface-hover-enabled:active {
+    filter: brightness(0.92);
+  }
+
+  .surface-color-chart1-soft.surface-hover-enabled:hover {
+    background-color: color-mix(in oklch, var(--chart-1) 36%, var(--color-light-surface));
+  }
+
+  .surface-color-chart1-soft.surface-hover-enabled:active,
+  .surface-color-chart1-surface.surface-hover-enabled:active {
+    filter: brightness(0.98);
+  }
+
+  .surface-color-chart1-surface.surface-hover-enabled:hover {
+    background-color: color-mix(in oklch, var(--chart-1) 18%, var(--color-light-surface));
+  }
+
+  .surface-color-chart1-outline.surface-hover-enabled:hover,
+  .surface-color-chart1-outline.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart1-ghost.surface-hover-enabled:hover {
+    background-color: color-mix(in oklch, var(--chart-1) 10%, var(--color-light-surface));
+  }
+
+  .surface-color-chart1-outline.surface-hover-enabled:active,
+  .surface-color-chart1-outline.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart1-ghost.surface-hover-enabled:active {
+    background-color: color-mix(in oklch, var(--chart-1) 16%, var(--color-light-surface));
+  }
+
+  .surface-color-chart1-classic.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart1-solid.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart1-soft.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart1-surface.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart1-ghost.surface-hover-enabled.af-high-contrast:hover {
+    filter: contrast(1.1) saturate(1.2);
+  }
+
+  .surface-color-chart1-classic.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart1-solid.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart1-soft.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart1-surface.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart1-ghost.surface-hover-enabled.af-high-contrast:active {
+    filter: contrast(1.15) saturate(1.25);
+  }
+
+  .surface-color-chart2-classic {
+    background-image: linear-gradient(to bottom, color-mix(in oklch, var(--chart-2) 88%, white), var(--chart-2));
+    border-color: var(--chart-2);
+    color: var(--chart-2-contrast);
+  }
+
+  .surface-color-chart2-classic.af-high-contrast {
+    background-color: var(--chart-2);
+    background-image: none;
+    border-color: var(--chart-2);
+    color: var(--chart-2-contrast);
+  }
+
+  .surface-color-chart2-solid {
+    background-color: var(--chart-2);
+    border-color: var(--chart-2);
+    color: var(--chart-2-contrast);
+  }
+
+  .surface-color-chart2-solid.af-high-contrast {
+    background-color: var(--chart-2);
+    border-color: var(--chart-2);
+    color: var(--chart-2-contrast);
+  }
+
+  .surface-color-chart2-soft {
+    background-color: color-mix(in oklch, var(--chart-2) 28%, var(--color-light-surface));
+    border-color: transparent;
+    color: color-mix(in oklch, var(--chart-2) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart2-soft.af-high-contrast {
+    background-color: color-mix(in oklch, var(--chart-2) 36%, var(--color-light-surface));
+    color: color-mix(in oklch, var(--chart-2) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart2-surface {
+    background-color: color-mix(in oklch, var(--chart-2) 12%, var(--color-light-surface));
+    border-color: color-mix(in oklch, var(--chart-2) 28%, var(--color-light-border));
+    box-shadow: var(--component-surface-variant-surface-box-shadow, var(--shadow-xs));
+    color: color-mix(in oklch, var(--chart-2) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart2-surface.af-high-contrast {
+    border-color: color-mix(in oklch, var(--chart-2) 40%, var(--color-light-border));
+    color: color-mix(in oklch, var(--chart-2) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart2-outline {
+    background-color: transparent;
+    border-color: color-mix(in oklch, var(--chart-2) 28%, var(--color-light-border));
+    color: color-mix(in oklch, var(--chart-2) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart2-outline.af-high-contrast {
+    border-color: color-mix(in oklch, var(--chart-2) 40%, var(--color-light-border));
+    color: color-mix(in oklch, var(--chart-2) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart2-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: color-mix(in oklch, var(--chart-2) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart2-ghost.af-high-contrast {
+    color: color-mix(in oklch, var(--chart-2) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart2-classic.surface-hover-enabled:hover,
+  .surface-color-chart2-solid.surface-hover-enabled:hover {
+    filter: brightness(0.96);
+  }
+
+  .surface-color-chart2-classic.surface-hover-enabled:active,
+  .surface-color-chart2-solid.surface-hover-enabled:active {
+    filter: brightness(0.92);
+  }
+
+  .surface-color-chart2-soft.surface-hover-enabled:hover {
+    background-color: color-mix(in oklch, var(--chart-2) 36%, var(--color-light-surface));
+  }
+
+  .surface-color-chart2-soft.surface-hover-enabled:active,
+  .surface-color-chart2-surface.surface-hover-enabled:active {
+    filter: brightness(0.98);
+  }
+
+  .surface-color-chart2-surface.surface-hover-enabled:hover {
+    background-color: color-mix(in oklch, var(--chart-2) 18%, var(--color-light-surface));
+  }
+
+  .surface-color-chart2-outline.surface-hover-enabled:hover,
+  .surface-color-chart2-outline.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart2-ghost.surface-hover-enabled:hover {
+    background-color: color-mix(in oklch, var(--chart-2) 10%, var(--color-light-surface));
+  }
+
+  .surface-color-chart2-outline.surface-hover-enabled:active,
+  .surface-color-chart2-outline.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart2-ghost.surface-hover-enabled:active {
+    background-color: color-mix(in oklch, var(--chart-2) 16%, var(--color-light-surface));
+  }
+
+  .surface-color-chart2-classic.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart2-solid.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart2-soft.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart2-surface.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart2-ghost.surface-hover-enabled.af-high-contrast:hover {
+    filter: contrast(1.1) saturate(1.2);
+  }
+
+  .surface-color-chart2-classic.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart2-solid.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart2-soft.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart2-surface.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart2-ghost.surface-hover-enabled.af-high-contrast:active {
+    filter: contrast(1.15) saturate(1.25);
+  }
+
+  .surface-color-chart3-classic {
+    background-image: linear-gradient(to bottom, color-mix(in oklch, var(--chart-3) 88%, white), var(--chart-3));
+    border-color: var(--chart-3);
+    color: var(--chart-3-contrast);
+  }
+
+  .surface-color-chart3-classic.af-high-contrast {
+    background-color: var(--chart-3);
+    background-image: none;
+    border-color: var(--chart-3);
+    color: var(--chart-3-contrast);
+  }
+
+  .surface-color-chart3-solid {
+    background-color: var(--chart-3);
+    border-color: var(--chart-3);
+    color: var(--chart-3-contrast);
+  }
+
+  .surface-color-chart3-solid.af-high-contrast {
+    background-color: var(--chart-3);
+    border-color: var(--chart-3);
+    color: var(--chart-3-contrast);
+  }
+
+  .surface-color-chart3-soft {
+    background-color: color-mix(in oklch, var(--chart-3) 28%, var(--color-light-surface));
+    border-color: transparent;
+    color: color-mix(in oklch, var(--chart-3) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart3-soft.af-high-contrast {
+    background-color: color-mix(in oklch, var(--chart-3) 36%, var(--color-light-surface));
+    color: color-mix(in oklch, var(--chart-3) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart3-surface {
+    background-color: color-mix(in oklch, var(--chart-3) 12%, var(--color-light-surface));
+    border-color: color-mix(in oklch, var(--chart-3) 28%, var(--color-light-border));
+    box-shadow: var(--component-surface-variant-surface-box-shadow, var(--shadow-xs));
+    color: color-mix(in oklch, var(--chart-3) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart3-surface.af-high-contrast {
+    border-color: color-mix(in oklch, var(--chart-3) 40%, var(--color-light-border));
+    color: color-mix(in oklch, var(--chart-3) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart3-outline {
+    background-color: transparent;
+    border-color: color-mix(in oklch, var(--chart-3) 28%, var(--color-light-border));
+    color: color-mix(in oklch, var(--chart-3) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart3-outline.af-high-contrast {
+    border-color: color-mix(in oklch, var(--chart-3) 40%, var(--color-light-border));
+    color: color-mix(in oklch, var(--chart-3) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart3-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: color-mix(in oklch, var(--chart-3) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart3-ghost.af-high-contrast {
+    color: color-mix(in oklch, var(--chart-3) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart3-classic.surface-hover-enabled:hover,
+  .surface-color-chart3-solid.surface-hover-enabled:hover {
+    filter: brightness(0.96);
+  }
+
+  .surface-color-chart3-classic.surface-hover-enabled:active,
+  .surface-color-chart3-solid.surface-hover-enabled:active {
+    filter: brightness(0.92);
+  }
+
+  .surface-color-chart3-soft.surface-hover-enabled:hover {
+    background-color: color-mix(in oklch, var(--chart-3) 36%, var(--color-light-surface));
+  }
+
+  .surface-color-chart3-soft.surface-hover-enabled:active,
+  .surface-color-chart3-surface.surface-hover-enabled:active {
+    filter: brightness(0.98);
+  }
+
+  .surface-color-chart3-surface.surface-hover-enabled:hover {
+    background-color: color-mix(in oklch, var(--chart-3) 18%, var(--color-light-surface));
+  }
+
+  .surface-color-chart3-outline.surface-hover-enabled:hover,
+  .surface-color-chart3-outline.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart3-ghost.surface-hover-enabled:hover {
+    background-color: color-mix(in oklch, var(--chart-3) 10%, var(--color-light-surface));
+  }
+
+  .surface-color-chart3-outline.surface-hover-enabled:active,
+  .surface-color-chart3-outline.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart3-ghost.surface-hover-enabled:active {
+    background-color: color-mix(in oklch, var(--chart-3) 16%, var(--color-light-surface));
+  }
+
+  .surface-color-chart3-classic.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart3-solid.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart3-soft.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart3-surface.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart3-ghost.surface-hover-enabled.af-high-contrast:hover {
+    filter: contrast(1.1) saturate(1.2);
+  }
+
+  .surface-color-chart3-classic.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart3-solid.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart3-soft.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart3-surface.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart3-ghost.surface-hover-enabled.af-high-contrast:active {
+    filter: contrast(1.15) saturate(1.25);
+  }
+
+  .surface-color-chart4-classic {
+    background-image: linear-gradient(to bottom, color-mix(in oklch, var(--chart-4) 88%, white), var(--chart-4));
+    border-color: var(--chart-4);
+    color: var(--chart-4-contrast);
+  }
+
+  .surface-color-chart4-classic.af-high-contrast {
+    background-color: var(--chart-4);
+    background-image: none;
+    border-color: var(--chart-4);
+    color: var(--chart-4-contrast);
+  }
+
+  .surface-color-chart4-solid {
+    background-color: var(--chart-4);
+    border-color: var(--chart-4);
+    color: var(--chart-4-contrast);
+  }
+
+  .surface-color-chart4-solid.af-high-contrast {
+    background-color: var(--chart-4);
+    border-color: var(--chart-4);
+    color: var(--chart-4-contrast);
+  }
+
+  .surface-color-chart4-soft {
+    background-color: color-mix(in oklch, var(--chart-4) 28%, var(--color-light-surface));
+    border-color: transparent;
+    color: color-mix(in oklch, var(--chart-4) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart4-soft.af-high-contrast {
+    background-color: color-mix(in oklch, var(--chart-4) 36%, var(--color-light-surface));
+    color: color-mix(in oklch, var(--chart-4) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart4-surface {
+    background-color: color-mix(in oklch, var(--chart-4) 12%, var(--color-light-surface));
+    border-color: color-mix(in oklch, var(--chart-4) 28%, var(--color-light-border));
+    box-shadow: var(--component-surface-variant-surface-box-shadow, var(--shadow-xs));
+    color: color-mix(in oklch, var(--chart-4) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart4-surface.af-high-contrast {
+    border-color: color-mix(in oklch, var(--chart-4) 40%, var(--color-light-border));
+    color: color-mix(in oklch, var(--chart-4) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart4-outline {
+    background-color: transparent;
+    border-color: color-mix(in oklch, var(--chart-4) 28%, var(--color-light-border));
+    color: color-mix(in oklch, var(--chart-4) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart4-outline.af-high-contrast {
+    border-color: color-mix(in oklch, var(--chart-4) 40%, var(--color-light-border));
+    color: color-mix(in oklch, var(--chart-4) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart4-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: color-mix(in oklch, var(--chart-4) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart4-ghost.af-high-contrast {
+    color: color-mix(in oklch, var(--chart-4) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart4-classic.surface-hover-enabled:hover,
+  .surface-color-chart4-solid.surface-hover-enabled:hover {
+    filter: brightness(0.96);
+  }
+
+  .surface-color-chart4-classic.surface-hover-enabled:active,
+  .surface-color-chart4-solid.surface-hover-enabled:active {
+    filter: brightness(0.92);
+  }
+
+  .surface-color-chart4-soft.surface-hover-enabled:hover {
+    background-color: color-mix(in oklch, var(--chart-4) 36%, var(--color-light-surface));
+  }
+
+  .surface-color-chart4-soft.surface-hover-enabled:active,
+  .surface-color-chart4-surface.surface-hover-enabled:active {
+    filter: brightness(0.98);
+  }
+
+  .surface-color-chart4-surface.surface-hover-enabled:hover {
+    background-color: color-mix(in oklch, var(--chart-4) 18%, var(--color-light-surface));
+  }
+
+  .surface-color-chart4-outline.surface-hover-enabled:hover,
+  .surface-color-chart4-outline.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart4-ghost.surface-hover-enabled:hover {
+    background-color: color-mix(in oklch, var(--chart-4) 10%, var(--color-light-surface));
+  }
+
+  .surface-color-chart4-outline.surface-hover-enabled:active,
+  .surface-color-chart4-outline.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart4-ghost.surface-hover-enabled:active {
+    background-color: color-mix(in oklch, var(--chart-4) 16%, var(--color-light-surface));
+  }
+
+  .surface-color-chart4-classic.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart4-solid.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart4-soft.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart4-surface.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart4-ghost.surface-hover-enabled.af-high-contrast:hover {
+    filter: contrast(1.1) saturate(1.2);
+  }
+
+  .surface-color-chart4-classic.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart4-solid.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart4-soft.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart4-surface.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart4-ghost.surface-hover-enabled.af-high-contrast:active {
+    filter: contrast(1.15) saturate(1.25);
+  }
+
+  .surface-color-chart5-classic {
+    background-image: linear-gradient(to bottom, color-mix(in oklch, var(--chart-5) 88%, white), var(--chart-5));
+    border-color: var(--chart-5);
+    color: var(--chart-5-contrast);
+  }
+
+  .surface-color-chart5-classic.af-high-contrast {
+    background-color: var(--chart-5);
+    background-image: none;
+    border-color: var(--chart-5);
+    color: var(--chart-5-contrast);
+  }
+
+  .surface-color-chart5-solid {
+    background-color: var(--chart-5);
+    border-color: var(--chart-5);
+    color: var(--chart-5-contrast);
+  }
+
+  .surface-color-chart5-solid.af-high-contrast {
+    background-color: var(--chart-5);
+    border-color: var(--chart-5);
+    color: var(--chart-5-contrast);
+  }
+
+  .surface-color-chart5-soft {
+    background-color: color-mix(in oklch, var(--chart-5) 28%, var(--color-light-surface));
+    border-color: transparent;
+    color: color-mix(in oklch, var(--chart-5) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart5-soft.af-high-contrast {
+    background-color: color-mix(in oklch, var(--chart-5) 36%, var(--color-light-surface));
+    color: color-mix(in oklch, var(--chart-5) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart5-surface {
+    background-color: color-mix(in oklch, var(--chart-5) 12%, var(--color-light-surface));
+    border-color: color-mix(in oklch, var(--chart-5) 28%, var(--color-light-border));
+    box-shadow: var(--component-surface-variant-surface-box-shadow, var(--shadow-xs));
+    color: color-mix(in oklch, var(--chart-5) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart5-surface.af-high-contrast {
+    border-color: color-mix(in oklch, var(--chart-5) 40%, var(--color-light-border));
+    color: color-mix(in oklch, var(--chart-5) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart5-outline {
+    background-color: transparent;
+    border-color: color-mix(in oklch, var(--chart-5) 28%, var(--color-light-border));
+    color: color-mix(in oklch, var(--chart-5) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart5-outline.af-high-contrast {
+    border-color: color-mix(in oklch, var(--chart-5) 40%, var(--color-light-border));
+    color: color-mix(in oklch, var(--chart-5) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart5-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: color-mix(in oklch, var(--chart-5) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart5-ghost.af-high-contrast {
+    color: color-mix(in oklch, var(--chart-5) 34%, var(--color-dark-primary));
+  }
+
+  .surface-color-chart5-classic.surface-hover-enabled:hover,
+  .surface-color-chart5-solid.surface-hover-enabled:hover {
+    filter: brightness(0.96);
+  }
+
+  .surface-color-chart5-classic.surface-hover-enabled:active,
+  .surface-color-chart5-solid.surface-hover-enabled:active {
+    filter: brightness(0.92);
+  }
+
+  .surface-color-chart5-soft.surface-hover-enabled:hover {
+    background-color: color-mix(in oklch, var(--chart-5) 36%, var(--color-light-surface));
+  }
+
+  .surface-color-chart5-soft.surface-hover-enabled:active,
+  .surface-color-chart5-surface.surface-hover-enabled:active {
+    filter: brightness(0.98);
+  }
+
+  .surface-color-chart5-surface.surface-hover-enabled:hover {
+    background-color: color-mix(in oklch, var(--chart-5) 18%, var(--color-light-surface));
+  }
+
+  .surface-color-chart5-outline.surface-hover-enabled:hover,
+  .surface-color-chart5-outline.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart5-ghost.surface-hover-enabled:hover {
+    background-color: color-mix(in oklch, var(--chart-5) 10%, var(--color-light-surface));
+  }
+
+  .surface-color-chart5-outline.surface-hover-enabled:active,
+  .surface-color-chart5-outline.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart5-ghost.surface-hover-enabled:active {
+    background-color: color-mix(in oklch, var(--chart-5) 16%, var(--color-light-surface));
+  }
+
+  .surface-color-chart5-classic.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart5-solid.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart5-soft.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart5-surface.surface-hover-enabled.af-high-contrast:hover,
+  .surface-color-chart5-ghost.surface-hover-enabled.af-high-contrast:hover {
+    filter: contrast(1.1) saturate(1.2);
+  }
+
+  .surface-color-chart5-classic.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart5-solid.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart5-soft.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart5-surface.surface-hover-enabled.af-high-contrast:active,
+  .surface-color-chart5-ghost.surface-hover-enabled.af-high-contrast:active {
+    filter: contrast(1.15) saturate(1.25);
+  }
+
+  .surface-floating-arrow {
+    display: flex;
+  }
+
+  .surface-floating-arrow[data-side="bottom"] {
+    top: 0;
+    transform: translateY(-100%);
+  }
+
+  .surface-floating-arrow[data-side="top"] {
+    bottom: 0;
+    transform: translateY(100%) rotate(180deg);
+  }
+
+  .surface-floating-arrow[data-side="right"] {
+    left: 0;
+    transform: translateX(-100%) rotate(-90deg);
+  }
+
+  .surface-floating-arrow[data-side="left"] {
+    right: 0;
+    transform: translateX(100%) rotate(90deg);
+  }
 }
 
 @keyframes progress-indeterminate {

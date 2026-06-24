@@ -8,7 +8,7 @@ import {
   surfaceColorVariants,
   surfaceHighContrastByVariant,
   surfaceHoverEnabledClass,
-} from '@/elements/surface/surface.css'
+} from '@/elements/surface/surface.class'
 import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
 import { getSpacingClasses } from '@/layouts/layout-utils'
 import { cn } from '@/lib/utils'

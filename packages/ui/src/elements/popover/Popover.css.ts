@@ -3,7 +3,7 @@ import type { Transition, Variants } from 'motion/react'
 import { popoverMaxWidthVar, popoverSizeVar } from '@/theme/runtime/component-vars'
 import { floatingSurfaceSizeTokens } from '@/theme/token-maps'
 
-export { surfaceArrowFillVariants as popoverArrowColorByVariant } from '../surface/surface.css'
+export { surfaceArrowFillVariants as popoverArrowColorByVariant } from '../surface/surface.class'
 
 const popoverPaddingVar = createVar()
 const popoverFontSizeVar = createVar()

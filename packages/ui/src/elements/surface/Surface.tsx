@@ -14,7 +14,7 @@ import {
   surfaceHoverEnabledClass,
   surfaceShapeVariants,
   surfaceSquare,
-} from './surface.css'
+} from './surface.class'
 import type { SurfaceShape, SurfaceVariant } from './surface.props'
 import { surfacePropDefs } from './surface.props'
 

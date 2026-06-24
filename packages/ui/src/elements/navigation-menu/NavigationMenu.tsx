@@ -9,7 +9,7 @@ import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
 import { FloatingArrowSvg } from '../surface/FloatingArrowSvg'
-import { floatingArrowBase } from '../surface/surface.css'
+import { floatingArrowBase } from '../surface/surface.class'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
   navigationMenuArrowByVariant,
