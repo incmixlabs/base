@@ -1,6 +1,8 @@
 // Ordered to maximise perceptual distance between adjacent entries so that
 // sequential hash indices (common in avatar groups) produce distinct colours.
 import { HUE_NAMES, type HueName } from '@/theme/tokens'
+import type { AvatarVariant } from './avatar.props'
+
 export const AVATAR_SOFT_TONES = ['3', '5', '7'] as const
 export type AvatarSoftTone = (typeof AVATAR_SOFT_TONES)[number]
 export const AVATAR_SOLID_TONES = ['7', '9', '11'] as const
@@ -45,7 +47,7 @@ export interface AvatarColorStyle {
   borderColor?: string
 }
 
-export function getAvatarColorStyle(hue: HueName, variant: 'soft' | 'solid', tone?: string): AvatarColorStyle {
+export function getAvatarColorStyle(hue: HueName, variant: AvatarVariant, tone?: string): AvatarColorStyle {
   if (variant === 'soft') {
     const softTone = tone ?? '6'
     return {

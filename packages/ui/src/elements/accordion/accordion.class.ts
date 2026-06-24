@@ -9,7 +9,7 @@ export const accordionItemBase = 'af-accordion-item-base'
 export const accordionItemBorderless = 'af-accordion-item-borderless'
 
 export const accordionHeaderBase = 'af-accordion-header-base'
-export const accordionTriggerPaddingless = 'af-accordion-trigger-paddingless'
+export const accordionTriggerPaddingless = 'af-padding-less'
 export const accordionTriggerBase = 'af-accordion-trigger-base'
 
 export const accordionChevron = 'af-accordion-chevron'

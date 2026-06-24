@@ -919,11 +919,6 @@
     width: 100%;
   }
 
-  .af-accordion-trigger-paddingless {
-    padding-inline: 0;
-    padding-block: 0;
-  }
-
   .af-accordion-trigger-base {
     width: 100%;
     display: flex;
@@ -2630,6 +2625,10 @@
   .af-shortcut-key {
     min-width: 1.5rem;
     justify-content: center;
+  }
+
+  .af-padding-less {
+    padding: 0;
   }
 }
 
