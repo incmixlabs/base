@@ -12,22 +12,18 @@ import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
 import { FloatingArrowSvg } from '../surface/FloatingArrowSvg'
 import { floatingArrowBase } from '../surface/surface.class'
-import { getRadiusStyles, getSemanticColorStyles, useThemeRadius } from '../utils'
+import { getRadiusStyles, getSizeStyles, useThemeRadius } from '../utils'
 import {
   navigationMenuArrowByVariant,
   navigationMenuBackdropBase,
   navigationMenuContentBase,
   navigationMenuContentBaseCls,
-  navigationMenuContentBySize,
   navigationMenuIconBase,
   navigationMenuIconBaseCls,
-  navigationMenuIconBySize,
   navigationMenuItemBaseCls,
   navigationMenuLinkBase,
   navigationMenuLinkBaseCls,
-  navigationMenuLinkBySize,
   navigationMenuLinkDescriptionBase,
-  navigationMenuLinkDescriptionBySize,
   navigationMenuLinkIconBaseCls,
   navigationMenuLinkTitleBase,
   navigationMenuListBaseCls,
@@ -42,7 +38,6 @@ import {
   navigationMenuRootVerticalCls,
   navigationMenuTriggerBase,
   navigationMenuTriggerBaseCls,
-  navigationMenuTriggerBySize,
   navigationMenuViewportBase,
   navigationMenuViewportBaseCls,
 } from './navigation-menu.class'
@@ -183,7 +178,7 @@ const NavigationMenuRoot = React.forwardRef<HTMLElement, NavigationMenuRootProps
             `surface-color-${safeColor}`,
             className,
           )}
-          style={style}
+          style={{ ...getSizeStyles(safeSize), ...style }}
           {...props}
         >
           {children}
@@ -263,11 +258,10 @@ export interface NavigationMenuIconProps extends Omit<PrimitiveIconProps, 'class
 
 const NavigationMenuIcon = React.forwardRef<HTMLSpanElement, NavigationMenuIconProps>(
   ({ className, children, ...props }, ref) => {
-    const { size } = React.useContext(NavigationMenuContext)
     return (
       <NavigationMenuPrimitive.Icon
         ref={ref}
-        className={cn(navigationMenuIconBaseCls, navigationMenuIconBase, navigationMenuIconBySize[size], className)}
+        className={cn(navigationMenuIconBaseCls, navigationMenuIconBase, className)}
         {...props}
       >
         {children ?? <ChevronDown aria-hidden className="h-full w-full" />}
@@ -293,18 +287,17 @@ export interface NavigationMenuTriggerProps extends Omit<PrimitiveTriggerProps, 
 
 const NavigationMenuTrigger = React.forwardRef<HTMLButtonElement, NavigationMenuTriggerProps>(
   ({ className, children, showIcon = true, ...props }, ref) => {
-    const { size, color, highContrast } = React.useContext(NavigationMenuContext)
+    const { size, highContrast } = React.useContext(NavigationMenuContext)
     return (
       <NavigationMenuPrimitive.Trigger
         ref={ref}
         className={cn(
           navigationMenuTriggerBaseCls,
           navigationMenuTriggerBase,
-          navigationMenuTriggerBySize[size],
           highContrast && 'af-high-contrast',
           className,
         )}
-        style={{ ...getSemanticColorStyles(color), ...props.style }}
+        style={{ ...getSizeStyles(size), ...props.style }}
         {...props}
       >
         {children}
@@ -320,25 +313,25 @@ NavigationMenuTrigger.displayName = 'NavigationMenu.Trigger'
 // Content
 // ============================================================================
 
-export interface NavigationMenuContentProps extends Omit<PrimitiveContentProps, 'className' | 'children'> {
+export interface NavigationMenuContentProps extends Omit<PrimitiveContentProps, 'className' | 'children' | 'style'> {
   /** Additional class names. */
   className?: string
   /** Active item panel content. */
   children: React.ReactNode
+  /** Maximum height constraint. Defaults to var(--available-height). */
+  maxHeight?: React.CSSProperties['maxHeight']
+  /** Inline styles. */
+  style?: React.CSSProperties
 }
 
 const NavigationMenuContent = React.forwardRef<HTMLDivElement, NavigationMenuContentProps>(
-  ({ className, children, ...props }, ref) => {
+  ({ className, children, maxHeight = 'var(--available-height)', style, ...props }, ref) => {
     const { size } = React.useContext(NavigationMenuContext)
     return (
       <NavigationMenuPrimitive.Content
         ref={ref}
-        className={cn(
-          navigationMenuContentBaseCls,
-          navigationMenuContentBase,
-          navigationMenuContentBySize[size],
-          className,
-        )}
+        className={cn(navigationMenuContentBaseCls, navigationMenuContentBase, className)}
+        style={{ maxHeight, ...getSizeStyles(size), ...style }}
         {...props}
       >
         {children}
@@ -368,21 +361,15 @@ export interface NavigationMenuLinkProps extends Omit<PrimitiveLinkProps, 'class
 
 const NavigationMenuLink = React.forwardRef<HTMLAnchorElement, NavigationMenuLinkProps>(
   ({ className, children, title, description, icon, ...props }, ref) => {
-    const { size, color, highContrast } = React.useContext(NavigationMenuContext)
+    const { size, highContrast } = React.useContext(NavigationMenuContext)
     const hasStructuredContent = title !== undefined || description !== undefined || icon !== undefined
     const primary = title ?? children
 
     return (
       <NavigationMenuPrimitive.Link
         ref={ref}
-        className={cn(
-          navigationMenuLinkBaseCls,
-          navigationMenuLinkBase,
-          navigationMenuLinkBySize[size],
-          highContrast && 'af-high-contrast',
-          className,
-        )}
-        style={{ ...getSemanticColorStyles(color), ...props.style }}
+        className={cn(navigationMenuLinkBaseCls, navigationMenuLinkBase, highContrast && 'af-high-contrast', className)}
+        style={{ ...getSizeStyles(size), ...props.style }}
         {...props}
       >
         {hasStructuredContent ? (
@@ -390,11 +377,7 @@ const NavigationMenuLink = React.forwardRef<HTMLAnchorElement, NavigationMenuLin
             {icon ? <span className={navigationMenuLinkIconBaseCls}>{icon}</span> : null}
             <span className="flex min-w-0 flex-1 flex-col">
               <span className={navigationMenuLinkTitleBase}>{primary}</span>
-              {description ? (
-                <span className={cn(navigationMenuLinkDescriptionBase, navigationMenuLinkDescriptionBySize[size])}>
-                  {description}
-                </span>
-              ) : null}
+              {description ? <span className={navigationMenuLinkDescriptionBase}>{description}</span> : null}
             </span>
           </>
         ) : (
@@ -461,17 +444,22 @@ NavigationMenuPositioner.displayName = 'NavigationMenu.Positioner'
 // Viewport
 // ============================================================================
 
-export interface NavigationMenuViewportProps extends Omit<PrimitiveViewportProps, 'className'> {
+export interface NavigationMenuViewportProps extends Omit<PrimitiveViewportProps, 'className' | 'style'> {
   /** Additional class names. */
   className?: string
+  /** Maximum height constraint. Defaults to var(--available-height). */
+  maxHeight?: React.CSSProperties['maxHeight']
+  /** Inline styles. */
+  style?: React.CSSProperties
 }
 
 const NavigationMenuViewport = React.forwardRef<HTMLDivElement, NavigationMenuViewportProps>(
-  ({ className, ...props }, ref) => {
+  ({ className, maxHeight = 'var(--available-height)', style, ...props }, ref) => {
     return (
       <NavigationMenuPrimitive.Viewport
         ref={ref}
         className={cn(navigationMenuViewportBaseCls, navigationMenuViewportBase, className)}
+        style={{ maxHeight, ...style }}
         {...props}
       />
     )
@@ -529,10 +517,24 @@ export interface NavigationMenuPopupProps extends Omit<PrimitivePopupProps, 'cla
   style?: React.CSSProperties
   /** Popup content. Defaults to Arrow + Viewport. */
   children?: React.ReactNode
+  /** Maximum height constraint. Defaults to var(--available-height). */
+  maxHeight?: React.CSSProperties['maxHeight']
 }
 
 const NavigationMenuPopup = React.forwardRef<HTMLElement, NavigationMenuPopupProps>(
-  ({ className, children, variant, highContrast, radius: radiusProp, style, ...props }, ref) => {
+  (
+    {
+      className,
+      children,
+      variant,
+      highContrast,
+      radius: radiusProp,
+      style,
+      maxHeight = 'var(--available-height)',
+      ...props
+    },
+    ref,
+  ) => {
     const context = React.useContext(NavigationMenuContext)
     const safeVariant = (normalizeEnumPropValue(navigationMenuPropDefs.Root.variant, variant ?? context.variant) ??
       navigationMenuPropDefs.Root.variant.default) as NavigationMenuVariant
@@ -557,7 +559,7 @@ const NavigationMenuPopup = React.forwardRef<HTMLElement, NavigationMenuPopupPro
           `surface-color-${safeColor}`,
           className,
         )}
-        style={{ ...getRadiusStyles(radius), ...style }}
+        style={{ maxHeight, ...getRadiusStyles(radius), ...getSizeStyles(context.size), ...style }}
         {...props}
       >
         {children ?? (

@@ -9,16 +9,25 @@
     background-color: transparent;
     color: var(--surface-text);
     letter-spacing: 0;
+
+    /* Layout properties bound to element variables */
+    height: var(--element-height);
+    gap: var(--element-gap, 0.5rem);
+    padding-left: var(--element-padding-x);
+    padding-right: var(--element-padding-x);
+    font-size: var(--element-font-size);
+    line-height: var(--element-line-height);
+    border-radius: var(--element-border-radius);
   }
 
   .af-navigation-menu-trigger:hover {
-    background-color: var(--af-color-soft-hover);
-    color: var(--af-color-text);
+    background-color: var(--surface-soft-hover);
+    color: var(--surface-text);
   }
 
   .af-navigation-menu-trigger[data-popup-open] {
-    background-color: var(--af-color-soft);
-    color: var(--af-color-text);
+    background-color: var(--surface-soft);
+    color: var(--surface-text);
   }
 
   .af-navigation-menu-trigger[data-pressed] {
@@ -30,6 +39,8 @@
   }
 
   .af-navigation-menu-icon {
+    width: var(--element-icon-size);
+    height: var(--element-icon-size);
     transition: transform var(--af-motion-fast) var(--af-ease-standard);
   }
 
@@ -38,11 +49,15 @@
   }
 
   .af-navigation-menu-content {
-    max-height: var(--available-height);
     overflow: hidden;
     transition:
       opacity var(--af-motion-fast) var(--af-ease-standard),
       transform var(--af-motion-fast) var(--af-ease-standard);
+
+    /* Sizing bindings */
+    padding: var(--element-padding-y);
+    font-size: var(--element-font-size);
+    line-height: var(--element-line-height);
   }
 
   .af-navigation-menu-content[data-starting-style],
@@ -54,7 +69,6 @@
   .af-navigation-menu-popup {
     min-width: min(100vw - 2rem, 18rem);
     max-width: calc(100vw - 2rem);
-    max-height: var(--available-height);
     color: var(--surface-text);
     transform-origin: var(--transform-origin);
     transition:
@@ -94,27 +108,32 @@
     width: max-content;
     min-width: 100%;
     max-width: calc(100vw - 2rem);
-    max-height: var(--available-height);
   }
 
   .af-navigation-menu-link {
     color: var(--surface-text);
     text-decoration: none;
     letter-spacing: 0;
+
+    /* Sizing/layout bindings */
+    padding: var(--element-padding-x);
+    border-radius: var(--element-border-radius);
+    font-size: var(--element-font-size);
+    line-height: var(--element-line-height);
   }
 
   .af-navigation-menu-link:hover {
-    background-color: var(--af-color-soft-hover);
-    color: var(--af-color-text);
+    background-color: var(--surface-soft-hover);
+    color: var(--surface-text);
   }
 
   .af-navigation-menu-link[data-active] {
-    background-color: var(--af-color-soft);
-    color: var(--af-color-text);
+    background-color: var(--surface-soft);
+    color: var(--surface-text);
   }
 
   .af-navigation-menu-link[data-active].af-high-contrast {
-    box-shadow: inset 0 0 0 1px var(--af-color-primary);
+    box-shadow: inset 0 0 0 1px var(--surface-primary);
   }
 
   .af-navigation-menu-link-title {
@@ -125,6 +144,10 @@
   .af-navigation-menu-link-description {
     margin-top: 0.25rem;
     color: color-mix(in oklch, var(--surface-text) 72%, transparent);
+
+    /* Sizing bindings */
+    font-size: max(0.75rem, calc(var(--element-font-size) - 0.125rem));
+    line-height: max(1rem, calc(var(--element-line-height) - 0.25rem));
   }
 
   .af-navigation-menu-arrow-solid {

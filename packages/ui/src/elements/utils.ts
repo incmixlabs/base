@@ -27,17 +27,6 @@ export function getColorVars(color: Color) {
   return getThemeColorVars(color)
 }
 
-/** getSemanticColorStyles export. */
-export function getSemanticColorStyles(color: Color) {
-  return {
-    '--af-color-primary': `var(--color-${color}-primary)`,
-    '--af-color-contrast': `var(--color-${color}-contrast)`,
-    '--af-color-soft': `var(--color-${color}-soft)`,
-    '--af-color-soft-hover': `var(--color-${color}-soft-hover)`,
-    '--af-color-text': `var(--color-${color}-text)`,
-  } as React.CSSProperties
-}
-
 const ThemeRadiusContext = React.createContext<Radius | undefined>(undefined)
 
 /** ThemeRadiusProvider export. */

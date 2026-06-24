@@ -1,4 +1,4 @@
-import type { NavigationMenuSize, NavigationMenuVariant } from './navigation-menu.props'
+import type { NavigationMenuVariant } from './navigation-menu.props'
 
 export const navigationMenuRootBaseCls = 'relative z-10 flex max-w-full'
 export const navigationMenuRootVerticalCls = 'items-start'
@@ -17,26 +17,8 @@ export const navigationMenuViewportBaseCls = 'box-border overflow-auto'
 
 export const navigationMenuRootBase = 'af-navigation-menu-root'
 export const navigationMenuTriggerBase = 'af-navigation-menu-trigger'
-export const navigationMenuTriggerBySize: Record<NavigationMenuSize, string> = {
-  sm: 'af-menu-size-sm',
-  md: 'af-menu-size-md',
-  lg: 'af-menu-size-lg',
-}
-
 export const navigationMenuIconBase = 'af-navigation-menu-icon'
-export const navigationMenuIconBySize: Record<NavigationMenuSize, string> = {
-  sm: 'af-menu-size-sm',
-  md: 'af-menu-size-md',
-  lg: 'af-menu-size-lg',
-}
-
 export const navigationMenuContentBase = 'af-navigation-menu-content'
-export const navigationMenuContentBySize: Record<NavigationMenuSize, string> = {
-  sm: 'af-menu-size-sm',
-  md: 'af-menu-size-md',
-  lg: 'af-menu-size-lg',
-}
-
 export const navigationMenuPositionerBase = 'af-menu-positioner'
 export const navigationMenuPopupBase = 'af-navigation-menu-popup'
 
@@ -49,20 +31,8 @@ export const navigationMenuPopupHighContrast = 'af-navigation-menu-popup-high-co
 export const navigationMenuViewportBase = 'af-navigation-menu-viewport'
 
 export const navigationMenuLinkBase = 'af-navigation-menu-link'
-export const navigationMenuLinkBySize: Record<NavigationMenuSize, string> = {
-  sm: 'af-menu-size-sm',
-  md: 'af-menu-size-md',
-  lg: 'af-menu-size-lg',
-}
-
 export const navigationMenuLinkTitleBase = 'af-navigation-menu-link-title'
 export const navigationMenuLinkDescriptionBase = 'af-navigation-menu-link-description'
-
-export const navigationMenuLinkDescriptionBySize: Record<NavigationMenuSize, string> = {
-  sm: 'af-menu-size-sm',
-  md: 'af-menu-size-sm',
-  lg: 'af-menu-size-md',
-}
 
 export const navigationMenuArrowByVariant: Record<NavigationMenuVariant, string> = {
   solid: 'af-navigation-menu-arrow-solid',

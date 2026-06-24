@@ -7,7 +7,7 @@ import { Check, ChevronDown, ChevronRight, ChevronsUpDown, Circle } from 'lucide
 import { AnimatePresence } from 'motion/react'
 import * as m from 'motion/react-m'
 import * as React from 'react'
-import { getRadiusStyles, getSemanticColorStyles, useThemeRadius } from '@/elements/utils'
+import { getRadiusStyles, getSizeStyles, useThemeRadius } from '@/elements/utils'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
@@ -15,40 +15,29 @@ import type { Color, Radius } from '@/theme/tokens'
 import { getShortcutAccessibleLabel } from './menu.a11y'
 import {
   menuContentBase,
-  menuContentBySize,
   menuContentByVariant,
-  menuHighlightBgByVariant,
-  menuIconBySize,
   menuIndicatorBaseCls,
   menuItemBase,
   menuItemBaseCls,
-  menuItemBySize,
   menuItemByVariant,
-  menuItemByVariantHighlight,
-  menuItemIndicatorBySize,
   menuItemMotion,
   menuItemTextBold,
   menuItemTextItalic,
   menuItemTextStrikethrough,
-  menuItemWithIndicatorBySize,
   menuLabelBase,
   menuLabelBaseCls,
-  menuLabelBySize,
   menuPanelTransition,
   menuPanelVariants,
   menuPopupBaseCls,
   menuPopupOverflowVisibleCls,
   menuPositionerBase,
   menuSeparatorBase,
-  menuSeparatorBySize,
   menuShortcutBase,
   menuShortcutBaseCls,
-  menuShortcutBySize,
   menuSubTriggerIcon,
   menuSubTriggerIconCls,
   menuViewportBase,
   menuViewportBaseCls,
-  menuViewportBySize,
 } from './menu.class'
 import type { MenuSize, MenuVariant } from './menu.props'
 import { MenuHighlight } from './menu-highlight'
@@ -73,7 +62,7 @@ const DropdownMenuContext = React.createContext<DropdownMenuContextValue>({
 const DropdownMenuOpenContext = React.createContext<boolean>(false)
 
 function getMenuItemVariantCls(context: DropdownMenuContextValue) {
-  return context.animated ? menuItemByVariantHighlight[context.variant] : menuItemByVariant[context.variant]
+  return menuItemByVariant[context.variant]
 }
 
 type ItemTextStyleProps = {
@@ -241,7 +230,7 @@ DropdownMenuTriggerIcon.displayName = 'DropdownMenu.TriggerIcon'
 // Content
 // ============================================================================
 
-export interface DropdownMenuContentProps {
+export interface DropdownMenuContentProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Size of the menu */
   size?: MenuSize
   /** Visual variant */
@@ -250,10 +239,6 @@ export interface DropdownMenuContentProps {
   color?: Color
   /** Border radius token */
   radius?: Radius
-  /** Additional class names */
-  className?: string
-  /** Menu items */
-  children: React.ReactNode
   /** Side of trigger to open */
   side?: 'top' | 'right' | 'bottom' | 'left'
   /** Alignment relative to trigger */
@@ -264,6 +249,8 @@ export interface DropdownMenuContentProps {
   container?: HTMLElement | null
   /** Animate highlight to follow focused/hovered items */
   animated?: boolean
+  /** Maximum height constraint */
+  maxHeight?: React.CSSProperties['maxHeight']
 }
 
 const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContentProps>(
@@ -274,12 +261,14 @@ const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContent
       color = SemanticColor.slate,
       radius: radiusProp,
       className,
+      style,
       children,
       side = 'bottom',
       align = 'start',
       sideOffset = 4,
       container: containerProp,
       animated = false,
+      maxHeight = 'var(--available-height)',
       ...props
     },
     ref,
@@ -289,9 +278,7 @@ const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContent
     const portalContainer = containerProp ?? themePortalContainer
     const isOpen = React.useContext(DropdownMenuOpenContext)
 
-    const viewport = (
-      <div className={cn(menuViewportBaseCls, menuViewportBase, menuViewportBySize[size])}>{children}</div>
-    )
+    const viewport = <div className={cn(menuViewportBaseCls, menuViewportBase)}>{children}</div>
 
     return (
       <DropdownMenuContext.Provider value={{ size, variant, color, radius, animated }}>
@@ -322,20 +309,14 @@ const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContent
                     'origin-[var(--transform-origin)]',
                     menuContentBase,
                     menuContentByVariant[variant],
-                    menuContentBySize[size],
                     `surface-color-${color}`,
                     className,
                   )}
-                  style={getRadiusStyles(radius)}
+                  style={{ maxHeight, ...getRadiusStyles(radius), ...getSizeStyles(size), ...style }}
+                  data-animated={animated ? '' : undefined}
                   {...props}
                 >
-                  {animated ? (
-                    <MenuHighlight className={menuHighlightBgByVariant[variant]} style={getSemanticColorStyles(color)}>
-                      {viewport}
-                    </MenuHighlight>
-                  ) : (
-                    viewport
-                  )}
+                  {animated ? <MenuHighlight>{viewport}</MenuHighlight> : viewport}
                 </MenuPrimitive.Popup>
               </MenuPrimitive.Positioner>
             </MenuPrimitive.Portal>
@@ -400,12 +381,12 @@ const DropdownMenuItem = React.forwardRef<HTMLDivElement, DropdownMenuItemProps>
         className={cn(
           menuItemBaseCls,
           menuItemBase,
-          menuItemBySize[context.size],
           menuItemMotion,
           variantCls,
+          `surface-color-${itemColor}`,
           className,
         )}
-        style={{ ...getSemanticColorStyles(itemColor), ...props.style }}
+        style={{ ...getSizeStyles(context.size), ...props.style }}
         {...props}
       >
         <DropdownMenuItemLabel
@@ -417,11 +398,7 @@ const DropdownMenuItem = React.forwardRef<HTMLDivElement, DropdownMenuItemProps>
         >
           {children}
         </DropdownMenuItemLabel>
-        {shortcut && (
-          <span className={cn(menuShortcutBaseCls, menuShortcutBase, menuShortcutBySize[context.size])}>
-            {shortcut}
-          </span>
-        )}
+        {shortcut && <span className={cn(menuShortcutBaseCls, menuShortcutBase)}>{shortcut}</span>}
       </MenuPrimitive.Item>
     )
   },
@@ -480,28 +457,23 @@ const DropdownMenuCheckboxItem = React.forwardRef<HTMLDivElement, DropdownMenuCh
         className={cn(
           menuItemBaseCls,
           menuItemBase,
-          menuItemBySize[context.size],
           menuItemMotion,
-          menuItemWithIndicatorBySize[context.size],
           variantCls,
+          `surface-color-${itemColor}`,
           className,
         )}
-        style={{ ...getSemanticColorStyles(itemColor), ...props.style }}
+        style={{ ...getSizeStyles(context.size), ...props.style }}
         {...props}
       >
-        <span className={cn(menuIndicatorBaseCls, menuItemIndicatorBySize[context.size])}>
+        <span className={cn(menuIndicatorBaseCls)}>
           <MenuPrimitive.CheckboxItemIndicator>
-            <Check className={menuIconBySize[context.size]} strokeWidth={2.5} />
+            <Check strokeWidth={2.5} />
           </MenuPrimitive.CheckboxItemIndicator>
         </span>
         <DropdownMenuItemLabel bold={bold} italic={italic} strikethrough={strikethrough}>
           {children}
         </DropdownMenuItemLabel>
-        {shortcut && (
-          <span className={cn(menuShortcutBaseCls, menuShortcutBase, menuShortcutBySize[context.size])}>
-            {shortcut}
-          </span>
-        )}
+        {shortcut && <span className={cn(menuShortcutBaseCls, menuShortcutBase)}>{shortcut}</span>}
       </MenuPrimitive.CheckboxItem>
     )
   },
@@ -575,18 +547,17 @@ const DropdownMenuRadioItem = React.forwardRef<HTMLDivElement, DropdownMenuRadio
         className={cn(
           menuItemBaseCls,
           menuItemBase,
-          menuItemBySize[context.size],
           menuItemMotion,
-          menuItemWithIndicatorBySize[context.size],
           variantCls,
+          `surface-color-${itemColor}`,
           className,
         )}
-        style={{ ...getSemanticColorStyles(itemColor), ...props.style }}
+        style={{ ...getSizeStyles(context.size), ...props.style }}
         {...props}
       >
-        <span className={cn(menuIndicatorBaseCls, menuItemIndicatorBySize[context.size])}>
+        <span className={cn(menuIndicatorBaseCls)}>
           <MenuPrimitive.RadioItemIndicator>
-            <Circle className={cn(menuIconBySize[context.size], 'fill-current')} strokeWidth={0} />
+            <Circle className="fill-current" strokeWidth={0} />
           </MenuPrimitive.RadioItemIndicator>
         </span>
         <DropdownMenuItemLabel bold={bold} italic={italic} strikethrough={strikethrough}>
@@ -612,13 +583,8 @@ export interface DropdownMenuLabelProps {
 
 const DropdownMenuLabel = React.forwardRef<HTMLDivElement, DropdownMenuLabelProps>(
   ({ className, children, ...props }, ref) => {
-    const context = React.useContext(DropdownMenuContext)
     return (
-      <div
-        ref={ref}
-        className={cn(menuLabelBaseCls, menuLabelBase, menuLabelBySize[context.size], className)}
-        {...props}
-      >
+      <div ref={ref} className={cn(menuLabelBaseCls, menuLabelBase, className)} {...props}>
         {children}
       </div>
     )
@@ -661,14 +627,7 @@ export interface DropdownMenuSeparatorProps {
 
 const DropdownMenuSeparator = React.forwardRef<HTMLDivElement, DropdownMenuSeparatorProps>(
   ({ className, ...props }, ref) => {
-    const context = React.useContext(DropdownMenuContext)
-    return (
-      <MenuPrimitive.Separator
-        ref={ref}
-        className={cn(menuSeparatorBase, menuSeparatorBySize[context.size], className)}
-        {...props}
-      />
-    )
+    return <MenuPrimitive.Separator ref={ref} className={cn(menuSeparatorBase, className)} {...props} />
   },
 )
 
@@ -751,18 +710,18 @@ const DropdownMenuSubTrigger = React.forwardRef<HTMLDivElement, DropdownMenuSubT
         className={cn(
           menuItemBaseCls,
           menuItemBase,
-          menuItemBySize[context.size],
           menuItemMotion,
           variantCls,
+          `surface-color-${itemColor}`,
           className,
         )}
-        style={{ ...getSemanticColorStyles(itemColor), ...props.style }}
+        style={{ ...getSizeStyles(context.size), ...props.style }}
         {...props}
       >
         <DropdownMenuItemLabel bold={bold} italic={italic} strikethrough={strikethrough}>
           {children}
         </DropdownMenuItemLabel>
-        <ChevronRight className={cn(menuSubTriggerIconCls, menuSubTriggerIcon, menuIconBySize[context.size])} />
+        <ChevronRight className={cn(menuSubTriggerIconCls, menuSubTriggerIcon)} />
       </MenuPrimitive.SubmenuTrigger>
     )
   },
@@ -774,7 +733,7 @@ DropdownMenuSubTrigger.displayName = 'DropdownMenu.SubTrigger'
 // SubContent
 // ============================================================================
 
-export interface DropdownMenuSubContentProps {
+export interface DropdownMenuSubContentProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Additional class names */
   className?: string
   /** Additional class names for the submenu viewport */
@@ -787,11 +746,23 @@ export interface DropdownMenuSubContentProps {
   sideOffset?: number
   /** Side of trigger to open */
   side?: 'top' | 'right' | 'bottom' | 'left'
+  /** Maximum height constraint */
+  maxHeight?: React.CSSProperties['maxHeight']
 }
 
 const DropdownMenuSubContent = React.forwardRef<HTMLDivElement, DropdownMenuSubContentProps>(
   (
-    { className, viewportClassName, overflowVisible = false, children, sideOffset = 2, side = 'right', ...props },
+    {
+      className,
+      viewportClassName,
+      overflowVisible = false,
+      children,
+      sideOffset = 2,
+      side = 'right',
+      maxHeight = 'var(--available-height)',
+      style,
+      ...props
+    },
     ref,
   ) => {
     const context = React.useContext(DropdownMenuContext)
@@ -821,39 +792,18 @@ const DropdownMenuSubContent = React.forwardRef<HTMLDivElement, DropdownMenuSubC
                   overflowVisible && menuPopupOverflowVisibleCls,
                   menuContentBase,
                   menuContentByVariant[context.variant],
-                  menuContentBySize[context.size],
                   className,
                 )}
-                style={getRadiusStyles(context.radius)}
+                style={{ maxHeight, ...getRadiusStyles(context.radius), ...getSizeStyles(context.size), ...style }}
+                data-animated={context.animated ? '' : undefined}
                 {...props}
               >
                 {context.animated ? (
-                  <MenuHighlight
-                    className={menuHighlightBgByVariant[context.variant]}
-                    style={getSemanticColorStyles(context.color)}
-                  >
-                    <div
-                      className={cn(
-                        menuViewportBaseCls,
-                        menuViewportBase,
-                        menuViewportBySize[context.size],
-                        viewportClassName,
-                      )}
-                    >
-                      {children}
-                    </div>
+                  <MenuHighlight>
+                    <div className={cn(menuViewportBaseCls, menuViewportBase, viewportClassName)}>{children}</div>
                   </MenuHighlight>
                 ) : (
-                  <div
-                    className={cn(
-                      menuViewportBaseCls,
-                      menuViewportBase,
-                      menuViewportBySize[context.size],
-                      viewportClassName,
-                    )}
-                  >
-                    {children}
-                  </div>
+                  <div className={cn(menuViewportBaseCls, menuViewportBase, viewportClassName)}>{children}</div>
                 )}
               </MenuPrimitive.Popup>
             </MenuPrimitive.Positioner>
