@@ -5,6 +5,7 @@ import { composeRefs } from '@/lib/compose-refs'
 import { cn } from '@/lib/utils'
 import { getHeightProps, getMarginProps, getPaddingProps, getWidthProps, resolveSpacingValue } from '@/theme/helpers'
 import { gapResponsiveClasses, gapResponsiveVars } from '@/theme/helpers/gap-responsive.css'
+import { getThemeColorUtilityClass } from '@/theme/helpers/token-class-maps'
 import type { HeightProps } from '@/theme/props/height.props'
 import {
   type LayoutCompositionMode,
@@ -1067,6 +1068,8 @@ export function getSharedLayoutClasses(props: SharedLayoutProps): string {
     height,
     minHeight,
     maxHeight,
+    bg,
+    borderColor,
     position,
     inset,
     top,
@@ -1092,6 +1095,8 @@ export function getSharedLayoutClasses(props: SharedLayoutProps): string {
     marginProps.className,
     widthProps.className,
     heightProps.className,
+    getThemeColorUtilityClass('bg', bg),
+    getThemeColorUtilityClass('border', borderColor),
     // Position
     getPositionClasses(position),
     getSpacingClasses(inset, 'inset'),
@@ -1157,14 +1162,16 @@ export function getSharedLayoutStyles(props: SharedLayoutProps): React.CSSProper
   const paddingProps = getPaddingProps({ p, px, py, pt, pr, pb, pl })
   const widthProps = getWidthProps({ width, minWidth, maxWidth })
   const heightProps = getHeightProps({ height, minHeight, maxHeight })
+  const bgClass = getThemeColorUtilityClass('bg', bg)
+  const borderColorClass = getThemeColorUtilityClass('border', borderColor)
 
   return {
     ...paddingProps.style,
     ...marginProps.style,
     ...widthProps.style,
     ...heightProps.style,
-    ...(bg && { backgroundColor: resolveThemeColorToken(bg) }),
-    ...(borderColor && { borderColor: resolveThemeColorToken(borderColor) }),
+    ...(bg && !bgClass && { backgroundColor: resolveThemeColorToken(bg) }),
+    ...(borderColor && !borderColorClass && { borderColor: resolveThemeColorToken(borderColor) }),
     ...(radius && { borderRadius: designTokens.radius[radius] }),
     ...(flexBasis && { flexBasis }),
     ...(gridArea && { gridArea }),
