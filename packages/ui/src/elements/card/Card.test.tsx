@@ -2,6 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { surfaceColorVariants } from '@/elements/surface/surface.css'
+import { radiusClassByToken } from '@/theme/helpers'
 import {
   gridTemplateAreasCustomResponsive,
   gridTemplateColumnsCustomResponsive,
@@ -10,7 +11,6 @@ import {
 import { Theme } from '@/theme/ThemeProvider'
 import { designTokens } from '@/theme/tokens'
 import { Card } from './Card'
-import { cardRootBase, cardRootSizeResponsiveVariants, cardSurfaceBase } from './Card.css'
 
 afterEach(() => {
   cleanup()
@@ -28,9 +28,10 @@ describe('Card', () => {
     const cardSurface = content.closest('div')?.parentElement
 
     expect(cardSurface).toBeInTheDocument()
-    expect(cardSurface?.className).toContain(cardRootBase)
-    expect(cardSurface?.className).toContain(cardSurfaceBase)
-    expect(cardSurface?.className).toContain(cardRootSizeResponsiveVariants.md.lg)
+    expect(cardSurface?.className).toContain('[container-type:inline-size]')
+    expect(cardSurface).toHaveClass('af-card-size')
+    expect(cardSurface?.style.getPropertyValue('--af-card-padding-initial')).toContain('--theme-rhythm-card-padding-xs')
+    expect(cardSurface?.style.getPropertyValue('--af-card-padding-md')).toContain('--theme-rhythm-card-padding-lg')
   })
 
   it('defaults radius to the ThemeProvider radius', () => {
@@ -46,7 +47,25 @@ describe('Card', () => {
     const cardSurface = content.closest('div')?.parentElement
 
     expect(cardSurface).toBeInTheDocument()
+    expect(cardSurface?.className).toContain(radiusClassByToken.lg)
     expect(cardSurface).toHaveStyle({ '--element-border-radius': designTokens.radius.lg })
+    expect(cardSurface).toHaveStyle({ '--inset-border-radius': designTokens.radius.lg })
+    expect(cardSurface?.style.getPropertyValue('--inset-border-radius')).not.toBe('var(--element-border-radius)')
+  })
+
+  it('uses shared token classes for an explicit radius prop', () => {
+    render(
+      <Card.Root radius="full">
+        <Card.Content>Content</Card.Content>
+      </Card.Root>,
+    )
+
+    const content = screen.getByText('Content')
+    const cardSurface = content.closest('div')?.parentElement
+
+    expect(cardSurface).toBeInTheDocument()
+    expect(cardSurface?.className).toContain(radiusClassByToken.full)
+    expect(cardSurface).toHaveStyle({ '--inset-border-radius': designTokens.radius.full })
   })
 
   it('applies padding props on the card surface root', () => {
@@ -71,7 +90,9 @@ describe('Card', () => {
     const root = screen.getByTestId('card')
 
     expect(root).toHaveClass('p-2', 'md:p-4')
-    expect(root.className).not.toContain(cardRootSizeResponsiveVariants.md.lg)
+    expect(root).not.toHaveClass('af-card-size')
+    expect(root.style.getPropertyValue('--af-card-padding-initial')).toBe('')
+    expect(root.style.getPropertyValue('--af-card-padding-md')).toBe('')
   })
 
   it.each(['chart1', 'chart-1'] as const)('supports chart surface tone %s on Card.Root', color => {

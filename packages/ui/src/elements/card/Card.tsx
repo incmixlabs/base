@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { useThemeRadius } from '@/elements/utils'
 import {
   extractLayoutCompositionProps,
   extractSharedLayoutProps,
@@ -14,22 +15,59 @@ import {
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { normalizeEnumPropValue } from '@/theme/props/prop-def'
-import type { Radius, Responsive, SurfaceColorKey } from '@/theme/tokens'
+import { cardSizeVar } from '@/theme/runtime/component-vars'
+import { panelSizeTokens } from '@/theme/token-maps'
+import { designTokens, type Radius, type Responsive, type SurfaceColorKey } from '@/theme/tokens'
 import { Text } from '@/typography/text/Text'
 import { Surface } from '../surface/Surface'
 import type { SurfaceShape } from '../surface/surface.props'
-import {
-  cardContentBase,
-  cardFooterBase,
-  cardHeaderBase,
-  cardRootBase,
-  cardRootSizeResponsiveVariants,
-  cardRootSizeVariants,
-  cardSurfaceBase,
-  cardTitleBase,
-} from './Card.css'
 import type { CardSize, CardVariant } from './card.props'
 import { cardPropDefs } from './card.props'
+
+const cardRootBase = '[container-type:inline-size]'
+const cardRootSizeClass = 'af-card-size'
+const cardHeaderBase = 'flex flex-col gap-[0.375rem]'
+const cardTitleBase = 'text-lg font-semibold leading-none tracking-tight'
+const cardContentBase = 'pt-4'
+const cardFooterBase = 'flex items-center pt-4'
+
+const cardPaddingBySize = {
+  xs: panelSizeTokens.xs.padding,
+  sm: panelSizeTokens.sm.padding,
+  md: panelSizeTokens.md.padding,
+  lg: panelSizeTokens.lg.padding,
+  xl: panelSizeTokens.xl.padding,
+} as const satisfies Record<CardSize, string>
+
+const responsiveSizeKeys = ['xs', 'sm', 'md', 'lg', 'xl'] as const
+
+type CardSizeStyle = React.CSSProperties &
+  Record<`--af-card-padding-${'initial' | (typeof responsiveSizeKeys)[number]}`, string>
+
+function cardPaddingValue(size: CardSize) {
+  return `var(--theme-rhythm-card-padding-${size}, ${cardSizeVar(size, 'padding', cardPaddingBySize[size])})`
+}
+
+function resolveCardSize(value: unknown) {
+  return (normalizeEnumPropValue(cardPropDefs.size, value) ?? cardPropDefs.size.default) as CardSize
+}
+
+function getCardSizeStyles(size: Responsive<CardSize>): Partial<CardSizeStyle> {
+  if (typeof size === 'string') {
+    return { '--af-card-padding-initial': cardPaddingValue(resolveCardSize(size)) }
+  }
+
+  const styles: Partial<CardSizeStyle> = {
+    '--af-card-padding-initial': cardPaddingValue(resolveCardSize(size.initial)),
+  }
+
+  for (const key of responsiveSizeKeys) {
+    const value = size[key]
+    if (value) styles[`--af-card-padding-${key}`] = cardPaddingValue(resolveCardSize(value))
+  }
+
+  return styles
+}
 
 interface CardRootOwnProps extends SharedLayoutProps, LayoutCompositionProps {
   /** Size (padding) */
@@ -75,6 +113,7 @@ export const CardRoot = React.forwardRef<HTMLDivElement, CardRootProps>(
     ref,
   ) => {
     const resolvedRadius = normalizeEnumPropValue(cardPropDefs.radius, radius) as Radius | undefined
+    const themeRadius = useThemeRadius(resolvedRadius)
     const { layoutProps: layoutCompositionProps, rest: propsWithoutLayoutComposition } =
       extractLayoutCompositionProps(props)
     const { layoutProps: sharedLayoutProps, rest: rootProps } = extractSharedLayoutProps({
@@ -90,20 +129,7 @@ export const CardRoot = React.forwardRef<HTMLDivElement, CardRootProps>(
       sharedLayoutProps.pb,
       sharedLayoutProps.pl,
     ].some(value => value !== undefined)
-    const resolveSize = (value: unknown) =>
-      (normalizeEnumPropValue(cardPropDefs.size, value) ?? cardPropDefs.size.default) as CardSize
-    const sizeClasses = hasExplicitPaddingProps
-      ? []
-      : typeof size === 'string'
-        ? [cardRootSizeVariants[resolveSize(size)]]
-        : [
-            cardRootSizeVariants[resolveSize(size.initial)],
-            ...(size.xs ? [cardRootSizeResponsiveVariants.xs[resolveSize(size.xs)]] : []),
-            ...(size.sm ? [cardRootSizeResponsiveVariants.sm[resolveSize(size.sm)]] : []),
-            ...(size.md ? [cardRootSizeResponsiveVariants.md[resolveSize(size.md)]] : []),
-            ...(size.lg ? [cardRootSizeResponsiveVariants.lg[resolveSize(size.lg)]] : []),
-            ...(size.xl ? [cardRootSizeResponsiveVariants.xl[resolveSize(size.xl)]] : []),
-          ]
+    const sizeStyles = hasExplicitPaddingProps ? undefined : getCardSizeStyles(size)
     const resolvedVariant = normalizeEnumPropValue(cardPropDefs.variant, variant) ?? cardPropDefs.variant.default
     const resolvedColor = (normalizeEnumPropValue(cardPropDefs.tone, tone) ??
       normalizeEnumPropValue(cardPropDefs.color, color) ??
@@ -122,8 +148,7 @@ export const CardRoot = React.forwardRef<HTMLDivElement, CardRootProps>(
         square={square}
         className={cn(
           cardRootBase,
-          cardSurfaceBase,
-          ...sizeClasses,
+          !hasExplicitPaddingProps && cardRootSizeClass,
           getLayoutCompositionClasses(layoutCompositionProps),
           getSharedLayoutClasses(sharedLayoutProps),
           className,
@@ -132,8 +157,9 @@ export const CardRoot = React.forwardRef<HTMLDivElement, CardRootProps>(
           {
             ...getLayoutCompositionStyles(layoutCompositionProps),
             ...getSharedLayoutStyles(sharedLayoutProps),
+            ...sizeStyles,
             ...style,
-            '--inset-border-radius': 'var(--element-border-radius)',
+            '--inset-border-radius': designTokens.radius[themeRadius],
           } as React.CSSProperties
         }
         {...rootProps}
