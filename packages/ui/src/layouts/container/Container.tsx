@@ -24,7 +24,7 @@ import {
   containerDisplayResponsive,
   containerInnerMaxWidth,
   containerSizeResponsive,
-} from './container.css'
+} from './container.class'
 import type { ContainerDisplay, ContainerProps } from './container.props'
 
 export type { ContainerDisplay, ContainerOwnProps, ContainerProps } from './container.props'
