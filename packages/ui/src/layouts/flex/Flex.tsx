@@ -33,7 +33,7 @@ import {
   flexByDisplay,
   flexByJustify,
   flexByWrap,
-} from './Flex.css'
+} from './Flex.classes'
 import { flexPropDefs } from './flex.props'
 
 // ============================================================================
