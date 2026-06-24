@@ -13,7 +13,7 @@ export const surfaceShapeVariants = Object.fromEntries(
 function surfaceColorClassName(color: SurfaceColorKey, variant: SurfaceVariant) {
   const normalizedChartColor = normalizeChartColor(color)
   const colorToken = normalizedChartColor ?? color
-  return `surface-color-${colorToken}-${variant}`
+  return `surface-color-${colorToken} surface-variant-${variant}`
 }
 
 export const surfaceColorVariants = Object.fromEntries(
@@ -35,7 +35,7 @@ const floatingVariants = Object.values(floatingVariant)
 export const surfaceArrowFillVariants = Object.fromEntries(
   semanticColorKeys.map(color => [
     color,
-    Object.fromEntries(floatingVariants.map(variant => [variant, `surface-arrow-${color}-${variant}`])),
+    Object.fromEntries(floatingVariants.map(variant => [variant, `surface-color-${color} surface-arrow-${variant}`])),
   ]),
 ) as Record<Color, Record<FloatingVariant, string>>
 
