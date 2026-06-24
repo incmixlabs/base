@@ -9,7 +9,7 @@ import {
   containerBase,
   containerDisplayResponsive,
   containerSizeResponsive,
-} from './container.css'
+} from './container.class'
 import { containerPropDefs } from './container.props'
 
 afterEach(() => {

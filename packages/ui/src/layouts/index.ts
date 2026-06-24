@@ -39,7 +39,12 @@ export {
   type CommandWrapperRenderItem,
   type CommandWrapperSection,
 } from './command-search/CommandWrapper'
-export { Container, type ContainerProps } from './container/Container'
+export {
+  Container,
+  type ContainerAlign,
+  type ContainerProps,
+  type ContainerSize,
+} from './container/Container'
 export {
   createDashboardItemsFromPreset,
   type DashboardBreakpointConfig,
@@ -102,8 +107,6 @@ export { Header, type HeaderProps } from './header/Header'
 // Layout Utilities and Types
 export {
   type AlignItems,
-  type ContainerAlign,
-  type ContainerSize,
   type Display,
   type FlexDirection,
   type FlexWrap,
