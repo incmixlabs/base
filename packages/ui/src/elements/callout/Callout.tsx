@@ -115,7 +115,6 @@ const CalloutRoot = React.forwardRef<HTMLDivElement, CalloutRootProps>(
             calloutColorVariants[safeColor][safeVariant],
             safeInverse && supportsInverse && calloutInverseByVariant[safeColor][safeVariant],
             safeHover && calloutHoverByVariant[safeVariant],
-            safeHover && 'callout-hover-enabled',
             safeHover && 'cursor-pointer',
             // High contrast mode
             safeHighContrast && calloutHighContrastByVariant[safeVariant],

@@ -865,7 +865,7 @@
     padding-inline: var(--af-callout-padding);
     padding-block: var(--af-callout-padding);
   }
-  .af-callout-split.callout-hover-enabled:hover [data-slot="callout-text"] {
+  .af-callout-split.surface-hover-enabled:hover [data-slot="callout-text"] {
     background-color: var(--callout-split-hover-bg, var(--surface-soft));
   }
 
