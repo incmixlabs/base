@@ -69,18 +69,6 @@
     pointer-events: none;
   }
 
-  .af-menu-item-text-bold {
-    font-weight: 600;
-  }
-
-  .af-menu-item-text-italic {
-    font-style: italic;
-  }
-
-  .af-menu-item-text-strikethrough {
-    text-decoration-line: line-through;
-  }
-
   .af-menu-item-motion {
     transition:
       background-color var(--af-motion-fast) var(--af-ease-standard),

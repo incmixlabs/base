@@ -21,9 +21,9 @@ export const menuViewportBase = 'af-menu-viewport'
 
 export const menuItemBase = 'af-menu-item'
 
-export const menuItemTextBold = 'af-menu-item-text-bold'
-export const menuItemTextItalic = 'af-menu-item-text-italic'
-export const menuItemTextStrikethrough = 'af-menu-item-text-strikethrough'
+export const menuItemTextBold = 'font-semibold'
+export const menuItemTextItalic = 'italic'
+export const menuItemTextStrikethrough = 'line-through'
 export const menuItemMotion = 'af-menu-item-motion'
 
 export const menuSubTriggerIcon = 'af-menu-subtrigger-icon'
