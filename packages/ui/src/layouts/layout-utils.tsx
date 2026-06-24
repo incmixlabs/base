@@ -97,9 +97,6 @@ export function getMergedSlotClassName(children: React.ReactNode, className?: st
 // Grid types
 export type GridFlow = 'row' | 'column' | 'dense' | 'row-dense' | 'column-dense'
 
-// Section types
-export type SectionSize = '1' | '2' | '3' | '4'
-
 // ============================================================================
 // Spacing Scale Mapping
 // ============================================================================
@@ -443,20 +440,25 @@ const gridRowsMap = Object.fromEntries(layoutCompositionRowValues.map(value => [
 export type GridColumns = (typeof layoutCompositionColumnValues)[number]
 export type GridRows = (typeof layoutCompositionRowValues)[number]
 
-function getGridClasses<T extends string>(
+/** getResponsiveLayoutClasses export. */
+export function getResponsiveLayoutClasses<T extends string>(
   prop: Responsive<T> | undefined,
   baseClasses: Record<T, string>,
   responsiveClasses: Record<'xs' | 'sm' | 'md' | 'lg' | 'xl', Record<T, string>>,
+  defaultInitial?: T,
 ): string {
-  if (prop === undefined) return ''
+  if (prop === undefined) {
+    return defaultInitial ? baseClasses[defaultInitial] || '' : ''
+  }
 
   if (typeof prop === 'string') {
     return baseClasses[prop] || ''
   }
 
   const classes: string[] = []
-  if (prop.initial) {
-    const initialClass = baseClasses[prop.initial]
+  const initialVal = prop.initial ?? defaultInitial
+  if (initialVal) {
+    const initialClass = baseClasses[initialVal]
     if (initialClass) classes.push(initialClass)
   }
 
@@ -483,12 +485,12 @@ export function isGridRowsValue(value: string): value is GridRows {
 
 /** getGridColumnsClasses export. */
 export function getGridColumnsClasses(prop: Responsive<GridColumns> | undefined): string {
-  return getGridClasses(prop, gridColumns, gridColumnsResponsive)
+  return getResponsiveLayoutClasses(prop, gridColumns, gridColumnsResponsive)
 }
 
 /** getGridRowsClasses export. */
 export function getGridRowsClasses(prop: Responsive<GridRows> | undefined): string {
-  return getGridClasses(prop, gridRows, gridRowsResponsive)
+  return getResponsiveLayoutClasses(prop, gridRows, gridRowsResponsive)
 }
 
 export function isSpacingValue(value: string): value is Spacing {

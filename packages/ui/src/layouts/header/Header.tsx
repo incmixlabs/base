@@ -2,7 +2,7 @@
 
 import type * as React from 'react'
 import { cn } from '@/lib/utils'
-import { headerRoot, headerSticky } from './Header.css'
+import { headerRoot, headerSticky } from './header.class'
 
 export interface HeaderProps extends React.ComponentProps<'header'> {
   sticky?: boolean

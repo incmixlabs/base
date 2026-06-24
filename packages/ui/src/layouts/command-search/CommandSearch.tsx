@@ -29,7 +29,7 @@ import {
   commandSearchTrigger,
   shortcutKey,
   shortcutRow,
-} from './CommandSearch.css'
+} from './command-search.class'
 
 export type CommandSearchItem = {
   id: string

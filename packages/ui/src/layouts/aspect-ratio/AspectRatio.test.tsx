@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { AspectRatio } from './AspectRatio'
-import { aspectRatioCustom } from './AspectRatio.css'
+import { aspectRatioCustom } from './aspect-ratio.class'
 
 afterEach(() => {
   cleanup()

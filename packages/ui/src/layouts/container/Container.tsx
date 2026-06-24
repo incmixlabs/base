@@ -10,6 +10,7 @@ import {
   getLayoutCompositionClasses,
   getLayoutCompositionStyles,
   getMergedSlotClassName,
+  getResponsiveLayoutClasses,
   getSharedLayoutClasses,
   getSharedLayoutStyles,
   hasBorderWidthUtility,
@@ -102,41 +103,19 @@ export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
     const resolvedAlign = align ?? 'center'
     const shouldApplyContainerAlign = !innerLayoutProps.layout || align !== undefined
 
-    const sizeClasses =
-      typeof resolvedSize === 'string'
-        ? [containerBySize[resolvedSize]]
-        : [
-            resolvedSize.initial ? containerBySize[resolvedSize.initial] : containerBySize['4'],
-            ...(resolvedSize.xs ? [containerSizeResponsive.xs[resolvedSize.xs]] : []),
-            ...(resolvedSize.sm ? [containerSizeResponsive.sm[resolvedSize.sm]] : []),
-            ...(resolvedSize.md ? [containerSizeResponsive.md[resolvedSize.md]] : []),
-            ...(resolvedSize.lg ? [containerSizeResponsive.lg[resolvedSize.lg]] : []),
-            ...(resolvedSize.xl ? [containerSizeResponsive.xl[resolvedSize.xl]] : []),
-          ]
-
-    const displayClasses =
-      typeof display === 'string'
-        ? [containerDisplayClassNames[display]]
-        : [
-            containerDisplayClassNames[display?.initial ?? 'initial'],
-            ...(display?.xs ? [containerDisplayResponsive.xs[display.xs]] : []),
-            ...(display?.sm ? [containerDisplayResponsive.sm[display.sm]] : []),
-            ...(display?.md ? [containerDisplayResponsive.md[display.md]] : []),
-            ...(display?.lg ? [containerDisplayResponsive.lg[display.lg]] : []),
-            ...(display?.xl ? [containerDisplayResponsive.xl[display.xl]] : []),
-          ]
-
-    const alignClasses =
-      typeof resolvedAlign === 'string'
-        ? [containerAlignClassNames[resolvedAlign]]
-        : [
-            containerAlignClassNames[resolvedAlign.initial ?? 'center'],
-            ...(resolvedAlign.xs ? [containerAlignResponsive.xs[resolvedAlign.xs]] : []),
-            ...(resolvedAlign.sm ? [containerAlignResponsive.sm[resolvedAlign.sm]] : []),
-            ...(resolvedAlign.md ? [containerAlignResponsive.md[resolvedAlign.md]] : []),
-            ...(resolvedAlign.lg ? [containerAlignResponsive.lg[resolvedAlign.lg]] : []),
-            ...(resolvedAlign.xl ? [containerAlignResponsive.xl[resolvedAlign.xl]] : []),
-          ]
+    const sizeClasses = getResponsiveLayoutClasses(resolvedSize, containerBySize, containerSizeResponsive, '4')
+    const displayClasses = getResponsiveLayoutClasses(
+      display,
+      containerDisplayClassNames,
+      containerDisplayResponsive,
+      'initial',
+    )
+    const alignClasses = getResponsiveLayoutClasses(
+      resolvedAlign,
+      containerAlignClassNames,
+      containerAlignResponsive,
+      'center',
+    )
 
     const classes = cn(
       containerBaseClassName,
@@ -152,7 +131,7 @@ export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
       !innerLayoutProps.layout && displayClasses,
       shouldApplyContainerAlign && alignClasses,
       getLayoutCompositionClasses(innerLayoutProps),
-      ...sizeClasses,
+      sizeClasses,
       widthProps.className,
       heightProps.className,
     )
