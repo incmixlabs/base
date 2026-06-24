@@ -12,7 +12,7 @@ import {
   avatarPieSliceThreeThird,
   avatarPieSliceTwoFirst,
   avatarPieSliceTwoSecond,
-} from './avatar-pie.css'
+} from './avatar.class'
 
 afterEach(() => {
   cleanup()

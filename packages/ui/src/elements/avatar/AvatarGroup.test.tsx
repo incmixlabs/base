@@ -5,8 +5,12 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Avatar } from './Avatar'
 import { AvatarGroup } from './AvatarGroup'
 import { AVATAR_SIZE_CLASS, avatarSizeStyles } from './avatar.context'
-import { avatarRadiusByRadius } from './avatar.css'
-import { avatarGroupSpreadBySize, avatarGroupStackBySize, avatarGroupStackItem } from './avatar-group.css'
+import {
+  avatarGroupSpreadBySize,
+  avatarGroupStackBySize,
+  avatarGroupStackItem,
+  avatarRadiusByRadius,
+} from './avatar.class'
 
 afterEach(() => {
   cleanup()

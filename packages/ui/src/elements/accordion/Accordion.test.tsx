@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { Accordion } from './Accordion'
-import { accordionContentBase, accordionSizeVars } from './Accordion.css'
+import { accordionContentBase, accordionSizeVars } from './accordion.class'
 
 afterEach(() => {
   cleanup()

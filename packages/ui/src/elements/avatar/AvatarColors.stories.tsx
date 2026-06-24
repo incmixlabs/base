@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Avatar, AvatarProvider, stringToHue } from '@/elements'
+import { avatarPropDefs } from './avatar.props'
 import { HUE_NAMES } from '@/theme/tokens'
 
 const meta: Meta = {
@@ -135,7 +136,7 @@ export const ProviderWithRadius: Story = {
   name: 'AvatarProvider (radius variants)',
   render: () => (
     <div className="flex flex-col gap-4">
-      {(['none', 'sm', 'md', 'lg', 'full'] as const).map(radius => (
+      {avatarPropDefs.radius.values.map(radius => (
         <div key={radius} className="flex items-center gap-4">
           <span className="text-sm w-12 text-muted-foreground">{radius}</span>
           <AvatarProvider radius={radius}>
