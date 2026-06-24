@@ -3,7 +3,10 @@ import {
   resolveInteractiveFillColor,
   resolveInteractiveForegroundToken,
   resolveInteractiveUnfilledColor,
+  resolveSurfaceBackgroundColor,
+  resolveSurfaceForegroundColor,
   resolveSurfaceToneColor,
+  resolveSurfaceToneStyle,
   SemanticColor,
   semanticColorVar,
 } from './color.prop'
@@ -47,5 +50,45 @@ describe('surface tone resolution', () => {
   it('preserves semantic color lanes for surface hosts', () => {
     expect(resolveSurfaceToneColor(SemanticColor.primary)).toBe(SemanticColor.primary)
     expect(resolveSurfaceToneColor(SemanticColor.info)).toBe(SemanticColor.info)
+  })
+})
+
+describe('surface color and text resolution helpers', () => {
+  it('resolves semantic and chart foreground colors', () => {
+    // Semantic solid vs soft
+    expect(resolveSurfaceForegroundColor('primary', undefined, 'solid')).toBe('var(--color-primary-contrast)')
+    expect(resolveSurfaceForegroundColor('primary', undefined, 'soft')).toBe('var(--color-primary-text)')
+
+    // Explicit semantic overrides
+    expect(resolveSurfaceForegroundColor('primary', 'contrast', 'soft')).toBe('var(--color-primary-contrast)')
+    expect(resolveSurfaceForegroundColor('primary', 'inverse', 'soft')).toBe('var(--color-inverse-text)')
+
+    // Chart solid vs soft
+    expect(resolveSurfaceForegroundColor('chart1', undefined, 'solid')).toBe('var(--chart-1-contrast)')
+    expect(resolveSurfaceForegroundColor('chart1', undefined, 'soft')).toBe(
+      'color-mix(in oklch, var(--chart-1) 34%, var(--color-dark-primary))',
+    )
+  })
+
+  it('resolves semantic and chart background colors', () => {
+    expect(resolveSurfaceBackgroundColor('primary', 'solid')).toBe('var(--color-primary-primary)')
+    expect(resolveSurfaceBackgroundColor('primary', 'soft')).toBe('var(--color-primary-soft)')
+    expect(resolveSurfaceBackgroundColor('primary', 'surface')).toBe('var(--color-primary-surface)')
+
+    expect(resolveSurfaceBackgroundColor('chart1', 'solid')).toBe('var(--chart-1)')
+    expect(resolveSurfaceBackgroundColor('chart1', 'soft')).toBe(
+      'color-mix(in oklch, var(--chart-1) 28%, var(--color-light-surface))',
+    )
+  })
+
+  it('resolves unified tone styles', () => {
+    const style = resolveSurfaceToneStyle('primary', 'soft', 'contrast')
+    expect(style).toEqual({
+      backgroundColor: 'var(--color-primary-soft)',
+      color: 'var(--color-primary-contrast)',
+    })
+
+    expect(resolveSurfaceToneStyle(undefined)).toBeNull()
+    expect(resolveSurfaceToneStyle('invalid-color-key')).toBeNull()
   })
 })

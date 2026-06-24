@@ -120,6 +120,104 @@ export function resolveInteractiveForegroundToken(color: SemanticColorInput): Se
   return requireSemanticColor(color) === SemanticColor.inverse ? 'primary' : 'text'
 }
 
+export const SurfaceColorVariant = {
+  solid: 'solid',
+  soft: 'soft',
+  surface: 'surface',
+} as const
+
+export type SurfaceColorVariant = (typeof SurfaceColorVariant)[keyof typeof SurfaceColorVariant]
+
+export const SurfaceForeground = {
+  auto: 'auto',
+  contrast: 'contrast',
+  inverse: 'inverse',
+  primary: 'primary',
+  text: 'text',
+} as const
+
+export type SurfaceForeground = (typeof SurfaceForeground)[keyof typeof SurfaceForeground]
+
+export interface SurfaceToneStyle {
+  backgroundColor: string
+  color: string
+}
+
+const semanticSurfaceBackgroundTokenByVariant = {
+  [SurfaceColorVariant.solid]: 'primary',
+  [SurfaceColorVariant.soft]: 'soft',
+  [SurfaceColorVariant.surface]: 'surface',
+} as const satisfies Record<SurfaceColorVariant, SemanticColorToken>
+
+const chartSurfaceBlendByVariant = {
+  [SurfaceColorVariant.soft]: 28,
+  [SurfaceColorVariant.surface]: 12,
+} as const satisfies Partial<Record<SurfaceColorVariant, number>>
+
+const readableChartTextColor = (color: ChartColorToken | ChartColorAlias) =>
+  `color-mix(in oklch, ${chartColorVar(color)} 34%, var(--color-dark-primary))`
+
+const surfaceColorSet = new Set<string>(SURFACE_COLOR_KEYS)
+
+export function resolveSurfaceForegroundColor(
+  color: SurfaceColorKey,
+  foreground: SurfaceForeground | undefined,
+  variant: SurfaceColorVariant = SurfaceColorVariant.surface,
+): string {
+  const chartColor = normalizeChartColor(color)
+
+  if (chartColor) {
+    if (foreground === SurfaceForeground.contrast) return chartColorContrastVar(chartColor)
+    if (foreground === SurfaceForeground.inverse) return 'var(--color-inverse-text)'
+    if (foreground === SurfaceForeground.primary) return chartColorVar(chartColor)
+    if (foreground === SurfaceForeground.text) return readableChartTextColor(chartColor)
+
+    return variant === SurfaceColorVariant.solid
+      ? chartColorContrastVar(chartColor)
+      : readableChartTextColor(chartColor)
+  }
+
+  const semanticColor = requireSemanticColor(color as SemanticColorInput)
+  if (foreground === SurfaceForeground.contrast) return semanticColorVar(semanticColor, 'contrast')
+  if (foreground === SurfaceForeground.inverse) return 'var(--color-inverse-text)'
+  if (foreground === SurfaceForeground.primary) return semanticColorVar(semanticColor, 'primary')
+  if (foreground === SurfaceForeground.text) return semanticColorVar(semanticColor, 'text')
+
+  return variant === SurfaceColorVariant.solid
+    ? semanticColorVar(semanticColor, 'contrast')
+    : semanticColorVar(semanticColor, 'text')
+}
+
+export function resolveSurfaceBackgroundColor(
+  color: SurfaceColorKey,
+  variant: SurfaceColorVariant = SurfaceColorVariant.surface,
+): string {
+  const chartColor = normalizeChartColor(color)
+  if (chartColor) {
+    const chartColorValue = chartColorVar(chartColor)
+    const blend = (chartSurfaceBlendByVariant as Record<SurfaceColorVariant, number | undefined>)[variant]
+
+    return blend ? `color-mix(in oklch, ${chartColorValue} ${blend}%, var(--color-light-surface))` : chartColorValue
+  }
+
+  const semanticColor = requireSemanticColor(color as SemanticColorInput)
+  return semanticColorVar(semanticColor, semanticSurfaceBackgroundTokenByVariant[variant])
+}
+
+export function resolveSurfaceToneStyle(
+  color: SurfaceColorKey | string | undefined,
+  variant: SurfaceColorVariant = SurfaceColorVariant.surface,
+  foreground?: SurfaceForeground,
+): SurfaceToneStyle | null {
+  if (!color || !surfaceColorSet.has(color)) return null
+  const surfaceColor = color as SurfaceColorKey
+
+  return {
+    backgroundColor: resolveSurfaceBackgroundColor(surfaceColor, variant),
+    color: resolveSurfaceForegroundColor(surfaceColor, foreground, variant),
+  }
+}
+
 // prettier-ignore
 const accentColors = [
   'gray',
