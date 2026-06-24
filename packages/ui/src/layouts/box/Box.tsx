@@ -3,9 +3,8 @@
 import * as React from 'react'
 import { useThemeRadius } from '@/elements/utils'
 import { cn } from '@/lib/utils'
-import { chartColorContrastVar, chartColorVar, normalizeChartColor, semanticColorVar } from '@/theme/props/color.prop'
-import type { ChartColorToken, Color, SurfaceColorKey } from '@/theme/tokens'
-import { semanticColorScale } from '@/theme/tokens'
+import { resolveSurfaceToneStyle, type SurfaceColorVariant, type SurfaceForeground } from '@/theme/props/color.prop'
+import type { SurfaceColorKey } from '@/theme/tokens'
 import {
   type Display,
   extractLayoutCompositionProps,
@@ -54,59 +53,8 @@ type BoxSpanProps = BoxOwnProps & { as: 'span' } & Omit<React.ComponentPropsWith
 export type BoxProps = BoxDivProps | BoxSpanProps
 
 type BoxColor = SurfaceColorKey
-type BoxVariant = 'solid' | 'soft' | 'surface'
-type BoxText = 'auto' | 'contrast' | 'text' | 'primary' | 'inverse'
-
-const semanticColorSet = new Set<string>(semanticColorScale)
-
-function resolveChartTextColor(color: ChartColorToken, text: BoxText | undefined, variant: BoxVariant) {
-  if (text === 'contrast') return chartColorContrastVar(color)
-  if (text === 'inverse') return 'var(--color-inverse-text)'
-  if (text === 'primary') return chartColorVar(color)
-  if (text === 'text') return `color-mix(in oklch, ${chartColorVar(color)} 34%, var(--color-dark-primary))`
-  return variant === 'solid'
-    ? chartColorContrastVar(color)
-    : `color-mix(in oklch, ${chartColorVar(color)} 34%, var(--color-dark-primary))`
-}
-
-function resolveSemanticTextColor(color: Color, text: BoxText | undefined, variant: BoxVariant) {
-  if (text === 'contrast') return semanticColorVar(color, 'contrast')
-  if (text === 'inverse') return 'var(--color-inverse-text)'
-  if (text === 'primary') return semanticColorVar(color, 'primary')
-  if (text === 'text') return semanticColorVar(color, 'text')
-  return variant === 'solid' ? semanticColorVar(color, 'contrast') : semanticColorVar(color, 'text')
-}
-
-function getBoxToneStyles(color: BoxColor | undefined, variant: BoxVariant = 'surface', text?: BoxText) {
-  if (!color) return null
-
-  const chartColor = normalizeChartColor(color)
-  if (chartColor) {
-    const chartVar = chartColorVar(chartColor)
-    return {
-      backgroundColor:
-        variant === 'solid'
-          ? chartVar
-          : variant === 'soft'
-            ? `color-mix(in oklch, ${chartVar} 28%, var(--color-light-surface))`
-            : `color-mix(in oklch, ${chartVar} 12%, var(--color-light-surface))`,
-      color: resolveChartTextColor(chartColor, text, variant),
-    } satisfies React.CSSProperties
-  }
-
-  if (!semanticColorSet.has(color)) return null
-
-  const semanticColor = color as Color
-  return {
-    backgroundColor:
-      variant === 'solid'
-        ? semanticColorVar(semanticColor, 'primary')
-        : variant === 'soft'
-          ? semanticColorVar(semanticColor, 'soft')
-          : semanticColorVar(semanticColor, 'surface'),
-    color: resolveSemanticTextColor(semanticColor, text, variant),
-  } satisfies React.CSSProperties
-}
+type BoxVariant = SurfaceColorVariant
+type BoxText = SurfaceForeground
 
 // ============================================================================
 // Box Component
@@ -154,7 +102,7 @@ export const Box = React.forwardRef<HTMLDivElement, BoxProps>(
     )
 
     const styles: React.CSSProperties = {
-      ...getBoxToneStyles(tone ?? color, variant, text),
+      ...resolveSurfaceToneStyle(tone ?? color, variant, text),
       ...getLayoutCompositionStyles(layoutCompositionProps),
       ...getSharedLayoutStyles(sharedLayoutProps),
       ...style,
