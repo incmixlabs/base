@@ -2,8 +2,11 @@ import { asChildPropDef } from '@/theme/props/as-child.prop'
 
 import type { GetPropDefTypes, PropDef } from '@/theme/props/prop-def'
 
-const sizes = ['1', '2', '3', '4'] as const
-const displayValues = ['none', 'initial'] as const
+export const sectionSizes = ['1', '2', '3', '4'] as const
+export type SectionSize = (typeof sectionSizes)[number]
+
+export const sectionDisplayValues = ['none', 'initial'] as const
+export type SectionDisplay = (typeof sectionDisplayValues)[number]
 
 const sectionPropDefs = {
   ...asChildPropDef,
@@ -28,7 +31,7 @@ const sectionPropDefs = {
   size: {
     type: 'enum',
     className: 'af-size',
-    values: sizes,
+    values: sectionSizes,
     default: '3',
     responsive: true,
   },
@@ -43,13 +46,13 @@ const sectionPropDefs = {
   display: {
     type: 'enum',
     className: 'af-display',
-    values: displayValues,
+    values: sectionDisplayValues,
     parseValue: parseDisplayValue,
     responsive: true,
   },
 } satisfies {
-  size: PropDef<(typeof sizes)[number]>
-  display: PropDef<(typeof displayValues)[number]>
+  size: PropDef<SectionSize>
+  display: PropDef<SectionDisplay>
 }
 
 function parseDisplayValue(value: string) {

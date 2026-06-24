@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { normalizeEnumPropValue } from '@/theme/props/prop-def'
-import { aspectRatioByRatio, aspectRatioCustom } from './AspectRatio.css'
+import { aspectRatioByRatio, aspectRatioCustom } from './aspect-ratio.class'
 import { aspectRatioPropDefs } from './aspect-ratio.props'
 
 type Ratio = (typeof aspectRatioPropDefs.ratio.values)[number]

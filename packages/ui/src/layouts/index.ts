@@ -126,7 +126,6 @@ export {
   type Position,
   // Types
   type Responsive,
-  type SectionSize,
   type SharedLayoutProps,
   // Utilities
   Slot,
@@ -142,7 +141,7 @@ export {
   type ResizablePanelGroupProps,
   type ResizablePanelProps,
 } from './resizable/Resizable'
-export { Section, type SectionProps } from './section/Section'
+export { Section, type SectionProps, type SectionSize } from './section/Section'
 export { Sidebar, useIconCollapsed, useSidebar } from './sidebar/Sidebar'
 export {
   SidebarWrapper,

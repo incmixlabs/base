@@ -1,12 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Tabs } from '@/elements/tabs/Tabs'
-import { getPropDefValues } from '@/theme/props/prop-def'
 import { Box } from '../box/Box'
 import { Container } from '../container/Container'
 import { Section } from './Section'
-import { sectionPropDefs } from './section.props'
-
-const sectionSizes = getPropDefValues(sectionPropDefs.size)
+import { sectionSizes } from './section.props'
 const sizeDescriptions: Record<string, string> = {
   '1': 'Vertical padding: 24px (py-6)',
   '2': 'Vertical padding: 40px (py-10)',

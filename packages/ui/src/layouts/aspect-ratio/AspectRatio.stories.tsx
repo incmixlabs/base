@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Image } from '@/elements'
-import { getPropDefValues } from '@/theme/props/prop-def'
 import { AspectRatio } from './AspectRatio'
-import { aspectRatioPropDefs } from './aspect-ratio.props'
+import { aspectRatioValues } from './aspect-ratio.props'
 
-const ratios = getPropDefValues(aspectRatioPropDefs.ratio)
+const ratios = aspectRatioValues
 
 const meta: Meta<typeof AspectRatio> = {
   title: 'Layouts/AspectRatio',

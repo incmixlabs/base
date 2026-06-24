@@ -4,23 +4,25 @@ import * as React from 'react'
 import { cn } from '@/lib/utils'
 import {
   getMergedSlotClassName,
+  getResponsiveLayoutClasses,
   getSharedLayoutClasses,
   getSharedLayoutStyles,
   hasBorderWidthUtility,
   type Responsive,
-  type SectionSize,
   type SharedLayoutProps,
   Slot,
 } from '../layout-utils'
 import {
-  type SectionDisplay,
   sectionBase,
   sectionBaseCls,
   sectionByDisplay,
   sectionBySize,
   sectionDisplayResponsive,
   sectionSizeResponsive,
-} from './Section.css'
+} from './section.class'
+import type { SectionDisplay, SectionSize } from './section.props'
+
+export type { SectionDisplay, SectionSize }
 
 // ============================================================================
 // Section Props
@@ -36,36 +38,6 @@ export interface SectionOwnProps extends SharedLayoutProps {
 }
 
 export type SectionProps = SectionOwnProps & Omit<React.ComponentPropsWithoutRef<'section'>, keyof SectionOwnProps>
-
-// Generate responsive size classes
-function getSectionSizeClasses(sizeProp: Responsive<SectionSize> | undefined): string {
-  if (!sizeProp) return sectionBySize['3']
-  if (typeof sizeProp === 'string') return sectionBySize[sizeProp]
-
-  const classes: string[] = []
-  if (sizeProp.initial) classes.push(sectionBySize[sizeProp.initial])
-  if (sizeProp.xs) classes.push(sectionSizeResponsive.xs[sizeProp.xs])
-  if (sizeProp.sm) classes.push(sectionSizeResponsive.sm[sizeProp.sm])
-  if (sizeProp.md) classes.push(sectionSizeResponsive.md[sizeProp.md])
-  if (sizeProp.lg) classes.push(sectionSizeResponsive.lg[sizeProp.lg])
-  if (sizeProp.xl) classes.push(sectionSizeResponsive.xl[sizeProp.xl])
-  return classes.join(' ')
-}
-
-// Generate responsive display classes
-function getSectionDisplayClasses(displayProp: Responsive<SectionDisplay> | undefined): string {
-  if (!displayProp) return ''
-  if (typeof displayProp === 'string') return sectionByDisplay[displayProp]
-
-  const classes: string[] = []
-  if (displayProp.initial) classes.push(sectionByDisplay[displayProp.initial])
-  if (displayProp.xs) classes.push(sectionDisplayResponsive.xs[displayProp.xs])
-  if (displayProp.sm) classes.push(sectionDisplayResponsive.sm[displayProp.sm])
-  if (displayProp.md) classes.push(sectionDisplayResponsive.md[displayProp.md])
-  if (displayProp.lg) classes.push(sectionDisplayResponsive.lg[displayProp.lg])
-  if (displayProp.xl) classes.push(sectionDisplayResponsive.xl[displayProp.xl])
-  return classes.join(' ')
-}
 
 // ============================================================================
 // Section Component
@@ -187,8 +159,8 @@ export const Section = React.forwardRef<HTMLElement, SectionProps>(
     const classes = cn(
       sectionBaseCls,
       sectionBase,
-      getSectionDisplayClasses(display),
-      !hasPaddingOverride && getSectionSizeClasses(size),
+      getResponsiveLayoutClasses(display, sectionByDisplay, sectionDisplayResponsive),
+      !hasPaddingOverride && getResponsiveLayoutClasses(size, sectionBySize, sectionSizeResponsive, '3'),
       borderColor && !hasBorderWidthUtility(effectiveClassName) && 'border',
       getSharedLayoutClasses(sharedLayoutProps),
       className,

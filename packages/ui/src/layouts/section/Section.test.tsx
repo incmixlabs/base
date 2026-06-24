@@ -2,10 +2,10 @@ import '@testing-library/jest-dom/vitest'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { Section } from './Section'
-import { sectionDisplayResponsive, sectionSizeResponsive } from './Section.css'
+import { sectionDisplayResponsive, sectionSizeResponsive } from './section.class'
 
 describe('Section', () => {
-  it('uses container-query responsive classes for size and display variants', () => {
+  it('uses viewport responsive classes for size and display variants', () => {
     render(
       <Section size={{ initial: '1', md: '3' }} display={{ initial: 'initial', lg: 'none' }}>
         Content
