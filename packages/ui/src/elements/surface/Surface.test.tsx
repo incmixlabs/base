@@ -89,4 +89,17 @@ describe('Surface', () => {
     expect(surface.className).not.toContain('rounded-[var(--element-border-radius)]')
     expect(surface).toHaveStyle({ '--element-border-radius': designTokens.radius.lg })
   })
+
+  it('uses shared token classes for an explicit radius prop', () => {
+    render(
+      <Surface data-testid="surface" radius="full">
+        Surface
+      </Surface>,
+    )
+
+    const surface = screen.getByTestId('surface')
+
+    expect(surface.className).toContain(radiusClassByToken.full)
+    expect(surface).toHaveStyle({ '--element-border-radius': designTokens.radius.full })
+  })
 })

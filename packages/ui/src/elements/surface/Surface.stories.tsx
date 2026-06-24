@@ -196,6 +196,18 @@ export const Shapes: Story = {
   ),
 }
 
+export const RadiusTokens: Story = {
+  render: () => (
+    <Box display="flex" className="flex-wrap items-center gap-3">
+      {getPropDefValues(surfacePropDefs.radius).map(radius => (
+        <Surface key={radius} radius={radius} variant="surface" color="neutral" className="px-4 py-2">
+          {radius}
+        </Surface>
+      ))}
+    </Box>
+  ),
+}
+
 export const HighContrast: Story = {
   render: () => (
     <Box display="flex" className="flex-wrap gap-3">
