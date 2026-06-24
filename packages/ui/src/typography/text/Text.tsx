@@ -20,6 +20,9 @@ export interface TextOwnProps {
   truncate?: boolean
   wrap?: 'wrap' | 'nowrap' | 'pretty' | 'balance'
   highContrast?: boolean
+  italic?: boolean
+  underline?: boolean
+  strikethrough?: boolean
   m?: Responsive<Spacing>
   mx?: Responsive<Spacing>
   my?: Responsive<Spacing>
@@ -46,6 +49,9 @@ export const Text = React.forwardRef<HTMLElement, TextProps>(
       truncate = false,
       wrap = 'wrap',
       highContrast = false,
+      italic = false,
+      underline = false,
+      strikethrough = false,
       m,
       mx,
       my,
@@ -89,6 +95,11 @@ export const Text = React.forwardRef<HTMLElement, TextProps>(
 
         // Truncation
         truncate && 'truncate',
+
+        // Text decoration & style
+        italic && 'italic',
+        underline && 'underline',
+        strikethrough && 'line-through',
 
         // Text wrapping
         wrap === 'nowrap' && 'whitespace-nowrap',

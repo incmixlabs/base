@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
+import { Text } from '@/typography'
 import { getShortcutAccessibleLabel } from './menu.a11y'
 import {
   menuContentBase,
@@ -20,9 +21,6 @@ import {
   menuItemBase,
   menuItemBaseCls,
   menuItemMotion,
-  menuItemTextBold,
-  menuItemTextItalic,
-  menuItemTextStrikethrough,
   menuLabelBase,
   menuLabelBaseCls,
   menuPanelTransition,
@@ -75,16 +73,9 @@ function DropdownMenuItemLabel({ children, title, subtitle, bold, italic, strike
 
   return (
     <span className="flex min-w-0 flex-1 flex-col">
-      <span
-        className={cn(
-          'truncate',
-          bold && menuItemTextBold,
-          italic && menuItemTextItalic,
-          strikethrough && menuItemTextStrikethrough,
-        )}
-      >
+      <Text truncate weight={bold ? 'medium' : 'regular'} italic={italic} strikethrough={strikethrough}>
         {primary}
-      </span>
+      </Text>
       {hasSubtitle ? <span className="truncate text-xs text-foreground/70">{subtitle}</span> : null}
     </span>
   )

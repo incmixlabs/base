@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
+import { Text } from '@/typography'
 import { getShortcutAccessibleLabel } from './menu.a11y'
 import {
   menuContentBase,
@@ -20,9 +21,6 @@ import {
   menuItemBase,
   menuItemBaseCls,
   menuItemMotion,
-  menuItemTextBold,
-  menuItemTextItalic,
-  menuItemTextStrikethrough,
   menuLabelBase,
   menuLabelBaseCls,
   menuPanelTransition,
@@ -246,16 +244,15 @@ const ContextMenuItem = React.forwardRef<HTMLDivElement, ContextMenuItemProps>(
         style={{ ...getSizeStyles(context.size), ...props.style }}
         {...props}
       >
-        <span
-          className={cn(
-            'flex-1',
-            bold && menuItemTextBold,
-            italic && menuItemTextItalic,
-            strikethrough && menuItemTextStrikethrough,
-          )}
+        <Text
+          as="span"
+          className="flex-1"
+          weight={bold ? 'medium' : 'regular'}
+          italic={italic}
+          strikethrough={strikethrough}
         >
           {children}
-        </span>
+        </Text>
         {shortcut && <span className={cn(menuShortcutBaseCls, menuShortcutBase)}>{shortcut}</span>}
       </ContextMenuPrimitive.Item>
     )
@@ -320,16 +317,15 @@ const ContextMenuCheckboxItem = React.forwardRef<HTMLDivElement, ContextMenuChec
             <Check strokeWidth={2.5} />
           </ContextMenuPrimitive.CheckboxItemIndicator>
         </span>
-        <span
-          className={cn(
-            'flex-1',
-            bold && menuItemTextBold,
-            italic && menuItemTextItalic,
-            strikethrough && menuItemTextStrikethrough,
-          )}
+        <Text
+          as="span"
+          className="flex-1"
+          weight={bold ? 'medium' : 'regular'}
+          italic={italic}
+          strikethrough={strikethrough}
         >
           {children}
-        </span>
+        </Text>
         {shortcut && <span className={cn(menuShortcutBaseCls, menuShortcutBase)}>{shortcut}</span>}
       </ContextMenuPrimitive.CheckboxItem>
     )
@@ -409,16 +405,15 @@ const ContextMenuRadioItem = React.forwardRef<HTMLDivElement, ContextMenuRadioIt
             <Circle className="fill-current" strokeWidth={0} />
           </ContextMenuPrimitive.RadioItemIndicator>
         </span>
-        <span
-          className={cn(
-            'flex-1',
-            bold && menuItemTextBold,
-            italic && menuItemTextItalic,
-            strikethrough && menuItemTextStrikethrough,
-          )}
+        <Text
+          as="span"
+          className="flex-1"
+          weight={bold ? 'medium' : 'regular'}
+          italic={italic}
+          strikethrough={strikethrough}
         >
           {children}
-        </span>
+        </Text>
       </ContextMenuPrimitive.RadioItem>
     )
   },
@@ -542,16 +537,15 @@ const ContextMenuSubTrigger = React.forwardRef<HTMLDivElement, ContextMenuSubTri
         style={{ ...getSizeStyles(context.size), ...props.style }}
         {...props}
       >
-        <span
-          className={cn(
-            'flex-1',
-            bold && menuItemTextBold,
-            italic && menuItemTextItalic,
-            strikethrough && menuItemTextStrikethrough,
-          )}
+        <Text
+          as="span"
+          className="flex-1"
+          weight={bold ? 'medium' : 'regular'}
+          italic={italic}
+          strikethrough={strikethrough}
         >
           {children}
-        </span>
+        </Text>
         <ChevronRight className={cn(menuSubTriggerIconCls, menuSubTriggerIcon)} />
       </ContextMenuPrimitive.SubmenuTrigger>
     )
