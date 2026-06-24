@@ -26,6 +26,7 @@ import { cardPropDefs } from './card.props'
 
 const cardRootBase = '[container-type:inline-size]'
 const cardRootSizeClass = 'af-card-size'
+const cardRootSizeWrapperBase = 'box-border'
 const cardHeaderBase = 'flex flex-col gap-[0.375rem]'
 const cardTitleBase = 'text-lg font-semibold leading-none tracking-tight'
 const cardContentBase = 'pt-4'
@@ -43,6 +44,10 @@ const responsiveSizeKeys = ['xs', 'sm', 'md', 'lg', 'xl'] as const
 
 type CardSizeStyle = React.CSSProperties &
   Record<`--af-card-padding-${'initial' | (typeof responsiveSizeKeys)[number]}`, string>
+type CardRootSizeStyle = React.CSSProperties & {
+  '--inset-border-width': string
+  '--inset-padding': string
+}
 
 function cardPaddingValue(size: CardSize) {
   return `var(--theme-rhythm-card-padding-${size}, ${cardSizeVar(size, 'padding', cardPaddingBySize[size])})`
@@ -130,12 +135,30 @@ export const CardRoot = React.forwardRef<HTMLDivElement, CardRootProps>(
       sharedLayoutProps.pl,
     ].some(value => value !== undefined)
     const sizeStyles = hasExplicitPaddingProps ? undefined : getCardSizeStyles(size)
+    const asChildSizeStyles =
+      asChild && !hasExplicitPaddingProps && sizeStyles
+        ? ({
+            ...sizeStyles,
+            '--inset-border-width': '0px',
+            '--inset-padding': 'var(--af-card-padding-initial)',
+            padding: 'var(--af-card-padding-initial)',
+          } as CardRootSizeStyle)
+        : undefined
     const resolvedVariant = normalizeEnumPropValue(cardPropDefs.variant, variant) ?? cardPropDefs.variant.default
     const resolvedColor = (normalizeEnumPropValue(cardPropDefs.tone, tone) ??
       normalizeEnumPropValue(cardPropDefs.color, color) ??
       SemanticColor.neutral) as SurfaceColorKey
     const resolvedShape = (normalizeEnumPropValue(cardPropDefs.shape, shape) ??
       cardPropDefs.shape.default) as SurfaceShape
+    const content =
+      !asChild && !hasExplicitPaddingProps ? (
+        <div className={cn(cardRootSizeWrapperBase, cardRootSizeClass)} style={sizeStyles as React.CSSProperties}>
+          {children}
+        </div>
+      ) : (
+        children
+      )
+
     return (
       <Surface
         ref={ref}
@@ -148,7 +171,6 @@ export const CardRoot = React.forwardRef<HTMLDivElement, CardRootProps>(
         square={square}
         className={cn(
           cardRootBase,
-          !hasExplicitPaddingProps && cardRootSizeClass,
           getLayoutCompositionClasses(layoutCompositionProps),
           getSharedLayoutClasses(sharedLayoutProps),
           className,
@@ -157,14 +179,14 @@ export const CardRoot = React.forwardRef<HTMLDivElement, CardRootProps>(
           {
             ...getLayoutCompositionStyles(layoutCompositionProps),
             ...getSharedLayoutStyles(sharedLayoutProps),
-            ...sizeStyles,
+            ...asChildSizeStyles,
             ...style,
             '--inset-border-radius': designTokens.radius[themeRadius],
           } as React.CSSProperties
         }
         {...rootProps}
       >
-        {children}
+        {content}
       </Surface>
     )
   },

@@ -428,6 +428,7 @@
     --af-card-padding-active: var(--af-card-padding-initial);
     --inset-border-width: 0px;
     --inset-padding: var(--af-card-padding-active);
+
     padding: var(--af-card-padding-active);
   }
 
