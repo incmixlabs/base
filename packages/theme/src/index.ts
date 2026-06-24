@@ -171,7 +171,15 @@ export {
 } from './summary-bar-chart-spec.js'
 export {
   BORDER_RADIUS_TO_PIXELS,
+  HUE_NAMES,
+  HUE_STEPS,
+  type HueName,
+  type HueStep,
   RHYTHM_RESPONSIVE_PROFILE_VARS,
+  SEMANTIC_COLOR_NAMES,
+  SEMANTIC_COLOR_VAR_TOKENS,
+  type SemanticColorName,
+  type SemanticColorVarToken,
   SPACING_SCALE_VALUES,
   SPACING_TO_PIXELS,
   type SpacingScaleValue,

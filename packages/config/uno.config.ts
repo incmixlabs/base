@@ -1,3 +1,4 @@
+import { CHART_COLOR_KEYS, HUE_NAMES, HUE_STEPS, SEMANTIC_COLOR_NAMES, SEMANTIC_COLOR_VAR_TOKENS } from '@incmix/theme'
 import { defineConfig, presetWind4, transformerDirectives, transformerVariantGroup } from 'unocss'
 
 const responsivePrefixes = ['', 'xs:', 'sm:', 'md:', 'lg:', 'xl:'] as const
@@ -69,58 +70,6 @@ const stateBorderColorUtilities = [
   '[var(--color-error-border)]',
 ] as const
 const colorUtilityPrefixes = ['bg', 'text', 'border'] as const
-const hueNames = [
-  'orange',
-  'tomato',
-  'red',
-  'crimson',
-  'pink',
-  'plum',
-  'purple',
-  'violet',
-  'indigo',
-  'blue',
-  'sky',
-  'cyan',
-  'teal',
-  'green',
-  'lime',
-  'mint',
-  'yellow',
-  'amber',
-  'brown',
-  'gray',
-] as const
-const hueSteps = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 'contrast'] as const
-const semanticColorNames = [
-  'slate',
-  'primary',
-  'secondary',
-  'accent',
-  'neutral',
-  'info',
-  'success',
-  'warning',
-  'error',
-  'inverse',
-  'light',
-  'dark',
-] as const
-const semanticColorTokenSuffixes = [
-  'border',
-  'border-subtle',
-  'surface-subtle',
-  'surface',
-  'surface-hover',
-  'soft',
-  'soft-hover',
-  'primary',
-  'primary-alpha',
-  'text',
-  'contrast',
-  'background',
-] as const
-const chartColorTokens = ['chart1', 'chart2', 'chart3', 'chart4', 'chart5'] as const
 
 const responsiveClasses = (classes: readonly string[]) =>
   responsivePrefixes.flatMap(prefix => classes.map(className => `${prefix}${className}`))
@@ -169,11 +118,11 @@ const sprinklesClasses = [
 const sprinklesSafelist = responsiveClasses(sprinklesClasses)
 
 const arbitraryThemeColorUtilities = colorUtilityPrefixes.flatMap(prefix => [
-  ...hueNames.flatMap(hue => hueSteps.map(step => `${prefix}-[var(--${hue}-${step})]`)),
-  ...semanticColorNames.flatMap(color =>
-    semanticColorTokenSuffixes.map(token => `${prefix}-[var(--color-${color}-${token})]`),
+  ...HUE_NAMES.flatMap(hue => HUE_STEPS.map(step => `${prefix}-[var(--${hue}-${step})]`)),
+  ...SEMANTIC_COLOR_NAMES.flatMap(color =>
+    SEMANTIC_COLOR_VAR_TOKENS.map(token => `${prefix}-[var(--color-${color}-${token})]`),
   ),
-  ...chartColorTokens.map(chart => `${prefix}-[var(--chart-${chart.slice('chart'.length)})]`),
+  ...CHART_COLOR_KEYS.map(chart => `${prefix}-[var(--chart-${chart.slice('chart'.length)})]`),
 ])
 
 const textSizeUtilities = {
