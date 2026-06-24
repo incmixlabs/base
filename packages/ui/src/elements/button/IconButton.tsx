@@ -18,7 +18,7 @@ import {
   iconButtonHighContrastByVariant,
   iconButtonSizeIconScope,
   iconButtonSizeVariants,
-} from './IconButton.css'
+} from './icon-button.class'
 import { iconButtonPropDefs } from './icon-button.props'
 
 // Variant styles

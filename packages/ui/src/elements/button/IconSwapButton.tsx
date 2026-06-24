@@ -11,7 +11,7 @@ import {
   iconSwapButtonMotionBackward,
   iconSwapButtonMotionForward,
   iconSwapButtonRotator,
-} from './IconSwapButton.css'
+} from './icon-swap-button.class'
 
 export type IconSwapButtonProps<TIcons extends readonly [string, string]> = Omit<
   IconButtonProps,

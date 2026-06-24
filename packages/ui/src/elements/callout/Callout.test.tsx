@@ -5,7 +5,7 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { designTokens } from '@/theme/tokens'
 import { Callout } from './Callout'
-import { calloutColorVariants, calloutHoverByVariant, calloutInverseByVariant, calloutSizeVars } from './Callout.css'
+import { calloutColorVariants, calloutHoverByVariant, calloutInverseByVariant, calloutSizeVars } from './callout.class'
 
 afterEach(() => {
   cleanup()

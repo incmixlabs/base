@@ -8,7 +8,7 @@ import {
   iconButtonColorVariants,
   iconButtonSizeIconScope,
   iconButtonSizeVariants,
-} from '@/elements/button/IconButton.css'
+} from '@/elements/button/icon-button.class'
 import { UpDownCaret } from '@/elements/menu/UpDownCaret'
 import { cn } from '@/lib/utils'
 import type { Color, Radius } from '@/theme/tokens'

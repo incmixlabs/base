@@ -4,7 +4,7 @@ import { SemanticColor } from '@/theme/props/color.prop'
 import { resolveIconExport } from './dynamic-icon'
 import { Icon } from './Icon'
 import { IconButton } from './IconButton'
-import { iconButtonColorVariants, iconButtonSizeVariants, iconSizeVariants } from './IconButton.css'
+import { iconButtonColorVariants, iconButtonSizeVariants, iconSizeVariants } from './icon-button.class'
 
 afterEach(() => {
   cleanup()

@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { getControlSizeValues } from '@/elements/control-size'
+import { normalizeEnumPropValue, type Responsive } from '@/theme/props/prop-def'
 import {
   type Color,
   designTokens,
@@ -9,6 +10,18 @@ import {
   type Size,
   type Variant,
 } from '@/theme/tokens'
+
+/** Resolves responsive enum props with a default fallback. */
+export function resolveResponsiveEnumProp<T extends string>(
+  prop: Responsive<T> | undefined,
+  propDef: { values: readonly T[]; default: T },
+): T {
+  if (prop === undefined) return propDef.default
+  if (typeof prop === 'string') {
+    return (normalizeEnumPropValue(propDef, prop) ?? propDef.default) as T
+  }
+  return (normalizeEnumPropValue(propDef, prop.initial) ?? propDef.default) as T
+}
 
 export function getColorVars(color: Color) {
   return getThemeColorVars(color)

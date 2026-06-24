@@ -20,7 +20,7 @@ import {
   Group,
   Popover,
 } from 'react-aria-components'
-import { iconButtonBase, iconButtonColorVariants } from '@/elements/button/IconButton.css'
+import { iconButtonBase, iconButtonColorVariants } from '@/elements/button/icon-button.class'
 import { UpDownCaret } from '@/elements/menu/UpDownCaret'
 import { useThemeRadius } from '@/elements/utils'
 import { useFieldGroup } from '@/form/FieldGroupContext'

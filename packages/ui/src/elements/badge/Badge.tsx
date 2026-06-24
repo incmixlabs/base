@@ -25,7 +25,7 @@ import {
   badgeIconSizeVariants,
   badgeSizeVariants,
   badgeVariantBorderWidth,
-} from './Badge.css'
+} from './badge.class'
 import { badgePropDefs } from './badge.props'
 
 type BadgeSize = (typeof badgePropDefs.size.values)[number]

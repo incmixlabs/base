@@ -10,7 +10,7 @@ import { type Color, resolveThemeColorToken, type ThemeColorToken } from '@/them
 import { SimpleTooltip } from '../tooltip/Tooltip'
 import { getColorVars } from '../utils'
 import { DynamicLucideIcon, type DynamicLucideIconProps } from './dynamic-icon'
-import { iconButtonSizeIconScope, iconSizeVariants } from './IconButton.css'
+import { iconButtonSizeIconScope, iconSizeVariants } from './icon-button.class'
 import { iconButtonPropDefs } from './icon-button.props'
 
 type IconSize = (typeof iconButtonPropDefs.size.values)[number]

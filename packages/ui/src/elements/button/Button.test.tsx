@@ -5,8 +5,8 @@ import { SemanticColor } from '@/theme/props/color.prop'
 import { Theme } from '@/theme/ThemeProvider'
 import { designTokens } from '@/theme/tokens'
 import { Button } from './Button'
-import { buttonColorVariants, buttonInverseVariants, buttonSizeVariants, highContrastByVariant } from './Button.css'
-import { iconSizeVariants } from './IconButton.css'
+import { buttonColorVariants, buttonInverseVariants, buttonSizeVariants, highContrastByVariant } from './button.class'
+import { iconSizeVariants } from './icon-button.class'
 
 afterEach(() => {
   cleanup()

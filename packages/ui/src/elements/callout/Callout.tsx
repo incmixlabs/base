@@ -21,7 +21,7 @@ import {
   calloutSizeVars,
   calloutTextBase,
   calloutTextBySize,
-} from './Callout.css'
+} from './callout.class'
 import { calloutRootPropDefs } from './callout.props'
 
 // Callout-specific variant type (different from Button variants)
