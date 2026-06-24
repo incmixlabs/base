@@ -2014,7 +2014,7 @@
 
   /* Divider Styles */
   .af-divider-base {
-    --af-divider-color: color-mix(in oklch, currentColor 12%, transparent);
+    --af-divider-color: color-mix(in oklch, currentcolor 12%, transparent);
     --af-divider-thickness: 0.125rem;
 
     display: flex;
