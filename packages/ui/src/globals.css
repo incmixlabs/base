@@ -423,6 +423,59 @@
     font-size: var(--af-avatar-font-size, 0.875rem);
     line-height: var(--af-avatar-line-height, 1.25rem);
   }
+
+  .af-card-size {
+    --af-card-padding-active: var(--af-card-padding-initial);
+    --inset-border-width: 0px;
+    --inset-padding: var(--af-card-padding-active);
+
+    padding: var(--af-card-padding-active);
+  }
+
+  @container (min-width: 400px) {
+    .af-card-size {
+      --af-card-padding-active: var(--af-card-padding-xs, var(--af-card-padding-initial));
+    }
+  }
+
+  @container (min-width: 560px) {
+    .af-card-size {
+      --af-card-padding-active: var(--af-card-padding-sm, var(--af-card-padding-xs, var(--af-card-padding-initial)));
+    }
+  }
+
+  @container (min-width: 840px) {
+    .af-card-size {
+      --af-card-padding-active: var(
+        --af-card-padding-md,
+        var(--af-card-padding-sm, var(--af-card-padding-xs, var(--af-card-padding-initial)))
+      );
+    }
+  }
+
+  @container (min-width: 1120px) {
+    .af-card-size {
+      --af-card-padding-active: var(
+        --af-card-padding-lg,
+        var(--af-card-padding-md, var(--af-card-padding-sm, var(--af-card-padding-xs, var(--af-card-padding-initial))))
+      );
+    }
+  }
+
+  @container (min-width: 1360px) {
+    .af-card-size {
+      --af-card-padding-active: var(
+        --af-card-padding-xl,
+        var(
+          --af-card-padding-lg,
+          var(
+            --af-card-padding-md,
+            var(--af-card-padding-sm, var(--af-card-padding-xs, var(--af-card-padding-initial)))
+          )
+        )
+      );
+    }
+  }
 }
 
 @keyframes progress-indeterminate {

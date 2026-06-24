@@ -2,6 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { surfaceColorVariants } from '@/elements/surface/surface.css'
+import { radiusClassByToken } from '@/theme/helpers'
 import {
   gridTemplateAreasCustomResponsive,
   gridTemplateColumnsCustomResponsive,
@@ -10,7 +11,8 @@ import {
 import { Theme } from '@/theme/ThemeProvider'
 import { designTokens } from '@/theme/tokens'
 import { Card } from './Card'
-import { cardRootBase, cardRootSizeResponsiveVariants, cardSurfaceBase } from './Card.css'
+
+const cardRootSizeClassForTest = 'af-card-size'
 
 afterEach(() => {
   cleanup()
@@ -19,34 +21,57 @@ afterEach(() => {
 describe('Card', () => {
   it('applies root and responsive padding classes on the card surface', () => {
     render(
-      <Card.Root size={{ initial: 'xs', md: 'lg' }}>
+      <Card.Root data-testid="card" size={{ initial: 'xs', md: 'lg' }}>
         <Card.Content>Content</Card.Content>
       </Card.Root>,
     )
 
     const content = screen.getByText('Content')
-    const cardSurface = content.closest('div')?.parentElement
+    const cardSurface = screen.getByTestId('card')
+    const cardPaddingWrapper = content.closest(`.${cardRootSizeClassForTest}`) as HTMLElement | null
 
     expect(cardSurface).toBeInTheDocument()
-    expect(cardSurface?.className).toContain(cardRootBase)
-    expect(cardSurface?.className).toContain(cardSurfaceBase)
-    expect(cardSurface?.className).toContain(cardRootSizeResponsiveVariants.md.lg)
+    expect(cardSurface.className).toContain('[container-type:inline-size]')
+    expect(cardSurface).not.toHaveClass('af-card-size')
+    expect(cardPaddingWrapper).toBeInTheDocument()
+    expect(cardPaddingWrapper?.style.getPropertyValue('--af-card-padding-initial')).toContain(
+      '--theme-rhythm-card-padding-xs',
+    )
+    expect(cardPaddingWrapper?.style.getPropertyValue('--af-card-padding-md')).toContain(
+      '--theme-rhythm-card-padding-lg',
+    )
   })
 
   it('defaults radius to the ThemeProvider radius', () => {
     render(
       <Theme radius="lg">
-        <Card.Root>
+        <Card.Root data-testid="card">
           <Card.Content>Content</Card.Content>
         </Card.Root>
       </Theme>,
     )
 
-    const content = screen.getByText('Content')
-    const cardSurface = content.closest('div')?.parentElement
+    const cardSurface = screen.getByTestId('card')
 
     expect(cardSurface).toBeInTheDocument()
+    expect(cardSurface?.className).toContain(radiusClassByToken.lg)
     expect(cardSurface).toHaveStyle({ '--element-border-radius': designTokens.radius.lg })
+    expect(cardSurface).toHaveStyle({ '--inset-border-radius': designTokens.radius.lg })
+    expect(cardSurface?.style.getPropertyValue('--inset-border-radius')).not.toBe('var(--element-border-radius)')
+  })
+
+  it('uses shared token classes for an explicit radius prop', () => {
+    render(
+      <Card.Root data-testid="card" radius="full">
+        <Card.Content>Content</Card.Content>
+      </Card.Root>,
+    )
+
+    const cardSurface = screen.getByTestId('card')
+
+    expect(cardSurface).toBeInTheDocument()
+    expect(cardSurface?.className).toContain(radiusClassByToken.full)
+    expect(cardSurface).toHaveStyle({ '--inset-border-radius': designTokens.radius.full })
   })
 
   it('applies padding props on the card surface root', () => {
@@ -71,7 +96,26 @@ describe('Card', () => {
     const root = screen.getByTestId('card')
 
     expect(root).toHaveClass('p-2', 'md:p-4')
-    expect(root.className).not.toContain(cardRootSizeResponsiveVariants.md.lg)
+    expect(root).not.toHaveClass('af-card-size')
+    expect(root.style.getPropertyValue('--af-card-padding-initial')).toBe('')
+    expect(root.style.getPropertyValue('--af-card-padding-md')).toBe('')
+  })
+
+  it('keeps asChild cards wrapperless while applying static size padding', () => {
+    const { container } = render(
+      <Card.Root asChild size={{ initial: 'xs', md: 'lg' }}>
+        <button data-testid="card-child" type="button">
+          Action
+        </button>
+      </Card.Root>,
+    )
+
+    const child = screen.getByTestId('card-child')
+
+    expect(container.firstElementChild).toBe(child)
+    expect(child).not.toHaveClass('af-card-size')
+    expect(child.style.padding).toBe('var(--af-card-padding-initial)')
+    expect(child.style.getPropertyValue('--af-card-padding-initial')).toContain('--theme-rhythm-card-padding-xs')
   })
 
   it.each(['chart1', 'chart-1'] as const)('supports chart surface tone %s on Card.Root', color => {

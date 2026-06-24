@@ -191,6 +191,21 @@ export const SurfacePropsShowcase: Story = {
   ),
 }
 
+export const RadiusTokens: Story = {
+  render: () => (
+    <div className="grid w-[720px] grid-cols-2 gap-4">
+      {getPropDefValues(cardPropDefs.radius).map(radius => (
+        <Card.Root key={radius} radius={radius} variant="surface" color="neutral">
+          <Card.Header>
+            <Card.Title>{radius}</Card.Title>
+            <Card.Description>radius={radius}</Card.Description>
+          </Card.Header>
+        </Card.Root>
+      ))}
+    </div>
+  ),
+}
+
 export const ChartToneCards: Story = {
   parameters: {
     controls: { disable: true },
