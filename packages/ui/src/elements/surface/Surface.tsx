@@ -9,11 +9,14 @@ import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props
 import type { Radius, SurfaceColorKey } from '@/theme/tokens'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
-  surfaceColorVariants,
   surfaceHighContrastByVariant,
   surfaceHoverEnabledClass,
   surfaceShapeVariants,
   surfaceSquare,
+  surfaceUnoColorVariants,
+  surfaceUnoFocusColorVariants,
+  surfaceUnoHoverColorVariants,
+  surfaceUnoSelectedColorVariants,
 } from './surface.class'
 import type { SurfaceShape, SurfaceVariant } from './surface.props'
 import { surfacePropDefs } from './surface.props'
@@ -26,6 +29,8 @@ export interface SurfaceProps extends React.HTMLAttributes<HTMLDivElement> {
   radius?: Radius
   highContrast?: boolean
   hover?: boolean
+  focus?: boolean
+  selected?: boolean
   shape?: SurfaceShape
   square?: boolean
 }
@@ -40,6 +45,8 @@ export const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(
       radius: radiusProp,
       highContrast = surfacePropDefs.highContrast.default,
       hover = surfacePropDefs.hover.default,
+      focus = surfacePropDefs.focus.default,
+      selected = surfacePropDefs.selected.default,
       shape = surfacePropDefs.shape.default,
       square = surfacePropDefs.square.default,
       className,
@@ -58,6 +65,8 @@ export const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(
     const safeRadius = normalizeEnumPropValue(surfacePropDefs.radius, radiusProp) as Radius | undefined
     const safeHighContrast = normalizeBooleanPropValue(surfacePropDefs.highContrast, highContrast) ?? false
     const safeHover = normalizeBooleanPropValue(surfacePropDefs.hover, hover)
+    const safeFocus = normalizeBooleanPropValue(surfacePropDefs.focus, focus) ?? false
+    const safeSelected = normalizeBooleanPropValue(surfacePropDefs.selected, selected) ?? false
     const safeSquare = normalizeBooleanPropValue(surfacePropDefs.square, square)
     const radius = useThemeRadius(safeRadius)
 
@@ -67,14 +76,18 @@ export const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(
         className={cn(
           'relative box-border border',
           radiusClassByToken[radius],
-          surfaceColorVariants[safeColor][safeVariant],
+          surfaceUnoColorVariants[safeColor][safeVariant],
           safeHover && surfaceHoverEnabledClass,
+          safeHover && surfaceUnoHoverColorVariants[safeColor][safeVariant],
+          safeFocus && surfaceUnoFocusColorVariants[safeColor],
+          safeSelected && surfaceUnoSelectedColorVariants[safeColor],
           safeHighContrast && 'af-high-contrast',
           safeHighContrast && surfaceHighContrastByVariant[safeVariant],
           surfaceShapeVariants[safeShape],
           safeSquare && surfaceSquare,
           className,
         )}
+        data-selected={safeSelected ? '' : undefined}
         style={{ ...getRadiusStyles(radius), ...style }}
         {...props}
       >

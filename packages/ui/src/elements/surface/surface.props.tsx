@@ -15,6 +15,14 @@ const surfacePropDefs = {
   ...surfaceColorPropDef,
   ...highContrastPropDef,
   ...hoverPropDefTrue,
+  focus: {
+    type: 'boolean',
+    default: false,
+  },
+  selected: {
+    type: 'boolean',
+    default: false,
+  },
   ...radiusPropDef,
   shape: {
     type: 'enum',
@@ -28,6 +36,8 @@ const surfacePropDefs = {
 } satisfies {
   variant: PropDef<(typeof surfaceVariants)[number]>
   hover: PropDef<boolean>
+  focus: PropDef<boolean>
+  selected: PropDef<boolean>
   shape: PropDef<(typeof surfaceShapes)[number]>
   square: PropDef<boolean>
 }

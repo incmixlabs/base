@@ -5,7 +5,13 @@ import { Theme } from '@/theme'
 import { radiusClassByToken } from '@/theme/helpers'
 import { designTokens } from '@/theme/tokens'
 import { Surface } from './Surface'
-import { surfaceColorVariants, surfaceHoverEnabledClass } from './surface.class'
+import {
+  surfaceHoverEnabledClass,
+  surfaceUnoColorVariants,
+  surfaceUnoFocusColorVariants,
+  surfaceUnoHoverColorVariants,
+  surfaceUnoSelectedColorVariants,
+} from './surface.class'
 
 afterEach(() => {
   cleanup()
@@ -14,14 +20,19 @@ afterEach(() => {
 describe('Surface', () => {
   it('supports semantic surface tones', () => {
     render(
-      <Surface data-testid="surface" color="primary" variant="soft">
+      <Surface data-testid="surface" color="primary" variant="surface">
         Surface
       </Surface>,
     )
 
     const surface = screen.getByTestId('surface')
 
-    expect(surface.className).toContain(surfaceColorVariants.primary.soft)
+    expect(surface.className).toContain(surfaceUnoColorVariants.primary.surface)
+    expect(surface.className).toContain('bg-primary-surface')
+    expect(surface.className).toContain('border-primary')
+    expect(surface.className).toContain('text-primary')
+    expect(surface.className).not.toContain('surface-color-primary')
+    expect(surface.className).not.toContain('surface-variant-surface')
   })
 
   it.each(['chart1', 'chart-1'] as const)('supports chart surface tone %s', color => {
@@ -33,7 +44,7 @@ describe('Surface', () => {
 
     const surface = screen.getByTestId('surface')
 
-    expect(surface.className).toContain(surfaceColorVariants[color].soft)
+    expect(surface.className).toContain(surfaceUnoColorVariants[color].soft)
   })
 
   it.each(['chart1', 'chart-1'] as const)('supports chart surface tone %s via tone prop', tone => {
@@ -45,7 +56,7 @@ describe('Surface', () => {
 
     const surface = screen.getByTestId('surface')
 
-    expect(surface.className).toContain(surfaceColorVariants[tone].soft)
+    expect(surface.className).toContain(surfaceUnoColorVariants[tone].soft)
   })
 
   it('prefers tone over color when both are provided', () => {
@@ -57,7 +68,7 @@ describe('Surface', () => {
 
     const surface = screen.getByTestId('surface')
 
-    expect(surface.className).toContain(surfaceColorVariants.chart1.soft)
+    expect(surface.className).toContain(surfaceUnoColorVariants.chart1.soft)
   })
 
   it.each([
@@ -86,6 +97,50 @@ describe('Surface', () => {
     } else {
       expect(surface.className).not.toContain(surfaceHoverEnabledClass)
     }
+  })
+
+  it('uses highlight state color for chromatic hover and selected states', () => {
+    render(
+      <Surface data-testid="surface" color="primary" hover selected>
+        Surface
+      </Surface>,
+    )
+
+    const surface = screen.getByTestId('surface')
+
+    expect(surface.className).toContain(surfaceUnoHoverColorVariants.primary.surface)
+    expect(surface.className).toContain('hover:bg-primary-highlight')
+    expect(surface.className).toContain(surfaceUnoSelectedColorVariants.primary)
+    expect(surface.className).toContain('data-[selected]:bg-primary-highlight')
+    expect(surface).toHaveAttribute('data-selected')
+  })
+
+  it('uses soft state color for structural selected states', () => {
+    render(
+      <Surface data-testid="surface" color="neutral" selected>
+        Surface
+      </Surface>,
+    )
+
+    const surface = screen.getByTestId('surface')
+
+    expect(surface.className).toContain(surfaceUnoSelectedColorVariants.neutral)
+    expect(surface.className).toContain('data-[selected]:bg-neutral-soft')
+    expect(surface.className).not.toContain('bg-neutral-highlight')
+  })
+
+  it('adds color-aware focus styling when enabled', () => {
+    render(
+      <Surface data-testid="surface" color="primary" focus>
+        Surface
+      </Surface>,
+    )
+
+    const surface = screen.getByTestId('surface')
+
+    expect(surface.className).toContain(surfaceUnoFocusColorVariants.primary)
+    expect(surface.className).toContain('focus-visible:outline-solid')
+    expect(surface.className).toContain('focus-visible:outline-primary-highlight')
   })
 
   it('uses shared token classes for the resolved theme radius', () => {
