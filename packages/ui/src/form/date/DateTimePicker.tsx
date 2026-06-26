@@ -17,7 +17,6 @@ import { Button } from '@/elements/button/Button'
 import {
   iconButtonBase,
   iconButtonColorVariants,
-  iconButtonSizeIconScope,
   iconButtonSizeVariants,
 } from '@/elements/button/icon-button.class'
 import { useThemeRadius } from '@/elements/utils'
@@ -313,7 +312,6 @@ export function DateTimePicker({
               iconButtonBase,
               iconButtonColorVariants.slate.ghost,
               iconButtonSizeVariants[buttonSize === 'md' ? 'sm' : buttonSize],
-              iconButtonSizeIconScope,
             )}
           >
             <CalendarClock />

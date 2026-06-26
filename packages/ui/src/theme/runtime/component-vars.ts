@@ -163,7 +163,6 @@ export type SwitchGroupTokenSlot = 'gap' | 'inlineGap'
 export type RadioSizeTokenSlot = 'radioSize' | 'indicatorSize' | 'gap'
 export type RadioGroupTokenSlot = 'gap' | 'inlineGap'
 export type RadioCardsSizeTokenSlot = 'padding' | 'gap' | 'indicatorSize' | 'indicatorInnerSize' | 'fontSize'
-export type IconButtonSizeTokenSlot = 'height' | 'fontSize' | 'iconSize'
 export type ToggleSizeTokenSlot = 'height' | 'paddingInline' | 'fontSize' | 'iconSize' | 'gap'
 export type ToggleGroupTokenSlot = 'gap'
 export type RatingSizeTokenSlot = 'iconSize' | 'gap'
@@ -322,10 +321,6 @@ export function radioGroupVar(slot: RadioGroupTokenSlot, fallback: string): stri
 
 export function radioCardsSizeVar(size: string, slot: RadioCardsSizeTokenSlot, fallback: string): string {
   return withFallback(`--component-radio-cards-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function iconButtonSizeVar(size: string, slot: IconButtonSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-icon-button-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function toggleSizeVar(size: string, slot: ToggleSizeTokenSlot, fallback: string): string {

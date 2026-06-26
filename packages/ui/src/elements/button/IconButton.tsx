@@ -17,7 +17,6 @@ import {
   iconButtonColorVariants,
   iconButtonHighContrastColorVariants,
   iconButtonHoverColorVariants,
-  iconButtonSizeIconScope,
   iconButtonSizeVariants,
 } from './icon-button.class'
 import { iconButtonPropDefs } from './icon-button.props'
@@ -150,7 +149,6 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
           'inline-flex items-center justify-center shrink-0 select-none appearance-none cursor-pointer',
           'p-0 m-0 leading-none',
           iconButtonSizeVariants[safeSize],
-          iconButtonSizeIconScope,
           'rounded-[var(--element-border-radius)]',
           iconButtonBase,
           safeHighContrast && 'af-high-contrast',

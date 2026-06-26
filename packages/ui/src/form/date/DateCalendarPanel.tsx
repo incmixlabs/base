@@ -6,7 +6,6 @@ import { Fragment, type KeyboardEvent, type ReactNode, useCallback, useEffect, u
 import {
   iconButtonBase,
   iconButtonColorVariants,
-  iconButtonSizeIconScope,
   iconButtonSizeVariants,
 } from '@/elements/button/icon-button.class'
 import { UpDownCaret } from '@/elements/menu/UpDownCaret'
@@ -243,7 +242,6 @@ export function DateCalendarPanel({
     'disabled:pointer-events-none disabled:opacity-50',
     iconButtonBase,
     iconButtonSizeVariants[mapDateSizeToButtonSize(size)],
-    iconButtonSizeIconScope,
     iconButtonColorVariants.slate.outline,
   )
 

@@ -490,77 +490,9 @@
   }
 
   /* IconButton Styles */
-  .af-icon-button-icon-scope svg {
-    width: var(--af-icon-button-icon-size);
-    height: var(--af-icon-button-icon-size);
-    flex-shrink: 0;
-  }
-
   .af-icon-button-base {
     border-style: solid;
     border-width: 0;
-  }
-
-  .af-icon-button-size-xs {
-    height: var(--component-icon-button-size-xs-height, 1.5rem);
-    width: var(--component-icon-button-size-xs-height, 1.5rem);
-    font-size: var(--component-icon-button-size-xs-font-size, 0.75rem);
-    --af-icon-button-icon-size: var(--component-icon-button-size-xs-icon-size, 0.75rem);
-  }
-  .af-icon-button-size-sm {
-    height: var(--component-icon-button-size-sm-height, 1.75rem);
-    width: var(--component-icon-button-size-sm-height, 1.75rem);
-    font-size: var(--component-icon-button-size-sm-font-size, 0.875rem);
-    --af-icon-button-icon-size: var(--component-icon-button-size-sm-icon-size, 0.875rem);
-  }
-  .af-icon-button-size-md {
-    height: var(--component-icon-button-size-md-height, 2rem);
-    width: var(--component-icon-button-size-md-height, 2rem);
-    font-size: var(--component-icon-button-size-md-font-size, 1rem);
-    --af-icon-button-icon-size: var(--component-icon-button-size-md-icon-size, 1rem);
-  }
-  .af-icon-button-size-lg {
-    height: var(--component-icon-button-size-lg-height, 2.5rem);
-    width: var(--component-icon-button-size-lg-height, 2.5rem);
-    font-size: var(--component-icon-button-size-lg-font-size, 1.125rem);
-    --af-icon-button-icon-size: var(--component-icon-button-size-lg-icon-size, 1.25rem);
-  }
-  .af-icon-button-size-xl {
-    height: var(--component-icon-button-size-xl-height, 2.75rem);
-    width: var(--component-icon-button-size-xl-height, 2.75rem);
-    font-size: var(--component-icon-button-size-xl-font-size, 1.25rem);
-    --af-icon-button-icon-size: var(--component-icon-button-size-xl-icon-size, 1.5rem);
-  }
-
-  .af-icon-size-xs {
-    width: var(--component-icon-button-size-xs-icon-size, 0.75rem);
-    height: var(--component-icon-button-size-xs-icon-size, 0.75rem);
-    font-size: var(--component-icon-button-size-xs-icon-size, 0.75rem);
-    --af-icon-button-icon-size: var(--component-icon-button-size-xs-icon-size, 0.75rem);
-  }
-  .af-icon-size-sm {
-    width: var(--component-icon-button-size-sm-icon-size, 0.875rem);
-    height: var(--component-icon-button-size-sm-icon-size, 0.875rem);
-    font-size: var(--component-icon-button-size-sm-icon-size, 0.875rem);
-    --af-icon-button-icon-size: var(--component-icon-button-size-sm-icon-size, 0.875rem);
-  }
-  .af-icon-size-md {
-    width: var(--component-icon-button-size-md-icon-size, 1rem);
-    height: var(--component-icon-button-size-md-icon-size, 1rem);
-    font-size: var(--component-icon-button-size-md-icon-size, 1rem);
-    --af-icon-button-icon-size: var(--component-icon-button-size-md-icon-size, 1rem);
-  }
-  .af-icon-size-lg {
-    width: var(--component-icon-button-size-lg-icon-size, 1.25rem);
-    height: var(--component-icon-button-size-lg-icon-size, 1.25rem);
-    font-size: var(--component-icon-button-size-lg-icon-size, 1.25rem);
-    --af-icon-button-icon-size: var(--component-icon-button-size-lg-icon-size, 1.25rem);
-  }
-  .af-icon-size-xl {
-    width: var(--component-icon-button-size-xl-icon-size, 1.5rem);
-    height: var(--component-icon-button-size-xl-icon-size, 1.5rem);
-    font-size: var(--component-icon-button-size-xl-icon-size, 1.5rem);
-    --af-icon-button-icon-size: var(--component-icon-button-size-xl-icon-size, 1.5rem);
   }
 
   /* IconSwapButton Styles */

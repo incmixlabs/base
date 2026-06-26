@@ -23,7 +23,6 @@ import { Button } from '@/elements/button/Button'
 import {
   iconButtonBase,
   iconButtonColorVariants,
-  iconButtonSizeIconScope,
   iconButtonSizeVariants,
 } from '@/elements/button/icon-button.class'
 import { UpDownCaret } from '@/elements/menu/UpDownCaret'
@@ -399,7 +398,6 @@ export const CalendarWithPresets = forwardRef<HTMLDivElement, CalendarWithPreset
           'disabled:pointer-events-none disabled:opacity-50',
           iconButtonBase,
           iconButtonSizeVariants[mapDateSizeToButtonSize(size)],
-          iconButtonSizeIconScope,
           iconButtonColorVariants.slate.outline,
         )
       : ''

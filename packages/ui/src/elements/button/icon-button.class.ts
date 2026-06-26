@@ -8,8 +8,6 @@ import type { iconButtonPropDefs } from './icon-button.props'
 type IconButtonVariant = (typeof iconButtonPropDefs.variant.values)[number]
 const iconButtonVariants = ['solid', 'soft', 'outline', 'ghost'] as const satisfies readonly IconButtonVariant[]
 
-export const iconButtonSizeIconScope = 'af-icon-button-icon-scope'
-
 export const iconButtonBase = 'af-icon-button-base'
 
 const iconButtonColorByVariant = {
@@ -49,17 +47,17 @@ export const iconButtonHighContrastColorVariants = createSemanticColorVariantCla
 ) as Record<Color, Record<IconButtonVariant, string>>
 
 export const iconButtonSizeVariants = {
-  xs: 'af-icon-button-size-xs',
-  sm: 'af-icon-button-size-sm',
-  md: 'af-icon-button-size-md',
-  lg: 'af-icon-button-size-lg',
-  xl: 'af-icon-button-size-xl',
+  xs: 'h-6 w-6 text-xs [&_svg]:h-3 [&_svg]:w-3',
+  sm: 'h-7 w-7 text-sm [&_svg]:h-3.5 [&_svg]:w-3.5',
+  md: 'h-8 w-8 text-base [&_svg]:h-4 [&_svg]:w-4',
+  lg: 'h-10 w-10 text-lg [&_svg]:h-5 [&_svg]:w-5',
+  xl: 'h-11 w-11 text-xl [&_svg]:h-6 [&_svg]:w-6',
 } as const
 
 export const iconSizeVariants = {
-  xs: 'af-icon-size-xs',
-  sm: 'af-icon-size-sm',
-  md: 'af-icon-size-md',
-  lg: 'af-icon-size-lg',
-  xl: 'af-icon-size-xl',
+  xs: 'h-3 w-3 text-xs [&_svg]:h-3 [&_svg]:w-3',
+  sm: 'h-3.5 w-3.5 text-sm [&_svg]:h-3.5 [&_svg]:w-3.5',
+  md: 'h-4 w-4 text-base [&_svg]:h-4 [&_svg]:w-4',
+  lg: 'h-5 w-5 text-xl [&_svg]:h-5 [&_svg]:w-5',
+  xl: 'h-6 w-6 text-2xl [&_svg]:h-6 [&_svg]:w-6',
 } as const
