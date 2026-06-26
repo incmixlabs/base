@@ -46,7 +46,6 @@ describe('theme concrete resolver', () => {
         size: {},
         fontWeight: {},
         borderRadius: {},
-        spacing: {},
         breakpoint: {},
         typography: {},
       },

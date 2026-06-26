@@ -15,7 +15,6 @@ function createTheme(): ThemeContract {
       size: { sm: { height: '1.75rem' } },
       fontWeight: { light: '300', regular: '400', medium: '500', bold: '700' },
       borderRadius: { none: '0', sm: '4px', md: '6px', lg: '8px', full: '9999px' },
-      spacing: { '0': '0px', '1': '4px' },
       breakpoint: { xs: '520px', sm: '768px', md: '1024px', lg: '1280px', xl: '1640px' },
       typography: {
         fontSans: 'system-ui',
@@ -71,26 +70,26 @@ function createTheme(): ThemeContract {
 describe('theme-compiler', () => {
   it('merges layer overrides with last-write-wins precedence', () => {
     const base = createTheme()
-    const brand = { global: { spacing: { '1': '6px' } } }
+    const brand = { global: { borderRadius: { sm: '6px' } } }
     const tenant = {
-      global: { spacing: { '1': '8px' } },
+      global: { borderRadius: { sm: '8px' } },
       component: { badge: { size: { sm: { paddingInline: '1rem' } } } },
     }
-    const user = { global: { spacing: { '1': '10px' } } }
+    const user = { global: { borderRadius: { sm: '10px' } } }
 
     const merged = mergeThemeContracts(base, brand, tenant, user)
 
-    expect(merged.global.spacing['1']).toBe('10px')
+    expect(merged.global.borderRadius.sm).toBe('10px')
     expect((merged.component.badge as { size: { sm: { paddingInline: string } } }).size.sm.paddingInline).toBe('1rem')
   })
 
   it('ignores prototype pollution keys while merging token overrides', () => {
     const base = createTheme()
-    const polluted = JSON.parse('{"global":{"spacing":{"__proto__":{"polluted":"yes"},"1":"8px"}}}')
+    const polluted = JSON.parse('{"global":{"borderRadius":{"__proto__":{"polluted":"yes"},"sm":"8px"}}}')
 
     const merged = mergeThemeContracts(base, polluted)
 
-    expect(merged.global.spacing['1']).toBe('8px')
+    expect(merged.global.borderRadius.sm).toBe('8px')
     expect(({} as Record<string, unknown>).polluted).toBeUndefined()
     expect(Object.prototype).not.toHaveProperty('polluted')
   })

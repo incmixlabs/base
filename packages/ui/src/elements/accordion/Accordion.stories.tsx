@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import type { ComponentProps } from 'react'
+import { cn } from '@/lib/utils'
 import { getPropDefValues } from '@/theme/props/prop-def'
 import { selectArgType } from '@/theme/props/storybook'
 import { Accordion } from './Accordion'
@@ -28,8 +29,15 @@ const accordionItems = [
 ] as const
 
 function AccordionExample(args: ComponentProps<typeof Accordion.Root>) {
+  const { className, ...rootProps } = args
+
   return (
-    <Accordion.Root {...args} className="w-[560px]">
+    <Accordion.Root
+      {...rootProps}
+      className={
+        typeof className === 'function' ? state => cn('w-[560px]', className(state)) : cn('w-[560px]', className)
+      }
+    >
       {accordionItems.map(item => (
         <Accordion.Item key={item.value} value={item.value}>
           <Accordion.Trigger>{item.trigger}</Accordion.Trigger>
