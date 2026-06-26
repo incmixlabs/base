@@ -44,6 +44,9 @@ describe('theme token class maps', () => {
     expect(getSemanticColorClassRecipe('chart1').state.hoverBg).toBe(
       'hover:bg-[color-mix(in_oklch,var(--chart-1)_36%,var(--color-light-surface))]',
     )
+    expect(getSemanticColorClassRecipe('chart1').state.hoverContainerBg).toBe(
+      'hover:bg-[color-mix(in_oklch,var(--chart-1)_18%,var(--color-light-surface))]',
+    )
   })
 
   it('normalizes chart aliases in semantic color class recipes', () => {
