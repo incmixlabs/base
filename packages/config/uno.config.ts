@@ -227,6 +227,7 @@ const surfaceColorUtilities = surfaceColorNames.flatMap(color => [
   `hover:${surfaceStateBackgroundUtility(color)}`,
   `hover:${surfaceStateBackgroundUtility(color, 'container')}`,
   `active:${surfaceStateBackgroundUtility(color)}`,
+  `active:${surfaceStateBackgroundUtility(color, 'container')}`,
   `data-[selected]:${surfaceStateBackgroundUtility(color)}`,
   `focus-visible:${surfaceFocusOutlineUtility(color)}`,
 ])
