@@ -1,31 +1,63 @@
 import type { Transition, Variants } from 'motion/react'
+import type { accordionRootPropDefs } from './accordion.props'
 
-export type AccordionSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2x'
+export type AccordionSize = (typeof accordionRootPropDefs.size.values)[number]
 
-export const accordionRootBase = 'af-accordion-root-base'
-export const accordionRootBorderless = 'af-accordion-root-borderless'
+export const accordionRootBase =
+  'overflow-hidden rounded-[var(--element-border-radius)] border border-neutral bg-neutral-surface'
+export const accordionRootBorderless = 'border-0'
 
-export const accordionItemBase = 'af-accordion-item-base'
-export const accordionItemBorderless = 'af-accordion-item-borderless'
+export const accordionItemBase = 'border-t border-neutral first:border-t-0'
+export const accordionItemBorderless = 'border-t-0'
 
-export const accordionHeaderBase = 'af-accordion-header-base'
-export const accordionTriggerPaddingless = 'af-padding-less'
-export const accordionTriggerBase = 'af-accordion-trigger-base'
+export const accordionHeaderBase = 'm-0 min-w-0 w-full'
+export const accordionTriggerPaddingless = 'p-0'
+export const accordionTriggerBase =
+  'group flex w-full cursor-pointer items-center justify-between border-0 bg-transparent text-left text-neutral transition-colors duration-[var(--af-motion-fast)] ease-[var(--af-ease-standard)] data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-solid focus-visible:outline-[var(--color-primary-primary)] [&:hover:not([data-disabled])]:bg-neutral-soft'
 
-export const accordionChevron = 'af-accordion-chevron'
+export const accordionChevron =
+  'shrink-0 transition-transform duration-[var(--af-motion-fast)] ease-[var(--af-ease-standard)]'
 
-export const accordionContentBase = 'af-accordion-content-base'
-export const accordionContentInner = 'af-accordion-content-inner'
-export const accordionContentPaddingless = 'af-accordion-content-paddingless'
+export const accordionContentBase =
+  'overflow-hidden [color:color-mix(in_oklch,var(--color-neutral-text)_68%,transparent)]'
+export const accordionContentInner = 'px-4'
+export const accordionContentPaddingless = 'p-0'
 
-export const accordionSizeVars = {
-  xs: 'af-accordion-size-xs',
-  sm: 'af-accordion-size-sm',
-  md: 'af-accordion-size-md',
-  lg: 'af-accordion-size-lg',
-  xl: 'af-accordion-size-xl',
-  '2x': 'af-accordion-size-2x',
-} as const
+export const accordionTextSizeVariants = {
+  xs: 'text-xs leading-4',
+  sm: 'text-sm leading-5',
+  md: 'text-base leading-6',
+  lg: 'text-lg leading-[1.625rem]',
+  xl: 'text-xl leading-7',
+  '2x': 'text-2xl leading-[1.875rem]',
+} as const satisfies Record<AccordionSize, string>
+
+export const accordionTriggerSizeVariants = {
+  xs: 'gap-1 px-4 py-1',
+  sm: 'gap-1.5 px-4 py-1',
+  md: 'gap-2 px-4 py-1',
+  lg: 'gap-2.5 px-4 py-[0.4375rem]',
+  xl: 'gap-[0.6875rem] px-4 py-2',
+  '2x': 'gap-[0.875rem] px-4 py-[1.5625rem]',
+} as const satisfies Record<AccordionSize, string>
+
+export const accordionContentSizeVariants = {
+  xs: 'py-1',
+  sm: 'py-1',
+  md: 'py-1',
+  lg: 'py-[0.4375rem]',
+  xl: 'py-2',
+  '2x': 'py-[1.5625rem]',
+} as const satisfies Record<AccordionSize, string>
+
+export const accordionChevronSizeVariants = {
+  xs: 'h-[0.75rem] w-[0.75rem]',
+  sm: 'h-[0.875rem] w-[0.875rem]',
+  md: 'h-[1rem] w-[1rem]',
+  lg: 'h-[1.25rem] w-[1.25rem]',
+  xl: 'h-[1.5rem] w-[1.5rem]',
+  '2x': 'h-[1.75rem] w-[1.75rem]',
+} as const satisfies Record<AccordionSize, string>
 
 // Motion variants
 export const accordionPanelVariants: Variants = {

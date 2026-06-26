@@ -14,16 +14,6 @@ function componentVar(component: string, slot: string, fallback: string): string
 
 export type SurfaceVariantTokenSlot = 'boxShadow'
 export type SurfaceShapeTokenSlot = 'radius'
-export type AccordionSizeTokenSlot =
-  | 'triggerPaddingInline'
-  | 'triggerPaddingBlock'
-  | 'contentPaddingInline'
-  | 'contentPaddingBlock'
-  | 'fontSize'
-  | 'lineHeight'
-  | 'gap'
-  | 'iconSize'
-  | 'triggerTransition'
 export type CalloutSizeTokenSlot =
   | 'padding'
   | 'rowGap'
@@ -170,10 +160,6 @@ export function surfaceVariantVar(variant: string, slot: SurfaceVariantTokenSlot
 
 export function surfaceShapeVar(shape: string, slot: SurfaceShapeTokenSlot, fallback: string): string {
   return withFallback(`--component-surface-shape-${toKebabCase(shape)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function accordionSizeVar(size: string, slot: AccordionSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-accordion-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function fieldGroupSectionVar(slot: FieldGroupSectionTokenSlot, fallback: string): string {

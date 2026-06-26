@@ -1,10 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { selectArgType } from '@/theme/props/storybook'
 import { AccordionWrapper } from './AccordionWrapper'
+import { accordionRootPropDefs } from './accordion.props'
 
 const meta = {
   title: 'Elements/AccordionWrapper',
   component: AccordionWrapper,
   parameters: { layout: 'centered' },
+  argTypes: {
+    size: selectArgType(accordionRootPropDefs.size),
+    border: { control: 'boolean' },
+    triggerPadding: { control: 'boolean' },
+    contentPadding: { control: 'boolean' },
+    multiple: { control: 'boolean' },
+    triggerIconPosition: selectArgType(accordionRootPropDefs.triggerIconPosition),
+  },
 } satisfies Meta<typeof AccordionWrapper>
 
 export default meta
@@ -33,6 +43,11 @@ const items = [
 export const Default: Story = {
   args: {
     className: 'w-[560px]',
+    size: accordionRootPropDefs.size.default,
+    border: accordionRootPropDefs.border.default,
+    triggerPadding: accordionRootPropDefs.triggerPadding.default,
+    contentPadding: accordionRootPropDefs.contentPadding.default,
+    triggerIconPosition: accordionRootPropDefs.triggerIconPosition.default,
     data: items,
   },
 }
@@ -41,6 +56,11 @@ export const Multiple: Story = {
   args: {
     className: 'w-[560px]',
     multiple: true,
+    size: accordionRootPropDefs.size.values[1],
+    border: accordionRootPropDefs.border.default,
+    triggerPadding: accordionRootPropDefs.triggerPadding.default,
+    contentPadding: accordionRootPropDefs.contentPadding.default,
+    triggerIconPosition: accordionRootPropDefs.triggerIconPosition.default,
     data: [
       { value: 'performance', title: 'Performance', content: 'Small and composable primitives.', open: true },
       {

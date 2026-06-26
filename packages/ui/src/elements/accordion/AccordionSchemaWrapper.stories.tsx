@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Badge } from '@/elements'
+import { selectArgType } from '@/theme/props/storybook'
 import { AccordionSchemaWrapper } from './AccordionSchemaWrapper'
+import { accordionRootPropDefs } from './accordion.props'
 
 const schema = {
   id: 'onboarding-faq',
@@ -41,6 +43,14 @@ const meta = {
   component: AccordionSchemaWrapper,
   parameters: { layout: 'centered' },
   tags: ['autodocs'],
+  argTypes: {
+    size: selectArgType(accordionRootPropDefs.size),
+    border: { control: 'boolean' },
+    triggerPadding: { control: 'boolean' },
+    contentPadding: { control: 'boolean' },
+    multiple: { control: 'boolean' },
+    triggerIconPosition: selectArgType(accordionRootPropDefs.triggerIconPosition),
+  },
 } satisfies Meta<typeof AccordionSchemaWrapper>
 
 export default meta
@@ -50,6 +60,12 @@ export const Default: Story = {
   args: {
     schema,
     className: 'w-[640px]',
+    size: accordionRootPropDefs.size.default,
+    border: accordionRootPropDefs.border.default,
+    triggerPadding: accordionRootPropDefs.triggerPadding.default,
+    contentPadding: accordionRootPropDefs.contentPadding.default,
+    multiple: accordionRootPropDefs.multiple.default,
+    triggerIconPosition: accordionRootPropDefs.triggerIconPosition.default,
   },
 }
 
@@ -57,6 +73,12 @@ export const RenderOverride: Story = {
   args: {
     schema,
     className: 'w-[640px]',
+    size: accordionRootPropDefs.size.default,
+    border: accordionRootPropDefs.border.default,
+    triggerPadding: accordionRootPropDefs.triggerPadding.default,
+    contentPadding: accordionRootPropDefs.contentPadding.default,
+    multiple: accordionRootPropDefs.multiple.default,
+    triggerIconPosition: accordionRootPropDefs.triggerIconPosition.default,
     renderItem: (item, defaults) => {
       if (item.value !== 'connections') return defaults
       return {
