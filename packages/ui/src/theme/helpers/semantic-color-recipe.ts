@@ -1,6 +1,6 @@
 import { CHROMATIC_SURFACE_COLOR_NAMES } from '@incmix/theme'
-import { normalizeChartColor, type SemanticColorKey, semanticColorKeys } from '@/theme/props/color.prop'
-import { SURFACE_COLOR_KEYS, type SurfaceColorKey } from '@/theme/tokens'
+import { normalizeChartColor, type SemanticColorKey, semanticColorKeys } from '../props/color.prop'
+import { SURFACE_COLOR_KEYS, type SurfaceColorKey } from '../tokens'
 
 type SemanticColorInteractionLayer = 'soft' | 'container'
 type SemanticColorInteractionState = 'hover' | 'active'
