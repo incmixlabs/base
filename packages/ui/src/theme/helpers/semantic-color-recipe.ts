@@ -1,6 +1,6 @@
 import { CHROMATIC_SURFACE_COLOR_NAMES } from '@incmix/theme'
-import { normalizeChartColor, semanticColorKeys } from '@/theme/props/color.prop'
-import { type Color, SURFACE_COLOR_KEYS, type SurfaceColorKey } from '@/theme/tokens'
+import { normalizeChartColor, semanticColorKeys, type SemanticColorKey } from '@/theme/props/color.prop'
+import { SURFACE_COLOR_KEYS, type SurfaceColorKey } from '@/theme/tokens'
 
 type SemanticColorInteractionLayer = 'soft' | 'container'
 
@@ -134,8 +134,10 @@ export function getSemanticColorClassRecipe(color: SurfaceColorKey) {
 
 export function createSemanticColorVariantClassMap<VariantName extends string>(
   variants: readonly VariantName[],
-  getClassName: (recipe: SemanticColorClassRecipe, variant: VariantName, color: Color) => string,
+  getClassName: (recipe: SemanticColorClassRecipe, variant: VariantName, color: SemanticColorKey) => string,
 ) {
+  type SemanticColorVariantClassMap = Record<SemanticColorKey, Record<VariantName, string>>
+
   return Object.fromEntries(
     semanticColorKeys.map(color => [
       color,
@@ -143,5 +145,5 @@ export function createSemanticColorVariantClassMap<VariantName extends string>(
         variants.map(variant => [variant, getClassName(semanticColorClassRecipes[color], variant, color)]),
       ),
     ]),
-  ) as Record<Color, Record<VariantName, string>>
+  ) as SemanticColorVariantClassMap
 }
