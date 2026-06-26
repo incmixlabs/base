@@ -110,9 +110,9 @@ describe('Surface', () => {
     const surface = screen.getByTestId('surface')
 
     expect(surface.className).toContain(surfaceUnoHoverColorVariants.primary.surface)
-    expect(surface.className).toContain('hover:bg-[var(--color-primary-surface-hover)]')
+    expect(surface.className).toContain('hover:bg-primary-highlight')
     expect(surface.className).toContain(surfaceUnoSelectedColorVariants.primary)
-    expect(surface.className).toContain('data-[selected]:bg-[var(--color-primary-soft-hover)]')
+    expect(surface.className).toContain('data-[selected]:bg-primary-highlight')
     expect(surface).toHaveAttribute('data-selected')
   })
 
