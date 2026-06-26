@@ -48,12 +48,6 @@ const badgeAvatarSizeMap: Record<BadgeSize, AvatarSize> = {
   md: 'md',
 }
 
-const badgeAvatarStyleMap: Record<BadgeSize, React.CSSProperties> = {
-  xs: { width: '1.25rem', height: '1.25rem' },
-  sm: { width: '1.5rem', height: '1.5rem' },
-  md: { width: '1.75rem', height: '1.75rem' },
-}
-
 const badgeDeleteButtonStyleMap: Record<BadgeSize, React.CSSProperties> = {
   xs: { width: '10px', height: '10px' },
   sm: { width: '12px', height: '12px' },
@@ -186,7 +180,6 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
           <Avatar
             {...avatar}
             size={badgeAvatarSizeMap[safeSize]}
-            style={badgeAvatarStyleMap[safeSize]}
             className={cn(badgeAvatarBase, badgeAvatarSizeVariants[safeSize])}
           />
         )}

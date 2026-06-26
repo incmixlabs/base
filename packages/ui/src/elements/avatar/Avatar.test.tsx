@@ -7,6 +7,7 @@ import { Avatar } from './Avatar'
 import { AVATAR_SIZE_CLASS, AvatarProvider, avatarSizeStyles } from './avatar.context'
 import { avatarFallbackMuted, avatarRadiusByRadius } from './avatar.class'
 import { stringToAvatarSoftTone, stringToAvatarSolidTone, stringToHue } from './avatar.shared'
+import { avatarPropDefs, type AvatarSize } from './avatar.props'
 
 afterEach(() => {
   cleanup()
@@ -114,46 +115,13 @@ describe('Avatar', () => {
   })
 
   describe('Size variants', () => {
-    it('applies size xs classes', () => {
-      const { container } = render(<Avatar size="xs" name="JD" />)
-      const avatar = container.firstChild as HTMLElement
-      expect(avatar).toHaveClass(AVATAR_SIZE_CLASS)
-      expect(avatar).toHaveClass(avatarSizeStyles.xs)
-    })
-
-    it('applies size sm classes (default)', () => {
-      const { container } = render(<Avatar name="JD" />)
-      const avatar = container.firstChild as HTMLElement
-      expect(avatar).toHaveClass(AVATAR_SIZE_CLASS)
-      expect(avatar).toHaveClass(avatarSizeStyles.sm)
-    })
-
-    it('applies size md classes', () => {
-      const { container } = render(<Avatar size="md" name="JD" />)
-      const avatar = container.firstChild as HTMLElement
-      expect(avatar).toHaveClass(AVATAR_SIZE_CLASS)
-      expect(avatar).toHaveClass(avatarSizeStyles.md)
-    })
-
-    it('applies size lg classes', () => {
-      const { container } = render(<Avatar size="lg" name="JD" />)
-      const avatar = container.firstChild as HTMLElement
-      expect(avatar).toHaveClass(AVATAR_SIZE_CLASS)
-      expect(avatar).toHaveClass(avatarSizeStyles.lg)
-    })
-
-    it('applies size xl classes', () => {
-      const { container } = render(<Avatar size="xl" name="JD" />)
-      const avatar = container.firstChild as HTMLElement
-      expect(avatar).toHaveClass(AVATAR_SIZE_CLASS)
-      expect(avatar).toHaveClass(avatarSizeStyles.xl)
-    })
-
-    it('applies size 2x classes', () => {
-      const { container } = render(<Avatar size="2x" name="JD" />)
-      const avatar = container.firstChild as HTMLElement
-      expect(avatar).toHaveClass(AVATAR_SIZE_CLASS)
-      expect(avatar).toHaveClass(avatarSizeStyles['2x'])
+    avatarPropDefs.size.values.forEach((size: AvatarSize) => {
+      it(`applies size ${size} classes`, () => {
+        const { container } = render(<Avatar size={size} name="JD" />)
+        const avatar = container.firstChild as HTMLElement
+        expect(avatar).toHaveClass(AVATAR_SIZE_CLASS)
+        expect(avatar).toHaveClass(avatarSizeStyles[size])
+      })
     })
   })
 

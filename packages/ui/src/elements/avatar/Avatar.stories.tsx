@@ -3,7 +3,7 @@ import { Avatar, AvatarProvider } from '@/elements'
 import { avatarPropDefs } from '@/elements/avatar/avatar.props'
 import { Image } from '@/elements/image/Image'
 import { AspectRatio } from '@/layouts'
-import { getPropDefValues } from '@/theme/props/prop-def'
+import { selectArgType } from '@/theme/props/storybook'
 import { Text } from '@/typography'
 
 const meta: Meta<typeof Avatar> = {
@@ -34,14 +34,8 @@ const meta: Meta<typeof Avatar> = {
     description: {
       control: 'text',
     },
-    size: {
-      control: 'select',
-      options: getPropDefValues(avatarPropDefs.size),
-    },
-    radius: {
-      control: 'select',
-      options: getPropDefValues(avatarPropDefs.radius),
-    },
+    size: selectArgType(avatarPropDefs.size),
+    radius: selectArgType(avatarPropDefs.radius),
   },
 }
 
