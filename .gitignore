@@ -9,6 +9,6 @@ coverage/
 test-results/
 *.tsbuildinfo
 apps/docs/src/routeTree.gen.ts
-
+packages/ui/.dist-analyze
 .DS_Store
 *.log

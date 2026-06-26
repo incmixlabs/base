@@ -4,7 +4,14 @@ import { SemanticColor } from '@/theme/props/color.prop'
 import { resolveIconExport } from './dynamic-icon'
 import { Icon } from './Icon'
 import { IconButton } from './IconButton'
-import { iconButtonColorVariants, iconButtonSizeVariants, iconSizeVariants } from './icon-button.class'
+import {
+  iconButtonColorVariants,
+  iconButtonHighContrastColorVariants,
+  iconButtonHighContrastHoverColorVariants,
+  iconButtonHoverColorVariants,
+  iconButtonSizeVariants,
+  iconSizeVariants,
+} from './icon-button.class'
 
 afterEach(() => {
   cleanup()
@@ -20,9 +27,12 @@ describe('IconButton', () => {
 
     const button = screen.getByRole('button', { name: 'Test' })
     expect(button.className).toContain(iconButtonColorVariants.info.soft)
+    expect(button.className).toContain(iconButtonHoverColorVariants.info.soft)
+    expect(button.className).not.toContain('surface-color-')
+    expect(button.className).not.toContain('surface-variant-')
   })
 
-  it('falls back to primary color and variant for invalid values', () => {
+  it('falls back to default color and variant for invalid values', () => {
     render(
       <IconButton aria-label="Test" color={'not-a-color' as any} variant={'invalid' as any}>
         <span>Icon</span>
@@ -31,6 +41,18 @@ describe('IconButton', () => {
 
     const button = screen.getByRole('button', { name: 'Test' })
     expect(button.className).toContain(iconButtonColorVariants[SemanticColor.primary].soft)
+  })
+
+  it('uses the prop-def color default when color is omitted', () => {
+    render(
+      <IconButton aria-label="Default">
+        <span>Icon</span>
+      </IconButton>,
+    )
+
+    const button = screen.getByRole('button', { name: 'Default' })
+    expect(button.className).toContain(iconButtonColorVariants[SemanticColor.primary].soft)
+    expect(button.className).toContain(iconButtonHoverColorVariants[SemanticColor.primary].soft)
   })
 
   it('falls back to default size for invalid values', () => {
@@ -42,6 +64,27 @@ describe('IconButton', () => {
 
     const button = screen.getByRole('button', { name: 'Test' })
     expect(button.className).toContain(iconButtonSizeVariants.md)
+  })
+
+  it('uses color-specific high-contrast classes when enabled', () => {
+    render(<IconButton aria-label="Test" color="neutral" variant="solid" highContrast />)
+
+    const button = screen.getByRole('button', { name: 'Test' })
+    expect(button.className).toContain('af-high-contrast')
+    expect(button.className).toContain(iconButtonHighContrastColorVariants.neutral.solid)
+    expect(button.className).toContain(iconButtonHighContrastHoverColorVariants.neutral.solid)
+    expect(button.className).not.toContain(iconButtonColorVariants.neutral.solid)
+    expect(button.className).not.toContain(iconButtonHoverColorVariants.neutral.solid)
+    expect(button.className).not.toContain('af-icon-button-hc')
+    expect(button.className).not.toContain('surface-high-contrast')
+  })
+
+  it('uses interaction backgrounds for outline active states', () => {
+    render(<IconButton aria-label="Outline" color="neutral" variant="outline" />)
+
+    const button = screen.getByRole('button', { name: 'Outline' })
+    expect(button.className).toContain(iconButtonHoverColorVariants.neutral.outline)
+    expect(button.className).toContain('active:bg-[var(--color-neutral-soft-hover)]')
   })
 
   it('uses string title as tooltip content source and fallback aria-label', () => {

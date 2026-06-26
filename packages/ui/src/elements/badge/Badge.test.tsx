@@ -1,12 +1,14 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { iconSizeVariants } from '@/elements/button/icon-button.class'
+import { radiusClassByToken } from '@/theme/helpers'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { Badge } from './Badge'
 import {
   badgeColorVariants,
-  badgeHighContrastByVariant,
-  badgeHoverEnabledClass,
+  badgeHighContrastColorVariants,
+  badgeHighContrastHoverColorVariants,
+  badgeHoverColorVariants,
   badgeSizeVariants,
 } from './badge.class'
 
@@ -25,6 +27,8 @@ describe('Badge', () => {
     const badge = screen.getByText('Test')
     expect(badge.className).toContain(badgeSizeVariants.xs)
     expect(badge.className).toContain(badgeColorVariants.info.soft)
+    expect(badge.className).not.toContain('surface-color-')
+    expect(badge.className).not.toContain('surface-variant-')
   })
 
   it('falls back to default size/color/variant for invalid values', () => {
@@ -39,6 +43,43 @@ describe('Badge', () => {
     expect(badge.className).toContain(badgeColorVariants[SemanticColor.slate].soft)
   })
 
+  it('uses shared radius utility classes', () => {
+    render(<Badge radius="full">Test</Badge>)
+
+    const badge = screen.getByText('Test')
+    expect(badge.className).toContain(radiusClassByToken.full)
+    expect(badge.className).not.toContain('radius_radiusStyleVariants')
+  })
+
+  it('composes asChild and margin props with the badge control classes', () => {
+    render(
+      <Badge asChild m="2">
+        <a href="/labels">Labels</a>
+      </Badge>,
+    )
+
+    const badge = screen.getByRole('link', { name: 'Labels' })
+    expect(badge).toHaveAttribute('href', '/labels')
+    expect(badge.className).toContain(badgeSizeVariants.xs)
+    expect(badge.className).toContain('m-2')
+  })
+
+  it('keeps delete controls outside interactive asChild hosts', () => {
+    render(
+      <Badge asChild onDelete={() => undefined}>
+        <a href="/labels">Labels</a>
+      </Badge>,
+    )
+
+    const link = screen.getByRole('link', { name: 'Labels' })
+    const deleteButton = screen.getByRole('button', { name: 'Remove' })
+
+    expect(link).toHaveAttribute('href', '/labels')
+    expect(link.querySelector('button')).toBeNull()
+    expect(deleteButton.closest('a')).toBeNull()
+    expect(deleteButton.parentElement?.className).toContain(badgeSizeVariants.xs)
+  })
+
   it('applies high-contrast styles when enabled', () => {
     render(
       <Badge variant="soft" highContrast>
@@ -48,7 +89,20 @@ describe('Badge', () => {
 
     const badge = screen.getByText('Test')
     expect(badge.className).toContain('af-high-contrast')
-    expect(badge.className).toContain(badgeHighContrastByVariant.soft)
+    expect(badge.className).toContain(badgeHighContrastColorVariants[SemanticColor.slate].soft)
+    expect(badge.className).not.toContain(badgeColorVariants[SemanticColor.slate].soft)
+  })
+
+  it('uses high-contrast hover classes for hoverable high-contrast badges', () => {
+    render(
+      <Badge variant="soft" highContrast hover>
+        Test
+      </Badge>,
+    )
+
+    const badge = screen.getByText('Test')
+    expect(badge.className).toContain(badgeHighContrastHoverColorVariants[SemanticColor.slate].soft)
+    expect(badge.className).not.toContain(badgeHoverColorVariants[SemanticColor.slate].soft)
   })
 
   it('normalizes boolean-like highContrast and hover values', () => {
@@ -60,17 +114,17 @@ describe('Badge', () => {
 
     const badge = screen.getByText('Test')
     expect(badge.className).not.toContain('af-high-contrast')
-    expect(badge.className).not.toContain(badgeHighContrastByVariant.soft)
-    expect(badge.className).toContain(badgeHoverEnabledClass)
+    expect(badge.className).not.toContain(badgeHighContrastColorVariants[SemanticColor.slate].soft)
+    expect(badge.className).toContain(badgeHoverColorVariants[SemanticColor.slate].soft)
   })
 
   it('defaults hover to false and applies hover classes when enabled', () => {
     const { rerender } = render(<Badge>Test</Badge>)
     const badge = screen.getByText('Test')
-    expect(badge.className).not.toContain(badgeHoverEnabledClass)
+    expect(badge.className).not.toContain(badgeHoverColorVariants[SemanticColor.slate].soft)
 
     rerender(<Badge hover>Test</Badge>)
-    expect(badge.className).toContain(badgeHoverEnabledClass)
+    expect(badge.className).toContain(badgeHoverColorVariants[SemanticColor.slate].soft)
   })
 
   it('renders avatar and delete button for chip-style usage', () => {

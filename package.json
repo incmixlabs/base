@@ -7,10 +7,10 @@
   "packageManager": "pnpm@10.26.2",
   "scripts": {
     "build": "pnpm -r --if-present build",
-    "build:analyze": "pnpm --filter @incmix/storybook build:analyze && pnpm --filter @incmix/ui build:analyze:lib",
+    "build:analyze": "pnpm --filter @incmix/ui build:analyze && pnpm --filter @incmix/ui build:analyze:lib",
     "check:react-compiler": "node scripts/check-react-compiler-health.mjs",
     "dev": "pnpm dev:storybook",
-    "dev:storybook": "pnpm --filter @incmix/storybook dev",
+    "dev:storybook": "pnpm --filter @incmix/ui dev",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "packages": "pnpm -r list --depth -1",

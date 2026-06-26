@@ -15,8 +15,9 @@ import { Icon } from './Icon'
 import {
   iconButtonBase,
   iconButtonColorVariants,
-  iconButtonHighContrastByVariant,
-  iconButtonSizeIconScope,
+  iconButtonHighContrastColorVariants,
+  iconButtonHighContrastHoverColorVariants,
+  iconButtonHoverColorVariants,
   iconButtonSizeVariants,
 } from './icon-button.class'
 import { iconButtonPropDefs } from './icon-button.props'
@@ -62,7 +63,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     {
       size = 'md',
       variant = 'soft',
-      color = SemanticColor.slate,
+      color,
       radius: radiusProp,
       loading = false,
       highContrast = false,
@@ -115,6 +116,9 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     const buttonStyles = tooltipContent ? ({ ...radiusStyles, ...style } as React.CSSProperties) : combinedStyles
     const tooltipSize = mapIconButtonSizeToTooltipSize(safeSize)
     const ariaLabel = ariaLabelProp ?? (tooltipText.length > 0 ? tooltipText : fallbackAriaLabel)
+    const colorVariantClassName = safeHighContrast
+      ? iconButtonHighContrastColorVariants[safeColor][safeVariant]
+      : iconButtonColorVariants[safeColor][safeVariant]
     const iconButtonIconProps = {
       color: 'currentColor',
       strokeWidth: 2.25,
@@ -146,16 +150,17 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
           'inline-flex items-center justify-center shrink-0 select-none appearance-none cursor-pointer',
           'p-0 m-0 leading-none',
           iconButtonSizeVariants[safeSize],
-          iconButtonSizeIconScope,
           'rounded-[var(--element-border-radius)]',
           iconButtonBase,
           safeHighContrast && 'af-high-contrast',
-          iconButtonColorVariants[safeColor][safeVariant],
+          colorVariantClassName,
+          !isDisabled &&
+            (safeHighContrast
+              ? iconButtonHighContrastHoverColorVariants[safeColor][safeVariant]
+              : iconButtonHoverColorVariants[safeColor][safeVariant]),
           'transition-colors',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
           'disabled:pointer-events-none disabled:opacity-50',
-          // High contrast
-          safeHighContrast && iconButtonHighContrastByVariant[safeVariant],
           !tooltipContent && marginProps.className,
 
           className,

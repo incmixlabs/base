@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Copy, Search, Settings, Trash2 } from 'lucide-react'
 import { Box } from '@/layouts/box/Box'
+import { getPropDefValues } from '@/theme/props/prop-def'
 import { selectArgType } from '@/theme/props/storybook'
 import { IconButton } from './IconButton'
 import { iconButtonPropDefs } from './icon-button.props'
+
+const labelForValue = (value: string) => `${value.charAt(0).toUpperCase()}${value.slice(1)}`
 
 const meta: Meta<typeof IconButton> = {
   title: 'Elements/IconButton',
@@ -61,18 +63,9 @@ export const Default: Story = {
 export const Variants: Story = {
   render: () => (
     <Box display="flex" className="gap-3">
-      <IconButton aria-label="Solid" variant="solid">
-        <Search className="h-4 w-4" />
-      </IconButton>
-      <IconButton aria-label="Soft" variant="soft">
-        <Copy className="h-4 w-4" />
-      </IconButton>
-      <IconButton aria-label="Outline" variant="outline">
-        <Settings className="h-4 w-4" />
-      </IconButton>
-      <IconButton aria-label="Ghost" variant="ghost">
-        <Trash2 className="h-4 w-4" />
-      </IconButton>
+      {getPropDefValues(iconButtonPropDefs.variant).map(variant => (
+        <IconButton key={variant} aria-label={labelForValue(variant)} variant={variant} icon="search" />
+      ))}
     </Box>
   ),
 }
@@ -80,18 +73,9 @@ export const Variants: Story = {
 export const Sizes: Story = {
   render: () => (
     <Box display="flex" className="items-center gap-3">
-      <IconButton aria-label="Small" size="sm">
-        <Search className="h-3 w-3" />
-      </IconButton>
-      <IconButton aria-label="Medium" size="md">
-        <Search className="h-4 w-4" />
-      </IconButton>
-      <IconButton aria-label="Large" size="lg">
-        <Search className="h-5 w-5" />
-      </IconButton>
-      <IconButton aria-label="Extra Large" size="xl">
-        <Search className="h-6 w-6" />
-      </IconButton>
+      {getPropDefValues(iconButtonPropDefs.size).map(size => (
+        <IconButton key={size} aria-label={`Size ${size}`} size={size} icon="search" />
+      ))}
     </Box>
   ),
 }
@@ -99,21 +83,9 @@ export const Sizes: Story = {
 export const Radius: Story = {
   render: () => (
     <Box display="flex" className="items-center gap-3">
-      <IconButton aria-label="none" radius="none" variant="soft">
-        <Search className="h-4 w-4" />
-      </IconButton>
-      <IconButton aria-label="sm" radius="sm" variant="soft">
-        <Search className="h-4 w-4" />
-      </IconButton>
-      <IconButton aria-label="md" radius="md" variant="soft">
-        <Search className="h-4 w-4" />
-      </IconButton>
-      <IconButton aria-label="lg" radius="lg" variant="soft">
-        <Search className="h-4 w-4" />
-      </IconButton>
-      <IconButton aria-label="full" radius="full" variant="soft">
-        <Search className="h-4 w-4" />
-      </IconButton>
+      {getPropDefValues(iconButtonPropDefs.radius).map(radius => (
+        <IconButton key={radius} aria-label={`Radius ${radius}`} radius={radius} variant="soft" icon="search" />
+      ))}
     </Box>
   ),
 }

@@ -33,11 +33,13 @@ describe('theme token class maps', () => {
     expect(recipe.text.contrast).toBe('text-primary-contrast')
     expect(recipe.border.default).toBe('border-primary')
     expect(recipe.state.hoverBg).toBe('hover:bg-primary-highlight')
+    expect(recipe.state.activeBg).toBe('active:bg-primary-highlight')
     expect(recipe.state.selectedBg).toBe('data-[selected]:bg-primary-highlight')
   })
 
   it('keeps structural and chart interaction states variant-specific', () => {
     expect(getSemanticColorClassRecipe('neutral').state.hoverBg).toBe('hover:bg-[var(--color-neutral-soft-hover)]')
+    expect(getSemanticColorClassRecipe('neutral').state.activeBg).toBe('active:bg-[var(--color-neutral-soft-hover)]')
     expect(getSemanticColorClassRecipe('neutral').state.hoverContainerBg).toBe(
       'hover:bg-[var(--color-neutral-surface-hover)]',
     )
@@ -46,6 +48,12 @@ describe('theme token class maps', () => {
     )
     expect(getSemanticColorClassRecipe('chart1').state.hoverContainerBg).toBe(
       'hover:bg-[color-mix(in_oklch,var(--chart-1)_18%,var(--color-light-surface))]',
+    )
+    expect(getSemanticColorClassRecipe('chart1').state.activeBg).toBe(
+      'active:bg-[color-mix(in_oklch,var(--chart-1)_36%,var(--color-light-surface))]',
+    )
+    expect(getSemanticColorClassRecipe('chart1').state.activeContainerBg).toBe(
+      'active:bg-[color-mix(in_oklch,var(--chart-1)_18%,var(--color-light-surface))]',
     )
   })
 

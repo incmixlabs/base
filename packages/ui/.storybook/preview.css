@@ -1,4 +1,4 @@
-@import "@incmix/ui/globals.css";
+@import "../src/globals.css";
 
 .storybook-outline-wrapper {
   --outline-box-color: rgb(0 102 255 / 0.9);

@@ -9,18 +9,18 @@ import { visualizer } from 'rollup-plugin-visualizer'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const analyze = process.env.ANALYZE === 'true'
 const storybookDocsBlocksPath = fileURLToPath(import.meta.resolve('@storybook/addon-docs/blocks'))
-const uiSrcPath = resolve(__dirname, '../../../packages/ui/src')
+const uiSrcPath = resolve(__dirname, '../src')
 
 const config: StorybookConfig = {
   stories: [
-    '../../../packages/ui/src/elements/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../../packages/ui/src/form/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../../packages/ui/src/layouts/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../../packages/ui/src/media/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../../packages/ui/src/stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../../packages/ui/src/theme/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../../packages/ui/src/typography/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../../packages/ui/src/**/*.mdx',
+    '../src/elements/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/form/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/layouts/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/media/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/theme/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/typography/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../src/**/*.mdx',
   ],
   addons: [getAbsolutePath('@storybook/addon-docs')],
   framework: {
@@ -37,7 +37,7 @@ const config: StorybookConfig = {
     const workspaceAliases = [
       { find: '@', replacement: uiSrcPath },
       { find: /^@incmix\/ui\/(.+)$/, replacement: `${uiSrcPath}/$1` },
-      { find: '@incmix/theme', replacement: resolve(__dirname, '../../../packages/theme/src/index.ts') },
+      { find: '@incmix/theme', replacement: resolve(__dirname, '../../theme/src/index.ts') },
       { find: '@incmix/ui', replacement: resolve(uiSrcPath, 'index.ts') },
       { find: '@storybook/addon-docs/blocks', replacement: storybookDocsBlocksPath },
     ]

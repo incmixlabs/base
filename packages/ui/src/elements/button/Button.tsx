@@ -3,7 +3,6 @@
 import { Button as ButtonPrimitive } from '@base-ui/react/button'
 import { Loader2 } from 'lucide-react'
 import * as React from 'react'
-import { surfaceHoverEnabledClass } from '@/elements/surface/surface.class'
 import { composeRefs } from '@/lib/compose-refs'
 import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
@@ -16,14 +15,14 @@ import { getRadiusStyles, resolveResponsiveEnumProp, useThemeRadius } from '../u
 import {
   buttonBaseCls,
   buttonColorVariants,
-  buttonInverseVariants,
+  buttonHighContrastColorVariants,
+  buttonHighContrastHoverColorVariants,
+  buttonHoverColorVariants,
   buttonLoading,
   buttonLoadingContentCls,
   buttonLoadingOverlayCls,
   buttonMotion,
-  buttonSizeIconScope,
   buttonSizeVariants,
-  highContrastByVariant,
 } from './button.class'
 import { buttonPropDefs } from './button.props'
 import { Icon } from './Icon'
@@ -56,7 +55,7 @@ export function Button({
   asChild = false,
   loading = false,
   highContrast = false,
-  inverse = false,
+  inverse: _inverse = false,
   iconStart,
   iconEnd,
   fill = false,
@@ -82,10 +81,12 @@ export function Button({
   const safeRadius = normalizeEnumPropValue(buttonPropDefs.radius, radiusProp) as Radius | undefined
   const safeLoading = normalizeBooleanPropValue(buttonPropDefs.loading, loading)
   const safeHighContrast = normalizeBooleanPropValue(buttonPropDefs.highContrast, highContrast) ?? false
-  const safeInverse = normalizeBooleanPropValue(buttonPropDefs.inverse, inverse)
   const radius = useThemeRadius(safeRadius)
   const radiusStyles = getRadiusStyles(radius)
   const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
+  const colorVariantClassName = safeHighContrast
+    ? buttonHighContrastColorVariants[safeColor][safeVariant]
+    : buttonColorVariants[safeColor][safeVariant]
 
   const combinedStyles = {
     ...marginProps.style,
@@ -98,22 +99,23 @@ export function Button({
     getInteractiveElementBaseClasses({ transition: 'colors' }),
     buttonMotion,
     buttonSizeVariants[resolvedSize],
-    buttonSizeIconScope,
     'enabled:cursor-pointer',
-    !disabled && !safeLoading && surfaceHoverEnabledClass,
+    !disabled &&
+      !safeLoading &&
+      (safeHighContrast
+        ? buttonHighContrastHoverColorVariants[safeColor][safeVariant]
+        : buttonHoverColorVariants[safeColor][safeVariant]),
     safeHighContrast && 'af-high-contrast',
     'rounded-[var(--element-border-radius)]',
-    buttonColorVariants[safeColor][safeVariant],
-    safeInverse && buttonInverseVariants[safeColor][safeVariant],
+    colorVariantClassName,
     safeLoading && buttonLoading,
-    safeHighContrast && highContrastByVariant[safeVariant],
     marginProps.className,
     className,
   )
 
   const loadingOverlay = safeLoading ? (
     <span className={buttonLoadingOverlayCls}>
-      <Loader2 className="animate-spin text-current" />
+      <Loader2 className="h-[1em] w-[1em] animate-spin text-current" />
     </span>
   ) : null
 

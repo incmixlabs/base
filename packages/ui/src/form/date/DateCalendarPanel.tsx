@@ -3,12 +3,7 @@
 import { isSameMonth, startOfMonth } from 'date-fns'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Fragment, type KeyboardEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import {
-  iconButtonBase,
-  iconButtonColorVariants,
-  iconButtonSizeIconScope,
-  iconButtonSizeVariants,
-} from '@/elements/button/icon-button.class'
+import { iconButtonBase, iconButtonColorVariants, iconButtonSizeVariants } from '@/elements/button/icon-button.class'
 import { UpDownCaret } from '@/elements/menu/UpDownCaret'
 import { cn } from '@/lib/utils'
 import type { Color, Radius } from '@/theme/tokens'
@@ -243,7 +238,6 @@ export function DateCalendarPanel({
     'disabled:pointer-events-none disabled:opacity-50',
     iconButtonBase,
     iconButtonSizeVariants[mapDateSizeToButtonSize(size)],
-    iconButtonSizeIconScope,
     iconButtonColorVariants.slate.outline,
   )
 

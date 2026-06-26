@@ -1,8 +1,9 @@
 import { CHROMATIC_SURFACE_COLOR_NAMES } from '@incmix/theme'
-import { normalizeChartColor } from '@/theme/props/color.prop'
+import { normalizeChartColor, type SemanticColorKey, semanticColorKeys } from '@/theme/props/color.prop'
 import { SURFACE_COLOR_KEYS, type SurfaceColorKey } from '@/theme/tokens'
 
 type SemanticColorInteractionLayer = 'soft' | 'container'
+type SemanticColorInteractionState = 'hover' | 'active'
 
 export interface SemanticColorClassRecipe {
   colorName: string
@@ -28,7 +29,9 @@ export interface SemanticColorClassRecipe {
   }
   state: {
     hoverBg: string
+    activeBg: string
     hoverContainerBg: string
+    activeContainerBg: string
     selectedBg: string
     focus: string
   }
@@ -67,6 +70,27 @@ function interactionBackgroundClassName(colorName: string, layer: SemanticColorI
     chartInteractionBackgroundClassName(colorName, layer) ??
     `bg-[var(--color-${colorName}-${interactionTokenByLayer[layer]}-hover)]`
   )
+}
+
+function activeInteractionBackgroundClassName(colorName: string, layer: SemanticColorInteractionLayer = 'soft') {
+  if (chromaticSurfaceColorSet.has(colorName)) return `bg-${colorName}-highlight`
+
+  if (layer === 'container') return interactionBackgroundClassName(colorName, layer)
+
+  return chartInteractionBackgroundClassName(colorName, layer) ?? `bg-[var(--color-${colorName}-soft-hover)]`
+}
+
+function stateBackgroundClassName(
+  state: SemanticColorInteractionState,
+  colorName: string,
+  layer: SemanticColorInteractionLayer = 'soft',
+) {
+  const backgroundClassName =
+    state === 'active'
+      ? activeInteractionBackgroundClassName(colorName, layer)
+      : interactionBackgroundClassName(colorName, layer)
+
+  return `${state}:${backgroundClassName}`
 }
 
 function focusOutlineClassName(colorName: string) {
@@ -109,8 +133,10 @@ function createSemanticColorClassRecipe(color: SurfaceColorKey): SemanticColorCl
       selected: softInteractionBg,
     },
     state: {
-      hoverBg: `hover:${softInteractionBg}`,
-      hoverContainerBg: `hover:${containerInteractionBg}`,
+      hoverBg: stateBackgroundClassName('hover', colorName),
+      activeBg: stateBackgroundClassName('active', colorName),
+      hoverContainerBg: stateBackgroundClassName('hover', colorName, 'container'),
+      activeContainerBg: stateBackgroundClassName('active', colorName, 'container'),
       selectedBg: `data-[selected]:${softInteractionBg}`,
       focus: `focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:${focusOutlineClassName(colorName)}`,
     },
@@ -130,4 +156,20 @@ export const semanticColorClassRecipes = Object.fromEntries(
 
 export function getSemanticColorClassRecipe(color: SurfaceColorKey) {
   return semanticColorClassRecipes[color]
+}
+
+export function createSemanticColorVariantClassMap<VariantName extends string>(
+  variants: readonly VariantName[],
+  getClassName: (recipe: SemanticColorClassRecipe, variant: VariantName, color: SemanticColorKey) => string,
+) {
+  type SemanticColorVariantClassMap = Record<SemanticColorKey, Record<VariantName, string>>
+
+  return Object.fromEntries(
+    semanticColorKeys.map(color => [
+      color,
+      Object.fromEntries(
+        variants.map(variant => [variant, getClassName(semanticColorClassRecipes[color], variant, color)]),
+      ),
+    ]),
+  ) as SemanticColorVariantClassMap
 }

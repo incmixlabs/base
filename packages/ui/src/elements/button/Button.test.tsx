@@ -7,12 +7,13 @@ import { designTokens } from '@/theme/tokens'
 import { Button } from './Button'
 import {
   buttonColorVariants,
-  buttonInverseVariants,
+  buttonHighContrastColorVariants,
+  buttonHighContrastHoverColorVariants,
+  buttonHoverColorVariants,
   buttonLoading,
   buttonLoadingContentCls,
   buttonLoadingOverlayCls,
   buttonSizeVariants,
-  highContrastByVariant,
 } from './button.class'
 import { iconSizeVariants } from './icon-button.class'
 
@@ -30,6 +31,9 @@ describe('Button', () => {
 
     const button = screen.getByRole('button', { name: 'Click' })
     expect(button.className).toContain(buttonColorVariants.info.soft)
+    expect(button.className).toContain(buttonHoverColorVariants.info.soft)
+    expect(button.className).not.toContain('surface-color-')
+    expect(button.className).not.toContain('surface-variant-')
   })
 
   it('falls back to primary color and variant for invalid values', () => {
@@ -59,7 +63,22 @@ describe('Button', () => {
 
     const button = screen.getByRole('button', { name: 'High contrast' })
     expect(button.className).toContain('af-high-contrast')
-    expect(button.className).toContain(highContrastByVariant.soft)
+    expect(button.className).toContain(buttonHighContrastColorVariants[SemanticColor.primary].soft)
+    expect(button.className).toContain(buttonHighContrastHoverColorVariants[SemanticColor.primary].soft)
+    expect(button.className).not.toContain(buttonColorVariants[SemanticColor.primary].soft)
+    expect(button.className).not.toContain(buttonHoverColorVariants[SemanticColor.primary].soft)
+  })
+
+  it('uses interaction backgrounds for outline active states', () => {
+    render(
+      <Button color="neutral" variant="outline">
+        Outline
+      </Button>,
+    )
+
+    const button = screen.getByRole('button', { name: 'Outline' })
+    expect(button.className).toContain(buttonHoverColorVariants.neutral.outline)
+    expect(button.className).toContain('active:bg-[var(--color-neutral-soft-hover)]')
   })
 
   it('normalizes case-insensitive enum values and boolean-like visual props', () => {
@@ -103,9 +122,13 @@ describe('Button', () => {
       </>,
     )
 
-    expect(screen.getByRole('button', { name: 'Neutral' }).className).toContain(buttonColorVariants.neutral.solid)
-    expect(screen.getByRole('button', { name: 'Light' }).className).toContain(buttonColorVariants.light.solid)
-    expect(screen.getByRole('button', { name: 'Dark' }).className).toContain(buttonColorVariants.dark.solid)
+    expect(screen.getByRole('button', { name: 'Neutral' }).className).toContain(
+      buttonHighContrastColorVariants.neutral.solid,
+    )
+    expect(screen.getByRole('button', { name: 'Light' }).className).toContain(
+      buttonHighContrastColorVariants.light.solid,
+    )
+    expect(screen.getByRole('button', { name: 'Dark' }).className).toContain(buttonHighContrastColorVariants.dark.solid)
     expect(screen.getByRole('button', { name: 'Neutral' }).className).toContain('af-high-contrast')
     expect(screen.getByRole('button', { name: 'Light' }).className).toContain('af-high-contrast')
     expect(screen.getByRole('button', { name: 'Dark' }).className).toContain('af-high-contrast')
@@ -226,7 +249,7 @@ describe('Button', () => {
     })
   })
 
-  it('applies inverse as a real visual-class change for soft variant', () => {
+  it('accepts inverse without changing the resolved class contract', () => {
     const { rerender } = render(
       <Button color="secondary" variant="soft">
         Soft
@@ -236,7 +259,6 @@ describe('Button', () => {
     const button = screen.getByRole('button', { name: 'Soft' })
     const beforeInverse = button.className
     expect(beforeInverse).toContain(buttonColorVariants.secondary.soft)
-    expect(beforeInverse).not.toContain(buttonInverseVariants.secondary.soft)
 
     rerender(
       <Button color="secondary" variant="soft" inverse>
@@ -245,8 +267,8 @@ describe('Button', () => {
     )
 
     expect(button.className).toContain(buttonColorVariants.secondary.soft)
-    expect(button.className).toContain(buttonInverseVariants.secondary.soft)
-    expect(button.className).not.toBe(beforeInverse)
+    expect(button).not.toHaveAttribute('inverse')
+    expect(button.className).toBe(beforeInverse)
   })
 
   it('defaults radius to the ThemeProvider radius', () => {

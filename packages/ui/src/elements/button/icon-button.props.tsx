@@ -1,12 +1,17 @@
 import type { PropDef } from '@/theme/props/prop-def'
-import { variantsSolidSoftOutlineGhost } from '@/theme/props/scales'
 import { buttonPropDefs } from './button.props'
 
-const variants = variantsSolidSoftOutlineGhost
+type ButtonVariant = (typeof buttonPropDefs.variant.values)[number]
+type IconButtonVariant = Extract<ButtonVariant, 'solid' | 'soft' | 'outline' | 'ghost'>
+
+const variants = buttonPropDefs.variant.values.filter(
+  (variant): variant is IconButtonVariant =>
+    variant === 'solid' || variant === 'soft' || variant === 'outline' || variant === 'ghost',
+)
 
 const iconButtonPropDefs = {
   size: buttonPropDefs.size,
-  variant: { type: 'enum', values: variants, default: 'soft' },
+  variant: { ...buttonPropDefs.variant, values: variants, default: 'soft' },
   color: { ...buttonPropDefs.color, default: 'primary' },
   highContrast: buttonPropDefs.highContrast,
   radius: buttonPropDefs.radius,
@@ -17,7 +22,7 @@ const iconButtonPropDefs = {
 } satisfies {
   size: typeof buttonPropDefs.size
   variant: PropDef<(typeof variants)[number]>
-  color: typeof buttonPropDefs.color
+  color: PropDef<(typeof buttonPropDefs.color.values)[number]>
   highContrast: typeof buttonPropDefs.highContrast
   radius: typeof buttonPropDefs.radius
   loading: typeof buttonPropDefs.loading

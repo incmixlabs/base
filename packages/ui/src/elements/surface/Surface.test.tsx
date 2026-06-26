@@ -100,7 +100,7 @@ describe('Surface', () => {
     }
   })
 
-  it('uses highlight state color for chromatic hover and selected states', () => {
+  it('uses interaction state color for chromatic hover and selected states', () => {
     render(
       <Surface data-testid="surface" color="primary" hover selected>
         Surface
