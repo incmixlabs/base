@@ -20,6 +20,7 @@ import {
   badgeDeleteButtonBase,
   badgeDeleteButtonSizeVariants,
   badgeHighContrastColorVariants,
+  badgeHighContrastHoverColorVariants,
   badgeHoverColorVariants,
   badgeIconBase,
   badgeIconSizeVariants,
@@ -108,7 +109,10 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
           radiusStyleVariants[safeRadius],
           badgeVariantBorderWidth[safeVariant],
           colorVariantClassName,
-          safeHover && badgeHoverColorVariants[safeColor][safeVariant],
+          safeHover &&
+            (safeHighContrast
+              ? badgeHighContrastHoverColorVariants[safeColor][safeVariant]
+              : badgeHoverColorVariants[safeColor][safeVariant]),
           safeHover && 'cursor-pointer',
           safeHighContrast && 'af-high-contrast',
           className,

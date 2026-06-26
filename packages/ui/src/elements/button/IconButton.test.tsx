@@ -7,6 +7,7 @@ import { IconButton } from './IconButton'
 import {
   iconButtonColorVariants,
   iconButtonHighContrastColorVariants,
+  iconButtonHighContrastHoverColorVariants,
   iconButtonHoverColorVariants,
   iconButtonSizeVariants,
   iconSizeVariants,
@@ -59,9 +60,19 @@ describe('IconButton', () => {
     const button = screen.getByRole('button', { name: 'Test' })
     expect(button.className).toContain('af-high-contrast')
     expect(button.className).toContain(iconButtonHighContrastColorVariants.neutral.solid)
+    expect(button.className).toContain(iconButtonHighContrastHoverColorVariants.neutral.solid)
     expect(button.className).not.toContain(iconButtonColorVariants.neutral.solid)
+    expect(button.className).not.toContain(iconButtonHoverColorVariants.neutral.solid)
     expect(button.className).not.toContain('af-icon-button-hc')
     expect(button.className).not.toContain('surface-high-contrast')
+  })
+
+  it('uses interaction backgrounds for outline active states', () => {
+    render(<IconButton aria-label="Outline" color="neutral" variant="outline" />)
+
+    const button = screen.getByRole('button', { name: 'Outline' })
+    expect(button.className).toContain(iconButtonHoverColorVariants.neutral.outline)
+    expect(button.className).toContain('active:bg-[var(--color-neutral-soft-hover)]')
   })
 
   it('uses string title as tooltip content source and fallback aria-label', () => {

@@ -1,68 +1,39 @@
-import { surfaceVariantSurfaceShadow } from '@/elements/surface/Surface.css'
 import { type SurfaceVariant, surfaceVariants } from '@/elements/surface/surface.props'
-import {
-  createSemanticColorVariantClassMap,
-  type SemanticColorClassRecipe,
-} from '@/theme/helpers/semantic-color-recipe'
 import type { Color, Variant } from '@/theme/tokens'
+import { createControlSurfaceClassMaps } from '../surface/control-surface.class'
 
 export const buttonBaseCls =
   'relative inline-flex items-center justify-center select-none border outline-none box-border'
 
-export const buttonLoadingContentCls = 'af-button-loading-content inline-flex items-center justify-center gap-[inherit]'
+export const buttonLoadingContentCls = 'opacity-0 inline-flex items-center justify-center gap-[inherit]'
 
-export const buttonLoadingOverlayCls = 'af-button-loading-overlay absolute inset-0 flex items-center justify-center'
-
-export const buttonSizeIconScope = 'af-button-icon-scope'
+export const buttonLoadingOverlayCls = 'absolute inset-0 flex items-center justify-center'
 
 export const buttonSizeVariants = {
-  xs: 'af-button-size-xs',
-  sm: 'af-button-size-sm',
-  md: 'af-button-size-md',
-  lg: 'af-button-size-lg',
-  xl: 'af-button-size-xl',
+  xs: 'h-6 px-2 py-1 text-xs leading-4 gap-1',
+  sm: 'h-7 px-2.5 py-1 text-sm leading-5 gap-1.5',
+  md: 'h-8 px-3 py-1 text-base leading-6 gap-2',
+  lg: 'h-10 px-3.5 py-[0.4375rem] text-lg leading-[1.625rem] gap-2.5',
+  xl: 'h-11 px-3.5 py-2 text-xl leading-7 gap-[0.6875rem]',
 } as const
 
-export const buttonMotion = 'af-button-motion'
+export const buttonMotion =
+  'transition-[background-color,color,border-color,box-shadow,filter] duration-[var(--af-motion-fast)] ease-[var(--af-ease-standard)]'
 
-export const buttonLoading = 'af-button-loading'
+export const buttonLoading = 'cursor-wait'
 
-const buttonColorByVariant = {
-  classic: recipe => `${recipe.fill.solid} ${recipe.border.default} ${recipe.text.contrast}`,
-  solid: recipe => `${recipe.fill.solid} ${recipe.border.default} ${recipe.text.contrast}`,
-  soft: recipe => `${recipe.fill.soft} ${recipe.border.transparent} ${recipe.text.default}`,
-  surface: recipe =>
-    `${recipe.fill.container} ${recipe.border.default} ${recipe.text.default} ${surfaceVariantSurfaceShadow}`,
-  outline: recipe => `${recipe.fill.transparent} ${recipe.border.default} ${recipe.text.default}`,
-  ghost: recipe => `${recipe.fill.transparent} ${recipe.border.transparent} ${recipe.text.default}`,
-} satisfies Record<SurfaceVariant, (recipe: SemanticColorClassRecipe) => string>
+const buttonSurfaceClassMaps = createControlSurfaceClassMaps(surfaceVariants satisfies readonly SurfaceVariant[])
 
-const buttonHoverByVariant = {
-  classic: () => 'hover:brightness-[0.96] active:brightness-[0.92]',
-  solid: () => 'hover:brightness-[0.96] active:brightness-[0.92]',
-  soft: recipe => `${recipe.state.hoverBg} active:brightness-[0.98]`,
-  surface: recipe => `${recipe.state.hoverContainerBg} active:brightness-[0.98]`,
-  outline: recipe => `${recipe.state.hoverBg} active:brightness-[0.98]`,
-  ghost: recipe => `${recipe.state.hoverBg} active:brightness-[0.98]`,
-} satisfies Record<SurfaceVariant, (recipe: SemanticColorClassRecipe) => string>
+export const buttonColorVariants = buttonSurfaceClassMaps.color as Record<Color, Record<Variant, string>>
 
-const buttonHighContrastByVariant = {
-  classic: recipe => `${recipe.highContrast.solid} saturate-[1.1] brightness-[0.95]`,
-  solid: recipe => `${recipe.highContrast.solid} saturate-[1.1] brightness-[0.95]`,
-  soft: recipe => `${recipe.highContrast.soft} ${recipe.border.transparent} saturate-[1.2]`,
-  surface: recipe => `${recipe.fill.container} ${recipe.highContrast.container} ${surfaceVariantSurfaceShadow}`,
-  outline: recipe => `${recipe.fill.transparent} ${recipe.highContrast.outline} font-semibold`,
-  ghost: recipe => `${recipe.fill.transparent} ${recipe.border.transparent} ${recipe.highContrast.ghost} font-semibold`,
-} satisfies Record<SurfaceVariant, (recipe: SemanticColorClassRecipe) => string>
+export const buttonHoverColorVariants = buttonSurfaceClassMaps.hover as Record<Color, Record<Variant, string>>
 
-export const buttonColorVariants = createSemanticColorVariantClassMap(surfaceVariants, (recipe, variant) =>
-  buttonColorByVariant[variant](recipe),
-) as Record<Color, Record<Variant, string>>
+export const buttonHighContrastHoverColorVariants = buttonSurfaceClassMaps.highContrastHover as Record<
+  Color,
+  Record<Variant, string>
+>
 
-export const buttonHoverColorVariants = createSemanticColorVariantClassMap(surfaceVariants, (recipe, variant) =>
-  buttonHoverByVariant[variant](recipe),
-) as Record<Color, Record<Variant, string>>
-
-export const buttonHighContrastColorVariants = createSemanticColorVariantClassMap(surfaceVariants, (recipe, variant) =>
-  buttonHighContrastByVariant[variant](recipe),
-) as Record<Color, Record<Variant, string>>
+export const buttonHighContrastColorVariants = buttonSurfaceClassMaps.highContrast as Record<
+  Color,
+  Record<Variant, string>
+>

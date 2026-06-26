@@ -16,12 +16,12 @@ import {
   buttonBaseCls,
   buttonColorVariants,
   buttonHighContrastColorVariants,
+  buttonHighContrastHoverColorVariants,
   buttonHoverColorVariants,
   buttonLoading,
   buttonLoadingContentCls,
   buttonLoadingOverlayCls,
   buttonMotion,
-  buttonSizeIconScope,
   buttonSizeVariants,
 } from './button.class'
 import { buttonPropDefs } from './button.props'
@@ -99,9 +99,12 @@ export function Button({
     getInteractiveElementBaseClasses({ transition: 'colors' }),
     buttonMotion,
     buttonSizeVariants[resolvedSize],
-    buttonSizeIconScope,
     'enabled:cursor-pointer',
-    !disabled && !safeLoading && buttonHoverColorVariants[safeColor][safeVariant],
+    !disabled &&
+      !safeLoading &&
+      (safeHighContrast
+        ? buttonHighContrastHoverColorVariants[safeColor][safeVariant]
+        : buttonHoverColorVariants[safeColor][safeVariant]),
     safeHighContrast && 'af-high-contrast',
     'rounded-[var(--element-border-radius)]',
     colorVariantClassName,
@@ -112,7 +115,7 @@ export function Button({
 
   const loadingOverlay = safeLoading ? (
     <span className={buttonLoadingOverlayCls}>
-      <Loader2 className="animate-spin text-current" />
+      <Loader2 className="h-[1em] w-[1em] animate-spin text-current" />
     </span>
   ) : null
 

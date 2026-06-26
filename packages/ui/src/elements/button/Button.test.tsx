@@ -8,6 +8,7 @@ import { Button } from './Button'
 import {
   buttonColorVariants,
   buttonHighContrastColorVariants,
+  buttonHighContrastHoverColorVariants,
   buttonHoverColorVariants,
   buttonLoading,
   buttonLoadingContentCls,
@@ -63,7 +64,21 @@ describe('Button', () => {
     const button = screen.getByRole('button', { name: 'High contrast' })
     expect(button.className).toContain('af-high-contrast')
     expect(button.className).toContain(buttonHighContrastColorVariants[SemanticColor.primary].soft)
+    expect(button.className).toContain(buttonHighContrastHoverColorVariants[SemanticColor.primary].soft)
     expect(button.className).not.toContain(buttonColorVariants[SemanticColor.primary].soft)
+    expect(button.className).not.toContain(buttonHoverColorVariants[SemanticColor.primary].soft)
+  })
+
+  it('uses interaction backgrounds for outline active states', () => {
+    render(
+      <Button color="neutral" variant="outline">
+        Outline
+      </Button>,
+    )
+
+    const button = screen.getByRole('button', { name: 'Outline' })
+    expect(button.className).toContain(buttonHoverColorVariants.neutral.outline)
+    expect(button.className).toContain('active:bg-[var(--color-neutral-soft-hover)]')
   })
 
   it('normalizes case-insensitive enum values and boolean-like visual props', () => {
@@ -234,7 +249,7 @@ describe('Button', () => {
     })
   })
 
-  it('accepts inverse without emitting legacy Button-specific surface classes', () => {
+  it('accepts inverse without changing the resolved class contract', () => {
     const { rerender } = render(
       <Button color="secondary" variant="soft">
         Soft
@@ -244,7 +259,6 @@ describe('Button', () => {
     const button = screen.getByRole('button', { name: 'Soft' })
     const beforeInverse = button.className
     expect(beforeInverse).toContain(buttonColorVariants.secondary.soft)
-    expect(beforeInverse).not.toContain('af-button-inverse')
 
     rerender(
       <Button color="secondary" variant="soft" inverse>
@@ -253,7 +267,6 @@ describe('Button', () => {
     )
 
     expect(button.className).toContain(buttonColorVariants.secondary.soft)
-    expect(button.className).not.toContain('af-button-inverse')
     expect(button).not.toHaveAttribute('inverse')
     expect(button.className).toBe(beforeInverse)
   })

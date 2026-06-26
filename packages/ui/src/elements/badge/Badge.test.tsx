@@ -6,6 +6,7 @@ import { Badge } from './Badge'
 import {
   badgeColorVariants,
   badgeHighContrastColorVariants,
+  badgeHighContrastHoverColorVariants,
   badgeHoverColorVariants,
   badgeSizeVariants,
 } from './badge.class'
@@ -52,6 +53,18 @@ describe('Badge', () => {
     expect(badge.className).toContain('af-high-contrast')
     expect(badge.className).toContain(badgeHighContrastColorVariants[SemanticColor.slate].soft)
     expect(badge.className).not.toContain(badgeColorVariants[SemanticColor.slate].soft)
+  })
+
+  it('uses high-contrast hover classes for hoverable high-contrast badges', () => {
+    render(
+      <Badge variant="soft" highContrast hover>
+        Test
+      </Badge>,
+    )
+
+    const badge = screen.getByText('Test')
+    expect(badge.className).toContain(badgeHighContrastHoverColorVariants[SemanticColor.slate].soft)
+    expect(badge.className).not.toContain(badgeHoverColorVariants[SemanticColor.slate].soft)
   })
 
   it('normalizes boolean-like highContrast and hover values', () => {

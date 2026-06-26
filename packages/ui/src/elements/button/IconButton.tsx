@@ -16,6 +16,7 @@ import {
   iconButtonBase,
   iconButtonColorVariants,
   iconButtonHighContrastColorVariants,
+  iconButtonHighContrastHoverColorVariants,
   iconButtonHoverColorVariants,
   iconButtonSizeVariants,
 } from './icon-button.class'
@@ -153,7 +154,10 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
           iconButtonBase,
           safeHighContrast && 'af-high-contrast',
           colorVariantClassName,
-          !isDisabled && iconButtonHoverColorVariants[safeColor][safeVariant],
+          !isDisabled &&
+            (safeHighContrast
+              ? iconButtonHighContrastHoverColorVariants[safeColor][safeVariant]
+              : iconButtonHoverColorVariants[safeColor][safeVariant]),
           'transition-colors',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
           'disabled:pointer-events-none disabled:opacity-50',

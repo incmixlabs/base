@@ -12,15 +12,6 @@ function componentVar(component: string, slot: string, fallback: string): string
   return withFallback(`--component-${toKebabCase(component)}-${toKebabCase(slot)}`, fallback)
 }
 
-export type ButtonSizeTokenSlot =
-  | 'height'
-  | 'paddingInline'
-  | 'paddingBlock'
-  | 'fontSize'
-  | 'lineHeight'
-  | 'gap'
-  | 'iconSize'
-
 export type SurfaceVariantTokenSlot = 'boxShadow'
 export type SurfaceShapeTokenSlot = 'radius'
 export type AccordionSizeTokenSlot =
@@ -33,16 +24,6 @@ export type AccordionSizeTokenSlot =
   | 'gap'
   | 'iconSize'
   | 'triggerTransition'
-export type BadgeSizeTokenSlot =
-  | 'fontSize'
-  | 'lineHeight'
-  | 'paddingInline'
-  | 'paddingBlock'
-  | 'gap'
-  | 'deleteButtonSize'
-  | 'deleteButtonMarginStart'
-  | 'avatarMarginStart'
-  | 'avatarSize'
 export type CalloutSizeTokenSlot =
   | 'padding'
   | 'rowGap'
@@ -183,14 +164,6 @@ export type TreeViewSizeTokenSlot =
   | 'iconSize'
   | 'itemRadius'
 
-export function buttonSizeVar(size: string, slot: ButtonSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-button-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function buttonMotionVar(slot: string, fallback: string): string {
-  return withFallback(`--component-button-motion-${toKebabCase(slot)}`, fallback)
-}
-
 export function surfaceVariantVar(variant: string, slot: SurfaceVariantTokenSlot, fallback: string): string {
   return withFallback(`--component-surface-variant-${toKebabCase(variant)}-${toKebabCase(slot)}`, fallback)
 }
@@ -225,10 +198,6 @@ export function mentionTextareaVar(slot: MentionTextareaTokenSlot, fallback: str
 
 export function dateSizeVar(size: string, slot: DateSizeTokenSlot, fallback: string): string {
   return withFallback(`--component-date-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function badgeSizeVar(size: string, slot: BadgeSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-badge-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function calloutSizeVar(size: string, slot: CalloutSizeTokenSlot, fallback: string): string {

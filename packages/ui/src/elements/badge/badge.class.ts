@@ -1,78 +1,57 @@
-import { surfaceVariantSurfaceShadow } from '@/elements/surface/Surface.css'
-import {
-  createSemanticColorVariantClassMap,
-  type SemanticColorClassRecipe,
-} from '@/theme/helpers/semantic-color-recipe'
 import type { Color } from '@/theme/tokens'
+import { createControlSurfaceClassMaps } from '../surface/control-surface.class'
 import type { BadgeVariant } from './badge.props'
 
 export const badgeBaseCls =
   'inline-flex items-center justify-center font-medium whitespace-nowrap shrink-0 leading-none h-fit'
 
-export const badgeBase = 'af-badge-base'
-export const badgeIconBase = 'af-badge-icon-base'
-export const badgeDeleteButtonBase = 'af-badge-delete-button-base'
-export const badgeAvatarBase = 'af-badge-avatar-base'
+export const badgeBase = 'border-solid'
+export const badgeIconBase = 'inline-flex items-center justify-center shrink-0 leading-none'
+export const badgeDeleteButtonBase =
+  'inline-flex items-center justify-center shrink-0 p-0 border-0 bg-transparent text-inherit leading-none cursor-pointer'
+export const badgeAvatarBase = 'shrink-0'
 
 export const badgeSizeVariants = {
-  xs: 'af-badge-size-xs',
-  sm: 'af-badge-size-sm',
-  md: 'af-badge-size-md',
+  xs: 'text-xs leading-4 px-2 py-1 gap-1',
+  sm: 'text-sm leading-5 px-2.5 py-1 gap-1.5',
+  md: 'text-base leading-6 px-3 py-1 gap-2',
 } as const
 
 export const badgeDeleteButtonSizeVariants = {
-  xs: 'af-badge-delete-button-size-xs',
-  sm: 'af-badge-delete-button-size-sm',
-  md: 'af-badge-delete-button-size-md',
+  xs: 'h-3 w-3 ms-0.5 [&_svg]:h-full [&_svg]:w-full',
+  sm: 'h-3.5 w-3.5 ms-0.5 [&_svg]:h-full [&_svg]:w-full',
+  md: 'h-4 w-4 ms-0.5 [&_svg]:h-full [&_svg]:w-full',
 } as const
 
 export const badgeIconSizeVariants = {
-  xs: 'af-badge-icon-size-xs',
-  sm: 'af-badge-icon-size-sm',
-  md: 'af-badge-icon-size-md',
+  xs: 'h-3 w-3 text-xs [&_svg]:h-3 [&_svg]:w-3',
+  sm: 'h-3.5 w-3.5 text-sm [&_svg]:h-3.5 [&_svg]:w-3.5',
+  md: 'h-4 w-4 text-base [&_svg]:h-4 [&_svg]:w-4',
 } as const
 
 export const badgeAvatarSizeVariants = {
-  xs: 'af-badge-avatar-size-xs',
-  sm: 'af-badge-avatar-size-sm',
-  md: 'af-badge-avatar-size-md',
+  xs: '-ms-1 h-5 w-5 text-[0.5625rem] leading-5',
+  sm: '-ms-1 h-6 w-6 text-[0.65625rem] leading-6',
+  md: '-ms-1 h-7 w-7 text-xs leading-7',
 } as const
 
 const badgeVariants = ['solid', 'soft', 'surface', 'outline'] as const satisfies readonly BadgeVariant[]
 
-const badgeColorByVariant = {
-  solid: recipe => `${recipe.fill.solid} ${recipe.border.default} ${recipe.text.contrast}`,
-  soft: recipe => `${recipe.fill.soft} ${recipe.border.transparent} ${recipe.text.default}`,
-  surface: recipe =>
-    `${recipe.fill.container} ${recipe.border.default} ${recipe.text.default} ${surfaceVariantSurfaceShadow}`,
-  outline: recipe => `${recipe.fill.transparent} ${recipe.border.default} ${recipe.text.default}`,
-} satisfies Record<BadgeVariant, (recipe: SemanticColorClassRecipe) => string>
+const badgeSurfaceClassMaps = createControlSurfaceClassMaps(badgeVariants)
 
-const badgeHoverByVariant = {
-  solid: () => 'hover:brightness-[0.96] active:brightness-[0.92]',
-  soft: recipe => `${recipe.state.hoverBg} active:brightness-[0.98]`,
-  surface: recipe => `${recipe.state.hoverContainerBg} active:brightness-[0.98]`,
-  outline: recipe => `${recipe.state.hoverBg} active:brightness-[0.98]`,
-} satisfies Record<BadgeVariant, (recipe: SemanticColorClassRecipe) => string>
+export const badgeColorVariants = badgeSurfaceClassMaps.color as Record<Color, Record<BadgeVariant, string>>
 
-const badgeHighContrastByVariant = {
-  solid: recipe => `${recipe.highContrast.solid} saturate-[1.1] brightness-[0.95]`,
-  soft: recipe => `${recipe.highContrast.soft} ${recipe.border.transparent} saturate-[1.2]`,
-  surface: recipe => `${recipe.fill.container} ${recipe.highContrast.container} ${surfaceVariantSurfaceShadow}`,
-  outline: recipe => `${recipe.fill.transparent} ${recipe.highContrast.outline} font-semibold`,
-} satisfies Record<BadgeVariant, (recipe: SemanticColorClassRecipe) => string>
+export const badgeHoverColorVariants = badgeSurfaceClassMaps.hover as Record<Color, Record<BadgeVariant, string>>
 
-export const badgeColorVariants = createSemanticColorVariantClassMap(badgeVariants, (recipe, variant) =>
-  badgeColorByVariant[variant](recipe),
-) as Record<Color, Record<BadgeVariant, string>>
+export const badgeHighContrastHoverColorVariants = badgeSurfaceClassMaps.highContrastHover as Record<
+  Color,
+  Record<BadgeVariant, string>
+>
 
-export const badgeHoverColorVariants = createSemanticColorVariantClassMap(badgeVariants, (recipe, variant) =>
-  badgeHoverByVariant[variant](recipe),
-) as Record<Color, Record<BadgeVariant, string>>
-
-export const badgeHighContrastColorVariants = createSemanticColorVariantClassMap(badgeVariants, (recipe, variant) =>
-  badgeHighContrastByVariant[variant](recipe),
-) as Record<Color, Record<BadgeVariant, string>>
+export const badgeHighContrastColorVariants = badgeSurfaceClassMaps.highContrast as Record<
+  Color,
+  Record<BadgeVariant, string>
+>
 
 export const badgeVariantBorderWidth = {
   solid: 'border-0',
