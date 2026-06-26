@@ -42,6 +42,19 @@ describe('Badge', () => {
     expect(badge.className).toContain(badgeColorVariants[SemanticColor.slate].soft)
   })
 
+  it('composes asChild and margin props with the badge control classes', () => {
+    render(
+      <Badge asChild m="2">
+        <a href="/labels">Labels</a>
+      </Badge>,
+    )
+
+    const badge = screen.getByRole('link', { name: 'Labels' })
+    expect(badge).toHaveAttribute('href', '/labels')
+    expect(badge.className).toContain(badgeSizeVariants.xs)
+    expect(badge.className).toContain('m-2')
+  })
+
   it('applies high-contrast styles when enabled', () => {
     render(
       <Badge variant="soft" highContrast>

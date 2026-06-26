@@ -14,7 +14,7 @@ const badgePropDefs = {
   ...hoverPropDefFalse,
   color: { ...buttonPropDefs.color, default: 'slate' },
   highContrast: buttonPropDefs.highContrast,
-  radius: buttonPropDefs.radius,
+  radius: { ...buttonPropDefs.radius, default: 'full' },
   icon: { type: 'string', required: false },
 } satisfies {
   size: PropDef<(typeof sizes)[number]>
@@ -22,7 +22,7 @@ const badgePropDefs = {
   hover: PropDef<boolean>
   color: PropDef<(typeof buttonPropDefs.color.values)[number]>
   highContrast: typeof buttonPropDefs.highContrast
-  radius: typeof buttonPropDefs.radius
+  radius: PropDef<(typeof buttonPropDefs.radius.values)[number]>
   icon: PropDef<string>
 }
 

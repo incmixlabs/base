@@ -5,12 +5,16 @@ import * as React from 'react'
 import { Avatar } from '@/elements/avatar/Avatar'
 import type { AvatarProps, AvatarSize } from '@/elements/avatar/avatar.props'
 import type { IconComponent } from '@/elements/icon.types'
+import { composeRefs } from '@/lib/compose-refs'
 import { cn } from '@/lib/utils'
+import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
+import type { MarginProps } from '@/theme/props/margin.props'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import { radiusStyleVariants } from '@/theme/radius.css'
-import type { Color, Radius } from '@/theme/tokens'
+import type { Color, Radius, Responsive } from '@/theme/tokens'
 import { Icon } from '../button/Icon'
+import { resolveResponsiveEnumProp } from '../utils'
 import {
   badgeAvatarBase,
   badgeAvatarSizeVariants,
@@ -37,9 +41,9 @@ const badgeAvatarSizeMap: Record<BadgeSize, AvatarSize> = {
   md: 'md',
 }
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
+export interface BadgeProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'color'>, MarginProps {
   /** Size of the badge */
-  size?: BadgeSize
+  size?: Responsive<BadgeSize>
   /** Visual variant */
   variant?: BadgeVariant
   /** Color scheme */
@@ -60,6 +64,7 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   deleteIcon?: IconComponent
   /** Accessible label for delete button */
   deleteLabel?: string
+  asChild?: boolean
 }
 
 const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
@@ -68,7 +73,8 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
       size = badgePropDefs.size.default,
       variant = 'soft',
       color = SemanticColor.slate,
-      radius = 'full',
+      radius = badgePropDefs.radius.default,
+      asChild = false,
       highContrast = false,
       hover = badgePropDefs.hover.default,
       icon,
@@ -78,17 +84,26 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
       deleteLabel = 'Remove',
       className,
       children,
+      style,
+      m,
+      mx,
+      my,
+      mt,
+      mr,
+      mb,
+      ml,
       ...props
     },
     ref,
   ) => {
-    const safeSize = (normalizeEnumPropValue(badgePropDefs.size, size) ?? badgePropDefs.size.default) as BadgeSize
+    const safeSize = resolveResponsiveEnumProp(size, badgePropDefs.size)
     const safeVariant = (normalizeEnumPropValue(badgePropDefs.variant, variant) ??
       badgePropDefs.variant.default) as BadgeVariant
     const safeColor = (normalizeEnumPropValue(badgePropDefs.color, color) ?? SemanticColor.slate) as Color
     const safeRadius = (normalizeEnumPropValue(badgePropDefs.radius, radius) ?? badgePropDefs.radius.default) as Radius
     const safeHighContrast = normalizeBooleanPropValue(badgePropDefs.highContrast, highContrast) ?? false
     const safeHover = normalizeBooleanPropValue(badgePropDefs.hover, hover) ?? false
+    const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
     const normalizedIconName = typeof icon === 'string' ? icon.trim() : ''
     const iconContent = normalizedIconName ? (
       <Icon icon={normalizedIconName} size={safeSize} style={{ color: 'inherit', width: 'auto', height: 'auto' }} />
@@ -98,27 +113,30 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
     const colorVariantClassName = safeHighContrast
       ? badgeHighContrastColorVariants[safeColor][safeVariant]
       : badgeColorVariants[safeColor][safeVariant]
+    const combinedStyles = {
+      ...marginProps.style,
+      ...style,
+    }
 
-    return (
-      <span
-        ref={ref}
-        className={cn(
-          badgeBase,
-          badgeBaseCls,
-          badgeSizeVariants[safeSize],
-          radiusStyleVariants[safeRadius],
-          badgeVariantBorderWidth[safeVariant],
-          colorVariantClassName,
-          safeHover &&
-            (safeHighContrast
-              ? badgeHighContrastHoverColorVariants[safeColor][safeVariant]
-              : badgeHoverColorVariants[safeColor][safeVariant]),
-          safeHover && 'cursor-pointer',
-          safeHighContrast && 'af-high-contrast',
-          className,
-        )}
-        {...props}
-      >
+    const badgeClasses = cn(
+      badgeBase,
+      badgeBaseCls,
+      badgeSizeVariants[safeSize],
+      radiusStyleVariants[safeRadius],
+      badgeVariantBorderWidth[safeVariant],
+      colorVariantClassName,
+      safeHover &&
+        (safeHighContrast
+          ? badgeHighContrastHoverColorVariants[safeColor][safeVariant]
+          : badgeHoverColorVariants[safeColor][safeVariant]),
+      safeHover && 'cursor-pointer',
+      safeHighContrast && 'af-high-contrast',
+      marginProps.className,
+      className,
+    )
+
+    const renderBadgeContent = (content: React.ReactNode) => (
+      <>
         {iconContent ? <span className={cn(badgeIconBase, badgeIconSizeVariants[safeSize])}>{iconContent}</span> : null}
         {avatar && (
           <Avatar
@@ -127,7 +145,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
             className={cn(badgeAvatarBase, badgeAvatarSizeVariants[safeSize])}
           />
         )}
-        {children}
+        {content}
         {onDelete && (
           <button
             type="button"
@@ -141,6 +159,32 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
             <DeleteIcon aria-hidden className="h-full w-full" />
           </button>
         )}
+      </>
+    )
+
+    if (asChild && React.isValidElement(children)) {
+      const childElement = children as React.ReactElement<Record<string, unknown>> & {
+        ref?: React.Ref<HTMLSpanElement>
+      }
+      const childProps = childElement.props as {
+        className?: string
+        style?: React.CSSProperties
+        children?: React.ReactNode
+      }
+      const childRef = childElement.ref
+
+      return React.cloneElement(childElement, {
+        ...props,
+        ref: childRef ? composeRefs(ref, childRef) : ref,
+        className: cn(badgeClasses, childProps.className),
+        style: { ...combinedStyles, ...childProps.style },
+        children: renderBadgeContent(childProps.children),
+      } as Record<string, unknown>)
+    }
+
+    return (
+      <span ref={ref} className={badgeClasses} style={combinedStyles} {...props}>
+        {renderBadgeContent(children)}
       </span>
     )
   },
