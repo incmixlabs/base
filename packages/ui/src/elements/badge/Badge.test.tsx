@@ -1,6 +1,7 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { iconSizeVariants } from '@/elements/button/icon-button.class'
+import { radiusClassByToken } from '@/theme/helpers'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { Badge } from './Badge'
 import {
@@ -40,6 +41,14 @@ describe('Badge', () => {
     const badge = screen.getByText('Test')
     expect(badge.className).toContain(badgeSizeVariants.xs)
     expect(badge.className).toContain(badgeColorVariants[SemanticColor.slate].soft)
+  })
+
+  it('uses shared radius utility classes', () => {
+    render(<Badge radius="full">Test</Badge>)
+
+    const badge = screen.getByText('Test')
+    expect(badge.className).toContain(radiusClassByToken.full)
+    expect(badge.className).not.toContain('radius_radiusStyleVariants')
   })
 
   it('composes asChild and margin props with the badge control classes', () => {

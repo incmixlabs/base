@@ -8,10 +8,10 @@ import type { IconComponent } from '@/elements/icon.types'
 import { composeRefs } from '@/lib/compose-refs'
 import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
+import { radiusClassByToken } from '@/theme/helpers/token-class-maps'
 import { SemanticColor } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
-import { radiusStyleVariants } from '@/theme/radius.css'
 import type { Color, Radius } from '@/theme/tokens'
 import { Icon } from '../button/Icon'
 import {
@@ -139,7 +139,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
       badgeBase,
       badgeBaseCls,
       badgeSizeVariants[safeSize],
-      radiusStyleVariants[safeRadius],
+      radiusClassByToken[safeRadius],
       badgeVariantBorderWidth[safeVariant],
       colorVariantClassName,
       safeHover &&
