@@ -19,7 +19,6 @@ function createValidTheme() {
       size: { sm: { height: '1.75rem' } },
       fontWeight: { light: '300', regular: '400', medium: '500', semibold: '600', bold: '700' },
       borderRadius: { none: '0', sm: '4px', md: '6px', lg: '8px', full: '9999px' },
-      spacing: { '0': '0px', '1': '4px' },
       breakpoint: { xs: '520px', sm: '768px', md: '1024px', lg: '1280px', xl: '1640px' },
       typography: {
         fontSans: 'system-ui',
@@ -205,7 +204,10 @@ describe('theme-contract', () => {
 
   it('fails validation for non-plain object slots like Date and Map', () => {
     const theme = createValidTheme()
-    ;(theme.global as unknown as Record<string, unknown>).spacing = new Date() as unknown as Record<string, string>
+    ;(theme.global as unknown as Record<string, unknown>).size = new Date() as unknown as Record<
+      string,
+      Record<string, string>
+    >
     ;(theme.semantic as unknown as Record<string, unknown>).color = new Map() as unknown as Record<
       string,
       Record<string, string>
@@ -215,17 +217,26 @@ describe('theme-contract', () => {
 
     expect(result.ok).toBe(false)
     if (!result.ok) {
-      expect(result.errors.join(' ')).toContain('global.spacing must be an object')
+      expect(result.errors.join(' ')).toContain('global.size must be an object')
       expect(result.errors.join(' ')).toContain('semantic.color must be an object')
     }
   })
 
   it('accepts null-prototype objects for token maps', () => {
     const theme = createValidTheme()
-    const spacing = Object.create(null) as { '0': string; '1': string }
-    spacing['0'] = '0px'
-    spacing['1'] = '4px'
-    theme.global.spacing = spacing
+    const borderRadius = Object.create(null) as {
+      none: string
+      sm: string
+      md: string
+      lg: string
+      full: string
+    }
+    borderRadius.none = '0'
+    borderRadius.sm = '4px'
+    borderRadius.md = '6px'
+    borderRadius.lg = '8px'
+    borderRadius.full = '9999px'
+    theme.global.borderRadius = borderRadius
 
     const result = validateThemeContract(theme)
 

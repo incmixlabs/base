@@ -12,9 +12,11 @@ import type { Radius } from '@/theme/tokens'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
   accordionChevron,
+  accordionChevronSizeVariants,
   accordionContentBase,
   accordionContentInner,
   accordionContentPaddingless,
+  accordionContentSizeVariants,
   accordionHeaderBase,
   accordionItemBase,
   accordionItemBorderless,
@@ -22,9 +24,10 @@ import {
   accordionPanelVariants,
   accordionRootBase,
   accordionRootBorderless,
-  accordionSizeVars,
+  accordionTextSizeVariants,
   accordionTriggerBase,
   accordionTriggerPaddingless,
+  accordionTriggerSizeVariants,
 } from './accordion.class'
 import { accordionRootPropDefs } from './accordion.props'
 
@@ -130,14 +133,8 @@ const AccordionRoot = React.forwardRef<HTMLDivElement, AccordionRootProps>(
           onValueChange={handleValueChange}
           className={
             typeof className === 'function'
-              ? state =>
-                  cn(
-                    accordionRootBase,
-                    !border && accordionRootBorderless,
-                    accordionSizeVars[safeSize],
-                    className(state),
-                  )
-              : cn(accordionRootBase, !border && accordionRootBorderless, accordionSizeVars[safeSize], className)
+              ? state => cn(accordionRootBase, !border && accordionRootBorderless, className(state))
+              : cn(accordionRootBase, !border && accordionRootBorderless, className)
           }
           style={
             typeof style === 'function'
@@ -193,7 +190,13 @@ const AccordionTrigger = React.forwardRef<HTMLElement, AccordionTriggerProps>(
     ref,
   ) => {
     const accordion = React.useContext(AccordionContext)
-    const resolvedIcon = triggerIcon ?? <ChevronDown className={accordionChevron} size={16} aria-hidden="true" />
+    const { isOpen } = React.useContext(AccordionItemContext)
+    const resolvedIcon = triggerIcon ?? (
+      <ChevronDown
+        className={cn(accordionChevron, accordionChevronSizeVariants[accordion.size], isOpen && 'rotate-180')}
+        aria-hidden="true"
+      />
+    )
     const resolvedTriggerIconPosition = triggerIconPosition ?? accordion.triggerIconPosition
     return (
       <AccordionPrimitive.Header className={accordionHeaderBase}>
@@ -202,8 +205,20 @@ const AccordionTrigger = React.forwardRef<HTMLElement, AccordionTriggerProps>(
           className={
             typeof className === 'function'
               ? state =>
-                  cn(accordionTriggerBase, !accordion.triggerPadding && accordionTriggerPaddingless, className(state))
-              : cn(accordionTriggerBase, !accordion.triggerPadding && accordionTriggerPaddingless, className)
+                  cn(
+                    accordionTriggerBase,
+                    accordionTextSizeVariants[accordion.size],
+                    accordionTriggerSizeVariants[accordion.size],
+                    !accordion.triggerPadding && accordionTriggerPaddingless,
+                    className(state),
+                  )
+              : cn(
+                  accordionTriggerBase,
+                  accordionTextSizeVariants[accordion.size],
+                  accordionTriggerSizeVariants[accordion.size],
+                  !accordion.triggerPadding && accordionTriggerPaddingless,
+                  className,
+                )
           }
           {...props}
         >
@@ -242,16 +257,27 @@ const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>
           hidden={false}
           className={
             typeof className === 'function'
-              ? state => cn(accordionContentBase, accordionContentFillClassName, className(state))
-              : cn(accordionContentBase, accordionContentFillClassName, className)
+              ? state =>
+                  cn(
+                    accordionContentBase,
+                    accordionTextSizeVariants[accordion.size],
+                    accordionContentFillClassName,
+                    className(state),
+                  )
+              : cn(
+                  accordionContentBase,
+                  accordionTextSizeVariants[accordion.size],
+                  accordionContentFillClassName,
+                  className,
+                )
           }
           {...props}
         >
           <div
             className={cn(
               accordionContentInner,
+              accordionContentSizeVariants[accordion.size],
               accordionContentFillClassName,
-              accordionSizeVars[accordion.size],
               !accordion.contentPadding && accordionContentPaddingless,
             )}
           >
@@ -281,15 +307,15 @@ const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>
             }
             className={
               typeof className === 'function'
-                ? state => cn(accordionContentBase, className(state))
-                : cn(accordionContentBase, className)
+                ? state => cn(accordionContentBase, accordionTextSizeVariants[accordion.size], className(state))
+                : cn(accordionContentBase, accordionTextSizeVariants[accordion.size], className)
             }
             {...props}
           >
             <div
               className={cn(
                 accordionContentInner,
-                accordionSizeVars[accordion.size],
+                accordionContentSizeVariants[accordion.size],
                 !accordion.contentPadding && accordionContentPaddingless,
               )}
             >

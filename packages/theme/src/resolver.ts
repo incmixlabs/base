@@ -8,7 +8,6 @@ export type ThemeTokenPath =
   | `global.size.${string}.${string}`
   | `global.fontWeight.${string}`
   | `global.typography.${string}`
-  | `global.spacing.${string}`
   | `global.borderRadius.${string}`
   | `component.${string}.${string}`
   | (string & {})

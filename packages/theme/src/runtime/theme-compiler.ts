@@ -106,7 +106,6 @@ export function mergeThemeContracts(
  * Mappings used by runtime + editor preview:
  * - `global.fontWeight.*` -> `--font-weight-*` (e.g. `global.fontWeight.bold` -> `--font-weight-bold`)
  * - `global.borderRadius.*` -> `--radius-*` (e.g. `global.borderRadius.md` -> `--radius-md`)
- * - `global.spacing.*` -> `--space-*` (e.g. `global.spacing.4` -> `--space-4`)
  * - `global.breakpoint.*` -> `--breakpoint-*` (e.g. `global.breakpoint.lg` -> `--breakpoint-lg`)
  * - `global.typography.*` -> `--*` (e.g. `global.typography.fontSans` -> `--font-sans`)
  * - `global.color.hue.*` -> `--color-*` (e.g. `global.color.hue.teal.9` -> `--color-teal-9`)
@@ -127,7 +126,6 @@ function buildCssVarName(path: string): string {
 
     if (domain === 'fontWeight') return suffix ? `--font-weight-${suffix}` : '--font-weight'
     if (domain === 'borderRadius') return suffix ? `--radius-${suffix}` : '--radius'
-    if (domain === 'spacing') return suffix ? `--space-${suffix}` : '--space'
     if (domain === 'breakpoint') return suffix ? `--breakpoint-${suffix}` : '--breakpoint'
     if (domain === 'typography') {
       return suffix ? `--${suffix}` : '--typography'

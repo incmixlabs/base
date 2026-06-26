@@ -44,7 +44,8 @@ describe('transposeTokenStyle', () => {
     const resolver = createEmailThemeResolver({
       'semantic.color.neutral.surface': '#eef6ff',
       'semantic.color.primary.text': '#0055aa',
-      'global.spacing.8': '40px',
+      'global.borderRadius.lg': '40px',
+      'global.borderRadius.sm': '10px',
     })
 
     expect(
@@ -53,7 +54,7 @@ describe('transposeTokenStyle', () => {
           backgroundColor: { token: 'semantic.color.neutral.surface' },
           color: { token: 'semantic.color.primary.text' },
           fontWeight: { token: 'global.fontWeight.bold' },
-          padding: { tokens: ['global.spacing.8', 'global.spacing.0'] },
+          padding: { tokens: ['global.borderRadius.lg', 'global.borderRadius.sm'] },
         },
         { resolver },
       ),
@@ -61,7 +62,7 @@ describe('transposeTokenStyle', () => {
       backgroundColor: '#eef6ff',
       color: '#0055aa',
       fontWeight: '700',
-      padding: '40px 0px',
+      padding: '40px 10px',
     })
   })
 
@@ -93,8 +94,8 @@ describe('transposeTokenStyle', () => {
     expect(() =>
       transposeTokenStyle({
         padding: {
-          token: 'global.spacing.8',
-          tokens: ['global.spacing.8', 'global.spacing.0'],
+          token: 'global.borderRadius.lg',
+          tokens: ['global.borderRadius.lg', 'global.borderRadius.sm'],
         },
       } as never),
     ).toThrow("Invalid token style value: expected exactly one of 'token' or 'tokens'")

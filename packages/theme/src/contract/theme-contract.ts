@@ -499,7 +499,6 @@ export type ThemeContract = {
     size: Record<string, Record<string, string>>
     fontWeight: { light: string; regular: string; medium: string; bold: string }
     borderRadius: { none: string; sm: string; md: string; lg: string; full: string }
-    spacing: Record<string, string>
     breakpoint: { xs: string; sm: string; md: string; lg: string; xl: string }
     typography: {
       fontSans: string
@@ -720,7 +719,7 @@ export function validateThemeContract(input: unknown): ThemeContractValidation {
     errors.push('metadata.fonts must be an object keyed by sans|serif|mono with valid font source objects')
   }
 
-  const requiredGlobal = ['color', 'size', 'fontWeight', 'borderRadius', 'spacing', 'breakpoint', 'typography']
+  const requiredGlobal = ['color', 'size', 'fontWeight', 'borderRadius', 'breakpoint', 'typography']
   for (const key of requiredGlobal) {
     if (!isObject(global[key])) errors.push(`global.${key} must be an object`)
   }
@@ -793,10 +792,6 @@ export function validateThemeContract(input: unknown): ThemeContractValidation {
   const requiredBorderRadius = ['none', 'sm', 'md', 'lg', 'full']
   for (const key of requiredBorderRadius) {
     if (!isNonEmptyString(borderRadius[key])) errors.push(`global.borderRadius.${key} must be a non-empty string`)
-  }
-
-  if (!isStringRecord(global.spacing)) {
-    errors.push('global.spacing must be an object with non-empty string values')
   }
 
   const breakpoint = global.breakpoint as Record<string, unknown>
