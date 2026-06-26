@@ -1,4 +1,11 @@
-import { CHART_COLOR_KEYS, HUE_NAMES, HUE_STEPS, SEMANTIC_COLOR_NAMES, SEMANTIC_COLOR_VAR_TOKENS } from '@incmix/theme'
+import {
+  CHART_COLOR_KEYS,
+  CHROMATIC_SURFACE_COLOR_NAMES,
+  HUE_NAMES,
+  HUE_STEPS,
+  SEMANTIC_COLOR_NAMES,
+  SEMANTIC_COLOR_VAR_TOKENS,
+} from '@incmix/theme'
 import { defineConfig, presetWind4, transformerDirectives, transformerVariantGroup } from 'unocss'
 
 const responsivePrefixes = ['', 'xs:', 'sm:', 'md:', 'lg:', 'xl:'] as const
@@ -70,6 +77,88 @@ const stateBorderColorUtilities = [
   '[var(--color-error-border)]',
 ] as const
 const colorUtilityPrefixes = ['bg', 'text', 'border'] as const
+const surfaceColorNames = [...SEMANTIC_COLOR_NAMES, ...CHART_COLOR_KEYS] as const
+type SemanticSurfaceColorName = (typeof SEMANTIC_COLOR_NAMES)[number]
+type ChartSurfaceColorName = (typeof CHART_COLOR_KEYS)[number]
+type SurfaceColorName = (typeof surfaceColorNames)[number]
+type ChromaticSurfaceColorName = (typeof CHROMATIC_SURFACE_COLOR_NAMES)[number]
+type SurfaceInteractionBackground = 'soft' | 'surface'
+
+const surfaceColorPattern = surfaceColorNames.join('|')
+const chromaticSurfaceColorPattern = CHROMATIC_SURFACE_COLOR_NAMES.join('|')
+const surfaceBackgroundRule = new RegExp(`^bg-(${surfaceColorPattern})-(solid|soft|surface)$`)
+const surfaceHighlightBackgroundRule = new RegExp(`^bg-(${chromaticSurfaceColorPattern})-highlight$`)
+const surfaceBorderRule = new RegExp(`^border-(${surfaceColorPattern})$`)
+const surfaceOutlineRule = new RegExp(`^outline-(${surfaceColorPattern})$`)
+const surfaceHighlightOutlineRule = new RegExp(`^outline-(${chromaticSurfaceColorPattern})-highlight$`)
+const surfaceTextRule = new RegExp(`^text-(${surfaceColorPattern})(?:-(contrast))?$`)
+
+function semanticSurfaceColorRoles(color: SemanticSurfaceColorName) {
+  return {
+    solid: `var(--color-${color}-primary)`,
+    soft: `var(--color-${color}-soft)`,
+    surface: `var(--color-${color}-surface)`,
+    highlight: `var(--color-${color}-primary-alpha)`,
+    border: `var(--color-${color}-border)`,
+    text: `var(--color-${color}-text)`,
+    contrast: `var(--color-${color}-contrast)`,
+  }
+}
+
+function chartSurfaceColorRoles(color: ChartSurfaceColorName) {
+  const chartIndex = color.slice('chart'.length)
+  const chartValue = `var(--chart-${chartIndex})`
+
+  return {
+    solid: chartValue,
+    soft: `color-mix(in oklch, ${chartValue} 28%, var(--color-light-surface))`,
+    surface: `color-mix(in oklch, ${chartValue} 12%, var(--color-light-surface))`,
+    border: `color-mix(in oklch, ${chartValue} 28%, var(--color-light-border))`,
+    text: `color-mix(in oklch, ${chartValue} 34%, var(--color-dark-primary))`,
+    contrast: `var(--chart-${chartIndex}-contrast)`,
+  }
+}
+
+const surfaceSemanticColors = Object.fromEntries(
+  SEMANTIC_COLOR_NAMES.map(color => [color, semanticSurfaceColorRoles(color)]),
+) as Record<SemanticSurfaceColorName, ReturnType<typeof semanticSurfaceColorRoles>>
+
+const surfaceChartColors = Object.fromEntries(
+  CHART_COLOR_KEYS.map(color => [color, chartSurfaceColorRoles(color)]),
+) as Record<ChartSurfaceColorName, ReturnType<typeof chartSurfaceColorRoles>>
+
+const surfaceColors = {
+  ...surfaceSemanticColors,
+  ...surfaceChartColors,
+} as Record<SurfaceColorName, ReturnType<typeof semanticSurfaceColorRoles> | ReturnType<typeof chartSurfaceColorRoles>>
+
+function isChromaticSurfaceColor(color: SurfaceColorName): color is ChromaticSurfaceColorName {
+  return (CHROMATIC_SURFACE_COLOR_NAMES as readonly string[]).includes(color)
+}
+
+function isChartSurfaceColor(color: SurfaceColorName): color is ChartSurfaceColorName {
+  return (CHART_COLOR_KEYS as readonly string[]).includes(color)
+}
+
+function chartSurfaceInteractionBackgroundUtility(
+  color: ChartSurfaceColorName,
+  background: SurfaceInteractionBackground,
+) {
+  const chartIndex = color.slice('chart'.length)
+  const mixPercent = background === 'surface' ? 18 : 36
+  return `bg-[color-mix(in_oklch,var(--chart-${chartIndex})_${mixPercent}%,var(--color-light-surface))]`
+}
+
+function surfaceStateBackgroundUtility(color: SurfaceColorName, background: SurfaceInteractionBackground = 'soft') {
+  if (isChromaticSurfaceColor(color)) return `bg-${color}-highlight`
+  if (isChartSurfaceColor(color)) return chartSurfaceInteractionBackgroundUtility(color, background)
+
+  return `bg-[var(--color-${color}-${background}-hover)]`
+}
+
+function surfaceFocusOutlineUtility(color: SurfaceColorName) {
+  return isChromaticSurfaceColor(color) ? `outline-${color}-highlight` : `outline-${color}`
+}
 
 const responsiveClasses = (classes: readonly string[]) =>
   responsivePrefixes.flatMap(prefix => classes.map(className => `${prefix}${className}`))
@@ -125,6 +214,32 @@ const arbitraryThemeColorUtilities = colorUtilityPrefixes.flatMap(prefix => [
   ...CHART_COLOR_KEYS.map(chart => `${prefix}-[var(--chart-${chart.slice('chart'.length)})]`),
 ])
 
+const surfaceColorUtilities = surfaceColorNames.flatMap(color => [
+  `bg-${color}-solid`,
+  `bg-${color}-soft`,
+  `bg-${color}-surface`,
+  `text-${color}`,
+  `text-${color}-contrast`,
+  `border-${color}`,
+  surfaceStateBackgroundUtility(color),
+  `hover:${surfaceStateBackgroundUtility(color)}`,
+  `hover:${surfaceStateBackgroundUtility(color, 'surface')}`,
+  `data-[selected]:${surfaceStateBackgroundUtility(color)}`,
+  `focus-visible:${surfaceFocusOutlineUtility(color)}`,
+])
+
+const surfaceStateUtilities = [
+  'bg-transparent',
+  'border-transparent',
+  'hover:brightness-[0.96]',
+  'active:brightness-[0.92]',
+  'active:brightness-[0.98]',
+  'focus-visible:outline-solid',
+  'focus-visible:outline-2',
+  'focus-visible:outline-offset-2',
+  'focus-visible:outline-none',
+] as const
+
 const textSizeUtilities = {
   xs: ['var(--font-size-xs)', 'var(--line-height-xs)'],
   sm: ['var(--font-size-sm)', 'var(--line-height-sm)'],
@@ -154,6 +269,62 @@ export const baseUnoConfig = {
   ],
   transformers: [transformerDirectives(), transformerVariantGroup()],
   rules: [
+    [
+      surfaceBackgroundRule,
+      ([, color, role]) => {
+        const roles = surfaceColors[color as SurfaceColorName]
+        if (!roles) return
+
+        return {
+          'background-color': roles[role as 'solid' | 'soft' | 'surface'],
+        }
+      },
+    ],
+    [
+      surfaceHighlightBackgroundRule,
+      ([, color]) => ({
+        'background-color': surfaceSemanticColors[color as ChromaticSurfaceColorName].highlight,
+      }),
+    ],
+    [
+      surfaceBorderRule,
+      ([, color]) => {
+        const roles = surfaceColors[color as SurfaceColorName]
+        if (!roles) return
+
+        return {
+          'border-color': roles.border,
+        }
+      },
+    ],
+    [
+      surfaceOutlineRule,
+      ([, color]) => {
+        const roles = surfaceColors[color as SurfaceColorName]
+        if (!roles) return
+
+        return {
+          'outline-color': roles.border,
+        }
+      },
+    ],
+    [
+      surfaceHighlightOutlineRule,
+      ([, color]) => ({
+        'outline-color': surfaceSemanticColors[color as ChromaticSurfaceColorName].highlight,
+      }),
+    ],
+    [
+      surfaceTextRule,
+      ([, color, contrast]) => {
+        const roles = surfaceColors[color as SurfaceColorName]
+        if (!roles) return
+
+        return {
+          color: contrast ? roles.contrast : roles.text,
+        }
+      },
+    ],
     [
       /^text-(xs|sm|base|lg|xl|2xl|3xl|4xl|5xl)$/,
       ([, size]) => {
@@ -313,6 +484,8 @@ export const baseUnoConfig = {
     ...radiusSafelist,
     ...sprinklesSafelist,
     ...arbitraryThemeColorUtilities,
+    ...surfaceColorUtilities,
+    ...surfaceStateUtilities,
   ],
 }
 

@@ -191,6 +191,18 @@ export const SEMANTIC_COLOR_NAMES = [
 
 export type SemanticColorName = (typeof SEMANTIC_COLOR_NAMES)[number]
 
+export const CHROMATIC_SURFACE_COLOR_NAMES = [
+  'primary',
+  'secondary',
+  'accent',
+  'info',
+  'success',
+  'warning',
+  'error',
+] as const
+
+export type ChromaticSurfaceColorName = (typeof CHROMATIC_SURFACE_COLOR_NAMES)[number]
+
 export const SEMANTIC_COLOR_VAR_TOKENS = [
   'border',
   'border-subtle',
