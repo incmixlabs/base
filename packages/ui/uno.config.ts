@@ -1,5 +1,17 @@
 import { baseUnoConfig } from '@incmix/config/uno.config'
 import { defineConfig } from 'unocss'
+import {
+  avatarGroupOverflowStackMarginBySize,
+  avatarGroupSpreadBySize,
+  avatarGroupStackBySize,
+  avatarListItemBase,
+  avatarListItemBySize,
+  avatarPresenceBusyLineBySize,
+  avatarPresenceBySize,
+  avatarSizeBySize,
+} from './src/elements/avatar/avatar.class'
+
+const splitClasses = (values: string[]) => values.flatMap(value => value.split(/\s+/))
 
 export default defineConfig({
   ...baseUnoConfig,
@@ -11,50 +23,15 @@ export default defineConfig({
   },
   safelist: [
     ...(baseUnoConfig.safelist ?? []),
-    // Avatar sizes
-    'w-[1.5rem]',
-    'h-[1.5rem]',
-    'w-[1.75rem]',
-    'h-[1.75rem]',
-    'w-[2rem]',
-    'h-[2rem]',
-    'w-[2.5rem]',
-    'h-[2.5rem]',
-    'w-[2.75rem]',
-    'h-[2.75rem]',
-    'w-[5rem]',
-    'h-[5rem]',
-    'text-xs',
-    'text-sm',
-    'text-base',
-    'text-lg',
-    'text-xl',
-    'text-2xl',
-    'leading-4',
-    'leading-5',
-    'leading-6',
-    'leading-[1.625rem]',
-    'leading-7',
-    'leading-[1.875rem]',
-    // Avatar presence
-    'w-[0.375rem]',
-    'h-[0.375rem]',
-    'w-[0.5rem]',
-    'h-[0.5rem]',
-    'w-[0.625rem]',
-    'h-[0.625rem]',
-    'w-[0.75rem]',
-    'h-[0.75rem]',
-    'w-[0.875rem]',
-    'h-[0.875rem]',
-    'w-[1rem]',
-    'h-[1rem]',
-    // Avatar busy lines
-    'w-[0.5rem]',
-    'w-[0.625rem]',
-    'w-[0.75rem]',
-    'w-[0.875rem]',
-    'w-[1rem]',
-    'w-[1.125rem]',
+    ...splitClasses([
+      ...Object.values(avatarSizeBySize),
+      ...Object.values(avatarPresenceBySize),
+      ...Object.values(avatarPresenceBusyLineBySize),
+      ...Object.values(avatarGroupStackBySize),
+      ...Object.values(avatarGroupSpreadBySize),
+      ...Object.values(avatarGroupOverflowStackMarginBySize),
+      avatarListItemBase,
+      ...Object.values(avatarListItemBySize),
+    ]),
   ],
 })
