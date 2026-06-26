@@ -20,11 +20,7 @@ import {
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/elements/button/Button'
-import {
-  iconButtonBase,
-  iconButtonColorVariants,
-  iconButtonSizeVariants,
-} from '@/elements/button/icon-button.class'
+import { iconButtonBase, iconButtonColorVariants, iconButtonSizeVariants } from '@/elements/button/icon-button.class'
 import { UpDownCaret } from '@/elements/menu/UpDownCaret'
 import { cn } from '@/lib/utils'
 import type { Color, Radius } from '@/theme/tokens'

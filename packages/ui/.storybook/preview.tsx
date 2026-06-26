@@ -1,9 +1,9 @@
 import type { Preview } from '@storybook/react-vite'
 import type * as React from 'react'
-import { Theme } from '../../../packages/ui/src/theme/ThemeProvider'
+import { Theme } from '../src/theme/ThemeProvider'
+import '../src/theme/chart-tokens.css'
+import '../src/theme/typography-tokens.css'
 import './preview.css'
-import '../../../packages/ui/src/theme/chart-tokens.css'
-import '../../../packages/ui/src/theme/typography-tokens.css'
 
 type StorybookOutlineWrapperProps = {
   children: React.ReactNode

@@ -89,12 +89,7 @@ const Icon = React.forwardRef<HTMLSpanElement, IconProps>(
         justify="center"
         flexShrink="0"
         title={nativeTitle}
-        className={cn(
-          'leading-none',
-          iconSizeVariants[safeSize],
-          !tooltipContent && marginProps.className,
-          className,
-        )}
+        className={cn('leading-none', iconSizeVariants[safeSize], !tooltipContent && marginProps.className, className)}
         style={combinedStyles}
         {...props}
       >
