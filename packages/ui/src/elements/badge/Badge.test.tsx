@@ -55,6 +55,22 @@ describe('Badge', () => {
     expect(badge.className).toContain('m-2')
   })
 
+  it('keeps delete controls outside interactive asChild hosts', () => {
+    render(
+      <Badge asChild onDelete={() => undefined}>
+        <a href="/labels">Labels</a>
+      </Badge>,
+    )
+
+    const link = screen.getByRole('link', { name: 'Labels' })
+    const deleteButton = screen.getByRole('button', { name: 'Remove' })
+
+    expect(link).toHaveAttribute('href', '/labels')
+    expect(link.querySelector('button')).toBeNull()
+    expect(deleteButton.closest('a')).toBeNull()
+    expect(deleteButton.parentElement?.className).toContain(badgeSizeVariants.xs)
+  })
+
   it('applies high-contrast styles when enabled', () => {
     render(
       <Badge variant="soft" highContrast>

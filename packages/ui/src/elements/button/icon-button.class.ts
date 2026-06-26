@@ -73,6 +73,6 @@ export const iconSizeVariants = {
   xs: 'h-3 w-3 text-xs [&_svg]:h-3 [&_svg]:w-3',
   sm: 'h-3.5 w-3.5 text-sm [&_svg]:h-3.5 [&_svg]:w-3.5',
   md: 'h-4 w-4 text-base [&_svg]:h-4 [&_svg]:w-4',
-  lg: 'h-5 w-5 text-xl [&_svg]:h-5 [&_svg]:w-5',
-  xl: 'h-6 w-6 text-2xl [&_svg]:h-6 [&_svg]:w-6',
+  lg: 'h-5 w-5 text-lg [&_svg]:h-5 [&_svg]:w-5',
+  xl: 'h-6 w-6 text-xl [&_svg]:h-6 [&_svg]:w-6',
 } as const

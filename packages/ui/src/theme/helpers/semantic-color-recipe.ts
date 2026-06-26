@@ -63,15 +63,6 @@ function chartInteractionBackgroundClassName(colorName: string, layer: SemanticC
   return `bg-[color-mix(in_oklch,var(--chart-${chartIndex})_${mixPercent}%,var(--color-light-surface))]`
 }
 
-function chartActiveInteractionBackgroundClassName(colorName: string, layer: SemanticColorInteractionLayer) {
-  const chartColor = normalizeChartColor(colorName)
-  if (!chartColor) return undefined
-
-  const chartIndex = chartColor.slice('chart'.length)
-  const mixPercent = layer === 'container' ? 18 : 16
-  return `bg-[color-mix(in_oklch,var(--chart-${chartIndex})_${mixPercent}%,var(--color-light-surface))]`
-}
-
 function interactionBackgroundClassName(colorName: string, layer: SemanticColorInteractionLayer = 'soft') {
   if (chromaticSurfaceColorSet.has(colorName)) return `bg-${colorName}-highlight`
 
@@ -84,7 +75,7 @@ function interactionBackgroundClassName(colorName: string, layer: SemanticColorI
 function activeInteractionBackgroundClassName(colorName: string, layer: SemanticColorInteractionLayer = 'soft') {
   if (layer === 'container') return interactionBackgroundClassName(colorName, layer)
 
-  return chartActiveInteractionBackgroundClassName(colorName, layer) ?? `bg-[var(--color-${colorName}-soft-hover)]`
+  return chartInteractionBackgroundClassName(colorName, layer) ?? `bg-[var(--color-${colorName}-soft-hover)]`
 }
 
 function stateBackgroundClassName(

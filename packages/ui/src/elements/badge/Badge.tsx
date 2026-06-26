@@ -12,9 +12,8 @@ import { SemanticColor } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import { radiusStyleVariants } from '@/theme/radius.css'
-import type { Color, Radius, Responsive } from '@/theme/tokens'
+import type { Color, Radius } from '@/theme/tokens'
 import { Icon } from '../button/Icon'
-import { resolveResponsiveEnumProp } from '../utils'
 import {
   badgeAvatarBase,
   badgeAvatarSizeVariants,
@@ -35,15 +34,33 @@ import { badgePropDefs } from './badge.props'
 
 type BadgeSize = (typeof badgePropDefs.size.values)[number]
 type BadgeVariant = (typeof badgePropDefs.variant.values)[number]
+type BadgeSlotProps = {
+  className?: string
+  style?: React.CSSProperties
+  children?: React.ReactNode
+  ref?: React.Ref<HTMLSpanElement>
+  role?: React.AriaRole
+}
+
 const badgeAvatarSizeMap: Record<BadgeSize, AvatarSize> = {
   xs: 'xs',
   sm: 'sm',
   md: 'md',
 }
 
+const interactiveBadgeHostTags = new Set(['a', 'button', 'input', 'select', 'textarea', 'summary', 'label'])
+const interactiveBadgeRoles = new Set(['button', 'link', 'menuitem', 'option', 'tab'])
+
+function isInteractiveBadgeHost(element: React.ReactElement, props: BadgeSlotProps) {
+  return (
+    (typeof element.type === 'string' && interactiveBadgeHostTags.has(element.type)) ||
+    (props.role !== undefined && interactiveBadgeRoles.has(props.role))
+  )
+}
+
 export interface BadgeProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'color'>, MarginProps {
   /** Size of the badge */
-  size?: Responsive<BadgeSize>
+  size?: BadgeSize
   /** Visual variant */
   variant?: BadgeVariant
   /** Color scheme */
@@ -96,7 +113,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
     },
     ref,
   ) => {
-    const safeSize = resolveResponsiveEnumProp(size, badgePropDefs.size)
+    const safeSize = (normalizeEnumPropValue(badgePropDefs.size, size) ?? badgePropDefs.size.default) as BadgeSize
     const safeVariant = (normalizeEnumPropValue(badgePropDefs.variant, variant) ??
       badgePropDefs.variant.default) as BadgeVariant
     const safeColor = (normalizeEnumPropValue(badgePropDefs.color, color) ?? SemanticColor.slate) as Color
@@ -135,6 +152,20 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
       className,
     )
 
+    const deleteButton = onDelete ? (
+      <button
+        type="button"
+        aria-label={deleteLabel}
+        onClick={event => {
+          event.stopPropagation()
+          onDelete()
+        }}
+        className={cn(badgeDeleteButtonBase, badgeDeleteButtonSizeVariants[safeSize])}
+      >
+        <DeleteIcon aria-hidden className="h-full w-full" />
+      </button>
+    ) : null
+
     const renderBadgeContent = (content: React.ReactNode) => (
       <>
         {iconContent ? <span className={cn(badgeIconBase, badgeIconSizeVariants[safeSize])}>{iconContent}</span> : null}
@@ -146,32 +177,22 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
           />
         )}
         {content}
-        {onDelete && (
-          <button
-            type="button"
-            aria-label={deleteLabel}
-            onClick={event => {
-              event.stopPropagation()
-              onDelete()
-            }}
-            className={cn(badgeDeleteButtonBase, badgeDeleteButtonSizeVariants[safeSize])}
-          >
-            <DeleteIcon aria-hidden className="h-full w-full" />
-          </button>
-        )}
+        {deleteButton}
       </>
     )
 
     if (asChild && React.isValidElement(children)) {
-      const childElement = children as React.ReactElement<Record<string, unknown>> & {
-        ref?: React.Ref<HTMLSpanElement>
+      const childElement = children as React.ReactElement<Record<string, unknown>>
+      const childProps = childElement.props as BadgeSlotProps
+      const childRef = childProps.ref
+
+      if (onDelete && isInteractiveBadgeHost(childElement, childProps)) {
+        return (
+          <span ref={ref} className={badgeClasses} style={combinedStyles} {...props}>
+            {renderBadgeContent(children)}
+          </span>
+        )
       }
-      const childProps = childElement.props as {
-        className?: string
-        style?: React.CSSProperties
-        children?: React.ReactNode
-      }
-      const childRef = childElement.ref
 
       return React.cloneElement(childElement, {
         ...props,

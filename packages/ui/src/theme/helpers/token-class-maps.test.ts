@@ -50,7 +50,10 @@ describe('theme token class maps', () => {
       'hover:bg-[color-mix(in_oklch,var(--chart-1)_18%,var(--color-light-surface))]',
     )
     expect(getSemanticColorClassRecipe('chart1').state.activeBg).toBe(
-      'active:bg-[color-mix(in_oklch,var(--chart-1)_16%,var(--color-light-surface))]',
+      'active:bg-[color-mix(in_oklch,var(--chart-1)_36%,var(--color-light-surface))]',
+    )
+    expect(getSemanticColorClassRecipe('chart1').state.activeContainerBg).toBe(
+      'active:bg-[color-mix(in_oklch,var(--chart-1)_18%,var(--color-light-surface))]',
     )
   })
 
