@@ -7,33 +7,39 @@ import { Check, ChevronRight, Circle } from 'lucide-react'
 import { AnimatePresence } from 'motion/react'
 import * as m from 'motion/react-m'
 import * as React from 'react'
-import { getRadiusStyles, getSizeStyles, useThemeRadius } from '@/elements/utils'
+import { useThemeRadius } from '@/elements/utils'
+import { getSpacingClasses, type Responsive, type Spacing } from '@/layouts/layout-utils'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
-import type { Color, Radius } from '@/theme/tokens'
+import { type Color, designTokens, type Radius } from '@/theme/tokens'
 import { Text } from '@/typography'
 import { getShortcutAccessibleLabel } from './menu.a11y'
 import {
   menuContentBase,
   menuContentByVariant,
+  menuIconSizeClasses,
   menuIndicatorBaseCls,
   menuItemBase,
   menuItemBaseCls,
   menuItemMotion,
+  menuItemSizeClasses,
   menuLabelBase,
   menuLabelBaseCls,
+  menuLabelSizeClasses,
   menuPanelTransition,
   menuPanelVariants,
   menuPopupBaseCls,
   menuPositionerBase,
   menuSeparatorBase,
+  menuSeparatorMarginClasses,
   menuShortcutBase,
   menuShortcutBaseCls,
   menuSubTriggerIcon,
   menuSubTriggerIconCls,
   menuViewportBase,
   menuViewportBaseCls,
+  menuViewportSizeClasses,
 } from './menu.class'
 import type { MenuSize, MenuVariant } from './menu.props'
 import { MenuHighlight } from './menu-highlight'
@@ -43,6 +49,7 @@ interface ContextMenuContextValue {
   size: MenuSize
   variant: MenuVariant
   color: Color
+  radius: Radius
   animated: boolean
 }
 
@@ -50,6 +57,7 @@ const ContextMenuContext = React.createContext<ContextMenuContextValue>({
   size: 'md',
   variant: 'solid',
   color: SemanticColor.slate,
+  radius: 'md',
   animated: false,
 })
 
@@ -121,7 +129,7 @@ ContextMenuTrigger.displayName = 'ContextMenu.Trigger'
 export interface ContextMenuContentProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Size of the menu */
   size?: MenuSize
-  /** Visual variant */
+  /** Floating panel visual variant */
   variant?: MenuVariant
   /** Accent color for item highlights */
   color?: Color
@@ -131,6 +139,16 @@ export interface ContextMenuContentProps extends React.HTMLAttributes<HTMLDivEle
   animated?: boolean
   /** Maximum height constraint */
   maxHeight?: React.CSSProperties['maxHeight']
+  /** Minimum width override */
+  minWidth?: React.CSSProperties['minWidth']
+  /** Maximum width override */
+  maxWidth?: React.CSSProperties['maxWidth']
+  /** Optional z-index override */
+  zIndex?: number
+  /** Custom padding props */
+  p?: Responsive<Spacing | string>
+  px?: Responsive<Spacing | string>
+  py?: Responsive<Spacing | string>
 }
 
 const ContextMenuContent = React.forwardRef<HTMLDivElement, ContextMenuContentProps>(
@@ -145,6 +163,12 @@ const ContextMenuContent = React.forwardRef<HTMLDivElement, ContextMenuContentPr
       children,
       animated = false,
       maxHeight = 'var(--available-height)',
+      minWidth = '12rem',
+      maxWidth = '22rem',
+      zIndex = 1000,
+      p,
+      px,
+      py,
       ...props
     },
     ref,
@@ -153,14 +177,25 @@ const ContextMenuContent = React.forwardRef<HTMLDivElement, ContextMenuContentPr
     const portalContainer = useThemePortalContainer()
     const isOpen = React.useContext(ContextMenuOpenContext)
 
-    const viewport = <div className={cn(menuViewportBaseCls, menuViewportBase)}>{children}</div>
+    const viewport = (
+      <div
+        className={cn(
+          menuViewportBaseCls,
+          menuViewportBase,
+          getSpacingClasses(p, 'p'),
+          py !== undefined ? getSpacingClasses(py, 'py') : p === undefined ? menuViewportSizeClasses[size] : undefined,
+        )}
+      >
+        {children}
+      </div>
+    )
 
     return (
-      <ContextMenuContext.Provider value={{ size, variant, color, animated }}>
+      <ContextMenuContext.Provider value={{ size, variant, color, radius, animated }}>
         <AnimatePresence>
           {isOpen && (
             <ContextMenuPrimitive.Portal keepMounted container={portalContainer}>
-              <ContextMenuPrimitive.Positioner className={menuPositionerBase}>
+              <ContextMenuPrimitive.Positioner className={menuPositionerBase} style={{ zIndex }}>
                 <ContextMenuPrimitive.Popup
                   ref={ref}
                   render={
@@ -180,9 +215,19 @@ const ContextMenuContent = React.forwardRef<HTMLDivElement, ContextMenuContentPr
                     menuContentBase,
                     menuContentByVariant[variant],
                     `surface-color-${color}`,
+                    'rounded-[var(--theme-radius)]',
                     className,
                   )}
-                  style={{ maxHeight, ...getRadiusStyles(radius), ...getSizeStyles(size), ...style }}
+                  style={
+                    {
+                      maxHeight,
+                      minWidth,
+                      maxWidth,
+                      '--theme-radius': designTokens.radius[radius],
+                      '--element-border-radius': designTokens.radius[radius],
+                      ...style,
+                    } as React.CSSProperties
+                  }
                   data-animated={animated ? '' : undefined}
                   {...props}
                 >
@@ -226,12 +271,18 @@ export interface ContextMenuItemProps
   strikethrough?: boolean
   /** Click handler */
   onClick?: () => void
+  /** Custom padding props */
+  p?: Responsive<Spacing | string>
+  px?: Responsive<Spacing | string>
+  py?: Responsive<Spacing | string>
 }
 
 const ContextMenuItem = React.forwardRef<HTMLDivElement, ContextMenuItemProps>(
-  ({ color, shortcut, disabled, className, children, bold, italic, strikethrough, onClick, ...props }, ref) => {
+  (
+    { color, shortcut, disabled, className, children, bold, italic, strikethrough, onClick, p, px, py, ...props },
+    ref,
+  ) => {
     const context = React.useContext(ContextMenuContext)
-    const itemColor = color || context.color
     const ariaLabel = getShortcutAccessibleLabel(children, shortcut)
 
     return (
@@ -240,8 +291,20 @@ const ContextMenuItem = React.forwardRef<HTMLDivElement, ContextMenuItemProps>(
         aria-label={ariaLabel}
         disabled={disabled}
         onClick={onClick}
-        className={cn(menuItemBaseCls, menuItemBase, menuItemMotion, `surface-color-${itemColor}`, className)}
-        style={{ ...getSizeStyles(context.size), ...props.style }}
+        className={cn(
+          menuItemBaseCls,
+          menuItemBase,
+          menuItemMotion,
+          menuItemSizeClasses[context.size],
+          menuIconSizeClasses[context.size],
+          'rounded-[calc(var(--theme-radius)-2px)]',
+          getSpacingClasses(p, 'p'),
+          getSpacingClasses(px, 'px'),
+          getSpacingClasses(py, 'py'),
+          color && `surface-color-${color}`,
+          className,
+        )}
+        style={props.style}
         {...props}
       >
         <Text
@@ -290,15 +353,33 @@ export interface ContextMenuCheckboxItemProps
   italic?: boolean
   /** Render item label with strikethrough */
   strikethrough?: boolean
+  /** Custom padding props */
+  p?: Responsive<Spacing | string>
+  px?: Responsive<Spacing | string>
+  py?: Responsive<Spacing | string>
 }
 
 const ContextMenuCheckboxItem = React.forwardRef<HTMLDivElement, ContextMenuCheckboxItemProps>(
   (
-    { checked, onCheckedChange, color, shortcut, disabled, className, children, bold, italic, strikethrough, ...props },
+    {
+      checked,
+      onCheckedChange,
+      color,
+      shortcut,
+      disabled,
+      className,
+      children,
+      bold,
+      italic,
+      strikethrough,
+      p,
+      px,
+      py,
+      ...props
+    },
     ref,
   ) => {
     const context = React.useContext(ContextMenuContext)
-    const itemColor = color || context.color
     const ariaLabel = getShortcutAccessibleLabel(children, shortcut)
 
     return (
@@ -308,8 +389,20 @@ const ContextMenuCheckboxItem = React.forwardRef<HTMLDivElement, ContextMenuChec
         checked={checked}
         onCheckedChange={onCheckedChange}
         disabled={disabled}
-        className={cn(menuItemBaseCls, menuItemBase, menuItemMotion, `surface-color-${itemColor}`, className)}
-        style={{ ...getSizeStyles(context.size), ...props.style }}
+        className={cn(
+          menuItemBaseCls,
+          menuItemBase,
+          menuItemMotion,
+          menuItemSizeClasses[context.size],
+          menuIconSizeClasses[context.size],
+          'rounded-[calc(var(--theme-radius)-2px)]',
+          getSpacingClasses(p, 'p'),
+          getSpacingClasses(px, 'px'),
+          getSpacingClasses(py, 'py'),
+          color && `surface-color-${color}`,
+          className,
+        )}
+        style={props.style}
         {...props}
       >
         <span className={cn(menuIndicatorBaseCls)}>
@@ -368,7 +461,7 @@ export interface ContextMenuRadioItemProps
     React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.RadioItem>,
     'color' | 'children' | 'className' | 'value'
   > {
-  /** Value of this radio item */
+  /** Value of the radio item */
   value: string
   /** Color override */
   color?: Color
@@ -384,20 +477,35 @@ export interface ContextMenuRadioItemProps
   italic?: boolean
   /** Render item label with strikethrough */
   strikethrough?: boolean
+  /** Custom padding props */
+  p?: Responsive<Spacing | string>
+  px?: Responsive<Spacing | string>
+  py?: Responsive<Spacing | string>
 }
 
 const ContextMenuRadioItem = React.forwardRef<HTMLDivElement, ContextMenuRadioItemProps>(
-  ({ value, color, disabled, className, children, bold, italic, strikethrough, ...props }, ref) => {
+  ({ value, color, disabled, className, children, bold, italic, strikethrough, p, px, py, ...props }, ref) => {
     const context = React.useContext(ContextMenuContext)
-    const itemColor = color || context.color
 
     return (
       <ContextMenuPrimitive.RadioItem
         ref={ref}
         value={value}
         disabled={disabled}
-        className={cn(menuItemBaseCls, menuItemBase, menuItemMotion, `surface-color-${itemColor}`, className)}
-        style={{ ...getSizeStyles(context.size), ...props.style }}
+        className={cn(
+          menuItemBaseCls,
+          menuItemBase,
+          menuItemMotion,
+          menuItemSizeClasses[context.size],
+          menuIconSizeClasses[context.size],
+          'rounded-[calc(var(--theme-radius)-2px)]',
+          getSpacingClasses(p, 'p'),
+          getSpacingClasses(px, 'px'),
+          getSpacingClasses(py, 'py'),
+          color && `surface-color-${color}`,
+          className,
+        )}
+        style={props.style}
         {...props}
       >
         <span className={cn(menuIndicatorBaseCls)}>
@@ -434,8 +542,13 @@ export interface ContextMenuLabelProps {
 
 const ContextMenuLabel = React.forwardRef<HTMLDivElement, ContextMenuLabelProps>(
   ({ className, children, ...props }, ref) => {
+    const context = React.useContext(ContextMenuContext)
     return (
-      <div ref={ref} className={cn(menuLabelBaseCls, menuLabelBase, className)} {...props}>
+      <div
+        ref={ref}
+        className={cn(menuLabelBaseCls, menuLabelBase, menuLabelSizeClasses[context.size], className)}
+        {...props}
+      >
         {children}
       </div>
     )
@@ -478,7 +591,14 @@ export interface ContextMenuSeparatorProps {
 
 const ContextMenuSeparator = React.forwardRef<HTMLDivElement, ContextMenuSeparatorProps>(
   ({ className, ...props }, ref) => {
-    return <ContextMenuPrimitive.Separator ref={ref} className={cn(menuSeparatorBase, className)} {...props} />
+    const context = React.useContext(ContextMenuContext)
+    return (
+      <ContextMenuPrimitive.Separator
+        ref={ref}
+        className={cn(menuSeparatorBase, menuSeparatorMarginClasses[context.size], className)}
+        {...props}
+      />
+    )
   },
 )
 
@@ -522,19 +642,34 @@ export interface ContextMenuSubTriggerProps
   italic?: boolean
   /** Render item label with strikethrough */
   strikethrough?: boolean
+  /** Custom padding props */
+  p?: Responsive<Spacing | string>
+  px?: Responsive<Spacing | string>
+  py?: Responsive<Spacing | string>
 }
 
 const ContextMenuSubTrigger = React.forwardRef<HTMLDivElement, ContextMenuSubTriggerProps>(
-  ({ color, disabled, className, children, bold, italic, strikethrough, ...props }, ref) => {
+  ({ color, disabled, className, children, bold, italic, strikethrough, p, px, py, ...props }, ref) => {
     const context = React.useContext(ContextMenuContext)
-    const itemColor = color || context.color
 
     return (
       <ContextMenuPrimitive.SubmenuTrigger
         ref={ref}
         disabled={disabled}
-        className={cn(menuItemBaseCls, menuItemBase, menuItemMotion, `surface-color-${itemColor}`, className)}
-        style={{ ...getSizeStyles(context.size), ...props.style }}
+        className={cn(
+          menuItemBaseCls,
+          menuItemBase,
+          menuItemMotion,
+          menuItemSizeClasses[context.size],
+          menuIconSizeClasses[context.size],
+          'rounded-[calc(var(--theme-radius)-2px)]',
+          getSpacingClasses(p, 'p'),
+          getSpacingClasses(px, 'px'),
+          getSpacingClasses(py, 'py'),
+          color && `surface-color-${color}`,
+          className,
+        )}
+        style={props.style}
         {...props}
       >
         <Text
@@ -567,10 +702,36 @@ export interface ContextMenuSubContentProps extends React.HTMLAttributes<HTMLDiv
   sideOffset?: number
   /** Maximum height constraint */
   maxHeight?: React.CSSProperties['maxHeight']
+  /** Minimum width override */
+  minWidth?: React.CSSProperties['minWidth']
+  /** Maximum width override */
+  maxWidth?: React.CSSProperties['maxWidth']
+  /** Optional z-index override */
+  zIndex?: number
+  /** Custom padding props */
+  p?: Responsive<Spacing | string>
+  px?: Responsive<Spacing | string>
+  py?: Responsive<Spacing | string>
 }
 
 const ContextMenuSubContent = React.forwardRef<HTMLDivElement, ContextMenuSubContentProps>(
-  ({ className, children, sideOffset = 2, maxHeight = 'var(--available-height)', style, ...props }, ref) => {
+  (
+    {
+      className,
+      children,
+      sideOffset = 2,
+      maxHeight = 'var(--available-height)',
+      minWidth = '12rem',
+      maxWidth = '22rem',
+      zIndex = 1000,
+      style,
+      p,
+      px,
+      py,
+      ...props
+    },
+    ref,
+  ) => {
     const context = React.useContext(ContextMenuContext)
     const portalContainer = useThemePortalContainer()
 
@@ -581,20 +742,62 @@ const ContextMenuSubContent = React.forwardRef<HTMLDivElement, ContextMenuSubCon
           sideOffset={sideOffset}
           side="right"
           align="start"
+          style={{ zIndex }}
         >
           <ContextMenuPrimitive.Popup
             ref={ref}
-            className={cn(menuPopupBaseCls, menuContentBase, menuContentByVariant[context.variant], className)}
-            style={{ maxHeight, ...getSizeStyles(context.size), ...style }}
+            className={cn(
+              menuPopupBaseCls,
+              menuContentBase,
+              menuContentByVariant[context.variant],
+              'rounded-[var(--theme-radius)]',
+              className,
+            )}
+            style={
+              {
+                maxHeight,
+                minWidth,
+                maxWidth,
+                '--theme-radius': designTokens.radius[context.radius],
+                '--element-border-radius': designTokens.radius[context.radius],
+                ...style,
+              } as React.CSSProperties
+            }
             data-animated={context.animated ? '' : undefined}
             {...props}
           >
             {context.animated ? (
               <MenuHighlight>
-                <div className={cn(menuViewportBaseCls, menuViewportBase)}>{children}</div>
+                <div
+                  className={cn(
+                    menuViewportBaseCls,
+                    menuViewportBase,
+                    getSpacingClasses(p, 'p'),
+                    py !== undefined
+                      ? getSpacingClasses(py, 'py')
+                      : p === undefined
+                        ? menuViewportSizeClasses[context.size]
+                        : undefined,
+                  )}
+                >
+                  {children}
+                </div>
               </MenuHighlight>
             ) : (
-              <div className={cn(menuViewportBaseCls, menuViewportBase)}>{children}</div>
+              <div
+                className={cn(
+                  menuViewportBaseCls,
+                  menuViewportBase,
+                  getSpacingClasses(p, 'p'),
+                  py !== undefined
+                    ? getSpacingClasses(py, 'py')
+                    : p === undefined
+                      ? menuViewportSizeClasses[context.size]
+                      : undefined,
+                )}
+              >
+                {children}
+              </div>
             )}
           </ContextMenuPrimitive.Popup>
         </ContextMenuPrimitive.Positioner>

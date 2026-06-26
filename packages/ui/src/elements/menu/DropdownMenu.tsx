@@ -7,34 +7,41 @@ import { Check, ChevronDown, ChevronRight, ChevronsUpDown, Circle } from 'lucide
 import { AnimatePresence } from 'motion/react'
 import * as m from 'motion/react-m'
 import * as React from 'react'
-import { getRadiusStyles, getSizeStyles, useThemeRadius } from '@/elements/utils'
+import { useThemeRadius } from '@/elements/utils'
+import { getSpacingClasses, type Responsive, type Spacing } from '@/layouts/layout-utils'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
-import type { Color, Radius } from '@/theme/tokens'
+import { type Color, designTokens, type Radius } from '@/theme/tokens'
 import { Text } from '@/typography'
 import { getShortcutAccessibleLabel } from './menu.a11y'
 import {
   menuContentBase,
   menuContentByVariant,
+  menuIconSizeClasses,
   menuIndicatorBaseCls,
   menuItemBase,
   menuItemBaseCls,
   menuItemMotion,
+  menuItemSizeClasses,
+  menuItemSubtitle,
   menuLabelBase,
   menuLabelBaseCls,
+  menuLabelSizeClasses,
   menuPanelTransition,
   menuPanelVariants,
   menuPopupBaseCls,
   menuPopupOverflowVisibleCls,
   menuPositionerBase,
   menuSeparatorBase,
+  menuSeparatorMarginClasses,
   menuShortcutBase,
   menuShortcutBaseCls,
   menuSubTriggerIcon,
   menuSubTriggerIconCls,
   menuViewportBase,
   menuViewportBaseCls,
+  menuViewportSizeClasses,
 } from './menu.class'
 import type { MenuSize, MenuVariant } from './menu.props'
 import { MenuHighlight } from './menu-highlight'
@@ -76,7 +83,7 @@ function DropdownMenuItemLabel({ children, title, subtitle, bold, italic, strike
       <Text truncate weight={bold ? 'medium' : 'regular'} italic={italic} strikethrough={strikethrough}>
         {primary}
       </Text>
-      {hasSubtitle ? <span className="truncate text-xs text-foreground/70">{subtitle}</span> : null}
+      {hasSubtitle ? <span className={cn('truncate text-xs', menuItemSubtitle)}>{subtitle}</span> : null}
     </span>
   )
 }
@@ -237,6 +244,16 @@ export interface DropdownMenuContentProps extends React.HTMLAttributes<HTMLDivEl
   animated?: boolean
   /** Maximum height constraint */
   maxHeight?: React.CSSProperties['maxHeight']
+  /** Minimum width override */
+  minWidth?: React.CSSProperties['minWidth']
+  /** Maximum width override */
+  maxWidth?: React.CSSProperties['maxWidth']
+  /** Optional z-index override */
+  zIndex?: number
+  /** Custom padding props */
+  p?: Responsive<Spacing | string>
+  px?: Responsive<Spacing | string>
+  py?: Responsive<Spacing | string>
 }
 
 const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContentProps>(
@@ -255,6 +272,12 @@ const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContent
       container: containerProp,
       animated = false,
       maxHeight = 'var(--available-height)',
+      minWidth = '12rem',
+      maxWidth = '22rem',
+      zIndex = 1000,
+      p,
+      px,
+      py,
       ...props
     },
     ref,
@@ -264,7 +287,18 @@ const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContent
     const portalContainer = containerProp ?? themePortalContainer
     const isOpen = React.useContext(DropdownMenuOpenContext)
 
-    const viewport = <div className={cn(menuViewportBaseCls, menuViewportBase)}>{children}</div>
+    const viewport = (
+      <div
+        className={cn(
+          menuViewportBaseCls,
+          menuViewportBase,
+          getSpacingClasses(p, 'p'),
+          py !== undefined ? getSpacingClasses(py, 'py') : p === undefined ? menuViewportSizeClasses[size] : undefined,
+        )}
+      >
+        {children}
+      </div>
+    )
 
     return (
       <DropdownMenuContext.Provider value={{ size, variant, color, radius, animated }}>
@@ -276,6 +310,7 @@ const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContent
                 side={side}
                 align={align}
                 sideOffset={sideOffset}
+                style={{ zIndex }}
               >
                 <MenuPrimitive.Popup
                   ref={ref}
@@ -296,9 +331,19 @@ const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContent
                     menuContentBase,
                     menuContentByVariant[variant],
                     `surface-color-${color}`,
+                    'rounded-[var(--theme-radius)]',
                     className,
                   )}
-                  style={{ maxHeight, ...getRadiusStyles(radius), ...getSizeStyles(size), ...style }}
+                  style={
+                    {
+                      maxHeight,
+                      minWidth,
+                      maxWidth,
+                      '--theme-radius': designTokens.radius[radius],
+                      '--element-border-radius': designTokens.radius[radius],
+                      ...style,
+                    } as React.CSSProperties
+                  }
                   data-animated={animated ? '' : undefined}
                   {...props}
                 >
@@ -346,15 +391,34 @@ export interface DropdownMenuItemProps
   strikethrough?: boolean
   /** Click handler */
   onClick?: () => void
+  /** Custom padding props */
+  p?: Responsive<Spacing | string>
+  px?: Responsive<Spacing | string>
+  py?: Responsive<Spacing | string>
 }
 
 const DropdownMenuItem = React.forwardRef<HTMLDivElement, DropdownMenuItemProps>(
   (
-    { color, title, subtitle, shortcut, disabled, className, children, bold, italic, strikethrough, onClick, ...props },
+    {
+      color,
+      title,
+      subtitle,
+      shortcut,
+      disabled,
+      className,
+      children,
+      bold,
+      italic,
+      strikethrough,
+      onClick,
+      p,
+      px,
+      py,
+      ...props
+    },
     ref,
   ) => {
     const context = React.useContext(DropdownMenuContext)
-    const itemColor = color || context.color
     const ariaLabel = getShortcutAccessibleLabel(title ?? children, shortcut)
 
     return (
@@ -363,8 +427,20 @@ const DropdownMenuItem = React.forwardRef<HTMLDivElement, DropdownMenuItemProps>
         aria-label={ariaLabel}
         disabled={disabled}
         onClick={onClick}
-        className={cn(menuItemBaseCls, menuItemBase, menuItemMotion, `surface-color-${itemColor}`, className)}
-        style={{ ...getSizeStyles(context.size), ...props.style }}
+        className={cn(
+          menuItemBaseCls,
+          menuItemBase,
+          menuItemMotion,
+          menuItemSizeClasses[context.size],
+          menuIconSizeClasses[context.size],
+          'rounded-[calc(var(--theme-radius)-2px)]',
+          getSpacingClasses(p, 'p'),
+          getSpacingClasses(px, 'px'),
+          getSpacingClasses(py, 'py'),
+          color && `surface-color-${color}`,
+          className,
+        )}
+        style={props.style}
         {...props}
       >
         <DropdownMenuItemLabel
@@ -413,15 +489,33 @@ export interface DropdownMenuCheckboxItemProps
   italic?: boolean
   /** Render item label with strikethrough */
   strikethrough?: boolean
+  /** Custom padding props */
+  p?: Responsive<Spacing | string>
+  px?: Responsive<Spacing | string>
+  py?: Responsive<Spacing | string>
 }
 
 const DropdownMenuCheckboxItem = React.forwardRef<HTMLDivElement, DropdownMenuCheckboxItemProps>(
   (
-    { checked, onCheckedChange, color, shortcut, disabled, className, children, bold, italic, strikethrough, ...props },
+    {
+      checked,
+      onCheckedChange,
+      color,
+      shortcut,
+      disabled,
+      className,
+      children,
+      bold,
+      italic,
+      strikethrough,
+      p,
+      px,
+      py,
+      ...props
+    },
     ref,
   ) => {
     const context = React.useContext(DropdownMenuContext)
-    const itemColor = color || context.color
     const ariaLabel = getShortcutAccessibleLabel(children, shortcut)
 
     return (
@@ -431,8 +525,20 @@ const DropdownMenuCheckboxItem = React.forwardRef<HTMLDivElement, DropdownMenuCh
         checked={checked}
         onCheckedChange={onCheckedChange}
         disabled={disabled}
-        className={cn(menuItemBaseCls, menuItemBase, menuItemMotion, `surface-color-${itemColor}`, className)}
-        style={{ ...getSizeStyles(context.size), ...props.style }}
+        className={cn(
+          menuItemBaseCls,
+          menuItemBase,
+          menuItemMotion,
+          menuItemSizeClasses[context.size],
+          menuIconSizeClasses[context.size],
+          'rounded-[calc(var(--theme-radius)-2px)]',
+          getSpacingClasses(p, 'p'),
+          getSpacingClasses(px, 'px'),
+          getSpacingClasses(py, 'py'),
+          color && `surface-color-${color}`,
+          className,
+        )}
+        style={props.style}
         {...props}
       >
         <span className={cn(menuIndicatorBaseCls)}>
@@ -501,20 +607,35 @@ export interface DropdownMenuRadioItemProps
   italic?: boolean
   /** Render item label with strikethrough */
   strikethrough?: boolean
+  /** Custom padding props */
+  p?: Responsive<Spacing | string>
+  px?: Responsive<Spacing | string>
+  py?: Responsive<Spacing | string>
 }
 
 const DropdownMenuRadioItem = React.forwardRef<HTMLDivElement, DropdownMenuRadioItemProps>(
-  ({ value, color, disabled, className, children, bold, italic, strikethrough, ...props }, ref) => {
+  ({ value, color, disabled, className, children, bold, italic, strikethrough, p, px, py, ...props }, ref) => {
     const context = React.useContext(DropdownMenuContext)
-    const itemColor = color || context.color
 
     return (
       <MenuPrimitive.RadioItem
         ref={ref}
         value={value}
         disabled={disabled}
-        className={cn(menuItemBaseCls, menuItemBase, menuItemMotion, `surface-color-${itemColor}`, className)}
-        style={{ ...getSizeStyles(context.size), ...props.style }}
+        className={cn(
+          menuItemBaseCls,
+          menuItemBase,
+          menuItemMotion,
+          menuItemSizeClasses[context.size],
+          menuIconSizeClasses[context.size],
+          'rounded-[calc(var(--theme-radius)-2px)]',
+          getSpacingClasses(p, 'p'),
+          getSpacingClasses(px, 'px'),
+          getSpacingClasses(py, 'py'),
+          color && `surface-color-${color}`,
+          className,
+        )}
+        style={props.style}
         {...props}
       >
         <span className={cn(menuIndicatorBaseCls)}>
@@ -545,8 +666,13 @@ export interface DropdownMenuLabelProps {
 
 const DropdownMenuLabel = React.forwardRef<HTMLDivElement, DropdownMenuLabelProps>(
   ({ className, children, ...props }, ref) => {
+    const context = React.useContext(DropdownMenuContext)
     return (
-      <div ref={ref} className={cn(menuLabelBaseCls, menuLabelBase, className)} {...props}>
+      <div
+        ref={ref}
+        className={cn(menuLabelBaseCls, menuLabelBase, menuLabelSizeClasses[context.size], className)}
+        {...props}
+      >
         {children}
       </div>
     )
@@ -589,7 +715,14 @@ export interface DropdownMenuSeparatorProps {
 
 const DropdownMenuSeparator = React.forwardRef<HTMLDivElement, DropdownMenuSeparatorProps>(
   ({ className, ...props }, ref) => {
-    return <MenuPrimitive.Separator ref={ref} className={cn(menuSeparatorBase, className)} {...props} />
+    const context = React.useContext(DropdownMenuContext)
+    return (
+      <MenuPrimitive.Separator
+        ref={ref}
+        className={cn(menuSeparatorBase, menuSeparatorMarginClasses[context.size], className)}
+        {...props}
+      />
+    )
   },
 )
 
@@ -657,19 +790,34 @@ export interface DropdownMenuSubTriggerProps
   italic?: boolean
   /** Render item label with strikethrough */
   strikethrough?: boolean
+  /** Custom padding props */
+  p?: Responsive<Spacing | string>
+  px?: Responsive<Spacing | string>
+  py?: Responsive<Spacing | string>
 }
 
 const DropdownMenuSubTrigger = React.forwardRef<HTMLDivElement, DropdownMenuSubTriggerProps>(
-  ({ color, disabled, className, children, bold, italic, strikethrough, ...props }, ref) => {
+  ({ color, disabled, className, children, bold, italic, strikethrough, p, px, py, ...props }, ref) => {
     const context = React.useContext(DropdownMenuContext)
-    const itemColor = color || context.color
 
     return (
       <MenuPrimitive.SubmenuTrigger
         ref={ref}
         disabled={disabled}
-        className={cn(menuItemBaseCls, menuItemBase, menuItemMotion, `surface-color-${itemColor}`, className)}
-        style={{ ...getSizeStyles(context.size), ...props.style }}
+        className={cn(
+          menuItemBaseCls,
+          menuItemBase,
+          menuItemMotion,
+          menuItemSizeClasses[context.size],
+          menuIconSizeClasses[context.size],
+          'rounded-[calc(var(--theme-radius)-2px)]',
+          getSpacingClasses(p, 'p'),
+          getSpacingClasses(px, 'px'),
+          getSpacingClasses(py, 'py'),
+          color && `surface-color-${color}`,
+          className,
+        )}
+        style={props.style}
         {...props}
       >
         <DropdownMenuItemLabel bold={bold} italic={italic} strikethrough={strikethrough}>
@@ -702,6 +850,16 @@ export interface DropdownMenuSubContentProps extends React.HTMLAttributes<HTMLDi
   side?: 'top' | 'right' | 'bottom' | 'left'
   /** Maximum height constraint */
   maxHeight?: React.CSSProperties['maxHeight']
+  /** Minimum width override */
+  minWidth?: React.CSSProperties['minWidth']
+  /** Maximum width override */
+  maxWidth?: React.CSSProperties['maxWidth']
+  /** Optional z-index override */
+  zIndex?: number
+  /** Custom padding props */
+  p?: Responsive<Spacing | string>
+  px?: Responsive<Spacing | string>
+  py?: Responsive<Spacing | string>
 }
 
 const DropdownMenuSubContent = React.forwardRef<HTMLDivElement, DropdownMenuSubContentProps>(
@@ -714,7 +872,13 @@ const DropdownMenuSubContent = React.forwardRef<HTMLDivElement, DropdownMenuSubC
       sideOffset = 2,
       side = 'right',
       maxHeight = 'var(--available-height)',
+      minWidth = '12rem',
+      maxWidth = '22rem',
+      zIndex = 1000,
       style,
+      p,
+      px,
+      py,
       ...props
     },
     ref,
@@ -723,11 +887,35 @@ const DropdownMenuSubContent = React.forwardRef<HTMLDivElement, DropdownMenuSubC
     const portalContainer = useThemePortalContainer()
     const isSubOpen = React.useContext(DropdownMenuSubOpenContext)
 
+    const viewport = (
+      <div
+        className={cn(
+          menuViewportBaseCls,
+          menuViewportBase,
+          viewportClassName,
+          getSpacingClasses(p, 'p'),
+          py !== undefined
+            ? getSpacingClasses(py, 'py')
+            : p === undefined
+              ? menuViewportSizeClasses[context.size]
+              : undefined,
+        )}
+      >
+        {children}
+      </div>
+    )
+
     return (
       <AnimatePresence>
         {isSubOpen && (
           <MenuPrimitive.Portal keepMounted container={portalContainer}>
-            <MenuPrimitive.Positioner className={menuPositionerBase} sideOffset={sideOffset} side={side} align="start">
+            <MenuPrimitive.Positioner
+              className={menuPositionerBase}
+              sideOffset={sideOffset}
+              side={side}
+              align="start"
+              style={{ zIndex }}
+            >
               <MenuPrimitive.Popup
                 ref={ref}
                 render={
@@ -746,19 +934,23 @@ const DropdownMenuSubContent = React.forwardRef<HTMLDivElement, DropdownMenuSubC
                   overflowVisible && menuPopupOverflowVisibleCls,
                   menuContentBase,
                   menuContentByVariant[context.variant],
+                  'rounded-[var(--theme-radius)]',
                   className,
                 )}
-                style={{ maxHeight, ...getRadiusStyles(context.radius), ...getSizeStyles(context.size), ...style }}
+                style={
+                  {
+                    maxHeight,
+                    minWidth,
+                    maxWidth,
+                    '--theme-radius': designTokens.radius[context.radius],
+                    '--element-border-radius': designTokens.radius[context.radius],
+                    ...style,
+                  } as React.CSSProperties
+                }
                 data-animated={context.animated ? '' : undefined}
                 {...props}
               >
-                {context.animated ? (
-                  <MenuHighlight>
-                    <div className={cn(menuViewportBaseCls, menuViewportBase, viewportClassName)}>{children}</div>
-                  </MenuHighlight>
-                ) : (
-                  <div className={cn(menuViewportBaseCls, menuViewportBase, viewportClassName)}>{children}</div>
-                )}
+                {context.animated ? <MenuHighlight>{viewport}</MenuHighlight> : viewport}
               </MenuPrimitive.Popup>
             </MenuPrimitive.Positioner>
           </MenuPrimitive.Portal>

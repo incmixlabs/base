@@ -1,15 +1,9 @@
 @layer components {
   /* Menu Styles */
-  .af-menu-positioner {
-    z-index: 1000;
-  }
 
   .af-menu-content {
     border: 1px solid var(--surface-border);
     color: var(--surface-text);
-    min-width: 12rem;
-    max-width: 22rem;
-    border-radius: var(--element-border-radius);
   }
 
   .af-menu-content-solid {
@@ -39,28 +33,13 @@
     --menu-subtrigger-icon-color: var(--surface-text);
   }
 
-  .af-menu-viewport {
-    min-width: 100%;
-    min-height: 0;
-    padding: var(--element-padding-y) 0;
-  }
-
   .af-menu-item {
-    gap: var(--element-gap, 0.5rem);
-    cursor: var(--cursor-menu-item, pointer);
+    cursor: pointer;
     color: var(--surface-text);
-    height: var(--element-height);
-    padding-left: var(--element-padding-x);
-    padding-right: var(--element-padding-x);
-    scroll-margin: var(--element-padding-y) 0;
-    font-size: var(--element-font-size);
-    line-height: var(--element-line-height);
-    border-radius: calc(var(--element-border-radius) - 2px);
   }
 
-  .af-menu-item svg {
-    width: var(--element-icon-size);
-    height: var(--element-icon-size);
+  .af-menu-item-subtitle {
+    color: color-mix(in oklch, var(--surface-text) 70%, transparent);
   }
 
   .af-menu-item[data-disabled] {
@@ -111,23 +90,13 @@
 
   .af-menu-label-base {
     color: color-mix(in oklch, var(--surface-text) 82%, transparent);
-    padding-left: var(--element-padding-x);
-    padding-right: var(--element-padding-x);
-    font-size: calc(var(--element-font-size) - 1px);
-    height: calc(var(--element-height) - 4px);
     display: flex;
     align-items: center;
-  }
-
-  .af-menu-item + .af-menu-label-base {
-    margin-top: var(--element-padding-y);
   }
 
   .af-menu-separator-base {
     height: 0;
     flex-shrink: 0;
-    margin-top: var(--element-padding-y);
-    margin-bottom: var(--element-padding-y);
     border-top: 1px solid var(--surface-border);
     align-self: stretch;
   }
