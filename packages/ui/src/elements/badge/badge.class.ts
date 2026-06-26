@@ -20,9 +20,9 @@ export const badgeSizeVariants = Object.fromEntries(
 ) as Pick<typeof buttonSizeVariants, (typeof badgeSizeNames)[number]>
 
 export const badgeDeleteButtonSizeVariants = {
-  xs: 'h-3 w-3 ms-0.5 [&_svg]:h-full [&_svg]:w-full',
-  sm: 'h-3.5 w-3.5 ms-0.5 [&_svg]:h-full [&_svg]:w-full',
-  md: 'h-4 w-4 ms-0.5 [&_svg]:h-full [&_svg]:w-full',
+  xs: 'h-1 w-1 ms-0.5 [&_svg]:h-full [&_svg]:w-full',
+  sm: 'h-2 w-2 ms-0.5 [&_svg]:h-full [&_svg]:w-full',
+  md: 'h-3 w-3 ms-0.5 [&_svg]:h-full [&_svg]:w-full',
 } as const
 
 export const badgeIconSizeVariants = Object.fromEntries(

@@ -157,6 +157,16 @@
   --font-mono: var(--font-geist-mono);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
   /* Legacy utility aliases now resolve through the semantic --color-* contract. */
   --card: var(--color-neutral-surface);
   --card-foreground: var(--color-neutral-text);
