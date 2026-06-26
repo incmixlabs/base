@@ -1,3 +1,4 @@
+import { CHROMATIC_SURFACE_COLOR_NAMES } from '@incmix/theme'
 import { normalizeChartColor, semanticColorKeys } from '@/theme/props/color.prop'
 import { type Color, SURFACE_COLOR_KEYS, type SurfaceColorKey } from '@/theme/tokens'
 import { surfaceVariantSurfaceShadow } from './Surface.css'
@@ -28,8 +29,7 @@ function surfaceUtilityColorName(color: SurfaceColorKey) {
   return normalizeChartColor(color) ?? color
 }
 
-const chromaticSurfaceColorNames = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'error'] as const
-const chromaticSurfaceColorSet = new Set<string>(chromaticSurfaceColorNames)
+const chromaticSurfaceColorSet = new Set<string>(CHROMATIC_SURFACE_COLOR_NAMES)
 
 function surfaceStateBackgroundClassName(colorName: string) {
   return chromaticSurfaceColorSet.has(colorName) ? `bg-${colorName}-highlight` : `bg-${colorName}-soft`

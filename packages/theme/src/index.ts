@@ -171,6 +171,8 @@ export {
 } from './summary-bar-chart-spec.js'
 export {
   BORDER_RADIUS_TO_PIXELS,
+  CHROMATIC_SURFACE_COLOR_NAMES,
+  type ChromaticSurfaceColorName,
   HUE_NAMES,
   HUE_STEPS,
   type HueName,

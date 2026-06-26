@@ -1,4 +1,11 @@
-import { CHART_COLOR_KEYS, HUE_NAMES, HUE_STEPS, SEMANTIC_COLOR_NAMES, SEMANTIC_COLOR_VAR_TOKENS } from '@incmix/theme'
+import {
+  CHART_COLOR_KEYS,
+  CHROMATIC_SURFACE_COLOR_NAMES,
+  HUE_NAMES,
+  HUE_STEPS,
+  SEMANTIC_COLOR_NAMES,
+  SEMANTIC_COLOR_VAR_TOKENS,
+} from '@incmix/theme'
 import { defineConfig, presetWind4, transformerDirectives, transformerVariantGroup } from 'unocss'
 
 const responsivePrefixes = ['', 'xs:', 'sm:', 'md:', 'lg:', 'xl:'] as const
@@ -70,15 +77,14 @@ const stateBorderColorUtilities = [
   '[var(--color-error-border)]',
 ] as const
 const colorUtilityPrefixes = ['bg', 'text', 'border'] as const
-const chromaticSurfaceColorNames = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'error'] as const
 const surfaceColorNames = [...SEMANTIC_COLOR_NAMES, ...CHART_COLOR_KEYS] as const
 type SemanticSurfaceColorName = (typeof SEMANTIC_COLOR_NAMES)[number]
 type ChartSurfaceColorName = (typeof CHART_COLOR_KEYS)[number]
 type SurfaceColorName = (typeof surfaceColorNames)[number]
-type ChromaticSurfaceColorName = (typeof chromaticSurfaceColorNames)[number]
+type ChromaticSurfaceColorName = (typeof CHROMATIC_SURFACE_COLOR_NAMES)[number]
 
 const surfaceColorPattern = surfaceColorNames.join('|')
-const chromaticSurfaceColorPattern = chromaticSurfaceColorNames.join('|')
+const chromaticSurfaceColorPattern = CHROMATIC_SURFACE_COLOR_NAMES.join('|')
 const surfaceBackgroundRule = new RegExp(`^bg-(${surfaceColorPattern})-(solid|soft|surface)$`)
 const surfaceHighlightBackgroundRule = new RegExp(`^bg-(${chromaticSurfaceColorPattern})-highlight$`)
 const surfaceBorderRule = new RegExp(`^border-(${surfaceColorPattern})$`)
@@ -126,7 +132,7 @@ const surfaceColors = {
 } as Record<SurfaceColorName, ReturnType<typeof semanticSurfaceColorRoles> | ReturnType<typeof chartSurfaceColorRoles>>
 
 function isChromaticSurfaceColor(color: SurfaceColorName): color is ChromaticSurfaceColorName {
-  return (chromaticSurfaceColorNames as readonly string[]).includes(color)
+  return (CHROMATIC_SURFACE_COLOR_NAMES as readonly string[]).includes(color)
 }
 
 function surfaceStateBackgroundUtility(color: SurfaceColorName) {
