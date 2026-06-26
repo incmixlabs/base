@@ -1,4 +1,5 @@
 import { surfaceVariants } from '@/elements/surface/surface.props'
+import { asChildPropDef } from '@/theme/props/as-child.prop'
 import type { PropDef } from '@/theme/props/prop-def'
 import { type controlButtonSizes, createControlButtonPropDefs } from '../control-button-props'
 
@@ -14,7 +15,7 @@ const baseButtonPropDefs = createControlButtonPropDefs({
   loading: PropDef<boolean>
 }
 
-const buttonPropDefs = baseButtonPropDefs
+const buttonPropDefs = { ...asChildPropDef, ...baseButtonPropDefs }
 const buttonPropDefsWithInverse = {
   ...buttonPropDefs,
   color: { ...buttonPropDefs.color, default: 'primary' },

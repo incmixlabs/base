@@ -63,7 +63,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     {
       size = 'md',
       variant = 'soft',
-      color = SemanticColor.slate,
+      color,
       radius: radiusProp,
       loading = false,
       highContrast = false,

@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Bell, Mail } from 'lucide-react'
 import { Badge, IconButton } from '@/elements'
 import { badgePropDefs } from '@/elements/badge/badge.props'
-import { colorPropDef } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
-import { radiusPropDef } from '@/theme/props/radius.prop'
+import { selectArgType } from '@/theme/props/storybook'
+
+const labelForValue = (value: string) => `${value.charAt(0).toUpperCase()}${value.slice(1)}`
 
 const meta: Meta<typeof Badge> = {
   title: 'Elements/Badge',
@@ -14,20 +14,16 @@ const meta: Meta<typeof Badge> = {
   },
   argTypes: {
     size: {
-      control: 'select',
-      options: getPropDefValues(badgePropDefs.size),
+      ...selectArgType(badgePropDefs.size),
     },
     variant: {
-      control: 'select',
-      options: getPropDefValues(badgePropDefs.variant),
+      ...selectArgType(badgePropDefs.variant),
     },
     color: {
-      control: 'select',
-      options: getPropDefValues(colorPropDef.color),
+      ...selectArgType(badgePropDefs.color),
     },
     radius: {
-      control: 'select',
-      options: getPropDefValues(radiusPropDef.radius),
+      ...selectArgType(badgePropDefs.radius),
     },
     highContrast: {
       control: 'boolean',
@@ -106,7 +102,7 @@ export const Colors: Story = {
       {getPropDefValues(badgePropDefs.variant).map(variant => (
         <div key={variant} className="flex items-center gap-2">
           <span className="w-16 text-sm capitalize">{variant}:</span>
-          {getPropDefValues(colorPropDef.color).map(color => (
+          {getPropDefValues(badgePropDefs.color).map(color => (
             <Badge key={color} variant={variant} color={color}>
               {color}
             </Badge>
@@ -120,7 +116,7 @@ export const Colors: Story = {
 export const Radius: Story = {
   render: () => (
     <div className="flex items-center gap-4">
-      {getPropDefValues(radiusPropDef.radius).map(radius => (
+      {getPropDefValues(badgePropDefs.radius).map(radius => (
         <Badge key={radius} radius={radius}>
           {radius}
         </Badge>
@@ -147,18 +143,11 @@ export const SizeComparison: Story = {
         <div key={size} className="space-y-2">
           <span className="text-xs text-muted-foreground font-mono">{size}</span>
           <div className="flex items-center gap-3">
-            <Badge size={size} variant="solid">
-              Solid
-            </Badge>
-            <Badge size={size} variant="soft">
-              Soft
-            </Badge>
-            <Badge size={size} variant="outline">
-              Outline
-            </Badge>
-            <Badge size={size} variant="surface">
-              Surface
-            </Badge>
+            {getPropDefValues(badgePropDefs.variant).map(variant => (
+              <Badge key={variant} size={size} variant={variant}>
+                {labelForValue(variant)}
+              </Badge>
+            ))}
             <Badge size={size} variant="soft" color="success" className="gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-current" />
               Active
@@ -294,17 +283,13 @@ export const NotificationCount: Story = {
   render: () => (
     <div className="flex items-center gap-8">
       <div className="relative">
-        <IconButton aria-label="Notifications" color="primary" size="lg" variant="outline">
-          <Bell className="h-4 w-4" />
-        </IconButton>
+        <IconButton aria-label="Notifications" color="primary" size="lg" variant="outline" icon="bell" />
         <Badge color="error" variant="solid" size="xs" radius="full" className="absolute -top-3 -right-3">
           3
         </Badge>
       </div>
       <div className="relative">
-        <IconButton aria-label="Messages" color="primary" size="lg" variant="outline">
-          <Mail className="h-4 w-4" />
-        </IconButton>
+        <IconButton aria-label="Messages" color="primary" size="lg" variant="outline" icon="mail" />
         <Badge color="primary" variant="solid" size="xs" radius="full" className="absolute -top-3 -right-2">
           12
         </Badge>

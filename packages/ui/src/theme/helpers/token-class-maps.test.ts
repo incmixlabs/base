@@ -32,9 +32,9 @@ describe('theme token class maps', () => {
     expect(recipe.text.default).toBe('text-primary')
     expect(recipe.text.contrast).toBe('text-primary-contrast')
     expect(recipe.border.default).toBe('border-primary')
-    expect(recipe.state.hoverBg).toBe('hover:bg-primary-highlight')
+    expect(recipe.state.hoverBg).toBe('hover:bg-[var(--color-primary-soft-hover)]')
     expect(recipe.state.activeBg).toBe('active:bg-[var(--color-primary-soft-hover)]')
-    expect(recipe.state.selectedBg).toBe('data-[selected]:bg-primary-highlight')
+    expect(recipe.state.selectedBg).toBe('data-[selected]:bg-[var(--color-primary-soft-hover)]')
   })
 
   it('keeps structural and chart interaction states variant-specific', () => {

@@ -7,17 +7,9 @@ import { selectArgType } from '@/theme/props/storybook'
 import { Button } from './Button'
 import { buttonPropDefs } from './button.props'
 
-const showcaseColors = [
-  SemanticColor.slate,
-  SemanticColor.primary,
-  SemanticColor.secondary,
-  SemanticColor.accent,
-  SemanticColor.neutral,
-  SemanticColor.info,
-  SemanticColor.success,
-  SemanticColor.warning,
-  SemanticColor.error,
-] as const
+const showcaseColors = [...getPropDefValues(buttonPropDefs.color)]
+
+const labelForValue = (value: string) => `${value.charAt(0).toUpperCase()}${value.slice(1)}`
 
 const meta: Meta<typeof Button> = {
   title: 'Elements/Button',
@@ -282,10 +274,11 @@ export const Disabled: Story = {
 export const AllVariants: Story = {
   render: () => (
     <Box display="flex" className="gap-4 flex-wrap">
-      <Button variant="solid">Solid</Button>
-      <Button variant="soft">Soft</Button>
-      <Button variant="outline">Outline</Button>
-      <Button variant="ghost">Ghost</Button>
+      {getPropDefValues(buttonPropDefs.variant).map(variant => (
+        <Button key={variant} variant={variant}>
+          {labelForValue(variant)}
+        </Button>
+      ))}
     </Box>
   ),
 }
@@ -294,10 +287,11 @@ export const AllVariants: Story = {
 export const AllSizes: Story = {
   render: () => (
     <Box display="flex" className="gap-4 items-center">
-      <Button size="sm">Small</Button>
-      <Button size="md">Medium (default)</Button>
-      <Button size="lg">Large</Button>
-      <Button size="xl">Extra Large</Button>
+      {getPropDefValues(buttonPropDefs.size).map(size => (
+        <Button key={size} size={size}>
+          Size {size}
+        </Button>
+      ))}
     </Box>
   ),
 }
@@ -308,8 +302,7 @@ export const AllColorsSolid: Story = {
     <Box display="flex" className="gap-4 flex-wrap">
       {showcaseColors.map(color => (
         <Button key={color} color={color}>
-          {color.charAt(0).toUpperCase()}
-          {color.slice(1)}
+          {labelForValue(color)}
         </Button>
       ))}
     </Box>
@@ -322,8 +315,7 @@ export const AllColorsSoft: Story = {
     <Box display="flex" className="gap-4 flex-wrap">
       {showcaseColors.map(color => (
         <Button key={color} variant="soft" color={color}>
-          {color.charAt(0).toUpperCase()}
-          {color.slice(1)}
+          {labelForValue(color)}
         </Button>
       ))}
     </Box>
@@ -336,8 +328,7 @@ export const AllColorsOutline: Story = {
     <Box display="flex" className="gap-4 flex-wrap">
       {showcaseColors.map(color => (
         <Button key={color} variant="outline" color={color}>
-          {color.charAt(0).toUpperCase()}
-          {color.slice(1)}
+          {labelForValue(color)}
         </Button>
       ))}
     </Box>
@@ -350,8 +341,7 @@ export const AllColorsGhost: Story = {
     <Box display="flex" className="gap-4 flex-wrap">
       {showcaseColors.map(color => (
         <Button key={color} variant="ghost" color={color}>
-          {color.charAt(0).toUpperCase()}
-          {color.slice(1)}
+          {labelForValue(color)}
         </Button>
       ))}
     </Box>
@@ -365,18 +355,11 @@ export const SizeVariantMatrix: Story = {
       {getPropDefValues(buttonPropDefs.size).map(size => (
         <Box key={size} display="flex" className="gap-4 items-center">
           <span className="w-12 text-sm text-muted-foreground">{size}</span>
-          <Button size={size} variant="solid">
-            Solid
-          </Button>
-          <Button size={size} variant="soft">
-            Soft
-          </Button>
-          <Button size={size} variant="outline">
-            Outline
-          </Button>
-          <Button size={size} variant="ghost">
-            Ghost
-          </Button>
+          {getPropDefValues(buttonPropDefs.variant).map(variant => (
+            <Button key={variant} size={size} variant={variant}>
+              {labelForValue(variant)}
+            </Button>
+          ))}
         </Box>
       ))}
     </Box>
@@ -453,11 +436,11 @@ export const LoadingStates: Story = {
 export const AllRadii: Story = {
   render: () => (
     <Box display="flex" className="gap-4 items-center">
-      <Button radius="none">None</Button>
-      <Button radius="sm">Small</Button>
-      <Button radius="md">Medium</Button>
-      <Button radius="lg">Large</Button>
-      <Button radius="full">Full</Button>
+      {getPropDefValues(buttonPropDefs.radius).map(radius => (
+        <Button key={radius} radius={radius}>
+          {labelForValue(radius)}
+        </Button>
+      ))}
     </Box>
   ),
 }

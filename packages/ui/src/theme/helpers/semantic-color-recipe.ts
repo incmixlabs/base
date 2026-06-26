@@ -64,8 +64,6 @@ function chartInteractionBackgroundClassName(colorName: string, layer: SemanticC
 }
 
 function interactionBackgroundClassName(colorName: string, layer: SemanticColorInteractionLayer = 'soft') {
-  if (chromaticSurfaceColorSet.has(colorName)) return `bg-${colorName}-highlight`
-
   return (
     chartInteractionBackgroundClassName(colorName, layer) ??
     `bg-[var(--color-${colorName}-${interactionTokenByLayer[layer]}-hover)]`

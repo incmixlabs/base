@@ -1,67 +1,35 @@
-import {
-  createSemanticColorVariantClassMap,
-  type SemanticColorClassRecipe,
-} from '@/theme/helpers/semantic-color-recipe'
 import type { Color } from '@/theme/tokens'
-import type { iconButtonPropDefs } from './icon-button.props'
+import { type ControlSurfaceVariant, createControlSurfaceClassMaps } from '../surface/control-surface.class'
+import { iconButtonPropDefs } from './icon-button.props'
 
 type IconButtonVariant = (typeof iconButtonPropDefs.variant.values)[number]
 type IconButtonSize = (typeof iconButtonPropDefs.size.values)[number]
-const iconButtonVariants = ['solid', 'soft', 'outline', 'ghost'] as const satisfies readonly IconButtonVariant[]
-const iconButtonSizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const satisfies readonly IconButtonSize[]
+const iconButtonVariants = iconButtonPropDefs.variant.values satisfies readonly ControlSurfaceVariant[]
+const iconButtonSizes = iconButtonPropDefs.size.values
 
 export const iconButtonBase = 'border-0 border-solid'
 
-const iconButtonColorByVariant = {
-  solid: recipe => `${recipe.fill.solid} ${recipe.border.default} ${recipe.text.contrast}`,
-  soft: recipe => `${recipe.fill.soft} ${recipe.border.transparent} ${recipe.text.default}`,
-  outline: recipe => `${recipe.fill.transparent} ${recipe.border.default} ${recipe.text.default}`,
-  ghost: recipe => `${recipe.fill.transparent} ${recipe.border.transparent} ${recipe.text.default}`,
-} satisfies Record<IconButtonVariant, (recipe: SemanticColorClassRecipe) => string>
+const iconButtonSurfaceClassMaps = createControlSurfaceClassMaps(iconButtonVariants)
 
-const iconButtonHoverByVariant = {
-  solid: () => 'hover:brightness-[0.96] active:brightness-[0.92]',
-  soft: recipe => `${recipe.state.hoverBg} active:brightness-[0.98]`,
-  outline: recipe => `${recipe.state.hoverBg} ${recipe.state.activeBg}`,
-  ghost: recipe => `${recipe.state.hoverBg} ${recipe.state.activeBg}`,
-} satisfies Record<IconButtonVariant, (recipe: SemanticColorClassRecipe) => string>
+export const iconButtonColorVariants = iconButtonSurfaceClassMaps.color as Record<
+  Color,
+  Record<IconButtonVariant, string>
+>
 
-const highContrastInteractionFilter =
-  'hover:contrast-[1.1] hover:saturate-[1.2] active:contrast-[1.15] active:saturate-[1.25]'
+export const iconButtonHoverColorVariants = iconButtonSurfaceClassMaps.hover as Record<
+  Color,
+  Record<IconButtonVariant, string>
+>
 
-const iconButtonHighContrastHoverByVariant = {
-  solid: () => highContrastInteractionFilter,
-  soft: () => highContrastInteractionFilter,
-  outline: recipe => `${recipe.state.hoverBg} ${recipe.state.activeBg}`,
-  ghost: recipe => `${recipe.state.hoverBg} ${recipe.state.activeBg} ${highContrastInteractionFilter}`,
-} satisfies Record<IconButtonVariant, (recipe: SemanticColorClassRecipe) => string>
+export const iconButtonHighContrastHoverColorVariants = iconButtonSurfaceClassMaps.highContrastHover as Record<
+  Color,
+  Record<IconButtonVariant, string>
+>
 
-const iconButtonHighContrastByVariant = {
-  solid: recipe => `${recipe.highContrast.solid} saturate-[1.1] brightness-[0.95] shadow-[var(--shadow-3)]`,
-  soft: recipe => `${recipe.highContrast.soft} ${recipe.border.transparent} saturate-[1.2]`,
-  outline: recipe =>
-    `${recipe.fill.transparent} ${recipe.highContrast.outline} font-semibold contrast-[1.15] saturate-[1.1]`,
-  ghost: recipe =>
-    `${recipe.fill.transparent} ${recipe.border.transparent} ${recipe.highContrast.ghost} font-semibold contrast-[1.15] saturate-[1.1]`,
-} satisfies Record<IconButtonVariant, (recipe: SemanticColorClassRecipe) => string>
-
-export const iconButtonColorVariants = createSemanticColorVariantClassMap(iconButtonVariants, (recipe, variant) =>
-  iconButtonColorByVariant[variant](recipe),
-) as Record<Color, Record<IconButtonVariant, string>>
-
-export const iconButtonHoverColorVariants = createSemanticColorVariantClassMap(iconButtonVariants, (recipe, variant) =>
-  iconButtonHoverByVariant[variant](recipe),
-) as Record<Color, Record<IconButtonVariant, string>>
-
-export const iconButtonHighContrastHoverColorVariants = createSemanticColorVariantClassMap(
-  iconButtonVariants,
-  (recipe, variant) => iconButtonHighContrastHoverByVariant[variant](recipe),
-) as Record<Color, Record<IconButtonVariant, string>>
-
-export const iconButtonHighContrastColorVariants = createSemanticColorVariantClassMap(
-  iconButtonVariants,
-  (recipe, variant) => iconButtonHighContrastByVariant[variant](recipe),
-) as Record<Color, Record<IconButtonVariant, string>>
+export const iconButtonHighContrastColorVariants = iconButtonSurfaceClassMaps.highContrast as Record<
+  Color,
+  Record<IconButtonVariant, string>
+>
 
 const iconControlSizeVariants = {
   xs: {

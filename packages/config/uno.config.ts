@@ -152,7 +152,6 @@ function chartSurfaceInteractionBackgroundUtility(color: ChartSurfaceColorName, 
 }
 
 function surfaceStateBackgroundUtility(color: SurfaceColorName, layer: SurfaceInteractionLayer = 'soft') {
-  if (isChromaticSurfaceColor(color)) return `bg-${color}-highlight`
   if (isChartSurfaceColor(color)) return chartSurfaceInteractionBackgroundUtility(color, layer)
 
   return `bg-[var(--color-${color}-${surfaceInteractionTokenByLayer[layer]}-hover)]`

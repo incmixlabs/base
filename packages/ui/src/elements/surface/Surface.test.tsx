@@ -100,7 +100,7 @@ describe('Surface', () => {
     }
   })
 
-  it('uses highlight state color for chromatic hover and selected states', () => {
+  it('uses interaction state color for chromatic hover and selected states', () => {
     render(
       <Surface data-testid="surface" color="primary" hover selected>
         Surface
@@ -110,9 +110,9 @@ describe('Surface', () => {
     const surface = screen.getByTestId('surface')
 
     expect(surface.className).toContain(surfaceUnoHoverColorVariants.primary.surface)
-    expect(surface.className).toContain('hover:bg-primary-highlight')
+    expect(surface.className).toContain('hover:bg-[var(--color-primary-surface-hover)]')
     expect(surface.className).toContain(surfaceUnoSelectedColorVariants.primary)
-    expect(surface.className).toContain('data-[selected]:bg-primary-highlight')
+    expect(surface.className).toContain('data-[selected]:bg-[var(--color-primary-soft-hover)]')
     expect(surface).toHaveAttribute('data-selected')
   })
 

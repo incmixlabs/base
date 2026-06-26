@@ -32,7 +32,7 @@ describe('IconButton', () => {
     expect(button.className).not.toContain('surface-variant-')
   })
 
-  it('falls back to primary color and variant for invalid values', () => {
+  it('falls back to default color and variant for invalid values', () => {
     render(
       <IconButton aria-label="Test" color={'not-a-color' as any} variant={'invalid' as any}>
         <span>Icon</span>
@@ -41,6 +41,18 @@ describe('IconButton', () => {
 
     const button = screen.getByRole('button', { name: 'Test' })
     expect(button.className).toContain(iconButtonColorVariants[SemanticColor.primary].soft)
+  })
+
+  it('uses the prop-def color default when color is omitted', () => {
+    render(
+      <IconButton aria-label="Default">
+        <span>Icon</span>
+      </IconButton>,
+    )
+
+    const button = screen.getByRole('button', { name: 'Default' })
+    expect(button.className).toContain(iconButtonColorVariants[SemanticColor.primary].soft)
+    expect(button.className).toContain(iconButtonHoverColorVariants[SemanticColor.primary].soft)
   })
 
   it('falls back to default size for invalid values', () => {
