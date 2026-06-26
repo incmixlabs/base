@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import type * as React from 'react'
 import { Avatar, AvatarPie } from '@/elements'
 import { avatarPropDefs } from './avatar.props'
-import { getPropDefValues } from '@/theme/props/prop-def'
+import { selectArgType } from '@/theme/props/storybook'
 
 type StoryAvatar = {
   id: string
@@ -79,10 +79,7 @@ const meta: Meta<AvatarPieStoryArgs> = {
     },
   },
   argTypes: {
-    size: {
-      control: 'select',
-      options: getPropDefValues(avatarPropDefs.size),
-    },
+    size: selectArgType(avatarPropDefs.size),
     avatarCount: {
       control: 'number',
     },

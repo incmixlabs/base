@@ -1,9 +1,12 @@
-export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2x'
+import type { avatarPropDefs } from './avatar.props'
 
-export const avatarFallbackMuted = 'af-avatar-fallback-muted'
-export const avatarPresence = 'af-avatar-presence'
-export const avatarPresenceBusyLine = 'af-avatar-presence-busy-line'
-export const avatarDefaultIcon = 'af-avatar-default-icon'
+export type AvatarSize = (typeof avatarPropDefs.size.values)[number]
+
+export const avatarFallbackMuted =
+  'bg-[color-mix(in_oklch,var(--color-slate-soft)_70%,transparent)] text-[var(--color-slate-text)]'
+export const avatarPresence = 'border-[1.5px] border-solid border-[var(--color-light-background)]'
+export const avatarPresenceBusyLine = 'h-[1px] bg-[var(--color-light-contrast)] -rotate-45 origin-center rounded-full'
+export const avatarDefaultIcon = 'w-3/5 h-3/5'
 
 export const avatarPresenceBySize = {
   xs: 'w-[0.375rem] h-[0.375rem]',
@@ -12,7 +15,7 @@ export const avatarPresenceBySize = {
   lg: 'w-[0.75rem] h-[0.75rem]',
   xl: 'w-[0.875rem] h-[0.875rem]',
   '2x': 'w-[1rem] h-[1rem]',
-} as const
+} as const satisfies Record<AvatarSize, string>
 
 export const avatarPresenceByState = {
   online: 'bg-[var(--color-success-primary)]',
@@ -28,16 +31,16 @@ export const avatarPresenceBusyLineBySize = {
   lg: 'w-[0.875rem]',
   xl: 'w-[1rem]',
   '2x': 'w-[1.125rem]',
-} as const
+} as const satisfies Record<AvatarSize, string>
 
 export const avatarSizeBySize = {
-  xs: 'af-avatar-size-xs',
-  sm: 'af-avatar-size-sm',
-  md: 'af-avatar-size-md',
-  lg: 'af-avatar-size-lg',
-  xl: 'af-avatar-size-xl',
-  '2x': 'af-avatar-size-2x',
-} as const
+  xs: 'w-[1.5rem] h-[1.5rem] text-xs leading-4',
+  sm: 'w-[1.75rem] h-[1.75rem] text-sm leading-5',
+  md: 'w-[2rem] h-[2rem] text-base leading-6',
+  lg: 'w-[2.5rem] h-[2.5rem] text-lg leading-[1.625rem]',
+  xl: 'w-[2.75rem] h-[2.75rem] text-xl leading-7',
+  '2x': 'w-[5rem] h-[5rem] text-2xl leading-[1.875rem]',
+} as const satisfies Record<AvatarSize, string>
 
 export const avatarRadiusByRadius = {
   none: 'rounded-none',
@@ -48,16 +51,16 @@ export const avatarRadiusByRadius = {
 } as const
 
 // avatar-group classes
-export const avatarGroupStackItem = 'af-avatar-group-stack-item'
+export const avatarGroupStackItem = 'shadow-[0_0_0_2px_var(--color-background)] hover:z-20 focus-within:z-20'
 
 export const avatarGroupStackBySize = {
-  xs: 'af-avatar-group-stack-xs af-avatar-group-stack',
-  sm: 'af-avatar-group-stack-sm af-avatar-group-stack',
-  md: 'af-avatar-group-stack-md af-avatar-group-stack',
-  lg: 'af-avatar-group-stack-lg af-avatar-group-stack',
-  xl: 'af-avatar-group-stack-xl af-avatar-group-stack',
-  '2x': 'af-avatar-group-stack-2x af-avatar-group-stack',
-} as const
+  xs: 'flex -space-x-0',
+  sm: 'flex [&>*+*]:-ml-[0.01875rem]',
+  md: 'flex [&>*+*]:-ml-[0.05rem]',
+  lg: 'flex [&>*+*]:-ml-[0.125rem]',
+  xl: 'flex [&>*+*]:-ml-[0.171875rem]',
+  '2x': 'flex [&>*+*]:-ml-[0.4375rem]',
+} as const satisfies Record<AvatarSize, string>
 
 export const avatarGroupSpreadBySize = {
   xs: 'gap-[0.25rem]',
@@ -66,19 +69,19 @@ export const avatarGroupSpreadBySize = {
   lg: 'gap-[0.625rem]',
   xl: 'gap-[0.6875rem]',
   '2x': 'gap-[0.875rem]',
-} as const
+} as const satisfies Record<AvatarSize, string>
 
 export const avatarGroupOverflowStackMarginBySize = {
-  xs: 'ml-0',
-  sm: 'ml-[calc(0.375rem*-0.05)]',
-  md: 'ml-[calc(0.5rem*-0.1)]',
-  lg: 'ml-[calc(0.625rem*-0.2)]',
-  xl: 'ml-[calc(0.6875rem*-0.25)]',
-  '2x': 'ml-[calc(0.875rem*-0.5)]',
-} as const
+  xs: '-ml-0',
+  sm: '-ml-[0.01875rem]',
+  md: '-ml-[0.05rem]',
+  lg: '-ml-[0.125rem]',
+  xl: '-ml-[0.171875rem]',
+  '2x': '-ml-[0.4375rem]',
+} as const satisfies Record<AvatarSize, string>
 
 // avatar-list classes
-export const avatarListItemBase = 'af-avatar-list-item-base'
+export const avatarListItemBase = '[&+&]:mt-[2px]'
 
 export const avatarListItemBySize = {
   xs: 'gap-[calc(0.25rem*1.125)] py-[calc(0.25rem*0.5*0.5)]',
@@ -87,23 +90,25 @@ export const avatarListItemBySize = {
   lg: 'gap-[calc(0.625rem*1.125)] py-[calc(0.4375rem*0.5)]',
   xl: 'gap-[calc(0.6875rem*1.125)] py-[calc(0.5rem*0.5)]',
   '2x': 'gap-[calc(0.875rem*1.125)] py-[calc(1.5625rem*0.5)]',
-} as const
+} as const satisfies Record<AvatarSize, string>
 
 // avatar-pie classes
-export const avatarPieRoot = 'af-avatar-pie-root'
+export const avatarPieRoot =
+  'isolate bg-[var(--color-background)] shadow-[inset_0_0_0_1px_var(--color-neutral-border-subtle)]'
 
 export const avatarPieSizeBySize = {
-  xs: 'w-[1.5rem] h-[1.5rem]',
-  sm: 'w-[1.75rem] h-[1.75rem]',
-  md: 'w-[2rem] h-[2rem]',
-  lg: 'w-[2.5rem] h-[2.5rem]',
-  xl: 'w-[2.75rem] h-[2.75rem]',
-  '2x': 'w-[5rem] h-[5rem]',
-} as const
+  xs: 'w-6 h-6',
+  sm: 'w-7 h-7',
+  md: 'w-8 h-8',
+  lg: 'w-10 h-10',
+  xl: 'w-11 h-11',
+  '2x': 'w-20 h-20',
+} as const satisfies Record<AvatarSize, string>
 
-export const avatarPieOverflowLabel = 'af-avatar-pie-overflow-label'
-export const avatarPieSliceTwoFirst = 'af-avatar-pie-slice-two-first'
-export const avatarPieSliceTwoSecond = 'af-avatar-pie-slice-two-second'
-export const avatarPieSliceThreeFirst = 'af-avatar-pie-slice-three-first'
-export const avatarPieSliceThreeSecond = 'af-avatar-pie-slice-three-second'
-export const avatarPieSliceThreeThird = 'af-avatar-pie-slice-three-third'
+export const avatarPieOverflowLabel = 'text-[var(--color-slate-text)] bg-[var(--color-slate-soft)]'
+export const avatarPieSliceTwoFirst = 'absolute top-0 left-0 w-[calc(50%-1px)] h-full rounded-l-full'
+export const avatarPieSliceTwoSecond = 'absolute top-0 left-[calc(50%+1px)] w-[calc(50%-1px)] h-full rounded-r-full'
+export const avatarPieSliceThreeFirst = 'absolute top-0 left-0 w-[calc(50%-1px)] h-[calc(50%-1px)] rounded-tl-full'
+export const avatarPieSliceThreeSecond =
+  'absolute top-[calc(50%+1px)] left-0 w-[calc(50%-1px)] h-[calc(50%-1px)] rounded-bl-full'
+export const avatarPieSliceThreeThird = 'absolute top-0 left-[calc(50%+1px)] w-[calc(50%-1px)] h-full rounded-r-full'

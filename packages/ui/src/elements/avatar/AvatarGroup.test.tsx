@@ -11,6 +11,7 @@ import {
   avatarGroupStackItem,
   avatarRadiusByRadius,
 } from './avatar.class'
+import { avatarGroupPropDefs } from './avatar-group.props'
 
 afterEach(() => {
   cleanup()
@@ -576,36 +577,27 @@ describe('AvatarGroup', () => {
       expect(avatar).toHaveClass(avatarSizeStyles.sm)
     })
 
-    it('applies correct spacing for size xs', () => {
-      const { container } = render(
-        <AvatarGroup size="xs" layout="stack">
-          <Avatar name="John Doe" />
-        </AvatarGroup>,
-      )
+    avatarGroupPropDefs.size.values.forEach(size => {
+      it(`applies correct spacing for size ${size} stack layout`, () => {
+        const { container } = render(
+          <AvatarGroup size={size} layout="stack">
+            <Avatar name="John Doe" />
+          </AvatarGroup>,
+        )
 
-      const visibleList = container.querySelector('[data-slot="avatar-group-list"]')
-      expect(visibleList).toHaveClass(avatarGroupStackBySize.xs)
-    })
+        const visibleList = container.querySelector('[data-slot="avatar-group-list"]')
+        expect(visibleList).toHaveClass(avatarGroupStackBySize[size])
+      })
 
-    it('applies correct spacing for size md spread layout', () => {
-      const { container } = render(
-        <AvatarGroup size="md" layout="spread">
-          <Avatar name="John Doe" />
-        </AvatarGroup>,
-      )
+      it(`applies correct spacing for size ${size} spread layout`, () => {
+        const { container } = render(
+          <AvatarGroup size={size} layout="spread">
+            <Avatar name="John Doe" />
+          </AvatarGroup>,
+        )
 
-      expect(container.firstChild).toHaveClass(avatarGroupSpreadBySize.md)
-    })
-
-    it('applies correct spacing for size 2x stack layout', () => {
-      const { container } = render(
-        <AvatarGroup size="2x" layout="stack">
-          <Avatar name="John Doe" />
-        </AvatarGroup>,
-      )
-
-      const visibleList = container.querySelector('[data-slot="avatar-group-list"]')
-      expect(visibleList).toHaveClass(avatarGroupStackBySize['2x'])
+        expect(container.firstChild).toHaveClass(avatarGroupSpreadBySize[size])
+      })
     })
   })
 

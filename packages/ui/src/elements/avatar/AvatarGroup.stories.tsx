@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Avatar, AvatarGroup } from '@/elements'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { avatarGroupPropDefs, avatarGroupSizes } from './avatar-group.props'
-import { getPropDefValues } from '@/theme/props/prop-def'
+import { selectArgType } from '@/theme/props/storybook'
 
 const meta: Meta<typeof AvatarGroup> = {
   title: 'Elements/AvatarGroup',
@@ -11,14 +11,8 @@ const meta: Meta<typeof AvatarGroup> = {
     layout: 'centered',
   },
   argTypes: {
-    size: {
-      control: 'select',
-      options: getPropDefValues(avatarGroupPropDefs.size),
-    },
-    layout: {
-      control: 'select',
-      options: getPropDefValues(avatarGroupPropDefs.layout),
-    },
+    size: selectArgType(avatarGroupPropDefs.size),
+    layout: selectArgType(avatarGroupPropDefs.layout),
     max: {
       control: 'number',
     },
