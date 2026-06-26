@@ -47,10 +47,10 @@ const surfaceUnoHoverByVariant = {
 const surfaceUnoHighContrastByVariant = {
   classic: recipe => `[background-image:none] ${recipe.highContrast.solid}`,
   solid: recipe => recipe.highContrast.solid,
-  soft: recipe => recipe.highContrast.soft,
-  surface: recipe => recipe.highContrast.container,
-  outline: recipe => recipe.highContrast.outline,
-  ghost: recipe => recipe.highContrast.ghost,
+  soft: recipe => `${recipe.highContrast.soft} ${recipe.border.transparent}`,
+  surface: recipe => `${recipe.fill.container} ${recipe.highContrast.container} ${surfaceVariantSurfaceShadow}`,
+  outline: recipe => `${recipe.fill.transparent} ${recipe.highContrast.outline}`,
+  ghost: recipe => `${recipe.fill.transparent} ${recipe.border.transparent} ${recipe.highContrast.ghost}`,
 } satisfies Record<SurfaceVariant, (recipe: SemanticColorClassRecipe) => string>
 
 function surfaceUnoColorClassName(color: SurfaceColorKey, variant: SurfaceVariant) {

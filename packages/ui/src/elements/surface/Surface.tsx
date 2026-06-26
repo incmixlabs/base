@@ -70,6 +70,9 @@ export const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(
     const safeSelected = normalizeBooleanPropValue(surfacePropDefs.selected, selected) ?? false
     const safeSquare = normalizeBooleanPropValue(surfacePropDefs.square, square)
     const radius = useThemeRadius(safeRadius)
+    const colorVariantClassName = safeHighContrast
+      ? surfaceUnoHighContrastColorVariants[safeColor][safeVariant]
+      : surfaceUnoColorVariants[safeColor][safeVariant]
 
     return (
       <Comp
@@ -77,14 +80,13 @@ export const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(
         className={cn(
           'relative box-border border',
           radiusClassByToken[radius],
-          surfaceUnoColorVariants[safeColor][safeVariant],
+          colorVariantClassName,
           safeHover && surfaceHoverEnabledClass,
           safeHover && surfaceUnoHoverColorVariants[safeColor][safeVariant],
           safeFocus && surfaceUnoFocusColorVariants[safeColor],
           safeSelected && surfaceUnoSelectedColorVariants[safeColor],
           safeHighContrast && 'af-high-contrast',
           safeHighContrast && surfaceHighContrastByVariant[safeVariant],
-          safeHighContrast && surfaceUnoHighContrastColorVariants[safeColor][safeVariant],
           surfaceShapeVariants[safeShape],
           safeSquare && surfaceSquare,
           className,
