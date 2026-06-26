@@ -1,7 +1,5 @@
-import type { accordionRootPropDefs } from '../accordion/accordion.props'
 import type { avatarPropDefs } from './avatar.props'
 
-export type AccordionSize = (typeof accordionRootPropDefs.size.values)[number]
 export type AvatarSize = (typeof avatarPropDefs.size.values)[number]
 
 export const avatarFallbackMuted =
