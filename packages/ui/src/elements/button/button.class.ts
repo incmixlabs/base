@@ -1,5 +1,9 @@
-import { surfaceColorVariants, surfaceHighContrastByVariant } from '@/elements/surface/surface.class'
-import { semanticColorKeys } from '@/theme/props/color.prop'
+import { surfaceVariantSurfaceShadow } from '@/elements/surface/Surface.css'
+import { type SurfaceVariant, surfaceVariants } from '@/elements/surface/surface.props'
+import {
+  createSemanticColorVariantClassMap,
+  type SemanticColorClassRecipe,
+} from '@/theme/helpers/semantic-color-recipe'
 import type { Color, Variant } from '@/theme/tokens'
 
 export const buttonBaseCls =
@@ -23,20 +27,42 @@ export const buttonMotion = 'af-button-motion'
 
 export const buttonLoading = 'af-button-loading'
 
-export const buttonColorVariants = surfaceColorVariants as Record<Color, Record<Variant, string>>
+const buttonColorByVariant = {
+  classic: recipe => `${recipe.fill.solid} ${recipe.border.default} ${recipe.text.contrast}`,
+  solid: recipe => `${recipe.fill.solid} ${recipe.border.default} ${recipe.text.contrast}`,
+  soft: recipe => `${recipe.fill.soft} ${recipe.border.transparent} ${recipe.text.default}`,
+  surface: recipe =>
+    `${recipe.fill.container} ${recipe.border.default} ${recipe.text.default} ${surfaceVariantSurfaceShadow}`,
+  outline: recipe => `${recipe.fill.transparent} ${recipe.border.default} ${recipe.text.default}`,
+  ghost: recipe => `${recipe.fill.transparent} ${recipe.border.transparent} ${recipe.text.default}`,
+} satisfies Record<SurfaceVariant, (recipe: SemanticColorClassRecipe) => string>
 
-export const buttonInverseVariants = Object.fromEntries(
-  semanticColorKeys.map(color => [
-    color,
-    {
-      classic: 'af-button-inverse-unused',
-      solid: 'af-button-inverse-solid',
-      soft: 'af-button-inverse-soft',
-      surface: 'af-button-inverse-unused',
-      outline: 'af-button-inverse-unused',
-      ghost: 'af-button-inverse-unused',
-    },
-  ]),
+const buttonHoverByVariant = {
+  classic: () => 'hover:brightness-[0.96] active:brightness-[0.92]',
+  solid: () => 'hover:brightness-[0.96] active:brightness-[0.92]',
+  soft: recipe => `${recipe.state.hoverBg} active:brightness-[0.98]`,
+  surface: recipe => `${recipe.state.hoverContainerBg} active:brightness-[0.98]`,
+  outline: recipe => `${recipe.state.hoverBg} active:brightness-[0.98]`,
+  ghost: recipe => `${recipe.state.hoverBg} active:brightness-[0.98]`,
+} satisfies Record<SurfaceVariant, (recipe: SemanticColorClassRecipe) => string>
+
+const buttonHighContrastByVariant = {
+  classic: recipe => `${recipe.highContrast.solid} saturate-[1.1] brightness-[0.95]`,
+  solid: recipe => `${recipe.highContrast.solid} saturate-[1.1] brightness-[0.95]`,
+  soft: recipe => `${recipe.highContrast.soft} ${recipe.border.transparent} saturate-[1.2]`,
+  surface: recipe => `${recipe.fill.container} ${recipe.highContrast.container} ${surfaceVariantSurfaceShadow}`,
+  outline: recipe => `${recipe.fill.transparent} ${recipe.highContrast.outline} font-semibold`,
+  ghost: recipe => `${recipe.fill.transparent} ${recipe.border.transparent} ${recipe.highContrast.ghost} font-semibold`,
+} satisfies Record<SurfaceVariant, (recipe: SemanticColorClassRecipe) => string>
+
+export const buttonColorVariants = createSemanticColorVariantClassMap(surfaceVariants, (recipe, variant) =>
+  buttonColorByVariant[variant](recipe),
 ) as Record<Color, Record<Variant, string>>
 
-export const highContrastByVariant = surfaceHighContrastByVariant
+export const buttonHoverColorVariants = createSemanticColorVariantClassMap(surfaceVariants, (recipe, variant) =>
+  buttonHoverByVariant[variant](recipe),
+) as Record<Color, Record<Variant, string>>
+
+export const buttonHighContrastColorVariants = createSemanticColorVariantClassMap(surfaceVariants, (recipe, variant) =>
+  buttonHighContrastByVariant[variant](recipe),
+) as Record<Color, Record<Variant, string>>

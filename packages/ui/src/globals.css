@@ -489,13 +489,6 @@
     opacity: 0;
   }
 
-  .surface-variant-solid.af-button-inverse-solid {
-    color: var(--surface-contrast);
-  }
-  .surface-variant-soft.af-button-inverse-soft {
-    color: var(--surface-text);
-  }
-
   /* IconButton Styles */
   .af-icon-button-icon-scope svg {
     width: var(--af-icon-button-icon-size);
@@ -506,16 +499,6 @@
   .af-icon-button-base {
     border-style: solid;
     border-width: 0;
-  }
-
-  .af-icon-button-hc-solid {
-    box-shadow: var(--shadow-3);
-  }
-  .af-icon-button-hc-outline {
-    filter: contrast(1.15) saturate(1.1);
-  }
-  .af-icon-button-hc-ghost {
-    filter: contrast(1.15) saturate(1.1);
   }
 
   .af-icon-button-size-xs {

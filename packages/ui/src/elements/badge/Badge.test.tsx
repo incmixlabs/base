@@ -5,8 +5,8 @@ import { SemanticColor } from '@/theme/props/color.prop'
 import { Badge } from './Badge'
 import {
   badgeColorVariants,
-  badgeHighContrastByVariant,
-  badgeHoverEnabledClass,
+  badgeHighContrastColorVariants,
+  badgeHoverColorVariants,
   badgeSizeVariants,
 } from './badge.class'
 
@@ -25,6 +25,8 @@ describe('Badge', () => {
     const badge = screen.getByText('Test')
     expect(badge.className).toContain(badgeSizeVariants.xs)
     expect(badge.className).toContain(badgeColorVariants.info.soft)
+    expect(badge.className).not.toContain('surface-color-')
+    expect(badge.className).not.toContain('surface-variant-')
   })
 
   it('falls back to default size/color/variant for invalid values', () => {
@@ -48,7 +50,8 @@ describe('Badge', () => {
 
     const badge = screen.getByText('Test')
     expect(badge.className).toContain('af-high-contrast')
-    expect(badge.className).toContain(badgeHighContrastByVariant.soft)
+    expect(badge.className).toContain(badgeHighContrastColorVariants[SemanticColor.slate].soft)
+    expect(badge.className).not.toContain(badgeColorVariants[SemanticColor.slate].soft)
   })
 
   it('normalizes boolean-like highContrast and hover values', () => {
@@ -60,17 +63,17 @@ describe('Badge', () => {
 
     const badge = screen.getByText('Test')
     expect(badge.className).not.toContain('af-high-contrast')
-    expect(badge.className).not.toContain(badgeHighContrastByVariant.soft)
-    expect(badge.className).toContain(badgeHoverEnabledClass)
+    expect(badge.className).not.toContain(badgeHighContrastColorVariants[SemanticColor.slate].soft)
+    expect(badge.className).toContain(badgeHoverColorVariants[SemanticColor.slate].soft)
   })
 
   it('defaults hover to false and applies hover classes when enabled', () => {
     const { rerender } = render(<Badge>Test</Badge>)
     const badge = screen.getByText('Test')
-    expect(badge.className).not.toContain(badgeHoverEnabledClass)
+    expect(badge.className).not.toContain(badgeHoverColorVariants[SemanticColor.slate].soft)
 
     rerender(<Badge hover>Test</Badge>)
-    expect(badge.className).toContain(badgeHoverEnabledClass)
+    expect(badge.className).toContain(badgeHoverColorVariants[SemanticColor.slate].soft)
   })
 
   it('renders avatar and delete button for chip-style usage', () => {

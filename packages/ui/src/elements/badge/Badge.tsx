@@ -19,8 +19,8 @@ import {
   badgeColorVariants,
   badgeDeleteButtonBase,
   badgeDeleteButtonSizeVariants,
-  badgeHighContrastByVariant,
-  badgeHoverEnabledClass,
+  badgeHighContrastColorVariants,
+  badgeHoverColorVariants,
   badgeIconBase,
   badgeIconSizeVariants,
   badgeSizeVariants,
@@ -94,6 +94,9 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
     ) : icon ? (
       React.createElement(icon, { 'aria-hidden': true })
     ) : null
+    const colorVariantClassName = safeHighContrast
+      ? badgeHighContrastColorVariants[safeColor][safeVariant]
+      : badgeColorVariants[safeColor][safeVariant]
 
     return (
       <span
@@ -104,11 +107,10 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
           badgeSizeVariants[safeSize],
           radiusStyleVariants[safeRadius],
           badgeVariantBorderWidth[safeVariant],
-          badgeColorVariants[safeColor][safeVariant],
-          safeHover && badgeHoverEnabledClass,
+          colorVariantClassName,
+          safeHover && badgeHoverColorVariants[safeColor][safeVariant],
           safeHover && 'cursor-pointer',
           safeHighContrast && 'af-high-contrast',
-          safeHighContrast && badgeHighContrastByVariant[safeVariant],
           className,
         )}
         {...props}

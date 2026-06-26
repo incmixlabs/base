@@ -4,7 +4,13 @@ import { SemanticColor } from '@/theme/props/color.prop'
 import { resolveIconExport } from './dynamic-icon'
 import { Icon } from './Icon'
 import { IconButton } from './IconButton'
-import { iconButtonColorVariants, iconButtonSizeVariants, iconSizeVariants } from './icon-button.class'
+import {
+  iconButtonColorVariants,
+  iconButtonHighContrastColorVariants,
+  iconButtonHoverColorVariants,
+  iconButtonSizeVariants,
+  iconSizeVariants,
+} from './icon-button.class'
 
 afterEach(() => {
   cleanup()
@@ -20,6 +26,9 @@ describe('IconButton', () => {
 
     const button = screen.getByRole('button', { name: 'Test' })
     expect(button.className).toContain(iconButtonColorVariants.info.soft)
+    expect(button.className).toContain(iconButtonHoverColorVariants.info.soft)
+    expect(button.className).not.toContain('surface-color-')
+    expect(button.className).not.toContain('surface-variant-')
   })
 
   it('falls back to primary color and variant for invalid values', () => {
@@ -42,6 +51,17 @@ describe('IconButton', () => {
 
     const button = screen.getByRole('button', { name: 'Test' })
     expect(button.className).toContain(iconButtonSizeVariants.md)
+  })
+
+  it('uses color-specific high-contrast classes when enabled', () => {
+    render(<IconButton aria-label="Test" color="neutral" variant="solid" highContrast />)
+
+    const button = screen.getByRole('button', { name: 'Test' })
+    expect(button.className).toContain('af-high-contrast')
+    expect(button.className).toContain(iconButtonHighContrastColorVariants.neutral.solid)
+    expect(button.className).not.toContain(iconButtonColorVariants.neutral.solid)
+    expect(button.className).not.toContain('af-icon-button-hc')
+    expect(button.className).not.toContain('surface-high-contrast')
   })
 
   it('uses string title as tooltip content source and fallback aria-label', () => {

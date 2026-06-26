@@ -15,7 +15,8 @@ import { Icon } from './Icon'
 import {
   iconButtonBase,
   iconButtonColorVariants,
-  iconButtonHighContrastByVariant,
+  iconButtonHighContrastColorVariants,
+  iconButtonHoverColorVariants,
   iconButtonSizeIconScope,
   iconButtonSizeVariants,
 } from './icon-button.class'
@@ -115,6 +116,9 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     const buttonStyles = tooltipContent ? ({ ...radiusStyles, ...style } as React.CSSProperties) : combinedStyles
     const tooltipSize = mapIconButtonSizeToTooltipSize(safeSize)
     const ariaLabel = ariaLabelProp ?? (tooltipText.length > 0 ? tooltipText : fallbackAriaLabel)
+    const colorVariantClassName = safeHighContrast
+      ? iconButtonHighContrastColorVariants[safeColor][safeVariant]
+      : iconButtonColorVariants[safeColor][safeVariant]
     const iconButtonIconProps = {
       color: 'currentColor',
       strokeWidth: 2.25,
@@ -150,12 +154,11 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
           'rounded-[var(--element-border-radius)]',
           iconButtonBase,
           safeHighContrast && 'af-high-contrast',
-          iconButtonColorVariants[safeColor][safeVariant],
+          colorVariantClassName,
+          !isDisabled && iconButtonHoverColorVariants[safeColor][safeVariant],
           'transition-colors',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
           'disabled:pointer-events-none disabled:opacity-50',
-          // High contrast
-          safeHighContrast && iconButtonHighContrastByVariant[safeVariant],
           !tooltipContent && marginProps.className,
 
           className,

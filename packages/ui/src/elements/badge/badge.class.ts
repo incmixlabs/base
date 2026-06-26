@@ -1,8 +1,8 @@
+import { surfaceVariantSurfaceShadow } from '@/elements/surface/Surface.css'
 import {
-  surfaceColorVariants,
-  surfaceHighContrastByVariant,
-  surfaceHoverEnabledClass,
-} from '@/elements/surface/surface.class'
+  createSemanticColorVariantClassMap,
+  type SemanticColorClassRecipe,
+} from '@/theme/helpers/semantic-color-recipe'
 import type { Color } from '@/theme/tokens'
 import type { BadgeVariant } from './badge.props'
 
@@ -38,11 +38,41 @@ export const badgeAvatarSizeVariants = {
   md: 'af-badge-avatar-size-md',
 } as const
 
-export const badgeColorVariants = surfaceColorVariants as Record<Color, Record<BadgeVariant, string>>
+const badgeVariants = ['solid', 'soft', 'surface', 'outline'] as const satisfies readonly BadgeVariant[]
 
-export const badgeHoverEnabledClass = surfaceHoverEnabledClass
+const badgeColorByVariant = {
+  solid: recipe => `${recipe.fill.solid} ${recipe.border.default} ${recipe.text.contrast}`,
+  soft: recipe => `${recipe.fill.soft} ${recipe.border.transparent} ${recipe.text.default}`,
+  surface: recipe =>
+    `${recipe.fill.container} ${recipe.border.default} ${recipe.text.default} ${surfaceVariantSurfaceShadow}`,
+  outline: recipe => `${recipe.fill.transparent} ${recipe.border.default} ${recipe.text.default}`,
+} satisfies Record<BadgeVariant, (recipe: SemanticColorClassRecipe) => string>
 
-export const badgeHighContrastByVariant = surfaceHighContrastByVariant as Record<BadgeVariant, string>
+const badgeHoverByVariant = {
+  solid: () => 'hover:brightness-[0.96] active:brightness-[0.92]',
+  soft: recipe => `${recipe.state.hoverBg} active:brightness-[0.98]`,
+  surface: recipe => `${recipe.state.hoverContainerBg} active:brightness-[0.98]`,
+  outline: recipe => `${recipe.state.hoverBg} active:brightness-[0.98]`,
+} satisfies Record<BadgeVariant, (recipe: SemanticColorClassRecipe) => string>
+
+const badgeHighContrastByVariant = {
+  solid: recipe => `${recipe.highContrast.solid} saturate-[1.1] brightness-[0.95]`,
+  soft: recipe => `${recipe.highContrast.soft} ${recipe.border.transparent} saturate-[1.2]`,
+  surface: recipe => `${recipe.fill.container} ${recipe.highContrast.container} ${surfaceVariantSurfaceShadow}`,
+  outline: recipe => `${recipe.fill.transparent} ${recipe.highContrast.outline} font-semibold`,
+} satisfies Record<BadgeVariant, (recipe: SemanticColorClassRecipe) => string>
+
+export const badgeColorVariants = createSemanticColorVariantClassMap(badgeVariants, (recipe, variant) =>
+  badgeColorByVariant[variant](recipe),
+) as Record<Color, Record<BadgeVariant, string>>
+
+export const badgeHoverColorVariants = createSemanticColorVariantClassMap(badgeVariants, (recipe, variant) =>
+  badgeHoverByVariant[variant](recipe),
+) as Record<Color, Record<BadgeVariant, string>>
+
+export const badgeHighContrastColorVariants = createSemanticColorVariantClassMap(badgeVariants, (recipe, variant) =>
+  badgeHighContrastByVariant[variant](recipe),
+) as Record<Color, Record<BadgeVariant, string>>
 
 export const badgeVariantBorderWidth = {
   solid: 'border-0',
