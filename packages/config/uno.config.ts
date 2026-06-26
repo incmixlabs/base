@@ -82,7 +82,12 @@ type SemanticSurfaceColorName = (typeof SEMANTIC_COLOR_NAMES)[number]
 type ChartSurfaceColorName = (typeof CHART_COLOR_KEYS)[number]
 type SurfaceColorName = (typeof surfaceColorNames)[number]
 type ChromaticSurfaceColorName = (typeof CHROMATIC_SURFACE_COLOR_NAMES)[number]
-type SurfaceInteractionBackground = 'soft' | 'surface'
+type SurfaceInteractionLayer = 'soft' | 'container'
+
+const surfaceInteractionTokenByLayer = {
+  soft: 'soft',
+  container: 'surface',
+} as const satisfies Record<SurfaceInteractionLayer, string>
 
 const surfaceColorPattern = surfaceColorNames.join('|')
 const chromaticSurfaceColorPattern = CHROMATIC_SURFACE_COLOR_NAMES.join('|')
@@ -140,20 +145,17 @@ function isChartSurfaceColor(color: SurfaceColorName): color is ChartSurfaceColo
   return (CHART_COLOR_KEYS as readonly string[]).includes(color)
 }
 
-function chartSurfaceInteractionBackgroundUtility(
-  color: ChartSurfaceColorName,
-  background: SurfaceInteractionBackground,
-) {
+function chartSurfaceInteractionBackgroundUtility(color: ChartSurfaceColorName, layer: SurfaceInteractionLayer) {
   const chartIndex = color.slice('chart'.length)
-  const mixPercent = background === 'surface' ? 18 : 36
+  const mixPercent = layer === 'container' ? 18 : 36
   return `bg-[color-mix(in_oklch,var(--chart-${chartIndex})_${mixPercent}%,var(--color-light-surface))]`
 }
 
-function surfaceStateBackgroundUtility(color: SurfaceColorName, background: SurfaceInteractionBackground = 'soft') {
+function surfaceStateBackgroundUtility(color: SurfaceColorName, layer: SurfaceInteractionLayer = 'soft') {
   if (isChromaticSurfaceColor(color)) return `bg-${color}-highlight`
-  if (isChartSurfaceColor(color)) return chartSurfaceInteractionBackgroundUtility(color, background)
+  if (isChartSurfaceColor(color)) return chartSurfaceInteractionBackgroundUtility(color, layer)
 
-  return `bg-[var(--color-${color}-${background}-hover)]`
+  return `bg-[var(--color-${color}-${surfaceInteractionTokenByLayer[layer]}-hover)]`
 }
 
 function surfaceFocusOutlineUtility(color: SurfaceColorName) {
@@ -223,7 +225,7 @@ const surfaceColorUtilities = surfaceColorNames.flatMap(color => [
   `border-${color}`,
   surfaceStateBackgroundUtility(color),
   `hover:${surfaceStateBackgroundUtility(color)}`,
-  `hover:${surfaceStateBackgroundUtility(color, 'surface')}`,
+  `hover:${surfaceStateBackgroundUtility(color, 'container')}`,
   `data-[selected]:${surfaceStateBackgroundUtility(color)}`,
   `focus-visible:${surfaceFocusOutlineUtility(color)}`,
 ])
@@ -231,6 +233,7 @@ const surfaceColorUtilities = surfaceColorNames.flatMap(color => [
 const surfaceStateUtilities = [
   'bg-transparent',
   'border-transparent',
+  '[background-image:none]',
   'hover:brightness-[0.96]',
   'active:brightness-[0.92]',
   'active:brightness-[0.98]',

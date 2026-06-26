@@ -15,6 +15,7 @@ import {
   surfaceSquare,
   surfaceUnoColorVariants,
   surfaceUnoFocusColorVariants,
+  surfaceUnoHighContrastColorVariants,
   surfaceUnoHoverColorVariants,
   surfaceUnoSelectedColorVariants,
 } from './surface.class'
@@ -83,6 +84,7 @@ export const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(
           safeSelected && surfaceUnoSelectedColorVariants[safeColor],
           safeHighContrast && 'af-high-contrast',
           safeHighContrast && surfaceHighContrastByVariant[safeVariant],
+          safeHighContrast && surfaceUnoHighContrastColorVariants[safeColor][safeVariant],
           surfaceShapeVariants[safeShape],
           safeSquare && surfaceSquare,
           className,

@@ -9,6 +9,7 @@ import {
   surfaceHoverEnabledClass,
   surfaceUnoColorVariants,
   surfaceUnoFocusColorVariants,
+  surfaceUnoHighContrastColorVariants,
   surfaceUnoHoverColorVariants,
   surfaceUnoSelectedColorVariants,
 } from './surface.class'
@@ -172,6 +173,21 @@ describe('Surface', () => {
     expect(surface.className).toContain(surfaceUnoFocusColorVariants.primary)
     expect(surface.className).toContain('focus-visible:outline-solid')
     expect(surface.className).toContain('focus-visible:outline-primary-highlight')
+  })
+
+  it('adds Uno color overrides for high-contrast states', () => {
+    render(
+      <Surface data-testid="surface" color="primary" variant="surface" highContrast>
+        Surface
+      </Surface>,
+    )
+
+    const surface = screen.getByTestId('surface')
+
+    expect(surface.className).toContain('af-high-contrast')
+    expect(surface.className).toContain(surfaceUnoHighContrastColorVariants.primary.surface)
+    expect(surface.className).toContain('border-[var(--color-primary-text)]')
+    expect(surface.className).not.toContain('surface-variant-surface')
   })
 
   it('uses shared token classes for the resolved theme radius', () => {

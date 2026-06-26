@@ -1,4 +1,4 @@
-import { CHROMATIC_SURFACE_COLOR_NAMES } from '@incmix/theme'
+import { type SemanticColorClassRecipe, semanticColorClassRecipes } from '@/theme/helpers/semantic-color-recipe'
 import { normalizeChartColor, semanticColorKeys } from '@/theme/props/color.prop'
 import { type Color, SURFACE_COLOR_KEYS, type SurfaceColorKey } from '@/theme/tokens'
 import { surfaceVariantSurfaceShadow } from './Surface.css'
@@ -25,72 +25,52 @@ export const surfaceColorVariants = Object.fromEntries(
   ]),
 ) as Record<SurfaceColorKey, Record<SurfaceVariant, string>>
 
-function surfaceUtilityColorName(color: SurfaceColorKey) {
-  return normalizeChartColor(color) ?? color
-}
-
-const chromaticSurfaceColorSet = new Set<string>(CHROMATIC_SURFACE_COLOR_NAMES)
-
-type SurfaceInteractionBackground = 'soft' | 'surface'
-
-function chartSurfaceInteractionBackgroundClassName(colorName: string, background: SurfaceInteractionBackground) {
-  const chartColor = normalizeChartColor(colorName)
-  if (!chartColor) return undefined
-
-  const chartIndex = chartColor.slice('chart'.length)
-  const mixPercent = background === 'surface' ? 18 : 36
-  return `bg-[color-mix(in_oklch,var(--chart-${chartIndex})_${mixPercent}%,var(--color-light-surface))]`
-}
-
-function surfaceStateBackgroundClassName(colorName: string, background: SurfaceInteractionBackground = 'soft') {
-  if (chromaticSurfaceColorSet.has(colorName)) return `bg-${colorName}-highlight`
-
-  return (
-    chartSurfaceInteractionBackgroundClassName(colorName, background) ??
-    `bg-[var(--color-${colorName}-${background}-hover)]`
-  )
-}
-
-function surfaceFocusOutlineClassName(colorName: string) {
-  return chromaticSurfaceColorSet.has(colorName) ? `outline-${colorName}-highlight` : `outline-${colorName}`
-}
-
 const surfaceUnoColorByVariant = {
-  classic: colorName => `bg-${colorName}-solid border-${colorName} text-${colorName}-contrast`,
-  solid: colorName => `bg-${colorName}-solid border-${colorName} text-${colorName}-contrast`,
-  soft: colorName => `bg-${colorName}-soft border-transparent text-${colorName}`,
-  surface: colorName => `bg-${colorName}-surface border-${colorName} text-${colorName} ${surfaceVariantSurfaceShadow}`,
-  outline: colorName => `bg-transparent border-${colorName} text-${colorName}`,
-  ghost: colorName => `bg-transparent border-transparent text-${colorName}`,
-} satisfies Record<SurfaceVariant, (colorName: string) => string>
+  classic: recipe => `${recipe.fill.solid} ${recipe.border.default} ${recipe.text.contrast}`,
+  solid: recipe => `${recipe.fill.solid} ${recipe.border.default} ${recipe.text.contrast}`,
+  soft: recipe => `${recipe.fill.soft} ${recipe.border.transparent} ${recipe.text.default}`,
+  surface: recipe =>
+    `${recipe.fill.container} ${recipe.border.default} ${recipe.text.default} ${surfaceVariantSurfaceShadow}`,
+  outline: recipe => `${recipe.fill.transparent} ${recipe.border.default} ${recipe.text.default}`,
+  ghost: recipe => `${recipe.fill.transparent} ${recipe.border.transparent} ${recipe.text.default}`,
+} satisfies Record<SurfaceVariant, (recipe: SemanticColorClassRecipe) => string>
 
 const surfaceUnoHoverByVariant = {
   classic: () => 'hover:brightness-[0.96] active:brightness-[0.92]',
   solid: () => 'hover:brightness-[0.96] active:brightness-[0.92]',
-  soft: colorName => `hover:${surfaceStateBackgroundClassName(colorName)} active:brightness-[0.98]`,
-  surface: colorName => `hover:${surfaceStateBackgroundClassName(colorName, 'surface')} active:brightness-[0.98]`,
-  outline: colorName => `hover:${surfaceStateBackgroundClassName(colorName)} active:brightness-[0.98]`,
-  ghost: colorName => `hover:${surfaceStateBackgroundClassName(colorName)} active:brightness-[0.98]`,
-} satisfies Record<SurfaceVariant, (colorName: string) => string>
+  soft: recipe => `${recipe.state.hoverBg} active:brightness-[0.98]`,
+  surface: recipe => `${recipe.state.hoverContainerBg} active:brightness-[0.98]`,
+  outline: recipe => `${recipe.state.hoverBg} active:brightness-[0.98]`,
+  ghost: recipe => `${recipe.state.hoverBg} active:brightness-[0.98]`,
+} satisfies Record<SurfaceVariant, (recipe: SemanticColorClassRecipe) => string>
+
+const surfaceUnoHighContrastByVariant = {
+  classic: recipe => `[background-image:none] ${recipe.highContrast.solid}`,
+  solid: recipe => recipe.highContrast.solid,
+  soft: recipe => recipe.highContrast.soft,
+  surface: recipe => recipe.highContrast.container,
+  outline: recipe => recipe.highContrast.outline,
+  ghost: recipe => recipe.highContrast.ghost,
+} satisfies Record<SurfaceVariant, (recipe: SemanticColorClassRecipe) => string>
 
 function surfaceUnoColorClassName(color: SurfaceColorKey, variant: SurfaceVariant) {
-  const colorName = surfaceUtilityColorName(color)
-  return surfaceUnoColorByVariant[variant](colorName)
+  return surfaceUnoColorByVariant[variant](semanticColorClassRecipes[color])
 }
 
 function surfaceUnoHoverClassName(color: SurfaceColorKey, variant: SurfaceVariant) {
-  const colorName = surfaceUtilityColorName(color)
-  return surfaceUnoHoverByVariant[variant](colorName)
+  return surfaceUnoHoverByVariant[variant](semanticColorClassRecipes[color])
 }
 
 function surfaceUnoSelectedClassName(color: SurfaceColorKey) {
-  const colorName = surfaceUtilityColorName(color)
-  return `data-[selected]:${surfaceStateBackgroundClassName(colorName)}`
+  return semanticColorClassRecipes[color].state.selectedBg
 }
 
 function surfaceUnoFocusClassName(color: SurfaceColorKey) {
-  const colorName = surfaceUtilityColorName(color)
-  return `focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:${surfaceFocusOutlineClassName(colorName)}`
+  return semanticColorClassRecipes[color].state.focus
+}
+
+function surfaceUnoHighContrastClassName(color: SurfaceColorKey, variant: SurfaceVariant) {
+  return surfaceUnoHighContrastByVariant[variant](semanticColorClassRecipes[color])
 }
 
 export const surfaceUnoColorVariants = Object.fromEntries(
@@ -114,6 +94,13 @@ export const surfaceUnoSelectedColorVariants = Object.fromEntries(
 export const surfaceUnoFocusColorVariants = Object.fromEntries(
   SURFACE_COLOR_KEYS.map(color => [color, surfaceUnoFocusClassName(color)]),
 ) as Record<SurfaceColorKey, string>
+
+export const surfaceUnoHighContrastColorVariants = Object.fromEntries(
+  SURFACE_COLOR_KEYS.map(color => [
+    color,
+    Object.fromEntries(surfaceVariants.map(variant => [variant, surfaceUnoHighContrastClassName(color, variant)])),
+  ]),
+) as Record<SurfaceColorKey, Record<SurfaceVariant, string>>
 
 const floatingVariant = {
   solid: 'solid',

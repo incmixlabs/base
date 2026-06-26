@@ -4,6 +4,7 @@ import {
   getResponsiveSpacingUtilityClasses,
   getThemeColorUtilityClass,
 } from './token-class-maps'
+import { getSemanticColorClassRecipe, semanticColorClassRecipes } from './semantic-color-recipe'
 
 describe('theme token class maps', () => {
   it('maps common semantic color tokens to clean utility classes', () => {
@@ -21,6 +22,34 @@ describe('theme token class maps', () => {
   it('maps unmapped semantic and chart tokens to arbitrary variable utilities', () => {
     expect(getThemeColorUtilityClass('bg', 'primary-soft')).toBe('bg-[var(--color-primary-soft)]')
     expect(getThemeColorUtilityClass('border', 'chart1')).toBe('border-[var(--chart-1)]')
+  })
+
+  it('resolves semantic color class recipes by role', () => {
+    const recipe = getSemanticColorClassRecipe('primary')
+
+    expect(recipe.fill.container).toBe('bg-primary-surface')
+    expect(recipe.fill.soft).toBe('bg-primary-soft')
+    expect(recipe.text.default).toBe('text-primary')
+    expect(recipe.text.contrast).toBe('text-primary-contrast')
+    expect(recipe.border.default).toBe('border-primary')
+    expect(recipe.state.hoverBg).toBe('hover:bg-primary-highlight')
+    expect(recipe.state.selectedBg).toBe('data-[selected]:bg-primary-highlight')
+  })
+
+  it('keeps structural and chart interaction states variant-specific', () => {
+    expect(getSemanticColorClassRecipe('neutral').state.hoverBg).toBe('hover:bg-[var(--color-neutral-soft-hover)]')
+    expect(getSemanticColorClassRecipe('neutral').state.hoverContainerBg).toBe(
+      'hover:bg-[var(--color-neutral-surface-hover)]',
+    )
+    expect(getSemanticColorClassRecipe('chart1').state.hoverBg).toBe(
+      'hover:bg-[color-mix(in_oklch,var(--chart-1)_36%,var(--color-light-surface))]',
+    )
+  })
+
+  it('normalizes chart aliases in semantic color class recipes', () => {
+    expect(getSemanticColorClassRecipe('chart-1')).toEqual(semanticColorClassRecipes['chart-1'])
+    expect(getSemanticColorClassRecipe('chart-1').colorName).toBe('chart1')
+    expect(semanticColorClassRecipes['chart-1'].fill.soft).toBe('bg-chart1-soft')
   })
 
   it('does not emit classes for missing tokens', () => {

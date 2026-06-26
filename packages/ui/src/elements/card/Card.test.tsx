@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
-import { surfaceColorVariants } from '@/elements/surface/surface.class'
+import { surfaceUnoColorVariants } from '@/elements/surface/surface.class'
 import { radiusClassByToken } from '@/theme/helpers'
 import {
   gridTemplateAreasCustomResponsive,
@@ -127,7 +127,7 @@ describe('Card', () => {
 
     const root = screen.getByTestId('card')
 
-    expect(root.className).toContain(surfaceColorVariants[color].soft)
+    expect(root.className).toContain(surfaceUnoColorVariants[color].soft)
   })
 
   it.each(['chart1', 'chart-1'] as const)('supports chart surface tone %s on Card.Root via tone prop', tone => {
@@ -139,7 +139,7 @@ describe('Card', () => {
 
     const root = screen.getByTestId('card')
 
-    expect(root.className).toContain(surfaceColorVariants[tone].soft)
+    expect(root.className).toContain(surfaceUnoColorVariants[tone].soft)
   })
 
   it('supports flex layout composition on Card.Root', () => {
