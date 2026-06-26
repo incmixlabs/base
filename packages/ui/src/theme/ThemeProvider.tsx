@@ -55,6 +55,14 @@ export type { AvatarVariant } from '@/elements/avatar/Avatar'
 export type { ThemeBreakpointConfig, ThemeBreakpoints } from './theme-breakpoints'
 export type { ThemeDashboard } from './theme-dashboard'
 
+const scalingFactorByValue = {
+  '90%': '0.9',
+  '95%': '0.95',
+  '100%': '1',
+  '105%': '1.05',
+  '110%': '1.1',
+} as const satisfies Record<Scaling, string>
+
 export interface ThemeLocale {
   locale: string
   language: string
@@ -793,6 +801,7 @@ export const ThemeProvider = React.forwardRef<HTMLDivElement, ThemeProviderProps
     '--theme-radius': getThemeRadiusValue(radius),
     '--theme-calendar-radius': getThemeRadiusValue(calendar.radius),
     '--theme-scaling': scaling,
+    '--scaling': scalingFactorByValue[scaling],
     '--font-sans': typography.fontSans,
     '--font-serif': typography.fontSerif,
     '--font-mono': typography.fontMono,

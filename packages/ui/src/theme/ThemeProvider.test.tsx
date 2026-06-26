@@ -121,11 +121,26 @@ describe('ThemeProvider', () => {
     const root = container.firstElementChild as HTMLDivElement | null
     expect(root).toBeInstanceOf(HTMLDivElement)
     expect(root?.dataset.typographyResponsiveProfile).toBe('balanced')
+    expect(root?.style.getPropertyValue('--theme-scaling')).toBe('100%')
+    expect(root?.style.getPropertyValue('--scaling')).toBe('1')
     expect(root?.style.getPropertyValue(THEME_PROFILE_VAR_NAMES.responsiveProfile)).toBe('balanced')
     expect(root?.style.getPropertyValue(THEME_PROFILE_VAR_NAMES.cardPaddingMd)).toBe('0.875rem')
     expect(root?.style.getPropertyValue(THEME_PROFILE_VAR_NAMES.sectionSpace2)).toBe('2.5rem')
     expect(root?.style.getPropertyValue(THEME_PROFILE_VAR_NAMES.fieldGroupRowGap)).toBe('1rem')
     expect(screen.getByTestId('theme-probe')).toHaveTextContent('balanced')
+  })
+
+  it('emits a numeric scaling multiplier for typography tokens', () => {
+    const { container } = render(
+      <ThemeProvider scaling="105%">
+        <ThemeProbe />
+      </ThemeProvider>,
+    )
+
+    const root = container.firstElementChild as HTMLDivElement | null
+
+    expect(root?.style.getPropertyValue('--theme-scaling')).toBe('105%')
+    expect(root?.style.getPropertyValue('--scaling')).toBe('1.05')
   })
 
   it('normalizes invalid responsive profile values to balanced', () => {
