@@ -80,18 +80,11 @@ export const Variants: Story = {
 export const Sizes: Story = {
   render: () => (
     <Box display="flex" className="items-center gap-3">
-      <IconButton aria-label="Small" size="sm">
-        <Search className="h-3 w-3" />
-      </IconButton>
-      <IconButton aria-label="Medium" size="md">
-        <Search className="h-4 w-4" />
-      </IconButton>
-      <IconButton aria-label="Large" size="lg">
-        <Search className="h-5 w-5" />
-      </IconButton>
-      <IconButton aria-label="Extra Large" size="xl">
-        <Search className="h-6 w-6" />
-      </IconButton>
+      <IconButton aria-label="xs" size="xs" icon="search" />
+      <IconButton aria-label="sm" size="sm" icon="search" />
+      <IconButton aria-label="Medium" size="md" icon="search" />
+      <IconButton aria-label="Large" size="lg" icon="search" />
+      <IconButton aria-label="Extra Large" size="xl" icon="search" />
     </Box>
   ),
 }
