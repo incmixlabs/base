@@ -31,8 +31,24 @@ function surfaceUtilityColorName(color: SurfaceColorKey) {
 
 const chromaticSurfaceColorSet = new Set<string>(CHROMATIC_SURFACE_COLOR_NAMES)
 
-function surfaceStateBackgroundClassName(colorName: string) {
-  return chromaticSurfaceColorSet.has(colorName) ? `bg-${colorName}-highlight` : `bg-${colorName}-soft`
+type SurfaceInteractionBackground = 'soft' | 'surface'
+
+function chartSurfaceInteractionBackgroundClassName(colorName: string, background: SurfaceInteractionBackground) {
+  const chartColor = normalizeChartColor(colorName)
+  if (!chartColor) return undefined
+
+  const chartIndex = chartColor.slice('chart'.length)
+  const mixPercent = background === 'surface' ? 18 : 36
+  return `bg-[color-mix(in_oklch,var(--chart-${chartIndex})_${mixPercent}%,var(--color-light-surface))]`
+}
+
+function surfaceStateBackgroundClassName(colorName: string, background: SurfaceInteractionBackground = 'soft') {
+  if (chromaticSurfaceColorSet.has(colorName)) return `bg-${colorName}-highlight`
+
+  return (
+    chartSurfaceInteractionBackgroundClassName(colorName, background) ??
+    `bg-[var(--color-${colorName}-${background}-hover)]`
+  )
 }
 
 function surfaceFocusOutlineClassName(colorName: string) {
@@ -52,7 +68,7 @@ const surfaceUnoHoverByVariant = {
   classic: () => 'hover:brightness-[0.96] active:brightness-[0.92]',
   solid: () => 'hover:brightness-[0.96] active:brightness-[0.92]',
   soft: colorName => `hover:${surfaceStateBackgroundClassName(colorName)} active:brightness-[0.98]`,
-  surface: colorName => `hover:${surfaceStateBackgroundClassName(colorName)} active:brightness-[0.98]`,
+  surface: colorName => `hover:${surfaceStateBackgroundClassName(colorName, 'surface')} active:brightness-[0.98]`,
   outline: colorName => `hover:${surfaceStateBackgroundClassName(colorName)} active:brightness-[0.98]`,
   ghost: colorName => `hover:${surfaceStateBackgroundClassName(colorName)} active:brightness-[0.98]`,
 } satisfies Record<SurfaceVariant, (colorName: string) => string>

@@ -115,18 +115,49 @@ describe('Surface', () => {
     expect(surface).toHaveAttribute('data-selected')
   })
 
-  it('uses soft state color for structural selected states', () => {
+  it('uses internal interaction color for structural hover and selected states', () => {
     render(
-      <Surface data-testid="surface" color="neutral" selected>
+      <Surface data-testid="surface" color="neutral" variant="soft" hover selected>
         Surface
       </Surface>,
     )
 
     const surface = screen.getByTestId('surface')
 
+    expect(surface.className).toContain(surfaceUnoHoverColorVariants.neutral.soft)
+    expect(surface.className).toContain('hover:bg-[var(--color-neutral-soft-hover)]')
     expect(surface.className).toContain(surfaceUnoSelectedColorVariants.neutral)
-    expect(surface.className).toContain('data-[selected]:bg-neutral-soft')
+    expect(surface.className).toContain('data-[selected]:bg-[var(--color-neutral-soft-hover)]')
+    expect(surface.className).not.toContain('hover:bg-neutral-soft')
+    expect(surface.className).not.toContain('data-[selected]:bg-neutral-soft')
     expect(surface.className).not.toContain('bg-neutral-highlight')
+  })
+
+  it('uses internal surface-hover color for structural surface hover states', () => {
+    render(
+      <Surface data-testid="surface" color="neutral" variant="surface" hover>
+        Surface
+      </Surface>,
+    )
+
+    const surface = screen.getByTestId('surface')
+
+    expect(surface.className).toContain(surfaceUnoHoverColorVariants.neutral.surface)
+    expect(surface.className).toContain('hover:bg-[var(--color-neutral-surface-hover)]')
+  })
+
+  it('uses internal interaction color for chart hover states', () => {
+    render(
+      <Surface data-testid="surface" color="chart1" variant="soft" hover>
+        Surface
+      </Surface>,
+    )
+
+    const surface = screen.getByTestId('surface')
+
+    expect(surface.className).toContain(surfaceUnoHoverColorVariants.chart1.soft)
+    expect(surface.className).toContain('hover:bg-[color-mix(in_oklch,var(--chart-1)_36%,var(--color-light-surface))]')
+    expect(surface.className).not.toContain('hover:bg-chart1-soft')
   })
 
   it('adds color-aware focus styling when enabled', () => {

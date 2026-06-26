@@ -82,6 +82,7 @@ type SemanticSurfaceColorName = (typeof SEMANTIC_COLOR_NAMES)[number]
 type ChartSurfaceColorName = (typeof CHART_COLOR_KEYS)[number]
 type SurfaceColorName = (typeof surfaceColorNames)[number]
 type ChromaticSurfaceColorName = (typeof CHROMATIC_SURFACE_COLOR_NAMES)[number]
+type SurfaceInteractionBackground = 'soft' | 'surface'
 
 const surfaceColorPattern = surfaceColorNames.join('|')
 const chromaticSurfaceColorPattern = CHROMATIC_SURFACE_COLOR_NAMES.join('|')
@@ -135,8 +136,24 @@ function isChromaticSurfaceColor(color: SurfaceColorName): color is ChromaticSur
   return (CHROMATIC_SURFACE_COLOR_NAMES as readonly string[]).includes(color)
 }
 
-function surfaceStateBackgroundUtility(color: SurfaceColorName) {
-  return isChromaticSurfaceColor(color) ? `bg-${color}-highlight` : `bg-${color}-soft`
+function isChartSurfaceColor(color: SurfaceColorName): color is ChartSurfaceColorName {
+  return (CHART_COLOR_KEYS as readonly string[]).includes(color)
+}
+
+function chartSurfaceInteractionBackgroundUtility(
+  color: ChartSurfaceColorName,
+  background: SurfaceInteractionBackground,
+) {
+  const chartIndex = color.slice('chart'.length)
+  const mixPercent = background === 'surface' ? 18 : 36
+  return `bg-[color-mix(in_oklch,var(--chart-${chartIndex})_${mixPercent}%,var(--color-light-surface))]`
+}
+
+function surfaceStateBackgroundUtility(color: SurfaceColorName, background: SurfaceInteractionBackground = 'soft') {
+  if (isChromaticSurfaceColor(color)) return `bg-${color}-highlight`
+  if (isChartSurfaceColor(color)) return chartSurfaceInteractionBackgroundUtility(color, background)
+
+  return `bg-[var(--color-${color}-${background}-hover)]`
 }
 
 function surfaceFocusOutlineUtility(color: SurfaceColorName) {
@@ -206,6 +223,7 @@ const surfaceColorUtilities = surfaceColorNames.flatMap(color => [
   `border-${color}`,
   surfaceStateBackgroundUtility(color),
   `hover:${surfaceStateBackgroundUtility(color)}`,
+  `hover:${surfaceStateBackgroundUtility(color, 'surface')}`,
   `data-[selected]:${surfaceStateBackgroundUtility(color)}`,
   `focus-visible:${surfaceFocusOutlineUtility(color)}`,
 ])
