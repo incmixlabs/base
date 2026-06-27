@@ -7,7 +7,7 @@ import {
   gridTemplateAreasCustomResponsive,
   gridTemplateColumnsCustomResponsive,
   gridTemplateRowsCustomResponsive,
-} from '@/layouts/grid/Grid.css'
+} from '@/layouts/grid/Grid.classes'
 import { Theme } from '@/theme/ThemeProvider'
 import { designTokens } from '@/theme/tokens'
 import { Card } from './Card'

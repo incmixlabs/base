@@ -728,20 +728,6 @@
     }
   }
 
-  .af-header-root {
-    z-index: 30;
-    width: 100%;
-    min-width: 0;
-    flex-shrink: 0;
-    border-bottom: 1px solid color-mix(in oklch, var(--border) 70%, transparent);
-    background-color: var(--background);
-  }
-
-  .af-header-sticky {
-    position: sticky;
-    top: 0;
-  }
-
   .af-section-display-none {
     display: none;
   }

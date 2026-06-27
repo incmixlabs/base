@@ -43,7 +43,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 const DemoBox = ({ children }: { children: React.ReactNode }) => (
-  <Box p="4" className="bg-primary text-primary-foreground rounded-md text-center">
+  <Box color="primary" variant="solid" text="contrast" p="4" className="rounded-md text-center">
     {children}
   </Box>
 )
@@ -74,7 +74,7 @@ export const ColumnVariants: Story = {
     <div className="space-y-6 w-[500px]">
       {showcasedColumns.map(cols => (
         <div key={cols}>
-          <p className="text-sm text-muted-foreground mb-2">columns="{cols}"</p>
+          <p className="text-sm text-slate mb-2">columns="{cols}"</p>
           <Grid columns={cols} gap="2">
             {Array.from({ length: Math.min(parseInt(cols, 10) * 2, 12) }, (_, i) => (
               <DemoBox key={i}>{i + 1}</DemoBox>
@@ -100,7 +100,7 @@ export const CustomColumns: Story = {
   render: () => (
     <div className="space-y-6 w-[500px]">
       <div>
-        <p className="text-sm text-muted-foreground mb-2">columns="1fr 2fr 1fr"</p>
+        <p className="text-sm text-slate mb-2">columns="1fr 2fr 1fr"</p>
         <Grid columns="1fr 2fr 1fr" gap="4">
           <DemoBox>1fr</DemoBox>
           <DemoBox>2fr</DemoBox>
@@ -108,14 +108,14 @@ export const CustomColumns: Story = {
         </Grid>
       </div>
       <div>
-        <p className="text-sm text-muted-foreground mb-2">columns="200px 1fr"</p>
+        <p className="text-sm text-slate mb-2">columns="200px 1fr"</p>
         <Grid columns="200px 1fr" gap="4">
           <DemoBox>200px</DemoBox>
           <DemoBox>1fr</DemoBox>
         </Grid>
       </div>
       <div>
-        <p className="text-sm text-muted-foreground mb-2">columns="repeat(auto-fit, minmax(100px, 1fr))"</p>
+        <p className="text-sm text-slate mb-2">columns="repeat(auto-fit, minmax(100px, 1fr))"</p>
         <Grid columns="repeat(auto-fit, minmax(100px, 1fr))" gap="4">
           <DemoBox>Auto</DemoBox>
           <DemoBox>Fit</DemoBox>
@@ -135,7 +135,7 @@ export const RowsAndColumns: Story = {
   render: () => (
     <div className="space-y-6 w-[400px]">
       <div>
-        <p className="text-sm text-muted-foreground mb-2">columns="2" rows="3"</p>
+        <p className="text-sm text-slate mb-2">columns="2" rows="3"</p>
         <Grid columns="2" rows="3" gap="4">
           <DemoBox>1</DemoBox>
           <DemoBox>2</DemoBox>
@@ -160,8 +160,8 @@ export const GapVariants: Story = {
         .filter((_, index) => index % 2 === 1)
         .map(gap => (
           <div key={gap}>
-            <p className="text-sm text-muted-foreground mb-2">gap="{gap}"</p>
-            <Grid columns="3" gap={gap} className="bg-muted/30 rounded p-2">
+            <p className="text-sm text-slate mb-2">gap="{gap}"</p>
+            <Grid columns="3" gap={gap} className="bg-slate-surface rounded p-2">
               <DemoBox>1</DemoBox>
               <DemoBox>2</DemoBox>
               <DemoBox>3</DemoBox>
@@ -196,17 +196,17 @@ export const AlignItems: Story = {
         .filter(align => align !== 'baseline')
         .map(align => (
           <div key={align}>
-            <p className="text-sm text-muted-foreground mb-2">align="{align}"</p>
-            <Grid columns="3" gap="4" align={align} className="bg-muted/30 rounded p-2 h-32">
-              <Box p="2" className="bg-primary text-primary-foreground rounded">
+            <p className="text-sm text-slate mb-2">align="{align}"</p>
+            <Grid columns="3" gap="4" align={align} className="bg-slate-surface rounded p-2 h-32">
+              <Box color="primary" variant="solid" text="contrast" p="2" className="rounded">
                 Short
               </Box>
-              <Box p="4" className="bg-primary text-primary-foreground rounded">
+              <Box color="primary" variant="solid" text="contrast" p="4" className="rounded">
                 Tall
                 <br />
                 Item
               </Box>
-              <Box p="3" className="bg-primary text-primary-foreground rounded">
+              <Box color="primary" variant="solid" text="contrast" p="3" className="rounded">
                 Med
               </Box>
             </Grid>
@@ -224,8 +224,8 @@ export const GridFlow: Story = {
   render: () => (
     <div className="space-y-6 w-[400px]">
       <div>
-        <p className="text-sm text-muted-foreground mb-2">flow="row" (default)</p>
-        <Grid columns="3" rows="2" gap="2" flow="row" className="bg-muted/30 rounded p-2">
+        <p className="text-sm text-slate mb-2">flow="row" (default)</p>
+        <Grid columns="3" rows="2" gap="2" flow="row" className="bg-slate-surface rounded p-2">
           <DemoBox>1</DemoBox>
           <DemoBox>2</DemoBox>
           <DemoBox>3</DemoBox>
@@ -233,8 +233,8 @@ export const GridFlow: Story = {
         </Grid>
       </div>
       <div>
-        <p className="text-sm text-muted-foreground mb-2">flow="column"</p>
-        <Grid columns="3" rows="2" gap="2" flow="column" className="bg-muted/30 rounded p-2">
+        <p className="text-sm text-slate mb-2">flow="column"</p>
+        <Grid columns="3" rows="2" gap="2" flow="column" className="bg-slate-surface rounded p-2">
           <DemoBox>1</DemoBox>
           <DemoBox>2</DemoBox>
           <DemoBox>3</DemoBox>
@@ -242,12 +242,15 @@ export const GridFlow: Story = {
         </Grid>
       </div>
       <div>
-        <p className="text-sm text-muted-foreground mb-2">flow="dense"</p>
-        <Grid columns="3" gap="2" flow="dense" className="bg-muted/30 rounded p-2">
+        <p className="text-sm text-slate mb-2">flow="dense"</p>
+        <Grid columns="3" gap="2" flow="dense" className="bg-slate-surface rounded p-2">
           <DemoBox>1</DemoBox>
           <Box
             p="4"
-            className="bg-primary text-primary-foreground rounded-md text-center"
+            color="primary"
+            variant="solid"
+            text="contrast"
+            className="rounded-md text-center"
             style={{ gridColumn: 'span 2' }}
           >
             Span 2
@@ -288,10 +291,10 @@ export const CardGrid: Story = {
   render: () => (
     <Grid columns="repeat(auto-fill, minmax(200px, 1fr))" gap="4" className="w-[600px]">
       {Array.from({ length: 6 }, (_, i) => (
-        <Box key={i} p="4" className="bg-card border rounded-lg shadow-sm">
-          <div className="h-24 bg-muted rounded mb-3" />
+        <Box key={i} color="light" variant="surface" p="4" className="border border-light rounded-lg shadow-sm">
+          <div className="h-24 bg-slate-soft rounded mb-3" />
           <h3 className="font-medium">Card {i + 1}</h3>
-          <p className="text-sm text-muted-foreground">Description text</p>
+          <p className="text-sm text-slate">Description text</p>
         </Box>
       ))}
     </Grid>
@@ -302,13 +305,20 @@ export const DashboardLayout: Story = {
   render: () => (
     <Grid columns="250px 1fr" rows="60px 1fr" gap="4" className="w-[800px] h-[400px]">
       <Box
-        className="bg-primary text-primary-foreground rounded-lg flex items-center justify-center"
+        color="primary"
+        variant="solid"
+        text="contrast"
+        className="rounded-lg flex items-center justify-center"
         style={{ gridColumn: 'span 2' }}
       >
         Header
       </Box>
-      <Box className="bg-muted rounded-lg flex items-center justify-center">Sidebar</Box>
-      <Box className="bg-card border rounded-lg flex items-center justify-center">Main Content</Box>
+      <Box color="slate" variant="soft" className="rounded-lg flex items-center justify-center">
+        Sidebar
+      </Box>
+      <Box color="light" variant="surface" className="border border-light rounded-lg flex items-center justify-center">
+        Main Content
+      </Box>
     </Grid>
   ),
 }

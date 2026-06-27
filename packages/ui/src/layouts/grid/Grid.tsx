@@ -38,6 +38,7 @@ import {
   spacingToPixels,
 } from '../layout-utils'
 import {
+  gridBase,
   gridBaseCls,
   gridByAlign,
   gridByAlignContent,
@@ -46,8 +47,9 @@ import {
   gridByJustify,
   gridByJustifyItems,
   gridColumns,
+  gridTemplateColumnsCustomResponsive,
+  gridTemplateRowsCustomResponsive,
 } from './Grid.classes'
-import { gridBase, gridTemplateColumnsCustomResponsive, gridTemplateRowsCustomResponsive } from './Grid.css'
 import { gridPropDefs } from './grid.props'
 
 // ============================================================================

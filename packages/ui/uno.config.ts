@@ -46,6 +46,33 @@ import {
   containerDisplayResponsive,
   containerSizeResponsive,
 } from './src/layouts/container/container.class'
+import {
+  flexBase,
+  flexBaseCls,
+  flexByAlign,
+  flexByDirection,
+  flexByDisplay,
+  flexByJustify,
+  flexByWrap,
+} from './src/layouts/flex/Flex.classes'
+import {
+  gridBase,
+  gridBaseCls,
+  gridByAlign,
+  gridByAlignContent,
+  gridByDisplay,
+  gridByFlow,
+  gridByJustify,
+  gridByJustifyItems,
+  gridColumns,
+  gridColumnsResponsive,
+  gridRows,
+  gridRowsResponsive,
+  gridTemplateAreasCustomResponsive,
+  gridTemplateColumnsCustomResponsive,
+  gridTemplateRowsCustomResponsive,
+} from './src/layouts/grid/Grid.classes'
+import { headerRoot, headerSticky } from './src/layouts/header/header.class'
 import { containerBreakpoints } from './src/theme/tokens'
 
 const splitClasses = (values: string[]) => values.flatMap(value => value.split(/\s+/))
@@ -120,6 +147,33 @@ export default defineConfig({
       ...classMapValues(containerDisplayResponsive),
       ...classMapValues(containerAlignResponsive),
       ...classMapValues(containerSizeResponsive),
+      // Flex styles
+      flexBaseCls,
+      flexBase,
+      ...Object.values(flexByDisplay),
+      ...Object.values(flexByDirection),
+      ...Object.values(flexByAlign),
+      ...Object.values(flexByJustify),
+      ...Object.values(flexByWrap),
+      // Grid styles
+      gridBaseCls,
+      gridBase,
+      ...Object.values(gridByDisplay),
+      ...Object.values(gridByFlow),
+      ...Object.values(gridByAlign),
+      ...Object.values(gridByAlignContent),
+      ...Object.values(gridByJustify),
+      ...Object.values(gridByJustifyItems),
+      ...Object.values(gridColumns),
+      ...Object.values(gridRows),
+      ...classMapValues(gridColumnsResponsive),
+      ...classMapValues(gridRowsResponsive),
+      ...Object.values(gridTemplateAreasCustomResponsive),
+      ...Object.values(gridTemplateColumnsCustomResponsive),
+      ...Object.values(gridTemplateRowsCustomResponsive),
+      // Header styles
+      headerRoot,
+      headerSticky,
     ]),
   ],
 })
