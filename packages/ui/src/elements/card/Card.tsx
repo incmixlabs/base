@@ -15,30 +15,22 @@ import {
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { normalizeEnumPropValue } from '@/theme/props/prop-def'
-import { cardSizeVar } from '@/theme/runtime/component-vars'
-import { panelSizeTokens } from '@/theme/token-maps'
 import { designTokens, type Radius, type Responsive, type SurfaceColorKey } from '@/theme/tokens'
 import { Text } from '@/typography/text/Text'
 import { Surface } from '../surface/Surface'
 import type { SurfaceShape } from '../surface/surface.props'
+import {
+  cardContentBase,
+  cardFooterBase,
+  cardHeaderBase,
+  cardPaddingBySize,
+  cardRootBase,
+  cardRootSizeClassName,
+  cardRootSizeWrapperBase,
+  cardTitleBase,
+} from './card.class'
 import type { CardSize, CardVariant } from './card.props'
 import { cardPropDefs } from './card.props'
-
-const cardRootBase = '[container-type:inline-size]'
-const cardRootSizeClass = 'af-card-size'
-const cardRootSizeWrapperBase = 'box-border'
-const cardHeaderBase = 'flex flex-col gap-[0.375rem]'
-const cardTitleBase = 'text-lg font-semibold leading-none tracking-tight'
-const cardContentBase = 'pt-4'
-const cardFooterBase = 'flex items-center pt-4'
-
-const cardPaddingBySize = {
-  xs: panelSizeTokens.xs.padding,
-  sm: panelSizeTokens.sm.padding,
-  md: panelSizeTokens.md.padding,
-  lg: panelSizeTokens.lg.padding,
-  xl: panelSizeTokens.xl.padding,
-} as const satisfies Record<CardSize, string>
 
 const responsiveSizeKeys = ['xs', 'sm', 'md', 'lg', 'xl'] as const
 
@@ -50,7 +42,7 @@ type CardRootSizeStyle = React.CSSProperties & {
 }
 
 function cardPaddingValue(size: CardSize) {
-  return `var(--theme-rhythm-card-padding-${size}, ${cardSizeVar(size, 'padding', cardPaddingBySize[size])})`
+  return `var(--theme-rhythm-card-padding-${size}, ${cardPaddingBySize[size]})`
 }
 
 function resolveCardSize(value: unknown) {
@@ -152,7 +144,7 @@ export const CardRoot = React.forwardRef<HTMLDivElement, CardRootProps>(
       cardPropDefs.shape.default) as SurfaceShape
     const content =
       !asChild && !hasExplicitPaddingProps ? (
-        <div className={cn(cardRootSizeWrapperBase, cardRootSizeClass)} style={sizeStyles as React.CSSProperties}>
+        <div className={cn(cardRootSizeWrapperBase, cardRootSizeClassName)} style={sizeStyles as React.CSSProperties}>
           {children}
         </div>
       ) : (

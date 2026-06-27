@@ -3,7 +3,7 @@ import { Bell, CreditCard, Settings, User } from 'lucide-react'
 import { Tabs } from '@/elements/tabs/Tabs'
 import { normalizeChartColor } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
-import { radiusPropDef } from '@/theme/props/radius.prop'
+import { selectArgType } from '@/theme/props/storybook'
 import type { ChartColorToken } from '@/theme/tokens'
 import { Avatar } from '../avatar/Avatar'
 import { Badge } from '../badge/Badge'
@@ -11,6 +11,8 @@ import { Button } from '../button/Button'
 import { Card } from './Card'
 import { cardPropDefs } from './card.props'
 
+const cardSizes = getPropDefValues(cardPropDefs.size)
+const cardRadii = getPropDefValues(cardPropDefs.radius)
 const chartToneColors = getPropDefValues(cardPropDefs.color).filter(
   (value): value is ChartColorToken => normalizeChartColor(value) === value,
 )
@@ -29,40 +31,28 @@ const meta: Meta<typeof Card.Root> = {
   },
   tags: ['autodocs'],
   argTypes: {
-    size: {
-      control: 'select',
-      options: getPropDefValues(cardPropDefs.size),
+    size: selectArgType(cardPropDefs.size, {
       description: 'Padding size',
-    },
-    variant: {
-      control: 'select',
-      options: getPropDefValues(cardPropDefs.variant),
+    }),
+    variant: selectArgType(cardPropDefs.variant, {
       description: 'Visual variant',
-    },
-    layout: {
-      control: 'select',
-      options: getPropDefValues(cardPropDefs.layout),
+    }),
+    layout: selectArgType(cardPropDefs.layout, {
       description: 'Optional child layout mode for the card root',
-    },
-    color: {
-      control: 'select',
-      options: getPropDefValues(cardPropDefs.color),
+    }),
+    color: selectArgType(cardPropDefs.color, {
       description: 'Surface tone, including semantic and chart tones',
-    },
-    radius: {
-      control: 'select',
-      options: getPropDefValues(radiusPropDef.radius),
+    }),
+    radius: selectArgType(cardPropDefs.radius, {
       description: 'Border radius token',
-    },
+    }),
     highContrast: {
       control: 'boolean',
       description: 'Increase contrast for improved legibility',
     },
-    shape: {
-      control: 'select',
-      options: getPropDefValues(cardPropDefs.shape),
+    shape: selectArgType(cardPropDefs.shape, {
       description: 'Geometric shape treatment',
-    },
+    }),
     square: {
       control: 'boolean',
       description: 'Force 1:1 aspect ratio',
@@ -83,13 +73,13 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    size: 'sm',
-    variant: 'surface',
+    size: cardPropDefs.size.default,
+    variant: cardPropDefs.variant.default,
     color: 'slate',
     radius: 'md',
-    highContrast: false,
-    shape: 'rect',
-    square: false,
+    highContrast: cardPropDefs.highContrast.default,
+    shape: cardPropDefs.shape.default,
+    square: cardPropDefs.square.default,
   },
   render: args => (
     <Card.Root
@@ -194,7 +184,7 @@ export const SurfacePropsShowcase: Story = {
 export const RadiusTokens: Story = {
   render: () => (
     <div className="grid w-[720px] grid-cols-2 gap-4">
-      {getPropDefValues(cardPropDefs.radius).map(radius => (
+      {cardRadii.map(radius => (
         <Card.Root key={radius} radius={radius} variant="surface" color="neutral">
           <Card.Header>
             <Card.Title>{radius}</Card.Title>
@@ -252,7 +242,7 @@ export const SquareCard: Story = {
 export const AllSizes: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
-      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map(size => (
+      {cardSizes.map(size => (
         <Card.Root key={size} size={size} className="w-80">
           <Card.Header>
             <Card.Title>Size {size}</Card.Title>
@@ -313,13 +303,13 @@ export const EmbeddedResponsivePadding: Story = {
 
 export const VariantSurface: Story = {
   args: {
-    size: 'sm',
+    size: cardPropDefs.size.default,
     variant: 'surface',
     color: 'slate',
     radius: 'md',
-    highContrast: false,
-    shape: 'rect',
-    square: false,
+    highContrast: cardPropDefs.highContrast.default,
+    shape: cardPropDefs.shape.default,
+    square: cardPropDefs.square.default,
   },
   render: args => (
     <Card.Root
@@ -345,13 +335,13 @@ export const VariantSurface: Story = {
 
 export const VariantClassic: Story = {
   args: {
-    size: 'sm',
+    size: cardPropDefs.size.default,
     variant: 'classic',
     color: 'slate',
     radius: 'md',
-    highContrast: false,
-    shape: 'rect',
-    square: false,
+    highContrast: cardPropDefs.highContrast.default,
+    shape: cardPropDefs.shape.default,
+    square: cardPropDefs.square.default,
   },
   render: args => (
     <Card.Root
@@ -377,13 +367,13 @@ export const VariantClassic: Story = {
 
 export const VariantGhost: Story = {
   args: {
-    size: 'sm',
+    size: cardPropDefs.size.default,
     variant: 'ghost',
     color: 'slate',
     radius: 'md',
-    highContrast: false,
-    shape: 'rect',
-    square: false,
+    highContrast: cardPropDefs.highContrast.default,
+    shape: cardPropDefs.shape.default,
+    square: cardPropDefs.square.default,
   },
   render: args => (
     <div className="p-6 bg-muted rounded-lg">
@@ -460,16 +450,16 @@ export const PricingCard: Story = {
         </div>
         <ul className="space-y-2 text-sm">
           <li className="flex items-center gap-2">
-            <span className="text-green-500">✓</span> Unlimited projects
+            <span className="text-green-9">✓</span> Unlimited projects
           </li>
           <li className="flex items-center gap-2">
-            <span className="text-green-500">✓</span> 10GB storage
+            <span className="text-green-9">✓</span> 10GB storage
           </li>
           <li className="flex items-center gap-2">
-            <span className="text-green-500">✓</span> Priority support
+            <span className="text-green-9">✓</span> Priority support
           </li>
           <li className="flex items-center gap-2">
-            <span className="text-green-500">✓</span> Advanced analytics
+            <span className="text-green-9">✓</span> Advanced analytics
           </li>
         </ul>
       </Card.Content>
@@ -576,9 +566,9 @@ export const StatsCard: Story = {
         <Card.Header className="pb-2">
           <Card.Description>Total Revenue</Card.Description>
         </Card.Header>
-        <Card.Content className="pt-0">
-          <p className="text-2xl font-bold">$45,231</p>
-          <p className="text-xs text-green-500">+20.1% from last month</p>
+        <Card.Content>
+          <p className="m-0 text-2xl font-bold">$45,231</p>
+          <p className="m-0 text-xs text-green-9">+20.1% from last month</p>
         </Card.Content>
       </Card.Root>
 
@@ -586,9 +576,9 @@ export const StatsCard: Story = {
         <Card.Header className="pb-2">
           <Card.Description>Active Users</Card.Description>
         </Card.Header>
-        <Card.Content className="pt-0">
-          <p className="text-2xl font-bold">2,350</p>
-          <p className="text-xs text-green-500">+180 new this week</p>
+        <Card.Content>
+          <p className="m-0 text-2xl font-bold">2,350</p>
+          <p className="m-0 text-xs text-green-9">+180 new this week</p>
         </Card.Content>
       </Card.Root>
 
@@ -596,9 +586,9 @@ export const StatsCard: Story = {
         <Card.Header className="pb-2">
           <Card.Description>Pending Orders</Card.Description>
         </Card.Header>
-        <Card.Content className="pt-0">
-          <p className="text-2xl font-bold">12</p>
-          <p className="text-xs text-amber-500">3 require attention</p>
+        <Card.Content>
+          <p className="m-0 text-2xl font-bold">12</p>
+          <p className="m-0 text-xs text-amber-9">3 require attention</p>
         </Card.Content>
       </Card.Root>
     </div>

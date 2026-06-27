@@ -6,6 +6,7 @@ import { Flex } from '@/layouts/flex/Flex'
 import { normalizeChartColor } from '@/theme/props/color.prop'
 import type { Color } from '@/theme/tokens'
 import { Card } from './Card'
+import { cardPropDefs } from './card.props'
 import type { CardWrapperProps, CardWrapperRenderSlot } from './card-wrapper.types'
 
 function renderSlot(
@@ -36,8 +37,8 @@ export function CardWrapper({
   renderSlot: renderSlotOverride,
   ...rootProps
 }: CardWrapperProps) {
-  const resolvedSize = size ?? data.size ?? 'xs'
-  const resolvedVariant = variant ?? data.variant ?? 'surface'
+  const resolvedSize = size ?? data.size ?? cardPropDefs.size.default
+  const resolvedVariant = variant ?? data.variant ?? cardPropDefs.variant.default
   const resolvedColor = color ?? data.color ?? 'neutral'
   const resolvedActionColor = resolveActionButtonColor(resolvedColor)
   const resolvedRadius = radius ?? data.radius

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { selectArgType } from '@/theme/props/storybook'
 import { Card } from './Card'
 import { Inset } from './Inset'
 import { insetPropDefs } from './inset.props'
-import { getPropDefValues } from '@/theme/props/prop-def'
 
 const meta: Meta<typeof Inset> = {
   title: 'Elements/Inset',
@@ -18,23 +18,19 @@ const meta: Meta<typeof Inset> = {
   },
   tags: ['autodocs'],
   argTypes: {
-    side: {
-      control: 'select',
-      options: getPropDefValues(insetPropDefs.side),
+    side: selectArgType(insetPropDefs.side, {
       description: 'Which sides should bleed outward.',
-    },
-    clip: {
-      control: 'select',
-      options: getPropDefValues(insetPropDefs.clip),
+    }),
+    clip: selectArgType(insetPropDefs.clip, {
       description: 'Spacing token used for the negative inset offset.',
-    },
-    p: { control: 'select', options: getPropDefValues(insetPropDefs.p) },
-    px: { control: 'select', options: getPropDefValues(insetPropDefs.px) },
-    py: { control: 'select', options: getPropDefValues(insetPropDefs.py) },
-    pt: { control: 'select', options: getPropDefValues(insetPropDefs.pt) },
-    pr: { control: 'select', options: getPropDefValues(insetPropDefs.pr) },
-    pb: { control: 'select', options: getPropDefValues(insetPropDefs.pb) },
-    pl: { control: 'select', options: getPropDefValues(insetPropDefs.pl) },
+    }),
+    p: selectArgType(insetPropDefs.p),
+    px: selectArgType(insetPropDefs.px),
+    py: selectArgType(insetPropDefs.py),
+    pt: selectArgType(insetPropDefs.pt),
+    pr: selectArgType(insetPropDefs.pr),
+    pb: selectArgType(insetPropDefs.pb),
+    pl: selectArgType(insetPropDefs.pl),
   },
 }
 
