@@ -1,4 +1,7 @@
+import { type ContainerBreakpoint, containerBreakpointKeys } from '../../theme/tokens'
+
 export const gridBaseCls = 'box-border'
+export const gridBase = '[container-type:inline-size]'
 
 export const gridByDisplay = {
   none: 'hidden',
@@ -84,3 +87,31 @@ export const gridColumns = Object.fromEntries(
 export const gridRows = Object.fromEntries(
   Object.keys(gridRowTemplates).map(key => [key, key === 'none' ? 'grid-rows-none' : `grid-rows-${key}`]),
 ) as Record<GridRowValue, string>
+
+export const gridColumnsResponsive = Object.fromEntries(
+  containerBreakpointKeys.map(bp => [
+    bp,
+    Object.fromEntries(
+      Object.keys(gridColumnTemplates).map(key => [key, `cq-${bp}:${gridColumns[key as GridColumnValue]}`]),
+    ),
+  ]),
+) as Record<ContainerBreakpoint, Record<GridColumnValue, string>>
+
+export const gridRowsResponsive = Object.fromEntries(
+  containerBreakpointKeys.map(bp => [
+    bp,
+    Object.fromEntries(Object.keys(gridRowTemplates).map(key => [key, `cq-${bp}:${gridRows[key as GridRowValue]}`])),
+  ]),
+) as Record<ContainerBreakpoint, Record<GridRowValue, string>>
+
+export const gridTemplateAreasCustomResponsive = Object.fromEntries(
+  containerBreakpointKeys.map(bp => [bp, `cq-${bp}:[grid-template-areas:var(--grid-template-areas-${bp})]`]),
+) as Record<ContainerBreakpoint, string>
+
+export const gridTemplateColumnsCustomResponsive = Object.fromEntries(
+  containerBreakpointKeys.map(bp => [bp, `cq-${bp}:[grid-template-columns:var(--grid-template-columns-${bp})]`]),
+) as Record<ContainerBreakpoint, string>
+
+export const gridTemplateRowsCustomResponsive = Object.fromEntries(
+  containerBreakpointKeys.map(bp => [bp, `cq-${bp}:[grid-template-rows:var(--grid-template-rows-${bp})]`]),
+) as Record<ContainerBreakpoint, string>

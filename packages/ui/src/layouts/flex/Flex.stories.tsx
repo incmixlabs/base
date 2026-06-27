@@ -29,7 +29,6 @@ const meta: Meta<typeof Flex> = {
     justify: {
       control: 'select',
       options: justifyValues,
-      // TODO(layout-ve): track justify option alignment in docs/issues/flex-justify-options-alignment.md.
     },
     wrap: {
       control: 'select',
@@ -46,7 +45,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 const DemoBox = ({ children }: { children: React.ReactNode }) => (
-  <Box p="3" className="bg-primary text-primary-foreground rounded-md text-sm">
+  <Box color="primary" variant="solid" text="contrast" p="3" className="rounded-md text-sm">
     {children}
   </Box>
 )
@@ -73,7 +72,7 @@ export const Directions: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <p className="text-sm text-muted-foreground mb-2">direction="row" (default)</p>
+        <p className="text-sm text-slate mb-2">direction="row" (default)</p>
         <Flex direction="row" gap="3">
           <DemoBox>1</DemoBox>
           <DemoBox>2</DemoBox>
@@ -81,7 +80,7 @@ export const Directions: Story = {
         </Flex>
       </div>
       <div>
-        <p className="text-sm text-muted-foreground mb-2">direction="row-reverse"</p>
+        <p className="text-sm text-slate mb-2">direction="row-reverse"</p>
         <Flex direction="row-reverse" gap="3">
           <DemoBox>1</DemoBox>
           <DemoBox>2</DemoBox>
@@ -89,7 +88,7 @@ export const Directions: Story = {
         </Flex>
       </div>
       <div>
-        <p className="text-sm text-muted-foreground mb-2">direction="column"</p>
+        <p className="text-sm text-slate mb-2">direction="column"</p>
         <Flex direction="column" gap="3">
           <DemoBox>1</DemoBox>
           <DemoBox>2</DemoBox>
@@ -97,7 +96,7 @@ export const Directions: Story = {
         </Flex>
       </div>
       <div>
-        <p className="text-sm text-muted-foreground mb-2">direction="column-reverse"</p>
+        <p className="text-sm text-slate mb-2">direction="column-reverse"</p>
         <Flex direction="column-reverse" gap="3">
           <DemoBox>1</DemoBox>
           <DemoBox>2</DemoBox>
@@ -117,17 +116,17 @@ export const AlignItems: Story = {
     <div className="space-y-4">
       {alignValues.map(align => (
         <div key={align}>
-          <p className="text-sm text-muted-foreground mb-2">align="{align}"</p>
-          <Flex align={align} gap="3" className="bg-muted/50 rounded-md p-2 h-20">
-            <Box p="2" className="bg-primary text-primary-foreground rounded text-xs">
+          <p className="text-sm text-slate mb-2">align="{align}"</p>
+          <Flex align={align} gap="3" className="bg-slate-surface rounded-md p-2 h-20">
+            <Box color="primary" variant="solid" text="contrast" p="2" className="rounded text-xs">
               Tall
               <br />
               Item
             </Box>
-            <Box p="2" className="bg-primary text-primary-foreground rounded text-xs">
+            <Box color="primary" variant="solid" text="contrast" p="2" className="rounded text-xs">
               Short
             </Box>
-            <Box p="2" className="bg-primary text-primary-foreground rounded text-xs">
+            <Box color="primary" variant="solid" text="contrast" p="2" className="rounded text-xs">
               Medium
               <br />
               Height
@@ -144,8 +143,8 @@ export const JustifyContent: Story = {
     <div className="space-y-4 w-[400px]">
       {justifyValues.map(justify => (
         <div key={justify}>
-          <p className="text-sm text-muted-foreground mb-2">justify="{justify}"</p>
-          <Flex justify={justify} className="bg-muted/50 rounded-md p-2">
+          <p className="text-sm text-slate mb-2">justify="{justify}"</p>
+          <Flex justify={justify} className="bg-slate-surface rounded-md p-2">
             <DemoBox>A</DemoBox>
             <DemoBox>B</DemoBox>
             <DemoBox>C</DemoBox>
@@ -165,8 +164,8 @@ export const GapScale: Story = {
     <div className="space-y-4">
       {gapValues.map(gap => (
         <div key={gap}>
-          <p className="text-sm text-muted-foreground mb-2">gap="{gap}"</p>
-          <Flex gap={gap} className="bg-muted/30 rounded p-1">
+          <p className="text-sm text-slate mb-2">gap="{gap}"</p>
+          <Flex gap={gap} className="bg-slate-surface rounded p-1">
             <DemoBox>A</DemoBox>
             <DemoBox>B</DemoBox>
             <DemoBox>C</DemoBox>
@@ -181,8 +180,8 @@ export const DirectionalGap: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <p className="text-sm text-muted-foreground mb-2">gapX="6" gapY="2"</p>
-        <Flex wrap="wrap" gapX="6" gapY="2" className="w-[300px] bg-muted/30 rounded p-2">
+        <p className="text-sm text-slate mb-2">gapX="6" gapY="2"</p>
+        <Flex wrap="wrap" gapX="6" gapY="2" className="w-[300px] bg-slate-surface rounded p-2">
           <DemoBox>One</DemoBox>
           <DemoBox>Two</DemoBox>
           <DemoBox>Three</DemoBox>
@@ -202,8 +201,8 @@ export const FlexWrap: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <p className="text-sm text-muted-foreground mb-2">wrap="nowrap" (default)</p>
-        <Flex wrap="nowrap" gap="2" className="w-[200px] bg-muted/30 rounded p-2 overflow-x-auto">
+        <p className="text-sm text-slate mb-2">wrap="nowrap" (default)</p>
+        <Flex wrap="nowrap" gap="2" className="w-[200px] bg-slate-surface rounded p-2 overflow-x-auto">
           <DemoBox>One</DemoBox>
           <DemoBox>Two</DemoBox>
           <DemoBox>Three</DemoBox>
@@ -211,8 +210,8 @@ export const FlexWrap: Story = {
         </Flex>
       </div>
       <div>
-        <p className="text-sm text-muted-foreground mb-2">wrap="wrap"</p>
-        <Flex wrap="wrap" gap="2" className="w-[200px] bg-muted/30 rounded p-2">
+        <p className="text-sm text-slate mb-2">wrap="wrap"</p>
+        <Flex wrap="wrap" gap="2" className="w-[200px] bg-slate-surface rounded p-2">
           <DemoBox>One</DemoBox>
           <DemoBox>Two</DemoBox>
           <DemoBox>Three</DemoBox>
@@ -220,8 +219,8 @@ export const FlexWrap: Story = {
         </Flex>
       </div>
       <div>
-        <p className="text-sm text-muted-foreground mb-2">wrap="wrap-reverse"</p>
-        <Flex wrap="wrap-reverse" gap="2" className="w-[200px] bg-muted/30 rounded p-2">
+        <p className="text-sm text-slate mb-2">wrap="wrap-reverse"</p>
+        <Flex wrap="wrap-reverse" gap="2" className="w-[200px] bg-slate-surface rounded p-2">
           <DemoBox>One</DemoBox>
           <DemoBox>Two</DemoBox>
           <DemoBox>Three</DemoBox>
@@ -252,13 +251,13 @@ export const ResponsiveDirection: Story = {
 
 export const SpaceBetween: Story = {
   render: () => (
-    <Flex justify="between" align="center" p="4" className="bg-muted rounded-lg w-[400px]">
+    <Flex justify="between" align="center" p="4" className="bg-slate-surface rounded-lg w-[400px]">
       <span className="font-medium">Title</span>
       <Flex gap="2">
-        <Box p="2" className="bg-primary text-primary-foreground rounded text-sm">
+        <Box color="primary" variant="solid" text="contrast" p="2" className="rounded text-sm">
           Action 1
         </Box>
-        <Box p="2" className="bg-secondary text-secondary-foreground rounded text-sm">
+        <Box color="secondary" variant="solid" text="contrast" p="2" className="rounded text-sm">
           Action 2
         </Box>
       </Flex>
@@ -273,13 +272,13 @@ export const CenteredContent: Story = {
       justify="center"
       direction="column"
       gap="4"
-      className="bg-muted rounded-lg w-[300px] h-[200px]"
+      className="bg-slate-surface rounded-lg w-[300px] h-[200px]"
     >
-      <Box p="4" className="bg-primary text-primary-foreground rounded-full">
+      <Box color="primary" variant="solid" text="contrast" p="4" className="rounded-full">
         Icon
       </Box>
       <span className="font-medium">Centered Content</span>
-      <span className="text-sm text-muted-foreground">With description</span>
+      <span className="text-sm text-slate">With description</span>
     </Flex>
   ),
 }

@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { gapResponsiveClasses, gapResponsiveVars } from '@/theme/helpers/gap-responsive.css'
-import { gridTemplateColumnsCustomResponsive, gridTemplateRowsCustomResponsive } from './Grid.css'
+import { gridTemplateColumnsCustomResponsive, gridTemplateRowsCustomResponsive } from './Grid.classes'
 import { Grid } from './Grid'
 
 afterEach(() => {
