@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Badge } from '@/elements/badge/Badge'
 import { Button } from '@/elements/button/Button'
+import { selectArgType } from '@/theme/props/storybook'
 import { Card } from './Card'
 import { CardWrapper } from './CardWrapper'
+import { cardPropDefs } from './card.props'
 import type { CardWrapperData, CardWrapperProps } from './card-wrapper.types'
 
 const accountCard: CardWrapperData = {
@@ -38,11 +40,17 @@ const meta = {
       },
     },
   },
+  argTypes: {
+    size: selectArgType(cardPropDefs.size),
+    variant: selectArgType(cardPropDefs.variant),
+    color: selectArgType(cardPropDefs.color),
+    radius: selectArgType(cardPropDefs.radius),
+  },
   args: {
     data: accountCard,
-    variant: 'surface',
+    variant: cardPropDefs.variant.default,
     color: 'neutral',
-    size: 'sm',
+    size: cardPropDefs.size.default,
   },
 } satisfies Meta<CardWrapperProps>
 

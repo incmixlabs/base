@@ -14,7 +14,6 @@ function componentVar(component: string, slot: string, fallback: string): string
 
 export type SurfaceVariantTokenSlot = 'boxShadow'
 export type SurfaceShapeTokenSlot = 'radius'
-export type CardSizeTokenSlot = 'padding'
 export type PopoverSizeTokenSlot = 'padding' | 'fontSize' | 'lineHeight'
 export type PopoverMaxWidthTokenSlot = 'maxWidth'
 export type TooltipSizeTokenSlot = 'padding' | 'fontSize' | 'lineHeight'
@@ -176,10 +175,6 @@ export function mentionTextareaVar(slot: MentionTextareaTokenSlot, fallback: str
 
 export function dateSizeVar(size: string, slot: DateSizeTokenSlot, fallback: string): string {
   return withFallback(`--component-date-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function cardSizeVar(size: string, slot: CardSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-card-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function popoverSizeVar(size: string, slot: PopoverSizeTokenSlot, fallback: string): string {
