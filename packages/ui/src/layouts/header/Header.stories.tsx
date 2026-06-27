@@ -21,6 +21,8 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const navButtonClassName = 'appearance-none border-0 bg-transparent p-0 font-[inherit] leading-[inherit] text-inherit'
+
 function HeaderContent({ title = 'Workspace' }: { title?: string }) {
   return (
     <div className="flex h-14 min-w-0 items-center justify-between gap-4 px-4">
@@ -29,11 +31,15 @@ function HeaderContent({ title = 'Workspace' }: { title?: string }) {
         <div className="truncate text-slate text-xs">Design system migration</div>
       </div>
       <nav className="flex shrink-0 items-center gap-3 text-sm text-slate">
-        <a className="font-medium text-primary" href="#">
+        <button type="button" className={`${navButtonClassName} font-medium text-primary`}>
           Overview
-        </a>
-        <a href="#">Activity</a>
-        <a href="#">Settings</a>
+        </button>
+        <button type="button" className={navButtonClassName}>
+          Activity
+        </button>
+        <button type="button" className={navButtonClassName}>
+          Settings
+        </button>
       </nav>
     </div>
   )
