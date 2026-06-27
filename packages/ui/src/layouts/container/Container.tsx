@@ -22,7 +22,6 @@ import {
   containerBase,
   containerBySize,
   containerDisplayResponsive,
-  containerInnerMaxWidth,
   containerSizeResponsive,
 } from './container.class'
 import type { ContainerAlign, ContainerDisplay, ContainerProps } from './container.props'
@@ -127,7 +126,6 @@ export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
 
     const innerClasses = cn(
       containerInnerClassName,
-      containerInnerMaxWidth,
       !innerLayoutProps.layout && displayClasses,
       shouldApplyContainerAlign && alignClasses,
       getLayoutCompositionClasses(innerLayoutProps),

@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { useThemeRadius } from '@/elements/utils'
 import { cn } from '@/lib/utils'
-import { resolveSurfaceToneStyle, type SurfaceColorVariant, type SurfaceForeground } from '@/theme/props/color.prop'
+import type { SurfaceColorVariant, SurfaceForeground } from '@/theme/props/color.prop'
 import type { SurfaceColorKey } from '@/theme/tokens'
 import {
   type Display,
@@ -21,6 +21,7 @@ import {
   type SharedLayoutProps,
   Slot,
 } from '../layout-utils'
+import { boxRootBase, getBoxSurfaceClassName } from './box.class'
 
 // ============================================================================
 // Box Props
@@ -93,7 +94,8 @@ export const Box = React.forwardRef<HTMLDivElement, BoxProps>(
     const effectiveClassName = asChild ? getMergedSlotClassName(children, className) : className
 
     const classes = cn(
-      'box-border',
+      boxRootBase,
+      getBoxSurfaceClassName(tone ?? color, variant, text),
       !layoutCompositionProps.layout && getDisplayClasses(display),
       getLayoutCompositionClasses(layoutCompositionProps),
       sharedLayoutProps.borderColor && !hasBorderWidthUtility(effectiveClassName) && 'border',
@@ -102,7 +104,6 @@ export const Box = React.forwardRef<HTMLDivElement, BoxProps>(
     )
 
     const styles: React.CSSProperties = {
-      ...resolveSurfaceToneStyle(tone ?? color, variant, text),
       ...getLayoutCompositionStyles(layoutCompositionProps),
       ...getSharedLayoutStyles(sharedLayoutProps),
       ...style,
