@@ -74,12 +74,14 @@ function IconForColor({ color }: { color: string }) {
   }
 }
 
-const renderCallout = (args: CalloutProps.Root, text: string) => (
-  <Callout.Root {...args}>
-    <Callout.Icon>
-      <IconForColor color={String(args.color ?? 'slate')} />
-    </Callout.Icon>
-    <Callout.Text>{text}</Callout.Text>
+const renderCallout = ({ icon, text, ...args }: CalloutProps.Root, fallbackText: string) => (
+  <Callout.Root {...args} icon={icon} text={text}>
+    {icon ? null : (
+      <Callout.Icon>
+        <IconForColor color={String(args.color ?? 'slate')} />
+      </Callout.Icon>
+    )}
+    {text == null ? <Callout.Text>{fallbackText}</Callout.Text> : null}
   </Callout.Root>
 )
 
