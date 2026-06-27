@@ -31,6 +31,7 @@ describe('Card', () => {
 
     expect(cardSurface).toBeInTheDocument()
     expect(cardSurface.className).toContain('[container-type:inline-size]')
+    expect(cardSurface).toHaveClass('border', 'border-solid')
     expect(cardSurface).not.toHaveClass(cardSizeClass)
     expect(cardPaddingWrapper).toBeInTheDocument()
     expect(cardPaddingWrapper).toHaveClass(cardRootSizeClassName)

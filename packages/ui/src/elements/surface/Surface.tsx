@@ -79,6 +79,7 @@ export const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(
         ref={ref}
         className={cn(
           'relative box-border border',
+          'border-solid',
           radiusClassByToken[radius],
           colorVariantClassName,
           safeHover && surfaceHoverEnabledClass,
