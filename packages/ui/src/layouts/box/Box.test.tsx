@@ -7,6 +7,7 @@ import { widthResponsiveClasses, widthResponsiveVars } from '@/theme/helpers/wid
 import { Theme } from '@/theme/ThemeProvider'
 import { designTokens } from '@/theme/tokens'
 import { Box } from './Box'
+import { getBoxSurfaceClassName } from './box.class'
 
 afterEach(() => {
   cleanup()
@@ -84,10 +85,11 @@ describe('Box', () => {
       </Box>,
     )
 
-    expect(screen.getByTestId('box')).toHaveStyle({
-      backgroundColor: 'var(--chart-1)',
-      color: 'var(--chart-1-contrast)',
-    })
+    const box = screen.getByTestId('box')
+
+    expect(box.className).toContain(getBoxSurfaceClassName(color, 'solid'))
+    expect(box.style.backgroundColor).toBe('')
+    expect(box.style.color).toBe('')
   })
 
   it.each(['chart1', 'chart-1'] as const)('resolves chart tone key %s via tone prop', tone => {
@@ -97,10 +99,17 @@ describe('Box', () => {
       </Box>,
     )
 
-    expect(screen.getByTestId('box')).toHaveStyle({
-      backgroundColor: 'var(--chart-1)',
-      color: 'var(--chart-1-contrast)',
-    })
+    expect(screen.getByTestId('box').className).toContain(getBoxSurfaceClassName(tone, 'solid'))
+  })
+
+  it('maps explicit primary text to a token color utility', () => {
+    render(
+      <Box data-testid="box" color="success" variant="surface" text="primary">
+        Content
+      </Box>,
+    )
+
+    expect(screen.getByTestId('box').className).toContain(getBoxSurfaceClassName('success', 'surface', 'primary'))
   })
 
   it('does not emit tone styles for unsupported color keys', () => {

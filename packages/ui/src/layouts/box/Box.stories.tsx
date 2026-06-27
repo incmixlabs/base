@@ -14,6 +14,10 @@ const meta: Meta<typeof Box> = {
   tags: ['autodocs'],
   argTypes: {
     as: selectArgType(boxPropDefs.as),
+    color: selectArgType(boxPropDefs.color),
+    tone: selectArgType(boxPropDefs.tone),
+    variant: selectArgType(boxPropDefs.variant),
+    text: selectArgType(boxPropDefs.text),
     display: selectArgType(boxPropDefs.display, { if: { arg: 'layout', exists: false } }),
     layout: selectArgType(boxPropDefs.layout),
     p: selectArgType(boxPropDefs.p),
@@ -31,8 +35,10 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   args: {
     p: '4',
+    color: 'neutral',
+    variant: 'soft',
+    radius: 'md',
     children: 'Basic Box with padding',
-    className: 'bg-muted rounded-md',
   },
 }
 
@@ -40,8 +46,10 @@ export const AsSpan: Story = {
   args: {
     as: 'span',
     p: '2',
+    color: 'primary',
+    variant: 'solid',
+    radius: 'md',
     children: 'Box as span',
-    className: 'bg-primary text-primary-foreground rounded',
   },
 }
 
@@ -49,7 +57,15 @@ export const RadiusVariants: Story = {
   render: () => (
     <div className="grid grid-cols-2 gap-4">
       {getPropDefValues(radiusPropDef.radius).map(radius => (
-        <Box key={radius} radius={radius} p="4" className="border border-border bg-muted text-sm">
+        <Box
+          key={radius}
+          radius={radius}
+          p="4"
+          color="neutral"
+          variant="soft"
+          borderColor="neutral-border"
+          className="text-sm"
+        >
           radius=&quot;{radius}&quot;
         </Box>
       ))}
@@ -65,8 +81,10 @@ export const PaddingScale: Story = {
   render: () => (
     <div className="space-y-2">
       {getPropDefValues(boxPropDefs.p).map(p => (
-        <Box key={p} p={p} className="bg-muted rounded">
-          <span className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded">p={p}</span>
+        <Box key={p} p={p} color="neutral" variant="soft" radius="md">
+          <Box as="span" color="primary" variant="solid" radius="sm" px="2" py="1" className="text-xs">
+            p={p}
+          </Box>
         </Box>
       ))}
     </div>
@@ -76,17 +94,25 @@ export const PaddingScale: Story = {
 export const DirectionalPadding: Story = {
   render: () => (
     <div className="grid grid-cols-2 gap-4">
-      <Box px="6" className="bg-muted rounded">
-        <span className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded">px=6</span>
+      <Box px="6" color="neutral" variant="soft" radius="md">
+        <Box as="span" color="primary" variant="solid" radius="sm" px="2" py="1" className="text-xs">
+          px=6
+        </Box>
       </Box>
-      <Box py="6" className="bg-muted rounded">
-        <span className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded">py=6</span>
+      <Box py="6" color="neutral" variant="soft" radius="md">
+        <Box as="span" color="primary" variant="solid" radius="sm" px="2" py="1" className="text-xs">
+          py=6
+        </Box>
       </Box>
-      <Box pt="6" className="bg-muted rounded">
-        <span className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded">pt=6</span>
+      <Box pt="6" color="neutral" variant="soft" radius="md">
+        <Box as="span" color="primary" variant="solid" radius="sm" px="2" py="1" className="text-xs">
+          pt=6
+        </Box>
       </Box>
-      <Box pb="6" className="bg-muted rounded">
-        <span className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded">pb=6</span>
+      <Box pb="6" color="neutral" variant="soft" radius="md">
+        <Box as="span" color="primary" variant="solid" radius="sm" px="2" py="1" className="text-xs">
+          pb=6
+        </Box>
       </Box>
     </div>
   ),
@@ -98,7 +124,7 @@ export const DirectionalPadding: Story = {
 
 export const ResponsivePadding: Story = {
   render: () => (
-    <Box p={{ initial: '2', sm: '4', md: '6', lg: '8' }} className="bg-muted rounded-md">
+    <Box p={{ initial: '2', sm: '4', md: '6', lg: '8' }} color="neutral" variant="soft" radius="md">
       <span className="text-sm">Responsive padding: p-2 → sm:p-4 → md:p-6 → lg:p-8</span>
     </Box>
   ),
@@ -111,13 +137,20 @@ export const ResponsivePadding: Story = {
 export const CustomSizing: Story = {
   render: () => (
     <div className="space-y-4">
-      <Box width="200px" height="100px" className="bg-muted rounded-md flex items-center justify-center">
+      <Box
+        width="200px"
+        height="100px"
+        color="neutral"
+        variant="soft"
+        radius="md"
+        className="flex items-center justify-center"
+      >
         200px × 100px
       </Box>
-      <Box width="100%" maxWidth="400px" p="4" className="bg-muted rounded-md">
+      <Box width="100%" maxWidth="400px" p="4" color="neutral" variant="soft" radius="md">
         100% width, max 400px
       </Box>
-      <Box minHeight="150px" p="4" className="bg-muted rounded-md">
+      <Box minHeight="150px" p="4" color="neutral" variant="soft" radius="md">
         Min height 150px
       </Box>
     </div>
@@ -130,17 +163,17 @@ export const CustomSizing: Story = {
 
 export const Positioning: Story = {
   render: () => (
-    <Box position="relative" height="200px" className="bg-muted rounded-md">
-      <Box position="absolute" top="2" left="2" p="2" className="bg-primary text-primary-foreground rounded">
+    <Box position="relative" height="200px" color="neutral" variant="soft" radius="md">
+      <Box position="absolute" top="2" left="2" p="2" color="primary" variant="solid" radius="sm">
         Top Left
       </Box>
-      <Box position="absolute" top="2" right="2" p="2" className="bg-primary text-primary-foreground rounded">
+      <Box position="absolute" top="2" right="2" p="2" color="primary" variant="solid" radius="sm">
         Top Right
       </Box>
-      <Box position="absolute" bottom="2" left="2" p="2" className="bg-primary text-primary-foreground rounded">
+      <Box position="absolute" bottom="2" left="2" p="2" color="primary" variant="solid" radius="sm">
         Bottom Left
       </Box>
-      <Box position="absolute" bottom="2" right="2" p="2" className="bg-primary text-primary-foreground rounded">
+      <Box position="absolute" bottom="2" right="2" p="2" color="primary" variant="solid" radius="sm">
         Bottom Right
       </Box>
     </Box>
@@ -154,15 +187,19 @@ export const Positioning: Story = {
 export const DisplayModes: Story = {
   render: () => (
     <div className="space-y-4">
-      <Box display="block" p="4" className="bg-muted rounded">
+      <Box display="block" p="4" color="neutral" variant="soft" radius="md">
         display="block" (full width)
       </Box>
-      <Box display="inline-block" p="4" className="bg-muted rounded">
+      <Box display="inline-block" p="4" color="neutral" variant="soft" radius="md">
         display="inline-block"
       </Box>
-      <Box display="flex" p="4" className="bg-muted rounded gap-2">
-        <span className="bg-primary text-primary-foreground px-2 py-1 rounded">Flex</span>
-        <span className="bg-primary text-primary-foreground px-2 py-1 rounded">Items</span>
+      <Box display="flex" p="4" color="neutral" variant="soft" radius="md" className="gap-2">
+        <Box as="span" color="primary" variant="solid" radius="sm" px="2" py="1">
+          Flex
+        </Box>
+        <Box as="span" color="primary" variant="solid" radius="sm" px="2" py="1">
+          Items
+        </Box>
       </Box>
     </div>
   ),
@@ -187,11 +224,15 @@ export const LayoutComposition: Story = {
 export const OverflowBehavior: Story = {
   render: () => (
     <div className="grid grid-cols-2 gap-4">
-      <Box overflow="auto" width="200px" height="100px" p="2" className="bg-muted rounded">
-        <div className="w-[300px] h-[200px] bg-primary/20 rounded p-2">overflow="auto" - scrollable content</div>
+      <Box overflow="auto" width="200px" height="100px" p="2" color="neutral" variant="soft" radius="md">
+        <Box width="300px" height="200px" color="primary" variant="soft" radius="md" p="2">
+          overflow="auto" - scrollable content
+        </Box>
       </Box>
-      <Box overflow="hidden" width="200px" height="100px" p="2" className="bg-muted rounded">
-        <div className="w-[300px] h-[200px] bg-primary/20 rounded p-2">overflow="hidden" - clipped content</div>
+      <Box overflow="hidden" width="200px" height="100px" p="2" color="neutral" variant="soft" radius="md">
+        <Box width="300px" height="200px" color="primary" variant="soft" radius="md" p="2">
+          overflow="hidden" - clipped content
+        </Box>
       </Box>
     </div>
   ),

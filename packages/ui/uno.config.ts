@@ -35,16 +35,24 @@ import {
   cardRootBase,
   cardRootSizeClassName,
   cardRootSizeWrapperBase,
-  cardSizeContainerBreakpoints,
   cardSizeRules,
   cardTitleBase,
 } from './src/elements/card/card.class'
+import { boxRootBase, boxSurfaceColorClassNames } from './src/layouts/box/box.class'
+import {
+  containerAlignResponsive,
+  containerBase,
+  containerBySize,
+  containerDisplayResponsive,
+  containerSizeResponsive,
+} from './src/layouts/container/container.class'
+import { containerBreakpoints } from './src/theme/tokens'
 
 const splitClasses = (values: string[]) => values.flatMap(value => value.split(/\s+/))
 const classMapValues = <Value extends string>(map: Record<string, Record<string, Value>>) =>
   Object.values(map).flatMap(variantMap => Object.values(variantMap))
 
-const cardContainerQueryVariants = Object.entries(cardSizeContainerBreakpoints).map(([breakpoint, minWidth]) => ({
+const containerQueryVariants = Object.entries(containerBreakpoints).map(([breakpoint, minWidth]) => ({
   name: `cq-${breakpoint}`,
   match(matcher: string) {
     const prefix = `cq-${breakpoint}:`
@@ -65,7 +73,7 @@ export default defineConfig({
   theme: {
     ...baseUnoConfig.theme,
   },
-  variants: [...cardContainerQueryVariants],
+  variants: [...containerQueryVariants],
   rules: [...(baseUnoConfig.rules ?? []), ...cardSizeRules],
   safelist: [
     ...(baseUnoConfig.safelist ?? []),
@@ -103,6 +111,15 @@ export default defineConfig({
       cardTitleBase,
       cardContentBase,
       cardFooterBase,
+      // Box styles
+      boxRootBase,
+      ...splitClasses(boxSurfaceColorClassNames),
+      // Container styles
+      containerBase,
+      ...Object.values(containerBySize),
+      ...classMapValues(containerDisplayResponsive),
+      ...classMapValues(containerAlignResponsive),
+      ...classMapValues(containerSizeResponsive),
     ]),
   ],
 })

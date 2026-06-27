@@ -7,7 +7,9 @@ import { Container, type ContainerProps } from './Container'
 import {
   containerAlignResponsive,
   containerBase,
+  containerBySize,
   containerDisplayResponsive,
+  containerSizeMaxWidth,
   containerSizeResponsive,
 } from './container.class'
 import { containerPropDefs } from './container.props'
@@ -22,6 +24,20 @@ function expectClassToken(element: Element | null | undefined, className: string
 }
 
 describe('Container', () => {
+  it.each(containerPropDefs.size.values)('keeps size %s class aligned with the max-width token', size => {
+    expect(containerBySize[size]).toBe(`max-w-[${containerSizeMaxWidth[size]}]`)
+  })
+
+  it.each(containerPropDefs.size.values)('applies size %s to the inner width target', size => {
+    render(<Container size={size}>Sized Content</Container>)
+
+    const innerContainer = screen.getByText('Sized Content').closest('div')
+    const outerContainer = innerContainer?.parentElement
+
+    expectClassToken(outerContainer, 'w-full')
+    expectClassToken(innerContainer, containerBySize[size])
+  })
+
   it('places the query host on the outer container and applies responsive classes to the inner target', () => {
     const [size1, , , size4] = containerPropDefs.size.values
     const [alignLeft, alignCenter] = containerPropDefs.align.values

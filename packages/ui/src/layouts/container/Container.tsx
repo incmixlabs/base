@@ -22,7 +22,6 @@ import {
   containerBase,
   containerBySize,
   containerDisplayResponsive,
-  containerInnerMaxWidth,
   containerSizeResponsive,
 } from './container.class'
 import type { ContainerAlign, ContainerDisplay, ContainerProps } from './container.props'
@@ -44,7 +43,7 @@ export {
 // Container Class Maps
 // ============================================================================
 
-const containerBaseClassName = 'box-border'
+const containerBaseClassName = 'box-border w-full'
 const containerInnerClassName = 'box-border flex-col w-full mx-auto shrink-0 grow'
 
 const containerDisplayClassNames: Record<ContainerDisplay, string> = {
@@ -127,7 +126,6 @@ export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
 
     const innerClasses = cn(
       containerInnerClassName,
-      containerInnerMaxWidth,
       !innerLayoutProps.layout && displayClasses,
       shouldApplyContainerAlign && alignClasses,
       getLayoutCompositionClasses(innerLayoutProps),

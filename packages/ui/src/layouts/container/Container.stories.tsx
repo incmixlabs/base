@@ -70,11 +70,11 @@ export const Default: Story = {
 
 export const SizeVariants: Story = {
   render: args => (
-    <Box color="neutral" variant="soft" py="8">
-      <Column gap="8">
+    <Box color="neutral" variant="soft" py="8" className="w-full">
+      <Column gap="8" className="w-full">
         {containerPropDefs.size.values.map(size => (
           <Container key={size} {...args} size={size}>
-            <Box width="full" p="4" color="neutral" variant="surface" borderColor="neutral-border" radius="lg">
+            <Box p="4" color="neutral" variant="surface" borderColor="neutral-border" radius="lg" className="w-full">
               <Column gap="2">
                 <Text as="p" weight="medium">
                   size="{size}"
