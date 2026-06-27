@@ -5,7 +5,7 @@ import {
   type Color,
   SURFACE_COLOR_KEYS,
   type SurfaceColorKey,
-} from '@/theme/tokens'
+} from '../tokens'
 import type { PropDef } from './prop-def'
 
 export const SemanticColor = {

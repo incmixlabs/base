@@ -1,10 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { AlertCircle, AlertTriangle, Bell, CheckCircle, Info, Lightbulb, Rocket, Shield, XCircle } from 'lucide-react'
 import { Box } from '@/layouts/box/Box'
-import { colorPropDef, SemanticColor } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
+import { selectArgType } from '@/theme/props/storybook'
 import { Callout, type CalloutProps } from './Callout'
 import { calloutRootPropDefs } from './callout.props'
+
+const calloutSizes = getPropDefValues(calloutRootPropDefs.size)
+const calloutVariants = getPropDefValues(calloutRootPropDefs.variant)
+const calloutColors = getPropDefValues(calloutRootPropDefs.color)
+const calloutRadii = getPropDefValues(calloutRootPropDefs.radius)
 
 const meta: Meta<typeof Callout.Root> = {
   title: 'Elements/Callout',
@@ -14,21 +19,18 @@ const meta: Meta<typeof Callout.Root> = {
   },
   tags: ['autodocs'],
   argTypes: {
-    size: {
-      control: 'select',
-      options: getPropDefValues(calloutRootPropDefs.size),
+    size: selectArgType(calloutRootPropDefs.size, {
       description: 'The size of the callout',
-    },
-    variant: {
-      control: 'select',
-      options: getPropDefValues(calloutRootPropDefs.variant),
+    }),
+    variant: selectArgType(calloutRootPropDefs.variant, {
       description: 'The visual variant of the callout',
-    },
-    color: {
-      control: 'select',
-      options: getPropDefValues(colorPropDef.color),
+    }),
+    color: selectArgType(calloutRootPropDefs.color, {
       description: 'The accent color of the callout',
-    },
+    }),
+    radius: selectArgType(calloutRootPropDefs.radius, {
+      description: 'Border radius',
+    }),
     highContrast: {
       control: 'boolean',
       description: 'High contrast mode for better accessibility',
@@ -41,535 +43,441 @@ const meta: Meta<typeof Callout.Root> = {
       control: 'boolean',
       description: 'Enable hover styles/cursor for interactive callouts',
     },
+    icon: {
+      control: 'text',
+      description: 'Lucide icon name for the icon slot',
+    },
+    text: {
+      control: 'text',
+      description: 'Text rendered in the callout text slot',
+    },
   },
 }
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-const renderCallout = (args: CalloutProps.Root, text: string) => (
-  <Callout.Root {...args}>
-    <Callout.Icon>
-      <Info />
-    </Callout.Icon>
-    <Callout.Text>{text}</Callout.Text>
+function IconForColor({ color }: { color: string }) {
+  switch (color) {
+    case 'primary':
+      return <Rocket />
+    case 'info':
+      return <Info />
+    case 'success':
+      return <CheckCircle />
+    case 'warning':
+      return <AlertTriangle />
+    case 'error':
+      return <XCircle />
+    default:
+      return <Bell />
+  }
+}
+
+const renderCallout = ({ icon, text, ...args }: CalloutProps.Root, fallbackText: string) => (
+  <Callout.Root {...args} icon={icon} text={text}>
+    {icon ? null : (
+      <Callout.Icon>
+        <IconForColor color={String(args.color ?? 'slate')} />
+      </Callout.Icon>
+    )}
+    {text == null ? <Callout.Text>{fallbackText}</Callout.Text> : null}
   </Callout.Root>
 )
 
-// Playground
+const splitStoryArgs = {
+  size: calloutRootPropDefs.size.default,
+  variant: 'split',
+  radius: 'lg',
+  hover: calloutRootPropDefs.hover.default,
+  inverse: calloutRootPropDefs.inverse.default,
+  highContrast: calloutRootPropDefs.highContrast.default,
+} satisfies Partial<CalloutProps.Root>
+
+const splitStatusExamples = [
+  {
+    color: 'error',
+    icon: <XCircle />,
+    title: 'Payment failed.',
+    message: 'The card on file was declined. Update billing details before the next retry.',
+  },
+  {
+    color: 'warning',
+    icon: <AlertTriangle />,
+    title: 'Schema drift detected.',
+    message: 'Three downstream mappings need review before the sync can be promoted.',
+  },
+  {
+    color: 'success',
+    icon: <CheckCircle />,
+    title: 'Import complete.',
+    message: 'All records passed validation and are ready for assignment.',
+  },
+  {
+    color: 'info',
+    icon: <Info />,
+    title: 'Maintenance scheduled.',
+    message: 'Background jobs pause for ten minutes during the maintenance window.',
+  },
+] as const
+
 export const Playground: Story = {
-  render: args => renderCallout(args, 'This is a callout with some important information for you.'),
+  render: args => renderCallout(args, 'This is a callout with important information.'),
   args: {
-    size: 'xl',
-    variant: 'soft',
-    color: SemanticColor.neutral,
-    hover: false,
-    inverse: false,
+    size: calloutRootPropDefs.size.default,
+    variant: calloutRootPropDefs.variant.default,
+    color: 'slate',
+    radius: 'lg',
+    hover: calloutRootPropDefs.hover.default,
+    inverse: calloutRootPropDefs.inverse.default,
+    highContrast: calloutRootPropDefs.highContrast.default,
   },
 }
 
-// Variants
-export const Soft: Story = {
-  render: args => renderCallout(args, 'This is a soft callout with a subtle background.'),
-  args: {
-    variant: 'soft',
-    color: 'info',
-    size: 'xl',
-    inverse: false,
-    hover: false,
-    highContrast: false,
-  },
-}
-
-export const Surface: Story = {
-  render: args => renderCallout(args, 'This is a surface callout with a border and light background.'),
-  args: {
-    variant: 'surface',
-    color: 'info',
-    size: 'xl',
-    inverse: false,
-    hover: false,
-    highContrast: false,
-  },
-}
-
-export const Solid: Story = {
-  render: args => renderCallout(args, 'This is a solid callout with high-emphasis fill.'),
-  args: {
-    variant: 'solid',
-    color: 'info',
-    size: 'xl',
-    inverse: false,
-    hover: false,
-    highContrast: false,
-  },
-}
-
-export const Outline: Story = {
-  render: args => renderCallout(args, 'This is an outline callout with just a border.'),
-  args: {
-    variant: 'outline',
-    color: 'info',
-    size: 'xl',
-    inverse: false,
-    hover: false,
-    highContrast: false,
-  },
-}
-
-export const Split: Story = {
-  render: args => renderCallout(args, 'This is a split callout with a solid icon rail and outlined content area.'),
-  args: {
-    variant: 'split',
-    color: 'info',
-    size: 'xl',
-    inverse: false,
-    hover: false,
-    highContrast: false,
-  },
-}
-
-// Sizes
-export const SizeSm: Story = {
-  name: 'Size sm (Small)',
-  render: () => (
-    <Callout.Root size="sm" color="info">
-      <Callout.Icon>
-        <Info />
-      </Callout.Icon>
-      <Callout.Text>Size sm callout</Callout.Text>
-    </Callout.Root>
-  ),
-}
-
-export const SizeMd: Story = {
-  name: 'Size md (Medium)',
-  render: () => (
-    <Callout.Root size="md" color="info">
-      <Callout.Icon>
-        <Info />
-      </Callout.Icon>
-      <Callout.Text>Size md callout</Callout.Text>
-    </Callout.Root>
-  ),
-}
-
-export const SizeLg: Story = {
-  name: 'Size lg (Large)',
-  render: () => (
-    <Callout.Root size="lg" color="info">
-      <Callout.Icon>
-        <Info />
-      </Callout.Icon>
-      <Callout.Text>Size lg callout</Callout.Text>
-    </Callout.Root>
-  ),
-}
-
-export const SizeXl: Story = {
-  name: 'Size xl (Extra Large, default)',
-  render: () => (
-    <Callout.Root size="xl" color="info">
-      <Callout.Icon>
-        <Info />
-      </Callout.Icon>
-      <Callout.Text>Size xl callout (default)</Callout.Text>
-    </Callout.Root>
-  ),
-}
-
-export const Size2x: Story = {
-  name: 'Size 2x (Extra Extra Large)',
-  render: () => (
-    <Callout.Root size="2x" color="info">
-      <Callout.Icon>
-        <Info />
-      </Callout.Icon>
-      <Callout.Text>Size 2x callout</Callout.Text>
-    </Callout.Root>
-  ),
-}
-
-// Colors
-export const ColorDefault: Story = {
-  render: () => (
-    <Callout.Root color="slate">
-      <Callout.Icon>
-        <Bell />
-      </Callout.Icon>
-      <Callout.Text>Default gray/slate callout</Callout.Text>
-    </Callout.Root>
-  ),
-}
-
-export const ColorNeutral: Story = {
-  render: () => (
-    <Callout.Root color="neutral">
-      <Callout.Icon>
-        <Bell />
-      </Callout.Icon>
-      <Callout.Text>Neutral theme-surface callout</Callout.Text>
-    </Callout.Root>
-  ),
-}
-
-export const ColorPrimary: Story = {
-  render: () => (
-    <Callout.Root color="primary">
-      <Callout.Icon>
-        <Rocket />
-      </Callout.Icon>
-      <Callout.Text>Primary branded callout</Callout.Text>
-    </Callout.Root>
-  ),
-}
-
-export const ColorInfo: Story = {
-  render: () => (
-    <Callout.Root color="info">
-      <Callout.Icon>
-        <Info />
-      </Callout.Icon>
-      <Callout.Text>Informational callout for helpful tips and details.</Callout.Text>
-    </Callout.Root>
-  ),
-}
-
-export const ColorSuccess: Story = {
-  render: () => (
-    <Callout.Root color="success">
-      <Callout.Icon>
-        <CheckCircle />
-      </Callout.Icon>
-      <Callout.Text>Success! Your action was completed successfully.</Callout.Text>
-    </Callout.Root>
-  ),
-}
-
-export const ColorWarning: Story = {
-  render: () => (
-    <Callout.Root color="warning">
-      <Callout.Icon>
-        <AlertTriangle />
-      </Callout.Icon>
-      <Callout.Text>Warning: Please review this before proceeding.</Callout.Text>
-    </Callout.Root>
-  ),
-}
-
-export const ColorError: Story = {
-  render: () => (
-    <Callout.Root color="error">
-      <Callout.Icon>
-        <XCircle />
-      </Callout.Icon>
-      <Callout.Text>Error: Something went wrong. Please try again.</Callout.Text>
-    </Callout.Root>
-  ),
-}
-
-// All variants showcase
-export const AllVariants: Story = {
-  render: () => (
+export const Variants: Story = {
+  render: args => (
     <Box display="flex" className="flex-col gap-4">
-      <Callout.Root variant="soft" color="info">
-        <Callout.Icon>
-          <Info />
-        </Callout.Icon>
-        <Callout.Text>Soft variant</Callout.Text>
-      </Callout.Root>
-      <Callout.Root variant="surface" color="info">
-        <Callout.Icon>
-          <Info />
-        </Callout.Icon>
-        <Callout.Text>Surface variant</Callout.Text>
-      </Callout.Root>
-      <Callout.Root variant="solid" color="info">
-        <Callout.Icon>
-          <Info />
-        </Callout.Icon>
-        <Callout.Text>Solid variant</Callout.Text>
-      </Callout.Root>
-      <Callout.Root variant="outline" color="info">
-        <Callout.Icon>
-          <Info />
-        </Callout.Icon>
-        <Callout.Text>Outline variant</Callout.Text>
-      </Callout.Root>
-      <Callout.Root variant="split" color="info">
-        <Callout.Icon>
-          <Info />
-        </Callout.Icon>
-        <Callout.Text>Split variant</Callout.Text>
-      </Callout.Root>
+      {calloutVariants.map(variant => (
+        <Callout.Root key={variant} {...args} variant={variant} color={args.color ?? 'info'}>
+          <Callout.Icon>
+            <Info />
+          </Callout.Icon>
+          <Callout.Text>{variant} variant</Callout.Text>
+        </Callout.Root>
+      ))}
     </Box>
   ),
+  args: {
+    size: calloutRootPropDefs.size.default,
+    color: 'info',
+    radius: 'lg',
+    hover: calloutRootPropDefs.hover.default,
+    inverse: calloutRootPropDefs.inverse.default,
+    highContrast: calloutRootPropDefs.highContrast.default,
+  },
 }
 
-// All sizes showcase
-export const AllSizes: Story = {
-  render: () => (
+export const Sizes: Story = {
+  render: args => (
     <Box display="flex" className="flex-col gap-8">
-      {getPropDefValues(calloutRootPropDefs.size).map(size => (
+      {calloutSizes.map(size => (
         <div key={size} className="space-y-1">
           <span className="text-xs text-muted-foreground font-mono">{size}</span>
-          <Callout.Root size={size} variant="soft" color="info">
+          <Callout.Root {...args} size={size} color={args.color ?? 'info'}>
             <Callout.Icon>
               <Info />
             </Callout.Icon>
-            <Callout.Text>Size {size} — The quick brown fox jumps over the lazy dog.</Callout.Text>
+            <Callout.Text>Size {size}. The quick brown fox jumps over the lazy dog.</Callout.Text>
           </Callout.Root>
         </div>
       ))}
     </Box>
   ),
+  args: {
+    variant: calloutRootPropDefs.variant.default,
+    color: 'info',
+    radius: 'lg',
+    hover: calloutRootPropDefs.hover.default,
+    inverse: calloutRootPropDefs.inverse.default,
+    highContrast: calloutRootPropDefs.highContrast.default,
+  },
 }
 
-// All colors with soft variant
-export const AllColorsSoft: Story = {
-  render: () => (
+export const Colors: Story = {
+  render: args => (
     <Box display="flex" className="flex-col gap-4">
-      <Callout.Root color="slate">
-        <Callout.Icon>
-          <Bell />
-        </Callout.Icon>
-        <Callout.Text>Default</Callout.Text>
-      </Callout.Root>
-      <Callout.Root color="neutral">
-        <Callout.Icon>
-          <Bell />
-        </Callout.Icon>
-        <Callout.Text>Neutral</Callout.Text>
-      </Callout.Root>
-      <Callout.Root color="primary">
-        <Callout.Icon>
-          <Rocket />
-        </Callout.Icon>
-        <Callout.Text>Primary</Callout.Text>
-      </Callout.Root>
-      <Callout.Root color="info">
-        <Callout.Icon>
-          <Info />
-        </Callout.Icon>
-        <Callout.Text>Info</Callout.Text>
-      </Callout.Root>
-      <Callout.Root color="success">
-        <Callout.Icon>
-          <CheckCircle />
-        </Callout.Icon>
-        <Callout.Text>Success</Callout.Text>
-      </Callout.Root>
-      <Callout.Root color="warning">
-        <Callout.Icon>
-          <AlertTriangle />
-        </Callout.Icon>
-        <Callout.Text>Warning</Callout.Text>
-      </Callout.Root>
-      <Callout.Root color="error">
-        <Callout.Icon>
-          <XCircle />
-        </Callout.Icon>
-        <Callout.Text>Error</Callout.Text>
-      </Callout.Root>
+      {calloutColors.map(color => (
+        <Callout.Root key={color} {...args} color={color}>
+          <Callout.Icon>
+            <IconForColor color={color} />
+          </Callout.Icon>
+          <Callout.Text>{color} callout</Callout.Text>
+        </Callout.Root>
+      ))}
     </Box>
   ),
+  args: {
+    size: calloutRootPropDefs.size.default,
+    variant: calloutRootPropDefs.variant.default,
+    radius: 'lg',
+    hover: calloutRootPropDefs.hover.default,
+    inverse: calloutRootPropDefs.inverse.default,
+    highContrast: calloutRootPropDefs.highContrast.default,
+  },
 }
 
-// All colors with surface variant
-export const AllColorsSurface: Story = {
-  render: () => (
+export const Radius: Story = {
+  render: args => (
     <Box display="flex" className="flex-col gap-4">
-      <Callout.Root variant="surface" color="slate">
-        <Callout.Icon>
-          <Bell />
-        </Callout.Icon>
-        <Callout.Text>Default</Callout.Text>
-      </Callout.Root>
-      <Callout.Root variant="surface" color="neutral">
-        <Callout.Icon>
-          <Bell />
-        </Callout.Icon>
-        <Callout.Text>Neutral</Callout.Text>
-      </Callout.Root>
-      <Callout.Root variant="surface" color="primary">
-        <Callout.Icon>
-          <Rocket />
-        </Callout.Icon>
-        <Callout.Text>Primary</Callout.Text>
-      </Callout.Root>
-      <Callout.Root variant="surface" color="info">
-        <Callout.Icon>
-          <Info />
-        </Callout.Icon>
-        <Callout.Text>Info</Callout.Text>
-      </Callout.Root>
-      <Callout.Root variant="surface" color="success">
-        <Callout.Icon>
-          <CheckCircle />
-        </Callout.Icon>
-        <Callout.Text>Success</Callout.Text>
-      </Callout.Root>
-      <Callout.Root variant="surface" color="warning">
-        <Callout.Icon>
-          <AlertTriangle />
-        </Callout.Icon>
-        <Callout.Text>Warning</Callout.Text>
-      </Callout.Root>
-      <Callout.Root variant="surface" color="error">
-        <Callout.Icon>
-          <XCircle />
-        </Callout.Icon>
-        <Callout.Text>Error</Callout.Text>
-      </Callout.Root>
+      {calloutRadii.map(radius => (
+        <Callout.Root key={radius} {...args} radius={radius}>
+          <Callout.Icon>
+            <Info />
+          </Callout.Icon>
+          <Callout.Text>Radius {radius}</Callout.Text>
+        </Callout.Root>
+      ))}
     </Box>
   ),
+  args: {
+    size: calloutRootPropDefs.size.default,
+    variant: calloutRootPropDefs.variant.default,
+    color: 'info',
+    hover: calloutRootPropDefs.hover.default,
+    inverse: calloutRootPropDefs.inverse.default,
+    highContrast: calloutRootPropDefs.highContrast.default,
+  },
 }
 
-// All colors with outline variant
-export const AllColorsOutline: Story = {
-  render: () => (
+export const Split: Story = {
+  render: args => renderCallout(args, 'Split callout with a colored rail and neutral content surface.'),
+  args: {
+    ...splitStoryArgs,
+    color: 'error',
+  },
+}
+
+export const SplitColors: Story = {
+  render: args => (
     <Box display="flex" className="flex-col gap-4">
-      <Callout.Root variant="outline" color="slate">
-        <Callout.Icon>
-          <Bell />
-        </Callout.Icon>
-        <Callout.Text>Default</Callout.Text>
-      </Callout.Root>
-      <Callout.Root variant="outline" color="neutral">
-        <Callout.Icon>
-          <Bell />
-        </Callout.Icon>
-        <Callout.Text>Neutral</Callout.Text>
-      </Callout.Root>
-      <Callout.Root variant="outline" color="primary">
-        <Callout.Icon>
-          <Rocket />
-        </Callout.Icon>
-        <Callout.Text>Primary</Callout.Text>
-      </Callout.Root>
-      <Callout.Root variant="outline" color="info">
-        <Callout.Icon>
-          <Info />
-        </Callout.Icon>
-        <Callout.Text>Info</Callout.Text>
-      </Callout.Root>
-      <Callout.Root variant="outline" color="success">
-        <Callout.Icon>
-          <CheckCircle />
-        </Callout.Icon>
-        <Callout.Text>Success</Callout.Text>
-      </Callout.Root>
-      <Callout.Root variant="outline" color="warning">
-        <Callout.Icon>
-          <AlertTriangle />
-        </Callout.Icon>
-        <Callout.Text>Warning</Callout.Text>
-      </Callout.Root>
-      <Callout.Root variant="outline" color="error">
-        <Callout.Icon>
-          <XCircle />
-        </Callout.Icon>
-        <Callout.Text>Error</Callout.Text>
-      </Callout.Root>
+      {calloutColors.map(color => (
+        <Callout.Root key={color} {...args} variant="split" color={color}>
+          <Callout.Icon>
+            <IconForColor color={color} />
+          </Callout.Icon>
+          <Callout.Text>
+            <span className="capitalize">{color}</span> split rail with neutral content surface.
+          </Callout.Text>
+        </Callout.Root>
+      ))}
     </Box>
   ),
+  args: {
+    ...splitStoryArgs,
+    color: 'error',
+  },
 }
 
-// High contrast mode
+export const SplitSizes: Story = {
+  render: args => (
+    <Box display="flex" className="flex-col gap-8">
+      {calloutSizes.map(size => (
+        <div key={size} className="space-y-1">
+          <span className="text-xs text-muted-foreground font-mono">{size}</span>
+          <Callout.Root {...args} size={size} variant="split" color={args.color ?? 'error'}>
+            <Callout.Icon>
+              <IconForColor color={String(args.color ?? 'error')} />
+            </Callout.Icon>
+            <Callout.Text>Split size {size}. The rail and content padding scale together.</Callout.Text>
+          </Callout.Root>
+        </div>
+      ))}
+    </Box>
+  ),
+  args: {
+    ...splitStoryArgs,
+    color: 'error',
+  },
+}
+
+export const SplitHover: Story = {
+  render: args => renderCallout(args, 'Hoverable split callout. The neutral content surface responds on hover.'),
+  args: {
+    ...splitStoryArgs,
+    color: 'warning',
+    hover: true,
+  },
+}
+
+export const SplitHighContrast: Story = {
+  render: args => (
+    <Box display="flex" className="flex-col gap-4">
+      {calloutColors.map(color => (
+        <Callout.Root key={color} {...args} variant="split" color={color} highContrast>
+          <Callout.Icon>
+            <IconForColor color={color} />
+          </Callout.Icon>
+          <Callout.Text>
+            <span className="capitalize">{color}</span> high-contrast split callout.
+          </Callout.Text>
+        </Callout.Root>
+      ))}
+    </Box>
+  ),
+  args: {
+    ...splitStoryArgs,
+    color: 'error',
+    highContrast: true,
+  },
+}
+
+export const SplitRootProps: Story = {
+  render: args => (
+    <Callout.Root
+      {...args}
+      icon={args.icon ?? 'alert-triangle'}
+      text={args.text ?? 'Split callout rendered from root icon and text props.'}
+    />
+  ),
+  args: {
+    ...splitStoryArgs,
+    color: 'warning',
+    icon: 'alert-triangle',
+    text: 'Split callout rendered from root icon and text props.',
+  },
+}
+
+export const SplitRadius: Story = {
+  render: args => (
+    <Box display="flex" className="flex-col gap-4">
+      {calloutRadii.map(radius => (
+        <Callout.Root key={radius} {...args} variant="split" radius={radius}>
+          <Callout.Icon>
+            <IconForColor color={String(args.color ?? 'error')} />
+          </Callout.Icon>
+          <Callout.Text>Split radius {radius}</Callout.Text>
+        </Callout.Root>
+      ))}
+    </Box>
+  ),
+  args: {
+    ...splitStoryArgs,
+    color: 'error',
+  },
+}
+
+export const SplitLongContent: Story = {
+  render: args => (
+    <Callout.Root {...args} className="max-w-xl">
+      <Callout.Icon>
+        <Shield />
+      </Callout.Icon>
+      <Callout.Text>
+        <strong>Policy exception pending.</strong> The request can continue, but approval must be completed before the
+        automation runs in production. The neutral content surface should remain readable across multi-line messages.
+      </Callout.Text>
+    </Callout.Root>
+  ),
+  args: {
+    ...splitStoryArgs,
+    color: 'warning',
+  },
+}
+
+export const SplitStatusExamples: Story = {
+  render: args => (
+    <Box display="flex" className="flex-col gap-4 max-w-2xl">
+      {splitStatusExamples.map(example => (
+        <Callout.Root key={example.title} {...args} variant="split" color={example.color}>
+          <Callout.Icon>{example.icon}</Callout.Icon>
+          <Callout.Text>
+            <strong>{example.title}</strong> {example.message}
+          </Callout.Text>
+        </Callout.Root>
+      ))}
+    </Box>
+  ),
+  args: {
+    ...splitStoryArgs,
+  },
+}
+
 export const HighContrast: Story = {
-  render: () => (
+  render: args => (
     <Box display="flex" className="flex-col gap-4">
-      <Callout.Root color="info" highContrast>
-        <Callout.Icon>
-          <Info />
-        </Callout.Icon>
-        <Callout.Text>High contrast soft (default variant)</Callout.Text>
-      </Callout.Root>
-      <Callout.Root variant="surface" color="success" highContrast>
-        <Callout.Icon>
-          <CheckCircle />
-        </Callout.Icon>
-        <Callout.Text>High contrast surface variant</Callout.Text>
-      </Callout.Root>
-      <Callout.Root variant="outline" color="warning" highContrast>
-        <Callout.Icon>
-          <AlertTriangle />
-        </Callout.Icon>
-        <Callout.Text>High contrast outline variant</Callout.Text>
-      </Callout.Root>
+      {calloutVariants.map(variant => (
+        <Callout.Root key={variant} {...args} variant={variant} highContrast>
+          <Callout.Icon>
+            <Info />
+          </Callout.Icon>
+          <Callout.Text>High contrast {variant}</Callout.Text>
+        </Callout.Root>
+      ))}
     </Box>
   ),
+  args: {
+    size: calloutRootPropDefs.size.default,
+    color: 'info',
+    radius: 'lg',
+    hover: calloutRootPropDefs.hover.default,
+    inverse: calloutRootPropDefs.inverse.default,
+  },
 }
 
-// Without icon
 export const WithoutIcon: Story = {
-  render: () => (
-    <Callout.Root color="info">
+  render: args => (
+    <Callout.Root {...args}>
       <Callout.Text className="col-span-2">This callout has no icon and the text spans the full width.</Callout.Text>
     </Callout.Root>
   ),
+  args: {
+    size: calloutRootPropDefs.size.default,
+    variant: calloutRootPropDefs.variant.default,
+    color: 'info',
+    radius: 'lg',
+    hover: calloutRootPropDefs.hover.default,
+    inverse: calloutRootPropDefs.inverse.default,
+    highContrast: calloutRootPropDefs.highContrast.default,
+  },
 }
 
-// Long content
 export const LongContent: Story = {
-  render: () => (
-    <Callout.Root color="info" className="max-w-lg">
+  render: args => (
+    <Callout.Root {...args} className="max-w-lg">
       <Callout.Icon>
         <Lightbulb />
       </Callout.Icon>
       <Callout.Text>
         This is a callout with longer content. It demonstrates how the component handles multi-line text. The icon stays
-        aligned to the top while the text wraps naturally. This is useful for displaying detailed information, tips, or
-        warnings that require more explanation.
+        aligned to the top while the text wraps naturally.
       </Callout.Text>
     </Callout.Root>
   ),
+  args: {
+    size: calloutRootPropDefs.size.default,
+    variant: calloutRootPropDefs.variant.default,
+    color: 'info',
+    radius: 'lg',
+    hover: calloutRootPropDefs.hover.default,
+    inverse: calloutRootPropDefs.inverse.default,
+    highContrast: calloutRootPropDefs.highContrast.default,
+  },
 }
 
-// Real-world examples
 export const RealWorldExamples: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-6 max-w-lg">
-      {/* Tip */}
       <Callout.Root color="info" variant="soft">
         <Callout.Icon>
           <Lightbulb />
         </Callout.Icon>
         <Callout.Text>
-          <strong>Tip:</strong> You can use keyboard shortcuts to navigate faster. Press{' '}
-          <code className="px-1 py-0.5 bg-blue-200/50 rounded text-xs">?</code> to see all available shortcuts.
+          <strong>Tip:</strong> Keyboard shortcuts are available from the command menu.
         </Callout.Text>
       </Callout.Root>
 
-      {/* Security notice */}
       <Callout.Root color="warning" variant="surface">
         <Callout.Icon>
           <Shield />
         </Callout.Icon>
         <Callout.Text>
-          <strong>Security Notice:</strong> Your session will expire in 5 minutes. Please save your work to avoid losing
-          any changes.
+          <strong>Security notice:</strong> Your session will expire soon. Save current work before continuing.
         </Callout.Text>
       </Callout.Root>
 
-      {/* Success message */}
       <Callout.Root color="success" variant="soft">
         <Callout.Icon>
           <CheckCircle />
         </Callout.Icon>
-        <Callout.Text>
-          Your changes have been saved successfully. The new settings will take effect immediately.
-        </Callout.Text>
+        <Callout.Text>Your changes have been saved successfully.</Callout.Text>
       </Callout.Root>
 
-      {/* Error message */}
       <Callout.Root color="error" variant="surface">
         <Callout.Icon>
           <AlertCircle />
         </Callout.Icon>
         <Callout.Text>
-          <strong>Connection Error:</strong> Unable to reach the server. Please check your internet connection and try
-          again.
+          <strong>Connection error:</strong> Unable to reach the server. Check the connection and try again.
         </Callout.Text>
       </Callout.Root>
     </Box>

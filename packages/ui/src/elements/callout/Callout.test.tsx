@@ -5,7 +5,18 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { designTokens } from '@/theme/tokens'
 import { Callout } from './Callout'
-import { calloutColorVariants, calloutHoverByVariant, calloutInverseByVariant, calloutSizeVars } from './callout.class'
+import {
+  calloutColorVariants,
+  calloutHoverColorVariants,
+  calloutIconSizeVariants,
+  calloutInverseByVariant,
+  calloutRootSizeVariants,
+  calloutSplitIconBase,
+  calloutSplitIconColorVariants,
+  calloutSplitSlotSizeVariants,
+  calloutSplitTextBase,
+} from './callout.class'
+import { calloutRootPropDefs } from './callout.props'
 
 afterEach(() => {
   cleanup()
@@ -23,7 +34,7 @@ describe('Callout', () => {
     expect(root.className).toContain(calloutColorVariants.info.soft)
   })
 
-  it('falls back to primary color and surface variant for invalid values', () => {
+  it('falls back to default color and surface variant for invalid values', () => {
     render(
       <Callout.Root data-testid="callout" color={'not-a-color' as any} variant={'invalid' as any}>
         <Callout.Text>Test</Callout.Text>
@@ -31,7 +42,7 @@ describe('Callout', () => {
     )
 
     const root = screen.getByTestId('callout')
-    expect(root.className).toContain(calloutColorVariants[SemanticColor.primary].surface)
+    expect(root.className).toContain(calloutColorVariants[SemanticColor.slate].surface)
   })
 
   it('falls back to default size for invalid values', () => {
@@ -42,7 +53,7 @@ describe('Callout', () => {
     )
 
     const root = screen.getByTestId('callout')
-    expect(root.className).toContain(calloutSizeVars.xl)
+    expect(root.className).toContain(calloutRootSizeVariants[calloutRootPropDefs.size.default])
   })
 
   it('applies radius token via css variable', () => {
@@ -72,14 +83,14 @@ describe('Callout', () => {
     )
 
     const root = screen.getByTestId('callout')
-    expect(root.className).not.toContain(calloutHoverByVariant.surface)
+    expect(root.className).not.toContain(calloutHoverColorVariants.slate.surface)
 
     rerender(
       <Callout.Root data-testid="callout" hover>
         <Callout.Text>Test</Callout.Text>
       </Callout.Root>,
     )
-    expect(root.className).toContain(calloutHoverByVariant.surface)
+    expect(root.className).toContain(calloutHoverColorVariants.slate.surface)
   })
 
   it('supports split variant class mapping', () => {
@@ -93,7 +104,19 @@ describe('Callout', () => {
     )
 
     const root = screen.getByTestId('callout')
+    const icon = root.querySelector('[data-slot="callout-icon"]')
+    const text = root.querySelector('[data-slot="callout-text"]')
+
     expect(root.className).toContain(calloutColorVariants.info.split)
+    expect(root.classList.contains('border-info')).toBe(true)
+    expect(icon?.className).toContain(calloutSplitIconBase)
+    expect(icon?.className).toContain(calloutSplitSlotSizeVariants[calloutRootPropDefs.size.default])
+    expect(icon?.className).toContain(calloutSplitIconColorVariants.info.split)
+    expect(text?.className).toContain(calloutSplitTextBase)
+    expect(text?.className).toContain('bg-neutral-surface')
+    expect(text?.className).toContain('border-l')
+    expect(text?.className).toContain('border-info')
+    expect(text?.className).toContain(calloutSplitSlotSizeVariants[calloutRootPropDefs.size.default])
   })
 
   it('renders icon and text directly from root props', async () => {
@@ -107,7 +130,9 @@ describe('Callout', () => {
     })
 
     const root = screen.getByTestId('callout')
-    expect(root.className).toContain(calloutSizeVars['2x'])
+    const icon = root.querySelector('[data-slot="callout-icon"]')
+    expect(root.className).toContain(calloutRootSizeVariants['2x'])
+    expect(icon?.className).toContain(calloutIconSizeVariants['2x'])
   })
 
   it('uses solid contrast class by default and applies inverse override when enabled', () => {
@@ -119,15 +144,16 @@ describe('Callout', () => {
 
     const root = screen.getByTestId('callout')
     expect(root.className).toContain(calloutColorVariants.secondary.solid)
-    expect(root.className).not.toContain(calloutInverseByVariant.secondary.solid)
+    expect(root.classList.contains(calloutInverseByVariant.secondary.solid)).toBe(false)
 
     rerender(
       <Callout.Root data-testid="callout" color="secondary" variant="solid" inverse>
         <Callout.Text>Solid</Callout.Text>
       </Callout.Root>,
     )
-    expect(root.className).toContain(calloutColorVariants.secondary.solid)
-    expect(root.className).toContain(calloutInverseByVariant.secondary.solid)
+    expect(root.classList.contains('bg-secondary-solid')).toBe(true)
+    expect(root.classList.contains('border-secondary')).toBe(true)
+    expect(root.classList.contains(calloutInverseByVariant.secondary.solid)).toBe(true)
   })
 
   it('applies responsive padding props on the root', () => {

@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { selectArgType } from '@/theme/props/storybook'
 import { Callout } from './Callout'
 import { CalloutWrapper } from './CalloutWrapper'
 import type { CalloutWrapperData, CalloutWrapperProps } from './callout-wrapper.types'
+import { calloutRootPropDefs } from './callout.props'
 
 const data: CalloutWrapperData = {
   title: 'Usage limit reached.',
@@ -20,6 +22,15 @@ const meta = {
   component: CalloutWrapper,
   parameters: { layout: 'centered' },
   tags: ['autodocs'],
+  argTypes: {
+    size: selectArgType(calloutRootPropDefs.size),
+    variant: selectArgType(calloutRootPropDefs.variant),
+    color: selectArgType(calloutRootPropDefs.color),
+    radius: selectArgType(calloutRootPropDefs.radius),
+    highContrast: { control: 'boolean' },
+    inverse: { control: 'boolean' },
+    hover: { control: 'boolean' },
+  },
 } satisfies Meta<CalloutWrapperProps>
 
 export default meta

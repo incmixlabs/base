@@ -15,13 +15,16 @@ import {
   calloutColorVariants,
   calloutHighContrastByVariant,
   calloutIconBaseCls,
-  calloutIconVars,
+  calloutIconSizeVariants,
   calloutInverseByVariant,
-  calloutRootBase,
   calloutRootBaseCls,
-  calloutSizeVars,
+  calloutRootSizeVariants,
+  calloutSplitIconBase,
+  calloutSplitIconColorVariants,
+  calloutSplitSlotSizeVariants,
+  calloutSplitTextColorVariants,
   calloutTextBase,
-  calloutTextBySize,
+  calloutTextSizeVariants,
 } from '../callout/callout.class'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import { type ToastApi, ToastApiContext, useToastApiContext } from './toast.context'
@@ -256,6 +259,7 @@ const ToastCard = ({
   const supportsInverse = safeVariant === 'soft' || safeVariant === 'solid'
   const safeRadius = normalizeEnumPropValue(toastRootPropDefs.radius, data.radius) as Radius | undefined
   const radius = useThemeRadius(safeRadius ?? 'lg')
+  const isSplit = safeVariant === 'split'
 
   return (
     <ToastPrimitive.Content
@@ -272,8 +276,7 @@ const ToastCard = ({
       <div
         className={cn(
           calloutRootBaseCls,
-          calloutRootBase,
-          calloutSizeVars[safeSize],
+          calloutRootSizeVariants[safeSize],
           calloutColorVariants[safeColor][safeVariant],
           data.inverse && supportsInverse && calloutInverseByVariant[safeColor][safeVariant],
           data.highContrast && calloutHighContrastByVariant[safeVariant],
@@ -283,20 +286,44 @@ const ToastCard = ({
         style={getRadiusStyles(radius)}
       >
         {data.icon ? (
-          <div data-slot="callout-icon" className={cn(calloutIconBaseCls, calloutIconVars, calloutSizeVars[safeSize])}>
+          <div
+            data-slot="callout-icon"
+            className={cn(
+              calloutIconBaseCls,
+              calloutIconSizeVariants[safeSize],
+              isSplit && calloutSplitIconBase,
+              isSplit && calloutSplitSlotSizeVariants[safeSize],
+              isSplit && calloutSplitIconColorVariants[safeColor].split,
+            )}
+          >
             {renderToastIcon(data.icon, safeSize)}
           </div>
         ) : null}
 
-        <div className={cn('min-w-0 pl-2', !data.icon && 'col-span-2')}>
+        <div
+          data-slot="callout-text"
+          className={cn(
+            'min-w-0',
+            isSplit
+              ? [
+                  'flex flex-col justify-center',
+                  calloutSplitTextColorVariants[safeColor].split,
+                  calloutSplitSlotSizeVariants[safeSize],
+                ]
+              : 'pl-2',
+            !data.icon && 'col-span-2',
+          )}
+        >
           {toast.title ? (
-            <ToastPrimitive.Title className={cn(calloutTextBase, calloutTextBySize[safeSize], 'font-semibold')}>
+            <ToastPrimitive.Title className={cn(calloutTextBase, calloutTextSizeVariants[safeSize], 'font-semibold')}>
               {toast.title}
             </ToastPrimitive.Title>
           ) : null}
 
           {toast.description ? (
-            <ToastPrimitive.Description className={cn(calloutTextBase, calloutTextBySize[safeSize], 'opacity-80')}>
+            <ToastPrimitive.Description
+              className={cn(calloutTextBase, calloutTextSizeVariants[safeSize], 'opacity-80')}
+            >
               {toast.description}
             </ToastPrimitive.Description>
           ) : null}

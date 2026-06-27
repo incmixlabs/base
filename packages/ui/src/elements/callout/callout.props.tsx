@@ -13,7 +13,7 @@ const calloutRootPropDefs = {
   size: { type: 'enum', values: sizes, default: 'xl', responsive: true },
   variant: { type: 'enum', values: variants, default: 'surface' },
   ...hoverPropDefFalse,
-  color: buttonPropDefs.color,
+  color: { ...buttonPropDefs.color, default: 'slate' },
   highContrast: buttonPropDefs.highContrast,
   inverse: { type: 'boolean', default: false },
   radius: buttonPropDefs.radius,
@@ -23,7 +23,7 @@ const calloutRootPropDefs = {
   size: PropDef<(typeof sizes)[number]>
   variant: PropDef<(typeof variants)[number]>
   hover: PropDef<boolean>
-  color: typeof buttonPropDefs.color
+  color: PropDef<(typeof buttonPropDefs.color.values)[number]>
   highContrast: typeof buttonPropDefs.highContrast
   inverse: PropDef<boolean>
   radius: typeof buttonPropDefs.radius

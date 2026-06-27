@@ -12,15 +12,20 @@ import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
   calloutColorVariants,
   calloutHighContrastByVariant,
-  calloutHoverByVariant,
+  calloutHoverColorVariants,
   calloutIconBaseCls,
-  calloutIconVars,
+  calloutIconSizeVariants,
   calloutInverseByVariant,
-  calloutRootBase,
   calloutRootBaseCls,
-  calloutSizeVars,
+  calloutRootSizeVariants,
+  calloutSplitIconBase,
+  calloutSplitIconColorVariants,
+  calloutSplitSlotSizeVariants,
+  calloutSplitTextBase,
+  calloutSplitTextColorVariants,
+  calloutSplitTextHover,
   calloutTextBase,
-  calloutTextBySize,
+  calloutTextSizeVariants,
 } from './callout.class'
 import { calloutRootPropDefs } from './callout.props'
 
@@ -32,9 +37,17 @@ const DEFAULT_CALLOUT_COLOR = SemanticColor.slate
 // Context for sharing size across subcomponents
 interface CalloutContextValue {
   size: CalloutSize
+  color: Color
+  variant: CalloutVariant
+  hover: boolean
 }
 
-const CalloutContext = React.createContext<CalloutContextValue>({ size: 'xl' })
+const CalloutContext = React.createContext<CalloutContextValue>({
+  size: calloutRootPropDefs.size.default,
+  color: DEFAULT_CALLOUT_COLOR,
+  variant: calloutRootPropDefs.variant.default,
+  hover: calloutRootPropDefs.hover.default,
+})
 
 // ============================================================================
 // CalloutRoot
@@ -91,17 +104,20 @@ const CalloutRoot = React.forwardRef<HTMLDivElement, CalloutRootProps>(
       calloutRootPropDefs.size.default) as CalloutSize
     const safeVariant = (normalizeEnumPropValue(calloutRootPropDefs.variant, variant) ??
       calloutRootPropDefs.variant.default) as CalloutVariant
-    const contextValue = React.useMemo(() => ({ size: safeSize }), [safeSize])
     const safeColor = (normalizeEnumPropValue(calloutRootPropDefs.color, color) ?? DEFAULT_CALLOUT_COLOR) as Color
     const supportsInverse = safeVariant === 'soft' || safeVariant === 'solid'
     const safeRadius = normalizeEnumPropValue(calloutRootPropDefs.radius, radiusProp) as Radius | undefined
     const safeHighContrast = normalizeBooleanPropValue(calloutRootPropDefs.highContrast, highContrast) ?? false
     const safeInverse = normalizeBooleanPropValue(calloutRootPropDefs.inverse, inverse)
-    const safeHover = normalizeBooleanPropValue(calloutRootPropDefs.hover, hover)
+    const safeHover = normalizeBooleanPropValue(calloutRootPropDefs.hover, hover) ?? false
     const radius = useThemeRadius(safeRadius ?? 'lg')
     const paddingProps = getPaddingProps({ p, px, py, pt, pr, pb, pl })
     const combinedStyle = { ...paddingProps.style, ...getRadiusStyles(radius), ...style }
     const normalizedIconName = typeof icon === 'string' ? icon.trim() : ''
+    const contextValue = React.useMemo(
+      () => ({ size: safeSize, color: safeColor, variant: safeVariant, hover: safeHover }),
+      [safeColor, safeHover, safeSize, safeVariant],
+    )
 
     return (
       <CalloutContext.Provider value={contextValue}>
@@ -109,12 +125,11 @@ const CalloutRoot = React.forwardRef<HTMLDivElement, CalloutRootProps>(
           ref={ref}
           className={cn(
             calloutRootBaseCls,
-            calloutRootBase,
-            calloutSizeVars[safeSize],
+            calloutRootSizeVariants[safeSize],
             // Color and variant styles
             calloutColorVariants[safeColor][safeVariant],
             safeInverse && supportsInverse && calloutInverseByVariant[safeColor][safeVariant],
-            safeHover && calloutHoverByVariant[safeVariant],
+            safeHover && calloutHoverColorVariants[safeColor][safeVariant],
             safeHover && 'cursor-pointer',
             // High contrast mode
             safeHighContrast && calloutHighContrastByVariant[safeVariant],
@@ -146,15 +161,23 @@ export interface CalloutIconProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const CalloutIcon = React.forwardRef<HTMLDivElement, CalloutIconProps>(
   ({ className, children, style, name, ...props }, ref) => {
-    const { size } = React.useContext(CalloutContext)
+    const { size, color, variant } = React.useContext(CalloutContext)
     const iconSize = size === '2x' ? 'xl' : size
     const iconContent = name ? <Icon icon={name} size={iconSize} aria-hidden="true" /> : children
+    const isSplit = variant === 'split'
 
     return (
       <div
         ref={ref}
         data-slot="callout-icon"
-        className={cn(calloutIconBaseCls, calloutIconVars, calloutSizeVars[size], className)}
+        className={cn(
+          calloutIconBaseCls,
+          calloutIconSizeVariants[size],
+          isSplit && calloutSplitIconBase,
+          isSplit && calloutSplitSlotSizeVariants[size],
+          isSplit && calloutSplitIconColorVariants[color].split,
+          className,
+        )}
         style={style}
         {...props}
       >
@@ -173,13 +196,22 @@ CalloutIcon.displayName = 'Callout.Icon'
 export interface CalloutTextProps extends React.HTMLAttributes<HTMLParagraphElement> {}
 
 const CalloutText = React.forwardRef<HTMLParagraphElement, CalloutTextProps>(({ className, ...props }, ref) => {
-  const { size } = React.useContext(CalloutContext)
+  const { size, color, variant, hover } = React.useContext(CalloutContext)
+  const isSplit = variant === 'split'
 
   return (
     <p
       ref={ref}
       data-slot="callout-text"
-      className={cn(calloutTextBase, calloutTextBySize[size], className)}
+      className={cn(
+        calloutTextBase,
+        calloutTextSizeVariants[size],
+        isSplit && calloutSplitTextBase,
+        isSplit && calloutSplitTextColorVariants[color].split,
+        isSplit && calloutSplitSlotSizeVariants[size],
+        isSplit && hover && calloutSplitTextHover,
+        className,
+      )}
       {...props}
     />
   )
