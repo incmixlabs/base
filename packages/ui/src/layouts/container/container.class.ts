@@ -11,10 +11,10 @@ export const containerSizeMaxWidth = {
 } as const satisfies Record<ContainerSize, string>
 
 export const containerBySize = {
-  '1': `max-w-[${containerSizeMaxWidth['1']}]`,
-  '2': `max-w-[${containerSizeMaxWidth['2']}]`,
-  '3': `max-w-[${containerSizeMaxWidth['3']}]`,
-  '4': `max-w-[${containerSizeMaxWidth['4']}]`,
+  '1': 'max-w-[28rem]',
+  '2': 'max-w-[43rem]',
+  '3': 'max-w-[55rem]',
+  '4': 'max-w-[71rem]',
 } as const satisfies Record<ContainerSize, string>
 
 const breakpointKeys = containerBreakpointKeys

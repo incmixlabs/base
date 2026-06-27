@@ -43,7 +43,7 @@ export {
 // Container Class Maps
 // ============================================================================
 
-const containerBaseClassName = 'box-border'
+const containerBaseClassName = 'box-border w-full'
 const containerInnerClassName = 'box-border flex-col w-full mx-auto shrink-0 grow'
 
 const containerDisplayClassNames: Record<ContainerDisplay, string> = {
