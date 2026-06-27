@@ -97,6 +97,7 @@ const surfaceBorderRule = new RegExp(`^border-(${surfaceColorPattern})$`)
 const surfaceOutlineRule = new RegExp(`^outline-(${surfaceColorPattern})$`)
 const surfaceHighlightOutlineRule = new RegExp(`^outline-(${chromaticSurfaceColorPattern})-highlight$`)
 const surfaceTextRule = new RegExp(`^text-(${surfaceColorPattern})(?:-(contrast))?$`)
+const rawHueColorRule = new RegExp(`^(bg|text|border)-(${HUE_NAMES.join('|')})-(${HUE_STEPS.join('|')})$`)
 
 function semanticSurfaceColorRoles(color: SemanticSurfaceColorName) {
   return {
@@ -328,6 +329,17 @@ export const baseUnoConfig = {
         return {
           color: contrast ? roles.contrast : roles.text,
         }
+      },
+    ],
+    [
+      rawHueColorRule,
+      ([, utility, hue, step]) => {
+        const value = `var(--${hue}-${step})`
+
+        if (utility === 'bg') return { 'background-color': value }
+        if (utility === 'border') return { 'border-color': value }
+
+        return { color: value }
       },
     ],
     [

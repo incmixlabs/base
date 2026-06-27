@@ -450,16 +450,16 @@ export const PricingCard: Story = {
         </div>
         <ul className="space-y-2 text-sm">
           <li className="flex items-center gap-2">
-            <span className="text-green-500">✓</span> Unlimited projects
+            <span className="text-green-9">✓</span> Unlimited projects
           </li>
           <li className="flex items-center gap-2">
-            <span className="text-green-500">✓</span> 10GB storage
+            <span className="text-green-9">✓</span> 10GB storage
           </li>
           <li className="flex items-center gap-2">
-            <span className="text-green-500">✓</span> Priority support
+            <span className="text-green-9">✓</span> Priority support
           </li>
           <li className="flex items-center gap-2">
-            <span className="text-green-500">✓</span> Advanced analytics
+            <span className="text-green-9">✓</span> Advanced analytics
           </li>
         </ul>
       </Card.Content>
@@ -566,9 +566,9 @@ export const StatsCard: Story = {
         <Card.Header className="pb-2">
           <Card.Description>Total Revenue</Card.Description>
         </Card.Header>
-        <Card.Content className="pt-0">
-          <p className="text-2xl font-bold">$45,231</p>
-          <p className="text-xs text-green-500">+20.1% from last month</p>
+        <Card.Content>
+          <p className="m-0 text-2xl font-bold">$45,231</p>
+          <p className="m-0 text-xs text-green-9">+20.1% from last month</p>
         </Card.Content>
       </Card.Root>
 
@@ -576,9 +576,9 @@ export const StatsCard: Story = {
         <Card.Header className="pb-2">
           <Card.Description>Active Users</Card.Description>
         </Card.Header>
-        <Card.Content className="pt-0">
-          <p className="text-2xl font-bold">2,350</p>
-          <p className="text-xs text-green-500">+180 new this week</p>
+        <Card.Content>
+          <p className="m-0 text-2xl font-bold">2,350</p>
+          <p className="m-0 text-xs text-green-9">+180 new this week</p>
         </Card.Content>
       </Card.Root>
 
@@ -586,9 +586,9 @@ export const StatsCard: Story = {
         <Card.Header className="pb-2">
           <Card.Description>Pending Orders</Card.Description>
         </Card.Header>
-        <Card.Content className="pt-0">
-          <p className="text-2xl font-bold">12</p>
-          <p className="text-xs text-amber-500">3 require attention</p>
+        <Card.Content>
+          <p className="m-0 text-2xl font-bold">12</p>
+          <p className="m-0 text-xs text-amber-9">3 require attention</p>
         </Card.Content>
       </Card.Root>
     </div>
