@@ -113,7 +113,7 @@ export default defineConfig({
       cardFooterBase,
       // Box styles
       boxRootBase,
-      ...boxSurfaceColorClassNames,
+      ...splitClasses(boxSurfaceColorClassNames),
       // Container styles
       containerBase,
       ...Object.values(containerBySize),
