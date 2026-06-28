@@ -28,9 +28,10 @@ const expectedAlertDialogContentClasses = [
   'max-h-[calc(100dvh-2rem)]',
   'w-auto',
   'overflow-y-auto',
-  'p-6',
-  'max-w-[28rem]',
+  'p-[var(--component-dialog-size-md-padding,_1.5rem)]',
+  'max-w-[var(--component-dialog-size-md-max-width,_28rem)]',
   'top-1/2',
+  '[translate:0_-50%]',
 ] as const
 
 function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
@@ -70,9 +71,20 @@ describe('AlertDialog', () => {
     expectClassTokens(dialog.className, expectedAlertDialogContentClasses)
 
     expect(dialog.className).not.toContain('af-dialog')
-    expectClassTokens(title.className, ['text-base', 'leading-6', 'm-0', 'font-semibold', 'text-neutral'])
-    expectClassTokens(description.className, ['text-base', 'leading-6', 'mt-2', 'text-slate'])
-    expectClassTokens(footer?.className, ['gap-2'])
+    expectClassTokens(title.className, [
+      'text-[length:var(--component-dialog-size-md-title-font-size,_var(--font-size-md))]',
+      'leading-[var(--component-dialog-size-md-title-line-height,_var(--line-height-md))]',
+      'm-0',
+      'font-semibold',
+      'text-neutral',
+    ])
+    expectClassTokens(description.className, [
+      'text-[length:var(--component-dialog-size-md-description-font-size,_var(--font-size-sm))]',
+      'leading-[var(--component-dialog-size-md-description-line-height,_var(--line-height-sm))]',
+      'mt-2',
+      'text-slate',
+    ])
+    expectClassTokens(footer?.className, ['gap-[var(--component-dialog-size-md-footer-gap,_0.5rem)]'])
     expectClassTokens(action.className, ['border-primary', 'bg-primary-solid', 'text-primary-contrast'])
     expectClassTokens(cancel.className, ['border-neutral', 'bg-transparent', 'text-neutral'])
   })

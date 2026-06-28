@@ -29,8 +29,9 @@ const expectedDialogContentClasses = [
   'max-h-[calc(100dvh-2rem)]',
   'w-auto',
   'overflow-y-auto',
-  'max-w-[28rem]',
+  'max-w-[var(--component-dialog-size-md-max-width,_28rem)]',
   'top-1/2',
+  '[translate:0_-50%]',
 ] as const
 
 function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
@@ -73,10 +74,20 @@ describe('Dialog', () => {
     expectClassTokens(dialog.className, expectedDialogContentClasses)
 
     expect(dialog.className).not.toContain('af-dialog')
-    expectClassTokens(title.className, ['text-base', 'leading-6', 'm-0', 'font-semibold', 'text-neutral'])
-    expectClassTokens(description.className, ['text-base', 'leading-6', 'text-slate'])
-    expectClassTokens(header?.className, ['gap-1.5', 'p-6', 'pb-0'])
-    expectClassTokens(body.className, ['p-6'])
+    expectClassTokens(title.className, [
+      'text-[length:var(--component-dialog-size-md-title-font-size,_var(--font-size-md))]',
+      'leading-[var(--component-dialog-size-md-title-line-height,_var(--line-height-md))]',
+      'm-0',
+      'font-semibold',
+      'text-neutral',
+    ])
+    expectClassTokens(description.className, [
+      'text-[length:var(--component-dialog-size-md-description-font-size,_var(--font-size-sm))]',
+      'leading-[var(--component-dialog-size-md-description-line-height,_var(--line-height-sm))]',
+      'text-slate',
+    ])
+    expectClassTokens(header?.className, ['gap-1.5', 'p-[var(--component-dialog-size-md-padding,_1.5rem)]', 'pb-0'])
+    expectClassTokens(body.className, ['p-[var(--component-dialog-size-md-padding,_1.5rem)]'])
 
     unmount()
     await Promise.resolve()
