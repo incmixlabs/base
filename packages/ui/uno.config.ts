@@ -114,6 +114,16 @@ const splitClasses = (values: string[]) => values.flatMap(value => value.split(/
 const classMapValues = <Value extends string>(map: Record<string, Record<string, Value>>) =>
   Object.values(map).flatMap(variantMap => Object.values(variantMap))
 
+const floatingSurfaceSafelist = splitClasses([
+  ...Object.values(floatingSurfaceSizeVariants),
+  ...Object.values(floatingSurfaceMaxWidthVariants),
+  ...Object.values(floatingSurfaceHighContrastEffectByVariant),
+  ...classMapValues(floatingSurfaceColorVariants),
+  ...classMapValues(floatingSurfaceHighContrastColorVariants),
+  ...classMapValues(floatingSurfaceArrowColorVariants),
+  ...classMapValues(floatingSurfaceHighContrastArrowColorVariants),
+])
+
 const containerQueryVariants = Object.entries(containerBreakpoints).map(([breakpoint, minWidth]) => ({
   name: `cq-${breakpoint}`,
   match(matcher: string) {
@@ -193,13 +203,7 @@ export default defineConfig({
       popoverContentBase,
       tooltipContentBase,
       tooltipPositionerBase,
-      ...Object.values(floatingSurfaceSizeVariants),
-      ...Object.values(floatingSurfaceMaxWidthVariants),
-      ...Object.values(floatingSurfaceHighContrastEffectByVariant),
-      ...classMapValues(floatingSurfaceColorVariants),
-      ...classMapValues(floatingSurfaceHighContrastColorVariants),
-      ...classMapValues(floatingSurfaceArrowColorVariants),
-      ...classMapValues(floatingSurfaceHighContrastArrowColorVariants),
+      ...floatingSurfaceSafelist,
       // Box styles
       boxRootBase,
       ...splitClasses(boxSurfaceColorClassNames),

@@ -9,7 +9,7 @@ function ItemRow({ item, renderItem }: { item: TooltipWrapperItem; renderItem?: 
   const defaultRender = (
     <div className="rounded-md border border-neutral bg-neutral-surface p-2">
       <div className="text-xs text-neutral opacity-70">{item.label}</div>
-      {item.value ? <div className="text-sm font-medium text-neutral">{item.value}</div> : null}
+      {item.value != null ? <div className="text-sm font-medium text-neutral">{item.value}</div> : null}
       {item.description ? <div className="mt-1 text-xs text-neutral opacity-70">{item.description}</div> : null}
     </div>
   )
