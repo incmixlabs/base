@@ -9,8 +9,12 @@ import {
   dataListItemBase,
   dataListItemByAlign,
   dataListItemByOrientation,
+  dataListItemGapBySize,
+  dataListItemGapResponsive,
   dataListLabelBase,
   dataListLabelByOrientation,
+  dataListLabelMinWidthBySize,
+  dataListLabelMinWidthResponsive,
   dataListRootBase,
   dataListRootByOrientation,
   dataListRootBySize,
@@ -24,10 +28,12 @@ import type { DataListAlign, DataListOrientation, DataListSize, DataListTrim } f
 // Context for sharing props
 interface DataListContextValue {
   orientation: DataListOrientation
+  size: Responsive<DataListSize>
 }
 
 const DataListContext = React.createContext<DataListContextValue>({
   orientation: 'horizontal',
+  size: 'sm',
 })
 
 function isCrossAxisAlign(align: DataListAlign): align is Exclude<DataListAlign, 'between'> {
@@ -39,6 +45,26 @@ function getDataListSizeClasses(size: Responsive<DataListSize> | undefined): str
     size,
     dataListRootBySize,
     dataListRootSizeResponsive,
+    'sm',
+    typographyBreakpointKeys,
+  )
+}
+
+function getDataListItemGapClasses(size: Responsive<DataListSize> | undefined): string {
+  return getResponsiveVariantClasses(
+    size,
+    dataListItemGapBySize,
+    dataListItemGapResponsive,
+    'sm',
+    typographyBreakpointKeys,
+  )
+}
+
+function getDataListLabelMinWidthClasses(size: Responsive<DataListSize> | undefined): string {
+  return getResponsiveVariantClasses(
+    size,
+    dataListLabelMinWidthBySize,
+    dataListLabelMinWidthResponsive,
     'sm',
     typographyBreakpointKeys,
   )
@@ -63,10 +89,11 @@ const DataListRoot = React.forwardRef<HTMLDListElement, DataListRootProps>(
     const textSizeClasses = getTextSizeClasses(size, 'sm')
 
     return (
-      <DataListContext.Provider value={{ orientation }}>
+      <DataListContext.Provider value={{ orientation, size }}>
         <div className={cn(dataListRootContainer, className)} style={style}>
           <dl
             ref={ref}
+            data-slot="data-list-root"
             className={cn(
               dataListRootBase,
               dataListRootByOrientation[orientation],
@@ -96,9 +123,10 @@ interface DataListItemProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const DataListItem = React.forwardRef<HTMLDivElement, DataListItemProps>(
   ({ align = 'baseline', className, children, style, ...props }, ref) => {
-    const { orientation } = React.useContext(DataListContext)
+    const { orientation, size } = React.useContext(DataListContext)
     const rowAlign = align === 'between' ? align : null
     const itemAlign = isCrossAxisAlign(align) ? align : null
+    const itemGapClasses = orientation === 'horizontal' ? getDataListItemGapClasses(size) : null
     const rowStyle =
       orientation === 'horizontal' && rowAlign
         ? {
@@ -112,9 +140,11 @@ const DataListItem = React.forwardRef<HTMLDivElement, DataListItemProps>(
     return (
       <div
         ref={ref}
+        data-slot="data-list-item"
         className={cn(
           dataListItemBase,
           dataListItemByOrientation[orientation],
+          itemGapClasses,
           itemAlign ? dataListItemByAlign[itemAlign] : null,
           className,
         )}
@@ -142,13 +172,19 @@ interface DataListLabelProps extends React.HTMLAttributes<HTMLElement> {
 
 const DataListLabel = React.forwardRef<HTMLElement, DataListLabelProps>(
   ({ minWidth, width, className, children, style, ...props }, ref) => {
-    const { orientation } = React.useContext(DataListContext)
+    const { orientation, size } = React.useContext(DataListContext)
     const resolvedMinWidth = minWidth ?? width
+    const labelSizeClasses = orientation === 'horizontal' ? getDataListLabelMinWidthClasses(size) : null
 
     return (
       <dt
         ref={ref}
-        className={cn(dataListLabelBase, dataListLabelByOrientation[orientation], className)}
+        data-slot="data-list-label"
+        className={cn(
+          dataListLabelBase,
+          orientation === 'vertical' ? dataListLabelByOrientation.vertical : labelSizeClasses,
+          className,
+        )}
         style={resolvedMinWidth ? { ...style, minWidth: resolvedMinWidth } : style}
         {...props}
       >
@@ -168,7 +204,7 @@ type DataListValueProps = React.HTMLAttributes<HTMLElement>
 
 const DataListValue = React.forwardRef<HTMLElement, DataListValueProps>(({ className, children, ...props }, ref) => {
   return (
-    <dd ref={ref} className={cn(dataListValueBase, className)} {...props}>
+    <dd ref={ref} data-slot="data-list-value" className={cn(dataListValueBase, className)} {...props}>
       {children}
     </dd>
   )

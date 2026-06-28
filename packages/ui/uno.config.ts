@@ -39,6 +39,24 @@ import {
   cardTitleBase,
 } from './src/elements/card/card.class'
 import {
+  dataListItemBase,
+  dataListItemByAlign,
+  dataListItemByOrientation,
+  dataListItemGapBySize,
+  dataListItemGapResponsive,
+  dataListLabelBase,
+  dataListLabelByOrientation,
+  dataListLabelMinWidthBySize,
+  dataListLabelMinWidthResponsive,
+  dataListRootBase,
+  dataListRootByOrientation,
+  dataListRootBySize,
+  dataListRootByTrim,
+  dataListRootContainer,
+  dataListRootSizeResponsive,
+  dataListValueBase,
+} from './src/elements/data-list/data-list.class'
+import {
   alertDialogFooterBySize,
   dialogBackdropBase,
   dialogBackdropBaseCls,
@@ -110,7 +128,7 @@ import {
 } from './src/layouts/section/section.class'
 import { containerBreakpoints } from './src/theme/tokens'
 
-const splitClasses = (values: string[]) => values.flatMap(value => value.split(/\s+/))
+const splitClasses = (values: string[]) => values.flatMap(value => value.split(/\s+/).filter(Boolean))
 const classMapValues = <Value extends string>(map: Record<string, Record<string, Value>>) =>
   Object.values(map).flatMap(variantMap => Object.values(variantMap))
 
@@ -199,6 +217,23 @@ export default defineConfig({
       ...Object.values(alertDialogFooterBySize),
       ...Object.values(dialogTitleBySize),
       ...Object.values(dialogDescriptionBySize),
+      // DataList styles
+      dataListRootContainer,
+      dataListRootBase,
+      ...Object.values(dataListRootBySize),
+      ...classMapValues(dataListRootSizeResponsive),
+      ...Object.values(dataListRootByOrientation),
+      ...Object.values(dataListRootByTrim),
+      dataListItemBase,
+      ...Object.values(dataListItemByOrientation),
+      ...Object.values(dataListItemGapBySize),
+      ...classMapValues(dataListItemGapResponsive),
+      ...Object.values(dataListItemByAlign),
+      dataListLabelBase,
+      ...Object.values(dataListLabelByOrientation),
+      ...Object.values(dataListLabelMinWidthBySize),
+      ...classMapValues(dataListLabelMinWidthResponsive),
+      dataListValueBase,
       // Popover/Tooltip floating surface styles
       popoverContentBase,
       tooltipContentBase,

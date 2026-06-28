@@ -27,16 +27,17 @@ const dataListRootPropDefs = {
     type: 'enum',
     className: 'af-r-size',
     values: dataListSizes,
-    default: 'md',
+    default: 'sm',
     responsive: true,
   },
   trim: {
     ...leadingTrimPropDef.trim,
+    default: 'normal',
   },
 } satisfies {
   orientation: PropDef<DataListOrientation>
   size: PropDef<DataListSize>
-  trim: typeof leadingTrimPropDef.trim
+  trim: PropDef<DataListTrim>
 }
 
 const dataListItemPropDefs = {
