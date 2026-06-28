@@ -36,10 +36,6 @@ const DataListContext = React.createContext<DataListContextValue>({
   size: 'sm',
 })
 
-function isCrossAxisAlign(align: DataListAlign): align is Exclude<DataListAlign, 'between'> {
-  return align !== 'between'
-}
-
 function getDataListSizeClasses(size: Responsive<DataListSize> | undefined): string {
   return getResponsiveVariantClasses(
     size,
@@ -124,18 +120,17 @@ interface DataListItemProps extends React.HTMLAttributes<HTMLDivElement> {
 const DataListItem = React.forwardRef<HTMLDivElement, DataListItemProps>(
   ({ align = 'baseline', className, children, style, ...props }, ref) => {
     const { orientation, size } = React.useContext(DataListContext)
-    const rowAlign = align === 'between' ? align : null
-    const itemAlign = isCrossAxisAlign(align) ? align : 'baseline'
+    const shouldJustifyBetween = orientation === 'horizontal' && align === 'between'
+    const itemAlign: Exclude<DataListAlign, 'between'> = align === 'between' ? 'center' : align
     const itemGapClasses = orientation === 'horizontal' ? getDataListItemGapClasses(size) : null
-    const rowStyle =
-      orientation === 'horizontal' && rowAlign
-        ? {
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            ...style,
-          }
-        : style
+    const rowStyle = shouldJustifyBetween
+      ? {
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          ...style,
+        }
+      : style
 
     return (
       <div
