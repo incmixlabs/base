@@ -21,7 +21,6 @@ const popoverContentPropDefs = {
     type: 'enum',
     values: contentSizes,
     default: 'sm',
-    responsive: true,
   },
   maxWidthToken: {
     type: 'enum',
