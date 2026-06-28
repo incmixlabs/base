@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
-import { emBase } from '../inline-elements.css'
+import { emBase } from '../inline-elements.class'
 
 export interface EmProps extends React.HTMLAttributes<HTMLElement> {}
 

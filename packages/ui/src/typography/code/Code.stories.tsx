@@ -56,10 +56,12 @@ export const Default: Story = {
 export const AllVariants: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-3">
-      <Code variant="soft">Soft variant (default)</Code>
-      <Code variant="solid">Solid variant</Code>
-      <Code variant="outline">Outline variant</Code>
-      <Code variant="ghost">Ghost variant</Code>
+      {getPropDefValues(codePropDefs.variant).map(variant => (
+        <Code key={variant} variant={variant}>
+          {variant.charAt(0).toUpperCase()}
+          {variant.slice(1)} variant
+        </Code>
+      ))}
     </Box>
   ),
 }
@@ -82,11 +84,11 @@ export const AllColors: Story = {
 export const AllSizes: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-3">
-      <Code size="xs">Size xs code</Code>
-      <Code size="sm">Size sm code</Code>
-      <Code size="md">Size md code</Code>
-      <Code size="lg">Size lg code</Code>
-      <Code size="xl">Size xl code</Code>
+      {getPropDefValues(codePropDefs.size).map(size => (
+        <Code key={size} size={size}>
+          Size {size} code
+        </Code>
+      ))}
     </Box>
   ),
 }

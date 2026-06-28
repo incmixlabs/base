@@ -46,7 +46,7 @@ export function resolveTextColor(color: TextColor, variant: TypographyVariant): 
 export type { Size as TypographySize } from '@/theme/tokens'
 
 // Font weight
-export type Weight = 'light' | 'regular' | 'medium' | 'bold'
+export type Weight = 'light' | 'regular' | 'medium' | 'semibold' | 'bold'
 
 // Typography colors
 export type TypographyColor = keyof typeof designTokens.color

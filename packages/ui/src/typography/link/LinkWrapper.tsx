@@ -5,7 +5,7 @@ import type { Responsive, Spacing } from '@/layouts/layout-utils'
 import { cn } from '@/lib/utils'
 import { containerBreakpointKeys } from '@/theme/tokens'
 import { Link, type LinkProps } from './Link'
-import { linkWrapperGap, linkWrapperGapResponsive, linkWrapperInner, linkWrapperQueryHost } from './LinkWrapper.css'
+import { linkWrapperGap, linkWrapperGapResponsive, linkWrapperInner, linkWrapperQueryHost } from './LinkWrapper.class'
 
 export type LinkWrapperItem = {
   id: string

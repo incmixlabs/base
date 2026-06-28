@@ -6,7 +6,7 @@ import { normalizeBooleanPropValue } from '@/theme/props/prop-def'
 import { getTextSizeClasses } from '../get-text-size-classes'
 import type { TextColor, TypographyVariant } from '../tokens'
 import { resolveTextColor, type TypographySize, type Weight } from '../tokens'
-import { textBase, textByWeight } from '../typography.ve.css'
+import { textBase, textByWeight } from '../typography.class'
 
 export interface TextOwnProps {
   as?: 'span' | 'div' | 'label' | 'p'
@@ -67,6 +67,7 @@ export const Text = React.forwardRef<HTMLElement, TextProps>(
           light: 'regular',
           regular: 'medium',
           medium: 'bold',
+          semibold: 'bold',
           bold: 'bold',
         }[weight] as Weight)
       : weight

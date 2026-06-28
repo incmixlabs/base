@@ -66,11 +66,11 @@ export const Default: Story = {
 export const AllSizes: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-4 max-w-xl">
-      <Blockquote size="xs">Size xs blockquote - The quick brown fox jumps over the lazy dog.</Blockquote>
-      <Blockquote size="sm">Size sm blockquote - The quick brown fox jumps over the lazy dog.</Blockquote>
-      <Blockquote size="md">Size md blockquote - The quick brown fox jumps over the lazy dog.</Blockquote>
-      <Blockquote size="lg">Size lg blockquote - The quick brown fox jumps over the lazy dog.</Blockquote>
-      <Blockquote size="xl">Size xl blockquote - The quick brown fox jumps over the lazy dog.</Blockquote>
+      {getPropDefValues(blockquotePropDefs.size).map(size => (
+        <Blockquote key={size} size={size}>
+          Size {size} blockquote - The quick brown fox jumps over the lazy dog.
+        </Blockquote>
+      ))}
     </Box>
   ),
 }
@@ -93,10 +93,12 @@ export const AllColors: Story = {
 export const AllWeights: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-4 max-w-xl">
-      <Blockquote weight="light">Light weight - The quick brown fox jumps over the lazy dog.</Blockquote>
-      <Blockquote weight="regular">Regular weight - The quick brown fox jumps over the lazy dog.</Blockquote>
-      <Blockquote weight="medium">Medium weight - The quick brown fox jumps over the lazy dog.</Blockquote>
-      <Blockquote weight="bold">Bold weight - The quick brown fox jumps over the lazy dog.</Blockquote>
+      {getPropDefValues(blockquotePropDefs.weight).map(weight => (
+        <Blockquote key={weight} weight={weight}>
+          {weight.charAt(0).toUpperCase()}
+          {weight.slice(1)} weight - The quick brown fox jumps over the lazy dog.
+        </Blockquote>
+      ))}
     </Box>
   ),
 }
@@ -143,7 +145,7 @@ function ResponsiveBlockquoteCard({ width }: { width: number }) {
 
   return (
     <EmbeddedResponsiveShell ref={shellRef} width={width}>
-      <Box className="mb-3 text-xs text-muted-foreground">{embeddedResponsiveScaleCopy}</Box>
+      <Box className="mb-3 text-xs text-slate">{embeddedResponsiveScaleCopy}</Box>
       <EmbeddedTypographyState formFactor={formFactor} activeBreakpoint={activeBreakpoint} />
       <div className="mt-3">
         <Blockquote size={{ initial: 'sm', md: '4x' }}>

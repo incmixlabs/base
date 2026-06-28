@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Box } from '@/layouts'
+import { getPropDefValues } from '@/theme/props/prop-def'
 import { Em, Strong, Text } from '@/typography'
+import { textPropDefs } from './text/text.props'
 
 const meta: Meta = {
   title: 'Typography/Inline Elements',
@@ -79,21 +81,11 @@ export const CombinedUsage: Story = {
 export const InDifferentSizes: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-3">
-      <Text size="xs">
-        Small text with <Strong>bold</Strong> and <Em>italic</Em>
-      </Text>
-      <Text size="sm">
-        Text size sm with <Strong>bold</Strong> and <Em>italic</Em>
-      </Text>
-      <Text size="md">
-        Text size md with <Strong>bold</Strong> and <Em>italic</Em>
-      </Text>
-      <Text size="lg">
-        Text size lg with <Strong>bold</Strong> and <Em>italic</Em>
-      </Text>
-      <Text size="xl">
-        Text size xl with <Strong>bold</Strong> and <Em>italic</Em>
-      </Text>
+      {getPropDefValues(textPropDefs.size).map(size => (
+        <Text key={size} size={size}>
+          Text size {size} with <Strong>bold</Strong> and <Em>italic</Em>
+        </Text>
+      ))}
     </Box>
   ),
 }

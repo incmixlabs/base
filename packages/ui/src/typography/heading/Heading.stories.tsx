@@ -42,22 +42,22 @@ function HeadingResponsivePreviewCard({ width }: { width: number }) {
 
   return (
     <div className="space-y-3 pt-4">
-      <div className="text-sm font-medium text-foreground">Preview width: {width}px</div>
+      <div className="text-sm font-medium text-neutral">Preview width: {width}px</div>
       <EmbeddedResponsiveShell ref={shellRef} width={width}>
         <div className="space-y-4">
           <Box>
-            <span className="text-xs text-muted-foreground">{embeddedResponsiveScaleCopy}</span>
+            <span className="text-xs text-slate">{embeddedResponsiveScaleCopy}</span>
           </Box>
           <EmbeddedTypographyState formFactor={formFactor} activeBreakpoint={activeBreakpoint} />
           <Heading size={{ initial: 'xs', sm: '2x', md: '5x' }} as="h2" ref={sampleRef}>
             Scale Test
           </Heading>
-          <div className="rounded-md border border-dashed px-3 py-2 text-xs text-muted-foreground">
+          <div className="rounded-md border border-dashed border-slate px-3 py-2 text-xs text-slate">
             font-size: {metrics.fontSize || '...'} | line-height: {metrics.lineHeight || '...'} | letter-spacing:{' '}
             {metrics.letterSpacing || '...'}
           </div>
           <Box>
-            <span className="text-xs text-muted-foreground">Reference text remains fixed at `xs`.</span>
+            <span className="text-xs text-slate">Reference text remains fixed at `xs`.</span>
           </Box>
         </div>
       </EmbeddedResponsiveShell>
@@ -100,7 +100,7 @@ const meta: Meta<typeof Heading> = {
     },
     align: {
       control: 'select',
-      options: ['left', 'center', 'right', 'justify'],
+      options: getPropDefValues(headingPropDefs.align),
       description: 'Text alignment',
     },
     wrap: {
@@ -137,15 +137,11 @@ export const Default: Story = {
 export const AllSizes: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-4">
-      <Heading size="5x">Size 5x Heading</Heading>
-      <Heading size="4x">Size 4x Heading</Heading>
-      <Heading size="3x">Size 3x Heading</Heading>
-      <Heading size="2x">Size 2x Heading</Heading>
-      <Heading size="xl">Size xl Heading</Heading>
-      <Heading size="lg">Size lg Heading</Heading>
-      <Heading size="md">Size md Heading</Heading>
-      <Heading size="sm">Size sm Heading</Heading>
-      <Heading size="xs">Size xs Heading</Heading>
+      {[...getPropDefValues(headingPropDefs.size)].reverse().map(size => (
+        <Heading key={size} size={size}>
+          Size {size} Heading
+        </Heading>
+      ))}
     </Box>
   ),
 }
@@ -154,18 +150,12 @@ export const AllSizes: Story = {
 export const AllWeights: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-2">
-      <Heading size="xl" weight="light">
-        Light weight heading
-      </Heading>
-      <Heading size="xl" weight="regular">
-        Regular weight heading
-      </Heading>
-      <Heading size="xl" weight="medium">
-        Medium weight heading
-      </Heading>
-      <Heading size="xl" weight="bold">
-        Bold weight heading
-      </Heading>
+      {getPropDefValues(headingPropDefs.weight).map(weight => (
+        <Heading key={weight} size="xl" weight={weight}>
+          {weight.charAt(0).toUpperCase()}
+          {weight.slice(1)} weight heading
+        </Heading>
+      ))}
     </Box>
   ),
 }
@@ -187,24 +177,12 @@ export const AllColors: Story = {
 export const Variants: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-3">
-      <Heading color="slate" variant="solid" size="xl">
-        Default solid heading
-      </Heading>
-      <Heading color="slate" variant="soft" size="xl">
-        Default soft heading
-      </Heading>
-      <Heading color="slate" variant="muted" size="xl">
-        Default muted heading
-      </Heading>
-      <Heading color="primary" variant="solid" size="xl">
-        Primary solid heading
-      </Heading>
-      <Heading color="primary" variant="soft" size="xl">
-        Primary soft heading
-      </Heading>
-      <Heading color="primary" variant="muted" size="xl">
-        Primary muted heading
-      </Heading>
+      {getPropDefValues(headingPropDefs.variant).map(variant => (
+        <Heading key={variant} color="slate" variant={variant} size="xl">
+          {variant.charAt(0).toUpperCase()}
+          {variant.slice(1)} heading
+        </Heading>
+      ))}
     </Box>
   ),
 }
@@ -213,24 +191,11 @@ export const Variants: Story = {
 export const SemanticElements: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-2">
-      <Heading as="h1" size="3x">
-        H1 Element
-      </Heading>
-      <Heading as="h2" size="2x">
-        H2 Element
-      </Heading>
-      <Heading as="h3" size="xl">
-        H3 Element
-      </Heading>
-      <Heading as="h4" size="lg">
-        H4 Element
-      </Heading>
-      <Heading as="h5" size="md">
-        H5 Element
-      </Heading>
-      <Heading as="h6" size="sm">
-        H6 Element
-      </Heading>
+      {getPropDefValues(headingPropDefs.as).map(as => (
+        <Heading key={as} as={as}>
+          {as.toUpperCase()} Element
+        </Heading>
+      ))}
     </Box>
   ),
 }
@@ -238,7 +203,7 @@ export const SemanticElements: Story = {
 // With Margin
 export const WithMargin: Story = {
   render: () => (
-    <Box className="bg-gray-100 p-4">
+    <Box className="bg-slate-soft p-4">
       <Heading size="xl" mb="4">
         Heading with margin bottom
       </Heading>
@@ -253,15 +218,12 @@ export const WithMargin: Story = {
 export const Alignment: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-4 w-full">
-      <Heading size="lg" align="left">
-        Left aligned heading
-      </Heading>
-      <Heading size="lg" align="center">
-        Center aligned heading
-      </Heading>
-      <Heading size="lg" align="right">
-        Right aligned heading
-      </Heading>
+      {getPropDefValues(headingPropDefs.align).map(align => (
+        <Heading key={align} size="lg" align={align}>
+          {align.charAt(0).toUpperCase()}
+          {align.slice(1)} aligned heading
+        </Heading>
+      ))}
     </Box>
   ),
 }

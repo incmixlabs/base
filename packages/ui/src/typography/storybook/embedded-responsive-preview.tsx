@@ -5,9 +5,10 @@ import { Box } from '@/layouts'
 import { typographyBreakpoints } from '@/theme/tokens'
 import {
   embeddedResponsiveShell,
+  embeddedResponsiveState,
   storyTypographyActiveBreakpointVar,
   storyTypographyFormFactorVar,
-} from './embedded-responsive-preview.css'
+} from './embedded-responsive-preview.class'
 
 export const embeddedPreviewWidths = {
   wide: 1040,
@@ -54,7 +55,9 @@ export const EmbeddedResponsiveShell = React.forwardRef<HTMLDivElement, { width:
           padding: '1rem',
         }}
       >
-        {children}
+        <div ref={ref} className={embeddedResponsiveState}>
+          {children}
+        </div>
       </Box>
     )
   },
@@ -98,7 +101,7 @@ export function EmbeddedTypographyState({
   activeBreakpoint: string
 }) {
   return (
-    <div className="rounded-md border border-dashed px-3 py-2 text-xs text-muted-foreground">
+    <div className="rounded-md border border-dashed border-slate px-3 py-2 text-xs text-slate">
       form factor: {formFactor || '...'} | active breakpoint: {activeBreakpoint || '...'}
     </div>
   )

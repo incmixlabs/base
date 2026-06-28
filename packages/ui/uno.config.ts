@@ -142,6 +142,46 @@ import {
   sectionSizeResponsive,
 } from './src/layouts/section/section.class'
 import { containerBreakpoints } from './src/theme/tokens'
+import {
+  codeBase,
+  codeByColor,
+  codeBySize,
+  codeHighContrast,
+  codeSizeResponsive,
+  emBase,
+  quoteBase,
+  strongBase,
+} from './src/typography/inline-elements.class'
+import { kbdBase, kbdBaseCls, kbdBySize, kbdByVariant, kbdSizeResponsive } from './src/typography/kbd/kbd.class'
+import {
+  linkWrapperGap,
+  linkWrapperGapResponsive,
+  linkWrapperInner,
+  linkWrapperQueryHost,
+} from './src/typography/link/LinkWrapper.class'
+import {
+  linkBase,
+  linkBaseCls,
+  linkByColor,
+  linkBySize,
+  linkByUnderline,
+  linkHighContrast,
+  linkSizeResponsive,
+} from './src/typography/link/link.class'
+import {
+  embeddedResponsiveShell,
+  embeddedResponsiveState,
+} from './src/typography/storybook/embedded-responsive-preview.class'
+import {
+  headingBase,
+  headingBySize,
+  headingByWeight,
+  headingSizeResponsive,
+  textBase,
+  textBySize,
+  textByWeight,
+  textSizeResponsive,
+} from './src/typography/typography.class'
 
 const splitClasses = (values: string[]) => values.flatMap(value => value.split(/\s+/).filter(Boolean))
 const classMapValues = <Value extends string>(map: Record<string, Record<string, Value>>) =>
@@ -155,6 +195,43 @@ const floatingSurfaceSafelist = splitClasses([
   ...classMapValues(floatingSurfaceHighContrastColorVariants),
   ...classMapValues(floatingSurfaceArrowColorVariants),
   ...classMapValues(floatingSurfaceHighContrastArrowColorVariants),
+])
+
+const typographySafelist = splitClasses([
+  textBase,
+  headingBase,
+  ...Object.values(textBySize),
+  ...Object.values(headingBySize),
+  ...Object.values(textByWeight),
+  ...Object.values(headingByWeight),
+  ...classMapValues(textSizeResponsive),
+  ...classMapValues(headingSizeResponsive),
+  strongBase,
+  emBase,
+  quoteBase,
+  codeBase,
+  ...Object.values(codeBySize),
+  ...classMapValues(codeSizeResponsive),
+  ...classMapValues(codeByColor),
+  codeHighContrast,
+  kbdBaseCls,
+  kbdBase,
+  ...Object.values(kbdBySize),
+  ...classMapValues(kbdSizeResponsive),
+  ...Object.values(kbdByVariant),
+  linkBaseCls,
+  linkBase,
+  ...Object.values(linkBySize),
+  ...classMapValues(linkSizeResponsive),
+  ...Object.values(linkByUnderline),
+  ...Object.values(linkByColor),
+  linkHighContrast,
+  linkWrapperQueryHost,
+  linkWrapperInner,
+  ...Object.values(linkWrapperGap),
+  ...classMapValues(linkWrapperGapResponsive),
+  embeddedResponsiveShell,
+  embeddedResponsiveState,
 ])
 
 const containerQueryVariants = Object.entries(containerBreakpoints).map(([breakpoint, minWidth]) => ({
@@ -311,6 +388,8 @@ export default defineConfig({
       ...Object.values(sectionByDisplay),
       ...classMapValues(sectionDisplayResponsive),
       ...classMapValues(sectionSizeResponsive),
+      // Typography styles
+      ...typographySafelist,
     ]),
   ],
 })
