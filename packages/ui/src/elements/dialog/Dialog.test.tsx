@@ -5,16 +5,39 @@ import { heightResponsiveClasses, heightResponsiveVars } from '@/theme/helpers/h
 import { Theme } from '@/theme/ThemeProvider'
 import { designTokens } from '@/theme/tokens'
 import { Dialog } from './Dialog'
-import {
-  dialogBodyBySize,
-  dialogContentByAlign,
-  dialogContentBySize,
-  dialogDescriptionBySize,
-  dialogHeaderBySize,
-  dialogPopupBase,
-  dialogPopupBaseCls,
-  dialogTitleBySize,
-} from './dialog.class'
+
+const expectedDialogContentClasses = [
+  'fixed',
+  'z-50',
+  'box-border',
+  'rounded-[var(--element-border-radius)]',
+  'border',
+  'border-solid',
+  'border-neutral',
+  'bg-neutral-surface',
+  'text-neutral',
+  '[box-shadow:0_10px_15px_-3px_rgb(0_0_0_/_0.1),0_4px_6px_-4px_rgb(0_0_0_/_0.1)]',
+  'focus:outline-none',
+  'data-[state=open]:animate-in',
+  'data-[state=open]:fade-in-0',
+  'data-[state=open]:zoom-in-95',
+  'data-[state=closed]:animate-out',
+  'data-[state=closed]:fade-out-0',
+  'data-[state=closed]:zoom-out-95',
+  'inset-x-4',
+  'mx-auto',
+  'max-h-[calc(100dvh-2rem)]',
+  'w-auto',
+  'overflow-y-auto',
+  'max-w-[28rem]',
+  'top-1/2',
+] as const
+
+function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
+  for (const token of tokens) {
+    expect(className).toContain(token)
+  }
+}
 
 afterEach(() => {
   cleanup()
@@ -45,22 +68,13 @@ describe('Dialog', () => {
     const body = screen.getByText('Dialog body')
     const header = title.parentElement
 
-    for (const className of [
-      ...dialogPopupBaseCls.split(/\s+/),
-      ...dialogPopupBase.split(/\s+/),
-      dialogContentBySize.md,
-      ...dialogContentByAlign.center.split(/\s+/),
-    ]) {
-      expect(dialog.className).toContain(className)
-    }
+    expectClassTokens(dialog.className, expectedDialogContentClasses)
 
     expect(dialog.className).not.toContain('af-dialog')
-    expect(title.className).toContain(dialogTitleBySize.md)
-    expect(title.className).toContain('text-neutral')
-    expect(description.className).toContain(dialogDescriptionBySize.md)
-    expect(description.className).toContain('text-slate')
-    expect(header?.className).toContain(dialogHeaderBySize.md)
-    expect(body.className).toContain(dialogBodyBySize.md)
+    expectClassTokens(title.className, ['text-base', 'leading-6', 'm-0', 'font-semibold', 'text-neutral'])
+    expectClassTokens(description.className, ['text-base', 'leading-6', 'text-slate'])
+    expectClassTokens(header?.className, ['gap-1.5', 'p-6', 'pb-0'])
+    expectClassTokens(body.className, ['p-6'])
 
     unmount()
     await Promise.resolve()

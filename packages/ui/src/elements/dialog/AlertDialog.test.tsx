@@ -4,16 +4,40 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { Theme } from '@/theme/ThemeProvider'
 import { designTokens } from '@/theme/tokens'
 import { AlertDialog } from './AlertDialog'
-import {
-  alertDialogFooterBySize,
-  dialogContentByAlign,
-  dialogContentBySize,
-  dialogContentPaddingBySize,
-  dialogDescriptionBySize,
-  dialogPopupBase,
-  dialogPopupBaseCls,
-  dialogTitleBySize,
-} from './dialog.class'
+
+const expectedAlertDialogContentClasses = [
+  'fixed',
+  'z-50',
+  'box-border',
+  'rounded-[var(--element-border-radius)]',
+  'border',
+  'border-solid',
+  'border-neutral',
+  'bg-neutral-surface',
+  'text-neutral',
+  '[box-shadow:0_10px_15px_-3px_rgb(0_0_0_/_0.1),0_4px_6px_-4px_rgb(0_0_0_/_0.1)]',
+  'focus:outline-none',
+  'data-[state=open]:animate-in',
+  'data-[state=open]:fade-in-0',
+  'data-[state=open]:zoom-in-95',
+  'data-[state=closed]:animate-out',
+  'data-[state=closed]:fade-out-0',
+  'data-[state=closed]:zoom-out-95',
+  'inset-x-4',
+  'mx-auto',
+  'max-h-[calc(100dvh-2rem)]',
+  'w-auto',
+  'overflow-y-auto',
+  'p-6',
+  'max-w-[28rem]',
+  'top-1/2',
+] as const
+
+function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
+  for (const token of tokens) {
+    expect(className).toContain(token)
+  }
+}
 
 afterEach(() => {
   cleanup()
@@ -41,26 +65,14 @@ describe('AlertDialog', () => {
     const action = screen.getByText('Confirm')
     const footer = cancel.parentElement
 
-    for (const className of [
-      ...dialogPopupBaseCls.split(/\s+/),
-      ...dialogPopupBase.split(/\s+/),
-      dialogContentPaddingBySize.md,
-      dialogContentBySize.md,
-      ...dialogContentByAlign.center.split(/\s+/),
-    ]) {
-      expect(dialog.className).toContain(className)
-    }
+    expectClassTokens(dialog.className, expectedAlertDialogContentClasses)
 
     expect(dialog.className).not.toContain('af-dialog')
-    expect(title.className).toContain(dialogTitleBySize.md)
-    expect(title.className).toContain('text-neutral')
-    expect(description.className).toContain(dialogDescriptionBySize.md)
-    expect(description.className).toContain('text-slate')
-    expect(footer?.className).toContain(alertDialogFooterBySize.md)
-    expect(action.className).toContain('bg-primary-solid')
-    expect(action.className).toContain('text-primary-contrast')
-    expect(cancel.className).toContain('border-neutral')
-    expect(cancel.className).toContain('text-neutral')
+    expectClassTokens(title.className, ['text-base', 'leading-6', 'm-0', 'font-semibold', 'text-neutral'])
+    expectClassTokens(description.className, ['text-base', 'leading-6', 'mt-2', 'text-slate'])
+    expectClassTokens(footer?.className, ['gap-2'])
+    expectClassTokens(action.className, ['border-primary', 'bg-primary-solid', 'text-primary-contrast'])
+    expectClassTokens(cancel.className, ['border-neutral', 'bg-transparent', 'text-neutral'])
   })
 
   it('defaults content radius to the ThemeProvider radius', () => {
