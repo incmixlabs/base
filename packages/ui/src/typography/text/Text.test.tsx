@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { getPropDefValues } from '@/theme/props/prop-def'
-import { textBase, textSizeResponsive } from '../typography.class'
+import { textBase, textSizeResponsive, typographyTrimByTrim } from '../typography.class'
 import { Text } from './Text'
 import { textPropDefs } from './text.props'
 
@@ -38,5 +38,11 @@ describe('Text', () => {
     expect(text).toBeInTheDocument()
     expect(text.className).toContain(textBase)
     expect(text.className).toContain(textSizeResponsive.md[responsiveSize])
+  })
+
+  it('applies concrete leading-trim utilities', () => {
+    render(<Text trim="both">Trimmed copy</Text>)
+
+    expect(screen.getByText('Trimmed copy')).toHaveClass(typographyTrimByTrim.both)
   })
 })

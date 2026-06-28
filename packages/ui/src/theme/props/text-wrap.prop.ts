@@ -5,9 +5,7 @@ const textWrapValues = ['wrap', 'nowrap', 'pretty', 'balance'] as const
 const textWrapPropDef = {
   wrap: {
     type: 'enum',
-    className: 'af-tw',
     values: textWrapValues,
-    responsive: true,
   },
 } satisfies {
   wrap: PropDef<(typeof textWrapValues)[number]>

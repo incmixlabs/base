@@ -12,6 +12,7 @@ import {
   headingByWeight,
   headingSizeResponsive,
   type TypographyTrim,
+  typographyTrimByTrim,
 } from '../typography.class'
 
 export interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
@@ -106,6 +107,7 @@ export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
           wrap === 'nowrap' && 'whitespace-nowrap',
           wrap === 'pretty' && 'text-pretty',
           wrap === 'balance' && 'text-balance',
+          typographyTrimByTrim[trim ?? 'normal'],
 
           // High contrast
           safeHighContrast && 'saturate-[1.1]',

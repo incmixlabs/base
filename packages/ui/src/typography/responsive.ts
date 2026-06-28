@@ -28,14 +28,15 @@ export function getResponsiveVariantClasses<TSize extends string, TBreakpoint ex
   breakpointKeys: readonly TBreakpoint[],
 ): string {
   if (!value) return baseMap[fallback]
-  if (typeof value === 'string') return baseMap[value]
+  if (typeof value === 'string') return baseMap[value] ?? baseMap[fallback]
 
   const responsiveValue = value as Partial<Record<TBreakpoint, TSize>> & { initial?: TSize }
-  const classes = [baseMap[value.initial ?? fallback]]
+  const classes = [baseMap[responsiveValue.initial ?? fallback] ?? baseMap[fallback]]
 
   for (const breakpoint of breakpointKeys) {
     const nextValue = responsiveValue[breakpoint]
-    if (nextValue) classes.push(responsiveMap[breakpoint][nextValue])
+    const nextClass = nextValue ? responsiveMap[breakpoint]?.[nextValue] : undefined
+    if (nextClass) classes.push(nextClass)
   }
 
   return classes.join(' ')

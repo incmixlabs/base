@@ -8,7 +8,7 @@ import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props
 import type { Color } from '@/theme/tokens'
 import { getResponsiveVariantClasses, typographyBreakpointKeys } from '../responsive'
 import { typographyTokens, type Weight } from '../tokens'
-import type { TypographyTrim } from '../typography.class'
+import { type TypographyTrim, typographyTrimByTrim } from '../typography.class'
 import {
   linkBase,
   linkBaseCls,
@@ -101,9 +101,7 @@ export const Link = React.forwardRef<HTMLElement, LinkProps>(
       wrap === 'pretty' && 'text-pretty',
       wrap === 'balance' && 'text-balance',
       truncate && 'truncate',
-      trim === 'start' && '[text-box-trim:trim-start]',
-      trim === 'end' && '[text-box-trim:trim-end]',
-      trim === 'both' && '[text-box-trim:trim-both]',
+      typographyTrimByTrim[trim ?? 'normal'],
       marginProps.className,
       className,
     )

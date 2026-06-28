@@ -6,7 +6,7 @@ import { normalizeBooleanPropValue } from '@/theme/props/prop-def'
 import { getTextSizeClasses } from '../get-text-size-classes'
 import type { TextColor, TypographyVariant } from '../tokens'
 import { resolveTextColor, type TypographySize, type Weight } from '../tokens'
-import { type TypographyTrim, textBase, textByWeight } from '../typography.class'
+import { type TypographyTrim, textBase, textByWeight, typographyTrimByTrim } from '../typography.class'
 
 export interface TextOwnProps {
   as?: 'span' | 'div' | 'label' | 'p'
@@ -95,6 +95,7 @@ export const Text = React.forwardRef<HTMLElement, TextProps>(
         wrap === 'nowrap' && 'whitespace-nowrap',
         wrap === 'pretty' && 'text-pretty',
         wrap === 'balance' && 'text-balance',
+        typographyTrimByTrim[trim ?? 'normal'],
 
         // Margin
         getSpacingClasses(m, 'm'),
