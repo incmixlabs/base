@@ -16,7 +16,7 @@ const expectedDialogContentClasses = [
   'border-neutral',
   'bg-neutral-surface',
   'text-neutral',
-  '[box-shadow:0_10px_15px_-3px_rgb(0_0_0_/_0.1),0_4px_6px_-4px_rgb(0_0_0_/_0.1)]',
+  'shadow-[var(--shadow-4)]',
   'focus:outline-none',
   'data-[state=open]:animate-in',
   'data-[state=open]:fade-in-0',
@@ -29,8 +29,9 @@ const expectedDialogContentClasses = [
   'max-h-[calc(100dvh-2rem)]',
   'w-auto',
   'overflow-y-auto',
-  'max-w-[28rem]',
+  'max-w-md',
   'top-1/2',
+  '[translate:0_-50%]',
 ] as const
 
 function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
@@ -73,8 +74,9 @@ describe('Dialog', () => {
     expectClassTokens(dialog.className, expectedDialogContentClasses)
 
     expect(dialog.className).not.toContain('af-dialog')
-    expectClassTokens(title.className, ['text-base', 'leading-6', 'm-0', 'font-semibold', 'text-neutral'])
-    expectClassTokens(description.className, ['text-base', 'leading-6', 'text-slate'])
+    expect(dialog.className).not.toContain('component-dialog')
+    expectClassTokens(title.className, ['text-base', 'm-0', 'font-semibold', 'text-neutral'])
+    expectClassTokens(description.className, ['text-sm', 'text-slate'])
     expectClassTokens(header?.className, ['gap-1.5', 'p-6', 'pb-0'])
     expectClassTokens(body.className, ['p-6'])
 

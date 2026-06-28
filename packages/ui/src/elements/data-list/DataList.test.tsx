@@ -1,8 +1,10 @@
 import '@testing-library/jest-dom/vitest'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+import { getPropDefValues } from '@/theme/props/prop-def'
 import { getTextSizeClasses } from '@/typography/get-text-size-classes'
 import { DataList } from './DataList'
+import { dataListPropDefs } from './data-list.props'
 
 function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
   const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
@@ -12,6 +14,12 @@ function expectClassTokens(className: string | undefined, tokens: readonly strin
 }
 
 describe('DataList', () => {
+  it('keeps scalar metadata for orientation and item alignment', () => {
+    expect(dataListPropDefs.Root.size).toHaveProperty('responsive', true)
+    expect(dataListPropDefs.Root.orientation).not.toHaveProperty('responsive')
+    expect(dataListPropDefs.Item.align).not.toHaveProperty('responsive')
+  })
+
   it('applies size and typography classes on the root', () => {
     render(
       <DataList.Root size="md">
@@ -100,6 +108,31 @@ describe('DataList', () => {
     ])
   })
 
+  it('exposes and applies the xs size contract', () => {
+    expect(getPropDefValues(dataListPropDefs.Root.size)).toContain('xs')
+
+    render(
+      <DataList.Root size="xs">
+        <DataList.Item>
+          <DataList.Label>XS</DataList.Label>
+          <DataList.Value>Compact</DataList.Value>
+        </DataList.Item>
+      </DataList.Root>,
+    )
+
+    const root = screen.getByText('XS').closest('dl')
+    const item = screen.getByText('XS').closest('div')
+    const label = screen.getByText('XS').closest('dt')
+
+    expectClassTokens(root?.className, [
+      'gap-2',
+      '[--af-datalist-line-height:calc(1rem*var(--theme-typography-text-leading,1))]',
+    ])
+    expect(root).toHaveClass(getTextSizeClasses('xs'))
+    expectClassTokens(item?.className, ['gap-4'])
+    expectClassTokens(label?.className, ['min-w-[80px]'])
+  })
+
   it('supports between justification for horizontal rows', () => {
     render(
       <DataList.Root>
@@ -112,6 +145,13 @@ describe('DataList', () => {
 
     const item = screen.getByText('Soft').closest('div')
     expect(item).toHaveStyle({ display: 'flex', justifyContent: 'space-between', alignItems: 'center' })
+    expectClassTokens(item?.className, [
+      'items-center',
+      '[--af-datalist-value-trim-start:-0.25em]',
+      '[--af-datalist-value-trim-end:-0.25em]',
+      '[--af-datalist-first-value-trim-start:-0.25em]',
+      '[--af-datalist-last-value-trim-end:-0.25em]',
+    ])
   })
 
   it('applies minWidth on labels and keeps width as a compatibility alias', () => {

@@ -7,19 +7,19 @@ export const dialogBackdropBaseCls =
 export const dialogBackdropBase = '[background-color:rgb(0_0_0_/_0.24)] backdrop-blur-[4px]'
 
 export const dialogPopupBaseCls =
-  'fixed z-50 box-border rounded-[var(--element-border-radius)] border border-solid border-neutral bg-neutral-surface text-neutral [box-shadow:0_10px_15px_-3px_rgb(0_0_0_/_0.1),0_4px_6px_-4px_rgb(0_0_0_/_0.1)] focus:outline-none data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95'
+  'fixed z-50 box-border rounded-[var(--element-border-radius)] border border-solid border-neutral bg-neutral-surface text-neutral shadow-[var(--shadow-4)] focus:outline-none data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95'
 
 export const dialogPopupBase = 'inset-x-4 mx-auto max-h-[calc(100dvh-2rem)] w-auto overflow-y-auto'
 
 export const dialogContentBySize: Record<DialogContentSize, string> = {
-  sm: 'max-w-[24rem]',
-  md: 'max-w-[28rem]',
-  lg: 'max-w-[32rem]',
-  xl: 'max-w-[36rem]',
+  sm: 'max-w-sm',
+  md: 'max-w-md',
+  lg: 'max-w-lg',
+  xl: 'max-w-xl',
 }
 
 export const dialogContentByAlign = {
-  center: 'top-1/2',
+  center: 'top-1/2 [translate:0_-50%]',
   start: 'top-[10vh]',
 } as const
 
@@ -54,17 +54,17 @@ export const alertDialogFooterBySize: Record<DialogContentSize, string> = {
 }
 
 export const dialogTitleBySize: Record<DialogContentSize, string> = {
-  sm: 'text-sm leading-5',
-  md: 'text-base leading-6',
-  lg: 'text-lg leading-[1.625rem]',
-  xl: 'text-xl leading-7',
+  sm: 'text-sm',
+  md: 'text-base',
+  lg: 'text-lg',
+  xl: 'text-xl',
 }
 
 export const dialogDescriptionBySize: Record<DialogContentSize, string> = {
-  sm: 'text-sm leading-5',
-  md: 'text-base leading-6',
-  lg: 'text-lg leading-[1.625rem]',
-  xl: 'text-xl leading-7',
+  sm: 'text-xs',
+  md: 'text-sm',
+  lg: 'text-base',
+  xl: 'text-lg',
 }
 
 // Motion variants

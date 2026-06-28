@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { Popover } from './Popover'
+import { popoverContentPropDefs } from './popover.props'
 
 function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
   const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
@@ -10,6 +11,10 @@ function expectClassTokens(className: string | undefined, tokens: readonly strin
 }
 
 describe('Popover', () => {
+  it('keeps size metadata scalar until responsive class handling exists', () => {
+    expect('responsive' in popoverContentPropDefs.size).toBe(false)
+  })
+
   it('renders the floating surface class contract', () => {
     render(
       <Popover.Root defaultOpen>

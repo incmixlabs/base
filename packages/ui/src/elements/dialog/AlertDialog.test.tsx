@@ -15,7 +15,7 @@ const expectedAlertDialogContentClasses = [
   'border-neutral',
   'bg-neutral-surface',
   'text-neutral',
-  '[box-shadow:0_10px_15px_-3px_rgb(0_0_0_/_0.1),0_4px_6px_-4px_rgb(0_0_0_/_0.1)]',
+  'shadow-[var(--shadow-4)]',
   'focus:outline-none',
   'data-[state=open]:animate-in',
   'data-[state=open]:fade-in-0',
@@ -29,8 +29,9 @@ const expectedAlertDialogContentClasses = [
   'w-auto',
   'overflow-y-auto',
   'p-6',
-  'max-w-[28rem]',
+  'max-w-md',
   'top-1/2',
+  '[translate:0_-50%]',
 ] as const
 
 function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
@@ -70,8 +71,9 @@ describe('AlertDialog', () => {
     expectClassTokens(dialog.className, expectedAlertDialogContentClasses)
 
     expect(dialog.className).not.toContain('af-dialog')
-    expectClassTokens(title.className, ['text-base', 'leading-6', 'm-0', 'font-semibold', 'text-neutral'])
-    expectClassTokens(description.className, ['text-base', 'leading-6', 'mt-2', 'text-slate'])
+    expect(dialog.className).not.toContain('component-dialog')
+    expectClassTokens(title.className, ['text-base', 'm-0', 'font-semibold', 'text-neutral'])
+    expectClassTokens(description.className, ['text-sm', 'mt-2', 'text-slate'])
     expectClassTokens(footer?.className, ['gap-2'])
     expectClassTokens(action.className, ['border-primary', 'bg-primary-solid', 'text-primary-contrast'])
     expectClassTokens(cancel.className, ['border-neutral', 'bg-transparent', 'text-neutral'])

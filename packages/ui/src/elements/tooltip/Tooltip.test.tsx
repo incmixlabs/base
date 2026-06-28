@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+import { TooltipWrapper } from './TooltipWrapper'
 import { Tooltip } from './Tooltip'
+import { tooltipContentPropDefs } from './tooltip.props'
 
 function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
   const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
@@ -10,6 +12,10 @@ function expectClassTokens(className: string | undefined, tokens: readonly strin
 }
 
 describe('Tooltip', () => {
+  it('keeps size metadata scalar until responsive class handling exists', () => {
+    expect('responsive' in tooltipContentPropDefs.size).toBe(false)
+  })
+
   it('renders the floating surface class contract', () => {
     render(
       <Tooltip.Root defaultOpen>
@@ -42,5 +48,61 @@ describe('Tooltip', () => {
     const arrow = document.body.querySelector('.surface-floating-arrow')
     expect(arrow).not.toBeNull()
     expectClassTokens(arrow?.className, ['[fill:var(--color-inverse-primary)]', '[color:var(--color-inverse-text)]'])
+  })
+})
+
+describe('TooltipWrapper', () => {
+  it('composes element triggers onto the focusable element', () => {
+    render(
+      <TooltipWrapper
+        defaultOpen
+        className="wrapper-trigger-class"
+        trigger={
+          <button type="button" className="source-trigger-class">
+            Inspect
+          </button>
+        }
+        data={{ title: 'Details' }}
+      />,
+    )
+
+    const trigger = screen.getByRole('button', { name: 'Inspect' })
+    expectClassTokens(trigger.className, ['source-trigger-class', 'wrapper-trigger-class'])
+  })
+
+  it('renders zero-valued wrapper content', () => {
+    render(
+      <TooltipWrapper
+        defaultOpen
+        trigger={<button type="button">Metrics</button>}
+        data={{
+          title: 0,
+          description: 0,
+          items: [{ id: 'count', label: 'Count', value: 0, description: 0 }],
+          footer: 0,
+        }}
+      />,
+    )
+
+    expect(screen.getAllByText('0')).toHaveLength(5)
+  })
+
+  it('does not render empty wrappers for boolean content', () => {
+    render(
+      <TooltipWrapper
+        defaultOpen
+        trigger={<button type="button">Boolean metrics</button>}
+        data={{
+          title: false,
+          description: false,
+          items: [{ id: 'hidden', label: false, value: false, description: false }],
+          footer: false,
+        }}
+      />,
+    )
+
+    expect(document.querySelector('.text-sm.font-semibold')).toBeNull()
+    expect(document.querySelector('.rounded-md.border.border-neutral')).toBeNull()
+    expect(document.querySelector('.text-xs.text-neutral.opacity-70')).toBeNull()
   })
 })

@@ -2,12 +2,12 @@ import { colorPropDef } from '@/theme/props/color.prop'
 import { highContrastPropDef } from '@/theme/props/high-contrast.prop'
 import { leadingTrimPropDef } from '@/theme/props/leading-trim.prop'
 import type { PropDef } from '@/theme/props/prop-def'
-import { sizesSmToLg } from '@/theme/props/scales'
+import { sizesXsToLg } from '@/theme/props/scales'
 import { widthPropDefs } from '@/theme/props/width.props'
 
 const dataListAlignValues = ['start', 'center', 'end', 'baseline', 'stretch', 'between'] as const
 const dataListOrientationValues = ['horizontal', 'vertical'] as const
-const dataListSizes = sizesSmToLg
+const dataListSizes = sizesXsToLg
 const dataListTrimValues = leadingTrimPropDef.trim.values
 
 type DataListAlign = (typeof dataListAlignValues)[number]
@@ -21,7 +21,6 @@ const dataListRootPropDefs = {
     className: 'af-r-orientation',
     values: dataListOrientationValues,
     default: 'horizontal',
-    responsive: true,
   },
   size: {
     type: 'enum',
@@ -45,7 +44,6 @@ const dataListItemPropDefs = {
     type: 'enum',
     className: 'af-r-ai',
     values: dataListAlignValues,
-    responsive: true,
   },
 } satisfies {
   align: PropDef<DataListAlign>
