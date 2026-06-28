@@ -55,6 +55,7 @@ export type PopoverWrapperProps = {
   data: PopoverWrapperData
   trigger: React.ReactNode
   showClose?: boolean
+  showArrow?: boolean
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void

@@ -5,12 +5,18 @@ import { Button, IconButton, Popover } from '@/elements'
 import { Label, Switch, TextField } from '@/form'
 import { Flex } from '@/layouts'
 import { Grid } from '@/layouts/grid/Grid'
+import { getPropDefValues } from '@/theme/props/prop-def'
 import { selectArgType } from '@/theme/props/storybook'
 import type { Color } from '@/theme/tokens'
 import { Text } from '@/typography'
 
 import type { PopoverContentMaxWidth, PopoverContentSize, PopoverContentVariant } from './popover.props'
-import { popoverContentPropDefs, popoverContentVariants } from './popover.props'
+import { popoverContentPropDefs } from './popover.props'
+
+const popoverContentSizes = getPropDefValues(popoverContentPropDefs.size)
+const popoverContentVariants = getPropDefValues(popoverContentPropDefs.variant)
+const popoverMaxWidthValues = getPropDefValues(popoverContentPropDefs.maxWidthToken)
+const popoverColors = getPropDefValues(popoverContentPropDefs.color)
 
 type PopoverStoryArgs = {
   variant: PopoverContentVariant
@@ -136,17 +142,35 @@ export const Alignments: Story = {
 export const Sizes: Story = {
   render: () => (
     <Flex gap="4">
-      {(['xs', 'sm', 'md', 'lg'] as const).map(size => (
+      {popoverContentSizes.map(size => (
         <Popover.Root key={size}>
           <Popover.Trigger render={<Button variant="outline" />}>{size.toUpperCase()}</Popover.Trigger>
-          <Popover.Content maxWidth={size}>
+          <Popover.Content size={size} maxWidth="xs">
             <Popover.Arrow />
-            <Text size="sm">
-              This popover has max-width set to {size}. Lorem ipsum dolor sit amet, consectetur adipiscing.
-            </Text>
+            <Text size="sm">Popover content size {size}</Text>
           </Popover.Content>
         </Popover.Root>
       ))}
+    </Flex>
+  ),
+}
+
+export const MaxWidths: Story = {
+  render: () => (
+    <Flex gap="4">
+      {popoverMaxWidthValues
+        .filter(maxWidth => maxWidth !== 'none')
+        .map(maxWidth => (
+          <Popover.Root key={maxWidth}>
+            <Popover.Trigger render={<Button variant="outline" />}>{maxWidth.toUpperCase()}</Popover.Trigger>
+            <Popover.Content maxWidth={maxWidth}>
+              <Popover.Arrow />
+              <Text size="sm">
+                This popover has max-width set to {maxWidth}. Lorem ipsum dolor sit amet, consectetur adipiscing.
+              </Text>
+            </Popover.Content>
+          </Popover.Root>
+        ))}
     </Flex>
   ),
 }
@@ -172,7 +196,7 @@ export const Variants: Story = {
 export const Colors: Story = {
   render: () => (
     <Flex wrap="wrap" gap="4">
-      {(['slate', 'primary', 'info', 'success', 'warning', 'error'] as const).map(color => (
+      {popoverColors.map(color => (
         <Popover.Root key={color}>
           <Popover.Trigger render={<Button variant="outline" className="capitalize" />}>{color}</Popover.Trigger>
           <Popover.Content color={color} variant="surface">
@@ -284,7 +308,7 @@ export const SettingsPopover: Story = {
             <Button variant="ghost" size="sm" className="justify-start">
               Help & Support
             </Button>
-            <hr className="my-1 border-border" />
+            <hr className="my-1 border-neutral" />
             <Button variant="ghost" size="sm" color="error" className="justify-start">
               Sign Out
             </Button>

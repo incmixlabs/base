@@ -15,11 +15,11 @@ import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
 import {
   popoverContentBase,
-  popoverContentBySize,
-  popoverContentMaxWidth,
+  floatingSurfaceSizeVariants as popoverContentBySize,
+  floatingSurfaceMaxWidthVariants as popoverContentMaxWidth,
   popoverPanelTransition,
   popoverPanelVariants,
-} from '../popover/Popover.css'
+} from '../popover/popover.class'
 import { type PopoverContentVariant, popoverContentPropDefs } from '../popover/popover.props'
 import { surfaceColorVariants, surfaceHighContrastByVariant } from '../surface/surface.class'
 import { getRadiusStyles, useThemeRadius } from '../utils'

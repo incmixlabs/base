@@ -7,10 +7,10 @@ import type { TooltipWrapperItem, TooltipWrapperProps, TooltipWrapperRenderItem 
 
 function ItemRow({ item, renderItem }: { item: TooltipWrapperItem; renderItem?: TooltipWrapperRenderItem }) {
   const defaultRender = (
-    <div className="rounded-md border border-border/60 bg-background/60 p-2">
-      <div className="text-xs text-muted-foreground">{item.label}</div>
-      {item.value ? <div className="text-sm font-medium text-foreground">{item.value}</div> : null}
-      {item.description ? <div className="mt-1 text-xs text-muted-foreground">{item.description}</div> : null}
+    <div className="rounded-md border border-neutral bg-neutral-surface p-2">
+      <div className="text-xs text-neutral opacity-70">{item.label}</div>
+      {item.value ? <div className="text-sm font-medium text-neutral">{item.value}</div> : null}
+      {item.description ? <div className="mt-1 text-xs text-neutral opacity-70">{item.description}</div> : null}
     </div>
   )
   return <>{renderItem ? renderItem(item, defaultRender) : defaultRender}</>
@@ -56,7 +56,7 @@ export function TooltipWrapper({
         {showArrow ? <Tooltip.Arrow variant={variant} color={color} /> : null}
         <Flex direction="column" gap="2">
           {data.title ? <div className="text-sm font-semibold">{data.title}</div> : null}
-          {data.description ? <div className="text-xs text-muted-foreground">{data.description}</div> : null}
+          {data.description ? <div className="text-xs text-neutral opacity-70">{data.description}</div> : null}
           {data.items?.length ? (
             <Flex direction="column" gap="2">
               {data.items.map(item => (
@@ -64,7 +64,7 @@ export function TooltipWrapper({
               ))}
             </Flex>
           ) : null}
-          {data.footer ? <div className="text-xs text-muted-foreground">{data.footer}</div> : null}
+          {data.footer ? <div className="text-xs text-neutral opacity-70">{data.footer}</div> : null}
         </Flex>
       </Tooltip.Content>
     </Tooltip.Root>

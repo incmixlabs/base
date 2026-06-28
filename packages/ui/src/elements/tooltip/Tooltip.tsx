@@ -10,23 +10,29 @@ import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props
 import type { WidthProps } from '@/theme/props/width.props'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
+import {
+  floatingSurfaceArrowColorVariants,
+  floatingSurfaceColorVariants,
+  floatingSurfaceHighContrastArrowColorVariants,
+  floatingSurfaceHighContrastColorVariants,
+  floatingSurfaceHighContrastEffectByVariant,
+} from '../popover/popover.class'
 import type {
   PopoverContentMaxWidth as TooltipMaxWidth,
   PopoverContentSize as TooltipSize,
   PopoverContentVariant as TooltipVariant,
 } from '../popover/popover.props'
 import { FloatingArrowSvg } from '../surface/FloatingArrowSvg'
-import { floatingArrowBase, surfaceColorVariants, surfaceHighContrastByVariant } from '../surface/surface.class'
+import { floatingArrowBase } from '../surface/surface.class'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
-  tooltipArrowColorByVariant,
   tooltipContentBase,
   tooltipContentBySize,
   tooltipContentMaxWidth,
   tooltipPanelTransition,
   tooltipPanelVariants,
   tooltipPositionerBase,
-} from './Tooltip.css'
+} from './tooltip.class'
 import { tooltipContentPropDefs, tooltipProviderPropDefs } from './tooltip.props'
 
 // ── Visual context (so Arrow inherits from Content) ──
@@ -34,6 +40,7 @@ import { tooltipContentPropDefs, tooltipProviderPropDefs } from './tooltip.props
 type TooltipVisualContextValue = {
   variant: TooltipVariant
   color: Color
+  highContrast: boolean
 }
 
 const THEME_CONTAINER_SELECTOR = '.af-themes' // used by TooltipTrigger's closest() for nested theme support
@@ -46,6 +53,7 @@ const TooltipPortalContainerContext = React.createContext<{
 const TooltipVisualContext = React.createContext<TooltipVisualContextValue>({
   variant: tooltipContentPropDefs.variant.default as TooltipVariant,
   color: tooltipContentPropDefs.color.default as Color,
+  highContrast: tooltipContentPropDefs.highContrast.default,
 })
 
 function resolveTooltipVisual({
@@ -54,7 +62,7 @@ function resolveTooltipVisual({
 }: {
   variant?: TooltipVariant
   color?: Color
-}): TooltipVisualContextValue {
+}): Pick<TooltipVisualContextValue, 'variant' | 'color'> {
   const safeVariant = (normalizeEnumPropValue(tooltipContentPropDefs.variant, variant) ??
     tooltipContentPropDefs.variant.default) as TooltipVariant
   const safeColor = (normalizeEnumPropValue(tooltipContentPropDefs.color, color) ??
@@ -271,8 +279,8 @@ const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentProps>(
     })
 
     const contextValue = React.useMemo<TooltipVisualContextValue>(
-      () => ({ variant: safeVariant, color: safeColor }),
-      [safeVariant, safeColor],
+      () => ({ variant: safeVariant, color: safeColor, highContrast: safeHighContrast }),
+      [safeVariant, safeColor, safeHighContrast],
     )
 
     const isOpen = React.useContext(TooltipOpenContext)
@@ -305,14 +313,15 @@ const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentProps>(
                     />
                   }
                   className={cn(
-                    'z-50 w-full border',
+                    'z-50 w-full border border-solid',
                     'focus:outline-none',
                     tooltipContentBase,
                     tooltipContentBySize[safeSize],
                     resolvedTokenMaxWidth && tooltipContentMaxWidth[resolvedTokenMaxWidth],
-                    surfaceColorVariants[safeColor][safeVariant],
-                    safeHighContrast && 'af-high-contrast',
-                    safeHighContrast && surfaceHighContrastByVariant[safeVariant],
+                    safeHighContrast
+                      ? floatingSurfaceHighContrastColorVariants[safeColor][safeVariant]
+                      : floatingSurfaceColorVariants[safeColor][safeVariant],
+                    safeHighContrast && floatingSurfaceHighContrastEffectByVariant[safeVariant],
                     widthProps.className,
                     className,
                   )}
@@ -343,17 +352,27 @@ export interface TooltipArrowProps {
   variant?: TooltipVariant
   /** Surface color lane */
   color?: Color
+  /** High contrast treatment */
+  highContrast?: boolean
 }
 
-const TooltipArrow: React.FC<TooltipArrowProps> = ({ className, variant, color, ...props }) => {
+const TooltipArrow: React.FC<TooltipArrowProps> = ({ className, variant, color, highContrast, ...props }) => {
   const visualContext = React.useContext(TooltipVisualContext)
   const { variant: safeVariant, color: safeColor } = resolveTooltipVisual({
     variant: variant ?? visualContext.variant,
     color: color ?? visualContext.color,
   })
+  const safeHighContrast =
+    normalizeBooleanPropValue(tooltipContentPropDefs.highContrast, highContrast ?? visualContext.highContrast) ?? false
   return (
     <TooltipPrimitive.Arrow
-      className={cn(floatingArrowBase, tooltipArrowColorByVariant[safeColor][safeVariant], className)}
+      className={cn(
+        floatingArrowBase,
+        safeHighContrast
+          ? floatingSurfaceHighContrastArrowColorVariants[safeColor][safeVariant]
+          : floatingSurfaceArrowColorVariants[safeColor][safeVariant],
+        className,
+      )}
       {...props}
     >
       <FloatingArrowSvg />
