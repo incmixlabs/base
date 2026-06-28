@@ -6,7 +6,6 @@ const leadingTrimPropDef = {
   trim: {
     type: 'enum',
     values: leadingTrimValues,
-    responsive: true,
   },
 } satisfies {
   trim: PropDef<(typeof leadingTrimValues)[number]>

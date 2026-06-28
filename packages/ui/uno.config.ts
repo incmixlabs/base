@@ -181,6 +181,7 @@ import {
   textBySize,
   textByWeight,
   textSizeResponsive,
+  typographyTrimByTrim,
 } from './src/typography/typography.class'
 
 const splitClasses = (values: string[]) => values.flatMap(value => value.split(/\s+/).filter(Boolean))
@@ -204,6 +205,7 @@ const typographySafelist = splitClasses([
   ...Object.values(headingBySize),
   ...Object.values(textByWeight),
   ...Object.values(headingByWeight),
+  ...Object.values(typographyTrimByTrim),
   ...classMapValues(textSizeResponsive),
   ...classMapValues(headingSizeResponsive),
   strongBase,

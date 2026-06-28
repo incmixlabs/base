@@ -3,6 +3,7 @@ import { arbitraryDeclaration, cssVar } from './class-utils'
 import type { TypographySize, Weight } from './tokens'
 
 type TypographyBreakpoint = (typeof typographyBreakpointKeys)[number]
+type TypographyTrim = 'normal' | 'start' | 'end' | 'both'
 
 const typographySizeValues = [
   'xs',
@@ -108,3 +109,10 @@ export const headingSizeResponsive = Object.fromEntries(
 export const textByWeight = weightClassNames
 
 export const headingByWeight = weightClassNames
+
+export const typographyTrimByTrim = {
+  normal: '',
+  start: arbitraryDeclaration('text-box-trim', 'trim-start'),
+  end: arbitraryDeclaration('text-box-trim', 'trim-end'),
+  both: arbitraryDeclaration('text-box-trim', 'trim-both'),
+} as const satisfies Record<TypographyTrim, string>

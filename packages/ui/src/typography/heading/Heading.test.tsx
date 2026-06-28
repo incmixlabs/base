@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { getPropDefValues } from '@/theme/props/prop-def'
-import { headingBase, headingSizeResponsive } from '../typography.class'
+import { headingBase, headingSizeResponsive, typographyTrimByTrim } from '../typography.class'
 import { Heading } from './Heading'
 import { headingPropDefs } from './heading.props'
 
@@ -26,5 +26,11 @@ describe('Heading', () => {
     expect(heading).toBeInTheDocument()
     expect(heading.className).toContain(headingBase)
     expect(heading.className).toContain(headingSizeResponsive.md[responsiveSize])
+  })
+
+  it('applies concrete leading-trim utilities', () => {
+    render(<Heading trim="start">Trimmed heading</Heading>)
+
+    expect(screen.getByRole('heading', { name: 'Trimmed heading' })).toHaveClass(typographyTrimByTrim.start)
   })
 })
