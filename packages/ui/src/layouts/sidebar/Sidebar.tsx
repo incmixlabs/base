@@ -7,7 +7,7 @@ import { AnimatePresence, m } from 'motion/react'
 import * as React from 'react'
 import { Badge } from '@/elements/badge/Badge'
 import { Button } from '@/elements/button/Button'
-import { Separator } from '@/elements/separator/Separator'
+import { Divider } from '@/elements/divider/Divider'
 import { Sheet } from '@/elements/sheet/Sheet'
 import { Skeleton } from '@/elements/skeleton/Skeleton'
 import { Surface } from '@/elements/surface/Surface'
@@ -445,12 +445,13 @@ function SidebarInput({ className, ...props }: React.ComponentProps<typeof TextF
   )
 }
 
-function SidebarSeparator({ className, ...props }: React.ComponentProps<typeof Separator>) {
+function SidebarSeparator({ className, ...props }: React.ComponentProps<typeof Divider>) {
   return (
-    <Separator
+    <Divider
+      size="xs"
       data-slot="sidebar-separator"
       data-sidebar="separator"
-      className={cn('bg-sidebar-border mx-2 w-auto', className)}
+      className={cn('mx-2 w-auto before:bg-sidebar-border after:bg-sidebar-border', className)}
       {...props}
     />
   )

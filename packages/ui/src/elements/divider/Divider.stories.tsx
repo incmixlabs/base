@@ -1,11 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Card, Divider } from '@/elements'
-import { SemanticColor, semanticColors } from '@/theme/props/color.prop'
+import { semanticColors } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
+import { Text } from '@/typography'
 import { dividerPropDefs } from './divider.props'
 
 const blockClassName = 'flex min-h-36 items-center justify-center text-xl font-medium'
 const compactBlockClassName = 'flex min-h-24 flex-1 items-center justify-center text-xl font-medium'
+const captionClassName = 'font-mono text-neutral opacity-70'
 
 function ContentCard({ compact = false }: { compact?: boolean }) {
   return (
@@ -129,13 +131,44 @@ export const WithoutText: Story = {
   ),
 }
 
+export const StructuralHorizontal: Story = {
+  render: () => (
+    <div className="flex w-full max-w-xl flex-col gap-4">
+      <div className="rounded-md bg-neutral-soft p-4 text-sm text-neutral">Account</div>
+      <Divider size="xs" />
+      <div className="rounded-md bg-neutral-soft p-4 text-sm text-neutral">Security</div>
+    </div>
+  ),
+}
+
+export const StructuralVertical: Story = {
+  args: {
+    orientation: 'vertical',
+  },
+  render: () => (
+    <div className="flex h-36 max-w-xl items-stretch gap-4">
+      <div className="flex flex-1 items-center justify-center rounded-md bg-neutral-soft text-sm text-neutral">
+        Left
+      </div>
+      <Divider orientation="vertical" size="xs" />
+      <div className="flex flex-1 items-center justify-center rounded-md bg-neutral-soft text-sm text-neutral">
+        Right
+      </div>
+    </div>
+  ),
+}
+
 export const Alignment: Story = {
   render: () => (
-    <div className="flex w-full flex-col gap-6">
+    <div className="flex w-full max-w-xl flex-col gap-6">
       {getPropDefValues(dividerPropDefs.align).map(align => (
-        <div key={align} className="space-y-1">
-          <div className="font-mono text-muted-foreground text-xs">{align}</div>
-          <Divider align={align}>Label</Divider>
+        <div key={align} className="rounded-md bg-neutral-soft p-4">
+          <Text as="div" size="xs" className={captionClassName}>
+            {align}
+          </Text>
+          <Divider align={align} color="primary">
+            {align}
+          </Divider>
         </div>
       ))}
     </div>
@@ -147,8 +180,25 @@ export const Sizes: Story = {
     <div className="flex w-full flex-col gap-6">
       {getPropDefValues(dividerPropDefs.size).map(size => (
         <div key={size} className="space-y-1">
-          <div className="font-mono text-muted-foreground text-xs">{size}</div>
+          <Text as="div" size="xs" className={captionClassName}>
+            {size}
+          </Text>
           <Divider size={size}>Section</Divider>
+        </div>
+      ))}
+    </div>
+  ),
+}
+
+export const StructuralSizes: Story = {
+  render: () => (
+    <div className="grid w-full max-w-3xl grid-cols-4 gap-4">
+      {getPropDefValues(dividerPropDefs.size).map(size => (
+        <div key={size} className="rounded-md bg-neutral-soft p-4">
+          <Text as="div" size="xs" className={captionClassName}>
+            {size}
+          </Text>
+          <Divider size={size} color="primary" />
         </div>
       ))}
     </div>
@@ -167,6 +217,21 @@ export const Colors: Story = {
   ),
 }
 
+export const StructuralColors: Story = {
+  render: () => (
+    <div className="grid w-full max-w-xl gap-4">
+      {semanticColors.map(color => (
+        <div key={color} className="space-y-2">
+          <Text as="div" size="xs" className={captionClassName}>
+            {color}
+          </Text>
+          <Divider color={color} size="sm" />
+        </div>
+      ))}
+    </div>
+  ),
+}
+
 export const InContext: Story = {
   render: () => (
     <Card.Root size="md" variant="surface" color="neutral" radius="lg" className="mx-auto w-full max-w-md">
@@ -175,22 +240,28 @@ export const InContext: Story = {
         <Card.Description>Choose your preferred sign in method</Card.Description>
       </Card.Header>
       <div className="mt-4 space-y-2">
-        <button type="button" className="w-full rounded-md border border-border px-4 py-2 text-sm hover:bg-muted">
+        <button
+          type="button"
+          className="w-full rounded-md border border-neutral px-4 py-2 text-sm hover:bg-neutral-soft"
+        >
           Continue with Google
         </button>
-        <button type="button" className="w-full rounded-md border border-border px-4 py-2 text-sm hover:bg-muted">
+        <button
+          type="button"
+          className="w-full rounded-md border border-neutral px-4 py-2 text-sm hover:bg-neutral-soft"
+        >
           Continue with GitHub
         </button>
       </div>
       <Divider>or continue with</Divider>
       <div className="space-y-2">
-        <input className="w-full rounded-md border border-border px-3 py-2 text-sm" placeholder="Email" />
+        <input className="w-full rounded-md border border-neutral px-3 py-2 text-sm" placeholder="Email" />
         <input
-          className="w-full rounded-md border border-border px-3 py-2 text-sm"
+          className="w-full rounded-md border border-neutral px-3 py-2 text-sm"
           placeholder="Password"
           type="password"
         />
-        <button type="button" className="w-full rounded-md bg-primary px-4 py-2 text-primary-foreground text-sm">
+        <button type="button" className="w-full rounded-md bg-primary-solid px-4 py-2 text-primary-contrast text-sm">
           Sign in
         </button>
       </div>

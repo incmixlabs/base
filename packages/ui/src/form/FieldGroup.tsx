@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { Separator } from '@/elements/separator/Separator'
+import { Divider } from '@/elements/divider/Divider'
 import { Flex } from '@/layouts/flex/Flex'
 import { Grid } from '@/layouts/grid/Grid'
 import { cn } from '@/lib/utils'
@@ -168,7 +168,7 @@ const FieldGroupSection = React.forwardRef<HTMLDivElement, FieldGroupSectionProp
       }
       {...props}
     >
-      {separator && <Separator className="my-[var(--field-group-section-separator-margin-block)]" />}
+      {separator && <Divider size="xs" className="my-[var(--field-group-section-separator-margin-block)]" />}
       {(title || description) && (
         <Flex direction="column" className="mb-[var(--field-group-section-header-margin-bottom)]">
           {title && <span className="text-base font-medium text-foreground">{title}</span>}

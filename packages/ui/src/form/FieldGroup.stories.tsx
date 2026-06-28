@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button } from '@/elements/button/Button'
-import { Separator } from '@/elements/separator/Separator'
+import { Divider } from '@/elements/divider/Divider'
 import { Tabs } from '@/elements/tabs/Tabs'
 import { Box } from '@/layouts/box/Box'
 import { DateTimePicker } from './date'
@@ -607,7 +607,7 @@ export const SideLabelsLayout: Story = {
         <TextField placeholder="Email address" leftIcon="mail" type="email" />
         <TextField placeholder="Phone number" leftIcon="phone" type="tel" />
       </FieldGroup.Row>
-      <Separator />
+      <Divider size="xs" />
       <FieldGroup.Row label="Address" description="Where should we ship to?">
         <TextField placeholder="Street address" leftIcon="map-pin" />
         <TextField placeholder="City" />
@@ -794,12 +794,12 @@ export const SettingsForm: Story = {
           <TextField placeholder="Display name" leftIcon="user" />
           <TextField placeholder="Bio" />
         </FieldGroup.Row>
-        <Separator />
+        <Divider size="xs" />
         <FieldGroup.Row label="Contact" description="How others can reach you">
           <TextField placeholder="Email" leftIcon="mail" type="email" />
           <TextField placeholder="Phone" leftIcon="phone" type="tel" />
         </FieldGroup.Row>
-        <Separator />
+        <Divider size="xs" />
         <FieldGroup.Row label="Company" description="Your organization details">
           <TextField placeholder="Company name" leftIcon="building" />
           <TextField placeholder="Job title" />
