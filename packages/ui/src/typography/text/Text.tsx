@@ -6,7 +6,7 @@ import { normalizeBooleanPropValue } from '@/theme/props/prop-def'
 import { getTextSizeClasses } from '../get-text-size-classes'
 import type { TextColor, TypographyVariant } from '../tokens'
 import { resolveTextColor, type TypographySize, type Weight } from '../tokens'
-import { textBase, textByWeight } from '../typography.class'
+import { type TypographyTrim, textBase, textByWeight } from '../typography.class'
 
 export interface TextOwnProps {
   as?: 'span' | 'div' | 'label' | 'p'
@@ -16,7 +16,7 @@ export interface TextOwnProps {
   color?: TextColor
   variant?: TypographyVariant
   align?: 'left' | 'center' | 'right'
-  trim?: 'normal' | 'start' | 'end' | 'both'
+  trim?: TypographyTrim
   truncate?: boolean
   wrap?: 'wrap' | 'nowrap' | 'pretty' | 'balance'
   highContrast?: boolean

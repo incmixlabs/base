@@ -8,6 +8,7 @@ import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props
 import type { Color } from '@/theme/tokens'
 import { getResponsiveVariantClasses, typographyBreakpointKeys } from '../responsive'
 import { typographyTokens, type Weight } from '../tokens'
+import type { TypographyTrim } from '../typography.class'
 import {
   linkBase,
   linkBaseCls,
@@ -23,7 +24,6 @@ type LinkSize = (typeof linkPropDefs.size.values)[number]
 type LinkUnderline = (typeof linkPropDefs.underline.values)[number]
 
 type Wrap = 'wrap' | 'nowrap' | 'pretty' | 'balance'
-type Trim = 'normal' | 'start' | 'end' | 'both'
 
 export interface LinkProps extends Omit<React.ComponentPropsWithoutRef<'a'>, 'color'>, MarginProps {
   asChild?: boolean
@@ -34,7 +34,7 @@ export interface LinkProps extends Omit<React.ComponentPropsWithoutRef<'a'>, 'co
   weight?: Weight
   wrap?: Wrap
   truncate?: boolean
-  trim?: Trim
+  trim?: TypographyTrim
 }
 
 function resolveResponsiveEnum<T extends string>(

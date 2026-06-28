@@ -1,6 +1,7 @@
 import type { PropDef } from './prop-def'
 
 const leadingTrimValues = ['normal', 'start', 'end', 'both'] as const
+type LeadingTrim = (typeof leadingTrimValues)[number]
 
 const leadingTrimPropDef = {
   trim: {
@@ -9,7 +10,8 @@ const leadingTrimPropDef = {
     responsive: true,
   },
 } satisfies {
-  trim: PropDef<(typeof leadingTrimValues)[number]>
+  trim: PropDef<LeadingTrim>
 }
 
-export { leadingTrimPropDef }
+export type { LeadingTrim }
+export { leadingTrimPropDef, leadingTrimValues }

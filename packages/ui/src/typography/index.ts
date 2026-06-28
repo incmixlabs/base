@@ -19,7 +19,6 @@ export { Quote, type QuoteProps } from './quote/Quote'
 export { Strong, type StrongProps } from './strong/Strong'
 // Typography components
 export { Text, type TextProps } from './text/Text'
-
 // Typography tokens
 export {
   type TypographyColor,
@@ -27,3 +26,4 @@ export {
   typographyTokens,
   type Weight,
 } from './tokens'
+export type { TypographyTrim } from './typography.class'

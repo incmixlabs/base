@@ -6,7 +6,13 @@ import { normalizeBooleanPropValue } from '@/theme/props/prop-def'
 import { getResponsiveVariantClasses, typographyBreakpointKeys } from '../responsive'
 import type { TypographyColor, TypographyVariant } from '../tokens'
 import { type TypographySize, typographyTokens, type Weight } from '../tokens'
-import { headingBase, headingBySize, headingByWeight, headingSizeResponsive } from '../typography.class'
+import {
+  headingBase,
+  headingBySize,
+  headingByWeight,
+  headingSizeResponsive,
+  type TypographyTrim,
+} from '../typography.class'
 
 export interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
@@ -16,7 +22,7 @@ export interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
   color?: TypographyColor
   variant?: TypographyVariant
   align?: 'left' | 'center' | 'right'
-  trim?: 'normal' | 'start' | 'end' | 'both'
+  trim?: TypographyTrim
   truncate?: boolean
   wrap?: 'wrap' | 'nowrap' | 'pretty' | 'balance'
   highContrast?: boolean
