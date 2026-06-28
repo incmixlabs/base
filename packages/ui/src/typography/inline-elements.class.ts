@@ -1,5 +1,6 @@
 import { semanticColorKeys } from '../theme/props/color.prop'
 import { type Color, typographyBreakpointKeys } from '../theme/tokens'
+import { arbitraryDeclaration, arbitraryUtility, cssVar } from './class-utils'
 import type { TypographySize } from './tokens'
 
 type CodeVariant = 'solid' | 'soft' | 'outline' | 'ghost'
@@ -24,15 +25,28 @@ const responsiveClassName = (breakpoint: TypographyBreakpoint, className: string
     .map(token => `cq-${breakpoint}:${token}`)
     .join(' ')
 
+const sizeTokenVar = (token: 'font-size' | 'letter-spacing' | 'line-height', size: TypographySize) =>
+  cssVar(`${token}-${size}`)
+const semanticColorVar = (color: Color, token: string) => cssVar(`color-${color}-${token}`)
+
 const codeSizeClassName = (size: TypographySize) =>
   [
-    `[font-size:calc(var(--font-size-${size})*0.95*var(--theme-typography-ui-scale,1))]`,
-    `[line-height:calc(var(--line-height-${size})*var(--theme-typography-ui-leading,1))]`,
-    `[letter-spacing:calc(var(--code-letter-spacing)_+_var(--letter-spacing-${size}))]`,
+    arbitraryDeclaration(
+      'font-size',
+      `calc(${sizeTokenVar('font-size', size)}*0.95*var(--theme-typography-ui-scale,1))`,
+    ),
+    arbitraryDeclaration(
+      'line-height',
+      `calc(${sizeTokenVar('line-height', size)}*var(--theme-typography-ui-leading,1))`,
+    ),
+    arbitraryDeclaration(
+      'letter-spacing',
+      `calc(var(--code-letter-spacing)_+_${sizeTokenVar('letter-spacing', size)})`,
+    ),
   ].join(' ')
 
 const createCodeColorClasses = (color: Color): Record<CodeVariant, string> => ({
-  solid: `bg-${color}-solid border-[var(--color-${color}-primary)] text-${color}-contrast`,
+  solid: `bg-${color}-solid ${arbitraryUtility('border', semanticColorVar(color, 'primary'))} text-${color}-contrast`,
   soft: `bg-${color}-soft border-${color} text-${color}`,
   outline: `bg-transparent border-${color} text-${color}`,
   ghost: `bg-transparent border-transparent text-${color} pt-0 pb-0 pl-0 pr-0 rounded-none`,

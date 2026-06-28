@@ -1,5 +1,6 @@
 import { semanticColorKeys } from '../../theme/props/color.prop'
 import { type Color, typographyBreakpointKeys } from '../../theme/tokens'
+import { arbitraryDeclaration, arbitraryUtility, arbitraryVariant, cssVar } from '../class-utils'
 import type { TypographySize } from '../tokens'
 
 type LinkSize = TypographySize
@@ -8,11 +9,19 @@ type TypographyBreakpoint = (typeof typographyBreakpointKeys)[number]
 
 const linkSizeValues = ['xs', 'sm', 'md', 'lg', 'xl', '2x', '3x', '4x', '5x'] as const satisfies readonly LinkSize[]
 
+const sizeTokenVar = (token: 'font-size' | 'letter-spacing' | 'line-height', size: LinkSize) =>
+  cssVar(`${token}-${size}`)
+const semanticColorVar = (color: Color, token: string) => cssVar(`color-${color}-${token}`)
+const hoverNotDisabled = (className: string) => arbitraryVariant('&:hover:not(:disabled)', className)
+
 const linkSizeClassName = (size: LinkSize) =>
   [
-    `[font-size:calc(var(--font-size-${size})*var(--theme-typography-text-scale,1))]`,
-    `[line-height:calc(var(--line-height-${size})*var(--theme-typography-text-leading,1))]`,
-    `[letter-spacing:var(--letter-spacing-${size})]`,
+    arbitraryDeclaration('font-size', `calc(${sizeTokenVar('font-size', size)}*var(--theme-typography-text-scale,1))`),
+    arbitraryDeclaration(
+      'line-height',
+      `calc(${sizeTokenVar('line-height', size)}*var(--theme-typography-text-leading,1))`,
+    ),
+    arbitraryDeclaration('letter-spacing', sizeTokenVar('letter-spacing', size)),
   ].join(' ')
 
 const responsiveClassName = (breakpoint: TypographyBreakpoint, className: string) =>
@@ -50,9 +59,9 @@ export const linkByUnderline = {
 const linkColorClassName = (color: Color) =>
   [
     `text-${color}`,
-    `[text-decoration-color:var(--color-${color}-border)]`,
-    `[&:hover:not(:disabled)]:text-[var(--color-${color}-primary)]`,
-    `[&:hover:not(:disabled)]:[text-decoration-color:var(--color-${color}-primary)]`,
+    arbitraryDeclaration('text-decoration-color', semanticColorVar(color, 'border')),
+    hoverNotDisabled(arbitraryUtility('text', semanticColorVar(color, 'primary'))),
+    hoverNotDisabled(arbitraryDeclaration('text-decoration-color', semanticColorVar(color, 'primary'))),
   ].join(' ')
 
 export const linkByColor = Object.fromEntries(

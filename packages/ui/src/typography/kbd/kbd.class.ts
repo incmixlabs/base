@@ -1,4 +1,5 @@
 import { typographyBreakpointKeys } from '../../theme/tokens'
+import { arbitraryDeclaration, cssVar } from '../class-utils'
 import type { TypographySize } from '../tokens'
 
 type KbdSize = TypographySize
@@ -7,10 +8,15 @@ type TypographyBreakpoint = (typeof typographyBreakpointKeys)[number]
 
 const kbdSizeValues = ['xs', 'sm', 'md', 'lg', 'xl', '2x', '3x', '4x', '5x'] as const satisfies readonly KbdSize[]
 
+const sizeTokenVar = (token: 'font-size' | 'letter-spacing', size: KbdSize) => cssVar(`${token}-${size}`)
+
 const kbdSizeClassName = (size: KbdSize) =>
   [
-    `[font-size:calc(var(--font-size-${size})*0.8*var(--theme-typography-ui-scale,1))]`,
-    `[letter-spacing:var(--letter-spacing-${size})]`,
+    arbitraryDeclaration(
+      'font-size',
+      `calc(${sizeTokenVar('font-size', size)}*0.8*var(--theme-typography-ui-scale,1))`,
+    ),
+    arbitraryDeclaration('letter-spacing', sizeTokenVar('letter-spacing', size)),
   ].join(' ')
 
 const responsiveClassName = (breakpoint: TypographyBreakpoint, className: string) =>

@@ -1,4 +1,5 @@
 import { typographyBreakpointKeys } from '../theme/tokens'
+import { arbitraryDeclaration, cssVar } from './class-utils'
 import type { TypographySize, Weight } from './tokens'
 
 type TypographyBreakpoint = (typeof typographyBreakpointKeys)[number]
@@ -40,21 +41,42 @@ const responsiveClassName = (breakpoint: TypographyBreakpoint, className: string
     .map(token => `cq-${breakpoint}:${token}`)
     .join(' ')
 
+const sizeTokenVar = (token: 'font-size' | 'letter-spacing' | 'line-height', size: TypographySize) =>
+  cssVar(`${token}-${size}`)
+
 const textSizeClassName = (size: TypographySize) =>
   [
-    `[font-size:calc(var(--font-size-${size})*var(--theme-typography-text-scale,1))]`,
-    `[line-height:calc(var(--line-height-${size})*var(--theme-typography-text-leading,1))]`,
-    `[letter-spacing:var(--letter-spacing-${size})]`,
-    `[--line-height:calc(var(--line-height-${size})*var(--theme-typography-text-leading,1))]`,
-    `[--letter-spacing:var(--letter-spacing-${size})]`,
+    arbitraryDeclaration('font-size', `calc(${sizeTokenVar('font-size', size)}*var(--theme-typography-text-scale,1))`),
+    arbitraryDeclaration(
+      'line-height',
+      `calc(${sizeTokenVar('line-height', size)}*var(--theme-typography-text-leading,1))`,
+    ),
+    arbitraryDeclaration('letter-spacing', sizeTokenVar('letter-spacing', size)),
+    arbitraryDeclaration(
+      '--line-height',
+      `calc(${sizeTokenVar('line-height', size)}*var(--theme-typography-text-leading,1))`,
+    ),
+    arbitraryDeclaration('--letter-spacing', sizeTokenVar('letter-spacing', size)),
   ].join(' ')
 
 const headingSizeClassName = (size: TypographySize) =>
   [
-    `[font-size:calc(var(--font-size-${size})*var(--heading-font-size-adjust,1)*var(--theme-typography-heading-scale,1))]`,
-    `[line-height:calc(${headingLineHeightRem[size]}*var(--theme-typography-heading-leading,1))]`,
-    `[letter-spacing:calc(var(--letter-spacing-${size})_+_var(--heading-letter-spacing,0em))]`,
-    `[--letter-spacing:calc(var(--letter-spacing-${size})_+_var(--heading-letter-spacing,0em))]`,
+    arbitraryDeclaration(
+      'font-size',
+      `calc(${sizeTokenVar('font-size', size)}*var(--heading-font-size-adjust,1)*var(--theme-typography-heading-scale,1))`,
+    ),
+    arbitraryDeclaration(
+      'line-height',
+      `calc(${headingLineHeightRem[size]}*var(--theme-typography-heading-leading,1))`,
+    ),
+    arbitraryDeclaration(
+      'letter-spacing',
+      `calc(${sizeTokenVar('letter-spacing', size)}_+_var(--heading-letter-spacing,0em))`,
+    ),
+    arbitraryDeclaration(
+      '--letter-spacing',
+      `calc(${sizeTokenVar('letter-spacing', size)}_+_var(--heading-letter-spacing,0em))`,
+    ),
   ].join(' ')
 
 export const textBase = '[font-family:var(--default-font-family)] [font-style:var(--default-font-style)] m-0'
