@@ -39,7 +39,7 @@ describe('DataList', () => {
       '[--af-datalist-leading-trim-start:initial]',
       '[--af-datalist-leading-trim-end:initial]',
       'gap-4',
-      '[--line-height:calc(1.5rem*var(--theme-typography-text-leading,1))]',
+      '[--af-datalist-line-height:calc(1.5rem*var(--theme-typography-text-leading,1))]',
     ])
     expect(root).toHaveClass(getTextSizeClasses('md'))
     expectClassTokens(item?.className, ['grid', '[grid-template-columns:inherit]', 'col-span-2', 'gap-4'])
@@ -67,10 +67,10 @@ describe('DataList', () => {
       'flex-col',
       'gap-3',
       'cq-md:gap-5',
-      '[--line-height:calc(1.25rem*var(--theme-typography-text-leading,1))]',
-      'cq-md:[--line-height:calc(1.625rem*var(--theme-typography-text-leading,1))]',
-      '[--af-datalist-leading-trim-start:calc(var(--default-leading-trim-start)-var(--line-height)/2)]',
-      '[--af-datalist-leading-trim-end:calc(var(--default-leading-trim-end)-var(--line-height)/2)]',
+      '[--af-datalist-line-height:calc(1.25rem*var(--theme-typography-text-leading,1))]',
+      'cq-md:[--af-datalist-line-height:calc(1.625rem*var(--theme-typography-text-leading,1))]',
+      '[--af-datalist-leading-trim-start:calc(var(--default-leading-trim-start)-var(--af-datalist-line-height)/2)]',
+      '[--af-datalist-leading-trim-end:calc(var(--default-leading-trim-end)-var(--af-datalist-line-height)/2)]',
     ])
     expect(root).toHaveClass(getTextSizeClasses({ initial: 'sm', md: 'lg' }, 'sm'))
     expectClassTokens(item?.className, [

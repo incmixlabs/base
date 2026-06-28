@@ -125,7 +125,7 @@ const DataListItem = React.forwardRef<HTMLDivElement, DataListItemProps>(
   ({ align = 'baseline', className, children, style, ...props }, ref) => {
     const { orientation, size } = React.useContext(DataListContext)
     const rowAlign = align === 'between' ? align : null
-    const itemAlign = isCrossAxisAlign(align) ? align : null
+    const itemAlign = isCrossAxisAlign(align) ? align : 'baseline'
     const itemGapClasses = orientation === 'horizontal' ? getDataListItemGapClasses(size) : null
     const rowStyle =
       orientation === 'horizontal' && rowAlign

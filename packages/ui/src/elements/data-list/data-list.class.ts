@@ -14,7 +14,7 @@ const dataListLineHeightRemBySize = {
 } as const satisfies Record<DataListSize, string>
 
 function dataListLineHeightClass(size: DataListSize) {
-  return `[--line-height:calc(${dataListLineHeightRemBySize[size]}*var(--theme-typography-text-leading,1))]`
+  return `[--af-datalist-line-height:calc(${dataListLineHeightRemBySize[size]}*var(--theme-typography-text-leading,1))]`
 }
 
 function dataListResponsiveSizeMap<const TMap extends Record<DataListSize, string>>(map: TMap) {
@@ -55,13 +55,13 @@ export const dataListRootByOrientation = {
 export const dataListRootByTrim = {
   normal: '[--af-datalist-leading-trim-start:initial] [--af-datalist-leading-trim-end:initial]',
   start:
-    '[--af-datalist-leading-trim-start:calc(var(--default-leading-trim-start)-var(--line-height)/2)] [--af-datalist-leading-trim-end:initial]',
-  end: '[--af-datalist-leading-trim-start:initial] [--af-datalist-leading-trim-end:calc(var(--default-leading-trim-end)-var(--line-height)/2)]',
-  both: '[--af-datalist-leading-trim-start:calc(var(--default-leading-trim-start)-var(--line-height)/2)] [--af-datalist-leading-trim-end:calc(var(--default-leading-trim-end)-var(--line-height)/2)]',
+    '[--af-datalist-leading-trim-start:calc(var(--default-leading-trim-start)-var(--af-datalist-line-height)/2)] [--af-datalist-leading-trim-end:initial]',
+  end: '[--af-datalist-leading-trim-start:initial] [--af-datalist-leading-trim-end:calc(var(--default-leading-trim-end)-var(--af-datalist-line-height)/2)]',
+  both: '[--af-datalist-leading-trim-start:calc(var(--default-leading-trim-start)-var(--af-datalist-line-height)/2)] [--af-datalist-leading-trim-end:calc(var(--default-leading-trim-end)-var(--af-datalist-line-height)/2)]',
 } as const
 
 export const dataListItemBase =
-  "[--af-datalist-value-trim-start:-0.25em] [--af-datalist-value-trim-end:-0.25em] [--af-datalist-first-value-trim-start:0px] [--af-datalist-last-value-trim-end:0px] [&:first-child]:mt-[var(--af-datalist-leading-trim-start)] [&:last-child]:mb-[var(--af-datalist-leading-trim-end)] [&:first-child>[data-slot='data-list-value']]:mt-[var(--af-datalist-first-value-trim-start)] [&:last-child>[data-slot='data-list-value']]:mb-[var(--af-datalist-last-value-trim-end)]"
+  "[&:first-child]:mt-[var(--af-datalist-leading-trim-start)] [&:last-child]:mb-[var(--af-datalist-leading-trim-end)] [&:first-child>[data-slot='data-list-value']]:mt-[var(--af-datalist-first-value-trim-start)] [&:last-child>[data-slot='data-list-value']]:mb-[var(--af-datalist-last-value-trim-end)]"
 
 export const dataListItemByOrientation = {
   horizontal: 'grid [grid-template-columns:inherit] col-span-2',
