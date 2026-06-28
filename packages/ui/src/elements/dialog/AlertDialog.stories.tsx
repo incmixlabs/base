@@ -73,7 +73,7 @@ export const DeleteConfirmation: StoryObj = {
         </AlertDialog.Description>
         <div className="flex justify-end gap-3 mt-6">
           <AlertDialog.Cancel>Keep Item</AlertDialog.Cancel>
-          <AlertDialog.Action className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+          <AlertDialog.Action className="border-error bg-error-solid text-error-contrast hover:brightness-[0.96]">
             Delete
           </AlertDialog.Action>
         </div>

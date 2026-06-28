@@ -19,17 +19,17 @@ import {
   dialogBackdropBaseCls,
   dialogBackdropTransition,
   dialogBackdropVariants,
-  dialogBody,
+  dialogBodyBySize,
   dialogContentByAlign,
   dialogContentBySize,
-  dialogDescription,
-  dialogFooter,
-  dialogHeader,
+  dialogDescriptionBySize,
+  dialogFooterBySize,
+  dialogHeaderBySize,
   dialogPopupBase,
   dialogPopupBaseCls,
   dialogPopupTransition,
   dialogPopupVariants,
-  dialogTitle,
+  dialogTitleBySize,
 } from './dialog.class'
 import {
   type DialogBodyProps,
@@ -209,8 +209,14 @@ DialogContent.displayName = 'Dialog.Content'
 // ============================================================================
 
 const DialogHeader = React.forwardRef<HTMLDivElement, DialogHeaderProps>(({ className, children, ...props }, ref) => {
+  const size = React.useContext(DialogSizeContext)
+
   return (
-    <Column ref={ref as React.Ref<HTMLElement>} className={cn('gap-1.5', dialogHeader, className)} {...props}>
+    <Column
+      ref={ref as React.Ref<HTMLElement>}
+      className={cn('gap-1.5', dialogHeaderBySize[size], className)}
+      {...props}
+    >
       {children}
     </Column>
   )
@@ -223,8 +229,10 @@ DialogHeader.displayName = 'Dialog.Header'
 // ============================================================================
 
 const DialogBody = React.forwardRef<HTMLDivElement, DialogBodyProps>(({ className, children, ...props }, ref) => {
+  const size = React.useContext(DialogSizeContext)
+
   return (
-    <div ref={ref} className={cn(dialogBody, className)} {...props}>
+    <div ref={ref} className={cn(dialogBodyBySize[size], className)} {...props}>
       {children}
     </div>
   )
@@ -237,12 +245,14 @@ DialogBody.displayName = 'Dialog.Body'
 // ============================================================================
 
 const DialogFooter = React.forwardRef<HTMLDivElement, DialogFooterProps>(({ className, children, ...props }, ref) => {
+  const size = React.useContext(DialogSizeContext)
+
   return (
     <Flex
       ref={ref as React.Ref<HTMLElement>}
       direction={{ initial: 'column-reverse', sm: 'row' }}
       justify={{ sm: 'end' }}
-      className={cn(dialogFooter, className)}
+      className={cn(dialogFooterBySize[size], className)}
       {...props}
     >
       {children}
@@ -257,8 +267,14 @@ DialogFooter.displayName = 'Dialog.Footer'
 // ============================================================================
 
 const DialogTitle = React.forwardRef<HTMLHeadingElement, DialogTitleProps>(({ className, children, ...props }, ref) => {
+  const size = React.useContext(DialogSizeContext)
+
   return (
-    <DialogPrimitive.Title ref={ref} className={cn(dialogTitle, 'font-semibold text-foreground', className)} {...props}>
+    <DialogPrimitive.Title
+      ref={ref}
+      className={cn(dialogTitleBySize[size], 'm-0 font-semibold text-neutral', className)}
+      {...props}
+    >
       {children}
     </DialogPrimitive.Title>
   )
@@ -272,11 +288,13 @@ DialogTitle.displayName = 'Dialog.Title'
 
 const DialogDescription = React.forwardRef<HTMLDivElement, DialogDescriptionProps>(
   ({ className, children, ...props }, ref) => {
+    const size = React.useContext(DialogSizeContext)
+
     return (
       <DialogPrimitive.Description
         ref={ref as React.Ref<HTMLDivElement>}
         render={<div />}
-        className={cn(dialogDescription, 'text-muted-foreground', className)}
+        className={cn(dialogDescriptionBySize[size], 'text-slate', className)}
         {...props}
       >
         {children}

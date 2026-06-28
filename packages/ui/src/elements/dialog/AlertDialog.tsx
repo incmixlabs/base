@@ -24,20 +24,20 @@ import {
   alertDialogContentPropDefs,
 } from './alert-dialog.props'
 import {
-  alertDialogFooter,
+  alertDialogFooterBySize,
   dialogBackdropBase,
   dialogBackdropBaseCls,
   dialogBackdropTransition,
   dialogBackdropVariants,
   dialogContentByAlign,
   dialogContentBySize,
-  dialogContentPadding,
-  dialogDescription,
+  dialogContentPaddingBySize,
+  dialogDescriptionBySize,
   dialogPopupBase,
   dialogPopupBaseCls,
   dialogPopupTransition,
   dialogPopupVariants,
-  dialogTitle,
+  dialogTitleBySize,
 } from './dialog.class'
 
 export type { AlertDialogProps } from './alert-dialog.props'
@@ -46,6 +46,7 @@ export type { AlertDialogProps } from './alert-dialog.props'
 // ============================================================================
 
 const AlertDialogOpenContext = React.createContext<boolean>(false)
+const AlertDialogSizeContext = React.createContext<AlertDialogContentSize>('md')
 
 const AlertDialogRoot: React.FC<AlertDialogRootProps> = ({ open: openProp, onOpenChange, defaultOpen, children }) => {
   const isControlled = openProp !== undefined
@@ -125,50 +126,52 @@ const AlertDialogContent = React.forwardRef<HTMLDivElement, AlertDialogContentPr
     const isOpen = React.useContext(AlertDialogOpenContext)
 
     return (
-      <AnimatePresence>
-        {isOpen && (
-          <AlertDialogPrimitive.Portal keepMounted container={containerProp ?? themePortalContainer}>
-            <AlertDialogPrimitive.Backdrop
-              render={
-                <m.div
-                  key="alert-dialog-backdrop"
-                  variants={dialogBackdropVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  transition={dialogBackdropTransition}
-                />
-              }
-              className={cn(dialogBackdropBaseCls, dialogBackdropBase)}
-            />
-            <AlertDialogPrimitive.Popup
-              ref={ref}
-              render={
-                <m.div
-                  key="alert-dialog-popup"
-                  variants={dialogPopupVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  transition={dialogPopupTransition}
-                />
-              }
-              className={cn(
-                dialogPopupBaseCls,
-                dialogPopupBase,
-                dialogContentPadding,
-                dialogContentBySize[resolvedSize],
-                dialogContentByAlign[resolvedAlign],
-                className,
-              )}
-              style={popupStyle}
-              {...props}
-            >
-              {children}
-            </AlertDialogPrimitive.Popup>
-          </AlertDialogPrimitive.Portal>
-        )}
-      </AnimatePresence>
+      <AlertDialogSizeContext.Provider value={resolvedSize}>
+        <AnimatePresence>
+          {isOpen && (
+            <AlertDialogPrimitive.Portal keepMounted container={containerProp ?? themePortalContainer}>
+              <AlertDialogPrimitive.Backdrop
+                render={
+                  <m.div
+                    key="alert-dialog-backdrop"
+                    variants={dialogBackdropVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    transition={dialogBackdropTransition}
+                  />
+                }
+                className={cn(dialogBackdropBaseCls, dialogBackdropBase)}
+              />
+              <AlertDialogPrimitive.Popup
+                ref={ref}
+                render={
+                  <m.div
+                    key="alert-dialog-popup"
+                    variants={dialogPopupVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    transition={dialogPopupTransition}
+                  />
+                }
+                className={cn(
+                  dialogPopupBaseCls,
+                  dialogPopupBase,
+                  dialogContentPaddingBySize[resolvedSize],
+                  dialogContentBySize[resolvedSize],
+                  dialogContentByAlign[resolvedAlign],
+                  className,
+                )}
+                style={popupStyle}
+                {...props}
+              >
+                {children}
+              </AlertDialogPrimitive.Popup>
+            </AlertDialogPrimitive.Portal>
+          )}
+        </AnimatePresence>
+      </AlertDialogSizeContext.Provider>
     )
   },
 )
@@ -181,10 +184,12 @@ AlertDialogContent.displayName = 'AlertDialog.Content'
 
 const AlertDialogTitle = React.forwardRef<HTMLHeadingElement, AlertDialogTitleProps>(
   ({ className, children, ...props }, ref) => {
+    const size = React.useContext(AlertDialogSizeContext)
+
     return (
       <AlertDialogPrimitive.Title
         ref={ref}
-        className={cn(dialogTitle, 'font-semibold text-foreground', className)}
+        className={cn(dialogTitleBySize[size], 'm-0 font-semibold text-neutral', className)}
         {...props}
       >
         {children}
@@ -201,11 +206,13 @@ AlertDialogTitle.displayName = 'AlertDialog.Title'
 
 const AlertDialogDescription = React.forwardRef<HTMLDivElement, AlertDialogDescriptionProps>(
   ({ className, children, ...props }, ref) => {
+    const size = React.useContext(AlertDialogSizeContext)
+
     return (
       <AlertDialogPrimitive.Description
         ref={ref as React.Ref<HTMLDivElement>}
         render={<div />}
-        className={cn(dialogDescription, 'mt-2 text-muted-foreground', className)}
+        className={cn(dialogDescriptionBySize[size], 'mt-2 text-slate', className)}
         {...props}
       >
         {children}
@@ -222,12 +229,14 @@ AlertDialogDescription.displayName = 'AlertDialog.Description'
 
 const AlertDialogFooter = React.forwardRef<HTMLDivElement, AlertDialogFooterProps>(
   ({ className, children, ...props }, ref) => {
+    const size = React.useContext(AlertDialogSizeContext)
+
     return (
       <Row
         ref={ref as React.Ref<HTMLElement>}
         justify="end"
         mt="5"
-        className={cn(alertDialogFooter, className)}
+        className={cn(alertDialogFooterBySize[size], className)}
         {...props}
       >
         {children}
@@ -260,11 +269,11 @@ const AlertDialogAction = React.forwardRef<HTMLButtonElement, AlertDialogActionP
       <AlertDialogPrimitive.Close
         ref={ref}
         className={cn(
-          'inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium',
-          'bg-primary text-primary-foreground hover:bg-primary/90',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+          'inline-flex items-center justify-center rounded-md border border-primary px-4 py-2 text-sm font-medium',
+          'bg-primary-solid text-primary-contrast hover:brightness-[0.96] active:brightness-[0.92]',
+          'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
           'disabled:pointer-events-none disabled:opacity-50',
-          'transition-colors',
+          'transition-[background-color,color,border-color,box-shadow,filter]',
           className,
         )}
         {...props}
@@ -299,11 +308,11 @@ const AlertDialogCancel = React.forwardRef<HTMLButtonElement, AlertDialogCancelP
       <AlertDialogPrimitive.Close
         ref={ref}
         className={cn(
-          'inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium',
-          'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+          'inline-flex items-center justify-center rounded-md border border-neutral px-4 py-2 text-sm font-medium',
+          'bg-transparent text-neutral hover:bg-neutral-soft active:brightness-[0.98]',
+          'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
           'disabled:pointer-events-none disabled:opacity-50',
-          'transition-colors',
+          'transition-[background-color,color,border-color,box-shadow,filter]',
           className,
         )}
         {...props}
