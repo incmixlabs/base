@@ -1,9 +1,11 @@
+import { type LeadingTrim, leadingTrimValues } from '../theme/props/leading-trim.prop'
 import { typographyBreakpointKeys } from '../theme/tokens'
 import { arbitraryDeclaration, cssVar } from './class-utils'
 import type { TypographySize, Weight } from './tokens'
 
 type TypographyBreakpoint = (typeof typographyBreakpointKeys)[number]
-type TypographyTrim = 'normal' | 'start' | 'end' | 'both'
+export const typographyTrimValues = leadingTrimValues
+export type TypographyTrim = LeadingTrim
 
 const typographySizeValues = [
   'xs',

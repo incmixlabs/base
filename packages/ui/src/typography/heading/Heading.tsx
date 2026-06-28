@@ -11,6 +11,7 @@ import {
   headingBySize,
   headingByWeight,
   headingSizeResponsive,
+  type TypographyTrim,
   typographyTrimByTrim,
 } from '../typography.class'
 
@@ -22,7 +23,7 @@ export interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
   color?: TypographyColor
   variant?: TypographyVariant
   align?: 'left' | 'center' | 'right'
-  trim?: 'normal' | 'start' | 'end' | 'both'
+  trim?: TypographyTrim
   truncate?: boolean
   wrap?: 'wrap' | 'nowrap' | 'pretty' | 'balance'
   highContrast?: boolean

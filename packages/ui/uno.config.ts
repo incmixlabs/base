@@ -100,6 +100,23 @@ import { tooltipContentBase, tooltipPositionerBase } from './src/elements/toolti
 import { aspectRatioByRatio } from './src/layouts/aspect-ratio/aspect-ratio.class'
 import { boxRootBase, boxSurfaceColorClassNames } from './src/layouts/box/box.class'
 import {
+  commandDialogContent,
+  commandDialogRoot,
+  commandEmptyState,
+  commandGroup,
+  commandInput,
+  commandInputRow,
+  commandItem,
+  commandItemDescription,
+  commandItemLabel,
+  commandItemText,
+  commandList,
+  commandSearchIcon,
+  commandSearchTrigger,
+  shortcutKey,
+  shortcutRow,
+} from './src/layouts/command-search/command-search.class'
+import {
   containerAlignResponsive,
   containerBase,
   containerBySize,
@@ -360,6 +377,24 @@ export default defineConfig({
       ...classMapValues(containerDisplayResponsive),
       ...classMapValues(containerAlignResponsive),
       ...classMapValues(containerSizeResponsive),
+      // Command search styles
+      ...splitClasses([
+        commandDialogContent,
+        commandDialogRoot,
+        commandSearchTrigger,
+        commandInputRow,
+        commandSearchIcon,
+        commandInput,
+        commandList,
+        commandEmptyState,
+        commandGroup,
+        commandItem,
+        commandItemText,
+        commandItemLabel,
+        commandItemDescription,
+        shortcutRow,
+        shortcutKey,
+      ]),
       // Flex styles
       flexBaseCls,
       flexBase,
