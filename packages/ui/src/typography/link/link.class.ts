@@ -41,9 +41,9 @@ export const linkSizeResponsive = Object.fromEntries(
 ) as Record<TypographyBreakpoint, Record<LinkSize, string>>
 
 export const linkByUnderline = {
-  auto: 'hover:underline',
+  auto: '[@media_(hover:_hover)]:hover:underline',
   always: 'underline',
-  hover: 'hover:underline',
+  hover: '[@media_(hover:_hover)]:hover:underline',
   none: 'no-underline',
 } as const satisfies Record<LinkUnderline, string>
 
@@ -51,8 +51,8 @@ const linkColorClassName = (color: Color) =>
   [
     `text-${color}`,
     `[text-decoration-color:var(--color-${color}-border)]`,
-    `hover:text-[var(--color-${color}-primary)]`,
-    `hover:[text-decoration-color:var(--color-${color}-primary)]`,
+    `[&:hover:not(:disabled)]:text-[var(--color-${color}-primary)]`,
+    `[&:hover:not(:disabled)]:[text-decoration-color:var(--color-${color}-primary)]`,
   ].join(' ')
 
 export const linkByColor = Object.fromEntries(

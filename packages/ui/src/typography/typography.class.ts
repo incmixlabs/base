@@ -53,8 +53,8 @@ const headingSizeClassName = (size: TypographySize) =>
   [
     `[font-size:calc(var(--font-size-${size})*var(--heading-font-size-adjust,1)*var(--theme-typography-heading-scale,1))]`,
     `[line-height:calc(${headingLineHeightRem[size]}*var(--theme-typography-heading-leading,1))]`,
-    `[letter-spacing:calc(var(--letter-spacing-${size})+var(--heading-letter-spacing,0em))]`,
-    `[--letter-spacing:calc(var(--letter-spacing-${size})+var(--heading-letter-spacing,0em))]`,
+    `[letter-spacing:calc(var(--letter-spacing-${size})_+_var(--heading-letter-spacing,0em))]`,
+    `[--letter-spacing:calc(var(--letter-spacing-${size})_+_var(--heading-letter-spacing,0em))]`,
   ].join(' ')
 
 export const textBase = '[font-family:var(--default-font-family)] [font-style:var(--default-font-style)] m-0'

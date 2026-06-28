@@ -28,7 +28,7 @@ const codeSizeClassName = (size: TypographySize) =>
   [
     `[font-size:calc(var(--font-size-${size})*0.95*var(--theme-typography-ui-scale,1))]`,
     `[line-height:calc(var(--line-height-${size})*var(--theme-typography-ui-leading,1))]`,
-    `[letter-spacing:calc(var(--code-letter-spacing)+var(--letter-spacing-${size}))]`,
+    `[letter-spacing:calc(var(--code-letter-spacing)_+_var(--letter-spacing-${size}))]`,
   ].join(' ')
 
 const createCodeColorClasses = (color: Color): Record<CodeVariant, string> => ({
@@ -39,13 +39,13 @@ const createCodeColorClasses = (color: Color): Record<CodeVariant, string> => ({
 })
 
 export const strongBase =
-  '[font-family:var(--strong-font-family)] [font-size:calc(var(--strong-font-size-adjust)*1em)] [font-style:var(--strong-font-style)] [font-weight:var(--strong-font-weight)] [letter-spacing:calc(var(--strong-letter-spacing)+var(--letter-spacing,var(--default-letter-spacing)))]'
+  '[font-family:var(--strong-font-family)] [font-size:calc(var(--strong-font-size-adjust)*1em)] [font-style:var(--strong-font-style)] [font-weight:var(--strong-font-weight)] [letter-spacing:calc(var(--strong-letter-spacing)_+_var(--letter-spacing,var(--default-letter-spacing)))]'
 
 export const emBase =
-  'box-border [font-family:var(--em-font-family)] [font-size:calc(var(--em-font-size-adjust)*1em)] [font-style:var(--em-font-style)] [font-weight:var(--em-font-weight)] leading-[1.25] [letter-spacing:calc(var(--em-letter-spacing)+var(--letter-spacing,var(--default-letter-spacing)))] [color:inherit]'
+  'box-border [font-family:var(--em-font-family)] [font-size:calc(var(--em-font-size-adjust)*1em)] [font-style:var(--em-font-style)] [font-weight:var(--em-font-weight)] leading-[1.25] [letter-spacing:calc(var(--em-letter-spacing)_+_var(--letter-spacing,var(--default-letter-spacing)))] [color:inherit]'
 
 export const quoteBase =
-  'box-border [font-family:var(--quote-font-family)] [font-size:calc(var(--quote-font-size-adjust)*1em)] [font-style:var(--quote-font-style)] [font-weight:var(--quote-font-weight)] leading-[1.25] [letter-spacing:calc(var(--quote-letter-spacing)+var(--letter-spacing,var(--default-letter-spacing)))] [color:inherit]'
+  'box-border [font-family:var(--quote-font-family)] [font-size:calc(var(--quote-font-size-adjust)*1em)] [font-style:var(--quote-font-style)] [font-weight:var(--quote-font-weight)] leading-[1.25] [letter-spacing:calc(var(--quote-letter-spacing)_+_var(--letter-spacing,var(--default-letter-spacing)))] [color:inherit]'
 
 export const codeBase =
   'inline-flex items-center box-border h-fit [font-family:var(--code-font-family,var(--font-mono,var(--font-geist-mono,ui-monospace,monospace)))] [font-style:var(--code-font-style)] [font-weight:var(--code-font-weight)] [letter-spacing:var(--code-letter-spacing)] rounded-[calc((0.5px_+_0.2em)_*_var(--radius-factor,1))] border border-solid pt-[var(--code-padding-top)] pb-[var(--code-padding-bottom)] pl-[var(--code-padding-left)] pr-[var(--code-padding-right)]'
