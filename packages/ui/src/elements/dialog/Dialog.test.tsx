@@ -34,8 +34,10 @@ const expectedDialogContentClasses = [
 ] as const
 
 function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
+  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
+
   for (const token of tokens) {
-    expect(className).toContain(token)
+    expect(classTokens).toContain(token)
   }
 }
 
