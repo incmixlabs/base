@@ -10,6 +10,13 @@ class ResizeObserverMock {
   disconnect() {}
 }
 
+function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
+  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
+  for (const token of tokens) {
+    expect(classTokens).toContain(token)
+  }
+}
+
 describe('CommandSearch', () => {
   beforeAll(() => {
     vi.stubGlobal('ResizeObserver', ResizeObserverMock)
@@ -53,6 +60,42 @@ describe('CommandSearch', () => {
 
     expect(screen.getByRole('option', { name: /Tokens/i })).toBeInTheDocument()
     expect(screen.queryByRole('option', { name: /Introduction/i })).not.toBeInTheDocument()
+  })
+
+  it('renders the Uno command-search class contract without legacy global classes', async () => {
+    const user = userEvent.setup()
+    const { container } = render(
+      <CommandSearchProvider
+        items={[
+          {
+            id: 'intro',
+            label: 'Introduction',
+            description: 'Project overview',
+            shortcut: ['⌘', 'K'],
+            onSelect: vi.fn(),
+          },
+        ]}
+      >
+        <CommandSearchInput triggerLabel="Search docs..." />
+      </CommandSearchProvider>,
+    )
+
+    const trigger = screen.getByRole('button', { name: /Search docs/i })
+    expectClassTokens(trigger.className, ['bg-neutral-surface', 'hover:bg-neutral-soft', 'text-neutral'])
+    expect(trigger.className).not.toContain('text-muted-foreground')
+
+    await user.click(trigger)
+
+    expectClassTokens(screen.getByRole('combobox').className, ['h-14', 'placeholder:text-neutral'])
+    expectClassTokens(screen.getByRole('listbox', { name: 'Command search results' }).className, [
+      'max-h-[50vh]',
+      '[&_[cmdk-list-sizer]]:flex',
+    ])
+    expectClassTokens(screen.getByRole('option', { name: /Introduction/i }).className, [
+      'data-[selected=true]:bg-slate-soft',
+      'data-[selected=true]:before:bg-primary-solid',
+    ])
+    expect(container.querySelector('[class*="af-command"], [class*="af-shortcut"]')).not.toBeInTheDocument()
   })
 
   it('supports keyboard navigation and executes the active item on enter', async () => {

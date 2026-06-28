@@ -4,12 +4,7 @@ import { CommandDialog, Command as CommandMenu } from 'cmdk-base'
 import { Search } from 'lucide-react'
 import * as React from 'react'
 import { Button } from '@/elements/button/Button'
-import {
-  dialogBackdropBase,
-  dialogBackdropBaseCls,
-  dialogPopupBase,
-  dialogPopupBaseCls,
-} from '@/elements/dialog/dialog.class'
+import { dialogBackdropBase, dialogBackdropBaseCls } from '@/elements/dialog/dialog.class'
 import { cn } from '@/lib/utils'
 import type { Color } from '@/theme/tokens'
 import { Kbd } from '@/typography/kbd/Kbd'
@@ -178,7 +173,7 @@ function CommandSearchDialog({ groups }: { groups: CommandGroupData[] }) {
       }}
       label="Command search"
       overlayClassName={cn(dialogBackdropBaseCls, dialogBackdropBase)}
-      contentClassName={cn(dialogPopupBaseCls, dialogPopupBase, commandDialogContent)}
+      contentClassName={commandDialogContent}
       className={commandDialogRoot}
       loop
     >
@@ -354,7 +349,7 @@ export function CommandSearchInput({ triggerLabel = 'Search...', className, colo
       title={triggerLabel}
       aria-label={triggerLabel}
       className={cn(
-        'w-9 min-w-9 justify-center rounded-xl border px-0 text-muted-foreground shadow-sm sm:w-auto sm:min-w-[240px] sm:justify-between sm:px-3',
+        'w-9 min-w-9 justify-center rounded-xl border px-0 text-neutral shadow-sm sm:w-auto sm:min-w-[240px] sm:justify-between sm:px-3',
         !color || color === 'neutral' ? commandSearchTrigger : null,
         className,
       )}
