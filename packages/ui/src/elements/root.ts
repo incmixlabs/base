@@ -165,7 +165,6 @@ export {
   type ScrollAreaWrapperProps,
   type ScrollAreaWrapperRenderItem,
 } from './scroll-area/ScrollAreaWrapper'
-export { Separator, type SeparatorProps, type SeparatorSize } from './separator/Separator'
 export { Sheet } from './sheet/Sheet'
 export { Skeleton, SkeletonAvatar, type SkeletonProps, SkeletonText } from './skeleton/Skeleton'
 export { Spinner, type SpinnerProps, type SpinnerSize } from './spinner/Spinner'

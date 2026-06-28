@@ -72,6 +72,21 @@ import {
   dialogTitleBySize,
 } from './src/elements/dialog/dialog.class'
 import {
+  dividerAlignEnd,
+  dividerAlignStart,
+  dividerBase,
+  dividerColorVariants,
+  dividerDefaultColor,
+  dividerHorizontal,
+  dividerHorizontalStructural,
+  dividerHorizontalWithContent,
+  dividerSizeVariants,
+  dividerVertical,
+  dividerVerticalStructural,
+  dividerVerticalWithContent,
+  dividerWithContent,
+} from './src/elements/divider/divider.class'
+import {
   floatingSurfaceArrowColorVariants,
   floatingSurfaceColorVariants,
   floatingSurfaceHighContrastArrowColorVariants,
@@ -234,6 +249,20 @@ export default defineConfig({
       ...Object.values(dataListLabelMinWidthBySize),
       ...classMapValues(dataListLabelMinWidthResponsive),
       dataListValueBase,
+      // Divider styles
+      dividerBase,
+      dividerDefaultColor,
+      dividerWithContent,
+      dividerAlignStart,
+      dividerAlignEnd,
+      dividerHorizontal,
+      dividerHorizontalStructural,
+      dividerHorizontalWithContent,
+      dividerVertical,
+      dividerVerticalStructural,
+      dividerVerticalWithContent,
+      ...classMapValues(dividerSizeVariants),
+      ...Object.values(dividerColorVariants),
       // Popover/Tooltip floating surface styles
       popoverContentBase,
       tooltipContentBase,
