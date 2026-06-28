@@ -46,7 +46,6 @@ export const EmbeddedResponsiveShell = React.forwardRef<HTMLDivElement, { width:
   ({ width, children }, ref) => {
     return (
       <Box
-        ref={ref}
         className={embeddedResponsiveShell}
         style={{
           width,
