@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Divider } from './Divider'
+import { Separator } from './Separator'
 
 function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
   const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
@@ -21,16 +21,16 @@ afterEach(() => {
   cleanup()
 })
 
-describe('Divider', () => {
-  it('renders a horizontal divider by default', () => {
-    render(<Divider data-testid="divider" />)
+describe('Separator', () => {
+  it('renders a horizontal separator by default', () => {
+    render(<Separator data-testid="separator" />)
 
-    const divider = screen.getByTestId('divider')
+    const separator = screen.getByTestId('separator')
 
-    expect(divider).toHaveAttribute('role', 'separator')
-    expect(divider).toHaveAttribute('aria-orientation', 'horizontal')
-    expect(divider).toHaveAttribute('data-orientation', 'horizontal')
-    expectClassTokens(divider.className, [
+    expect(separator).toHaveAttribute('role', 'separator')
+    expect(separator).toHaveAttribute('aria-orientation', 'horizontal')
+    expect(separator).toHaveAttribute('data-orientation', 'horizontal')
+    expectClassTokens(separator.className, [
       'flex',
       'items-center',
       'self-stretch',
@@ -46,30 +46,41 @@ describe('Divider', () => {
       'before:h-[0.125rem]',
       'after:h-[0.125rem]',
     ])
-    expectNoClassTokens(divider.className, ['gap-4', 'h-4', 'my-4'])
+    expectNoClassTokens(separator.className, ['gap-4', 'h-4', 'my-4'])
   })
 
-  it('renders children as divider label content', () => {
-    render(<Divider data-testid="divider">OR</Divider>)
+  it('renders children as separator label content', () => {
+    render(<Separator data-testid="separator">OR</Separator>)
 
-    const divider = screen.getByTestId('divider')
+    const separator = screen.getByTestId('separator')
 
     expect(screen.getByText('OR')).toBeInTheDocument()
-    expectClassTokens(divider.className, ['gap-4', 'h-4', 'my-4'])
+    expectClassTokens(separator.className, ['gap-4', 'h-4', 'my-4'])
+  })
+
+  it('can render as a decorative visual rule', () => {
+    render(<Separator decorative data-testid="separator" />)
+
+    const separator = screen.getByTestId('separator')
+
+    expect(separator).toHaveAttribute('role', 'presentation')
+    expect(separator).toHaveAttribute('aria-hidden', 'true')
+    expect(separator).not.toHaveAttribute('aria-orientation')
+    expect(separator).toHaveAttribute('data-orientation', 'horizontal')
   })
 
   it('applies vertical orientation and visual variants', () => {
     render(
-      <Divider data-testid="divider" orientation="vertical" size="lg" color="primary" align="start">
+      <Separator data-testid="separator" orientation="vertical" size="lg" color="primary" align="start">
         OR
-      </Divider>,
+      </Separator>,
     )
 
-    const divider = screen.getByTestId('divider')
+    const separator = screen.getByTestId('separator')
 
-    expect(divider).toHaveAttribute('data-orientation', 'vertical')
-    expect(divider).toHaveAttribute('aria-orientation', 'vertical')
-    expectClassTokens(divider.className, [
+    expect(separator).toHaveAttribute('data-orientation', 'vertical')
+    expect(separator).toHaveAttribute('aria-orientation', 'vertical')
+    expectClassTokens(separator.className, [
       'flex-col',
       'w-4',
       'mx-4',
@@ -81,7 +92,7 @@ describe('Divider', () => {
       'after:bg-primary-solid',
       'before:hidden',
     ])
-    expectNoClassTokens(divider.className, [
+    expectNoClassTokens(separator.className, [
       'before:bg-[color-mix(in_oklch,currentcolor_12%,transparent)]',
       'after:bg-[color-mix(in_oklch,currentcolor_12%,transparent)]',
     ])

@@ -7,7 +7,7 @@ import { AnimatePresence, m } from 'motion/react'
 import * as React from 'react'
 import { Badge } from '@/elements/badge/Badge'
 import { Button } from '@/elements/button/Button'
-import { Divider } from '@/elements/divider/Divider'
+import { Separator } from '@/elements/separator/Separator'
 import { Sheet } from '@/elements/sheet/Sheet'
 import { Skeleton } from '@/elements/skeleton/Skeleton'
 import { Surface } from '@/elements/surface/Surface'
@@ -445,9 +445,10 @@ function SidebarInput({ className, ...props }: React.ComponentProps<typeof TextF
   )
 }
 
-function SidebarSeparator({ className, ...props }: React.ComponentProps<typeof Divider>) {
+function SidebarSeparator({ className, ...props }: React.ComponentProps<typeof Separator>) {
   return (
-    <Divider
+    <Separator
+      decorative
       size="xs"
       data-slot="sidebar-separator"
       data-sidebar="separator"

@@ -72,21 +72,6 @@ import {
   dialogTitleBySize,
 } from './src/elements/dialog/dialog.class'
 import {
-  dividerAlignEnd,
-  dividerAlignStart,
-  dividerBase,
-  dividerColorVariants,
-  dividerDefaultColor,
-  dividerHorizontal,
-  dividerHorizontalStructural,
-  dividerHorizontalWithContent,
-  dividerSizeVariants,
-  dividerVertical,
-  dividerVerticalStructural,
-  dividerVerticalWithContent,
-  dividerWithContent,
-} from './src/elements/divider/divider.class'
-import {
   floatingSurfaceArrowColorVariants,
   floatingSurfaceColorVariants,
   floatingSurfaceHighContrastArrowColorVariants,
@@ -96,6 +81,21 @@ import {
   floatingSurfaceSizeVariants,
   popoverContentBase,
 } from './src/elements/popover/popover.class'
+import {
+  separatorAlignEnd,
+  separatorAlignStart,
+  separatorBase,
+  separatorColorVariants,
+  separatorDefaultColor,
+  separatorHorizontal,
+  separatorHorizontalStructural,
+  separatorHorizontalWithContent,
+  separatorSizeVariants,
+  separatorVertical,
+  separatorVerticalStructural,
+  separatorVerticalWithContent,
+  separatorWithContent,
+} from './src/elements/separator/separator.class'
 import { tooltipContentBase, tooltipPositionerBase } from './src/elements/tooltip/tooltip.class'
 import { aspectRatioByRatio } from './src/layouts/aspect-ratio/aspect-ratio.class'
 import { boxRootBase, boxSurfaceColorClassNames } from './src/layouts/box/box.class'
@@ -326,20 +326,22 @@ export default defineConfig({
       ...Object.values(dataListLabelMinWidthBySize),
       ...classMapValues(dataListLabelMinWidthResponsive),
       dataListValueBase,
-      // Divider styles
-      dividerBase,
-      dividerDefaultColor,
-      dividerWithContent,
-      dividerAlignStart,
-      dividerAlignEnd,
-      dividerHorizontal,
-      dividerHorizontalStructural,
-      dividerHorizontalWithContent,
-      dividerVertical,
-      dividerVerticalStructural,
-      dividerVerticalWithContent,
-      ...classMapValues(dividerSizeVariants),
-      ...Object.values(dividerColorVariants),
+      // Separator styles
+      ...splitClasses([
+        separatorBase,
+        separatorDefaultColor,
+        separatorWithContent,
+        separatorAlignStart,
+        separatorAlignEnd,
+        separatorHorizontal,
+        separatorHorizontalStructural,
+        separatorHorizontalWithContent,
+        separatorVertical,
+        separatorVerticalStructural,
+        separatorVerticalWithContent,
+        ...classMapValues(separatorSizeVariants),
+        ...Object.values(separatorColorVariants),
+      ]),
       // Popover/Tooltip floating surface styles
       popoverContentBase,
       tooltipContentBase,
