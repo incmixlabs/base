@@ -2,8 +2,6 @@ import type { AspectRatioOwnProps } from './aspect-ratio.props'
 
 type Ratio = NonNullable<AspectRatioOwnProps['ratio']>
 
-export const aspectRatioCustom = 'af-aspect-ratio-custom'
-
 export const aspectRatioByRatio: Record<Ratio, string> = {
   '1/1': 'aspect-square',
   '4/3': 'aspect-[4/3]',
