@@ -78,6 +78,26 @@ describe('Separator', () => {
     expect(separator).toHaveAttribute('data-orientation', 'horizontal')
   })
 
+  it('keeps derived accessibility props non-overridable', () => {
+    render(
+      <Separator
+        decorative
+        role="separator"
+        aria-hidden={false}
+        aria-orientation="vertical"
+        data-orientation="vertical"
+        data-testid="separator"
+      />,
+    )
+
+    const separator = screen.getByTestId('separator')
+
+    expect(separator).toHaveAttribute('role', 'presentation')
+    expect(separator).toHaveAttribute('aria-hidden', 'true')
+    expect(separator).not.toHaveAttribute('aria-orientation')
+    expect(separator).toHaveAttribute('data-orientation', 'horizontal')
+  })
+
   it('applies vertical orientation and visual variants', () => {
     render(
       <Separator data-testid="separator" orientation="vertical" size="lg" color="primary" align="start">

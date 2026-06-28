@@ -448,12 +448,12 @@ function SidebarInput({ className, ...props }: React.ComponentProps<typeof TextF
 function SidebarSeparator({ className, ...props }: React.ComponentProps<typeof Separator>) {
   return (
     <Separator
+      {...props}
       decorative
       size="xs"
       data-slot="sidebar-separator"
       data-sidebar="separator"
       className={cn('mx-2 w-auto before:bg-sidebar-border after:bg-sidebar-border', className)}
-      {...props}
     />
   )
 }

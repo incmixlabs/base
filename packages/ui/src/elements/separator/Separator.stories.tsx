@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type * as React from 'react'
 import { Card, Separator } from '@/elements'
 import { semanticColors } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
@@ -62,18 +63,27 @@ const meta: Meta<typeof Separator> = {
 export default meta
 type Story = StoryObj<typeof Separator>
 
+function PlaygroundSeparator(args: React.ComponentProps<typeof Separator>) {
+  const { decorative, children, ...separatorArgs } = args
+  return (
+    <Separator decorative={decorative} {...separatorArgs}>
+      {decorative ? null : children}
+    </Separator>
+  )
+}
+
 export const Playground: Story = {
   render: args =>
     args.orientation === 'vertical' ? (
       <div className="flex min-h-44 w-full items-stretch">
         <ContentCard compact />
-        <Separator {...args} />
+        <PlaygroundSeparator {...args} />
         <ContentCard compact />
       </div>
     ) : (
       <div className="flex w-full flex-col">
         <ContentCard />
-        <Separator {...args} />
+        <PlaygroundSeparator {...args} />
         <ContentCard />
       </div>
     ),

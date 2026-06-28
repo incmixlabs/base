@@ -93,12 +93,16 @@ const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(
           role: 'separator',
           'aria-orientation': safeOrientation,
         } satisfies React.HTMLAttributes<HTMLDivElement>)
+    const elementProps: React.HTMLAttributes<HTMLDivElement> = { ...props }
+    delete elementProps.role
+    delete elementProps['aria-hidden']
+    delete elementProps['aria-orientation']
 
     return (
       <div
         ref={ref}
+        {...elementProps}
         data-orientation={safeOrientation}
-        {...accessibilityProps}
         className={cn(
           separatorBase,
           safeOrientation === 'vertical' ? separatorVertical : separatorHorizontal,
@@ -117,7 +121,7 @@ const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(
           className,
         )}
         style={style}
-        {...props}
+        {...accessibilityProps}
       >
         {children}
       </div>

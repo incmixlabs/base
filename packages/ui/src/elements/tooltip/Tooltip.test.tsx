@@ -86,4 +86,23 @@ describe('TooltipWrapper', () => {
 
     expect(screen.getAllByText('0')).toHaveLength(5)
   })
+
+  it('does not render empty wrappers for boolean content', () => {
+    render(
+      <TooltipWrapper
+        defaultOpen
+        trigger={<button type="button">Boolean metrics</button>}
+        data={{
+          title: false,
+          description: false,
+          items: [{ id: 'hidden', label: false, value: false, description: false }],
+          footer: false,
+        }}
+      />,
+    )
+
+    expect(document.querySelector('.text-sm.font-semibold')).toBeNull()
+    expect(document.querySelector('.rounded-md.border.border-neutral')).toBeNull()
+    expect(document.querySelector('.text-xs.text-neutral.opacity-70')).toBeNull()
+  })
 })
