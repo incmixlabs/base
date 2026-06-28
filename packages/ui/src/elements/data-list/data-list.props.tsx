@@ -21,7 +21,6 @@ const dataListRootPropDefs = {
     className: 'af-r-orientation',
     values: dataListOrientationValues,
     default: 'horizontal',
-    responsive: true,
   },
   size: {
     type: 'enum',
@@ -45,7 +44,6 @@ const dataListItemPropDefs = {
     type: 'enum',
     className: 'af-r-ai',
     values: dataListAlignValues,
-    responsive: true,
   },
 } satisfies {
   align: PropDef<DataListAlign>

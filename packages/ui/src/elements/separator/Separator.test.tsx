@@ -58,6 +58,15 @@ describe('Separator', () => {
     expectClassTokens(separator.className, ['gap-4', 'h-4', 'my-4'])
   })
 
+  it('does not use labelled layout for invisible conditional children', () => {
+    render(<Separator data-testid="separator">{false && 'OR'}</Separator>)
+
+    const separator = screen.getByTestId('separator')
+
+    expectNoClassTokens(separator.className, ['gap-4', 'h-4', 'my-4'])
+    expectClassTokens(separator.className, ['w-full', 'h-auto'])
+  })
+
   it('can render as a decorative visual rule', () => {
     render(<Separator decorative data-testid="separator" />)
 

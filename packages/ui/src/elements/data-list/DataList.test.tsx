@@ -14,6 +14,12 @@ function expectClassTokens(className: string | undefined, tokens: readonly strin
 }
 
 describe('DataList', () => {
+  it('keeps scalar metadata for orientation and item alignment', () => {
+    expect(dataListPropDefs.Root.size).toHaveProperty('responsive', true)
+    expect(dataListPropDefs.Root.orientation).not.toHaveProperty('responsive')
+    expect(dataListPropDefs.Item.align).not.toHaveProperty('responsive')
+  })
+
   it('applies size and typography classes on the root', () => {
     render(
       <DataList.Root size="md">

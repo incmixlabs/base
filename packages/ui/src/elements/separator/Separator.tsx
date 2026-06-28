@@ -44,6 +44,23 @@ export interface SeparatorProps extends React.HTMLAttributes<HTMLDivElement> {
   decorative?: boolean
 }
 
+function hasVisibleContent(children: React.ReactNode): boolean {
+  if (children == null || typeof children === 'boolean') return false
+  if (typeof children === 'string') return children.trim().length > 0
+  if (typeof children === 'number') return true
+  if (Array.isArray(children)) return children.some(hasVisibleContent)
+
+  if (React.isValidElement(children)) {
+    if (children.type === React.Fragment) {
+      return hasVisibleContent((children.props as { children?: React.ReactNode }).children)
+    }
+
+    return true
+  }
+
+  return true
+}
+
 const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(
   (
     {
@@ -69,7 +86,7 @@ const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(
       (normalizeEnumPropValue(separatorPropDefs.align, align) as SeparatorAlign | undefined) ??
       separatorPropDefs.align.default
     const safeColor = normalizeEnumPropValue(separatorPropDefs.color, color) as SemanticColorKey | undefined
-    const hasContent = React.Children.count(children) > 0
+    const hasContent = hasVisibleContent(children)
     const accessibilityProps = decorative
       ? ({ role: 'presentation', 'aria-hidden': true } satisfies React.HTMLAttributes<HTMLDivElement>)
       : ({

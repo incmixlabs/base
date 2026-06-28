@@ -1,4 +1,3 @@
-import { asChildPropDef } from '@/theme/props/as-child.prop'
 import { colorPropDef } from '@/theme/props/color.prop'
 import { highContrastPropDef } from '@/theme/props/high-contrast.prop'
 import type { PropDef } from '@/theme/props/prop-def'
@@ -8,7 +7,6 @@ import { createTypographySizePropDef, type typographySizeValues } from '@/theme/
 import { weightPropDef } from '@/theme/props/weight.prop'
 
 const blockquotePropDefs = {
-  ...asChildPropDef,
   size: createTypographySizePropDef(),
   ...weightPropDef,
   ...colorPropDef,
