@@ -8,7 +8,7 @@ import type { MarginProps } from '@/theme/props/margin.props'
 import { normalizeBooleanPropValue } from '@/theme/props/prop-def'
 import { getResponsiveVariantClasses, typographyBreakpointKeys } from '../responsive'
 import { type TypographyColor, type TypographySize, typographyTokens, type Weight } from '../tokens'
-import { textBySize, textSizeResponsive } from '../typography.ve.css'
+import { textBySize, textSizeResponsive } from '../typography.class'
 
 export interface BlockquoteProps extends React.HTMLAttributes<HTMLElement>, MarginProps {
   size?: Responsive<TypographySize>
@@ -65,7 +65,7 @@ export const Blockquote = React.forwardRef<HTMLQuoteElement, BlockquoteProps>(
         className={cn(
           // Base styles
           'font-sans italic',
-          'border-l-4 pl-4 py-2',
+          'border-0 border-l-4 [border-left-style:solid] pl-4 py-2',
           getBlockquoteSizeClasses(size),
 
           // Truncation

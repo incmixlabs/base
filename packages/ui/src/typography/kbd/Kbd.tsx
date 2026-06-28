@@ -4,7 +4,7 @@ import { Slot } from '@/layouts/layout-utils'
 import { cn } from '@/lib/utils'
 import { normalizeEnumPropValue } from '@/theme/props/prop-def'
 import { getResponsiveVariantClasses, typographyBreakpointKeys } from '../responsive'
-import { kbdBase, kbdBaseCls, kbdBySize, kbdByVariant, kbdSizeResponsive } from './Kbd.css'
+import { kbdBase, kbdBaseCls, kbdBySize, kbdByVariant, kbdSizeResponsive } from './kbd.class'
 import { kbdPropDefs } from './kbd.props'
 
 type KbdSize = (typeof kbdPropDefs.size.values)[number]

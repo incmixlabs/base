@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { LinkWrapper } from './LinkWrapper'
-import { linkWrapperGap, linkWrapperGapResponsive, linkWrapperInner, linkWrapperQueryHost } from './LinkWrapper.css'
+import { linkWrapperGap, linkWrapperGapResponsive, linkWrapperInner, linkWrapperQueryHost } from './LinkWrapper.class'
 
 describe('LinkWrapper', () => {
   it('uses a query host plus responsive gap classes when gap is responsive', () => {

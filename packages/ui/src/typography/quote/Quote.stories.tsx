@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Box } from '@/layouts'
+import { getPropDefValues } from '@/theme/props/prop-def'
 import { Quote, Text } from '@/typography'
+import { quotePropDefs } from './quote.props'
 
 const meta: Meta<typeof Quote> = {
   title: 'Typography/Quote',
@@ -16,7 +18,7 @@ const meta: Meta<typeof Quote> = {
     },
     wrap: {
       control: 'select',
-      options: ['wrap', 'nowrap', 'pretty', 'balance'],
+      options: getPropDefValues(quotePropDefs.wrap),
       description: 'Text wrapping behavior',
     },
   },

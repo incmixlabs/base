@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
-import { strongBase } from '../inline-elements.css'
+import { strongBase } from '../inline-elements.class'
 
 export interface StrongProps extends React.HTMLAttributes<HTMLElement> {}
 

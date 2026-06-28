@@ -6,7 +6,7 @@ import { normalizeBooleanPropValue } from '@/theme/props/prop-def'
 import { getResponsiveVariantClasses, typographyBreakpointKeys } from '../responsive'
 import type { TypographyColor, TypographyVariant } from '../tokens'
 import { type TypographySize, typographyTokens, type Weight } from '../tokens'
-import { headingBase, headingBySize, headingByWeight, headingSizeResponsive } from '../typography.ve.css'
+import { headingBase, headingBySize, headingByWeight, headingSizeResponsive } from '../typography.class'
 
 export interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
@@ -69,6 +69,7 @@ export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
           light: 'regular',
           regular: 'medium',
           medium: 'bold',
+          semibold: 'bold',
           bold: 'bold',
         }[weight] as Weight)
       : weight

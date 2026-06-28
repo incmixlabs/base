@@ -41,15 +41,15 @@ function LinkResponsivePreviewCard({ width }: { width: number }) {
 
   return (
     <div className="space-y-3 pt-4">
-      <div className="text-sm font-medium text-foreground">Preview width: {width}px</div>
+      <div className="text-sm font-medium text-neutral">Preview width: {width}px</div>
       <EmbeddedResponsiveShell ref={shellRef} width={width}>
         <div className="space-y-3">
-          <span className="text-xs text-muted-foreground">{embeddedResponsiveScaleCopy}</span>
+          <span className="text-xs text-slate">{embeddedResponsiveScaleCopy}</span>
           <EmbeddedTypographyState formFactor={formFactor} activeBreakpoint={activeBreakpoint} />
           <Link href="#" size={{ initial: 'xs', sm: 'lg', md: '4x' }} color="primary" ref={sampleRef}>
             Scale Test
           </Link>
-          <div className="rounded-md border border-dashed px-3 py-2 text-xs text-muted-foreground">
+          <div className="rounded-md border border-dashed border-slate px-3 py-2 text-xs text-slate">
             font-size: {metrics.fontSize || '...'} | line-height: {metrics.lineHeight || '...'} | letter-spacing:{' '}
             {metrics.letterSpacing || '...'}
           </div>

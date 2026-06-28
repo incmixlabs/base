@@ -16,7 +16,7 @@ import {
   linkByUnderline,
   linkHighContrast,
   linkSizeResponsive,
-} from './Link.css'
+} from './link.class'
 import { linkPropDefs } from './link.props'
 
 type LinkSize = (typeof linkPropDefs.size.values)[number]

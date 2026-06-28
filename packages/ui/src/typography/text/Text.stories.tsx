@@ -42,7 +42,7 @@ function TextResponsivePreviewCard({ width }: { width: number }) {
 
   return (
     <div className="space-y-3 pt-4">
-      <div className="text-sm font-medium text-foreground">Preview width: {width}px</div>
+      <div className="text-sm font-medium text-neutral">Preview width: {width}px</div>
       <EmbeddedResponsiveShell ref={shellRef} width={width}>
         <div className="space-y-4">
           <Text as="p" size="xs" variant="muted">
@@ -52,7 +52,7 @@ function TextResponsivePreviewCard({ width }: { width: number }) {
           <Text as="p" size={{ initial: 'xs', sm: '2x', md: '5x' }} weight="bold" ref={sampleRef}>
             Scale Test
           </Text>
-          <div className="rounded-md border border-dashed px-3 py-2 text-xs text-muted-foreground">
+          <div className="rounded-md border border-dashed border-slate px-3 py-2 text-xs text-slate">
             font-size: {metrics.fontSize || '...'} | line-height: {metrics.lineHeight || '...'} | letter-spacing:{' '}
             {metrics.letterSpacing || '...'}
           </div>
@@ -95,7 +95,7 @@ const meta: Meta<typeof Text> = {
     },
     align: {
       control: 'select',
-      options: ['left', 'center', 'right', 'justify'],
+      options: getPropDefValues(textPropDefs.align),
       description: 'Text alignment',
     },
     wrap: {
@@ -117,6 +117,17 @@ const meta: Meta<typeof Text> = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const textVariantDemoToneLabels = {
+  slate: 'Default',
+  success: 'Success',
+} as const
+
+type TextVariantDemoTone = keyof typeof textVariantDemoToneLabels
+
+function isTextVariantDemoTone(color: string): color is TextVariantDemoTone {
+  return Object.hasOwn(textVariantDemoToneLabels, color)
+}
+
 // Default
 export const Default: Story = {
   args: {
@@ -132,15 +143,11 @@ export const Default: Story = {
 export const AllSizes: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-2">
-      <Text size="xs">Text size xs</Text>
-      <Text size="sm">Text size sm</Text>
-      <Text size="md">Text size md</Text>
-      <Text size="lg">Text size lg</Text>
-      <Text size="xl">Text size xl</Text>
-      <Text size="2x">Text size 2x</Text>
-      <Text size="3x">Text size 3x</Text>
-      <Text size="4x">Text size 4x</Text>
-      <Text size="5x">Text size 5x</Text>
+      {getPropDefValues(textPropDefs.size).map(size => (
+        <Text key={size} size={size}>
+          Text size {size}
+        </Text>
+      ))}
     </Box>
   ),
 }
@@ -149,18 +156,12 @@ export const AllSizes: Story = {
 export const AllWeights: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-2">
-      <Text size="lg" weight="light">
-        Light weight text
-      </Text>
-      <Text size="lg" weight="regular">
-        Regular weight text
-      </Text>
-      <Text size="lg" weight="medium">
-        Medium weight text
-      </Text>
-      <Text size="lg" weight="bold">
-        Bold weight text
-      </Text>
+      {getPropDefValues(textPropDefs.weight).map(weight => (
+        <Text key={weight} size="lg" weight={weight}>
+          {weight.charAt(0).toUpperCase()}
+          {weight.slice(1)} weight text
+        </Text>
+      ))}
     </Box>
   ),
 }
@@ -182,24 +183,15 @@ export const AllColors: Story = {
 export const Variants: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-2">
-      <Text color="slate" variant="solid">
-        Default solid text
-      </Text>
-      <Text color="slate" variant="soft">
-        Default soft text
-      </Text>
-      <Text color="slate" variant="muted">
-        Default muted text
-      </Text>
-      <Text color="success" variant="solid">
-        Success solid text
-      </Text>
-      <Text color="success" variant="soft">
-        Success soft text
-      </Text>
-      <Text color="success" variant="muted">
-        Success muted text
-      </Text>
+      {getPropDefValues(textPropDefs.color)
+        .filter(isTextVariantDemoTone)
+        .map(color =>
+          getPropDefValues(textPropDefs.variant).map(variant => (
+            <Text key={`${color}-${variant}`} color={color} variant={variant}>
+              {textVariantDemoToneLabels[color]} {variant} text
+            </Text>
+          )),
+        )}
     </Box>
   ),
 }
@@ -217,15 +209,12 @@ export const RawPaletteColor: Story = {
 export const Alignment: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-4 w-full max-w-md">
-      <Text align="left" className="bg-gray-100 p-2">
-        Left aligned text
-      </Text>
-      <Text align="center" className="bg-gray-100 p-2">
-        Center aligned text
-      </Text>
-      <Text align="right" className="bg-gray-100 p-2">
-        Right aligned text
-      </Text>
+      {getPropDefValues(textPropDefs.align).map(align => (
+        <Text key={align} align={align} className="bg-slate-soft p-2">
+          {align.charAt(0).toUpperCase()}
+          {align.slice(1)} aligned text
+        </Text>
+      ))}
     </Box>
   ),
 }
@@ -234,7 +223,9 @@ export const Alignment: Story = {
 export const Truncation: Story = {
   render: () => (
     <Box className="w-48">
-      <Text truncate>This is a very long text that will be truncated with an ellipsis at the end.</Text>
+      <Text as="p" truncate>
+        This is a very long text that will be truncated with an ellipsis at the end.
+      </Text>
     </Box>
   ),
 }
@@ -243,10 +234,11 @@ export const Truncation: Story = {
 export const AsElement: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-2">
-      <Text as="span">As span (default)</Text>
-      <Text as="p">As paragraph</Text>
-      <Text as="div">As div</Text>
-      <Text as="label">As label</Text>
+      {getPropDefValues(textPropDefs.as).map(as => (
+        <Text key={as} as={as}>
+          As {as}
+        </Text>
+      ))}
     </Box>
   ),
 }

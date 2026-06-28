@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
-import { quoteBase } from '../inline-elements.css'
+import { quoteBase } from '../inline-elements.class'
 
 export interface QuoteProps extends React.HTMLAttributes<HTMLQuoteElement> {
   /** Whether to truncate text with ellipsis */
