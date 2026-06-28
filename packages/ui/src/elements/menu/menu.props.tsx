@@ -1,7 +1,7 @@
-import { asChildPropDef } from '@/theme/props/as-child.prop'
-import { colorPropDef } from '@/theme/props/color.prop'
-import { highContrastPropDef } from '@/theme/props/high-contrast.prop'
-import type { PropDef } from '@/theme/props/prop-def'
+import { asChildPropDef } from '../../theme/props/as-child.prop'
+import { colorPropDef } from '../../theme/props/color.prop'
+import { highContrastPropDef } from '../../theme/props/high-contrast.prop'
+import type { PropDef } from '../../theme/props/prop-def'
 
 const contentSizes = ['sm', 'md', 'lg', 'xl'] as const
 const contentVariants = ['solid', 'soft'] as const

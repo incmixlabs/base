@@ -286,7 +286,7 @@ export const UserMenu: StoryObj = {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
         <Button variant="ghost" className="h-10 w-10 rounded-full p-0">
-          <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+          <div className="h-8 w-8 rounded-full bg-primary-soft flex items-center justify-center">
             <User className="h-4 w-4" />
           </div>
         </Button>
@@ -295,7 +295,7 @@ export const UserMenu: StoryObj = {
         <DropdownMenu.Label>
           <div>
             <p className="font-medium">John Doe</p>
-            <p className="text-xs text-muted-foreground">john@example.com</p>
+            <p className="text-xs text-neutral">john@example.com</p>
           </div>
         </DropdownMenu.Label>
         <DropdownMenu.Separator />
@@ -365,8 +365,8 @@ export const Sizes: StoryObj = {
     return (
       <div className="grid grid-cols-2 gap-5 min-w-[520px]">
         {menuSizes.map(size => (
-          <div key={size} className="rounded-md border border-dashed border-muted-foreground/30 p-4 text-center">
-            <div className="mb-3 text-xs text-muted-foreground">Menu size {size}</div>
+          <div key={size} className="rounded-md border border-dashed border-neutral p-4 text-center">
+            <div className="mb-3 text-xs text-neutral">Menu size {size}</div>
             <DropdownMenu.Root open={openSize === size} onOpenChange={open => setOpenSize(open ? size : null)}>
               <DropdownMenu.Trigger>
                 <Button variant="outline" className="min-w-20">
@@ -390,7 +390,7 @@ export const Sizes: StoryObj = {
 export const Variants: StoryObj = {
   render: () => (
     <div className="flex gap-4">
-      {(['solid', 'soft'] as const).map(variant => (
+      {menuVariants.map(variant => (
         <DropdownMenu.Root key={variant}>
           <DropdownMenu.Trigger>
             <Button variant="outline" className="capitalize">

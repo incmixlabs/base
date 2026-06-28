@@ -2,7 +2,7 @@
 export function UpDownCaret({
   size = '0.75em',
   color = 'currentColor',
-  className = 'shrink-0 text-muted-foreground',
+  className = 'shrink-0 text-neutral',
 }: {
   size?: string | number
   color?: string
