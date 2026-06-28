@@ -349,7 +349,7 @@ export function CommandSearchInput({ triggerLabel = 'Search...', className, colo
       title={triggerLabel}
       aria-label={triggerLabel}
       className={cn(
-        'w-9 min-w-9 justify-center rounded-xl border px-0 text-neutral shadow-sm sm:w-auto sm:min-w-[240px] sm:justify-between sm:px-3',
+        'w-9 min-w-9 justify-center rounded-xl border px-0 shadow-sm sm:w-auto sm:min-w-[240px] sm:justify-between sm:px-3',
         !color || color === 'neutral' ? commandSearchTrigger : null,
         className,
       )}

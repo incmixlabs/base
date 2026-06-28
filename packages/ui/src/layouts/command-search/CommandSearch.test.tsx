@@ -98,6 +98,18 @@ describe('CommandSearch', () => {
     expect(container.querySelector('[class*="af-command"], [class*="af-shortcut"]')).not.toBeInTheDocument()
   })
 
+  it('does not force neutral text when a semantic trigger color is provided', () => {
+    render(
+      <CommandSearchProvider items={[{ id: 'intro', label: 'Introduction', onSelect: vi.fn() }]}>
+        <CommandSearchInput triggerLabel="Search docs..." color="primary" />
+      </CommandSearchProvider>,
+    )
+
+    const trigger = screen.getByRole('button', { name: /Search docs/i })
+    expectClassTokens(trigger.className, ['text-primary'])
+    expect(trigger.className.split(/\s+/)).not.toContain('text-neutral')
+  })
+
   it('supports keyboard navigation and executes the active item on enter', async () => {
     const user = userEvent.setup()
     const introSelect = vi.fn()
