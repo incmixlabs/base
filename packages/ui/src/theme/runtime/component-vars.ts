@@ -21,14 +21,6 @@ export type TooltipMaxWidthTokenSlot = 'maxWidth'
 export type ProgressSizeTokenSlot = 'height'
 export type ProgressVariantTokenSlot = 'boxShadow'
 export type ProgressMotionTokenSlot = 'indicatorTransition' | 'indeterminateDuration' | 'indeterminateWidth'
-export type DialogSizeTokenSlot =
-  | 'maxWidth'
-  | 'titleFontSize'
-  | 'titleLineHeight'
-  | 'descriptionFontSize'
-  | 'descriptionLineHeight'
-  | 'padding'
-  | 'footerGap'
 export type SliderSizeTokenSlot = 'trackHeight' | 'thumbSize'
 export type SliderVariantTokenSlot = 'boxShadow'
 export type StepperSizeTokenSlot =
@@ -203,10 +195,6 @@ export function progressVariantVar(variant: string, slot: ProgressVariantTokenSl
 
 export function progressMotionVar(slot: ProgressMotionTokenSlot, fallback: string): string {
   return withFallback(`--component-progress-motion-${toKebabCase(slot)}`, fallback)
-}
-
-export function dialogSizeVar(size: string, slot: DialogSizeTokenSlot, fallback: string): string {
-  return componentSizeVar('dialog', size, slot, fallback)
 }
 
 export function sliderSizeVar(size: string, slot: SliderSizeTokenSlot, fallback: string): string {
