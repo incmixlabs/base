@@ -22,10 +22,12 @@ function FieldRow({
   renderField?: PopoverWrapperProps['renderField']
 }) {
   const defaultRender = (
-    <div className="rounded-md border border-border/70 bg-background/60 p-2">
-      <div className="text-xs text-muted-foreground">{field.label}</div>
-      {field.value != null ? <div className="text-sm font-medium text-foreground">{field.value}</div> : null}
-      {field.description != null ? <div className="mt-1 text-xs text-muted-foreground">{field.description}</div> : null}
+    <div className="rounded-md border border-neutral bg-neutral-surface p-2">
+      <div className="text-xs text-neutral opacity-70">{field.label}</div>
+      {field.value != null ? <div className="text-sm font-medium text-neutral">{field.value}</div> : null}
+      {field.description != null ? (
+        <div className="mt-1 text-xs text-neutral opacity-70">{field.description}</div>
+      ) : null}
     </div>
   )
 
@@ -62,6 +64,7 @@ export function PopoverWrapper({
   data,
   trigger,
   showClose = true,
+  showArrow = true,
   open,
   defaultOpen,
   onOpenChange,
@@ -131,21 +134,21 @@ export function PopoverWrapper({
         alignOffset={alignOffset}
         className={contentClassName}
       >
-        <Popover.Arrow />
+        {showArrow ? <Popover.Arrow /> : null}
         {showClose ? <Popover.Close /> : null}
 
         <Flex direction="column" gap="3">
           {data.title != null ? <div className="text-sm font-semibold">{data.title}</div> : null}
-          {data.description != null ? <div className="text-xs text-muted-foreground">{data.description}</div> : null}
+          {data.description != null ? <div className="text-xs text-neutral opacity-70">{data.description}</div> : null}
 
           {data.sections.map(section => {
             const defaultSectionRender = (
-              <Flex key={section.id} direction="column" gap="2" className="rounded-md border border-border/60 p-2">
+              <Flex key={section.id} direction="column" gap="2" className="rounded-md border border-neutral p-2">
                 {section.title != null ? (
-                  <div className="text-xs font-semibold uppercase text-muted-foreground">{section.title}</div>
+                  <div className="text-xs font-semibold uppercase text-neutral opacity-70">{section.title}</div>
                 ) : null}
                 {section.description != null ? (
-                  <div className="text-xs text-muted-foreground">{section.description}</div>
+                  <div className="text-xs text-neutral opacity-70">{section.description}</div>
                 ) : null}
 
                 {section.fields?.length ? (

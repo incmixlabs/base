@@ -53,6 +53,17 @@ import {
   dialogPopupBaseCls,
   dialogTitleBySize,
 } from './src/elements/dialog/dialog.class'
+import {
+  floatingSurfaceArrowColorVariants,
+  floatingSurfaceColorVariants,
+  floatingSurfaceHighContrastArrowColorVariants,
+  floatingSurfaceHighContrastColorVariants,
+  floatingSurfaceHighContrastEffectByVariant,
+  floatingSurfaceMaxWidthVariants,
+  floatingSurfaceSizeVariants,
+  popoverContentBase,
+} from './src/elements/popover/popover.class'
+import { tooltipContentBase, tooltipPositionerBase } from './src/elements/tooltip/tooltip.class'
 import { aspectRatioByRatio } from './src/layouts/aspect-ratio/aspect-ratio.class'
 import { boxRootBase, boxSurfaceColorClassNames } from './src/layouts/box/box.class'
 import {
@@ -102,6 +113,16 @@ import { containerBreakpoints } from './src/theme/tokens'
 const splitClasses = (values: string[]) => values.flatMap(value => value.split(/\s+/))
 const classMapValues = <Value extends string>(map: Record<string, Record<string, Value>>) =>
   Object.values(map).flatMap(variantMap => Object.values(variantMap))
+
+const floatingSurfaceSafelist = splitClasses([
+  ...Object.values(floatingSurfaceSizeVariants),
+  ...Object.values(floatingSurfaceMaxWidthVariants),
+  ...Object.values(floatingSurfaceHighContrastEffectByVariant),
+  ...classMapValues(floatingSurfaceColorVariants),
+  ...classMapValues(floatingSurfaceHighContrastColorVariants),
+  ...classMapValues(floatingSurfaceArrowColorVariants),
+  ...classMapValues(floatingSurfaceHighContrastArrowColorVariants),
+])
 
 const containerQueryVariants = Object.entries(containerBreakpoints).map(([breakpoint, minWidth]) => ({
   name: `cq-${breakpoint}`,
@@ -178,6 +199,11 @@ export default defineConfig({
       ...Object.values(alertDialogFooterBySize),
       ...Object.values(dialogTitleBySize),
       ...Object.values(dialogDescriptionBySize),
+      // Popover/Tooltip floating surface styles
+      popoverContentBase,
+      tooltipContentBase,
+      tooltipPositionerBase,
+      ...floatingSurfaceSafelist,
       // Box styles
       boxRootBase,
       ...splitClasses(boxSurfaceColorClassNames),

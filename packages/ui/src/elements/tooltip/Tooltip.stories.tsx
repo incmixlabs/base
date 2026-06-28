@@ -10,9 +10,15 @@ import { popoverContentPropDefs } from '@/elements/popover/popover.props'
 import { Label } from '@/form'
 import { Flex } from '@/layouts'
 import { colorPropDef } from '@/theme/props/color.prop'
+import { getPropDefValues } from '@/theme/props/prop-def'
 import { selectArgType } from '@/theme/props/storybook'
 import type { Color } from '@/theme/tokens'
 import { Text } from '@/typography'
+
+const tooltipContentSizes = getPropDefValues(popoverContentPropDefs.size)
+const tooltipContentVariants = getPropDefValues(popoverContentPropDefs.variant)
+const tooltipMaxWidthValues = getPropDefValues(popoverContentPropDefs.maxWidthToken)
+const tooltipColors = getPropDefValues(colorPropDef.color)
 
 type TooltipStoryArgs = {
   variant: PopoverContentVariant
@@ -147,7 +153,7 @@ export const Positions: Story = {
 export const Variants: Story = {
   render: () => (
     <Flex gap="4">
-      {(['solid', 'soft', 'surface', 'outline'] as const).map(variant => (
+      {tooltipContentVariants.map(variant => (
         <Tooltip.Root key={variant}>
           <Tooltip.Trigger render={<Button variant="outline" className="capitalize" />}>{variant}</Tooltip.Trigger>
           <Tooltip.Content variant={variant} color={variant === 'solid' ? 'inverse' : 'slate'}>
@@ -163,7 +169,7 @@ export const Variants: Story = {
 export const Colors: Story = {
   render: () => (
     <Flex wrap="wrap" gap="4">
-      {(['slate', 'primary', 'info', 'success', 'warning', 'error', 'inverse'] as const).map(color => (
+      {tooltipColors.map(color => (
         <Tooltip.Root key={color}>
           <Tooltip.Trigger render={<Button variant="outline" className="capitalize" />}>{color}</Tooltip.Trigger>
           <Tooltip.Content variant="solid" color={color}>
@@ -179,7 +185,7 @@ export const Colors: Story = {
 export const Sizes: Story = {
   render: () => (
     <Flex gap="4">
-      {(['xs', 'sm', 'md', 'lg'] as const).map(size => (
+      {tooltipContentSizes.map(size => (
         <Tooltip.Root key={size}>
           <Tooltip.Trigger render={<Button variant="outline" />}>{size.toUpperCase()}</Tooltip.Trigger>
           <Tooltip.Content size={size}>
@@ -195,22 +201,24 @@ export const Sizes: Story = {
 export const MaxWidths: Story = {
   render: () => (
     <Flex gap="4">
-      {(['xs', 'sm', 'md', 'lg'] as const).map(maxWidth => (
-        <Tooltip.Root key={maxWidth}>
-          <Tooltip.Trigger render={<Button variant="outline" />}>{maxWidth.toUpperCase()}</Tooltip.Trigger>
-          <Tooltip.Content maxWidth={maxWidth}>
-            <Tooltip.Arrow />
-            This is a longer tooltip text that demonstrates the different max-width options available for wrapping.
-          </Tooltip.Content>
-        </Tooltip.Root>
-      ))}
+      {tooltipMaxWidthValues
+        .filter(maxWidth => maxWidth !== 'none')
+        .map(maxWidth => (
+          <Tooltip.Root key={maxWidth}>
+            <Tooltip.Trigger render={<Button variant="outline" />}>{maxWidth.toUpperCase()}</Tooltip.Trigger>
+            <Tooltip.Content maxWidth={maxWidth}>
+              <Tooltip.Arrow />
+              This is a longer tooltip text that demonstrates the different max-width options available for wrapping.
+            </Tooltip.Content>
+          </Tooltip.Root>
+        ))}
     </Flex>
   ),
 }
 
 export const IconButtonsToolbar: Story = {
   render: () => (
-    <Flex align="center" gap="1" className="p-2 border rounded-lg bg-muted/30">
+    <Flex align="center" gap="1" className="rounded-lg border border-neutral bg-neutral-soft p-2">
       <SimpleTooltip content="Copy">
         <IconButton variant="ghost" size="md" aria-label="Copy">
           <Copy className="h-4 w-4" />

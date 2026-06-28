@@ -16,16 +16,20 @@ import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
 import { IconButton } from '../button/IconButton'
 import { FloatingArrowSvg } from '../surface/FloatingArrowSvg'
-import { floatingArrowBase, surfaceColorVariants, surfaceHighContrastByVariant } from '../surface/surface.class'
+import { floatingArrowBase } from '../surface/surface.class'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
-  popoverArrowColorByVariant,
+  floatingSurfaceArrowColorVariants,
+  floatingSurfaceColorVariants,
+  floatingSurfaceHighContrastArrowColorVariants,
+  floatingSurfaceHighContrastColorVariants,
+  floatingSurfaceHighContrastEffectByVariant,
+  floatingSurfaceMaxWidthVariants,
+  floatingSurfaceSizeVariants,
   popoverContentBase,
-  popoverContentBySize,
-  popoverContentMaxWidth,
   popoverPanelTransition,
   popoverPanelVariants,
-} from './Popover.css'
+} from './popover.class'
 import {
   type PopoverContentMaxWidth,
   type PopoverContentSize,
@@ -36,11 +40,13 @@ import {
 type PopoverVisualContextValue = {
   variant: PopoverContentVariant
   color: Color
+  highContrast: boolean
 }
 
 const PopoverVisualContext = React.createContext<PopoverVisualContextValue>({
   variant: popoverContentPropDefs.variant.default,
   color: SemanticColor.neutral,
+  highContrast: false,
 })
 
 const PopoverOpenContext = React.createContext<boolean>(false)
@@ -105,7 +111,7 @@ const PopoverTrigger = React.forwardRef<HTMLButtonElement, PopoverTriggerProps>(
           ref={ref}
           render={render}
           className={cn(
-            'outline-none focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-2',
+            'outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
             className,
           )}
           {...props}
@@ -118,7 +124,7 @@ const PopoverTrigger = React.forwardRef<HTMLButtonElement, PopoverTriggerProps>(
       <PopoverPrimitive.Trigger
         ref={ref}
         className={cn(
-          'outline-none focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-2',
+          'outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
           className,
         )}
         {...props}
@@ -207,8 +213,8 @@ const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentProps>(
     })
     const heightProps = getHeightProps({ height, minHeight, maxHeight })
     const contextValue = React.useMemo<PopoverVisualContextValue>(
-      () => ({ variant: safeVariant, color: safeColor }),
-      [safeVariant, safeColor],
+      () => ({ variant: safeVariant, color: safeColor, highContrast: safeHighContrast }),
+      [safeVariant, safeColor, safeHighContrast],
     )
 
     const portalContainer = useThemePortalContainer()
@@ -233,14 +239,15 @@ const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentProps>(
                     />
                   }
                   className={cn(
-                    'z-50 w-full border origin-[var(--transform-origin)]',
+                    'z-50 w-full border border-solid',
                     'focus:outline-none',
                     popoverContentBase,
-                    popoverContentBySize[safeSize],
-                    resolvedTokenMaxWidth && popoverContentMaxWidth[resolvedTokenMaxWidth],
-                    surfaceColorVariants[safeColor][safeVariant],
-                    safeHighContrast && 'af-high-contrast',
-                    safeHighContrast && surfaceHighContrastByVariant[safeVariant],
+                    floatingSurfaceSizeVariants[safeSize],
+                    resolvedTokenMaxWidth && floatingSurfaceMaxWidthVariants[resolvedTokenMaxWidth],
+                    safeHighContrast
+                      ? floatingSurfaceHighContrastColorVariants[safeColor][safeVariant]
+                      : floatingSurfaceColorVariants[safeColor][safeVariant],
+                    safeHighContrast && floatingSurfaceHighContrastEffectByVariant[safeVariant],
                     widthProps.className,
                     heightProps.className,
                     className,
@@ -287,7 +294,7 @@ const PopoverClose = React.forwardRef<HTMLButtonElement, PopoverCloseProps>(
         }
         {...props}
       >
-        {children || <X className="h-4 w-4" />}
+        {children || <X className="h-2.5 w-2.5" />}
       </PopoverPrimitive.Close>
     )
   },
@@ -306,19 +313,30 @@ export interface PopoverArrowProps {
   variant?: PopoverContentVariant
   /** Surface color lane */
   color?: Color
+  /** High contrast treatment */
+  highContrast?: boolean
 }
 
 const PopoverArrow = React.forwardRef<HTMLDivElement, PopoverArrowProps>(
-  ({ className, variant, color, ...props }, ref) => {
+  ({ className, variant, color, highContrast, ...props }, ref) => {
     const visualContext = React.useContext(PopoverVisualContext)
     const safeVariant = (normalizeEnumPropValue(popoverContentPropDefs.variant, variant ?? visualContext.variant) ??
       popoverContentPropDefs.variant.default) as PopoverContentVariant
     const safeColor = (normalizeEnumPropValue(popoverContentPropDefs.color, color ?? visualContext.color) ??
       SemanticColor.neutral) as Color
+    const safeHighContrast =
+      normalizeBooleanPropValue(popoverContentPropDefs.highContrast, highContrast ?? visualContext.highContrast) ??
+      false
     return (
       <PopoverPrimitive.Arrow
         ref={ref}
-        className={cn(floatingArrowBase, popoverArrowColorByVariant[safeColor][safeVariant], className)}
+        className={cn(
+          floatingArrowBase,
+          safeHighContrast
+            ? floatingSurfaceHighContrastArrowColorVariants[safeColor][safeVariant]
+            : floatingSurfaceArrowColorVariants[safeColor][safeVariant],
+          className,
+        )}
         {...props}
       >
         <FloatingArrowSvg />

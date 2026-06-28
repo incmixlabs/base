@@ -36,6 +36,16 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
+  argTypes: {
+    showArrow: {
+      control: 'boolean',
+      description: 'Show popover arrow',
+    },
+    showClose: {
+      control: 'boolean',
+      description: 'Show close button',
+    },
+  },
 } satisfies Meta<PopoverWrapperProps>
 
 export default meta
@@ -49,6 +59,8 @@ export const DataDriven: Story = {
     variant: 'surface',
     size: 'sm',
     maxWidth: 'sm',
+    showArrow: true,
+    showClose: true,
   },
 }
 
