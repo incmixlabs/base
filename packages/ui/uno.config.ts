@@ -38,6 +38,21 @@ import {
   cardSizeRules,
   cardTitleBase,
 } from './src/elements/card/card.class'
+import {
+  alertDialogFooterBySize,
+  dialogBackdropBase,
+  dialogBackdropBaseCls,
+  dialogBodyBySize,
+  dialogContentByAlign,
+  dialogContentBySize,
+  dialogContentPaddingBySize,
+  dialogDescriptionBySize,
+  dialogFooterBySize,
+  dialogHeaderBySize,
+  dialogPopupBase,
+  dialogPopupBaseCls,
+  dialogTitleBySize,
+} from './src/elements/dialog/dialog.class'
 import { aspectRatioByRatio } from './src/layouts/aspect-ratio/aspect-ratio.class'
 import { boxRootBase, boxSurfaceColorClassNames } from './src/layouts/box/box.class'
 import {
@@ -149,6 +164,20 @@ export default defineConfig({
       cardTitleBase,
       cardContentBase,
       cardFooterBase,
+      // Dialog styles
+      dialogBackdropBaseCls,
+      dialogBackdropBase,
+      dialogPopupBaseCls,
+      dialogPopupBase,
+      ...Object.values(dialogContentBySize),
+      ...Object.values(dialogContentByAlign),
+      ...Object.values(dialogHeaderBySize),
+      ...Object.values(dialogBodyBySize),
+      ...Object.values(dialogContentPaddingBySize),
+      ...Object.values(dialogFooterBySize),
+      ...Object.values(alertDialogFooterBySize),
+      ...Object.values(dialogTitleBySize),
+      ...Object.values(dialogDescriptionBySize),
       // Box styles
       boxRootBase,
       ...splitClasses(boxSurfaceColorClassNames),

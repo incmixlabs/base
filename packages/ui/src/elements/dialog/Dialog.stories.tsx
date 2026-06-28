@@ -65,7 +65,7 @@ export const Sizes: StoryObj = {
               <Dialog.Description>This dialog uses size {size}.</Dialog.Description>
             </Dialog.Header>
             <Dialog.Body>
-              <p className="text-muted-foreground">Content goes here. The dialog uses the {size} width preset.</p>
+              <p className="text-slate">Content goes here. The dialog uses the {size} width preset.</p>
             </Dialog.Body>
             <Dialog.Footer>
               <Dialog.Close>
@@ -137,7 +137,7 @@ export const ScrollableContent: StoryObj = {
           <Dialog.Description>Please read and accept our terms of service.</Dialog.Description>
         </Dialog.Header>
         <Dialog.Body className="max-h-[60vh] overflow-y-auto">
-          <div className="space-y-4 text-sm text-muted-foreground">
+          <div className="space-y-4 text-sm text-slate">
             {Array.from({ length: 10 }).map((_, i) => (
               <p key={i}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et

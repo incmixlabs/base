@@ -5,6 +5,16 @@ import { heightResponsiveClasses, heightResponsiveVars } from '@/theme/helpers/h
 import { Theme } from '@/theme/ThemeProvider'
 import { designTokens } from '@/theme/tokens'
 import { Dialog } from './Dialog'
+import {
+  dialogBodyBySize,
+  dialogContentByAlign,
+  dialogContentBySize,
+  dialogDescriptionBySize,
+  dialogHeaderBySize,
+  dialogPopupBase,
+  dialogPopupBaseCls,
+  dialogTitleBySize,
+} from './dialog.class'
 
 afterEach(() => {
   cleanup()
@@ -16,6 +26,46 @@ function customPropertyName(value: string): string {
 }
 
 describe('Dialog', () => {
+  it('renders the semantic surface and size utility classes', async () => {
+    const { unmount } = render(
+      <Dialog.Root defaultOpen>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Dialog title</Dialog.Title>
+            <Dialog.Description>Dialog description</Dialog.Description>
+          </Dialog.Header>
+          <Dialog.Body>Dialog body</Dialog.Body>
+        </Dialog.Content>
+      </Dialog.Root>,
+    )
+
+    const dialog = screen.getByRole('dialog')
+    const title = screen.getByText('Dialog title')
+    const description = screen.getByText('Dialog description')
+    const body = screen.getByText('Dialog body')
+    const header = title.parentElement
+
+    for (const className of [
+      ...dialogPopupBaseCls.split(/\s+/),
+      ...dialogPopupBase.split(/\s+/),
+      dialogContentBySize.md,
+      ...dialogContentByAlign.center.split(/\s+/),
+    ]) {
+      expect(dialog.className).toContain(className)
+    }
+
+    expect(dialog.className).not.toContain('af-dialog')
+    expect(title.className).toContain(dialogTitleBySize.md)
+    expect(title.className).toContain('text-neutral')
+    expect(description.className).toContain(dialogDescriptionBySize.md)
+    expect(description.className).toContain('text-slate')
+    expect(header?.className).toContain(dialogHeaderBySize.md)
+    expect(body.className).toContain(dialogBodyBySize.md)
+
+    unmount()
+    await Promise.resolve()
+  })
+
   it('defaults content radius to the ThemeProvider radius', async () => {
     const { unmount } = render(
       <Theme radius="lg">
