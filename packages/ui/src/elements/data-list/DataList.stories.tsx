@@ -2,11 +2,18 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Badge } from '@/elements/badge/Badge'
 import { IconButton } from '@/elements/button/IconButton'
 import { Flex } from '@/layouts/flex/Flex'
+import { getPropDefValues } from '@/theme/props/prop-def'
+import { selectArgType } from '@/theme/props/storybook'
 import { Code } from '@/typography/code/Code'
 import { Link } from '@/typography/link/Link'
 import { EmbeddedResponsiveShell, EmbeddedResponsiveTabs } from '@/typography/storybook/embedded-responsive-preview'
 import { DataList } from './DataList'
 import { dataListPropDefs } from './data-list.props'
+
+const dataListSizes = getPropDefValues(dataListPropDefs.Root.size)
+const dataListOrientations = getPropDefValues(dataListPropDefs.Root.orientation)
+const dataListTrims = getPropDefValues(dataListPropDefs.Root.trim)
+const dataListAlignments = getPropDefValues(dataListPropDefs.Item.align)
 
 const meta = {
   title: 'Elements/Data List',
@@ -23,22 +30,22 @@ type Story = StoryObj<typeof DataList.Root>
 export const Playground: Story = {
   argTypes: {
     size: {
-      control: { type: 'select' },
-      options: [...dataListPropDefs.Root.size.values],
+      ...selectArgType(dataListPropDefs.Root.size),
+      options: dataListSizes,
     },
     orientation: {
       control: { type: 'radio' },
-      options: [...dataListPropDefs.Root.orientation.values],
+      options: dataListOrientations,
     },
     trim: {
-      control: { type: 'select' },
-      options: [...dataListPropDefs.Root.trim.values],
+      ...selectArgType(dataListPropDefs.Root.trim),
+      options: dataListTrims,
     },
   },
   args: {
-    size: 'sm',
-    orientation: 'horizontal',
-    trim: 'normal',
+    size: dataListPropDefs.Root.size.default,
+    orientation: dataListPropDefs.Root.orientation.default,
+    trim: dataListPropDefs.Root.trim.default,
   },
   render: args => (
     <DataList.Root {...args} className="w-[420px]">
@@ -79,9 +86,9 @@ export const Horizontal: Story = {
 
 export const Vertical: Story = {
   render: () => (
-    <div className="w-[320px] rounded-xl border p-4">
+    <div className="w-[320px] rounded-xl border border-neutral p-4">
       <DataList.Root orientation="vertical" size="sm" trim="both">
-        {dataListPropDefs.Item.align.values.map(align => (
+        {dataListAlignments.map(align => (
           <DataList.Item key={align} align={align}>
             <DataList.Label>{align}</DataList.Label>
             <DataList.Value>{align} alignment</DataList.Value>
@@ -97,7 +104,7 @@ export const ResponsiveSizes: Story = {
     <EmbeddedResponsiveTabs
       renderContent={({ width }) => (
         <div className="space-y-3 pt-4">
-          <div className="text-sm font-medium text-foreground">Preview width: {width}px</div>
+          <div className="text-sm font-medium text-neutral">Preview width: {width}px</div>
           <EmbeddedResponsiveShell width={width}>
             <DataList.Root size={{ initial: 'sm', md: 'lg' }}>
               <DataList.Item>
