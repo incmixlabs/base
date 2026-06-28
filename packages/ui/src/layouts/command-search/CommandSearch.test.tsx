@@ -64,7 +64,7 @@ describe('CommandSearch', () => {
 
   it('renders the Uno command-search class contract without legacy global classes', async () => {
     const user = userEvent.setup()
-    const { container } = render(
+    render(
       <CommandSearchProvider
         items={[
           {
@@ -95,7 +95,7 @@ describe('CommandSearch', () => {
       'data-[selected=true]:bg-slate-soft',
       'data-[selected=true]:before:bg-primary-solid',
     ])
-    expect(container.querySelector('[class*="af-command"], [class*="af-shortcut"]')).not.toBeInTheDocument()
+    expect(document.body.querySelector('[class*="af-command"], [class*="af-shortcut"]')).not.toBeInTheDocument()
   })
 
   it('does not force neutral text when a semantic trigger color is provided', () => {
