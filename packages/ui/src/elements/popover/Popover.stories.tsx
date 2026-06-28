@@ -308,7 +308,7 @@ export const SettingsPopover: Story = {
             <Button variant="ghost" size="sm" className="justify-start">
               Help & Support
             </Button>
-            <hr className="my-1 border-neutral" />
+            <hr className="my-1 border-0 border-t border-solid border-neutral" />
             <Button variant="ghost" size="sm" color="error" className="justify-start">
               Sign Out
             </Button>
