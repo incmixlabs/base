@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { AspectRatio } from './AspectRatio'
-import { aspectRatioCustom } from './aspect-ratio.class'
+import { aspectRatioByRatio } from './aspect-ratio.class'
 
 afterEach(() => {
   cleanup()
@@ -29,11 +29,11 @@ describe('AspectRatio', () => {
     expect(node.style.borderRadius).toBe('12px')
   })
 
-  it('treats customRatio=0 as custom input path', () => {
+  it('falls back to the configured ratio when customRatio=0', () => {
     render(<AspectRatio data-testid="ratio-box" customRatio={0} />)
 
     const node = screen.getByTestId('ratio-box')
-    expect(node.className).toContain(aspectRatioCustom)
+    expect(node.className).toContain(aspectRatioByRatio['16/9'])
     expect(node.style.aspectRatio).toBe('')
   })
 
@@ -41,7 +41,7 @@ describe('AspectRatio', () => {
     render(<AspectRatio data-testid="ratio-box" customRatio={Number.NaN} style={{ aspectRatio: '4 / 3' }} />)
 
     const node = screen.getByTestId('ratio-box')
-    expect(node.className).toContain(aspectRatioCustom)
+    expect(node.className).toContain(aspectRatioByRatio['16/9'])
     expect(node.style.aspectRatio).toBe('4 / 3')
   })
 })

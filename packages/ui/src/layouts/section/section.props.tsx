@@ -19,7 +19,7 @@ const sectionPropDefs = {
    * | size="1" | 24px    |
    * | size="2" | 40px    |
    * | size="3" | 64px    |
-   * | size="4" | 80px    |
+   * | size="4" | 96px    |
    *
    * @example
    * size="4"
@@ -47,16 +47,11 @@ const sectionPropDefs = {
     type: 'enum',
     className: 'af-display',
     values: sectionDisplayValues,
-    parseValue: parseDisplayValue,
     responsive: true,
   },
 } satisfies {
   size: PropDef<SectionSize>
   display: PropDef<SectionDisplay>
-}
-
-function parseDisplayValue(value: string) {
-  return value === 'initial' ? 'block' : value
 }
 
 // Use all of the imported prop defs to ensure that JSDoc works

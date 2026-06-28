@@ -38,6 +38,7 @@ import {
   cardSizeRules,
   cardTitleBase,
 } from './src/elements/card/card.class'
+import { aspectRatioByRatio } from './src/layouts/aspect-ratio/aspect-ratio.class'
 import { boxRootBase, boxSurfaceColorClassNames } from './src/layouts/box/box.class'
 import {
   containerAlignResponsive,
@@ -73,6 +74,14 @@ import {
   gridTemplateRowsCustomResponsive,
 } from './src/layouts/grid/Grid.classes'
 import { headerRoot, headerSticky } from './src/layouts/header/header.class'
+import {
+  sectionBase,
+  sectionBaseCls,
+  sectionByDisplay,
+  sectionBySize,
+  sectionDisplayResponsive,
+  sectionSizeResponsive,
+} from './src/layouts/section/section.class'
 import { containerBreakpoints } from './src/theme/tokens'
 
 const splitClasses = (values: string[]) => values.flatMap(value => value.split(/\s+/))
@@ -113,6 +122,8 @@ export default defineConfig({
       ...Object.values(avatarGroupOverflowStackMarginBySize),
       avatarListItemBase,
       ...Object.values(avatarListItemBySize),
+      // AspectRatio styles
+      ...Object.values(aspectRatioByRatio),
       // Callout styles
       calloutRootBaseCls,
       calloutIconBaseCls,
@@ -174,6 +185,13 @@ export default defineConfig({
       // Header styles
       headerRoot,
       headerSticky,
+      // Section styles
+      sectionBaseCls,
+      sectionBase,
+      ...Object.values(sectionBySize),
+      ...Object.values(sectionByDisplay),
+      ...classMapValues(sectionDisplayResponsive),
+      ...classMapValues(sectionSizeResponsive),
     ]),
   ],
 })
