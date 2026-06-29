@@ -17,7 +17,7 @@ const indicatorSizeBySize: Record<FormSize, string> = {
 const joinClass = (...parts: string[]) => parts.join('')
 const colorVar = (color: string, token: string) => joinClass('var(--color-', color, '-', token, ')')
 const radioCardsSizeVar = (size: string, slot: string, fallback: string) =>
-  joinClass('var(--component-radio-cards-size-', size, '-', slot, ',', fallback, ')')
+  joinClass('var(--af-radio-cards-size-', size, '-', slot, ',', fallback, ')')
 
 const selectedRadioCardColor = (color: Color): Color => (color === 'neutral' ? 'primary' : color)
 

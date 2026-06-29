@@ -39,9 +39,7 @@ describe('Card', () => {
     expect(cardPaddingWrapper?.style.getPropertyValue('--af-card-padding-initial')).toContain(
       '--theme-rhythm-card-padding-xs',
     )
-    expect(cardPaddingWrapper?.style.getPropertyValue('--af-card-padding-initial')).not.toContain(
-      '--component-card-size',
-    )
+    expect(cardPaddingWrapper?.style.getPropertyValue('--af-card-padding-initial')).not.toContain('--af-card-size')
     expect(cardPaddingWrapper?.style.getPropertyValue('--af-card-padding-md')).toContain(
       '--theme-rhythm-card-padding-lg',
     )
@@ -121,7 +119,7 @@ describe('Card', () => {
     expect(child).not.toHaveClass(cardSizeClass)
     expect(child.style.padding).toBe('var(--af-card-padding-initial)')
     expect(child.style.getPropertyValue('--af-card-padding-initial')).toContain('--theme-rhythm-card-padding-xs')
-    expect(child.style.getPropertyValue('--af-card-padding-initial')).not.toContain('--component-card-size')
+    expect(child.style.getPropertyValue('--af-card-padding-initial')).not.toContain('--af-card-size')
   })
 
   it.each(['chart1', 'chart-1'] as const)('supports chart surface tone %s on Card.Root', color => {

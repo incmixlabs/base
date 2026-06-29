@@ -21,7 +21,7 @@ const switchSizeTokens: Record<
 const joinClass = (...parts: string[]) => parts.join('')
 const colorVar = (color: string, token: string) => joinClass('var(--color-', color, '-', token, ')')
 const switchSizeVar = (size: string, slot: string, fallback: string) =>
-  joinClass('var(--component-switch-size-', size, '-', slot, ',', fallback, ')')
+  joinClass('var(--af-switch-size-', size, '-', slot, ',', fallback, ')')
 
 const switchFocusClassName = (color: string) =>
   joinClass(
@@ -107,8 +107,8 @@ export const switchSizeVariants = Object.fromEntries(
 ) as Record<SwitchSize, string>
 
 export const switchGroupRootOrientation = {
-  vertical: 'flex-col gap-[var(--component-switch-group-gap,0.5rem)]',
-  horizontal: 'flex-row gap-[var(--component-switch-group-inline-gap,1rem)]',
+  vertical: 'flex-col gap-[var(--af-switch-group-gap,0.5rem)]',
+  horizontal: 'flex-row gap-[var(--af-switch-group-inline-gap,1rem)]',
 } as const satisfies Record<SwitchGroupOrientation, string>
 
 export const switchSegmentedSizeClasses: Record<SwitchSize, string> = {

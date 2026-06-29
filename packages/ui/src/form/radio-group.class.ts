@@ -71,22 +71,22 @@ export const radioHighContrastByVariant: Record<RadioVariant, string> = {
 }
 
 export const radioSizeVariants = {
-  xs: 'w-[var(--component-radio-size-xs-radio-size,0.75rem)] h-[var(--component-radio-size-xs-radio-size,0.75rem)] [--radio-indicator-size:var(--component-radio-size-xs-indicator-size,calc(0.75rem/2))]',
-  sm: 'w-[var(--component-radio-size-sm-radio-size,1rem)] h-[var(--component-radio-size-sm-radio-size,1rem)] [--radio-indicator-size:var(--component-radio-size-sm-indicator-size,calc(1rem/2))]',
-  md: 'w-[var(--component-radio-size-md-radio-size,1.25rem)] h-[var(--component-radio-size-md-radio-size,1.25rem)] [--radio-indicator-size:var(--component-radio-size-md-indicator-size,calc(1.25rem/2))]',
-  lg: 'w-[var(--component-radio-size-lg-radio-size,1.5rem)] h-[var(--component-radio-size-lg-radio-size,1.5rem)] [--radio-indicator-size:var(--component-radio-size-lg-indicator-size,calc(1.5rem/2))]',
+  xs: 'w-[var(--af-radio-size-xs-radio-size,0.75rem)] h-[var(--af-radio-size-xs-radio-size,0.75rem)] [--radio-indicator-size:var(--af-radio-size-xs-indicator-size,calc(0.75rem/2))]',
+  sm: 'w-[var(--af-radio-size-sm-radio-size,1rem)] h-[var(--af-radio-size-sm-radio-size,1rem)] [--radio-indicator-size:var(--af-radio-size-sm-indicator-size,calc(1rem/2))]',
+  md: 'w-[var(--af-radio-size-md-radio-size,1.25rem)] h-[var(--af-radio-size-md-radio-size,1.25rem)] [--radio-indicator-size:var(--af-radio-size-md-indicator-size,calc(1.25rem/2))]',
+  lg: 'w-[var(--af-radio-size-lg-radio-size,1.5rem)] h-[var(--af-radio-size-lg-radio-size,1.5rem)] [--radio-indicator-size:var(--af-radio-size-lg-indicator-size,calc(1.5rem/2))]',
 } as const satisfies Record<RadioSize, string>
 
 export const radioGapVariants = {
-  xs: '[--radio-gap:var(--component-radio-size-xs-gap,0.25rem)]',
-  sm: '[--radio-gap:var(--component-radio-size-sm-gap,0.375rem)]',
-  md: '[--radio-gap:var(--component-radio-size-md-gap,0.5rem)]',
-  lg: '[--radio-gap:var(--component-radio-size-lg-gap,0.625rem)]',
+  xs: '[--radio-gap:var(--af-radio-size-xs-gap,0.25rem)]',
+  sm: '[--radio-gap:var(--af-radio-size-sm-gap,0.375rem)]',
+  md: '[--radio-gap:var(--af-radio-size-md-gap,0.5rem)]',
+  lg: '[--radio-gap:var(--af-radio-size-lg-gap,0.625rem)]',
 } as const satisfies Record<RadioSize, string>
 
 export const radioGroupRootOrientation = {
-  vertical: 'flex-col gap-[var(--component-radio-group-gap,0.5rem)]',
-  horizontal: 'flex-row gap-[var(--component-radio-group-inline-gap,1rem)]',
+  vertical: 'flex-col gap-[var(--af-radio-group-gap,0.5rem)]',
+  horizontal: 'flex-row gap-[var(--af-radio-group-inline-gap,1rem)]',
 } as const satisfies Record<RadioGroupOrientation, string>
 
 export const radioGroupClassNames = [

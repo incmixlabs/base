@@ -455,11 +455,11 @@
   }
 
   .surface-shape-ellipse {
-    border-radius: var(--component-surface-shape-ellipse-radius, 50%);
+    border-radius: var(--af-surface-shape-ellipse-radius, 50%);
   }
 
   .surface-shape-circle {
-    border-radius: var(--component-surface-shape-circle-radius, 9999px);
+    border-radius: var(--af-surface-shape-circle-radius, 9999px);
   }
 
   .surface-shape-hexagon {
@@ -467,7 +467,7 @@
   }
 
   .surface-shape-pill {
-    border-radius: var(--component-surface-shape-pill-radius, 9999px);
+    border-radius: var(--af-surface-shape-pill-radius, 9999px);
   }
 
   .surface-high-contrast-classic,
@@ -528,7 +528,7 @@
   .surface-variant-surface {
     background-color: var(--surface-surface);
     border-color: var(--surface-border);
-    box-shadow: var(--component-surface-variant-surface-box-shadow, var(--shadow-xs));
+    box-shadow: var(--af-surface-variant-surface-box-shadow, var(--shadow-xs));
     color: var(--surface-text);
   }
 

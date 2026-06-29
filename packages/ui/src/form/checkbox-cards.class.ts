@@ -8,10 +8,10 @@ export type CheckboxCardSize = FormSize
 export const checkboxCardSizeVariants = createRadioCheckboxCardSizeVariants('checkbox-cards')
 
 export const checkboxCardControlSizeVariants = {
-  xs: '[--af-checkbox-card-box-size:var(--component-checkbox-cards-size-xs-box-size,0.875rem)] [--af-checkbox-card-icon-size:var(--component-checkbox-cards-size-xs-icon-size,0.75rem)]',
-  sm: '[--af-checkbox-card-box-size:var(--component-checkbox-cards-size-sm-box-size,1rem)] [--af-checkbox-card-icon-size:var(--component-checkbox-cards-size-sm-icon-size,0.875rem)]',
-  md: '[--af-checkbox-card-box-size:var(--component-checkbox-cards-size-md-box-size,1.25rem)] [--af-checkbox-card-icon-size:var(--component-checkbox-cards-size-md-icon-size,1rem)]',
-  lg: '[--af-checkbox-card-box-size:var(--component-checkbox-cards-size-lg-box-size,1.5rem)] [--af-checkbox-card-icon-size:var(--component-checkbox-cards-size-lg-icon-size,1.25rem)]',
+  xs: '[--af-checkbox-card-box-size:var(--af-checkbox-cards-size-xs-box-size,0.875rem)] [--af-checkbox-card-icon-size:var(--af-checkbox-cards-size-xs-icon-size,0.75rem)]',
+  sm: '[--af-checkbox-card-box-size:var(--af-checkbox-cards-size-sm-box-size,1rem)] [--af-checkbox-card-icon-size:var(--af-checkbox-cards-size-sm-icon-size,0.875rem)]',
+  md: '[--af-checkbox-card-box-size:var(--af-checkbox-cards-size-md-box-size,1.25rem)] [--af-checkbox-card-icon-size:var(--af-checkbox-cards-size-md-icon-size,1rem)]',
+  lg: '[--af-checkbox-card-box-size:var(--af-checkbox-cards-size-lg-box-size,1.5rem)] [--af-checkbox-card-icon-size:var(--af-checkbox-cards-size-lg-icon-size,1.25rem)]',
 } as const satisfies Record<CheckboxCardSize, string>
 
 const joinClass = (...parts: string[]) => parts.join('')

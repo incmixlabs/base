@@ -16,7 +16,7 @@ const radioCheckboxCardTokens: Record<FormSize, { padding: string; gap: string; 
 const joinClass = (...parts: string[]) => parts.join('')
 
 const componentSizeVar = (component: RadioCheckboxCardComponent, size: string, slot: string, fallback: string) =>
-  joinClass('var(--component-', component, '-size-', size, '-', slot, ',', fallback, ')')
+  joinClass('var(--af-', component, '-size-', size, '-', slot, ',', fallback, ')')
 
 export const radioCheckboxCardPaddingClass = 'p-[var(--af-radio-checkbox-card-padding)]'
 export const radioCheckboxCardGapClass = 'gap-[var(--af-radio-checkbox-card-gap)]'

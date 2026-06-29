@@ -234,24 +234,24 @@ function getInitialResolvedAppearance(appearance: Appearance | undefined): 'ligh
 function getSurfaceVariantVars(prefix: string, color: Color, variant: SidebarVariant): Record<string, string> {
   if (variant === 'solid') {
     return {
-      [`--component-${prefix}-background`]: `var(--color-${color}-primary)`,
-      [`--component-${prefix}-foreground`]: `var(--color-${color}-contrast)`,
-      [`--component-${prefix}-border-color`]: `var(--color-${color}-primary)`,
+      [`--af-${prefix}-background`]: `var(--color-${color}-primary)`,
+      [`--af-${prefix}-foreground`]: `var(--color-${color}-contrast)`,
+      [`--af-${prefix}-border-color`]: `var(--color-${color}-primary)`,
     }
   }
 
   if (variant === 'soft') {
     return {
-      [`--component-${prefix}-background`]: `var(--color-${color}-soft)`,
-      [`--component-${prefix}-foreground`]: `var(--color-${color}-text)`,
-      [`--component-${prefix}-border-color`]: 'transparent',
+      [`--af-${prefix}-background`]: `var(--color-${color}-soft)`,
+      [`--af-${prefix}-foreground`]: `var(--color-${color}-text)`,
+      [`--af-${prefix}-border-color`]: 'transparent',
     }
   }
 
   return {
-    [`--component-${prefix}-background`]: `var(--color-${color}-surface)`,
-    [`--component-${prefix}-foreground`]: `var(--color-${color}-text)`,
-    [`--component-${prefix}-border-color`]: `var(--color-${color}-border)`,
+    [`--af-${prefix}-background`]: `var(--color-${color}-surface)`,
+    [`--af-${prefix}-foreground`]: `var(--color-${color}-text)`,
+    [`--af-${prefix}-border-color`]: `var(--color-${color}-border)`,
   }
 }
 

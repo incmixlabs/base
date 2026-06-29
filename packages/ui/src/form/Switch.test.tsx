@@ -21,10 +21,10 @@ describe('Switch', () => {
     const switchControl = screen.getByTestId('switch')
 
     expectClassTokens(switchControl.className, [
-      '[--sw-root-height:var(--component-switch-size-sm-root-height,1.25rem)]',
-      '[--sw-root-width:var(--component-switch-size-sm-root-width,2.25rem)]',
-      '[--sw-thumb-size:var(--component-switch-size-sm-thumb-size,1rem)]',
-      '[--sw-thumb-translate:var(--component-switch-size-sm-thumb-translate,1rem)]',
+      '[--sw-root-height:var(--af-switch-size-sm-root-height,1.25rem)]',
+      '[--sw-root-width:var(--af-switch-size-sm-root-width,2.25rem)]',
+      '[--sw-thumb-size:var(--af-switch-size-sm-thumb-size,1rem)]',
+      '[--sw-thumb-translate:var(--af-switch-size-sm-thumb-translate,1rem)]',
       'bg-neutral-soft',
       'data-[checked]:bg-success-solid',
       'data-[checked]:[border-color:var(--color-success-primary)]',
