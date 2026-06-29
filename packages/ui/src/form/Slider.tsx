@@ -5,27 +5,30 @@ import * as React from 'react'
 import { sliderPropDefs } from '@/elements/slider/slider.props'
 import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
-import { SemanticColor } from '@/theme/props/color.prop'
+import { SemanticColor, type SemanticColorKey } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
-import { radiusStyleVariants } from '@/theme/radius.css'
-import type { Color, Radius } from '@/theme/tokens'
+import type { Radius } from '@/theme/tokens'
 import { useFieldGroup } from './FieldGroupContext'
-import { formColorVars } from './form-color'
 import { type FormSize, resolveFormSize } from './form-size'
 import {
+  sliderControlBase,
+  sliderIndicatorBase,
+  sliderIndicatorColorStyles,
   sliderIndicatorHighContrast,
+  sliderRadiusVariants,
+  sliderRootBase,
   sliderSizeVariants,
+  sliderSoftIndicatorColorStyles,
+  sliderSolidTrackColorStyles,
+  sliderThumbBase,
+  sliderThumbColorStyles,
+  sliderTrackBase,
   sliderTrackHighContrast,
   sliderTrackVariantStyles,
-} from './Slider.css'
+} from './Slider.class'
 
 export type SliderSize = FormSize
-
-// Static color classes — reference --fc-primary set via formColorVars
-const fillColorCls = 'bg-[var(--fc-primary)]'
-const softFillColorCls = 'bg-[var(--fc-soft-bg-hover)]'
-const borderColorCls = 'border-[var(--fc-primary)]'
 
 // Variant styles
 type SliderVariant = (typeof sliderPropDefs.variant.values)[number]
@@ -48,7 +51,7 @@ export interface SliderProps extends MarginProps {
   /** Visual variant */
   variant?: SliderVariant
   /** Color of the slider */
-  color?: Color
+  color?: SemanticColorKey
   /** Border radius */
   radius?: Radius
   /** High contrast mode */
@@ -96,6 +99,8 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
     const effectiveDisabled = disabled || fieldGroup.disabled
     const safeVariant = (normalizeEnumPropValue(sliderPropDefs.variant, variant) ??
       sliderPropDefs.variant.default) as SliderVariant
+    const safeColor = (normalizeEnumPropValue(sliderPropDefs.color, color) ?? SemanticColor.primary) as SemanticColorKey
+    const safeRadius = (normalizeEnumPropValue(sliderPropDefs.radius, radius) ?? 'full') as Radius
     const safeHighContrast = normalizeBooleanPropValue(sliderPropDefs.highContrast, highContrast) ?? false
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
 
@@ -110,9 +115,10 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
         step={step}
         disabled={effectiveDisabled}
         orientation={orientation}
-        style={{ ...marginProps.style, ...formColorVars[color], ...style }}
+        data-slot="slider"
+        style={{ ...marginProps.style, ...style }}
         className={cn(
-          'relative flex touch-none select-none items-center',
+          sliderRootBase,
           sliderSizeVariants[size],
           orientation === 'horizontal' && 'w-full',
           orientation === 'vertical' && 'h-full flex-col',
@@ -122,29 +128,34 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
         )}
       >
         <SliderPrimitive.Control
+          data-slot="slider-control"
           className={cn(
-            'relative grow',
+            sliderControlBase,
             orientation === 'horizontal' && 'w-full',
             orientation === 'vertical' && 'h-full',
           )}
         >
           <SliderPrimitive.Track
+            data-slot="slider-track"
             className={cn(
-              'relative overflow-hidden',
-              radiusStyleVariants[radius],
-              'h-[var(--slider-track-height)]',
+              sliderTrackBase,
+              sliderRadiusVariants[safeRadius],
+              'h-[var(--af-slider-track-height)]',
               orientation === 'horizontal' && 'w-full',
               orientation === 'vertical' && 'h-full',
               sliderTrackVariantStyles[safeVariant],
-              safeHighContrast && 'af-high-contrast',
+              safeVariant === 'solid' && sliderSolidTrackColorStyles[safeColor],
               safeHighContrast && sliderTrackHighContrast,
             )}
           >
             <SliderPrimitive.Indicator
+              data-slot="slider-indicator"
               className={cn(
-                'absolute',
-                radiusStyleVariants[radius],
-                safeVariant === 'soft' ? softFillColorCls : fillColorCls,
+                sliderIndicatorBase,
+                sliderRadiusVariants[safeRadius],
+                safeVariant === 'soft'
+                  ? sliderSoftIndicatorColorStyles[safeColor]
+                  : sliderIndicatorColorStyles[safeColor],
                 orientation === 'horizontal' && 'h-full',
                 orientation === 'vertical' && 'w-full bottom-0',
                 safeHighContrast && sliderIndicatorHighContrast,
@@ -155,14 +166,12 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
             <SliderPrimitive.Thumb
               key={index}
               index={index}
+              data-slot="slider-thumb"
               className={cn(
-                'block border-2 bg-background shadow-sm transition-colors',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-                'disabled:pointer-events-none disabled:opacity-50',
-                radiusStyleVariants[radius],
-                'h-[var(--slider-thumb-size)] w-[var(--slider-thumb-size)]',
-                borderColorCls,
-                safeHighContrast && 'af-high-contrast',
+                sliderThumbBase,
+                sliderRadiusVariants[safeRadius],
+                'h-[var(--af-slider-thumb-size)] w-[var(--af-slider-thumb-size)]',
+                sliderThumbColorStyles[safeColor],
               )}
             />
           ))}

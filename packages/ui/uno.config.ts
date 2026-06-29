@@ -109,6 +109,7 @@ import { ratingClassNames } from './src/form/Rating.class'
 import { radioCardsClassNames } from './src/form/radio-cards.class'
 import { radioCheckboxCardClassNames } from './src/form/radio-checkbox.shared.class'
 import { radioGroupClassNames } from './src/form/radio-group.class'
+import { sliderClassNames } from './src/form/Slider.class'
 import { switchClassNames } from './src/form/switch.class'
 import { aspectRatioByRatio } from './src/layouts/aspect-ratio/aspect-ratio.class'
 import { boxRootBase, boxSurfaceColorClassNames } from './src/layouts/box/box.class'
@@ -405,6 +406,8 @@ export default defineConfig({
       ...splitClasses(radioGroupClassNames),
       // Rating styles
       ...splitClasses(ratingClassNames),
+      // Slider styles
+      ...splitClasses(sliderClassNames),
       // Switch styles
       ...splitClasses(switchClassNames),
       // Box styles

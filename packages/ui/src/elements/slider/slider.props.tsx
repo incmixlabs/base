@@ -8,7 +8,7 @@ const sizes = sizesXsToLg
 const variants = variantsClassicSolidSurfaceSoft
 
 const sliderPropDefs = {
-  size: { type: 'enum', values: sizes, default: 'sm', responsive: true },
+  size: { type: 'enum', values: sizes, default: 'sm' },
   variant: { type: 'enum', values: variants, default: 'surface' },
   ...colorPropDef,
   ...highContrastPropDef,

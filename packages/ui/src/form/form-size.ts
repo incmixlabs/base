@@ -1,5 +1,5 @@
-import { sizesXsToLg, sizesXsToLgAnd2x } from '@/theme/props/scales'
-import type { Size } from '@/theme/tokens'
+import { sizesXsToLg, sizesXsToLgAnd2x } from '../theme/props/scales'
+import type { Size } from '../theme/tokens'
 
 /**
  * Standard form component size range (xs–lg).
