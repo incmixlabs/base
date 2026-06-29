@@ -55,7 +55,7 @@ export const WithStrengthIndicator: Story = {
           placeholder="Enter a strong password"
           showStrength
         />
-        <ul className="text-xs text-muted-foreground space-y-1 mt-2">
+        <ul className="text-xs text-muted space-y-1 mt-2">
           <li className={password.length >= 8 ? 'text-green-600' : ''}>
             {password.length >= 8 ? '✓' : '○'} At least 8 characters
           </li>
@@ -103,7 +103,7 @@ export const CustomStrengthCalculator: Story = {
           showStrength
           strengthCalculator={customCalculator}
         />
-        <p className="text-xs text-muted-foreground">Strength is based on password length only</p>
+        <p className="text-xs text-muted">Strength is based on password length only</p>
       </div>
     )
   },
@@ -163,7 +163,7 @@ export const LoginForm: Story = {
       <div className="w-96 p-6 border rounded-lg space-y-6">
         <div className="text-center">
           <h2 className="text-xl font-semibold">Welcome back</h2>
-          <p className="text-sm text-muted-foreground">Sign in to your account</p>
+          <p className="text-sm text-muted">Sign in to your account</p>
         </div>
 
         <div className="space-y-4">
@@ -213,7 +213,7 @@ export const SignupForm: Story = {
       <div className="w-96 p-6 border rounded-lg space-y-6">
         <div className="text-center">
           <h2 className="text-xl font-semibold">Create account</h2>
-          <p className="text-sm text-muted-foreground">Enter your details below</p>
+          <p className="text-sm text-muted">Enter your details below</p>
         </div>
 
         <div className="space-y-4">

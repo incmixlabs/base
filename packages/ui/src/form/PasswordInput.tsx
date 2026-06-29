@@ -80,9 +80,7 @@ const StrengthIndicator: React.FC<StrengthIndicatorProps> = ({ strength }) => (
         />
       ))}
     </div>
-    <p className={cn('text-xs', strength < 2 ? 'text-destructive' : 'text-muted-foreground')}>
-      {strengthLabels[strength]}
-    </p>
+    <p className={cn('text-xs', strength < 2 ? 'text-destructive' : 'text-muted')}>{strengthLabels[strength]}</p>
   </div>
 )
 
@@ -103,7 +101,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({ showPassword, onToggle, dis
     disabled={disabled}
     className={cn(
       'flex items-center justify-center w-full h-full',
-      'text-muted-foreground hover:text-foreground transition-colors',
+      'text-muted hover:text-foreground transition-colors',
       'focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded',
       disabled && 'pointer-events-none opacity-50',
     )}

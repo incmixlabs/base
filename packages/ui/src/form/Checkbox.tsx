@@ -15,7 +15,7 @@ import {
   checkboxHighContrastByVariant,
   checkboxIndicator,
   checkboxSizeVariants,
-} from './checkbox.css'
+} from './checkbox.class'
 import type { CheckboxProps, CheckboxSize, CheckboxWithLabelProps } from './checkbox.props'
 import { checkboxPropDefs } from './checkbox.props'
 import { useFieldGroup, useFieldGroupOptional } from './FieldGroupContext'
@@ -139,7 +139,7 @@ export const CheckboxWithLabel = React.forwardRef<HTMLButtonElement, CheckboxWit
             {label}
           </Label>
           {description && (
-            <Text size="xs" className="text-muted-foreground mt-1">
+            <Text size="xs" className="mt-1 text-muted">
               {description}
             </Text>
           )}

@@ -57,8 +57,8 @@ export const Standalone: Story = {
           toolbarRef={toolbarRef}
         />
 
-        {lastAction && <p className="text-xs text-muted-foreground">Last action: {lastAction}</p>}
-        <p className="text-xs text-muted-foreground">
+        {lastAction && <p className="text-xs text-muted">Last action: {lastAction}</p>}
+        <p className="text-xs text-muted">
           This uses FloatingToolbar directly with useTextareaSelection — no SelectionToolbar wrapper. The same
           FloatingToolbar can be wired to Lexical or any other source.
         </p>
@@ -77,7 +77,7 @@ export const FixedPosition: Story = {
     return (
       <div className="w-[500px] space-y-4">
         <Label>Fixed position demo</Label>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted">
           Toolbar positioned at a fixed rect — demonstrates that FloatingToolbar is independent of any text input.
         </p>
         <button className="px-3 py-1.5 rounded-md border text-sm" onClick={() => setOpen(!open)}>
@@ -93,7 +93,7 @@ export const FixedPosition: Story = {
 
         {/* Visual indicator of the rect */}
         <div
-          className="fixed border-2 border-dashed border-primary/30 pointer-events-none"
+          className="fixed pointer-events-none border-2 border-dashed border-primary opacity-30"
           style={{ top: rect.top, left: rect.left, width: rect.width, height: rect.height }}
         />
       </div>
@@ -117,7 +117,7 @@ export const WithActiveState: Story = {
     return (
       <div className="w-[500px] space-y-4">
         <Label>Active state toggle</Label>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted">
           Click toolbar buttons to toggle active state. Active buttons are highlighted. This pattern is how Lexical
           integration would work — buttons reflect editor state.
         </p>

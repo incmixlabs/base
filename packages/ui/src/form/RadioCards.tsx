@@ -19,12 +19,19 @@ import { useFieldGroup } from './FieldGroupContext'
 import { resolveFormSize } from './form-size'
 import {
   type RadioCardSize,
+  radioCardContentBase,
+  radioCardGapVariants,
+  radioCardIndicatorBase,
   radioCardIndicatorColorVariants,
+  radioCardIndicatorInner,
+  radioCardIndicatorInnerSizeVariants,
+  radioCardIndicatorSizeVariants,
+  radioCardPaddingVariants,
+  radioCardRootBase,
   radioCardRootColorVariants,
-  radioCardSizeVariants,
-} from './radio-cards.css'
+} from './radio-cards.class'
 import { type RadioCardsGap, radioCardsGapValues, radioCardsRootPropDefs } from './radio-cards.props'
-import { radioHighContrastByVariant } from './radio-group.css'
+import { radioHighContrastByVariant } from './radio-group.class'
 
 export type { RadioCardSize }
 
@@ -205,41 +212,36 @@ const RadioCardsItem = React.forwardRef<HTMLButtonElement, RadioCardsItemProps>(
         value={value}
         disabled={isDisabled}
         className={cn(
-          'group relative flex cursor-pointer rounded-lg border bg-card text-left transition-all',
-          radioCardSizeVariants[context.size],
-          'p-[var(--rc-padding)]',
+          radioCardRootBase,
+          radioCardPaddingVariants[context.size],
           surfaceColorVariants[context.color][context.variant === 'surface' ? 'surface' : 'classic'],
           !isDisabled && surfaceHoverEnabledClass,
           context.highContrast && 'af-high-contrast',
           context.highContrast && surfaceHighContrastByVariant[context.variant === 'surface' ? 'surface' : 'classic'],
           radioCardRootColorVariants[context.color],
-          // Selected styles
-          'data-[checked]:ring-2',
-          // Focus state
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
           // Disabled state
-          isDisabled && 'cursor-not-allowed opacity-50 hover:bg-card',
+          isDisabled && 'cursor-not-allowed opacity-50',
           className,
         )}
         {...props}
       >
-        <div className="flex w-full items-start gap-[var(--rc-gap)]">
+        <div className={cn('flex w-full items-start', radioCardGapVariants[context.size])}>
           {/* Radio indicator */}
           <span
             className={cn(
-              'mt-0.5 inline-flex shrink-0 items-center justify-center rounded-full',
-              'w-[var(--rc-indicator-size)] h-[var(--rc-indicator-size)]',
-              'border-2',
-              'transition-all duration-150',
+              radioCardIndicatorBase,
+              radioCardIndicatorSizeVariants[context.size],
               radioCardIndicatorColorVariants[context.color],
               context.highContrast && 'af-high-contrast',
               context.highContrast && radioHighContrastByVariant.surface,
             )}
           >
-            <RadioPrimitive.Indicator className="rounded-full bg-white w-[var(--rc-indicator-inner)] h-[var(--rc-indicator-inner)]" />
+            <RadioPrimitive.Indicator
+              className={cn(radioCardIndicatorInner, radioCardIndicatorInnerSizeVariants[context.size])}
+            />
           </span>
           {/* Content */}
-          <div className="flex-1 text-[var(--rc-font-size)]">{children}</div>
+          <div className={radioCardContentBase}>{children}</div>
         </div>
       </RadioPrimitive.Root>
     )

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import * as React from 'react'
+import { Button } from '@/elements/button/Button'
 import { Box } from '@/layouts/box/Box'
-import { SemanticColor } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
 import { selectArgType } from '@/theme/props/storybook'
 import { SwitchGroup } from './SwitchGroup'
@@ -32,19 +32,13 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    size: 'sm',
-    variant: 'surface',
-    color: SemanticColor.primary,
-    orientation: 'vertical',
+    size: switchGroupRootPropDefs.size.default,
+    variant: switchGroupRootPropDefs.variant.default,
+    color: switchGroupRootPropDefs.color.default,
+    orientation: switchGroupRootPropDefs.orientation.default,
   },
   render: args => (
-    <SwitchGroup.Root
-      defaultValue={['notifications']}
-      size={args.size}
-      variant={args.variant}
-      color={args.color}
-      orientation={args.orientation}
-    >
+    <SwitchGroup.Root {...args} defaultValue={['notifications']}>
       <SwitchGroup.Item name="notifications" label="Push notifications" />
       <SwitchGroup.Item name="emails" label="Email updates" />
       <SwitchGroup.Item name="sms" label="SMS alerts" />
@@ -194,7 +188,7 @@ export const Controlled: Story = {
           <SwitchGroup.Item name="highContrast" label="High contrast" description="Increase visual contrast" />
         </SwitchGroup.Root>
 
-        <div className="p-4 bg-muted rounded-md">
+        <div className="rounded-md bg-neutral-soft p-4">
           <p className="text-sm font-medium">Active settings:</p>
           <code className="text-sm">{values.length > 0 ? values.join(', ') : 'none'}</code>
         </div>
@@ -212,10 +206,10 @@ export const NotificationSettings: Story = {
     const [settings, setSettings] = React.useState<string[]>(['push', 'email'])
 
     return (
-      <div className="w-96 p-6 border rounded-lg space-y-6">
+      <div className="w-96 space-y-6 rounded-[var(--element-border-radius)] border border-neutral bg-neutral-surface p-6">
         <div>
           <h3 className="text-lg font-semibold">Notification Preferences</h3>
-          <p className="text-sm text-muted-foreground">Choose how you want to be notified.</p>
+          <p className="text-sm text-muted">Choose how you want to be notified.</p>
         </div>
 
         <SwitchGroup.Root value={settings} onValueChange={setSettings} color="success" size="sm">
@@ -229,7 +223,7 @@ export const NotificationSettings: Story = {
           />
         </SwitchGroup.Root>
 
-        <div className="pt-4 border-t">
+        <div className="border-t border-neutral pt-4">
           <p className="text-sm">
             <span className="font-medium">{settings.length}</span> notification channels enabled
           </p>
@@ -248,10 +242,10 @@ export const PrivacySettings: Story = {
     const [privacy, setPrivacy] = React.useState<string[]>(['analytics'])
 
     return (
-      <div className="w-96 p-6 border rounded-lg space-y-6">
+      <div className="w-96 space-y-6 rounded-[var(--element-border-radius)] border border-neutral bg-neutral-surface p-6">
         <div>
           <h3 className="text-lg font-semibold">Privacy Settings</h3>
-          <p className="text-sm text-muted-foreground">Control how your data is used.</p>
+          <p className="text-sm text-muted">Control how your data is used.</p>
         </div>
 
         <SwitchGroup.Root value={privacy} onValueChange={setPrivacy} color="primary" size="md">
@@ -277,12 +271,9 @@ export const PrivacySettings: Story = {
           />
         </SwitchGroup.Root>
 
-        <button
-          type="button"
-          className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90"
-        >
+        <Button type="button" className="w-full">
           Save preferences
-        </button>
+        </Button>
       </div>
     )
   },

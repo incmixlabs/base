@@ -1,6 +1,6 @@
 import { globalStyle, style, styleVariants } from '@vanilla-extract/css'
 import { getControlSizeValues } from '@/elements/control-size'
-import { surfaceColorVariants } from '@/elements/surface/surface.class'
+import { surfaceUnoColorVariants } from '@/elements/surface/surface.class'
 import { type SurfaceVariant, surfaceVariants } from '@/elements/surface/surface.props'
 import { semanticColorKeys, semanticColorVar } from '@/theme/props/color.prop'
 import { textFieldSizeVar } from '@/theme/runtime/component-vars'
@@ -13,7 +13,12 @@ export const textFieldRootCls = 'relative w-full'
 
 export const textFieldInputBaseCls = 'w-full outline-none transition-all duration-150 ease-in-out'
 
-export const textFieldIconContainerCls = 'absolute top-1/2 -translate-y-1/2 z-10'
+export const textFieldIconContainerCls = style({
+  position: 'absolute',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  zIndex: 10,
+})
 
 const iconInset = 'calc(var(--tf-padding-x) + var(--tf-gap))'
 const iconTextOffset = `calc(${iconInset} + var(--tf-icon-size) + var(--tf-gap))`
@@ -106,13 +111,22 @@ const textFieldEnhancementVariants = Object.fromEntries(
   semanticColorKeys.map(color => [color, createTextFieldEnhancements(color)]),
 ) as Record<Color, Record<TextFieldVariant, string>>
 
+export const textFieldSurfaceColorVariants: Record<Color, Record<TextFieldVariant, string>> = Object.fromEntries(
+  semanticColorKeys.map(color => [
+    color,
+    Object.fromEntries(textFieldVariantKeys.map(variant => [variant, surfaceUnoColorVariants[color][variant]])),
+  ]),
+) as Record<Color, Record<TextFieldVariant, string>>
+
+export { textFieldEnhancementVariants }
+
 export const textFieldColorVariants: Record<Color, Record<TextFieldVariant, string>> = Object.fromEntries(
   semanticColorKeys.map(color => [
     color,
     Object.fromEntries(
       textFieldVariantKeys.map(variant => [
         variant,
-        `${surfaceColorVariants[color][variant]} ${textFieldEnhancementVariants[color][variant]}`,
+        `${textFieldSurfaceColorVariants[color][variant]} ${textFieldEnhancementVariants[color][variant]}`,
       ]),
     ),
   ]),

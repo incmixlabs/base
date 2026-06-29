@@ -16,14 +16,14 @@ import {
   checkboxHighContrastByVariant,
   checkboxIndicator,
   checkboxSizeVariants,
-} from './checkbox.css'
+} from './checkbox.class'
 import type { CheckboxSize, CheckboxVariant } from './checkbox.props'
 import {
   checkboxGroupItemBase,
   checkboxGroupItemGap,
   checkboxGroupRootBase,
   checkboxGroupRootOrientation,
-} from './checkbox-group.css'
+} from './checkbox-group.class'
 import type { CheckboxGroupItemProps, CheckboxGroupRootProps } from './checkbox-group.props'
 import { checkboxGroupRootPropDefs } from './checkbox-group.props'
 import { useFieldGroup } from './FieldGroupContext'
@@ -141,7 +141,7 @@ const CheckboxGroupItem = React.forwardRef<HTMLButtonElement, CheckboxGroupItemP
               {displayLabel}
             </Label>
             {description && (
-              <Text size="xs" className="text-muted-foreground mt-1">
+              <Text size="xs" className="mt-1 text-muted">
                 {description}
               </Text>
             )}

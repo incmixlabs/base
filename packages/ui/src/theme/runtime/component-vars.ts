@@ -5,11 +5,11 @@ function withFallback(cssVar: string, fallback: string): string {
 }
 
 function componentSizeVar(component: string, size: string, slot: string, fallback: string): string {
-  return withFallback(`--component-${toKebabCase(component)}-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-${toKebabCase(component)}-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 function componentVar(component: string, slot: string, fallback: string): string {
-  return withFallback(`--component-${toKebabCase(component)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-${toKebabCase(component)}-${toKebabCase(slot)}`, fallback)
 }
 
 export type SurfaceVariantTokenSlot = 'boxShadow'
@@ -44,18 +44,6 @@ export type TimelineSizeTokenSlot =
   | 'contentFontSize'
 export type FieldGroupSectionTokenSlot = 'separatorMarginBlock' | 'headerMarginBottom' | 'descriptionMarginTop'
 export type FieldGroupRowTokenSlot = 'rootGap' | 'columnGap' | 'descriptionMarginTop'
-export type PickerPopupSizeTokenSlot =
-  | 'viewportMaxHeight'
-  | 'popupPadding'
-  | 'statusPaddingX'
-  | 'statusPaddingY'
-  | 'searchHeight'
-  | 'fontSize'
-  | 'lineHeight'
-  | 'rowPaddingX'
-  | 'rowPaddingY'
-  | 'rowTrailingPadding'
-  | 'iconSize'
 export type FileUploadSizeTokenSlot =
   | 'defaultPadding'
   | 'minimalPadding'
@@ -64,17 +52,6 @@ export type FileUploadSizeTokenSlot =
   | 'iconSize'
   | 'titleFontSize'
   | 'descriptionFontSize'
-export type MentionTextareaTokenSlot =
-  | 'suggestionMinWidth'
-  | 'suggestionMaxWidth'
-  | 'suggestionFontSize'
-  | 'suggestionEmptyPaddingInline'
-  | 'suggestionEmptyPaddingBlock'
-  | 'dragOverlayFontSize'
-  | 'previewMinHeight'
-  | 'previewPaddingInline'
-  | 'previewPaddingBlock'
-  | 'previewFontSize'
 export type DateSizeTokenSlot =
   | 'controlHeight'
   | 'controlFontSize'
@@ -108,12 +85,12 @@ export type TextFieldSizeTokenSlot =
   | 'floatingOutlinedPlaceholderTranslate'
 export type CheckboxSizeTokenSlot = 'boxSize' | 'iconSize' | 'borderRadius'
 export type CheckboxGroupTokenSlot = 'gap' | 'inlineGap' | 'itemGap'
-export type CheckboxCardsSizeTokenSlot = 'padding' | 'boxSize' | 'iconSize' | 'fontSize' | 'gap'
+export type CheckboxCardsSizeTokenSlot = 'padding' | 'boxSize' | 'iconSize' | 'gap'
 export type SwitchSizeTokenSlot = 'rootHeight' | 'rootWidth' | 'thumbSize' | 'thumbTranslate' | 'gap'
 export type SwitchGroupTokenSlot = 'gap' | 'inlineGap'
 export type RadioSizeTokenSlot = 'radioSize' | 'indicatorSize' | 'gap'
 export type RadioGroupTokenSlot = 'gap' | 'inlineGap'
-export type RadioCardsSizeTokenSlot = 'padding' | 'gap' | 'indicatorSize' | 'indicatorInnerSize' | 'fontSize'
+export type RadioCardsSizeTokenSlot = 'padding' | 'gap' | 'indicatorSize' | 'indicatorInnerSize'
 export type ToggleSizeTokenSlot = 'height' | 'paddingInline' | 'fontSize' | 'iconSize' | 'gap'
 export type ToggleGroupTokenSlot = 'gap'
 export type RatingSizeTokenSlot = 'iconSize' | 'gap'
@@ -135,59 +112,51 @@ export type TreeViewSizeTokenSlot =
   | 'itemRadius'
 
 export function surfaceVariantVar(variant: string, slot: SurfaceVariantTokenSlot, fallback: string): string {
-  return withFallback(`--component-surface-variant-${toKebabCase(variant)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-surface-variant-${toKebabCase(variant)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function surfaceShapeVar(shape: string, slot: SurfaceShapeTokenSlot, fallback: string): string {
-  return withFallback(`--component-surface-shape-${toKebabCase(shape)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-surface-shape-${toKebabCase(shape)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function fieldGroupSectionVar(slot: FieldGroupSectionTokenSlot, fallback: string): string {
-  return withFallback(`--component-field-group-section-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-field-group-section-${toKebabCase(slot)}`, fallback)
 }
 
 export function fieldGroupRowVar(slot: FieldGroupRowTokenSlot, fallback: string): string {
-  return withFallback(`--component-field-group-row-${toKebabCase(slot)}`, fallback)
-}
-
-export function pickerPopupSizeVar(size: string, slot: PickerPopupSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-picker-popup-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-field-group-row-${toKebabCase(slot)}`, fallback)
 }
 
 export function fileUploadSizeVar(size: string, slot: FileUploadSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-file-upload-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function mentionTextareaVar(slot: MentionTextareaTokenSlot, fallback: string): string {
-  return withFallback(`--component-mention-textarea-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-file-upload-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function dateSizeVar(size: string, slot: DateSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-date-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-date-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function popoverSizeVar(size: string, slot: PopoverSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-popover-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-popover-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function popoverMaxWidthVar(size: string, slot: PopoverMaxWidthTokenSlot, fallback: string): string {
-  return withFallback(`--component-popover-max-width-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-popover-max-width-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function tooltipSizeVar(size: string, slot: TooltipSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-tooltip-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-tooltip-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function tooltipMaxWidthVar(size: string, slot: TooltipMaxWidthTokenSlot, fallback: string): string {
-  return withFallback(`--component-tooltip-max-width-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-tooltip-max-width-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function sliderSizeVar(size: string, slot: SliderSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-slider-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-slider-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function sliderVariantVar(variant: string, slot: SliderVariantTokenSlot, fallback: string): string {
-  return withFallback(`--component-slider-variant-${toKebabCase(variant)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-slider-variant-${toKebabCase(variant)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function stepperSizeVar(size: string, slot: StepperSizeTokenSlot, fallback: string): string {
@@ -199,11 +168,11 @@ export function timelineSizeVar(size: string, slot: TimelineSizeTokenSlot, fallb
 }
 
 export function textFieldSizeVar(size: string, slot: TextFieldSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-text-field-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-text-field-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function checkboxSizeVar(size: string, slot: CheckboxSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-checkbox-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-checkbox-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function checkboxGroupVar(slot: CheckboxGroupTokenSlot, fallback: string): string {
@@ -211,11 +180,11 @@ export function checkboxGroupVar(slot: CheckboxGroupTokenSlot, fallback: string)
 }
 
 export function checkboxCardsSizeVar(size: string, slot: CheckboxCardsSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-checkbox-cards-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-checkbox-cards-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function switchSizeVar(size: string, slot: SwitchSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-switch-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-switch-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function switchGroupVar(slot: SwitchGroupTokenSlot, fallback: string): string {
@@ -223,7 +192,7 @@ export function switchGroupVar(slot: SwitchGroupTokenSlot, fallback: string): st
 }
 
 export function radioSizeVar(size: string, slot: RadioSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-radio-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-radio-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function radioGroupVar(slot: RadioGroupTokenSlot, fallback: string): string {
@@ -231,7 +200,7 @@ export function radioGroupVar(slot: RadioGroupTokenSlot, fallback: string): stri
 }
 
 export function radioCardsSizeVar(size: string, slot: RadioCardsSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-radio-cards-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-radio-cards-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function toggleSizeVar(size: string, slot: ToggleSizeTokenSlot, fallback: string): string {
@@ -247,23 +216,23 @@ export function ratingSizeVar(size: string, slot: RatingSizeTokenSlot, fallback:
 }
 
 export function appShellLayoutVar(slot: AppShellLayoutTokenSlot, fallback: string): string {
-  return withFallback(`--component-app-shell-layout-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-app-shell-layout-${toKebabCase(slot)}`, fallback)
 }
 
 export function appShellContentVar(slot: AppShellContentTokenSlot, fallback: string): string {
-  return withFallback(`--component-app-shell-content-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-app-shell-content-${toKebabCase(slot)}`, fallback)
 }
 
 export function contentBodyVar(slot: ContentBodyTokenSlot, fallback: string): string {
-  return withFallback(`--component-content-body-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-content-body-${toKebabCase(slot)}`, fallback)
 }
 
 export function scrollAreaSizeVar(size: string, slot: ScrollAreaSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-scroll-area-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-scroll-area-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function scrollAreaShapeVar(shape: string, slot: ScrollAreaShapeTokenSlot, fallback: string): string {
-  return withFallback(`--component-scroll-area-shape-${toKebabCase(shape)}-${toKebabCase(slot)}`, fallback)
+  return withFallback(`--af-scroll-area-shape-${toKebabCase(shape)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function treeViewSizeVar(size: string, slot: TreeViewSizeTokenSlot, fallback: string): string {

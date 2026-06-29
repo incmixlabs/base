@@ -27,7 +27,7 @@ export const Fieldset = React.forwardRef<HTMLFieldSetElement, FieldsetProps>(
         ) : null}
         <div className={cn(legend ? 'mt-3' : undefined, contentClassName)}>
           {description ? (
-            <p id={descriptionId} className="mb-4 text-sm text-muted-foreground">
+            <p id={descriptionId} className="mb-4 text-sm text-muted">
               {description}
             </p>
           ) : null}

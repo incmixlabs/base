@@ -16,14 +16,12 @@ import {
   ratingColorVariants,
   ratingGapVariants,
   ratingItemBase,
+  ratingItemFocusColorVariants,
   ratingItemSizeVariants,
-} from './Rating.css'
+} from './Rating.class'
+import type { RatingActivationMode, RatingOrientation, RatingSize, RatingStep } from './rating.props'
 
 type Direction = 'ltr' | 'rtl'
-type Orientation = 'horizontal' | 'vertical'
-type ActivationMode = 'automatic' | 'manual'
-type RatingSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2x'
-type Step = 0.5 | 1
 type DataState = 'full' | 'partial' | 'empty'
 type FocusIntent = 'first' | 'last' | 'prev' | 'next'
 
@@ -55,7 +53,7 @@ function getItemId(id: string, value: number) {
   return `${id}-item-${value}`
 }
 
-function getPartialFillGradientId(id: string, step: Step) {
+function getPartialFillGradientId(id: string, step: RatingStep) {
   return `partial-fill-gradient-${id}-${step}`
 }
 
@@ -77,7 +75,7 @@ function getDirectionAwareKey(key: string, dir?: Direction) {
       : key
 }
 
-function getFocusIntent(event: React.KeyboardEvent<ItemElement>, dir?: Direction, orientation?: Orientation) {
+function getFocusIntent(event: React.KeyboardEvent<ItemElement>, dir?: Direction, orientation?: RatingOrientation) {
   const key = getDirectionAwareKey(event.key, dir)
   if (orientation === 'horizontal' && VERTICAL_ARROW_KEYS.includes(key as (typeof VERTICAL_ARROW_KEYS)[number])) {
     return undefined
@@ -145,12 +143,12 @@ interface ItemData {
 interface RatingContextValue {
   rootId: string
   dir: Direction
-  orientation: Orientation
-  activationMode: ActivationMode
+  orientation: RatingOrientation
+  activationMode: RatingActivationMode
   size: RatingSize
   color: SemanticColorKey
   max: number
-  step: Step
+  step: RatingStep
   clearable: boolean
   disabled: boolean
   readOnly: boolean
@@ -194,13 +192,13 @@ interface RatingProps extends React.ComponentProps<'div'> {
   onValueChange?: (value: number) => void
   onHover?: (value: number | null) => void
   max?: number
-  activationMode?: ActivationMode
+  activationMode?: RatingActivationMode
   dir?: Direction
-  orientation?: Orientation
+  orientation?: RatingOrientation
   size?: RatingSize
   color?: SemanticColorKey
   asChild?: boolean
-  step?: Step
+  step?: RatingStep
   clearable?: boolean
   disabled?: boolean
   readOnly?: boolean
@@ -240,6 +238,7 @@ function Rating(props: RatingProps) {
   const dir = useDirection(dirProp)
   const instanceId = React.useId()
   const rootId = id ?? instanceId
+  const safeMax = Math.max(1, Math.floor(max))
 
   const listenersRef = useLazyRef(() => new Set<() => void>())
   const stateRef = useLazyRef<StoreState>(() => ({
@@ -419,12 +418,12 @@ function Rating(props: RatingProps) {
       readOnly,
       size,
       color,
-      max,
+      max: safeMax,
       step,
       clearable,
       getAutoIndex,
     }),
-    [rootId, dir, orientation, activationMode, disabled, readOnly, size, color, max, step, clearable, getAutoIndex],
+    [rootId, dir, orientation, activationMode, disabled, readOnly, size, color, safeMax, step, clearable, getAutoIndex],
   )
 
   const focusContextValue = React.useMemo<FocusContextValue>(
@@ -858,7 +857,7 @@ function RatingItem(props: RatingItemProps) {
       className={cn(
         ratingItemBase,
         ratingItemSizeVariants[context.size],
-        'focus-visible:ring-2 focus-visible:ring-ring/50',
+        ratingItemFocusColorVariants[context.color],
         "[&_svg:not([class*='size-'])]:size-full [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:transition-colors [&_svg]:duration-200",
         'data-[state=empty]:[&_svg]:fill-transparent data-[state=full]:[&_svg]:fill-current data-[state=partial]:[&_svg]:fill-(--partial-fill)',
         className,

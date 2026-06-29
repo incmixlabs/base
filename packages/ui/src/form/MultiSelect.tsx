@@ -1,5 +1,6 @@
 'use client'
 
+import { clsx } from 'clsx'
 import { ChevronDown } from 'lucide-react'
 import * as React from 'react'
 import { Button } from '@/elements'
@@ -13,6 +14,7 @@ import { SemanticColor } from '@/theme/props/color.prop'
 import type { Color, Radius, Size, TextFieldVariant } from '@/theme/tokens'
 import { Text } from '@/typography'
 import { useFieldGroup } from './FieldGroupContext'
+import { formControlBorderFrame, formControlNeutralBackground } from './form-control.class'
 import type { ExtendedFormSize } from './form-size'
 import { Label } from './Label'
 import {
@@ -30,17 +32,18 @@ import {
   pickerSearchRowBase,
   pickerStatusRowBase,
   pickerStatusRowBySize,
-} from './picker-popup.css'
+} from './picker-popup.class'
 import { SearchInput } from './SearchInput'
 import {
   floatingInputBaseCls,
   floatingInputStyleVariants,
-  textFieldColorVariants,
+  textFieldEnhancementVariants,
   textFieldFloatingColorVariants,
   textFieldFloatingWrapperColorVariants,
   textFieldInputBaseCls,
   textFieldRootCls,
   textFieldSizeVariants,
+  textFieldSurfaceColorVariants,
 } from './text-field.css'
 import { getFloatingStyle, isFloatingVariant, resolveSurfaceVariant } from './text-field-variant'
 
@@ -586,7 +589,7 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                         setOverflowOpen(true)
                       }
                     }}
-                    className="appearance-none border-0 bg-transparent p-0 shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    className="appearance-none border-0 bg-transparent p-0 shadow-none focus-visible:outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-highlight"
                   >
                     <Badge size={badgeSize} variant="outline" color={effectiveColor}>
                       +{hiddenSelectedCount}
@@ -597,7 +600,7 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                       role="dialog"
                       aria-label="Additional selected items"
                       className={cn(
-                        'absolute right-0 top-[calc(100%+0.375rem)] z-50 w-max max-w-64 rounded-xl border bg-popover p-1.5 text-popover-foreground shadow-lg',
+                        'absolute right-0 top-[calc(100%+0.375rem)] z-50 w-max max-w-64 rounded-xl border border-neutral bg-neutral-surface p-1.5 text-neutral shadow-lg',
                         textFieldSizeVariants[size],
                       )}
                       onClick={event => event.stopPropagation()}
@@ -695,32 +698,28 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
               textFieldFloatingWrapperColorVariants[effectiveColor],
             )}
           >
-            <Row
+            <div
               {...triggerProps}
-              display="inline-flex"
-              align="center"
-              justify="between"
               aria-describedby={ariaDescribedby}
               aria-invalid={ariaInvalid ?? (error || undefined)}
               data-placeholder={selectedOptions.length === 0 ? '' : undefined}
               data-popup-open={open ? '' : undefined}
-              className={cn(
-                'peer w-full outline-none transition-all duration-150 ease-in-out',
-                'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+              className={`${cn(
+                'peer inline-flex w-full items-center justify-between outline-none transition-all duration-150 ease-in-out',
+                '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
                 floatingInputBaseCls,
                 floatingStyle && floatingInputStyleVariants[floatingStyle],
-                floatingStyle && textFieldFloatingColorVariants[effectiveColor]?.[floatingStyle],
                 disabled && 'opacity-50 cursor-not-allowed',
-              )}
+              )} ${floatingStyle ? textFieldFloatingColorVariants[effectiveColor]?.[floatingStyle] : ''}`}
             >
               {triggerContent}
-            </Row>
+            </div>
             {floatingLabel ? (
               <label
                 id={labelId}
                 onPointerDown={() => triggerRef.current?.focus()}
                 className={cn(
-                  'absolute text-[length:var(--tf-font-size)] text-[color:var(--tf-color-text)] duration-300 origin-[0] select-none cursor-text',
+                  'absolute [font-size:var(--tf-font-size)] text-[color:var(--tf-color-text)] duration-300 origin-[0] select-none cursor-text',
                   floatingStyle === 'filled' && [
                     'left-[var(--tf-padding-x)] top-4 z-10',
                     '-translate-y-4 scale-75',
@@ -729,9 +728,10 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                   ],
                   floatingStyle === 'outlined' && [
                     'left-[var(--tf-padding-x)] top-2 z-10',
-                    '-translate-y-4 scale-75 bg-background px-1',
+                    '-translate-y-4 scale-75 px-1',
+                    formControlNeutralBackground,
                     'peer-data-[placeholder]:scale-100 peer-data-[placeholder]:translate-y-3',
-                    'peer-data-[popup-open]:-translate-y-4 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--tf-color-primary)] peer-data-[popup-open]:bg-background peer-data-[popup-open]:px-1',
+                    'peer-data-[popup-open]:-translate-y-4 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--tf-color-primary)] peer-data-[popup-open]:px-1',
                   ],
                   floatingStyle === 'standard' && [
                     'left-0 top-3 z-10',
@@ -757,25 +757,25 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                 {label}
               </Label>
             ) : null}
-            <Row
+            <div
               {...triggerProps}
-              display="inline-flex"
-              align="center"
-              justify="between"
-              gap="2"
               aria-describedby={ariaDescribedby}
               aria-invalid={ariaInvalid ?? (error || undefined)}
-              className={cn(
-                textFieldInputBaseCls,
-                'w-full box-border border',
-                'min-h-[var(--tf-height)] px-[var(--tf-padding-x)] py-[var(--tf-padding-y)] text-left',
-                'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)] rounded-[var(--element-border-radius)]',
-                textFieldColorVariants[effectiveColor][surfaceVariant],
-                disabled && 'opacity-50 cursor-not-allowed',
+              className={clsx(
+                cn(
+                  textFieldInputBaseCls,
+                  'inline-flex w-full box-border items-center justify-between gap-2',
+                  'min-h-[var(--tf-height)] px-[var(--tf-padding-x)] py-[var(--tf-padding-y)] text-left',
+                  '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+                  formControlBorderFrame,
+                  textFieldSurfaceColorVariants[effectiveColor][surfaceVariant],
+                  disabled && 'opacity-50 cursor-not-allowed',
+                ),
+                textFieldEnhancementVariants[effectiveColor][surfaceVariant],
               )}
             >
               {triggerContent}
-            </Row>
+            </div>
           </Column>
         )}
 

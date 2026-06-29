@@ -8,10 +8,21 @@ import { Row } from '@/layouts/flex/Flex'
 import { isActivationKey, KEYBOARD_KEYS } from '@/lib/keyboard-keys'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
-import { mentionTextareaVar } from '@/theme/runtime/component-vars'
 import type { Color } from '@/theme/tokens'
 import { Text } from '@/typography'
-import { mentionDragOverlayColorVariants, mentionItemHighlightColorVariants } from './MentionTextarea.css'
+import {
+  mentionDragOverlayBase,
+  mentionDragOverlayColorVariants,
+  mentionDragOverlayText,
+  mentionItemBase,
+  mentionItemHighlightColorVariants,
+  mentionPreviewBase,
+  mentionPreviewEmpty,
+  mentionSuggestionBase,
+  mentionSuggestionEmpty,
+  mentionSuggestionList,
+  mentionSuggestionPosition,
+} from './MentionTextarea.class'
 import {
   getStructuredMentionTokens,
   MentionMarkdownPreview,
@@ -964,8 +975,7 @@ export function MentionTextarea({
   const defaultRenderItem = (item: MentionItem, isHighlighted: boolean) => (
     <div
       className={cn(
-        'flex items-center gap-2 px-3 py-2 cursor-pointer',
-        'transition-colors duration-150',
+        mentionItemBase,
         isHighlighted && mentionItemHighlightColorVariants[effectiveHighlightColor],
         item.disabled && 'opacity-50 cursor-not-allowed',
       )}
@@ -1064,32 +1074,16 @@ export function MentionTextarea({
               role="listbox"
               aria-label="Mention suggestions"
               className={cn(
-                'fixed z-[9999] min-w-[var(--mention-textarea-suggestion-min-width)] max-w-[var(--mention-textarea-suggestion-max-width)] text-[length:var(--mention-textarea-suggestion-font-size)]',
-                'rounded-md border bg-popover text-popover-foreground shadow-lg',
-                'animate-in fade-in-0 zoom-in-95',
-                triggerPosition.showAbove && 'animate-in slide-in-from-bottom-2',
-                !triggerPosition.showAbove && 'animate-in slide-in-from-top-2',
+                mentionSuggestionBase,
+                triggerPosition.showAbove ? mentionSuggestionPosition.above : mentionSuggestionPosition.below,
               )}
-              style={
-                {
-                  top: triggerPosition.top,
-                  left: triggerPosition.left,
-                  '--mention-textarea-suggestion-min-width': mentionTextareaVar('suggestionMinWidth', '200px'),
-                  '--mention-textarea-suggestion-max-width': mentionTextareaVar('suggestionMaxWidth', '300px'),
-                  '--mention-textarea-suggestion-font-size': mentionTextareaVar('suggestionFontSize', '0.875rem'),
-                  '--mention-textarea-suggestion-empty-padding-inline': mentionTextareaVar(
-                    'suggestionEmptyPaddingInline',
-                    '0.75rem',
-                  ),
-                  '--mention-textarea-suggestion-empty-padding-block': mentionTextareaVar(
-                    'suggestionEmptyPaddingBlock',
-                    '0.5rem',
-                  ),
-                } as React.CSSProperties
-              }
+              style={{
+                top: triggerPosition.top,
+                left: triggerPosition.left,
+              }}
             >
               {filteredMentions.length > 0 ? (
-                <div className="py-1">
+                <div className={mentionSuggestionList}>
                   {filteredMentions.map((item, index) => (
                     <div
                       key={item.id}
@@ -1115,9 +1109,7 @@ export function MentionTextarea({
                   ))}
                 </div>
               ) : (
-                <div className="px-[var(--mention-textarea-suggestion-empty-padding-inline)] py-[var(--mention-textarea-suggestion-empty-padding-block)] text-[length:var(--mention-textarea-suggestion-font-size)] text-muted-foreground">
-                  {noMatchesText}
-                </div>
+                <div className={mentionSuggestionEmpty}>{noMatchesText}</div>
               )}
             </div>
           ),
@@ -1141,11 +1133,6 @@ export function MentionTextarea({
     // biome-ignore lint/a11y/noStaticElementInteractions: drag-and-drop on container; keyboard via onPaste
     <div
       className="relative"
-      style={
-        {
-          '--mention-textarea-drag-overlay-font-size': mentionTextareaVar('dragOverlayFontSize', '0.875rem'),
-        } as React.CSSProperties
-      }
       onDragOver={onFileUpload ? handleDragOver : undefined}
       onDragEnter={onFileUpload ? handleDragEnter : undefined}
       onDragLeave={onFileUpload ? handleDragLeave : undefined}
@@ -1155,17 +1142,9 @@ export function MentionTextarea({
         <Row
           align="center"
           justify="center"
-          className={cn(
-            'absolute inset-0 z-10 rounded-md border-2 border-dashed pointer-events-none',
-            mentionDragOverlayColorVariants[effectiveDragOverlayColor],
-          )}
+          className={cn(mentionDragOverlayBase, mentionDragOverlayColorVariants[effectiveDragOverlayColor])}
         >
-          <Text
-            as="span"
-            weight="medium"
-            color="neutral"
-            className="text-[length:var(--mention-textarea-drag-overlay-font-size)]"
-          >
+          <Text as="span" weight="medium" color="neutral" className={mentionDragOverlayText}>
             Attach images by dropping them here
           </Text>
         </Row>
@@ -1182,21 +1161,7 @@ export function MentionTextarea({
           </Tabs.List>
           <Tabs.Content value="write">{textareaBlock}</Tabs.Content>
           <Tabs.Content value="preview">
-            <div
-              className={cn(
-                'min-h-[var(--mention-textarea-preview-min-height)] rounded-md border px-[var(--mention-textarea-preview-padding-inline)] py-[var(--mention-textarea-preview-padding-block)] text-[length:var(--mention-textarea-preview-font-size)]',
-                !value && 'text-muted-foreground',
-              )}
-              style={
-                {
-                  '--mention-textarea-preview-min-height': mentionTextareaVar('previewMinHeight', '80px'),
-                  '--mention-textarea-preview-padding-inline': mentionTextareaVar('previewPaddingInline', '0.75rem'),
-                  '--mention-textarea-preview-padding-block': mentionTextareaVar('previewPaddingBlock', '0.5rem'),
-                  '--mention-textarea-preview-font-size': mentionTextareaVar('previewFontSize', '0.875rem'),
-                  '--mention-textarea-drag-overlay-font-size': mentionTextareaVar('dragOverlayFontSize', '0.875rem'),
-                } as React.CSSProperties
-              }
-            >
+            <div className={cn(mentionPreviewBase, !value && mentionPreviewEmpty)}>
               {value ? (
                 <MentionMarkdownPreview markdown={value} triggerChars={triggerChars} sources={previewSources} />
               ) : (

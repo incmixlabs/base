@@ -3,11 +3,17 @@ import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { RadioCards } from './RadioCards'
-import { radioCardIndicatorColorVariants, radioCardRootColorVariants } from './radio-cards.css'
 
 afterEach(() => {
   cleanup()
 })
+
+function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
+  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
+  for (const token of tokens) {
+    expect(classTokens).toContain(token)
+  }
+}
 
 describe('RadioCards', () => {
   it('reflects the controlled value in the checked radio state', () => {
@@ -32,8 +38,18 @@ describe('RadioCards', () => {
     const radioCard = screen.getByRole('radio', { name: 'Draft' })
     const indicatorShell = radioCard.querySelector('span')
 
-    expect(radioCard).toHaveClass(radioCardRootColorVariants.primary)
-    expect(indicatorShell).toHaveClass(radioCardIndicatorColorVariants.primary)
+    expectClassTokens(radioCard.className, [
+      'data-[checked]:bg-primary-soft',
+      'data-[checked]:[border-color:var(--color-primary-primary)]',
+      'data-[checked]:[box-shadow:0_0_0_2px_var(--color-primary-primary-alpha)]',
+      'data-[checked]:hover:bg-primary-soft-hover',
+    ])
+    expectClassTokens(indicatorShell?.className, [
+      'border-primary',
+      'bg-primary-surface',
+      'group-data-[checked]:bg-primary-solid',
+      'group-data-[checked]:[border-color:var(--color-primary-primary)]',
+    ])
   })
 
   it('emits value changes when an enabled card is selected', async () => {
@@ -72,5 +88,40 @@ describe('RadioCards', () => {
     )
 
     expect(screen.getByTestId('radio-cards')).toHaveClass('gap-7')
+  })
+
+  it('uses direct radio-card spacing and text classes', () => {
+    render(
+      <RadioCards.Root size="md" value="standard">
+        <RadioCards.Item value="standard">Standard</RadioCards.Item>
+      </RadioCards.Root>,
+    )
+
+    const radioCard = screen.getByRole('radio', { name: 'Standard' })
+    const row = radioCard.querySelector('div')
+    const content = row?.lastElementChild
+
+    expectClassTokens(radioCard.className, ['box-border', 'p-4'])
+    expectClassTokens(row?.className, ['gap-4'])
+    expectClassTokens(content?.className, ['text-base', 'leading-6'])
+  })
+
+  it('keeps the xs radio indicator on the original direct size scale', () => {
+    render(
+      <RadioCards.Root size="xs" value="standard">
+        <RadioCards.Item value="standard">Standard</RadioCards.Item>
+      </RadioCards.Root>,
+    )
+
+    const radioCard = screen.getByRole('radio', { name: 'Standard' })
+    const indicatorShell = radioCard.querySelector('span')
+    const indicatorInner = indicatorShell?.firstElementChild
+
+    expectClassTokens(indicatorShell?.className, ['box-border', '[height:0.75rem]', '[width:0.75rem]'])
+    expectClassTokens(indicatorInner?.className, [
+      '[background-color:var(--color-light-primary)]',
+      '[height:0.375rem]',
+      '[width:0.375rem]',
+    ])
   })
 })

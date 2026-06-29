@@ -54,7 +54,7 @@ export interface SwitchGroupItemProps {
 }
 
 export const switchGroupRootPropDefs = {
-  size: { type: 'enum', values: switchSizes, default: 'sm', responsive: true },
+  size: { type: 'enum', values: switchSizes, default: 'sm' },
   variant: { type: 'enum', values: switchVariants, default: 'surface' },
   ...colorPropDef,
   ...radiusPropDef,

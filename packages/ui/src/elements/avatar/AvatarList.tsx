@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { Checkbox } from '@/form/Checkbox'
 import type { FormSize } from '@/form/form-size'
-import { pickerIndicatorBySize, pickerOptionItemBase, pickerOptionItemBySize } from '@/form/picker-popup.css'
+import { pickerIndicatorBySize, pickerOptionItemBase, pickerOptionItemBySize } from '@/form/picker-popup.class'
 import { Flex } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
 import { Text } from '@/typography'

@@ -21,22 +21,27 @@
 import { Switch as SwitchPrimitive } from '@base-ui/react/switch'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
+import { radiusClassByToken } from '@/theme/helpers'
 import { SemanticColor } from '@/theme/props/color.prop'
-import { radiusStyleVariants } from '@/theme/radius.css'
+import { normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color, Radius } from '@/theme/tokens'
 import { Text } from '@/typography'
 import { useFieldGroup } from './FieldGroupContext'
-import { formColorVars } from './form-color'
 import { resolveFormSize } from './form-size'
 import { Label } from './Label'
-import { switchGroupRootOrientation, switchSizeVariants } from './switch.css'
+import {
+  switchColorVariants,
+  switchGroupRootOrientation,
+  switchRootBase,
+  switchRootSize,
+  switchSizeVariants,
+  switchThumbBase,
+} from './switch.class'
 import type { SwitchVariant } from './switch.props'
+import { switchPropDefs } from './switch.props'
 import type { SwitchGroupItemProps, SwitchGroupRootProps, SwitchGroupSize } from './switch-group.props'
 
 export type { SwitchGroupItemProps, SwitchGroupRootProps, SwitchGroupSize } from './switch-group.props'
-
-// Static checked color class — references --fc-primary set via formColorVars
-const checkedColorCls = 'data-[checked]:bg-[var(--fc-primary)]'
 
 // Context for sharing props across switch group
 interface SwitchGroupContextValue {
@@ -81,6 +86,10 @@ const SwitchGroupRoot = React.forwardRef<HTMLDivElement, SwitchGroupRootProps>(
     const fieldGroup = useFieldGroup()
     const size = resolveFormSize(sizeProp ?? fieldGroup.size)
     const radius = radiusProp ?? fieldGroup.radius ?? 'full'
+    const safeVariant = (normalizeEnumPropValue(switchPropDefs.variant, variant) ??
+      switchPropDefs.variant.default) as SwitchVariant
+    const safeColor = (normalizeEnumPropValue(switchPropDefs.color, color) ?? SemanticColor.primary) as Color
+    const safeRadius = (normalizeEnumPropValue(switchPropDefs.radius, radius) ?? 'full') as Radius
     const effectiveDisabled = disabled || fieldGroup.disabled
 
     const [internalValue, setInternalValue] = React.useState<string[]>(defaultValue)
@@ -101,7 +110,15 @@ const SwitchGroupRoot = React.forwardRef<HTMLDivElement, SwitchGroupRootProps>(
 
     return (
       <SwitchGroupContext.Provider
-        value={{ size, variant, color, radius, disabled: effectiveDisabled, values, onValueChange: handleValueChange }}
+        value={{
+          size,
+          variant: safeVariant,
+          color: safeColor,
+          radius: safeRadius,
+          disabled: effectiveDisabled,
+          values,
+          onValueChange: handleValueChange,
+        }}
       >
         <div
           ref={ref}
@@ -150,27 +167,15 @@ const SwitchGroupItem = React.forwardRef<HTMLSpanElement, SwitchGroupItemProps>(
           checked={isChecked}
           onCheckedChange={checked => context.onValueChange(name, checked)}
           disabled={isDisabled}
-          style={formColorVars[context.color] as React.CSSProperties}
           className={cn(
-            'peer inline-flex shrink-0 cursor-pointer items-center border-2 border-transparent transition-colors',
-            'h-[var(--sw-root-height)] w-[var(--sw-root-width)]',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-            'disabled:cursor-not-allowed disabled:opacity-50',
-            radiusStyleVariants[context.radius],
-            checkedColorCls,
-            context.variant === 'surface' && 'bg-input',
-            context.variant === 'classic' && 'bg-input border-border',
-            context.variant === 'soft' && 'bg-secondary/50',
+            switchRootBase,
+            switchRootSize,
+            radiusClassByToken[context.radius],
+            switchColorVariants[context.color][context.variant],
           )}
           {...props}
         >
-          <SwitchPrimitive.Thumb
-            className={cn(
-              'pointer-events-none block rounded-full bg-background shadow-lg ring-0 transition-transform',
-              'h-[var(--sw-thumb-size)] w-[var(--sw-thumb-size)]',
-              'translate-x-0 data-[checked]:translate-x-[var(--sw-thumb-translate)]',
-            )}
-          />
+          <SwitchPrimitive.Thumb className={switchThumbBase} />
         </SwitchPrimitive.Root>
 
         {displayLabel && (
@@ -179,7 +184,7 @@ const SwitchGroupItem = React.forwardRef<HTMLSpanElement, SwitchGroupItemProps>(
               {displayLabel}
             </Label>
             {description && (
-              <Text size="xs" className="text-muted-foreground mt-0.5">
+              <Text size="xs" className="mt-0.5 text-muted">
                 {description}
               </Text>
             )}

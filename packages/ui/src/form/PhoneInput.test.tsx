@@ -1,8 +1,7 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { surfaceColorVariants } from '@/elements/surface/surface.class'
 import { PhoneInput } from './PhoneInput'
-import { textFieldSizeVariants } from './text-field.css'
+import { textFieldColorVariants, textFieldSizeVariants } from './text-field.css'
 
 afterEach(() => {
   cleanup()
@@ -51,7 +50,7 @@ describe('PhoneInput', () => {
 
     const input = screen.getByRole('textbox', { name: 'Phone number' })
     expect(input.closest('div')).toHaveClass(textFieldSizeVariants.lg)
-    expect(input).toHaveClass(surfaceColorVariants.slate.soft)
+    expect(input).toHaveClass(textFieldColorVariants.slate.soft)
   })
 
   it('keeps the accessible field name independent from custom placeholders', () => {
@@ -72,7 +71,7 @@ describe('PhoneInput', () => {
     const input = screen.getByRole('textbox', { name: 'Phone number' })
     expect(input).toBeDisabled()
     expect(input).toHaveAttribute('aria-invalid', 'true')
-    expect(input).toHaveClass(surfaceColorVariants.error.outline)
+    expect(input).toHaveClass(textFieldColorVariants.error.outline)
     expect(screen.getByRole('button', { name: /change country code/i })).toBeDisabled()
   })
 

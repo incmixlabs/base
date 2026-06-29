@@ -304,7 +304,7 @@ export const SignatureInput = React.forwardRef<HTMLCanvasElement, SignatureInput
           {/* Placeholder */}
           {isEmpty && (
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="flex items-center gap-2 text-muted-foreground">
+              <div className="flex items-center gap-2 text-muted">
                 <Pen className="h-4 w-4" />
                 <span className="text-sm">{placeholder}</span>
               </div>

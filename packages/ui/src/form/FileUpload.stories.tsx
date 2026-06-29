@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
+import { Button } from '@/elements/button/Button'
 import { acceptPresets, FileUpload, type UploadedFile } from './FileUpload'
+import { formControlBorderedSurface } from './form-control.class'
 import { Label } from './Label'
 
 const meta: Meta<typeof FileUpload> = {
@@ -171,7 +173,7 @@ export const WithUploadProgress: Story = {
       <div className="w-[400px] space-y-2">
         <Label>Upload with progress</Label>
         <FileUpload value={files} onChange={setFiles} onUpload={simulateUpload} accept={acceptPresets.images} />
-        <p className="text-xs text-muted-foreground">Files will upload automatically with progress indicator</p>
+        <p className="text-xs text-muted">Files will upload automatically with progress indicator</p>
       </div>
     )
   },
@@ -186,7 +188,7 @@ export const WithUploadErrors: Story = {
       <div className="w-[400px] space-y-2">
         <Label>Upload with potential errors</Label>
         <FileUpload value={files} onChange={setFiles} onUpload={simulateUploadWithError} maxSize={50 * 1024 * 1024} />
-        <p className="text-xs text-muted-foreground">Files larger than 1MB will fail at 60% (for demo purposes)</p>
+        <p className="text-xs text-muted">Files larger than 1MB will fail at 60% (for demo purposes)</p>
       </div>
     )
   },
@@ -212,12 +214,12 @@ export const Controlled: Story = {
             }}
           />
         </div>
-        <div className="p-3 bg-muted rounded-md">
+        <div className="p-3 bg-neutral-soft rounded-md">
           <p className="text-sm font-medium">Selected files:</p>
           {files.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No files selected</p>
+            <p className="text-sm text-muted">No files selected</p>
           ) : (
-            <ul className="text-sm text-muted-foreground">
+            <ul className="text-sm text-muted">
               {files.map(f => (
                 <li key={f.id}>{f.file.name}</li>
               ))}
@@ -269,7 +271,7 @@ export const MaxFilesReached: Story = {
       <div className="w-[400px] space-y-2">
         <Label>Max 3 files</Label>
         <FileUpload value={files} onChange={setFiles} maxFiles={3} accept={acceptPresets.documents} />
-        <p className="text-xs text-muted-foreground">Remove a file to upload more</p>
+        <p className="text-xs text-muted">Remove a file to upload more</p>
       </div>
     )
   },
@@ -286,7 +288,7 @@ export const WithoutFileList: Story = {
           <Label>Hidden file list</Label>
           <FileUpload value={files} onChange={setFiles} showFileList={false} />
         </div>
-        {files.length > 0 && <p className="text-sm text-muted-foreground">{files.length} file(s) selected</p>}
+        {files.length > 0 && <p className="text-sm text-muted">{files.length} file(s) selected</p>}
       </div>
     )
   },
@@ -323,10 +325,10 @@ export const FormExample: Story = {
     const [files, setFiles] = useState<UploadedFile[]>([])
 
     return (
-      <div className="w-[450px] p-6 border rounded-lg space-y-6">
+      <div className={`box-border w-[450px] p-6 ${formControlBorderedSurface} space-y-6`}>
         <div>
           <h3 className="font-semibold text-lg">Submit Application</h3>
-          <p className="text-sm text-muted-foreground">Please upload your required documents</p>
+          <p className="text-sm text-muted">Please upload your required documents</p>
         </div>
 
         <div className="space-y-4">
@@ -359,12 +361,9 @@ export const FormExample: Story = {
           </div>
         </div>
 
-        <button
-          type="button"
-          className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 transition-colors"
-        >
+        <Button type="button" className="w-full">
           Submit Application
-        </button>
+        </Button>
       </div>
     )
   },
@@ -379,7 +378,7 @@ export const WithStatusSections: Story = {
       <div className="w-[400px] space-y-2">
         <Label>Upload with status sections</Label>
         <FileUpload value={files} onChange={setFiles} onUpload={simulateUpload} showStatusSections />
-        <p className="text-xs text-muted-foreground">Files are grouped into "Uploading" and "Completed" sections</p>
+        <p className="text-xs text-muted">Files are grouped into "Uploading" and "Completed" sections</p>
       </div>
     )
   },

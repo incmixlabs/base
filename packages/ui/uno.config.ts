@@ -102,6 +102,21 @@ import {
   separatorWithContent,
 } from './src/elements/separator/separator.class'
 import { tooltipContentBase, tooltipPositionerBase } from './src/elements/tooltip/tooltip.class'
+import { avatarPickerClassNames } from './src/form/avatar-picker.class'
+import { checkboxClassNames } from './src/form/checkbox.class'
+import { checkboxCardsClassNames } from './src/form/checkbox-cards.class'
+import { checkboxGroupClassNames } from './src/form/checkbox-group.class'
+import { fieldGroupClassNames } from './src/form/FieldGroup.class'
+import { floatingToolbarClassNames } from './src/form/FloatingToolbar.class'
+import { formControlClassNames } from './src/form/form-control.class'
+import { mentionTextareaClassNames } from './src/form/MentionTextarea.class'
+import { pickerPopupClassNames } from './src/form/picker-popup.class'
+import { ratingClassNames } from './src/form/Rating.class'
+import { radioCardsClassNames } from './src/form/radio-cards.class'
+import { radioCheckboxCardClassNames } from './src/form/radio-checkbox.shared.class'
+import { radioGroupClassNames } from './src/form/radio-group.class'
+import { sliderClassNames } from './src/form/Slider.class'
+import { switchClassNames } from './src/form/switch.class'
 import { aspectRatioByRatio } from './src/layouts/aspect-ratio/aspect-ratio.class'
 import { boxRootBase, boxSurfaceColorClassNames } from './src/layouts/box/box.class'
 import {
@@ -383,6 +398,36 @@ export default defineConfig({
       ...splitClasses(progressClassNames),
       // Scroll area styles
       ...splitClasses(scrollAreaClassNames),
+      // Avatar picker styles
+      ...splitClasses(avatarPickerClassNames),
+      // Checkbox styles
+      ...splitClasses(checkboxClassNames),
+      // Checkbox cards styles
+      ...splitClasses(checkboxCardsClassNames),
+      // Checkbox group styles
+      ...splitClasses(checkboxGroupClassNames),
+      // Field group styles
+      ...splitClasses(fieldGroupClassNames),
+      // Shared form control surface styles
+      ...splitClasses(formControlClassNames),
+      // Floating toolbar styles
+      ...splitClasses(floatingToolbarClassNames),
+      // Mention textarea styles
+      ...splitClasses(mentionTextareaClassNames),
+      // Picker popup styles
+      ...splitClasses(pickerPopupClassNames),
+      // Shared radio/checkbox card styles
+      ...splitClasses(radioCheckboxCardClassNames),
+      // Radio cards styles
+      ...splitClasses(radioCardsClassNames),
+      // Radio group styles
+      ...splitClasses(radioGroupClassNames),
+      // Rating styles
+      ...splitClasses(ratingClassNames),
+      // Slider styles
+      ...splitClasses(sliderClassNames),
+      // Switch styles
+      ...splitClasses(switchClassNames),
       // Box styles
       boxRootBase,
       ...splitClasses(boxSurfaceColorClassNames),

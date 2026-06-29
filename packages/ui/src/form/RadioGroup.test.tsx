@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { RadioGroup } from './RadioGroup'
-import { radioColorVariants, radioHighContrastByVariant } from './radio-group.css'
+import { radioColorVariants, radioHighContrastByVariant, radioIndicatorCls } from './radio-group.class'
 
 afterEach(() => {
   cleanup()
@@ -21,5 +21,19 @@ describe('RadioGroup', () => {
     expect(radio).toHaveClass(radioColorVariants.success.classic)
     expect(radio).toHaveClass('af-high-contrast')
     expect(radio).toHaveClass(radioHighContrastByVariant.classic)
+  })
+
+  it('keeps the radio control border-box and token-backed checked dot', () => {
+    render(
+      <RadioGroup.Root defaultValue="standard">
+        <RadioGroup.Item value="standard">Standard</RadioGroup.Item>
+      </RadioGroup.Root>,
+    )
+
+    const radio = screen.getByRole('radio')
+    const indicator = radio.firstElementChild
+
+    expect(radio).toHaveClass('box-border')
+    expect(indicator).toHaveClass(radioIndicatorCls)
   })
 })

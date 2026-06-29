@@ -292,7 +292,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
                   >
                     <span className="text-base">{country.flag}</span>
                     <span className="flex-1 truncate">{country.name}</span>
-                    <span className="text-muted-foreground">+{country.phonecode}</span>
+                    <span className="text-muted">+{country.phonecode}</span>
                   </div>
                 ))}
               </div>

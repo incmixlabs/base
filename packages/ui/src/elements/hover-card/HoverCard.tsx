@@ -14,6 +14,9 @@ import type { WidthProps } from '@/theme/props/width.props'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
 import {
+  floatingSurfaceColorVariants,
+  floatingSurfaceHighContrastColorVariants,
+  floatingSurfaceHighContrastEffectByVariant,
   popoverContentBase,
   floatingSurfaceSizeVariants as popoverContentBySize,
   floatingSurfaceMaxWidthVariants as popoverContentMaxWidth,
@@ -21,7 +24,6 @@ import {
   popoverPanelVariants,
 } from '../popover/popover.class'
 import { type PopoverContentVariant, popoverContentPropDefs } from '../popover/popover.props'
-import { surfaceColorVariants, surfaceHighContrastByVariant } from '../surface/surface.class'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 
 // ============================================================================
@@ -198,7 +200,7 @@ const HoverCardContent = React.forwardRef<React.ElementRef<typeof PopoverPrimiti
   (
     {
       variant = popoverContentPropDefs.variant.default,
-      color = SemanticColor.light,
+      color = SemanticColor.neutral,
       highContrast = popoverContentPropDefs.highContrast.default,
       radius: radiusProp,
       style: styleProp,
@@ -223,7 +225,7 @@ const HoverCardContent = React.forwardRef<React.ElementRef<typeof PopoverPrimiti
     const themePortalContainer = useThemePortalContainer()
     const safeVariant = (normalizeEnumPropValue(popoverContentPropDefs.variant, variant) ??
       popoverContentPropDefs.variant.default) as PopoverContentVariant
-    const safeColor = (normalizeEnumPropValue(popoverContentPropDefs.color, color) ?? SemanticColor.light) as Color
+    const safeColor = (normalizeEnumPropValue(popoverContentPropDefs.color, color) ?? SemanticColor.neutral) as Color
     const safeRadius = normalizeEnumPropValue(popoverContentPropDefs.radius, radiusProp) as Radius | undefined
     const safeHighContrast = normalizeBooleanPropValue(popoverContentPropDefs.highContrast, highContrast) ?? false
     const radius = useThemeRadius(safeRadius)
@@ -258,14 +260,15 @@ const HoverCardContent = React.forwardRef<React.ElementRef<typeof PopoverPrimiti
                   />
                 }
                 className={cn(
-                  'z-50 w-full border origin-[var(--transform-origin)]',
+                  'z-50 w-full border border-solid origin-[var(--transform-origin)]',
                   'focus:outline-none',
                   popoverContentBase,
                   popoverContentBySize[size],
                   resolvedTokenMaxWidth && popoverContentMaxWidth[resolvedTokenMaxWidth],
-                  surfaceColorVariants[safeColor][safeVariant],
-                  safeHighContrast && 'af-high-contrast',
-                  safeHighContrast && surfaceHighContrastByVariant[safeVariant],
+                  safeHighContrast
+                    ? floatingSurfaceHighContrastColorVariants[safeColor][safeVariant]
+                    : floatingSurfaceColorVariants[safeColor][safeVariant],
+                  safeHighContrast && floatingSurfaceHighContrastEffectByVariant[safeVariant],
                   widthProps.className,
                   heightProps.className,
                   className,

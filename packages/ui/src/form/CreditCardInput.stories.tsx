@@ -112,8 +112,8 @@ export const Controlled: Story = {
 export const CardTypeDetection: Story = {
   render: () => (
     <div className="w-80 space-y-4">
-      <p className="text-sm text-muted-foreground">Try these prefixes to see card type detection:</p>
-      <ul className="text-xs text-muted-foreground space-y-1">
+      <p className="text-sm text-muted">Try these prefixes to see card type detection:</p>
+      <ul className="text-xs text-muted space-y-1">
         <li>
           <strong>4</strong> - Visa
         </li>
@@ -258,7 +258,7 @@ export const CheckoutForm: Story = {
       <div className="w-96 p-6 border rounded-lg space-y-6">
         <div>
           <h3 className="font-semibold text-lg">Checkout</h3>
-          <p className="text-sm text-muted-foreground">Complete your purchase</p>
+          <p className="text-sm text-muted">Complete your purchase</p>
         </div>
 
         <div className="p-4 bg-muted rounded-md">
@@ -294,7 +294,7 @@ export const CheckoutForm: Story = {
           Pay $29.99
         </button>
 
-        <p className="text-xs text-center text-muted-foreground">Your payment is secured with 256-bit SSL encryption</p>
+        <p className="text-xs text-center text-muted">Your payment is secured with 256-bit SSL encryption</p>
       </div>
     )
   },
@@ -346,7 +346,7 @@ export const ValidationExample: Story = {
         {validationChecks.length > 0 && (
           <div className="p-3 bg-muted rounded-md text-sm space-y-1">
             {validationChecks.map((check, i) => (
-              <p key={i} className={check.valid ? 'text-green-600' : 'text-muted-foreground'}>
+              <p key={i} className={check.valid ? 'text-green-600' : 'text-muted'}>
                 {check.valid ? '\u2713' : '\u25CB'} {check.label}
               </p>
             ))}

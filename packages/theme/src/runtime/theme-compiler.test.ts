@@ -99,7 +99,7 @@ describe('theme-compiler', () => {
     const compiled = compileThemeTokens(theme)
 
     expect(compiled.cssVars['--font-weight-bold']).toBe('700')
-    expect(compiled.cssVars['--component-app-shell-layout-body-with-secondary-right-grid-template-columns']).toBe(
+    expect(compiled.cssVars['--af-app-shell-layout-body-with-secondary-right-grid-template-columns']).toBe(
       'auto minmax(0, 1fr) 20rem',
     )
     expect(compiled.cssVars['--font-weight-']).toBeUndefined()

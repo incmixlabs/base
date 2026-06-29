@@ -5,6 +5,8 @@ import { colorPropDef } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
 import { radiusPropDef } from '@/theme/props/radius.prop'
 import { sizesXsToLgAnd2x, variantsSolidSoftOutlineGhost } from '@/theme/props/scales'
+import { Button } from '@/elements/button/Button'
+import { formControlBorderedSurface } from './form-control.class'
 import { Label } from './Label'
 import { MultiSelect, type MultiSelectOption } from './MultiSelect'
 
@@ -88,7 +90,7 @@ function ControlledMultiSelectStory() {
         <Label>Selected Skills</Label>
         <MultiSelect options={skillOptions} value={selected} onChange={setSelected} placeholder="Select skills..." />
       </div>
-      <div className="p-3 bg-muted rounded-md text-sm">
+      <div className="p-3 bg-neutral-soft rounded-md text-sm">
         <strong>Selected:</strong> {selected.length > 0 ? selected.join(', ') : 'None'}
       </div>
     </div>
@@ -108,7 +110,7 @@ function MaxSelectedMultiSelectStory() {
         maxSelected={3}
         placeholder="Select up to 3..."
       />
-      <p className="text-xs text-muted-foreground">{selected.length}/3 selected</p>
+      <p className="text-xs text-muted">{selected.length}/3 selected</p>
     </div>
   )
 }
@@ -160,7 +162,7 @@ function OverflowDropdownMultiSelectStory() {
         max={3}
         placeholder="Select skills..."
       />
-      <p className="text-xs text-muted-foreground">
+      <p className="text-xs text-muted">
         Extra selections collapse into the <code>+N</code> chip. Open it to remove hidden items without reopening the
         main list.
       </p>
@@ -182,7 +184,7 @@ function FormExampleMultiSelectStory() {
   ]
 
   return (
-    <div className="w-96 p-6 border rounded-lg space-y-6">
+    <div className={`box-border w-96 p-6 ${formControlBorderedSurface} space-y-6`}>
       <h3 className="font-semibold text-lg">Profile Setup</h3>
 
       <div className="space-y-4">
@@ -195,7 +197,7 @@ function FormExampleMultiSelectStory() {
             placeholder="Select your skills..."
             error={skills.length === 0}
           />
-          {skills.length === 0 && <p className="text-xs text-destructive">Select at least one skill</p>}
+          {skills.length === 0 && <p className="text-xs text-error">Select at least one skill</p>}
         </div>
 
         <div className="space-y-2">
@@ -210,13 +212,9 @@ function FormExampleMultiSelectStory() {
         </div>
       </div>
 
-      <button
-        type="button"
-        className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-md font-medium disabled:opacity-50"
-        disabled={skills.length === 0}
-      >
+      <Button type="button" className="w-full" disabled={skills.length === 0}>
         Save Profile
-      </button>
+      </Button>
     </div>
   )
 }
@@ -236,7 +234,7 @@ function CreatableMultiSelectStory() {
         placeholder="Search or create tags..."
         searchPlaceholder="Search tags..."
       />
-      <p className="text-xs text-muted-foreground">Search for a missing tag to reveal the create action.</p>
+      <p className="text-xs text-muted">Search for a missing tag to reveal the create action.</p>
     </div>
   )
 }
@@ -323,7 +321,7 @@ export const WithDisabledOptions: Story = {
       <div className="w-80 space-y-2">
         <Label>With Disabled Options</Label>
         <MultiSelect options={options} placeholder="Select frameworks..." />
-        <p className="text-xs text-muted-foreground">Vue and Svelte are disabled</p>
+        <p className="text-xs text-muted">Vue and Svelte are disabled</p>
       </div>
     )
   },
@@ -390,7 +388,7 @@ export const WithError: Story = {
     <div className="w-80 space-y-2">
       <Label>With Error</Label>
       <MultiSelect options={fruitOptions} error placeholder="Select..." />
-      <p className="text-xs text-destructive">Please select at least one item</p>
+      <p className="text-xs text-error">Please select at least one item</p>
     </div>
   ),
 }

@@ -1,0 +1,45 @@
+import { render, screen } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
+import { HoverCard } from './HoverCard'
+
+function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
+  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
+  for (const token of tokens) {
+    expect(classTokens).toContain(token)
+  }
+}
+
+describe('HoverCard', () => {
+  it('renders the shared floating surface class contract', () => {
+    render(
+      <HoverCard.Root defaultOpen>
+        <HoverCard.Trigger>Open</HoverCard.Trigger>
+        <HoverCard.Content size="md" maxWidth="md">
+          Hover card body
+        </HoverCard.Content>
+      </HoverCard.Root>,
+    )
+
+    const popup = screen.getByText('Hover card body').closest('[class]')
+    expect(popup).not.toBeNull()
+    expectClassTokens(popup?.className, [
+      'relative',
+      'box-border',
+      'overflow-visible',
+      'rounded-[var(--element-border-radius)]',
+      'border',
+      'border-solid',
+      'px-3',
+      'py-1',
+      'text-base',
+      'leading-6',
+      'max-w-[28rem]',
+      'bg-neutral-surface',
+      'border-neutral',
+      'text-neutral',
+      '[box-shadow:var(--shadow-xs)]',
+    ])
+    expect(popup?.className).not.toContain('surface-color-')
+    expect(popup?.className).not.toContain('surface-variant-')
+  })
+})

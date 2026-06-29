@@ -1,4 +1,4 @@
-import { possibleSizes } from '@/theme/tokens'
+import { possibleSizes } from '../tokens'
 
 export const sizesXsToMd = [possibleSizes.xs, possibleSizes.sm, possibleSizes.md] as const
 export const sizesSmToMd = [possibleSizes.sm, possibleSizes.md] as const

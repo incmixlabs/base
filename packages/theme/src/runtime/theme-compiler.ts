@@ -110,7 +110,7 @@ export function mergeThemeContracts(
  * - `global.typography.*` -> `--*` (e.g. `global.typography.fontSans` -> `--font-sans`)
  * - `global.color.hue.*` -> `--color-*` (e.g. `global.color.hue.teal.9` -> `--color-teal-9`)
  * - `semantic.color.*` -> `--color-*` (e.g. `semantic.color.primary.text` -> `--color-primary-text`)
- * - `component.*` -> `--component-*` (e.g. `component.button.solid.borderRadius` -> `--component-button-solid-border-radius`)
+ * - `component.*` -> `--af-*` (e.g. `component.button.solid.borderRadius` -> `--af-button-solid-border-radius`)
  *
  * Reference: docs/issues/theme-token-taxonomy-v1.md (Issue #234) and W3C DTCG format.
  */
@@ -143,7 +143,7 @@ function buildCssVarName(path: string): string {
   }
 
   if (segments[0] === 'component') {
-    return `--component-${segments.slice(1).map(toKebabCase).join('-')}`
+    return `--af-${segments.slice(1).map(toKebabCase).join('-')}`
   }
 
   return `--${segments.map(toKebabCase).join('-')}`

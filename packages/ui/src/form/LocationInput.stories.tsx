@@ -142,7 +142,7 @@ export const WithCallbacks: Story = {
         </div>
         <div className="p-3 bg-muted rounded-md text-xs font-mono space-y-1">
           {logs.length === 0 ? (
-            <p className="text-muted-foreground">Select a location to see logs</p>
+            <p className="text-muted">Select a location to see logs</p>
           ) : (
             logs.map((log, i) => <p key={i}>{log}</p>)
           )}

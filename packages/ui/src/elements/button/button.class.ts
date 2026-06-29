@@ -3,7 +3,7 @@ import type { Color, Variant } from '@/theme/tokens'
 import { createControlSurfaceClassMaps } from '../surface/control-surface.class'
 
 export const buttonBaseCls =
-  'relative inline-flex items-center justify-center select-none border outline-none box-border'
+  'relative inline-flex items-center justify-center select-none border border-solid outline-none box-border'
 
 export const buttonLoadingContentCls = 'opacity-0 inline-flex items-center justify-center gap-[inherit]'
 

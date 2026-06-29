@@ -14,7 +14,7 @@ type RadioCardsGap = (typeof radioCardsGapValues)[number]
 
 const radioCardsRootPropDefs = {
   ...asChildPropDef,
-  size: { type: 'enum', values: radioCardsSizes, default: 'sm', responsive: true },
+  size: { type: 'enum', values: radioCardsSizes, default: 'sm' },
   variant: { type: 'enum', values: radioCardsVariants, default: 'surface' },
   ...colorPropDef,
   ...highContrastPropDef,

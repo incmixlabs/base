@@ -17,7 +17,7 @@ describe('FileUpload', () => {
       '[data-slot="file-upload-dropzone"][data-invalid="true"]',
     ) as HTMLElement | null
     expect(dropzone).toBeInTheDocument()
-    expect(dropzone?.className).toContain('border-[color:var(--color-error-border)]')
+    expect(dropzone?.className).toContain('[border-color:var(--color-error-border)]')
     expect(dropzone).toHaveAttribute('aria-invalid', 'true')
   })
 
@@ -26,6 +26,35 @@ describe('FileUpload', () => {
 
     const dropzone = container.querySelector('[data-slot="file-upload-dropzone"]') as HTMLElement | null
     expect(dropzone?.style.getPropertyValue('--element-border-radius')).toBeTruthy()
+  })
+
+  it('keeps bordered dropzone variants visible without relying on global border defaults', () => {
+    const { container, rerender } = render(<FileUpload variant="minimal" />)
+
+    let dropzone = container.querySelector('[data-slot="file-upload-dropzone"]') as HTMLElement | null
+    expect(dropzone).toHaveClass('border', 'border-solid')
+    expect(dropzone?.className).toContain('[border-color:var(--color-neutral-border)]')
+
+    rerender(<FileUpload variant="card" />)
+
+    dropzone = container.querySelector('[data-slot="file-upload-dropzone"]') as HTMLElement | null
+    expect(dropzone).toHaveClass('border', 'border-solid')
+    expect(dropzone?.className).toContain('[border-color:var(--color-neutral-border)]')
+  })
+
+  it('does not keep hover affordances on disabled bordered dropzones', () => {
+    const { container, rerender } = render(<FileUpload variant="minimal" disabled />)
+
+    let dropzone = container.querySelector('[data-slot="file-upload-dropzone"]') as HTMLElement | null
+    expect(dropzone?.className).not.toContain('hover:[background-color:var(--color-neutral-surface-hover)]')
+    expect(dropzone).toHaveClass('hover:bg-transparent')
+
+    rerender(<FileUpload variant="card" disabled />)
+
+    dropzone = container.querySelector('[data-slot="file-upload-dropzone"]') as HTMLElement | null
+    expect(dropzone).not.toHaveClass('hover:shadow-md')
+    expect(dropzone).toHaveClass('hover:shadow-sm')
+    expect(dropzone?.className).toContain('hover:[border-color:var(--color-neutral-border)]')
   })
 
   it('inherits size from FieldGroup context', () => {

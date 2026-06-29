@@ -4,10 +4,16 @@ import userEvent from '@testing-library/user-event'
 import * as React from 'react'
 import { describe, expect, it } from 'vitest'
 import { MentionTextarea } from './MentionTextarea'
-import { mentionDragOverlayColorVariants } from './MentionTextarea.css'
 import { collectMentionReferences } from './mention-markdown'
 
 const TEST_TIMEOUT_MS = 20_000
+
+function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
+  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
+  for (const token of tokens) {
+    expect(classTokens).toContain(token)
+  }
+}
 
 describe('MentionTextarea', () => {
   it(
@@ -553,7 +559,10 @@ describe('MentionTextarea', () => {
     const overlay = screen.getByText('Attach images by dropping them here').parentElement
 
     expect(overlay).not.toBeNull()
-    expect(overlay!).toHaveClass(mentionDragOverlayColorVariants.success)
+    expectClassTokens(overlay?.className, [
+      '[border-color:var(--color-success-primary)]',
+      'bg-[var(--color-success-primary-alpha)]',
+    ])
     expect(overlay?.className).not.toContain('border-primary')
     expect(overlay?.className).not.toContain('bg-primary')
   })

@@ -1,10 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Heart, Star, ThumbsUp } from 'lucide-react'
 import { useState } from 'react'
-import { SemanticColor } from '@/theme/props/color.prop'
+import { Button } from '@/elements/button/Button'
+import { getPropDefValues } from '@/theme/props/prop-def'
+import { selectArgType } from '@/theme/props/storybook'
+import { Label } from './Label'
 import { Rating, RatingItem } from './Rating'
-
-const semanticColorOptions = Object.values(SemanticColor)
+import { ratingPropDefs } from './rating.props'
 
 const meta: Meta<typeof Rating> = {
   title: 'Form/Rating',
@@ -13,38 +15,23 @@ const meta: Meta<typeof Rating> = {
     layout: 'centered',
   },
   argTypes: {
-    size: {
-      control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl', '2x'],
-    },
-    color: {
-      control: 'select',
-      options: semanticColorOptions,
-    },
+    size: selectArgType(ratingPropDefs.size),
+    color: selectArgType(ratingPropDefs.color),
     max: {
-      control: 'number',
+      control: ratingPropDefs.max.type,
     },
-    step: {
-      control: 'select',
-      options: [0.5, 1],
-    },
+    step: selectArgType(ratingPropDefs.step),
     clearable: {
-      control: 'boolean',
+      control: ratingPropDefs.clearable.type,
     },
     disabled: {
-      control: 'boolean',
+      control: ratingPropDefs.disabled.type,
     },
     readOnly: {
-      control: 'boolean',
+      control: ratingPropDefs.readOnly.type,
     },
-    orientation: {
-      control: 'select',
-      options: ['horizontal', 'vertical'],
-    },
-    activationMode: {
-      control: 'select',
-      options: ['automatic', 'manual'],
-    },
+    orientation: selectArgType(ratingPropDefs.orientation),
+    activationMode: selectArgType(ratingPropDefs.activationMode),
   },
 }
 
@@ -61,7 +48,7 @@ export const Default: Story = {
             <RatingItem key={i} />
           ))}
         </Rating>
-        <p className="mt-2 text-sm text-muted-foreground text-center">
+        <p className="mt-2 text-center text-sm text-muted">
           Rating: {value} / {args.max ?? 5}
         </p>
       </div>
@@ -72,9 +59,9 @@ export const Default: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="space-y-4">
-      {(['xs', 'sm', 'md', 'lg', 'xl', '2x'] as const).map(size => (
+      {getPropDefValues(ratingPropDefs.size).map(size => (
         <div key={size}>
-          <p className="text-sm text-muted-foreground mb-2 capitalize">{size}</p>
+          <p className="mb-2 text-sm text-muted capitalize">{size}</p>
           <Rating size={size} defaultValue={3}>
             {Array.from({ length: 5 }, (_, i) => (
               <RatingItem key={i} />
@@ -89,9 +76,9 @@ export const Sizes: Story = {
 export const Colors: Story = {
   render: () => (
     <div className="space-y-4">
-      {semanticColorOptions.map(color => (
+      {getPropDefValues(ratingPropDefs.color).map(color => (
         <div key={color}>
-          <p className="text-sm text-muted-foreground mb-2 capitalize">{color}</p>
+          <p className="mb-2 text-sm text-muted capitalize">{color}</p>
           <Rating color={color} defaultValue={3}>
             {Array.from({ length: 5 }, (_, i) => (
               <RatingItem key={i} />
@@ -113,7 +100,7 @@ export const HalfStars: Story = {
             <RatingItem key={i} />
           ))}
         </Rating>
-        <p className="mt-2 text-sm text-muted-foreground text-center">Rating: {value} / 5</p>
+        <p className="mt-2 text-center text-sm text-muted">Rating: {value} / 5</p>
       </div>
     )
   },
@@ -129,7 +116,7 @@ export const Clearable: Story = {
             <RatingItem key={i} />
           ))}
         </Rating>
-        <p className="mt-2 text-sm text-muted-foreground text-center">
+        <p className="mt-2 text-center text-sm text-muted">
           {value > 0 ? `Rating: ${value} / 5 (click same star to clear)` : 'No rating'}
         </p>
       </div>
@@ -164,7 +151,7 @@ export const CustomIcons: Story = {
     return (
       <div className="space-y-6">
         <div>
-          <p className="text-sm text-muted-foreground mb-2">Hearts</p>
+          <p className="mb-2 text-sm text-muted">Hearts</p>
           <Rating value={hearts} onValueChange={setHearts}>
             {Array.from({ length: 5 }, (_, i) => (
               <RatingItem key={i}>
@@ -174,7 +161,7 @@ export const CustomIcons: Story = {
           </Rating>
         </div>
         <div>
-          <p className="text-sm text-muted-foreground mb-2">Thumbs Up</p>
+          <p className="mb-2 text-sm text-muted">Thumbs Up</p>
           <Rating value={thumbs} onValueChange={setThumbs}>
             {Array.from({ length: 5 }, (_, i) => (
               <RatingItem key={i}>
@@ -198,7 +185,7 @@ export const CustomMax: Story = {
             <RatingItem key={i} />
           ))}
         </Rating>
-        <p className="mt-2 text-sm text-muted-foreground text-center">Rating: {value} / 10</p>
+        <p className="mt-2 text-center text-sm text-muted">Rating: {value} / 10</p>
       </div>
     )
   },
@@ -255,17 +242,19 @@ export const FormIntegration: Story = {
         className="space-y-4"
       >
         <div>
-          <label className="text-sm font-medium mb-2 block">Your Rating</label>
-          <Rating name="rating" defaultValue={0} required>
+          <Label id="rating-label" className="mb-2 block text-sm font-medium">
+            Your Rating
+          </Label>
+          <Rating name="rating" defaultValue={0} required aria-labelledby="rating-label">
             {Array.from({ length: 5 }, (_, i) => (
               <RatingItem key={i} />
             ))}
           </Rating>
         </div>
-        <button type="submit" className="px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm">
+        <Button type="submit" size="sm">
           Submit
-        </button>
-        {submitted !== null && <p className="text-sm text-muted-foreground">Submitted rating: {submitted}</p>}
+        </Button>
+        {submitted !== null && <p className="text-sm text-muted">Submitted rating: {submitted}</p>}
       </form>
     )
   },

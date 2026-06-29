@@ -17,10 +17,11 @@ import {
   floatingInputBaseCls,
   floatingInputStyleVariants,
   floatingLabelStyleVariants,
-  textFieldColorVariants,
+  textFieldEnhancementVariants,
   textFieldFloatingColorVariants,
   textFieldFloatingWrapperColorVariants,
   textFieldSizeVariants,
+  textFieldSurfaceColorVariants,
 } from './text-field.css'
 import { getFloatingStyle, isFloatingVariant, resolveSurfaceVariant } from './text-field-variant'
 
@@ -130,7 +131,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
               className={clsx(
                 cn(
                   'peer inline-flex items-center justify-between w-full outline-none transition-all duration-150 ease-in-out',
-                  'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+                  '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
                   floatingInputBaseCls,
                   className,
                 ),
@@ -187,23 +188,24 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
             id={effectiveId}
             ref={ref}
             aria-invalid={ariaInvalid ?? (error || undefined)}
-            className={cn(
-              'inline-flex items-center justify-between w-full outline-none transition-all duration-150 ease-in-out',
-              'border',
-              'h-[var(--tf-height)]',
-              'px-[var(--tf-padding-x)] py-[var(--tf-padding-y)]',
-              'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)]',
-              'rounded-[var(--element-border-radius)]',
-              textFieldColorVariants[effectiveColor]?.[surfaceVariant],
-              effectiveDisabled && 'opacity-50 cursor-not-allowed',
-              className,
+            className={clsx(
+              cn(
+                'inline-flex items-center justify-between w-full outline-none transition-all duration-150 ease-in-out',
+                'border',
+                'h-[var(--tf-height)]',
+                'px-[var(--tf-padding-x)] py-[var(--tf-padding-y)]',
+                '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+                'rounded-[var(--element-border-radius)]',
+                textFieldSurfaceColorVariants[effectiveColor]?.[surfaceVariant],
+                effectiveDisabled && 'opacity-50 cursor-not-allowed',
+                className,
+              ),
+              textFieldEnhancementVariants[effectiveColor]?.[surfaceVariant],
             )}
             {...props}
           >
             <SelectPrimitive.Value>
-              {(selectedValue: string | null) =>
-                selectedValue || <span className="text-muted-foreground">{placeholder}</span>
-              }
+              {(selectedValue: string | null) => selectedValue || <span className="text-muted">{placeholder}</span>}
             </SelectPrimitive.Value>
             <SelectPrimitive.Icon render={<ChevronDown className="h-4 w-4 opacity-50 ml-2" />} />
           </SelectPrimitive.Trigger>

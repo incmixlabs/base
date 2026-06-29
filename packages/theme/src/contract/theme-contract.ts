@@ -271,7 +271,6 @@ export type CheckboxCardsComponentTokens = {
       padding: string
       boxSize: string
       iconSize: string
-      fontSize: string
       gap: string
     }>
   >
@@ -285,7 +284,6 @@ export type RadioCardsComponentTokens = {
       gap: string
       indicatorSize: string
       indicatorInnerSize: string
-      fontSize: string
     }>
   >
 }

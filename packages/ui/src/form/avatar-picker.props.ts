@@ -5,7 +5,7 @@ import { formSizes } from './form-size'
 const avatarPickerSizes = formSizes
 
 const avatarPickerPropDefs = {
-  size: { type: 'enum', values: avatarPickerSizes, default: 'xs', responsive: true },
+  size: { type: 'enum', values: avatarPickerSizes, default: 'xs' },
   ...colorPropDef,
 } satisfies {
   size: PropDef<(typeof avatarPickerSizes)[number]>

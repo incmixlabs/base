@@ -249,7 +249,11 @@ describe('AvatarGroup', () => {
 
         await user.hover(screen.getByText('JD'))
 
-        const dialog = await screen.findByRole('dialog')
+        const explicitTitle = await screen.findByText('Lead reviewer')
+        const dialog = explicitTitle.closest<HTMLElement>('[role="dialog"]')
+        if (!dialog) {
+          throw new Error('Expected explicit child hover-card content to be inside a dialog')
+        }
         expect(within(dialog).getByText('Lead reviewer')).toBeInTheDocument()
         expect(within(dialog).getByText('platform@company.com')).toBeInTheDocument()
       },
