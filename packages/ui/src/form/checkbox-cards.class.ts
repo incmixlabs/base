@@ -1,12 +1,34 @@
+import { semanticColorKeys } from '../theme/props/color.prop'
+import type { Color } from '../theme/tokens'
 import type { FormSize } from './form-size'
+import { createRadioCheckboxCardSizeVariants } from './radio-checkbox.shared.class'
 
 export type CheckboxCardSize = FormSize
 
-export const checkboxCardSizeVariants = {
-  xs: '[--cbc-padding:var(--component-checkbox-cards-size-xs-padding,0.75rem)] [--cbc-cb-size:var(--component-checkbox-cards-size-xs-box-size,0.875rem)] [--cbc-icon-size:var(--component-checkbox-cards-size-xs-icon-size,0.75rem)] [--cbc-font-size:var(--component-checkbox-cards-size-xs-font-size,0.75rem)] [--cbc-gap:var(--component-checkbox-cards-size-xs-gap,0.5rem)]',
-  sm: '[--cbc-padding:var(--component-checkbox-cards-size-sm-padding,0.75rem)] [--cbc-cb-size:var(--component-checkbox-cards-size-sm-box-size,1rem)] [--cbc-icon-size:var(--component-checkbox-cards-size-sm-icon-size,0.875rem)] [--cbc-font-size:var(--component-checkbox-cards-size-sm-font-size,0.875rem)] [--cbc-gap:var(--component-checkbox-cards-size-sm-gap,0.5rem)]',
-  md: '[--cbc-padding:var(--component-checkbox-cards-size-md-padding,1rem)] [--cbc-cb-size:var(--component-checkbox-cards-size-md-box-size,1.25rem)] [--cbc-icon-size:var(--component-checkbox-cards-size-md-icon-size,1rem)] [--cbc-font-size:var(--component-checkbox-cards-size-md-font-size,1rem)] [--cbc-gap:var(--component-checkbox-cards-size-md-gap,0.75rem)]',
-  lg: '[--cbc-padding:var(--component-checkbox-cards-size-lg-padding,1.25rem)] [--cbc-cb-size:var(--component-checkbox-cards-size-lg-box-size,1.5rem)] [--cbc-icon-size:var(--component-checkbox-cards-size-lg-icon-size,1.25rem)] [--cbc-font-size:var(--component-checkbox-cards-size-lg-font-size,1.125rem)] [--cbc-gap:var(--component-checkbox-cards-size-lg-gap,0.75rem)]',
+export const checkboxCardSizeVariants = createRadioCheckboxCardSizeVariants('checkbox-cards')
+
+export const checkboxCardControlSizeVariants = {
+  xs: '[--af-checkbox-card-box-size:var(--component-checkbox-cards-size-xs-box-size,0.875rem)] [--af-checkbox-card-icon-size:var(--component-checkbox-cards-size-xs-icon-size,0.75rem)]',
+  sm: '[--af-checkbox-card-box-size:var(--component-checkbox-cards-size-sm-box-size,1rem)] [--af-checkbox-card-icon-size:var(--component-checkbox-cards-size-sm-icon-size,0.875rem)]',
+  md: '[--af-checkbox-card-box-size:var(--component-checkbox-cards-size-md-box-size,1.25rem)] [--af-checkbox-card-icon-size:var(--component-checkbox-cards-size-md-icon-size,1rem)]',
+  lg: '[--af-checkbox-card-box-size:var(--component-checkbox-cards-size-lg-box-size,1.5rem)] [--af-checkbox-card-icon-size:var(--component-checkbox-cards-size-lg-icon-size,1.25rem)]',
 } as const satisfies Record<CheckboxCardSize, string>
 
-export const checkboxCardsClassNames = Object.values(checkboxCardSizeVariants)
+const joinClass = (...parts: string[]) => parts.join('')
+const colorVar = (color: string, token: string) => joinClass('var(--color-', color, '-', token, ')')
+
+export const checkboxCardSelectionColorVariants = Object.fromEntries(
+  semanticColorKeys.map(color => [
+    color,
+    [
+      joinClass('peer-data-[checked]:[box-shadow:0_0_0_2px_', colorVar(color, 'primary-alpha'), ']'),
+      joinClass('peer-focus-visible:[box-shadow:0_0_0_2px_', colorVar(color, 'primary-alpha'), ']'),
+    ].join(' '),
+  ]),
+) as Record<Color, string>
+
+export const checkboxCardsClassNames = [
+  ...Object.values(checkboxCardSizeVariants),
+  ...Object.values(checkboxCardControlSizeVariants),
+  ...Object.values(checkboxCardSelectionColorVariants),
+]

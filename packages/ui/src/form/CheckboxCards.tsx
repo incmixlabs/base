@@ -18,7 +18,12 @@ import type { MarginProps } from '@/theme/props/margin.props'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color, Radius, Size } from '@/theme/tokens'
 import { checkboxColorVariants, checkboxHighContrastByVariant } from './checkbox.class'
-import { type CheckboxCardSize, checkboxCardSizeVariants } from './checkbox-cards.class'
+import {
+  type CheckboxCardSize,
+  checkboxCardControlSizeVariants,
+  checkboxCardSelectionColorVariants,
+  checkboxCardSizeVariants,
+} from './checkbox-cards.class'
 import {
   checkboxCardsColumnValues,
   type checkboxCardsGapValues,
@@ -26,6 +31,7 @@ import {
 } from './checkbox-cards.props'
 import { useFieldGroup } from './FieldGroupContext'
 import { resolveFormSize } from './form-size'
+import { radioCheckboxCardGapClass, radioCheckboxCardPaddingClass } from './radio-checkbox.shared.class'
 
 export type { CheckboxCardSize }
 
@@ -241,7 +247,9 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
         className={cn(
           'group relative flex cursor-pointer select-none rounded-[var(--element-border-radius)]',
           checkboxCardSizeVariants[resolvedSize],
-          'p-[var(--cbc-padding)] gap-[var(--cbc-gap)]',
+          checkboxCardControlSizeVariants[resolvedSize],
+          radioCheckboxCardPaddingClass,
+          radioCheckboxCardGapClass,
           isDisabled && 'cursor-not-allowed opacity-50',
           className,
         )}
@@ -260,7 +268,7 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
             context.showCheckbox
               ? [
                   'relative z-10 inline-flex shrink-0 items-center justify-center rounded',
-                  'w-[var(--cbc-cb-size)] h-[var(--cbc-cb-size)]',
+                  'w-[var(--af-checkbox-card-box-size)] h-[var(--af-checkbox-card-box-size)]',
                   'transition-all duration-150',
                   // Keep checkbox token mapping stable for legibility; card `variant` styles the container span.
                   checkboxColorVariants[context.color].solid,
@@ -271,7 +279,7 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
               : 'sr-only',
           )}
         >
-          <CheckboxPrimitive.Indicator className="flex items-center justify-center text-inherit w-[var(--cbc-icon-size)] h-[var(--cbc-icon-size)]">
+          <CheckboxPrimitive.Indicator className="flex items-center justify-center text-inherit w-[var(--af-checkbox-card-icon-size)] h-[var(--af-checkbox-card-icon-size)]">
             <Check className="h-full w-full stroke-current" strokeWidth={3} />
           </CheckboxPrimitive.Indicator>
         </CheckboxPrimitive.Root>
@@ -284,13 +292,12 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
             !isDisabled && surfaceHoverEnabledClass,
             context.highContrast && 'af-high-contrast',
             context.highContrast && surfaceHighContrastByVariant[context.variant === 'surface' ? 'surface' : 'outline'],
-            'peer-data-[checked]:ring-2 peer-data-[checked]:ring-ring/40',
-            'peer-focus-visible:ring-2 peer-focus-visible:ring-ring/60',
+            checkboxCardSelectionColorVariants[context.color],
           )}
           aria-hidden="true"
         />
 
-        <div className="relative z-10 flex flex-1 flex-col text-[var(--cbc-font-size)]">{children}</div>
+        <div className="relative z-10 flex flex-1 flex-col">{children}</div>
       </label>
     )
   },
