@@ -34,9 +34,9 @@ const checkedSolidStateClassName = (color: string) =>
 
 const checkedSoftStateClassName = (color: string) =>
   [
-    joinClass('data-[checked]:bg-[', colorVar(color, 'soft-hover'), ']'),
+    joinClass('data-[checked]:[background-color:', colorVar(color, 'soft-hover'), ']'),
     joinClass('data-[checked]:text-', color),
-    joinClass('data-[indeterminate]:bg-[', colorVar(color, 'soft-hover'), ']'),
+    joinClass('data-[indeterminate]:[background-color:', colorVar(color, 'soft-hover'), ']'),
     joinClass('data-[indeterminate]:text-', color),
   ].join(' ')
 

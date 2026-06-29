@@ -20,6 +20,7 @@ describe('TextField', () => {
 
     const input = screen.getByRole('textbox', { name: 'Name' })
     expect(input.closest('div')).toHaveStyle({ '--element-border-radius': designTokens.radius.lg })
+    expect(input).toHaveClass('border-solid')
   })
 
   it('uses the ThemeProvider radius for floating inputs', () => {
@@ -46,5 +47,15 @@ describe('TextField', () => {
 
     expect(input).toHaveClass(floatingInputStyleVariants.outlined)
     expect(input).toHaveClass(textFieldFloatingColorVariants.success.outlined)
+  })
+
+  it('centers floating input icon slots in the input surface', () => {
+    const { container } = render(
+      <TextField aria-label="Email" variant="floating-outlined" label="Email" leftIcon="mail" />,
+    )
+
+    const iconSlot = container.querySelector('svg')?.closest('div')
+
+    expect(iconSlot).toHaveStyle({ top: '50%' })
   })
 })

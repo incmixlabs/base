@@ -4,7 +4,6 @@ import { clsx } from 'clsx'
 import * as React from 'react'
 import { Icon, type IconProps } from '@/elements/button/Icon'
 import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
-import { Flex } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
@@ -39,6 +38,7 @@ export type { TextFieldVariant } from '@/theme/tokens'
 export type { TextFieldProps } from './text-field.props'
 
 type TextFieldIconSize = NonNullable<IconProps['size']>
+const textFieldIconSlotBase = 'box-border flex min-w-0 items-center justify-center'
 
 /** TextField export. */
 export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
@@ -110,10 +110,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     // If floating variant, render the floating version
     if (isFloatingVariant(variant)) {
       const floatingIconStyle = {
-        top:
-          floatingStyle === 'standard'
-            ? 'calc(0.75rem + (var(--tf-line-height) / 2))'
-            : 'calc(1rem + (var(--tf-line-height) / 2))',
+        top: '50%',
       } as React.CSSProperties
       const leftSlotStyle = {
         ...floatingIconStyle,
@@ -134,11 +131,11 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           style={{ ...marginProps.style, ...radiusStyles, ...style }}
         >
           {leftIcon && (
-            <Flex
-              align="center"
-              justify="center"
+            <div
               className={clsx(
-                cn(textFieldIconContainerCls, 'pointer-events-none'),
+                textFieldIconSlotBase,
+                textFieldIconContainerCls,
+                'pointer-events-none',
                 textFieldLeftIconContainerCls,
                 textFieldIconCls,
                 'text-muted-foreground',
@@ -146,18 +143,16 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
               style={leftSlotStyle}
             >
               <Icon aria-hidden color={effectiveColor} icon={leftIcon} size={iconSize} />
-            </Flex>
+            </div>
           )}
 
           {leftElement && (
-            <Flex
-              align="center"
-              justify="center"
-              className={clsx(cn(textFieldIconContainerCls), textFieldLeftIconContainerCls)}
+            <div
+              className={clsx(textFieldIconSlotBase, textFieldIconContainerCls, textFieldLeftIconContainerCls)}
               style={leftSlotStyle}
             >
               {leftElement}
-            </Flex>
+            </div>
           )}
 
           <input
@@ -213,11 +208,11 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           )}
 
           {rightIcon && (
-            <Flex
-              align="center"
-              justify="center"
+            <div
               className={clsx(
-                cn(textFieldIconContainerCls, 'pointer-events-none'),
+                textFieldIconSlotBase,
+                textFieldIconContainerCls,
+                'pointer-events-none',
                 textFieldRightIconContainerCls,
                 textFieldIconCls,
                 'text-muted-foreground',
@@ -225,18 +220,16 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
               style={rightSlotStyle}
             >
               <Icon aria-hidden color={effectiveColor} icon={rightIcon} size={iconSize} />
-            </Flex>
+            </div>
           )}
 
           {rightElement && (
-            <Flex
-              align="center"
-              justify="center"
-              className={clsx(cn(textFieldIconContainerCls), textFieldRightIconContainerCls)}
+            <div
+              className={clsx(textFieldIconSlotBase, textFieldIconContainerCls, textFieldRightIconContainerCls)}
               style={rightSlotStyle}
             >
               {rightElement}
-            </Flex>
+            </div>
           )}
         </div>
       )
@@ -248,28 +241,24 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     const control = (
       <div className={clsx(cn(textFieldRootCls), textFieldSizeVariants[size])} style={regularStyles}>
         {leftIcon && (
-          <Flex
-            align="center"
-            justify="center"
+          <div
             className={clsx(
-              cn(textFieldIconContainerCls, 'pointer-events-none'),
+              textFieldIconSlotBase,
+              textFieldIconContainerCls,
+              'pointer-events-none',
               textFieldLeftIconContainerCls,
               textFieldIconCls,
               'text-muted-foreground',
             )}
           >
             <Icon aria-hidden color={effectiveColor} icon={leftIcon} size={iconSize} />
-          </Flex>
+          </div>
         )}
 
         {leftElement && (
-          <Flex
-            align="center"
-            justify="center"
-            className={clsx(cn(textFieldIconContainerCls), textFieldLeftIconContainerCls)}
-          >
+          <div className={clsx(textFieldIconSlotBase, textFieldIconContainerCls, textFieldLeftIconContainerCls)}>
             {leftElement}
-          </Flex>
+          </div>
         )}
 
         <input
@@ -285,7 +274,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)]',
             'rounded-[var(--element-border-radius)]',
 
-            'border',
+            'border border-solid',
             textFieldColorVariants[effectiveColor]?.[surfaceVariant],
 
             (leftIcon || leftElement) && textFieldInputWithLeftElementCls,
@@ -303,28 +292,24 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
         />
 
         {rightIcon && (
-          <Flex
-            align="center"
-            justify="center"
+          <div
             className={clsx(
-              cn(textFieldIconContainerCls, 'pointer-events-none'),
+              textFieldIconSlotBase,
+              textFieldIconContainerCls,
+              'pointer-events-none',
               textFieldRightIconContainerCls,
               textFieldIconCls,
               'text-muted-foreground',
             )}
           >
             <Icon aria-hidden color={effectiveColor} icon={rightIcon} size={iconSize} />
-          </Flex>
+          </div>
         )}
 
         {rightElement && (
-          <Flex
-            align="center"
-            justify="center"
-            className={clsx(cn(textFieldIconContainerCls), textFieldRightIconContainerCls)}
-          >
+          <div className={clsx(textFieldIconSlotBase, textFieldIconContainerCls, textFieldRightIconContainerCls)}>
             {rightElement}
-          </Flex>
+          </div>
         )}
       </div>
     )

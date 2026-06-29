@@ -281,7 +281,7 @@ export const pickerPopupSizeTokens = {
     statusPaddingY: spaceRem['2'],
   },
   md: {
-    viewportMaxHeight: '12.5rem',
+    viewportMaxHeight: '13.5rem',
     searchHeight: '2.25rem',
     fontSize: fontSizeRem.sm,
     lineHeight: lineHeightRem.sm,

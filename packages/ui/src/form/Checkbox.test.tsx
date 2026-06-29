@@ -15,6 +15,7 @@ describe('Checkbox', () => {
     const checkbox = screen.getByTestId('checkbox')
 
     expect(checkbox).toHaveClass(checkboxColorVariants.success.soft)
+    expect(checkbox).toHaveClass('data-[checked]:[background-color:var(--color-success-soft-hover)]')
     expect(checkbox).toHaveClass('af-high-contrast')
     expect(checkbox).toHaveClass(checkboxHighContrastByVariant.soft)
   })

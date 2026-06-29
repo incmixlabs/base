@@ -13,7 +13,12 @@ export const textFieldRootCls = 'relative w-full'
 
 export const textFieldInputBaseCls = 'w-full outline-none transition-all duration-150 ease-in-out'
 
-export const textFieldIconContainerCls = 'absolute top-1/2 -translate-y-1/2 z-10'
+export const textFieldIconContainerCls = style({
+  position: 'absolute',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  zIndex: 10,
+})
 
 const iconInset = 'calc(var(--tf-padding-x) + var(--tf-gap))'
 const iconTextOffset = `calc(${iconInset} + var(--tf-icon-size) + var(--tf-gap))`
