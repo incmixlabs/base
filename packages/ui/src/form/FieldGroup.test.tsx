@@ -35,8 +35,7 @@ describe('FieldGroup', () => {
     expectClassTokens(screen.getByText('Work address').className, [
       'mt-[var(--af-field-group-row-description-margin-top,0.25rem)]',
       'text-sm',
-      'text-neutral',
-      'opacity-70',
+      'text-muted',
     ])
   })
 })

@@ -268,18 +268,21 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           disabled={effectiveDisabled}
           aria-invalid={error || undefined}
           readOnly={effectiveReadOnly}
-          className={cn(
-            textFieldInputBaseCls,
-            'box-border h-[var(--tf-height)]',
-            'px-[var(--tf-padding-x)] py-[var(--tf-padding-y)]',
-            'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)]',
-            formControlBorderFrame,
+          className={clsx(
+            cn(
+              textFieldInputBaseCls,
+              'box-border h-[var(--tf-height)]',
+              'px-[var(--tf-padding-x)] py-[var(--tf-padding-y)]',
+              'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+              formControlBorderFrame,
+
+              (leftIcon || leftElement) && textFieldInputWithLeftElementCls,
+              (rightIcon || rightElement) && textFieldInputWithRightElementCls,
+
+              effectiveDisabled && 'opacity-50 cursor-not-allowed',
+            ),
+            // VE classes must be joined outside tailwind-merge or one generated class can drop `text-*` utilities.
             textFieldColorVariants[effectiveColor]?.[surfaceVariant],
-
-            (leftIcon || leftElement) && textFieldInputWithLeftElementCls,
-            (rightIcon || rightElement) && textFieldInputWithRightElementCls,
-
-            effectiveDisabled && 'opacity-50 cursor-not-allowed',
           )}
           placeholder={placeholder}
           value={value}
