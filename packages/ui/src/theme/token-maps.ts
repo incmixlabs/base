@@ -1,4 +1,4 @@
-import { designTokens, type Radius } from '@/theme/tokens'
+import { designTokens, type Radius } from './tokens'
 
 export const space = {
   '0': '0',
