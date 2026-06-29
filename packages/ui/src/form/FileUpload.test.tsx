@@ -42,6 +42,21 @@ describe('FileUpload', () => {
     expect(dropzone?.className).toContain('[border-color:var(--color-neutral-border)]')
   })
 
+  it('does not keep hover affordances on disabled bordered dropzones', () => {
+    const { container, rerender } = render(<FileUpload variant="minimal" disabled />)
+
+    let dropzone = container.querySelector('[data-slot="file-upload-dropzone"]') as HTMLElement | null
+    expect(dropzone?.className).not.toContain('hover:[background-color:var(--color-neutral-surface-hover)]')
+    expect(dropzone).toHaveClass('hover:bg-transparent')
+
+    rerender(<FileUpload variant="card" disabled />)
+
+    dropzone = container.querySelector('[data-slot="file-upload-dropzone"]') as HTMLElement | null
+    expect(dropzone).not.toHaveClass('hover:shadow-md')
+    expect(dropzone).toHaveClass('hover:shadow-sm')
+    expect(dropzone?.className).toContain('hover:[border-color:var(--color-neutral-border)]')
+  })
+
   it('inherits size from FieldGroup context', () => {
     const { container } = render(
       <FieldGroupProvider value={{ size: 'xs' }}>

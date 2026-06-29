@@ -206,14 +206,17 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
       },
       [onValueChange, options],
     )
-    const openForBrowse = React.useCallback(() => {
-      if (effectiveDisabled || effectiveReadOnly) return
+    const openForBrowse = React.useCallback(
+      (resetFiltering = true) => {
+        if (effectiveDisabled || effectiveReadOnly) return
 
-      window.clearTimeout(closeTimerRef.current)
-      setIsFiltering(false)
-      setOpen(true)
-      inputRef.current?.focus()
-    }, [effectiveDisabled, effectiveReadOnly])
+        window.clearTimeout(closeTimerRef.current)
+        if (resetFiltering) setIsFiltering(false)
+        setOpen(true)
+        inputRef.current?.focus()
+      },
+      [effectiveDisabled, effectiveReadOnly],
+    )
 
     return (
       <div ref={ref} className={cn('relative w-full', className)}>
@@ -246,16 +249,16 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
               className="inline-flex h-full w-full appearance-none items-center justify-center border-0 bg-transparent p-0 leading-none text-neutral opacity-50 enabled:cursor-pointer"
               disabled={effectiveDisabled || effectiveReadOnly}
               onMouseDown={event => event.preventDefault()}
-              onClick={openForBrowse}
+              onClick={() => openForBrowse()}
             >
               <ChevronDown className={cn('block shrink-0', pickerIndicatorBySize[popupSize])} aria-hidden="true" />
             </button>
           }
           onFocus={() => {
-            openForBrowse()
+            openForBrowse(false)
           }}
           onClick={() => {
-            openForBrowse()
+            openForBrowse(false)
           }}
           onBlur={() => {
             closeTimerRef.current = window.setTimeout(() => {
@@ -329,6 +332,7 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
                     id={item.id}
                     type="button"
                     role="option"
+                    tabIndex={-1}
                     aria-selected={isSelected}
                     disabled={item.disabled}
                     className={cn(

@@ -643,11 +643,11 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
             variant === 'minimal' && [
               formControlBorderedSurface,
               'p-[var(--file-upload-container-padding)]',
-              !error && formControlNeutralHoverBackground,
+              !error && !isPickerDisabled && formControlNeutralHoverBackground,
               isDragActive && formControlPrimarySurface,
               isDragReject && formControlErrorSurface,
               error && !isDragActive && formControlErrorSurface,
-              isPickerDisabled && formControlDisabled,
+              isPickerDisabled && `${formControlDisabled} hover:bg-transparent`,
             ],
 
             variant === 'card' && [
@@ -655,11 +655,12 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
               formControlNeutralBackground,
               'shadow-sm',
               'p-[var(--file-upload-container-padding)]',
-              !error && `hover:shadow-md ${formControlPrimaryHoverBorder}`,
+              !error && !isPickerDisabled && `hover:shadow-md ${formControlPrimaryHoverBorder}`,
               isDragActive && `${formControlPrimaryBorderColor} shadow-md`,
               isDragReject && formControlErrorSurface,
               error && !isDragActive && formControlErrorSurface,
-              isPickerDisabled && `${formControlDisabled} hover:shadow-sm`,
+              isPickerDisabled &&
+                `${formControlDisabled} hover:shadow-sm hover:[border-color:var(--color-neutral-border)]`,
             ],
           )}
         >

@@ -1,8 +1,10 @@
 import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 
-const unoConfigSource = readFileSync(resolve(process.cwd(), '../config/uno.config.ts'), 'utf8')
+const thisDir = dirname(fileURLToPath(import.meta.url))
+const unoConfigSource = readFileSync(resolve(thisDir, '../../../config/uno.config.ts'), 'utf8')
 
 describe('base Uno config', () => {
   it('keeps muted text as neutral text plus opacity utility', () => {

@@ -1,5 +1,6 @@
 'use client'
 
+import { clsx } from 'clsx'
 import { Check, ChevronDown, X } from 'lucide-react'
 import * as React from 'react'
 import { IconButton } from '@/elements'
@@ -40,7 +41,12 @@ import {
   pickerSearchRowBase,
 } from './picker-popup.class'
 import { SearchInput } from './SearchInput'
-import { textFieldColorVariants, textFieldInputBaseCls, textFieldSizeVariants } from './text-field.css'
+import {
+  textFieldEnhancementVariants,
+  textFieldInputBaseCls,
+  textFieldSizeVariants,
+  textFieldSurfaceColorVariants,
+} from './text-field.css'
 import { resolveSurfaceVariant } from './text-field-variant'
 import { highlightColorStyles } from './textFieldStyles'
 
@@ -467,13 +473,16 @@ const AvatarPickerMultiTrigger = React.forwardRef<HTMLDivElement, AvatarPickerMu
             }
             if (e.key === KEYBOARD_KEYS.escape) setIsOpen(false)
           }}
-          className={cn(
-            textFieldInputBaseCls,
-            'inline-flex w-full items-center justify-between gap-2 box-border border',
-            'min-h-[var(--tf-height)] px-[var(--tf-padding-x)] py-[var(--tf-padding-y)] text-left',
-            'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)] rounded-[var(--element-border-radius)]',
-            textFieldColorVariants[highlightColor][surfaceVariant],
-            disabled && 'cursor-not-allowed opacity-50',
+          className={clsx(
+            cn(
+              textFieldInputBaseCls,
+              'inline-flex w-full items-center justify-between gap-2 box-border border',
+              'min-h-[var(--tf-height)] px-[var(--tf-padding-x)] py-[var(--tf-padding-y)] text-left',
+              '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)] rounded-[var(--element-border-radius)]',
+              textFieldSurfaceColorVariants[highlightColor][surfaceVariant],
+              disabled && 'cursor-not-allowed opacity-50',
+            ),
+            textFieldEnhancementVariants[highlightColor][surfaceVariant],
           )}
         >
           {selectedItems.length === 0 ? (
@@ -987,13 +996,16 @@ const AvatarPickerSingle = React.forwardRef<HTMLDivElement, AvatarPickerSinglePr
             setIsOpen(open => !open)
           }}
           onKeyDown={handleTriggerKeyDown}
-          className={cn(
-            textFieldInputBaseCls,
-            'inline-flex w-full items-center justify-between gap-2 box-border border',
-            'min-h-[var(--tf-height)] px-[var(--tf-padding-x)] py-[var(--tf-padding-y)] text-left',
-            'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)] rounded-[var(--element-border-radius)]',
-            textFieldColorVariants[highlightColor][surfaceVariant],
-            disabled && 'cursor-not-allowed opacity-50',
+          className={clsx(
+            cn(
+              textFieldInputBaseCls,
+              'inline-flex w-full items-center justify-between gap-2 box-border border',
+              'min-h-[var(--tf-height)] px-[var(--tf-padding-x)] py-[var(--tf-padding-y)] text-left',
+              '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)] rounded-[var(--element-border-radius)]',
+              textFieldSurfaceColorVariants[highlightColor][surfaceVariant],
+              disabled && 'cursor-not-allowed opacity-50',
+            ),
+            textFieldEnhancementVariants[highlightColor][surfaceVariant],
           )}
         >
           <div className={avatarPickerTriggerContentCls}>

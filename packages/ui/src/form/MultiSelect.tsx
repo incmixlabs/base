@@ -1,5 +1,6 @@
 'use client'
 
+import { clsx } from 'clsx'
 import { ChevronDown } from 'lucide-react'
 import * as React from 'react'
 import { Button } from '@/elements'
@@ -36,12 +37,13 @@ import { SearchInput } from './SearchInput'
 import {
   floatingInputBaseCls,
   floatingInputStyleVariants,
-  textFieldColorVariants,
+  textFieldEnhancementVariants,
   textFieldFloatingColorVariants,
   textFieldFloatingWrapperColorVariants,
   textFieldInputBaseCls,
   textFieldRootCls,
   textFieldSizeVariants,
+  textFieldSurfaceColorVariants,
 } from './text-field.css'
 import { getFloatingStyle, isFloatingVariant, resolveSurfaceVariant } from './text-field-variant'
 
@@ -704,7 +706,7 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
               data-popup-open={open ? '' : undefined}
               className={`${cn(
                 'peer inline-flex w-full items-center justify-between outline-none transition-all duration-150 ease-in-out',
-                'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+                '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
                 floatingInputBaseCls,
                 floatingStyle && floatingInputStyleVariants[floatingStyle],
                 disabled && 'opacity-50 cursor-not-allowed',
@@ -717,7 +719,7 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                 id={labelId}
                 onPointerDown={() => triggerRef.current?.focus()}
                 className={cn(
-                  'absolute text-[length:var(--tf-font-size)] text-[color:var(--tf-color-text)] duration-300 origin-[0] select-none cursor-text',
+                  'absolute [font-size:var(--tf-font-size)] text-[color:var(--tf-color-text)] duration-300 origin-[0] select-none cursor-text',
                   floatingStyle === 'filled' && [
                     'left-[var(--tf-padding-x)] top-4 z-10',
                     '-translate-y-4 scale-75',
@@ -759,14 +761,18 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
               {...triggerProps}
               aria-describedby={ariaDescribedby}
               aria-invalid={ariaInvalid ?? (error || undefined)}
-              className={`${cn(
-                textFieldInputBaseCls,
-                'inline-flex w-full box-border items-center justify-between gap-2',
-                'min-h-[var(--tf-height)] px-[var(--tf-padding-x)] py-[var(--tf-padding-y)] text-left',
-                'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)]',
-                formControlBorderFrame,
-                disabled && 'opacity-50 cursor-not-allowed',
-              )} ${textFieldColorVariants[effectiveColor][surfaceVariant]}`}
+              className={clsx(
+                cn(
+                  textFieldInputBaseCls,
+                  'inline-flex w-full box-border items-center justify-between gap-2',
+                  'min-h-[var(--tf-height)] px-[var(--tf-padding-x)] py-[var(--tf-padding-y)] text-left',
+                  '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+                  formControlBorderFrame,
+                  textFieldSurfaceColorVariants[effectiveColor][surfaceVariant],
+                  disabled && 'opacity-50 cursor-not-allowed',
+                ),
+                textFieldEnhancementVariants[effectiveColor][surfaceVariant],
+              )}
             >
               {triggerContent}
             </div>

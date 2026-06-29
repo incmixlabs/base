@@ -148,7 +148,7 @@ function SearchableSelect<T>({
             'inline-flex items-center justify-between w-full outline-none transition-all duration-150 ease-in-out',
             floating
               ? [
-                  'peer text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+                  'peer [font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
                   floatingInputBaseCls,
                   floatingStyle && floatingInputStyleVariants[floatingStyle],
                   floatingStyle && textFieldFloatingColorVariants[error ? 'error' : 'slate']?.[floatingStyle],
@@ -211,7 +211,7 @@ function SearchableSelect<T>({
           <label
             htmlFor={triggerId}
             className={cn(
-              'absolute text-[length:var(--tf-font-size)] text-[color:var(--tf-color-text)]',
+              'absolute [font-size:var(--tf-font-size)] text-[color:var(--tf-color-text)]',
               'duration-300 origin-[0]',
               'pointer-events-none select-none',
               floatingStyle === 'filled' && [

@@ -15,12 +15,13 @@ import type { TextareaProps } from './text-area.props'
 import {
   floatingInputStyleVariants,
   floatingLabelStyleVariants,
-  textFieldColorVariants,
+  textFieldEnhancementVariants,
   textFieldFloatingColorVariants,
   textFieldFloatingWrapperColorVariants,
   textFieldInputBaseCls,
   textFieldRootCls,
   textFieldSizeVariants,
+  textFieldSurfaceColorVariants,
 } from './text-field.css'
 import { getFloatingStyle, isFloatingVariant, resolveSurfaceVariant } from './text-field-variant'
 
@@ -159,25 +160,29 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     const surfaceVariant = resolveSurfaceVariant(variant)
 
     // Regular (non-floating) textarea
-    const regularClasses = cn(
-      textFieldInputBaseCls,
-      'box-border',
-      'min-h-[calc(var(--tf-height)*2)]',
-      'px-[var(--tf-padding-x)] py-[var(--tf-padding-y)]',
-      'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)]',
-      'rounded-[var(--element-border-radius)]',
-      'border',
-      resizeClass,
-      textFieldColorVariants[effectiveColor]?.[surfaceVariant],
-      effectiveDisabled && 'opacity-50 cursor-not-allowed',
+    const regularClasses = clsx(
+      cn(
+        textFieldInputBaseCls,
+        'box-border',
+        'min-h-[calc(var(--tf-height)*2)]',
+        'px-[var(--tf-padding-x)] py-[var(--tf-padding-y)]',
+        '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+        'rounded-[var(--element-border-radius)]',
+        'border',
+        resizeClass,
+        textFieldSurfaceColorVariants[effectiveColor]?.[surfaceVariant],
+        effectiveDisabled && 'opacity-50 cursor-not-allowed',
+      ),
+      textFieldEnhancementVariants[effectiveColor]?.[surfaceVariant],
     )
+    const regularClassName = clsx(cn(textFieldRootCls, textFieldSizeVariants[size]), regularClasses)
 
     const control = autoSize ? (
       <TextareaAutosize
         ref={ref}
         id={textareaId}
         aria-invalid={error || undefined}
-        className={cn(textFieldRootCls, textFieldSizeVariants[size], regularClasses)}
+        className={regularClassName}
         style={combinedStyles as React.CSSProperties & { height?: number }}
         disabled={effectiveDisabled}
         readOnly={effectiveReadOnly}
@@ -191,7 +196,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         ref={ref}
         id={textareaId}
         aria-invalid={error || undefined}
-        className={cn(textFieldRootCls, textFieldSizeVariants[size], regularClasses)}
+        className={regularClassName}
         style={combinedStyles}
         disabled={effectiveDisabled}
         readOnly={effectiveReadOnly}

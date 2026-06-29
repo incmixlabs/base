@@ -111,13 +111,22 @@ const textFieldEnhancementVariants = Object.fromEntries(
   semanticColorKeys.map(color => [color, createTextFieldEnhancements(color)]),
 ) as Record<Color, Record<TextFieldVariant, string>>
 
+export const textFieldSurfaceColorVariants: Record<Color, Record<TextFieldVariant, string>> = Object.fromEntries(
+  semanticColorKeys.map(color => [
+    color,
+    Object.fromEntries(textFieldVariantKeys.map(variant => [variant, surfaceUnoColorVariants[color][variant]])),
+  ]),
+) as Record<Color, Record<TextFieldVariant, string>>
+
+export { textFieldEnhancementVariants }
+
 export const textFieldColorVariants: Record<Color, Record<TextFieldVariant, string>> = Object.fromEntries(
   semanticColorKeys.map(color => [
     color,
     Object.fromEntries(
       textFieldVariantKeys.map(variant => [
         variant,
-        `${surfaceUnoColorVariants[color][variant]} ${textFieldEnhancementVariants[color][variant]}`,
+        `${textFieldSurfaceColorVariants[color][variant]} ${textFieldEnhancementVariants[color][variant]}`,
       ]),
     ),
   ]),

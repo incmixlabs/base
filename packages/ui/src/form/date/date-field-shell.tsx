@@ -1,13 +1,15 @@
+import { clsx } from 'clsx'
 import * as React from 'react'
 import { Label } from '@/form/Label'
 import {
   floatingInputBaseCls,
   floatingInputStyleVariants,
   type TextFieldSize,
-  textFieldColorVariants,
+  textFieldEnhancementVariants,
   textFieldFloatingColorVariants,
   textFieldFloatingWrapperColorVariants,
   textFieldSizeVariants,
+  textFieldSurfaceColorVariants,
 } from '@/form/text-field.css'
 import type { FloatingStyle } from '@/form/text-field-variant'
 import { resolveSurfaceVariant } from '@/form/text-field-variant'
@@ -77,24 +79,27 @@ export function getDateFieldSurfaceClassName({
   textFieldSize: TextFieldSize
 }) {
   const surfaceVariant = resolveSurfaceVariant(variant ?? 'outline')
-  return cn(
-    'relative box-border flex w-full min-w-0 items-center overflow-hidden text-foreground transition-all duration-150 ease-in-out',
-    textFieldSizeVariants[textFieldSize],
-    datePickerTriggerGroupRadiusStyles[radius],
-    floatingStyle
-      ? [
-          'peer bg-background',
-          floatingInputBaseCls,
-          floatingInputStyleVariants[floatingStyle],
-          textFieldFloatingColorVariants[color]?.[floatingStyle],
-        ]
-      : ['h-[var(--tf-height)] border', textFieldColorVariants[color]?.[surfaceVariant]],
+  return clsx(
+    cn(
+      'relative box-border flex w-full min-w-0 items-center overflow-hidden text-foreground transition-all duration-150 ease-in-out',
+      textFieldSizeVariants[textFieldSize],
+      datePickerTriggerGroupRadiusStyles[radius],
+      floatingStyle
+        ? [
+            'peer bg-background',
+            floatingInputBaseCls,
+            floatingInputStyleVariants[floatingStyle],
+            textFieldFloatingColorVariants[color]?.[floatingStyle],
+          ]
+        : ['h-[var(--tf-height)] border', textFieldSurfaceColorVariants[color]?.[surfaceVariant]],
+    ),
+    !floatingStyle && textFieldEnhancementVariants[color]?.[surfaceVariant],
   )
 }
 
 export function getDateFloatingLabelClassName(floatingStyle: FloatingStyle | null, isFloatingActive: boolean) {
   return cn(
-    'pointer-events-none absolute origin-[0] select-none text-[length:var(--tf-font-size)] text-[color:var(--tf-color-text)] duration-300',
+    'pointer-events-none absolute origin-[0] select-none [font-size:var(--tf-font-size)] text-[color:var(--tf-color-text)] duration-300',
     floatingStyle === 'filled' && [
       'left-[var(--tf-padding-x)] top-[0.875rem] z-10',
       isFloatingActive ? '-translate-y-4 scale-75' : 'translate-y-0 scale-100',

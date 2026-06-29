@@ -68,6 +68,7 @@ describe('Combobox', () => {
     expect(popup?.className).not.toContain('bg-popover')
     expect(popup?.className).not.toContain('text-popover-foreground')
     expect(reactOption.className).not.toContain('border-input')
+    expect(reactOption).toHaveAttribute('tabindex', '-1')
   })
 
   it('opens the full option list from a selected value and marks the selection', async () => {
@@ -90,6 +91,12 @@ describe('Combobox', () => {
 
     await user.clear(input)
     await user.type(input, 'ang')
+
+    expect(screen.queryByRole('option', { name: 'React' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('option', { name: 'Vue' })).not.toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'Angular' })).toBeInTheDocument()
+
+    await user.click(input)
 
     expect(screen.queryByRole('option', { name: 'React' })).not.toBeInTheDocument()
     expect(screen.queryByRole('option', { name: 'Vue' })).not.toBeInTheDocument()

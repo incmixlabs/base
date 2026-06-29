@@ -19,7 +19,7 @@ import {
   floatingInputWithRightIconCls,
   floatingLabelStyleVariants,
   floatingLabelWithLeftIconCls,
-  textFieldColorVariants,
+  textFieldEnhancementVariants,
   textFieldFloatingColorVariants,
   textFieldFloatingWrapperColorVariants,
   textFieldIconCls,
@@ -31,6 +31,7 @@ import {
   textFieldRightIconContainerCls,
   textFieldRootCls,
   textFieldSizeVariants,
+  textFieldSurfaceColorVariants,
 } from './text-field.css'
 import type { TextFieldProps } from './text-field.props'
 import { getFloatingStyle, isFloatingVariant, resolveSurfaceVariant } from './text-field-variant'
@@ -273,16 +274,16 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
               textFieldInputBaseCls,
               'box-border h-[var(--tf-height)]',
               'px-[var(--tf-padding-x)] py-[var(--tf-padding-y)]',
-              'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+              '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
               formControlBorderFrame,
-
-              (leftIcon || leftElement) && textFieldInputWithLeftElementCls,
-              (rightIcon || rightElement) && textFieldInputWithRightElementCls,
+              textFieldSurfaceColorVariants[effectiveColor]?.[surfaceVariant],
 
               effectiveDisabled && 'opacity-50 cursor-not-allowed',
             ),
-            // VE classes must be joined outside tailwind-merge or one generated class can drop `text-*` utilities.
-            textFieldColorVariants[effectiveColor]?.[surfaceVariant],
+            // VE classes must be joined outside tailwind-merge or generated class names can drop `text-*` utilities.
+            (leftIcon || leftElement) && textFieldInputWithLeftElementCls,
+            (rightIcon || rightElement) && textFieldInputWithRightElementCls,
+            textFieldEnhancementVariants[effectiveColor]?.[surfaceVariant],
           )}
           placeholder={placeholder}
           value={value}
