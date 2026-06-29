@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { cn } from '@/lib/utils'
+import { Text } from '@/typography'
 import { ScrollArea } from './ScrollArea'
 import type { ScrollAreaWrapperProps } from './scroll-area-wrapper.types'
 
@@ -42,10 +43,14 @@ export function ScrollAreaWrapper({
               <div className="text-sm font-medium text-neutral">{item.title}</div>
             ) : null
             const defaultDescription = hasContent(item.description) ? (
-              <div className="text-xs text-neutral opacity-70">{item.description}</div>
+              <Text as="div" size="xs" color="neutral" muted>
+                {item.description}
+              </Text>
             ) : null
             const defaultTrailing = hasContent(item.trailing) ? (
-              <div className="shrink-0 text-xs text-neutral opacity-70">{item.trailing}</div>
+              <Text as="div" size="xs" color="neutral" muted className="shrink-0">
+                {item.trailing}
+              </Text>
             ) : null
             const defaultContent = hasContent(item.content) ? (
               <div className="text-sm text-neutral">{item.content}</div>

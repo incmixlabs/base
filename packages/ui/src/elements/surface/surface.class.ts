@@ -1,8 +1,9 @@
 import { type SemanticColorClassRecipe, semanticColorClassRecipes } from '@/theme/helpers/semantic-color-recipe'
 import { normalizeChartColor, semanticColorKeys } from '@/theme/props/color.prop'
 import { type Color, SURFACE_COLOR_KEYS, type SurfaceColorKey } from '@/theme/tokens'
-import { surfaceVariantSurfaceShadow } from './Surface.css'
 import { type SurfaceShape, type SurfaceVariant, surfaceShapes, surfaceVariants } from './surface.props'
+
+export const surfaceVariantSurfaceShadow = '[box-shadow:var(--af-surface-variant-surface-box-shadow,var(--shadow-xs))]'
 
 export const surfaceHoverEnabledClass = 'surface-hover-enabled'
 

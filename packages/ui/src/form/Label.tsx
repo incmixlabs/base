@@ -30,7 +30,7 @@ export interface LabelProps extends Omit<TextProps, 'as' | 'size'> {
 
 /** Label export. */
 export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
-  ({ size: sizeProp, weight = 'medium', htmlFor, disabled, className, children, ...props }, ref) => {
+  ({ size: sizeProp, weight = 'medium', htmlFor, disabled, muted, className, children, ...props }, ref) => {
     const fieldGroup = useFieldGroup()
     const size = sizeProp ?? fieldGroup.size
     const effectiveDisabled = disabled || fieldGroup.disabled
@@ -42,7 +42,8 @@ export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
         as="label"
         size={textSize}
         weight={weight}
-        className={cn('leading-none cursor-pointer', effectiveDisabled && 'cursor-not-allowed opacity-70', className)}
+        muted={effectiveDisabled ? true : muted}
+        className={cn('leading-none cursor-pointer', effectiveDisabled && 'cursor-not-allowed', className)}
         {...props}
         {...(htmlFor && { htmlFor })}
       >

@@ -2,6 +2,7 @@ import * as React from 'react'
 import { getSpacingClasses, type Responsive, Slot, type Spacing } from '@/layouts/layout-utils'
 import { cn } from '@/lib/utils'
 import { highContrastPropDef } from '@/theme/props/high-contrast.prop'
+import { mutedClassName, mutedPropDef } from '@/theme/props/muted.prop'
 import { normalizeBooleanPropValue } from '@/theme/props/prop-def'
 import { getTextSizeClasses } from '../get-text-size-classes'
 import type { TextColor, TypographyVariant } from '../tokens'
@@ -9,7 +10,7 @@ import { resolveTextColor, type TypographySize, type Weight } from '../tokens'
 import { type TypographyTrim, textBase, textByWeight, typographyTrimByTrim } from '../typography.class'
 
 export interface TextOwnProps {
-  as?: 'span' | 'div' | 'label' | 'p'
+  as?: 'span' | 'div' | 'label' | 'p' | 'cite'
   asChild?: boolean
   size?: Responsive<TypographySize>
   weight?: Weight
@@ -20,6 +21,7 @@ export interface TextOwnProps {
   truncate?: boolean
   wrap?: 'wrap' | 'nowrap' | 'pretty' | 'balance'
   highContrast?: boolean
+  muted?: boolean
   m?: Responsive<Spacing>
   mx?: Responsive<Spacing>
   my?: Responsive<Spacing>
@@ -46,6 +48,7 @@ export const Text = React.forwardRef<HTMLElement, TextProps>(
       truncate = false,
       wrap = 'wrap',
       highContrast = false,
+      muted = false,
       m,
       mx,
       my,
@@ -62,6 +65,7 @@ export const Text = React.forwardRef<HTMLElement, TextProps>(
   ) => {
     const sizeClasses = getTextSizeClasses(size)
     const safeHighContrast = normalizeBooleanPropValue(highContrastPropDef.highContrast, highContrast) ?? false
+    const safeMuted = normalizeBooleanPropValue(mutedPropDef.muted, muted) ?? false
     const resolvedWeight = safeHighContrast
       ? ({
           light: 'regular',
@@ -96,6 +100,7 @@ export const Text = React.forwardRef<HTMLElement, TextProps>(
         wrap === 'pretty' && 'text-pretty',
         wrap === 'balance' && 'text-balance',
         typographyTrimByTrim[trim ?? 'normal'],
+        safeMuted && mutedClassName,
 
         // Margin
         getSpacingClasses(m, 'm'),
@@ -139,6 +144,13 @@ export const Text = React.forwardRef<HTMLElement, TextProps>(
         <p ref={ref as React.Ref<HTMLParagraphElement>} {...sharedProps} {...props}>
           {children}
         </p>
+      )
+    }
+    if (Tag === 'cite') {
+      return (
+        <cite ref={ref as React.Ref<HTMLElement>} {...sharedProps} {...props}>
+          {children}
+        </cite>
       )
     }
     return (

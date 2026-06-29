@@ -2,6 +2,7 @@ import { asChildPropDef } from '@/theme/props/as-child.prop'
 import { colorPropDef } from '@/theme/props/color.prop'
 import { highContrastPropDef } from '@/theme/props/high-contrast.prop'
 import { leadingTrimPropDef } from '@/theme/props/leading-trim.prop'
+import { mutedPropDef } from '@/theme/props/muted.prop'
 import type { PropDef } from '@/theme/props/prop-def'
 import { textAlignPropDef } from '@/theme/props/text-align.prop'
 import { textWrapPropDef } from '@/theme/props/text-wrap.prop'
@@ -9,7 +10,7 @@ import { truncatePropDef } from '@/theme/props/truncate.prop'
 import { createTypographySizePropDef, type typographySizeValues } from '@/theme/props/typography-size.prop'
 import { weightPropDef } from '@/theme/props/weight.prop'
 
-const as = ['span', 'div', 'label', 'p'] as const
+const as = ['span', 'div', 'label', 'p', 'cite'] as const
 const variants = ['solid', 'soft', 'muted'] as const
 
 const textPropDefs = {
@@ -39,6 +40,7 @@ const textPropDefs = {
   ...truncatePropDef,
   ...textWrapPropDef,
   ...highContrastPropDef,
+  ...mutedPropDef,
 } satisfies {
   as: PropDef<(typeof as)[number]>
   size: PropDef<(typeof typographySizeValues)[number]>

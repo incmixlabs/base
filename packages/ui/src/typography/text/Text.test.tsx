@@ -45,4 +45,16 @@ describe('Text', () => {
 
     expect(screen.getByText('Trimmed copy')).toHaveClass(typographyTrimByTrim.both)
   })
+
+  it('applies muted opacity when requested', () => {
+    render(<Text muted>Muted copy</Text>)
+
+    expect(screen.getByText('Muted copy')).toHaveClass('opacity-70')
+  })
+
+  it('can render semantic cite text', () => {
+    render(<Text as="cite">Citation</Text>)
+
+    expect(screen.getByText('Citation').tagName).toBe('CITE')
+  })
 })

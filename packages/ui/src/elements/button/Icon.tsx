@@ -5,7 +5,8 @@ import { Flex } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import type { MarginProps } from '@/theme/props/margin.props'
-import { normalizeEnumPropValue } from '@/theme/props/prop-def'
+import { mutedClassName, mutedPropDef } from '@/theme/props/muted.prop'
+import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import { type Color, resolveThemeColorToken, type ThemeColorToken } from '@/theme/tokens'
 import { SimpleTooltip } from '../tooltip/Tooltip'
 import { getColorVars } from '../utils'
@@ -31,6 +32,7 @@ export interface IconProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, '
   title?: string | ((data: IconTooltipData) => React.ReactNode)
   icon?: string
   fill?: boolean
+  muted?: boolean
   iconProps?: Omit<DynamicLucideIconProps, 'name' | 'className'>
 }
 
@@ -42,6 +44,7 @@ const Icon = React.forwardRef<HTMLSpanElement, IconProps>(
       title,
       icon,
       fill = false,
+      muted = false,
       iconProps,
       className,
       children,
@@ -59,6 +62,7 @@ const Icon = React.forwardRef<HTMLSpanElement, IconProps>(
   ) => {
     const safeSize = (normalizeEnumPropValue(iconButtonPropDefs.size, size) ??
       iconButtonPropDefs.size.default) as IconSize
+    const safeMuted = normalizeBooleanPropValue(mutedPropDef.muted, muted) ?? false
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
     const isSemanticColor =
       typeof color === 'string' && (iconButtonPropDefs.color.values as readonly string[]).includes(color)
@@ -94,7 +98,13 @@ const Icon = React.forwardRef<HTMLSpanElement, IconProps>(
         justify="center"
         flexShrink="0"
         title={nativeTitle}
-        className={cn('leading-none', iconSizeVariants[safeSize], !tooltipContent && marginProps.className, className)}
+        className={cn(
+          'leading-none',
+          iconSizeVariants[safeSize],
+          safeMuted && mutedClassName,
+          !tooltipContent && marginProps.className,
+          className,
+        )}
         style={combinedStyles}
         {...props}
       >

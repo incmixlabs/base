@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { Flex } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
+import { Text } from '@/typography'
 import { Tooltip } from './Tooltip'
 import type { TooltipWrapperItem, TooltipWrapperProps, TooltipWrapperRenderItem } from './tooltip-wrapper.types'
 
@@ -17,10 +18,16 @@ function hasItemContent(item: TooltipWrapperItem) {
 function ItemRow({ item, renderItem }: { item: TooltipWrapperItem; renderItem?: TooltipWrapperRenderItem }) {
   const defaultRender = hasItemContent(item) ? (
     <div className="rounded-md border border-neutral bg-neutral-surface p-2">
-      {hasRenderableContent(item.label) ? <div className="text-xs text-neutral opacity-70">{item.label}</div> : null}
+      {hasRenderableContent(item.label) ? (
+        <Text as="div" size="xs" color="neutral" muted>
+          {item.label}
+        </Text>
+      ) : null}
       {hasRenderableContent(item.value) ? <div className="text-sm font-medium text-neutral">{item.value}</div> : null}
       {hasRenderableContent(item.description) ? (
-        <div className="mt-1 text-xs text-neutral opacity-70">{item.description}</div>
+        <Text as="div" size="xs" color="neutral" muted className="mt-1">
+          {item.description}
+        </Text>
       ) : null}
     </div>
   ) : null
@@ -87,7 +94,9 @@ export function TooltipWrapper({
         <Flex direction="column" gap="2">
           {hasRenderableContent(data.title) ? <div className="text-sm font-semibold">{data.title}</div> : null}
           {hasRenderableContent(data.description) ? (
-            <div className="text-xs text-neutral opacity-70">{data.description}</div>
+            <Text as="div" size="xs" color="neutral" muted>
+              {data.description}
+            </Text>
           ) : null}
           {hasItemsContent ? (
             <Flex direction="column" gap="2">
@@ -97,7 +106,9 @@ export function TooltipWrapper({
             </Flex>
           ) : null}
           {hasRenderableContent(data.footer) ? (
-            <div className="text-xs text-neutral opacity-70">{data.footer}</div>
+            <Text as="div" size="xs" color="neutral" muted>
+              {data.footer}
+            </Text>
           ) : null}
         </Flex>
       </Tooltip.Content>

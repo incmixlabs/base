@@ -3,6 +3,7 @@ import { BookOpen, Boxes, ChartSpline, FileText, Layers, LifeBuoy, Rocket, Shiel
 import { NavigationMenu } from '@/elements'
 import { SemanticColor, semanticColorKeys } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
+import { Text } from '@/typography'
 import { navigationMenuPropDefs } from './navigation-menu.props'
 
 const productLinks = [
@@ -211,7 +212,9 @@ export const Sizes: Story = {
     <div className="flex flex-col gap-8">
       {navigationMenuPropDefs.Root.size.values.map(size => (
         <div key={size} className="flex flex-col gap-2">
-          <p className="text-sm font-medium text-neutral opacity-70">Size {size}</p>
+          <Text as="p" size="sm" weight="medium" color="neutral" muted>
+            Size {size}
+          </Text>
           <ExampleNavigationMenu size={size} />
         </div>
       ))}
@@ -224,7 +227,9 @@ export const Colors: Story = {
     <div className="flex flex-col gap-8">
       {semanticColorKeys.map(color => (
         <div key={color} className="flex flex-col gap-2">
-          <p className="text-sm font-medium capitalize text-neutral opacity-70">{color}</p>
+          <Text as="p" size="sm" weight="medium" color="neutral" muted className="capitalize">
+            {color}
+          </Text>
           <ExampleNavigationMenu color={color} />
         </div>
       ))}

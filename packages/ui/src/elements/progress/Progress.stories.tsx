@@ -4,6 +4,7 @@ import { Progress } from '@/elements'
 import { progressPropDefs } from '@/elements/progress/progress.props'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
+import { Text } from '@/typography'
 
 const meta: Meta<typeof Progress> = {
   title: 'Elements/Progress',
@@ -53,7 +54,9 @@ export const Sizes: Story = {
     <div className="w-64 space-y-4">
       {getPropDefValues(progressPropDefs.size).map(size => (
         <div key={size}>
-          <p className="mb-2 text-sm text-neutral opacity-70">Size {size}</p>
+          <Text as="p" size="sm" color="neutral" muted className="mb-2">
+            Size {size}
+          </Text>
           <Progress size={size} value={60} />
         </div>
       ))}
@@ -66,7 +69,9 @@ export const Colors: Story = {
     <div className="w-64 space-y-4">
       {getPropDefValues(progressPropDefs.color).map(color => (
         <div key={color}>
-          <p className="mb-2 text-sm text-neutral opacity-70 capitalize">{color}</p>
+          <Text as="p" size="sm" color="neutral" muted className="mb-2 capitalize">
+            {color}
+          </Text>
           <Progress color={color} value={70} />
         </div>
       ))}
@@ -79,7 +84,9 @@ export const Variants: Story = {
     <div className="w-64 space-y-4">
       {getPropDefValues(progressPropDefs.variant).map(variant => (
         <div key={variant}>
-          <p className="mb-2 text-sm text-neutral opacity-70 capitalize">{variant}</p>
+          <Text as="p" size="sm" color="neutral" muted className="mb-2 capitalize">
+            {variant}
+          </Text>
           <Progress variant={variant} value={50} />
         </div>
       ))}
@@ -90,7 +97,9 @@ export const Variants: Story = {
 export const Indeterminate: Story = {
   render: () => (
     <div className="w-64 space-y-4">
-      <p className="text-sm text-neutral opacity-70">Loading...</p>
+      <Text as="p" size="sm" color="neutral" muted>
+        Loading...
+      </Text>
       <Progress />
     </div>
   ),
@@ -113,7 +122,9 @@ export const Animated: Story = {
     return (
       <div className="w-64">
         <Progress value={progress} />
-        <p className="mt-2 text-center text-sm text-neutral opacity-70">{progress}%</p>
+        <Text as="p" size="sm" color="neutral" muted className="mt-2 text-center">
+          {progress}%
+        </Text>
       </div>
     )
   },
@@ -143,15 +154,23 @@ export const FileUpload: Story = {
       <div className="w-80 space-y-4 rounded-lg border border-neutral p-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="font-medium text-sm">document.pdf</p>
-            <p className="text-xs text-neutral opacity-70">2.4 MB</p>
+            <Text as="p" size="sm" weight="medium">
+              document.pdf
+            </Text>
+            <Text as="p" size="xs" color="neutral" muted>
+              2.4 MB
+            </Text>
           </div>
           {!uploading && progress === 0 && (
             <button onClick={startUpload} className="text-sm text-primary hover:underline">
               Upload
             </button>
           )}
-          {progress >= 100 && <span className="text-sm text-success">Complete</span>}
+          {progress >= 100 && (
+            <Text as="span" size="sm" color="success">
+              Complete
+            </Text>
+          )}
         </div>
         {(uploading || progress > 0) && (
           <div>
@@ -159,7 +178,9 @@ export const FileUpload: Story = {
               value={Math.min(progress, 100)}
               color={progress >= 100 ? SemanticColor.success : SemanticColor.primary}
             />
-            <p className="mt-1 text-right text-xs text-neutral opacity-70">{Math.min(Math.round(progress), 100)}%</p>
+            <Text as="p" size="xs" color="neutral" muted className="mt-1 text-right">
+              {Math.min(Math.round(progress), 100)}%
+            </Text>
           </div>
         )}
       </div>
@@ -170,41 +191,63 @@ export const FileUpload: Story = {
 export const MultipleProgress: Story = {
   render: () => (
     <div className="w-80 space-y-4 rounded-lg border border-neutral p-4">
-      <h4 className="font-medium">Storage Usage</h4>
+      <Text as="p" size="sm" weight="medium">
+        Storage Usage
+      </Text>
       <div className="space-y-3">
         <div>
-          <div className="flex justify-between text-sm mb-1">
-            <span>Documents</span>
-            <span className="text-neutral opacity-70">4.2 GB</span>
+          <div className="flex justify-between mb-1">
+            <Text as="span" size="sm">
+              Documents
+            </Text>
+            <Text as="span" size="sm" color="neutral" muted>
+              4.2 GB
+            </Text>
           </div>
           <Progress value={42} color="info" size="sm" />
         </div>
         <div>
-          <div className="flex justify-between text-sm mb-1">
-            <span>Photos</span>
-            <span className="text-neutral opacity-70">8.5 GB</span>
+          <div className="flex justify-between mb-1">
+            <Text as="span" size="sm">
+              Photos
+            </Text>
+            <Text as="span" size="sm" color="neutral" muted>
+              8.5 GB
+            </Text>
           </div>
           <Progress value={85} color="success" size="sm" />
         </div>
         <div>
-          <div className="flex justify-between text-sm mb-1">
-            <span>Videos</span>
-            <span className="text-neutral opacity-70">9.1 GB</span>
+          <div className="flex justify-between mb-1">
+            <Text as="span" size="sm">
+              Videos
+            </Text>
+            <Text as="span" size="sm" color="neutral" muted>
+              9.1 GB
+            </Text>
           </div>
           <Progress value={91} color="warning" size="sm" />
         </div>
         <div>
-          <div className="flex justify-between text-sm mb-1">
-            <span>Other</span>
-            <span className="text-neutral opacity-70">1.2 GB</span>
+          <div className="flex justify-between mb-1">
+            <Text as="span" size="sm">
+              Other
+            </Text>
+            <Text as="span" size="sm" color="neutral" muted>
+              1.2 GB
+            </Text>
           </div>
           <Progress value={12} color="neutral" size="sm" />
         </div>
       </div>
       <div className="border-t border-neutral pt-2">
-        <div className="flex justify-between text-sm">
-          <span className="font-medium">Total</span>
-          <span>23 GB / 50 GB</span>
+        <div className="flex justify-between">
+          <Text as="span" size="sm" weight="medium">
+            Total
+          </Text>
+          <Text as="span" size="sm">
+            23 GB / 50 GB
+          </Text>
         </div>
       </div>
     </div>
@@ -222,9 +265,13 @@ export const SkillLevels: Story = {
         { skill: 'Rust', level: 30 },
       ].map(({ skill, level }) => (
         <div key={skill}>
-          <div className="flex justify-between text-sm mb-1">
-            <span>{skill}</span>
-            <span className="text-neutral opacity-70">{level}%</span>
+          <div className="flex justify-between mb-1">
+            <Text as="span" size="sm">
+              {skill}
+            </Text>
+            <Text as="span" size="sm" color="neutral" muted>
+              {level}%
+            </Text>
           </div>
           <Progress
             value={level}

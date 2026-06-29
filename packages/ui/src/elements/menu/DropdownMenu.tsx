@@ -1,15 +1,17 @@
 'use client'
 
 import { Menu as MenuPrimitive } from '@base-ui/react/menu'
-import { Check, ChevronDown, ChevronRight, ChevronsUpDown, Circle } from 'lucide-react'
+import { Check, ChevronRight, Circle } from 'lucide-react'
 import { AnimatePresence } from 'motion/react'
 import * as m from 'motion/react-m'
 import * as React from 'react'
+import { Icon as UiIcon } from '@/elements/button/Icon'
 import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
+import { Text } from '@/typography'
 import { getShortcutAccessibleLabel } from './menu.a11y'
 import type { MenuSize, MenuVariant } from './menu.props'
 import {
@@ -101,7 +103,11 @@ function DropdownMenuItemLabel({ children, title, subtitle, bold, italic, strike
       >
         {primary}
       </span>
-      {hasSubtitle ? <span className="truncate text-xs text-neutral opacity-70">{subtitle}</span> : null}
+      {hasSubtitle ? (
+        <Text as="span" size="xs" color="neutral" muted className="truncate">
+          {subtitle}
+        </Text>
+      ) : null}
     </span>
   )
 }
@@ -231,8 +237,16 @@ export interface DropdownMenuTriggerIconProps {
 }
 
 const DropdownMenuTriggerIcon = ({ className, arrow = 'down' }: DropdownMenuTriggerIconProps) => {
-  const Icon = arrow === 'updown' ? ChevronsUpDown : ChevronDown
-  return <Icon aria-hidden className={cn('ml-1 h-4 w-4 opacity-70', className)} />
+  return (
+    <UiIcon
+      aria-hidden
+      icon={arrow === 'updown' ? 'chevrons-up-down' : 'chevron-down'}
+      size="md"
+      muted
+      className={cn('ml-1', className)}
+      style={{ color: 'inherit' }}
+    />
+  )
 }
 
 DropdownMenuTriggerIcon.displayName = 'DropdownMenu.TriggerIcon'
