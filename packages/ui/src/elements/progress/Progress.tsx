@@ -66,7 +66,7 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
       color = SemanticColor.primary,
       highContrast = progressPropDefs.highContrast.default,
       radius = 'full',
-      duration = '1s',
+      duration,
       className,
       style,
       m,
@@ -126,7 +126,8 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
           style={
             isIndeterminate
               ? {
-                  ['--progress-indeterminate-duration' as string]: duration,
+                  ['--progress-indeterminate-duration' as string]:
+                    duration ?? 'var(--component-progress-motion-indeterminate-duration, 1s)',
                 }
               : {
                   width: `${(boundedValue / boundedMax) * 100}%`,

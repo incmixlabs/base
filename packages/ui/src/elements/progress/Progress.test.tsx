@@ -17,10 +17,10 @@ describe('Progress', () => {
     expect(indicator).not.toBeNull()
     expect(progress).toHaveClass('relative')
     expect(progress).toHaveClass('w-full')
-    expect(progress).toHaveClass('h-[0.375rem]')
+    expect(progress).toHaveClass('h-[var(--component-progress-size-sm-height,0.375rem)]')
     expect(progress).toHaveClass('bg-neutral-soft')
     expect(progress).toHaveClass('border-0')
-    expect(progress).toHaveClass('border-[var(--color-neutral-text)]')
+    expect(progress).toHaveClass('[border-color:var(--color-neutral-text)]')
     expect(progress).toHaveClass('rounded-full')
     expect(indicator!).toHaveClass('relative')
     expect(indicator!).toHaveClass('h-full')
@@ -44,9 +44,20 @@ describe('Progress', () => {
     expect(progress.innerHTML).not.toContain('animate-progress-indeterminate')
   })
 
-  it('uses explicit rem heights for xs sizing', () => {
+  it('uses token-backed heights for xs sizing', () => {
     render(<Progress size="xs" value={90} data-testid="progress" />)
 
-    expect(screen.getByTestId('progress')).toHaveClass('h-[0.25rem]')
+    expect(screen.getByTestId('progress')).toHaveClass('h-[var(--component-progress-size-xs-height,0.25rem)]')
+  })
+
+  it('uses progress motion tokens when duration is not provided', () => {
+    render(<Progress data-testid="progress" />)
+
+    const indicator = screen.getByTestId('progress').firstElementChild
+
+    expect(indicator).toHaveClass('w-[var(--component-progress-motion-indeterminate-width,40%)]')
+    expect(indicator).toHaveStyle({
+      '--progress-indeterminate-duration': 'var(--component-progress-motion-indeterminate-duration, 1s)',
+    })
   })
 })
