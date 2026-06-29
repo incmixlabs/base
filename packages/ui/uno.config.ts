@@ -84,6 +84,7 @@ import {
   floatingSurfaceSizeVariants,
   popoverContentBase,
 } from './src/elements/popover/popover.class'
+import { progressClassNames } from './src/elements/progress/progress.class'
 import {
   separatorAlignEnd,
   separatorAlignStart,
@@ -377,6 +378,8 @@ export default defineConfig({
       ...splitClasses(navigationMenuClassNames),
       // Filter styles
       ...splitClasses(filterClassNames),
+      // Progress styles
+      ...splitClasses(progressClassNames),
       // Box styles
       boxRootBase,
       ...splitClasses(boxSurfaceColorClassNames),

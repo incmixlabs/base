@@ -990,15 +990,11 @@
 
 @keyframes progress-indeterminate {
   0% {
-    transform: translateX(-100%);
+    transform: translateX(-60%);
   }
   100% {
-    transform: translateX(400%);
+    transform: translateX(140%);
   }
-}
-
-.animate-progress-indeterminate {
-  animation: progress-indeterminate 1.5s ease-in-out infinite;
 }
 
 @keyframes caret-blink {

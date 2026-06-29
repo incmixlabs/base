@@ -4,11 +4,10 @@ import { Progress as ProgressPrimitive } from '@base-ui/react/progress'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
-import { SemanticColor } from '@/theme/props/color.prop'
+import { SemanticColor, type SemanticColorKey } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
-import type { Color, Radius } from '@/theme/tokens'
-import { getRadiusStyles, useThemeRadius } from '../utils'
+import type { Radius } from '@/theme/tokens'
 import {
   progressIndicatorBase,
   progressIndicatorColorStyles,
@@ -20,7 +19,7 @@ import {
   progressSoftIndicatorColorStyles,
   progressTrackHighContrast,
   progressTrackVariantStyles,
-} from './Progress.css'
+} from './progress.class'
 import { progressPropDefs } from './progress.props'
 
 export type ProgressSize = (typeof progressPropDefs.size.values)[number]
@@ -44,7 +43,7 @@ export interface ProgressProps extends MarginProps {
   /** Visual variant */
   variant?: ProgressVariant
   /** Color of the indicator */
-  color?: Color
+  color?: SemanticColorKey
   /** High-contrast mode */
   highContrast?: boolean
   /** Border radius */
@@ -87,11 +86,11 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
     const progressSize = resolveProgressSize(size)
     const safeVariant = (normalizeEnumPropValue(progressPropDefs.variant, variant) ??
       progressPropDefs.variant.default) as ProgressVariant
-    const safeColor = (normalizeEnumPropValue(progressPropDefs.color, color) ?? SemanticColor.primary) as Color
-    const safeRadius = (normalizeEnumPropValue(progressPropDefs.radius, radius) ??
-      progressPropDefs.radius.default) as Radius
+    const safeColor = (normalizeEnumPropValue(progressPropDefs.color, color) ??
+      SemanticColor.primary) as SemanticColorKey
+    const safeRadius = (normalizeEnumPropValue(progressPropDefs.radius, radius) ?? 'full') as Radius
     const safeHighContrast = normalizeBooleanPropValue(progressPropDefs.highContrast, highContrast) ?? false
-    const resolvedRadius = useThemeRadius(safeRadius)
+    const resolvedRadius = safeRadius
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
     const boundedMax = Number.isFinite(max) && max > 0 ? max : 100
     const boundedValue =
@@ -111,7 +110,7 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
           marginProps.className,
           className,
         )}
-        style={{ ...marginProps.style, ...getRadiusStyles(resolvedRadius), ...style }}
+        style={{ ...marginProps.style, ...style }}
         {...props}
       >
         <ProgressPrimitive.Indicator

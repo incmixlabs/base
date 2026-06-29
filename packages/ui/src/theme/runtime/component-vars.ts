@@ -18,9 +18,6 @@ export type PopoverSizeTokenSlot = 'padding' | 'fontSize' | 'lineHeight'
 export type PopoverMaxWidthTokenSlot = 'maxWidth'
 export type TooltipSizeTokenSlot = 'padding' | 'fontSize' | 'lineHeight'
 export type TooltipMaxWidthTokenSlot = 'maxWidth'
-export type ProgressSizeTokenSlot = 'height'
-export type ProgressVariantTokenSlot = 'boxShadow'
-export type ProgressMotionTokenSlot = 'indicatorTransition' | 'indeterminateDuration' | 'indeterminateWidth'
 export type SliderSizeTokenSlot = 'trackHeight' | 'thumbSize'
 export type SliderVariantTokenSlot = 'boxShadow'
 export type StepperSizeTokenSlot =
@@ -183,18 +180,6 @@ export function tooltipSizeVar(size: string, slot: TooltipSizeTokenSlot, fallbac
 
 export function tooltipMaxWidthVar(size: string, slot: TooltipMaxWidthTokenSlot, fallback: string): string {
   return withFallback(`--component-tooltip-max-width-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function progressSizeVar(size: string, slot: ProgressSizeTokenSlot, fallback: string): string {
-  return withFallback(`--component-progress-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function progressVariantVar(variant: string, slot: ProgressVariantTokenSlot, fallback: string): string {
-  return withFallback(`--component-progress-variant-${toKebabCase(variant)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function progressMotionVar(slot: ProgressMotionTokenSlot, fallback: string): string {
-  return withFallback(`--component-progress-motion-${toKebabCase(slot)}`, fallback)
 }
 
 export function sliderSizeVar(size: string, slot: SliderSizeTokenSlot, fallback: string): string {
