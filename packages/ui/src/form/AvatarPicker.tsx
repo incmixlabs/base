@@ -38,7 +38,7 @@ import {
   pickerPopupViewportBase,
   pickerPopupViewportBySize,
   pickerSearchRowBase,
-} from './picker-popup.css'
+} from './picker-popup.class'
 import { SearchInput } from './SearchInput'
 import { textFieldColorVariants, textFieldInputBaseCls, textFieldSizeVariants } from './text-field.css'
 import { resolveSurfaceVariant } from './text-field-variant'

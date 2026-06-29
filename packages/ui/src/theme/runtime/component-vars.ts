@@ -44,18 +44,6 @@ export type TimelineSizeTokenSlot =
   | 'contentFontSize'
 export type FieldGroupSectionTokenSlot = 'separatorMarginBlock' | 'headerMarginBottom' | 'descriptionMarginTop'
 export type FieldGroupRowTokenSlot = 'rootGap' | 'columnGap' | 'descriptionMarginTop'
-export type PickerPopupSizeTokenSlot =
-  | 'viewportMaxHeight'
-  | 'popupPadding'
-  | 'statusPaddingX'
-  | 'statusPaddingY'
-  | 'searchHeight'
-  | 'fontSize'
-  | 'lineHeight'
-  | 'rowPaddingX'
-  | 'rowPaddingY'
-  | 'rowTrailingPadding'
-  | 'iconSize'
 export type FileUploadSizeTokenSlot =
   | 'defaultPadding'
   | 'minimalPadding'
@@ -137,10 +125,6 @@ export function fieldGroupSectionVar(slot: FieldGroupSectionTokenSlot, fallback:
 
 export function fieldGroupRowVar(slot: FieldGroupRowTokenSlot, fallback: string): string {
   return withFallback(`--af-field-group-row-${toKebabCase(slot)}`, fallback)
-}
-
-export function pickerPopupSizeVar(size: string, slot: PickerPopupSizeTokenSlot, fallback: string): string {
-  return withFallback(`--af-picker-popup-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function fileUploadSizeVar(size: string, slot: FileUploadSizeTokenSlot, fallback: string): string {

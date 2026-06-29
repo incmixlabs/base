@@ -30,7 +30,7 @@ import {
   pickerSearchRowBase,
   pickerStatusRowBase,
   pickerStatusRowBySize,
-} from './picker-popup.css'
+} from './picker-popup.class'
 import { SearchInput } from './SearchInput'
 import {
   floatingInputBaseCls,
@@ -586,7 +586,7 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                         setOverflowOpen(true)
                       }
                     }}
-                    className="appearance-none border-0 bg-transparent p-0 shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    className="appearance-none border-0 bg-transparent p-0 shadow-none focus-visible:outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-highlight"
                   >
                     <Badge size={badgeSize} variant="outline" color={effectiveColor}>
                       +{hiddenSelectedCount}
@@ -597,7 +597,7 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                       role="dialog"
                       aria-label="Additional selected items"
                       className={cn(
-                        'absolute right-0 top-[calc(100%+0.375rem)] z-50 w-max max-w-64 rounded-xl border bg-popover p-1.5 text-popover-foreground shadow-lg',
+                        'absolute right-0 top-[calc(100%+0.375rem)] z-50 w-max max-w-64 rounded-xl border border-neutral bg-neutral-surface p-1.5 text-neutral shadow-lg',
                         textFieldSizeVariants[size],
                       )}
                       onClick={event => event.stopPropagation()}
