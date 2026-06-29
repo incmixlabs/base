@@ -5,7 +5,6 @@ import { Separator } from '@/elements/separator/Separator'
 import { Flex } from '@/layouts/flex/Flex'
 import { Grid } from '@/layouts/grid/Grid'
 import { cn } from '@/lib/utils'
-import { fieldGroupRowVar, fieldGroupSectionVar } from '@/theme/runtime/component-vars'
 import type {
   AlignItems,
   FieldGroupLayout,
@@ -16,7 +15,18 @@ import type {
   Spacing,
   TextFieldVariant,
 } from '@/theme/tokens'
-import { fieldGroupRowBase, fieldGroupRowResponsive, fieldGroupSideLabelsBase } from './FieldGroup.css'
+import {
+  fieldGroupDescriptionText,
+  fieldGroupLabelText,
+  fieldGroupRowBase,
+  fieldGroupRowDescription,
+  fieldGroupRowGapClasses,
+  fieldGroupRowResponsive,
+  fieldGroupSectionDescription,
+  fieldGroupSectionHeader,
+  fieldGroupSectionSeparator,
+  fieldGroupSideLabelsBase,
+} from './FieldGroup.class'
 import { FieldGroupProvider } from './FieldGroupContext'
 
 // ============================================================================
@@ -154,30 +164,13 @@ export interface FieldGroupSectionProps extends React.HTMLAttributes<HTMLDivElem
 
 const FieldGroupSection = React.forwardRef<HTMLDivElement, FieldGroupSectionProps>(
   ({ title, description, separator = true, gap = '4', className, children, style, ...props }, ref) => (
-    <Flex
-      ref={ref}
-      direction="column"
-      className={className}
-      style={
-        {
-          '--field-group-section-separator-margin-block': fieldGroupSectionVar('separatorMarginBlock', '1.5rem'),
-          '--field-group-section-header-margin-bottom': fieldGroupSectionVar('headerMarginBottom', '1rem'),
-          '--field-group-section-description-margin-top': fieldGroupSectionVar('descriptionMarginTop', '0.25rem'),
-          ...style,
-        } as React.CSSProperties
-      }
-      {...props}
-    >
-      {separator && (
-        <Separator decorative size="xs" className="my-[var(--field-group-section-separator-margin-block)]" />
-      )}
+    <Flex ref={ref} direction="column" className={className} style={style} {...props}>
+      {separator && <Separator decorative size="xs" className={fieldGroupSectionSeparator} />}
       {(title || description) && (
-        <Flex direction="column" className="mb-[var(--field-group-section-header-margin-bottom)]">
-          {title && <span className="text-base font-medium text-foreground">{title}</span>}
+        <Flex direction="column" className={fieldGroupSectionHeader}>
+          {title && <span className="text-base font-medium text-neutral">{title}</span>}
           {description && (
-            <span className="mt-[var(--field-group-section-description-margin-top)] text-sm text-muted-foreground">
-              {description}
-            </span>
+            <span className={cn(fieldGroupSectionDescription, fieldGroupDescriptionText)}>{description}</span>
           )}
         </Flex>
       )}
@@ -203,46 +196,16 @@ export interface FieldGroupRowProps extends React.HTMLAttributes<HTMLDivElement>
   gap?: Spacing
 }
 
-// Gap mapping for row content
-const rowGapClasses: Record<Spacing, string> = {
-  '0': 'gap-0',
-  '1': 'gap-1',
-  '2': 'gap-2',
-  '3': 'gap-3',
-  '4': 'gap-4',
-  '5': 'gap-5',
-  '6': 'gap-6',
-  '7': 'gap-7',
-  '8': 'gap-8',
-  '9': 'gap-9',
-}
-
 const FieldGroupRow = React.forwardRef<HTMLDivElement, FieldGroupRowProps>(
   ({ label, description, gap = '4', className, children, style, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(fieldGroupRowBase, fieldGroupRowResponsive, className)}
-      style={
-        {
-          '--field-group-row-root-gap': fieldGroupRowVar('rootGap', '1rem'),
-          '--field-group-row-column-gap': fieldGroupRowVar('columnGap', '2rem'),
-          '--field-group-row-description-margin-top': fieldGroupRowVar('descriptionMarginTop', '0.25rem'),
-          ...style,
-        } as React.CSSProperties
-      }
-      {...props}
-    >
+    <div ref={ref} className={cn(fieldGroupRowBase, fieldGroupRowResponsive, className)} style={style} {...props}>
       {/* Label column */}
       <div className="flex flex-col">
-        {label && <span className="text-sm font-medium text-foreground">{label}</span>}
-        {description && (
-          <span className="mt-[var(--field-group-row-description-margin-top)] text-sm text-muted-foreground">
-            {description}
-          </span>
-        )}
+        {label && <span className={fieldGroupLabelText}>{label}</span>}
+        {description && <span className={cn(fieldGroupRowDescription, fieldGroupDescriptionText)}>{description}</span>}
       </div>
       {/* Content column */}
-      <div className={cn('flex flex-col', rowGapClasses[gap])}>{children}</div>
+      <div className={cn('flex flex-col', fieldGroupRowGapClasses[gap])}>{children}</div>
     </div>
   ),
 )

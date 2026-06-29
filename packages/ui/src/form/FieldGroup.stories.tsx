@@ -10,6 +10,8 @@ import { LocationInput } from './LocationInput'
 import { Select, SelectItem } from './Select'
 import { Textarea } from './Textarea'
 import { TextField } from './TextField'
+import { fieldGroupPropDefs } from './field-group.props'
+import { selectArgType } from '../theme/props/storybook'
 
 const meta: Meta<typeof FieldGroup> = {
   title: 'Form/FieldGroup',
@@ -19,46 +21,40 @@ const meta: Meta<typeof FieldGroup> = {
   },
   tags: ['autodocs'],
   args: {
-    gap: '4',
+    gap: fieldGroupPropDefs.gap.default,
   },
   argTypes: {
     size: {
-      control: 'select',
-      options: ['sm', 'md', 'lg', 'xl'],
+      ...selectArgType(fieldGroupPropDefs.size),
       description: 'Size applied to all child form fields',
     },
     variant: {
-      control: 'select',
-      options: ['soft', 'surface', 'outline', 'ghost', 'floating-filled', 'floating-standard', 'floating-outlined'],
+      ...selectArgType(fieldGroupPropDefs.variant),
       description: 'Variant applied to all child form fields',
     },
     gap: {
-      control: 'select',
-      options: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+      ...selectArgType(fieldGroupPropDefs.gap),
       description: 'Gap between child elements',
-      table: { defaultValue: { summary: '4' } },
+      table: { defaultValue: { summary: fieldGroupPropDefs.gap.default } },
     },
     layout: {
-      control: 'select',
-      options: ['stacked', 'inline', 'grid', 'side-labels', 'sectioned'],
+      ...selectArgType(fieldGroupPropDefs.layout),
       description: 'Layout mode for the field group',
-      table: { defaultValue: { summary: 'stacked' } },
+      table: { defaultValue: { summary: fieldGroupPropDefs.layout.default } },
     },
     columns: {
-      control: 'select',
-      options: ['1', '2', '3', '4', '6', '12'],
+      ...selectArgType(fieldGroupPropDefs.columns),
       description: 'Number of grid columns (only for grid layout)',
-      table: { defaultValue: { summary: '2' } },
+      table: { defaultValue: { summary: fieldGroupPropDefs.columns.default } },
     },
     align: {
-      control: 'select',
-      options: ['start', 'center', 'end', 'baseline', 'stretch'],
+      ...selectArgType(fieldGroupPropDefs.align),
       description: 'Alignment for inline layout',
     },
     disabled: {
-      control: 'boolean',
+      control: fieldGroupPropDefs.disabled.type,
       description: 'Disables all child form fields',
-      table: { defaultValue: { summary: 'false' } },
+      table: { defaultValue: { summary: String(fieldGroupPropDefs.disabled.default) } },
     },
   },
 }
@@ -564,7 +560,7 @@ export const OptionalFieldsetLayering: Story = {
   render: args => (
     <Box className="max-w-4xl space-y-8">
       <Box>
-        <h3 className="mb-3 text-sm font-medium text-foreground">FieldGroup only</h3>
+        <h3 className="mb-3 text-sm font-medium text-neutral">FieldGroup only</h3>
         <FieldGroup {...args} layout="grid" columns="2">
           <TextField label="Full name" placeholder="Traveler full name" />
           <TextField label="Email address" placeholder="name@example.com" />
@@ -575,7 +571,7 @@ export const OptionalFieldsetLayering: Story = {
       </Box>
 
       <Box>
-        <h3 className="mb-3 text-sm font-medium text-foreground">FieldGroup inside optional Fieldset</h3>
+        <h3 className="mb-3 text-sm font-medium text-neutral">FieldGroup inside optional Fieldset</h3>
         <Fieldset
           legend="Traveler information"
           description="Fieldset adds semantic/visual grouping on top of FieldGroup."
@@ -637,8 +633,8 @@ export const EmbeddedSideLabels: Story = {
         {Object.entries(previewWidths).map(([viewport, width]) => (
           <Tabs.Content key={viewport} value={viewport}>
             <Box className="space-y-3 pt-4">
-              <h3 className="text-sm font-medium text-foreground">Preview width: {width}px</h3>
-              <Box className="border rounded-xl p-4 bg-background" style={{ width }}>
+              <h3 className="text-sm font-medium text-neutral">Preview width: {width}px</h3>
+              <Box className="border rounded-xl p-4 bg-light-surface" style={{ width }}>
                 <FieldGroup layout="side-labels" size="md" variant="outline" gap="4">
                   <FieldGroup.Row
                     label="Contact"

@@ -105,6 +105,7 @@ import { tooltipContentBase, tooltipPositionerBase } from './src/elements/toolti
 import { checkboxClassNames } from './src/form/checkbox.class'
 import { checkboxCardsClassNames } from './src/form/checkbox-cards.class'
 import { checkboxGroupClassNames } from './src/form/checkbox-group.class'
+import { fieldGroupClassNames } from './src/form/FieldGroup.class'
 import { ratingClassNames } from './src/form/Rating.class'
 import { radioCardsClassNames } from './src/form/radio-cards.class'
 import { radioCheckboxCardClassNames } from './src/form/radio-checkbox.shared.class'
@@ -398,6 +399,8 @@ export default defineConfig({
       ...splitClasses(checkboxCardsClassNames),
       // Checkbox group styles
       ...splitClasses(checkboxGroupClassNames),
+      // Field group styles
+      ...splitClasses(fieldGroupClassNames),
       // Shared radio/checkbox card styles
       ...splitClasses(radioCheckboxCardClassNames),
       // Radio cards styles
