@@ -4,28 +4,32 @@ import { Switch as SwitchPrimitive } from '@base-ui/react/switch'
 import * as React from 'react'
 import { Flex } from '@/layouts'
 import { cn } from '@/lib/utils'
+import { radiusClassByToken } from '@/theme/helpers'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
-import { radiusStyleVariants } from '@/theme/radius.css'
 import { Text, type TextProps } from '@/typography'
 import { useFieldGroup } from './FieldGroupContext'
-import { formColorVars } from './form-color'
 import { resolveFormSize } from './form-size'
 import { Label } from './Label'
 import {
-  switchSegmentedCheckedLabel,
+  switchColorVariants,
+  switchHighContrastByVariant,
+  switchRootBase,
+  switchRootSize,
+  switchSegmentedControlBase,
   switchSegmentedLabelBase,
-  switchSegmentedUncheckedLabel,
+  switchSegmentedLabelColorVariants,
+  switchSegmentedRootBase,
+  switchSegmentedSizeClasses,
+  switchSegmentedThumbBase,
   switchSizeVariants,
-} from './switch.css'
+  switchThumbBase,
+} from './switch.class'
 import type { SwitchProps, SwitchSegmentedProps, SwitchSize, SwitchWithLabelProps } from './switch.props'
 import { switchPropDefs } from './switch.props'
 
 export type { SwitchProps, SwitchSegmentedProps, SwitchWithLabelProps } from './switch.props'
 export type { SwitchSize }
-
-// Static checked color class — references --fc-primary set via formColorVars
-const checkedColorCls = 'data-[checked]:bg-[var(--fc-primary)]'
 
 const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
   (
@@ -61,35 +65,19 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         defaultChecked={defaultChecked}
         onCheckedChange={onCheckedChange}
         disabled={effectiveDisabled}
-        style={formColorVars[safeColor] as React.CSSProperties}
         className={cn(
           switchSizeVariants[size],
-          'peer inline-flex shrink-0 cursor-pointer items-center border-2 border-transparent transition-colors',
-          'h-[var(--sw-root-height)] w-[var(--sw-root-width)]',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-          'disabled:cursor-not-allowed disabled:opacity-50',
-          radiusStyleVariants[safeRadius],
-          checkedColorCls,
-
-          // Variant styles for unchecked state
-          safeVariant === 'surface' && 'bg-input',
-          safeVariant === 'classic' && 'bg-input border-border',
-          safeVariant === 'soft' && 'bg-secondary/50',
-
-          // High contrast
-          safeHighContrast && 'data-[checked]:shadow-md',
-
+          switchRootBase,
+          switchRootSize,
+          radiusClassByToken[safeRadius],
+          switchColorVariants[safeColor][safeVariant],
+          safeHighContrast && 'af-high-contrast',
+          safeHighContrast && switchHighContrastByVariant[safeVariant],
           className,
         )}
         {...props}
       >
-        <SwitchPrimitive.Thumb
-          className={cn(
-            'pointer-events-none block rounded-full bg-background shadow-lg ring-0 transition-transform',
-            'w-[var(--sw-thumb-size)] h-[var(--sw-thumb-size)]',
-            'translate-x-0 data-[checked]:translate-x-[var(--sw-thumb-translate)]',
-          )}
-        />
+        <SwitchPrimitive.Thumb className={switchThumbBase} />
       </SwitchPrimitive.Root>
     )
   },
@@ -116,13 +104,6 @@ const SwitchWithLabel = React.forwardRef<HTMLButtonElement, SwitchWithLabelProps
 )
 
 SwitchWithLabel.displayName = 'SwitchWithLabel'
-
-const segmentedSizeClasses: Record<SwitchSize, string> = {
-  xs: 'h-6 min-w-20',
-  sm: 'h-7 min-w-24',
-  md: 'h-8 min-w-28',
-  lg: 'h-9 min-w-32',
-}
 
 const segmentedLabelSize: Record<SwitchSize, TextProps['size']> = {
   xs: 'xs',
@@ -167,13 +148,7 @@ const SwitchSegmented = React.forwardRef<HTMLButtonElement, SwitchSegmentedProps
       ariaLabelledBy ?? (ariaLabel == null ? `${uncheckedLabelId} ${checkedLabelId}` : undefined)
 
     return (
-      <div
-        className={cn(
-          'relative inline-grid grid-cols-[1fr_1fr] items-center font-medium',
-          segmentedSizeClasses[size],
-          className,
-        )}
-      >
+      <div className={cn(switchSegmentedRootBase, switchSegmentedSizeClasses[size], className)}>
         <SwitchPrimitive.Root
           ref={ref as React.Ref<HTMLElement>}
           aria-label={ariaLabel}
@@ -182,36 +157,23 @@ const SwitchSegmented = React.forwardRef<HTMLButtonElement, SwitchSegmentedProps
           defaultChecked={defaultChecked}
           onCheckedChange={onCheckedChange}
           disabled={effectiveDisabled}
-          style={formColorVars[safeColor] as React.CSSProperties}
           className={cn(
-            'peer group/switch absolute inset-0 h-[inherit] w-auto cursor-pointer overflow-hidden border transition-colors',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-            'disabled:cursor-not-allowed disabled:opacity-50',
-            radiusStyleVariants[safeRadius],
-            checkedColorCls,
-            safeVariant === 'surface' && 'border-border bg-input',
-            safeVariant === 'classic' && 'border-border bg-input',
-            safeVariant === 'soft' && 'border-transparent bg-secondary/50',
-            safeHighContrast && 'data-[checked]:shadow-md',
+            switchSegmentedControlBase,
+            radiusClassByToken[safeRadius],
+            switchColorVariants[safeColor][safeVariant],
+            safeHighContrast && 'af-high-contrast',
+            safeHighContrast && switchHighContrastByVariant[safeVariant],
           )}
           {...props}
         >
-          <SwitchPrimitive.Thumb
-            className={cn(
-              'pointer-events-none block h-full w-1/2 bg-background shadow-sm ring-0 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
-              'data-[checked]:translate-x-full data-[checked]:rtl:-translate-x-full',
-              radiusStyleVariants[safeRadius],
-            )}
-          />
+          <SwitchPrimitive.Thumb className={cn(switchSegmentedThumbBase, radiusClassByToken[safeRadius])} />
         </SwitchPrimitive.Root>
         <Flex asChild align="center" justify="center">
           <Text
             as="span"
             id={uncheckedLabelId}
-            color="neutral"
             size={segmentedLabelSize[size]}
-            variant="solid"
-            className={cn(switchSegmentedLabelBase, switchSegmentedUncheckedLabel)}
+            className={cn(switchSegmentedLabelBase, switchSegmentedLabelColorVariants[safeColor].unchecked)}
           >
             {uncheckedLabel}
           </Text>
@@ -220,10 +182,8 @@ const SwitchSegmented = React.forwardRef<HTMLButtonElement, SwitchSegmentedProps
           <Text
             as="span"
             id={checkedLabelId}
-            color="neutral"
             size={segmentedLabelSize[size]}
-            variant="muted"
-            className={cn(switchSegmentedLabelBase, switchSegmentedCheckedLabel)}
+            className={cn(switchSegmentedLabelBase, switchSegmentedLabelColorVariants[safeColor].checked)}
           >
             {checkedLabel}
           </Text>

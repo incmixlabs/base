@@ -125,13 +125,13 @@ export const SettingsExample: Story = {
     })
 
     return (
-      <div className="w-80 space-y-4 p-4 border rounded-lg">
+      <div className="w-80 space-y-4 rounded-[var(--element-border-radius)] border border-neutral bg-neutral-surface p-4">
         <h3 className="font-semibold">Settings</h3>
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium">Push Notifications</p>
-              <p className="text-xs text-muted-foreground">Receive push notifications</p>
+              <p className="text-xs text-neutral opacity-70">Receive push notifications</p>
             </div>
             <Switch
               checked={settings.notifications}
@@ -141,7 +141,7 @@ export const SettingsExample: Story = {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium">Marketing Emails</p>
-              <p className="text-xs text-muted-foreground">Receive marketing emails</p>
+              <p className="text-xs text-neutral opacity-70">Receive marketing emails</p>
             </div>
             <Switch
               checked={settings.marketing}
@@ -151,7 +151,7 @@ export const SettingsExample: Story = {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium">Dark Mode</p>
-              <p className="text-xs text-muted-foreground">Enable dark theme</p>
+              <p className="text-xs text-neutral opacity-70">Enable dark theme</p>
             </div>
             <Switch
               checked={settings.darkMode}
@@ -161,7 +161,7 @@ export const SettingsExample: Story = {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium">Auto-save</p>
-              <p className="text-xs text-muted-foreground">Automatically save changes</p>
+              <p className="text-xs text-neutral opacity-70">Automatically save changes</p>
             </div>
             <Switch
               checked={settings.autoSave}
