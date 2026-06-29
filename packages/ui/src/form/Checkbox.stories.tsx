@@ -145,23 +145,23 @@ export const AllVariants: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-8">
       <div>
-        <h3 className="text-sm font-semibold mb-4 text-neutral opacity-70 uppercase tracking-wide">Unchecked</h3>
+        <h3 className="text-sm font-semibold mb-4 text-muted uppercase tracking-wide">Unchecked</h3>
         <Box display="flex" className="items-center gap-6">
           {checkboxStoryVariants.map(variant => (
             <div key={variant} className="flex flex-col items-center gap-1">
               <Checkbox variant={variant} />
-              <span className="text-xs text-neutral opacity-70">{checkboxLabel(variant)}</span>
+              <span className="text-xs text-muted">{checkboxLabel(variant)}</span>
             </div>
           ))}
         </Box>
       </div>
       <div>
-        <h3 className="text-sm font-semibold mb-4 text-neutral opacity-70 uppercase tracking-wide">Checked</h3>
+        <h3 className="text-sm font-semibold mb-4 text-muted uppercase tracking-wide">Checked</h3>
         <Box display="flex" className="items-center gap-6">
           {checkboxStoryVariants.map(variant => (
             <div key={variant} className="flex flex-col items-center gap-1">
               <Checkbox variant={variant} defaultChecked />
-              <span className="text-xs text-neutral opacity-70">{checkboxLabel(variant)}</span>
+              <span className="text-xs text-muted">{checkboxLabel(variant)}</span>
             </div>
           ))}
         </Box>
@@ -179,14 +179,14 @@ export const AllColors: Story = {
     <Box display="flex" className="flex-col gap-10">
       {checkboxStoryVariants.map(variant => (
         <div key={variant}>
-          <h3 className="text-sm font-semibold mb-4 text-neutral opacity-70 uppercase tracking-wide">
+          <h3 className="text-sm font-semibold mb-4 text-muted uppercase tracking-wide">
             {checkboxLabel(variant)} Variant
           </h3>
           <Box display="flex" className="items-center gap-6">
             {checkboxStoryColors.map(color => (
               <div key={color} className="flex flex-col items-center gap-1">
                 <Checkbox color={color} variant={variant} defaultChecked />
-                <span className="text-xs text-neutral opacity-70">{checkboxLabel(color)}</span>
+                <span className="text-xs text-muted">{checkboxLabel(color)}</span>
               </div>
             ))}
           </Box>
@@ -239,7 +239,7 @@ export const Controlled: Story = {
           checked={checked}
           onCheckedChange={setChecked}
         />
-        <p className="text-sm text-neutral opacity-70">
+        <p className="text-sm text-muted">
           Current state: <code>{String(checked)}</code>
         </p>
       </Box>
@@ -543,7 +543,7 @@ export const GroupFormExample: Story = {
       <form onSubmit={handleSubmit} className="max-w-md space-y-6">
         <div>
           <h3 className="text-lg font-medium mb-2">Select your interests</h3>
-          <p className="text-sm text-neutral opacity-70 mb-4">Choose the topics you'd like to receive updates about.</p>
+          <p className="text-sm text-muted mb-4">Choose the topics you'd like to receive updates about.</p>
 
           <CheckboxGroup.Root value={interests} onValueChange={setInterests} color="primary">
             <CheckboxGroup.Item value="technology" label="Technology" description="Latest tech news and innovations" />

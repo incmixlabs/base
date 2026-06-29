@@ -1,6 +1,6 @@
 import { globalStyle, style, styleVariants } from '@vanilla-extract/css'
 import { getControlSizeValues } from '@/elements/control-size'
-import { surfaceColorVariants } from '@/elements/surface/surface.class'
+import { surfaceUnoColorVariants } from '@/elements/surface/surface.class'
 import { type SurfaceVariant, surfaceVariants } from '@/elements/surface/surface.props'
 import { semanticColorKeys, semanticColorVar } from '@/theme/props/color.prop'
 import { textFieldSizeVar } from '@/theme/runtime/component-vars'
@@ -117,7 +117,7 @@ export const textFieldColorVariants: Record<Color, Record<TextFieldVariant, stri
     Object.fromEntries(
       textFieldVariantKeys.map(variant => [
         variant,
-        `${surfaceColorVariants[color][variant]} ${textFieldEnhancementVariants[color][variant]}`,
+        `${surfaceUnoColorVariants[color][variant]} ${textFieldEnhancementVariants[color][variant]}`,
       ]),
     ),
   ]),

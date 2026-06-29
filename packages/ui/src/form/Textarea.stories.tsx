@@ -62,7 +62,7 @@ export const Sizes: Story = {
     <div className="w-80 space-y-4">
       {textFieldSizes.map(size => (
         <div key={size}>
-          <p className="text-sm text-muted-foreground mb-2">{size}</p>
+          <p className="text-sm text-muted mb-2">{size}</p>
           <Textarea size={size} placeholder={`${size} textarea`} />
         </div>
       ))}
@@ -75,7 +75,7 @@ export const Variants: Story = {
     <div className="w-80 space-y-4">
       {(['soft', 'surface', 'outline', 'ghost'] as const).map(variant => (
         <div key={variant}>
-          <p className="text-sm text-muted-foreground mb-2 capitalize">{variant}</p>
+          <p className="text-sm text-muted mb-2 capitalize">{variant}</p>
           <Textarea variant={variant} placeholder={`${variant} variant`} />
         </div>
       ))}
@@ -88,7 +88,7 @@ export const Resize: Story = {
     <div className="w-80 space-y-4">
       {(['none', 'vertical', 'horizontal', 'both'] as const).map(resize => (
         <div key={resize}>
-          <p className="text-sm text-muted-foreground mb-2 capitalize">Resize: {resize}</p>
+          <p className="text-sm text-muted mb-2 capitalize">Resize: {resize}</p>
           <Textarea resize={resize} placeholder={`Resize ${resize}`} />
         </div>
       ))}
@@ -118,7 +118,7 @@ export const WithLabel: Story = {
     <div className="w-80 space-y-2">
       <Label htmlFor="description">Description</Label>
       <Textarea id="description" placeholder="Enter a detailed description..." rows={4} />
-      <p className="text-xs text-muted-foreground">Provide a detailed description of your issue.</p>
+      <p className="text-xs text-muted">Provide a detailed description of your issue.</p>
     </div>
   ),
 }
@@ -131,7 +131,7 @@ export const CharacterCount: Story = {
         <Label htmlFor="bio">Bio</Label>
         <Textarea id="bio" placeholder="Tell us about yourself..." maxLength={maxLength} rows={3} />
         <div className="flex justify-end">
-          <span className="text-xs text-muted-foreground">0 / {maxLength}</span>
+          <span className="text-xs text-muted">0 / {maxLength}</span>
         </div>
       </div>
     )
@@ -254,7 +254,7 @@ export const FloatingSizes: Story = {
     <div className="w-80 space-y-4">
       {textFieldSizes.map(size => (
         <div key={size}>
-          <p className="text-sm text-muted-foreground mb-2">{size}</p>
+          <p className="text-sm text-muted mb-2">{size}</p>
           <Textarea variant="floating-outlined" size={size} label={`${size} textarea`} />
         </div>
       ))}
@@ -284,7 +284,7 @@ export const AutoSize: Story = {
     <div className="w-80 space-y-2">
       <Label htmlFor="auto-message">Auto-sizing textarea</Label>
       <Textarea id="auto-message" autoSize placeholder="Type here and watch the textarea grow..." />
-      <p className="text-xs text-muted-foreground">The textarea will automatically expand as you type more content.</p>
+      <p className="text-xs text-muted">The textarea will automatically expand as you type more content.</p>
     </div>
   ),
 }
@@ -319,7 +319,7 @@ export const AutoSizeVariants: Story = {
     <div className="w-80 space-y-4">
       {(['surface', 'outline', 'soft'] as const).map(variant => (
         <div key={variant}>
-          <p className="text-sm text-muted-foreground mb-2 capitalize">{variant} (autoSize)</p>
+          <p className="text-sm text-muted mb-2 capitalize">{variant} (autoSize)</p>
           <Textarea variant={variant} autoSize minRows={1} placeholder={`Auto-sizing ${variant} variant`} />
         </div>
       ))}
@@ -375,7 +375,7 @@ export const AutoSizeCodeEditor: Story = {
         className="font-mono text-sm"
         placeholder={'// Paste your code here\nfunction example() {\n  return "hello"\n}'}
       />
-      <p className="text-xs text-muted-foreground">Supports syntax highlighting in the real implementation.</p>
+      <p className="text-xs text-muted">Supports syntax highlighting in the real implementation.</p>
     </div>
   ),
 }

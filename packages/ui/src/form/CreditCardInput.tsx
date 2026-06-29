@@ -144,7 +144,7 @@ const CardTypeIcon: React.FC<{ type: CardType; className?: string }> = ({ type, 
         </svg>
       )
     default:
-      return <CreditCard className={cn('h-5 w-5 text-muted-foreground', className)} aria-hidden="true" />
+      return <CreditCard className={cn('h-5 w-5 text-muted', className)} aria-hidden="true" />
   }
 }
 

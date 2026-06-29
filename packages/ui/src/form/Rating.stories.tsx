@@ -48,7 +48,7 @@ export const Default: Story = {
             <RatingItem key={i} />
           ))}
         </Rating>
-        <p className="mt-2 text-center text-sm text-neutral opacity-70">
+        <p className="mt-2 text-center text-sm text-muted">
           Rating: {value} / {args.max ?? 5}
         </p>
       </div>
@@ -61,7 +61,7 @@ export const Sizes: Story = {
     <div className="space-y-4">
       {getPropDefValues(ratingPropDefs.size).map(size => (
         <div key={size}>
-          <p className="mb-2 text-sm text-neutral opacity-70 capitalize">{size}</p>
+          <p className="mb-2 text-sm text-muted capitalize">{size}</p>
           <Rating size={size} defaultValue={3}>
             {Array.from({ length: 5 }, (_, i) => (
               <RatingItem key={i} />
@@ -78,7 +78,7 @@ export const Colors: Story = {
     <div className="space-y-4">
       {getPropDefValues(ratingPropDefs.color).map(color => (
         <div key={color}>
-          <p className="mb-2 text-sm text-neutral opacity-70 capitalize">{color}</p>
+          <p className="mb-2 text-sm text-muted capitalize">{color}</p>
           <Rating color={color} defaultValue={3}>
             {Array.from({ length: 5 }, (_, i) => (
               <RatingItem key={i} />
@@ -100,7 +100,7 @@ export const HalfStars: Story = {
             <RatingItem key={i} />
           ))}
         </Rating>
-        <p className="mt-2 text-center text-sm text-neutral opacity-70">Rating: {value} / 5</p>
+        <p className="mt-2 text-center text-sm text-muted">Rating: {value} / 5</p>
       </div>
     )
   },
@@ -116,7 +116,7 @@ export const Clearable: Story = {
             <RatingItem key={i} />
           ))}
         </Rating>
-        <p className="mt-2 text-center text-sm text-neutral opacity-70">
+        <p className="mt-2 text-center text-sm text-muted">
           {value > 0 ? `Rating: ${value} / 5 (click same star to clear)` : 'No rating'}
         </p>
       </div>
@@ -151,7 +151,7 @@ export const CustomIcons: Story = {
     return (
       <div className="space-y-6">
         <div>
-          <p className="mb-2 text-sm text-neutral opacity-70">Hearts</p>
+          <p className="mb-2 text-sm text-muted">Hearts</p>
           <Rating value={hearts} onValueChange={setHearts}>
             {Array.from({ length: 5 }, (_, i) => (
               <RatingItem key={i}>
@@ -161,7 +161,7 @@ export const CustomIcons: Story = {
           </Rating>
         </div>
         <div>
-          <p className="mb-2 text-sm text-neutral opacity-70">Thumbs Up</p>
+          <p className="mb-2 text-sm text-muted">Thumbs Up</p>
           <Rating value={thumbs} onValueChange={setThumbs}>
             {Array.from({ length: 5 }, (_, i) => (
               <RatingItem key={i}>
@@ -185,7 +185,7 @@ export const CustomMax: Story = {
             <RatingItem key={i} />
           ))}
         </Rating>
-        <p className="mt-2 text-center text-sm text-neutral opacity-70">Rating: {value} / 10</p>
+        <p className="mt-2 text-center text-sm text-muted">Rating: {value} / 10</p>
       </div>
     )
   },
@@ -254,7 +254,7 @@ export const FormIntegration: Story = {
         <Button type="submit" size="sm">
           Submit
         </Button>
-        {submitted !== null && <p className="text-sm text-neutral opacity-70">Submitted rating: {submitted}</p>}
+        {submitted !== null && <p className="text-sm text-muted">Submitted rating: {submitted}</p>}
       </form>
     )
   },

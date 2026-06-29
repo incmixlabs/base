@@ -9,6 +9,7 @@ import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
 import type { Color } from '@/theme/tokens'
 import { useFieldGroup } from './FieldGroupContext'
+import { formControlBorderFrame } from './form-control.class'
 import type { ExtendedFormSize } from './form-size'
 import { Label } from './Label'
 import {
@@ -138,7 +139,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
                 'pointer-events-none',
                 textFieldLeftIconContainerCls,
                 textFieldIconCls,
-                'text-muted-foreground',
+                'text-muted',
               )}
               style={leftSlotStyle}
             >
@@ -215,7 +216,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
                 'pointer-events-none',
                 textFieldRightIconContainerCls,
                 textFieldIconCls,
-                'text-muted-foreground',
+                'text-muted',
               )}
               style={rightSlotStyle}
             >
@@ -248,7 +249,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
               'pointer-events-none',
               textFieldLeftIconContainerCls,
               textFieldIconCls,
-              'text-muted-foreground',
+              'text-muted',
             )}
           >
             <Icon aria-hidden color={effectiveColor} icon={leftIcon} size={iconSize} />
@@ -272,9 +273,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             'box-border h-[var(--tf-height)]',
             'px-[var(--tf-padding-x)] py-[var(--tf-padding-y)]',
             'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)]',
-            'rounded-[var(--element-border-radius)]',
-
-            'border border-solid',
+            formControlBorderFrame,
             textFieldColorVariants[effectiveColor]?.[surfaceVariant],
 
             (leftIcon || leftElement) && textFieldInputWithLeftElementCls,
@@ -299,7 +298,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
               'pointer-events-none',
               textFieldRightIconContainerCls,
               textFieldIconCls,
-              'text-muted-foreground',
+              'text-muted',
             )}
           >
             <Icon aria-hidden color={effectiveColor} icon={rightIcon} size={iconSize} />

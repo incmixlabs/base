@@ -200,7 +200,7 @@ function SearchableSelect<T>({
               ) : floating ? (
                 <span className="opacity-0">{placeholder}</span>
               ) : (
-                <span className="text-muted-foreground">{placeholder}</span>
+                <span className="text-muted">{placeholder}</span>
               )
             }
           </SelectPrimitive.Value>
@@ -254,13 +254,13 @@ function SearchableSelect<T>({
                 placeholder="Search..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="flex h-8 w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+                className="flex h-8 w-full bg-transparent text-sm outline-none placeholder:text-muted"
               />
             </div>
 
             <SelectPrimitive.List className="p-1 max-h-[250px] overflow-y-auto">
               {filteredItems.length === 0 ? (
-                <div className="py-6 text-center text-sm text-muted-foreground">No results found</div>
+                <div className="py-6 text-center text-sm text-muted">No results found</div>
               ) : (
                 filteredItems.map(item => (
                   <SelectPrimitive.Item

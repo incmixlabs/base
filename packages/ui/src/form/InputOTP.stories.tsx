@@ -38,7 +38,7 @@ export const Default: Story = {
       <div className="space-y-2">
         <Label>Enter verification code</Label>
         <InputOTP {...args} value={value} onChange={setValue} />
-        <p className="text-sm text-muted-foreground">Value: {value || '(empty)'}</p>
+        <p className="text-sm text-muted">Value: {value || '(empty)'}</p>
       </div>
     )
   },
@@ -97,7 +97,7 @@ export const Alphanumeric: Story = {
           pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
           inputMode="text"
         />
-        <p className="text-xs text-muted-foreground">Letters and numbers allowed</p>
+        <p className="text-xs text-muted">Letters and numbers allowed</p>
       </div>
     )
   },
@@ -111,7 +111,7 @@ export const LettersOnly: Story = {
       <div className="space-y-2">
         <Label>Letter code</Label>
         <InputOTP maxLength={4} value={value} onChange={setValue} pattern={REGEXP_ONLY_CHARS} inputMode="text" />
-        <p className="text-xs text-muted-foreground">Letters only (A-Z)</p>
+        <p className="text-xs text-muted">Letters only (A-Z)</p>
       </div>
     )
   },
@@ -181,7 +181,7 @@ export const CustomSeparator: Story = {
           value={value}
           onChange={setValue}
           groups={[3, 3]}
-          separator={<span className="text-muted-foreground px-2">/</span>}
+          separator={<span className="text-muted px-2">/</span>}
         />
       </div>
     )
@@ -277,7 +277,7 @@ export const WithResendTimer: Story = {
               Resend code
             </Button>
           ) : (
-            <span className="text-muted-foreground">Resend code in {timer}s</span>
+            <span className="text-muted">Resend code in {timer}s</span>
           )}
         </div>
       </div>
@@ -314,7 +314,7 @@ export const VerificationForm: Story = {
       <div className="w-80 space-y-6 p-6 border rounded-lg">
         <div className="text-center space-y-2">
           <h3 className="font-semibold text-lg">Verify your email</h3>
-          <p className="text-sm text-muted-foreground">We sent a code to your email address</p>
+          <p className="text-sm text-muted">We sent a code to your email address</p>
         </div>
 
         <div className="flex justify-center">
@@ -335,7 +335,7 @@ export const VerificationForm: Story = {
           </div>
         )}
 
-        {status === 'loading' && <p className="text-sm text-muted-foreground text-center">Verifying...</p>}
+        {status === 'loading' && <p className="text-sm text-muted text-center">Verifying...</p>}
 
         <div className="text-center">
           <Button variant="ghost" size="sm" disabled={status === 'loading' || status === 'success'}>

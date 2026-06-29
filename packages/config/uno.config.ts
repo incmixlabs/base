@@ -274,6 +274,9 @@ export const baseUnoConfig = {
     }),
   ],
   transformers: [transformerDirectives(), transformerVariantGroup()],
+  shortcuts: {
+    'text-muted': 'text-neutral opacity-70',
+  },
   rules: [
     [
       surfaceBackgroundRule,
@@ -388,7 +391,7 @@ export const baseUnoConfig = {
       },
       muted: {
         DEFAULT: 'var(--color-neutral-soft)',
-        foreground: 'color-mix(in oklch, var(--color-neutral-text) 68%, transparent)',
+        foreground: 'var(--color-neutral-text)',
       },
       accent: {
         DEFAULT: 'var(--color-accent-soft)',

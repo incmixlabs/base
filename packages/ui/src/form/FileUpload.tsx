@@ -33,6 +33,19 @@ import type {
   FileUploadProps,
   UploadedFile,
 } from './file-upload.props'
+import {
+  formControlBorderedSurface,
+  formControlDashedSurface,
+  formControlDisabled,
+  formControlErrorHoverBorder,
+  formControlErrorSurface,
+  formControlNeutralBackground,
+  formControlNeutralHoverBackground,
+  formControlNeutralHoverBorder,
+  formControlPrimaryBorderColor,
+  formControlPrimaryHoverBorder,
+  formControlPrimarySurface,
+} from './form-control.class'
 import { resolveFormSize } from './form-size'
 
 export {
@@ -618,38 +631,35 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
 
             // Variant styles
             variant === 'default' && [
-              'border-2 border-dashed [border-color:var(--color-neutral-border)] rounded-[var(--element-border-radius)]',
+              formControlDashedSurface,
               'p-[var(--file-upload-container-padding)]',
-              !error &&
-                'hover:[border-color:var(--color-primary-border)] hover:bg-[var(--color-neutral-surface-hover)]',
-              isDragActive && '[border-color:var(--color-primary-border)] bg-[var(--color-primary-surface)]',
-              isDragReject && '[border-color:var(--color-error-border)] bg-[var(--color-error-surface)]',
-              error &&
-                !isDragActive &&
-                !isDragReject &&
-                '[border-color:var(--color-error-border)] bg-[var(--color-error-surface)] hover:[border-color:var(--color-error-border)]',
-              isPickerDisabled &&
-                'opacity-50 cursor-not-allowed hover:[border-color:var(--color-neutral-border)] hover:bg-transparent',
+              !error && `${formControlPrimaryHoverBorder} ${formControlNeutralHoverBackground}`,
+              isDragActive && formControlPrimarySurface,
+              isDragReject && formControlErrorSurface,
+              error && !isDragActive && !isDragReject && `${formControlErrorSurface} ${formControlErrorHoverBorder}`,
+              isPickerDisabled && `${formControlDisabled} ${formControlNeutralHoverBorder} hover:bg-transparent`,
             ],
 
             variant === 'minimal' && [
-              'border border-solid [border-color:var(--color-neutral-border)] rounded-[var(--element-border-radius)]',
+              formControlBorderedSurface,
               'p-[var(--file-upload-container-padding)]',
-              !error && 'hover:bg-[var(--color-neutral-surface-hover)]',
-              isDragActive && '[border-color:var(--color-primary-border)] bg-[var(--color-primary-surface)]',
-              isDragReject && '[border-color:var(--color-error-border)] bg-[var(--color-error-surface)]',
-              error && !isDragActive && '[border-color:var(--color-error-border)] bg-[var(--color-error-surface)]',
-              isPickerDisabled && 'opacity-50 cursor-not-allowed',
+              !error && formControlNeutralHoverBackground,
+              isDragActive && formControlPrimarySurface,
+              isDragReject && formControlErrorSurface,
+              error && !isDragActive && formControlErrorSurface,
+              isPickerDisabled && formControlDisabled,
             ],
 
             variant === 'card' && [
-              'border border-solid [border-color:var(--color-neutral-border)] rounded-[var(--element-border-radius)] bg-[var(--color-neutral-background)] shadow-sm',
+              formControlBorderedSurface,
+              formControlNeutralBackground,
+              'shadow-sm',
               'p-[var(--file-upload-container-padding)]',
-              !error && 'hover:shadow-md hover:[border-color:var(--color-primary-border)]',
-              isDragActive && '[border-color:var(--color-primary-border)] shadow-md',
-              isDragReject && '[border-color:var(--color-error-border)] bg-[var(--color-error-surface)]',
-              error && !isDragActive && '[border-color:var(--color-error-border)] bg-[var(--color-error-surface)]',
-              isPickerDisabled && 'opacity-50 cursor-not-allowed hover:shadow-sm',
+              !error && `hover:shadow-md ${formControlPrimaryHoverBorder}`,
+              isDragActive && `${formControlPrimaryBorderColor} shadow-md`,
+              isDragReject && formControlErrorSurface,
+              error && !isDragActive && formControlErrorSurface,
+              isPickerDisabled && `${formControlDisabled} hover:shadow-sm`,
             ],
           )}
         >

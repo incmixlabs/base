@@ -192,7 +192,7 @@ export const CustomMask: Story = {
     <div className="w-80 space-y-2">
       <Label htmlFor="custom">Product Code (AA-999-AA)</Label>
       <InputMask id="custom" mask="aa-999-aa" placeholder="AB-123-CD" />
-      <p className="text-xs text-muted-foreground">Use 'a' for letters, '9' for digits, '*' for alphanumeric</p>
+      <p className="text-xs text-muted">Use 'a' for letters, '9' for digits, '*' for alphanumeric</p>
     </div>
   ),
 }
@@ -203,7 +203,7 @@ export const Sizes: Story = {
     <div className="w-80 space-y-4">
       {(['xs', 'sm', 'md', 'lg'] as const).map(size => (
         <div key={size}>
-          <p className="text-sm text-muted-foreground mb-2">Size {size}</p>
+          <p className="text-sm text-muted mb-2">Size {size}</p>
           <InputMask size={size} mask="phone" placeholder="(555) 555-5555" />
         </div>
       ))}
@@ -217,7 +217,7 @@ export const Variants: Story = {
     <div className="w-80 space-y-4">
       {(['soft', 'surface', 'outline', 'ghost'] as const).map(variant => (
         <div key={variant}>
-          <p className="text-sm text-muted-foreground mb-2 capitalize">{variant}</p>
+          <p className="text-sm text-muted mb-2 capitalize">{variant}</p>
           <InputMask variant={variant} mask="phone" placeholder="(555) 555-5555" />
         </div>
       ))}
@@ -303,7 +303,7 @@ export const AllPresets: Story = {
       {Object.entries(maskPresets).map(([name, pattern]) => (
         <div key={name} className="space-y-1">
           <Label htmlFor={name} className="text-xs">
-            {name} <span className="text-muted-foreground">({pattern})</span>
+            {name} <span className="text-muted">({pattern})</span>
           </Label>
           <InputMask
             id={name}

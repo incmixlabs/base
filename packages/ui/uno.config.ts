@@ -108,6 +108,7 @@ import { checkboxCardsClassNames } from './src/form/checkbox-cards.class'
 import { checkboxGroupClassNames } from './src/form/checkbox-group.class'
 import { fieldGroupClassNames } from './src/form/FieldGroup.class'
 import { floatingToolbarClassNames } from './src/form/FloatingToolbar.class'
+import { formControlClassNames } from './src/form/form-control.class'
 import { mentionTextareaClassNames } from './src/form/MentionTextarea.class'
 import { pickerPopupClassNames } from './src/form/picker-popup.class'
 import { ratingClassNames } from './src/form/Rating.class'
@@ -407,6 +408,8 @@ export default defineConfig({
       ...splitClasses(checkboxGroupClassNames),
       // Field group styles
       ...splitClasses(fieldGroupClassNames),
+      // Shared form control surface styles
+      ...splitClasses(formControlClassNames),
       // Floating toolbar styles
       ...splitClasses(floatingToolbarClassNames),
       // Mention textarea styles

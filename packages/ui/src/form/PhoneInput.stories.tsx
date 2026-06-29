@@ -96,7 +96,7 @@ export const LimitedCountries: Story = {
     <div className="w-80 space-y-2">
       <Label>North America Only</Label>
       <PhoneInput countries={['US', 'CA', 'MX']} defaultCountry="US" />
-      <p className="text-xs text-muted-foreground">Only US, Canada, and Mexico available</p>
+      <p className="text-xs text-muted">Only US, Canada, and Mexico available</p>
     </div>
   ),
 }

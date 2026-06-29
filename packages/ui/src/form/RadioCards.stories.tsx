@@ -50,15 +50,15 @@ export const Default: Story = {
     <RadioCards.Root defaultValue="1" {...args}>
       <RadioCards.Item value="1">
         <div className="font-medium">Option 1</div>
-        <div className="text-neutral opacity-70">Description for option 1</div>
+        <div className="text-muted">Description for option 1</div>
       </RadioCards.Item>
       <RadioCards.Item value="2">
         <div className="font-medium">Option 2</div>
-        <div className="text-neutral opacity-70">Description for option 2</div>
+        <div className="text-muted">Description for option 2</div>
       </RadioCards.Item>
       <RadioCards.Item value="3">
         <div className="font-medium">Option 3</div>
-        <div className="text-neutral opacity-70">Description for option 3</div>
+        <div className="text-muted">Description for option 3</div>
       </RadioCards.Item>
     </RadioCards.Root>
   ),
@@ -72,21 +72,21 @@ export const WithIcons: Story = {
           <CreditCard className="h-4 w-4" />
           <span className="font-medium">Credit Card</span>
         </div>
-        <div className="text-neutral opacity-70">Pay with Visa, Mastercard</div>
+        <div className="text-muted">Pay with Visa, Mastercard</div>
       </RadioCards.Item>
       <RadioCards.Item value="bank">
         <div className="flex items-center gap-2">
           <Landmark className="h-4 w-4" />
           <span className="font-medium">Bank Transfer</span>
         </div>
-        <div className="text-neutral opacity-70">Direct bank payment</div>
+        <div className="text-muted">Direct bank payment</div>
       </RadioCards.Item>
       <RadioCards.Item value="wallet">
         <div className="flex items-center gap-2">
           <Wallet className="h-4 w-4" />
           <span className="font-medium">Digital Wallet</span>
         </div>
-        <div className="text-neutral opacity-70">Apple Pay, Google Pay</div>
+        <div className="text-muted">Apple Pay, Google Pay</div>
       </RadioCards.Item>
     </RadioCards.Root>
   ),
@@ -128,15 +128,15 @@ export const VariantSurface: Story = {
     <RadioCards.Root variant="surface" columns={3} defaultValue="1">
       <RadioCards.Item value="1">
         <div className="font-medium">Surface Card</div>
-        <div className="text-neutral opacity-70">With subtle shadow</div>
+        <div className="text-muted">With subtle shadow</div>
       </RadioCards.Item>
       <RadioCards.Item value="2">
         <div className="font-medium">Surface Card</div>
-        <div className="text-neutral opacity-70">With subtle shadow</div>
+        <div className="text-muted">With subtle shadow</div>
       </RadioCards.Item>
       <RadioCards.Item value="3">
         <div className="font-medium">Surface Card</div>
-        <div className="text-neutral opacity-70">With subtle shadow</div>
+        <div className="text-muted">With subtle shadow</div>
       </RadioCards.Item>
     </RadioCards.Root>
   ),
@@ -147,15 +147,15 @@ export const VariantClassic: Story = {
     <RadioCards.Root variant="classic" columns={3} defaultValue="1">
       <RadioCards.Item value="1">
         <div className="font-medium">Classic Card</div>
-        <div className="text-neutral opacity-70">More prominent shadow</div>
+        <div className="text-muted">More prominent shadow</div>
       </RadioCards.Item>
       <RadioCards.Item value="2">
         <div className="font-medium">Classic Card</div>
-        <div className="text-neutral opacity-70">More prominent shadow</div>
+        <div className="text-muted">More prominent shadow</div>
       </RadioCards.Item>
       <RadioCards.Item value="3">
         <div className="font-medium">Classic Card</div>
-        <div className="text-neutral opacity-70">More prominent shadow</div>
+        <div className="text-muted">More prominent shadow</div>
       </RadioCards.Item>
     </RadioCards.Root>
   ),
@@ -323,21 +323,21 @@ export const Controlled: Story = {
               <Truck className="h-5 w-5" />
               <span className="font-medium">Standard</span>
             </div>
-            <div className="text-neutral opacity-70">5-7 days</div>
+            <div className="text-muted">5-7 days</div>
           </RadioCards.Item>
           <RadioCards.Item value="express">
             <div className="flex items-center gap-2">
               <Zap className="h-5 w-5" />
               <span className="font-medium">Express</span>
             </div>
-            <div className="text-neutral opacity-70">2-3 days</div>
+            <div className="text-muted">2-3 days</div>
           </RadioCards.Item>
           <RadioCards.Item value="overnight">
             <div className="flex items-center gap-2">
               <Smartphone className="h-5 w-5" />
               <span className="font-medium">Overnight</span>
             </div>
-            <div className="text-neutral opacity-70">Next day</div>
+            <div className="text-muted">Next day</div>
           </RadioCards.Item>
         </RadioCards.Root>
 
@@ -387,7 +387,7 @@ export const PlanSelection: Story = {
       <div className="max-w-3xl space-y-6">
         <div>
           <h3 className="text-lg font-semibold">Choose Your Plan</h3>
-          <p className="text-neutral opacity-70">Select the plan that fits your needs.</p>
+          <p className="text-muted">Select the plan that fits your needs.</p>
         </div>
 
         <RadioCards.Root value={plan} onValueChange={setPlan} columns={3} gap="4" color="primary" size="md">
@@ -397,7 +397,7 @@ export const PlanSelection: Story = {
                 <div className="flex justify-between items-start">
                   <div>
                     <div className="font-semibold">{p.name}</div>
-                    <div className="text-neutral opacity-70 text-sm">{p.description}</div>
+                    <div className="text-muted text-sm">{p.description}</div>
                   </div>
                   {p.popular && (
                     <span className="px-2 py-0.5 text-xs font-medium bg-primary-soft text-primary rounded-full">
@@ -407,9 +407,9 @@ export const PlanSelection: Story = {
                 </div>
                 <div className="text-2xl font-bold">
                   {p.price}
-                  <span className="text-sm font-normal text-neutral opacity-70">/mo</span>
+                  <span className="text-sm font-normal text-muted">/mo</span>
                 </div>
-                <ul className="text-sm text-neutral opacity-70 space-y-1">
+                <ul className="text-sm text-muted space-y-1">
                   {p.features.map(feature => (
                     <li key={feature}>• {feature}</li>
                   ))}

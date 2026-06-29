@@ -209,7 +209,7 @@ export const NotificationSettings: Story = {
       <div className="w-96 space-y-6 rounded-[var(--element-border-radius)] border border-neutral bg-neutral-surface p-6">
         <div>
           <h3 className="text-lg font-semibold">Notification Preferences</h3>
-          <p className="text-sm text-neutral opacity-70">Choose how you want to be notified.</p>
+          <p className="text-sm text-muted">Choose how you want to be notified.</p>
         </div>
 
         <SwitchGroup.Root value={settings} onValueChange={setSettings} color="success" size="sm">
@@ -245,7 +245,7 @@ export const PrivacySettings: Story = {
       <div className="w-96 space-y-6 rounded-[var(--element-border-radius)] border border-neutral bg-neutral-surface p-6">
         <div>
           <h3 className="text-lg font-semibold">Privacy Settings</h3>
-          <p className="text-sm text-neutral opacity-70">Control how your data is used.</p>
+          <p className="text-sm text-muted">Control how your data is used.</p>
         </div>
 
         <SwitchGroup.Root value={privacy} onValueChange={setPrivacy} color="primary" size="md">

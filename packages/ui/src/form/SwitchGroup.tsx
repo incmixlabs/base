@@ -184,7 +184,7 @@ const SwitchGroupItem = React.forwardRef<HTMLSpanElement, SwitchGroupItemProps>(
               {displayLabel}
             </Label>
             {description && (
-              <Text size="xs" className="mt-0.5 text-neutral opacity-70">
+              <Text size="xs" className="mt-0.5 text-muted">
                 {description}
               </Text>
             )}

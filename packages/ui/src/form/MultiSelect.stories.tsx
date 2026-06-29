@@ -108,7 +108,7 @@ function MaxSelectedMultiSelectStory() {
         maxSelected={3}
         placeholder="Select up to 3..."
       />
-      <p className="text-xs text-muted-foreground">{selected.length}/3 selected</p>
+      <p className="text-xs text-muted">{selected.length}/3 selected</p>
     </div>
   )
 }
@@ -160,7 +160,7 @@ function OverflowDropdownMultiSelectStory() {
         max={3}
         placeholder="Select skills..."
       />
-      <p className="text-xs text-muted-foreground">
+      <p className="text-xs text-muted">
         Extra selections collapse into the <code>+N</code> chip. Open it to remove hidden items without reopening the
         main list.
       </p>
@@ -236,7 +236,7 @@ function CreatableMultiSelectStory() {
         placeholder="Search or create tags..."
         searchPlaceholder="Search tags..."
       />
-      <p className="text-xs text-muted-foreground">Search for a missing tag to reveal the create action.</p>
+      <p className="text-xs text-muted">Search for a missing tag to reveal the create action.</p>
     </div>
   )
 }
@@ -323,7 +323,7 @@ export const WithDisabledOptions: Story = {
       <div className="w-80 space-y-2">
         <Label>With Disabled Options</Label>
         <MultiSelect options={options} placeholder="Select frameworks..." />
-        <p className="text-xs text-muted-foreground">Vue and Svelte are disabled</p>
+        <p className="text-xs text-muted">Vue and Svelte are disabled</p>
       </div>
     )
   },

@@ -201,9 +201,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
             {...props}
           >
             <SelectPrimitive.Value>
-              {(selectedValue: string | null) =>
-                selectedValue || <span className="text-muted-foreground">{placeholder}</span>
-              }
+              {(selectedValue: string | null) => selectedValue || <span className="text-muted">{placeholder}</span>}
             </SelectPrimitive.Value>
             <SelectPrimitive.Icon render={<ChevronDown className="h-4 w-4 opacity-50 ml-2" />} />
           </SelectPrimitive.Trigger>

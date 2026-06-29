@@ -46,7 +46,7 @@ export const Controlled: Story = {
         </div>
         {signature && (
           <div className="p-3 border rounded-md">
-            <p className="text-xs text-muted-foreground mb-2">Preview:</p>
+            <p className="text-xs text-muted mb-2">Preview:</p>
             <img src={signature} alt="Signature preview" className="max-w-full h-auto" />
           </div>
         )}
@@ -160,7 +160,7 @@ export const ContractForm: Story = {
 
         <div className="p-4 bg-muted rounded-md text-sm max-h-40 overflow-y-auto">
           <p className="mb-2">By signing below, you agree to the following terms and conditions:</p>
-          <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+          <ul className="list-disc list-inside space-y-1 text-muted">
             <li>You will comply with all applicable laws and regulations</li>
             <li>You will maintain confidentiality of all shared information</li>
             <li>You accept the pricing and payment terms as discussed</li>

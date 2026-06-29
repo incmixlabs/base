@@ -4,6 +4,15 @@ import { OTPInput, REGEXP_ONLY_CHARS, REGEXP_ONLY_DIGITS, REGEXP_ONLY_DIGITS_AND
 import { Minus } from 'lucide-react'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
+import {
+  formControlDisabled,
+  formControlErrorBorderColor,
+  formControlNeutralBackground,
+  formControlPrimaryBorderColor,
+  formControlRadius,
+  formControlSubtleBorderColor,
+  formControlSubtleBorderedSurface,
+} from './form-control.class'
 
 // Re-export patterns for convenience
 export { REGEXP_ONLY_CHARS, REGEXP_ONLY_DIGITS, REGEXP_ONLY_DIGITS_AND_CHARS }
@@ -63,35 +72,37 @@ const Slot: React.FC<SlotProps> = ({ char, isActive, hasFakeCaret, variant, erro
   return (
     <div
       className={cn(
-        'relative flex h-12 w-10 items-center justify-center text-lg font-medium transition-all',
+        'relative flex h-12 w-10 box-border items-center justify-center text-lg font-medium transition-all',
 
         // Variant styles
         variant === 'outline' && [
-          'border border-input rounded-md bg-background',
-          isActive && 'border-ring ring-2 ring-ring ring-offset-2',
-          error && 'border-destructive',
+          formControlSubtleBorderedSurface,
+          formControlNeutralBackground,
+          isActive && `${formControlPrimaryBorderColor} ring-2 ring-[var(--color-primary-primary)] ring-offset-2`,
+          error && formControlErrorBorderColor,
         ],
 
         variant === 'filled' && [
-          'border-0 rounded-md bg-secondary',
-          isActive && 'bg-secondary/80 ring-2 ring-ring ring-offset-2',
-          error && 'bg-destructive/10',
+          `border-0 ${formControlRadius} bg-neutral-soft`,
+          isActive &&
+            '[background-color:var(--color-neutral-soft-hover)] ring-2 ring-[var(--color-primary-primary)] ring-offset-2',
+          error && 'bg-error-soft',
         ],
 
         variant === 'minimal' && [
-          'border-b-2 border-input rounded-none bg-transparent',
-          isActive && 'border-ring',
-          error && 'border-destructive',
+          `border-b-2 border-solid rounded-none bg-transparent ${formControlSubtleBorderColor}`,
+          isActive && formControlPrimaryBorderColor,
+          error && formControlErrorBorderColor,
         ],
 
         // Disabled state
-        disabled && 'opacity-50 cursor-not-allowed',
+        disabled && formControlDisabled,
       )}
     >
       {char}
       {hasFakeCaret && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="h-6 w-px animate-caret-blink bg-foreground duration-1000" />
+          <div className="h-6 w-px animate-caret-blink bg-neutral duration-1000" />
         </div>
       )}
     </div>
@@ -104,7 +115,7 @@ const Slot: React.FC<SlotProps> = ({ char, isActive, hasFakeCaret, variant, erro
 
 const DefaultSeparator: React.FC = () => (
   <div className="flex items-center justify-center px-1">
-    <Minus className="h-4 w-4 text-muted-foreground" />
+    <Minus className="h-4 w-4 text-muted" />
   </div>
 )
 

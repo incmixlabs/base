@@ -80,15 +80,15 @@ export const Default: Story = {
     >
       <CheckboxCards.Item value="1">
         <div className="font-medium">Option 1</div>
-        <div className="text-neutral opacity-70">Description for option 1</div>
+        <div className="text-muted">Description for option 1</div>
       </CheckboxCards.Item>
       <CheckboxCards.Item value="2">
         <div className="font-medium">Option 2</div>
-        <div className="text-neutral opacity-70">Description for option 2</div>
+        <div className="text-muted">Description for option 2</div>
       </CheckboxCards.Item>
       <CheckboxCards.Item value="3">
         <div className="font-medium">Option 3</div>
-        <div className="text-neutral opacity-70">Description for option 3</div>
+        <div className="text-muted">Description for option 3</div>
       </CheckboxCards.Item>
     </CheckboxCards.Root>
   ),
@@ -117,21 +117,21 @@ export const WithIcons: Story = {
           <Wifi className="h-4 w-4" />
           <span className="font-medium">Wi-Fi</span>
         </div>
-        <div className="text-neutral opacity-70">Wireless connection</div>
+        <div className="text-muted">Wireless connection</div>
       </CheckboxCards.Item>
       <CheckboxCards.Item value="bluetooth">
         <div className="flex items-center gap-2">
           <Bluetooth className="h-4 w-4" />
           <span className="font-medium">Bluetooth</span>
         </div>
-        <div className="text-neutral opacity-70">Short-range wireless</div>
+        <div className="text-muted">Short-range wireless</div>
       </CheckboxCards.Item>
       <CheckboxCards.Item value="nfc">
         <div className="flex items-center gap-2">
           <Nfc className="h-4 w-4" />
           <span className="font-medium">NFC</span>
         </div>
-        <div className="text-neutral opacity-70">Near-field communication</div>
+        <div className="text-muted">Near-field communication</div>
       </CheckboxCards.Item>
     </CheckboxCards.Root>
   ),
@@ -173,15 +173,15 @@ export const VariantSurface: Story = {
     <CheckboxCards.Root variant="surface" columns="3" defaultValue={['1']}>
       <CheckboxCards.Item value="1">
         <div className="font-medium">Surface Card</div>
-        <div className="text-neutral opacity-70">With background</div>
+        <div className="text-muted">With background</div>
       </CheckboxCards.Item>
       <CheckboxCards.Item value="2">
         <div className="font-medium">Surface Card</div>
-        <div className="text-neutral opacity-70">With background</div>
+        <div className="text-muted">With background</div>
       </CheckboxCards.Item>
       <CheckboxCards.Item value="3">
         <div className="font-medium">Surface Card</div>
-        <div className="text-neutral opacity-70">With background</div>
+        <div className="text-muted">With background</div>
       </CheckboxCards.Item>
     </CheckboxCards.Root>
   ),
@@ -192,15 +192,15 @@ export const VariantOutline: Story = {
     <CheckboxCards.Root variant="outline" columns="3" defaultValue={['1']}>
       <CheckboxCards.Item value="1">
         <div className="font-medium">Outline Card</div>
-        <div className="text-neutral opacity-70">Transparent background</div>
+        <div className="text-muted">Transparent background</div>
       </CheckboxCards.Item>
       <CheckboxCards.Item value="2">
         <div className="font-medium">Outline Card</div>
-        <div className="text-neutral opacity-70">Transparent background</div>
+        <div className="text-muted">Transparent background</div>
       </CheckboxCards.Item>
       <CheckboxCards.Item value="3">
         <div className="font-medium">Outline Card</div>
-        <div className="text-neutral opacity-70">Transparent background</div>
+        <div className="text-muted">Transparent background</div>
       </CheckboxCards.Item>
     </CheckboxCards.Root>
   ),
@@ -400,7 +400,7 @@ export const SubscriptionFeatures: Story = {
       <div className="max-w-3xl space-y-6">
         <div>
           <h3 className="text-lg font-semibold">Add-on Features</h3>
-          <p className="text-neutral opacity-70">Select the features you want to add to your plan.</p>
+          <p className="text-muted">Select the features you want to add to your plan.</p>
         </div>
 
         <CheckboxCards.Root value={features} onValueChange={setFeatures} columns="2" gap="4" color="success">
@@ -409,7 +409,7 @@ export const SubscriptionFeatures: Story = {
               <div className="flex justify-between items-start w-full">
                 <div>
                   <div className="font-medium">{feature.title}</div>
-                  <div className="text-neutral opacity-70 text-sm">{feature.description}</div>
+                  <div className="text-muted text-sm">{feature.description}</div>
                 </div>
                 <div className="font-semibold text-primary">{feature.price}</div>
               </div>

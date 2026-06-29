@@ -110,23 +110,23 @@ export const PlanSelection: StoryObj = {
           <RadioGroup.Item value="starter">
             <div>
               <span className="font-medium">Starter</span>
-              <span className="text-neutral opacity-70 ml-2">$9/month</span>
+              <span className="text-muted ml-2">$9/month</span>
             </div>
           </RadioGroup.Item>
           <RadioGroup.Item value="pro">
             <div>
               <span className="font-medium">Pro</span>
-              <span className="text-neutral opacity-70 ml-2">$29/month</span>
+              <span className="text-muted ml-2">$29/month</span>
             </div>
           </RadioGroup.Item>
           <RadioGroup.Item value="enterprise">
             <div>
               <span className="font-medium">Enterprise</span>
-              <span className="text-neutral opacity-70 ml-2">$99/month</span>
+              <span className="text-muted ml-2">$99/month</span>
             </div>
           </RadioGroup.Item>
         </RadioGroup.Root>
-        <p className="mt-4 text-sm text-neutral opacity-70">
+        <p className="mt-4 text-sm text-muted">
           Selected: <span className="font-medium capitalize">{plan}</span>
         </p>
       </div>
@@ -147,7 +147,7 @@ export const ShippingMethod: StoryObj = {
               <RadioGroup.Item value="standard" />
               <div className="flex-1">
                 <p className="font-medium">Standard Shipping</p>
-                <p className="text-sm text-neutral opacity-70">5-7 business days</p>
+                <p className="text-sm text-muted">5-7 business days</p>
               </div>
               <span className="font-medium">$4.99</span>
             </label>
@@ -155,7 +155,7 @@ export const ShippingMethod: StoryObj = {
               <RadioGroup.Item value="express" />
               <div className="flex-1">
                 <p className="font-medium">Express Shipping</p>
-                <p className="text-sm text-neutral opacity-70">2-3 business days</p>
+                <p className="text-sm text-muted">2-3 business days</p>
               </div>
               <span className="font-medium">$14.99</span>
             </label>
@@ -163,7 +163,7 @@ export const ShippingMethod: StoryObj = {
               <RadioGroup.Item value="overnight" />
               <div className="flex-1">
                 <p className="font-medium">Overnight Shipping</p>
-                <p className="text-sm text-neutral opacity-70">Next business day</p>
+                <p className="text-sm text-muted">Next business day</p>
               </div>
               <span className="font-medium">$29.99</span>
             </label>

@@ -15,7 +15,7 @@ export const mentionSuggestionPosition = {
 export const mentionSuggestionList = 'py-1'
 
 export const mentionSuggestionEmpty =
-  'px-[var(--af-mention-textarea-suggestion-empty-padding-inline,0.75rem)] py-[var(--af-mention-textarea-suggestion-empty-padding-block,0.5rem)] text-[length:var(--af-mention-textarea-suggestion-font-size,0.875rem)] text-neutral opacity-70'
+  'px-[var(--af-mention-textarea-suggestion-empty-padding-inline,0.75rem)] py-[var(--af-mention-textarea-suggestion-empty-padding-block,0.5rem)] text-[length:var(--af-mention-textarea-suggestion-font-size,0.875rem)] text-muted'
 
 export const mentionItemBase = 'flex cursor-pointer items-center gap-2 px-3 py-2 transition-colors duration-150'
 
@@ -37,7 +37,7 @@ export const mentionDragOverlayColorVariants = Object.fromEntries(
 export const mentionPreviewBase =
   'min-h-[var(--af-mention-textarea-preview-min-height,80px)] rounded-md border border-neutral px-[var(--af-mention-textarea-preview-padding-inline,0.75rem)] py-[var(--af-mention-textarea-preview-padding-block,0.5rem)] text-[length:var(--af-mention-textarea-preview-font-size,0.875rem)]'
 
-export const mentionPreviewEmpty = 'text-neutral opacity-70'
+export const mentionPreviewEmpty = 'text-muted'
 
 export const mentionTextareaClassNames = [
   mentionSuggestionBase,

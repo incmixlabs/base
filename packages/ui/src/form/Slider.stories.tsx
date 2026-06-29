@@ -33,7 +33,7 @@ export const Default: Story = {
     return (
       <div className="w-64">
         <Slider {...args} value={value} onValueChange={setValue} />
-        <p className="mt-2 text-center text-sm text-neutral opacity-70">Value: {value[0]}</p>
+        <p className="mt-2 text-center text-sm text-muted">Value: {value[0]}</p>
       </div>
     )
   },
@@ -44,7 +44,7 @@ export const Sizes: Story = {
     <div className="w-64 space-y-6">
       {getPropDefValues(sliderPropDefs.size).map(size => (
         <div key={size}>
-          <p className="mb-2 text-sm text-neutral opacity-70">Size {size}</p>
+          <p className="mb-2 text-sm text-muted">Size {size}</p>
           <Slider size={size} defaultValue={[50]} />
         </div>
       ))}
@@ -57,7 +57,7 @@ export const Colors: Story = {
     <div className="w-64 space-y-4">
       {getPropDefValues(sliderPropDefs.color).map(color => (
         <div key={color}>
-          <p className="mb-2 text-sm text-neutral opacity-70 capitalize">{color}</p>
+          <p className="mb-2 text-sm text-muted capitalize">{color}</p>
           <Slider color={color} defaultValue={[60]} />
         </div>
       ))}
@@ -70,7 +70,7 @@ export const Variants: Story = {
     <div className="w-64 space-y-6">
       {getPropDefValues(sliderPropDefs.variant).map(variant => (
         <div key={variant}>
-          <p className="mb-2 text-sm text-neutral opacity-70 capitalize">{variant}</p>
+          <p className="mb-2 text-sm text-muted capitalize">{variant}</p>
           <Slider variant={variant} defaultValue={[50]} />
         </div>
       ))}
@@ -83,7 +83,7 @@ export const Radius: Story = {
     <div className="w-64 space-y-6">
       {getPropDefValues(sliderPropDefs.radius).map(radius => (
         <div key={radius}>
-          <p className="mb-2 text-sm text-neutral opacity-70 capitalize">{radius}</p>
+          <p className="mb-2 text-sm text-muted capitalize">{radius}</p>
           <Slider radius={radius} size="md" defaultValue={[50]} />
         </div>
       ))}
@@ -105,7 +105,7 @@ export const CustomRange: Story = {
     return (
       <div className="w-64">
         <Slider {...args} value={value} onValueChange={setValue} min={0} max={100} step={5} />
-        <div className="mt-2 flex justify-between text-xs text-neutral opacity-70">
+        <div className="mt-2 flex justify-between text-xs text-muted">
           <span>0</span>
           <span>{value[0]}</span>
           <span>100</span>
@@ -121,7 +121,7 @@ export const VolumeControl: Story = {
     return (
       <div className="w-72 rounded-[var(--element-border-radius)] border border-neutral p-4">
         <div className="flex items-center gap-3">
-          <Volume2 className="h-5 w-5 text-neutral opacity-70" />
+          <Volume2 className="h-5 w-5 text-muted" />
           <Slider {...args} value={volume} onValueChange={setVolume} className="flex-1" aria-label="Volume" />
           <span className="w-8 text-right text-sm">{volume[0]}%</span>
         </div>
@@ -136,7 +136,7 @@ export const Range: Story = {
     return (
       <div className="w-64">
         <Slider {...args} value={value} onValueChange={setValue} />
-        <p className="mt-2 text-center text-sm text-neutral opacity-70">
+        <p className="mt-2 text-center text-sm text-muted">
           Range: {value[0]} - {value[1]}
         </p>
       </div>
@@ -156,7 +156,7 @@ export const RangeSliderRadixStyle: Story = {
     return (
       <div className="w-72 space-y-3">
         <Slider {...args} value={range} onValueChange={setRange} min={0} max={100} step={1} aria-label="Range slider" />
-        <div className="flex items-center justify-between text-xs text-neutral opacity-70">
+        <div className="flex items-center justify-between text-xs text-muted">
           <span>{range[0]}</span>
           <span>{range[1]}</span>
         </div>
@@ -184,11 +184,11 @@ export const PriceRange: Story = {
           {...args}
         />
         <div className="mt-2 flex justify-between text-sm">
-          <span className="text-neutral opacity-70">$0</span>
+          <span className="text-muted">$0</span>
           <span className="font-medium">
             ${price[0]} - ${price[1]}
           </span>
-          <span className="text-neutral opacity-70">$1000</span>
+          <span className="text-muted">$1000</span>
         </div>
       </div>
     )
@@ -205,10 +205,10 @@ export const BrightnessControl: Story = {
       <div className="w-72 rounded-[var(--element-border-radius)] border border-neutral p-4">
         <div className="mb-3 flex items-center justify-between">
           <span className="text-sm font-medium">Brightness</span>
-          <span className="text-sm text-neutral opacity-70">{brightness[0]}%</span>
+          <span className="text-sm text-muted">{brightness[0]}%</span>
         </div>
         <div className="flex items-center gap-3">
-          <SunDim className="h-4 w-4 text-neutral opacity-70" />
+          <SunDim className="h-4 w-4 text-muted" />
           <Slider
             value={brightness}
             onValueChange={setBrightness}
@@ -216,7 +216,7 @@ export const BrightnessControl: Story = {
             aria-label="Brightness"
             {...args}
           />
-          <SunMedium className="h-5 w-5 text-neutral opacity-70" />
+          <SunMedium className="h-5 w-5 text-muted" />
         </div>
       </div>
     )

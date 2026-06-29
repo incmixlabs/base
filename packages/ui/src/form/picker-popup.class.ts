@@ -17,9 +17,6 @@ const joinClass = (...parts: string[]) => parts.join('')
 const pickerPopupSizeVar = (size: string, slot: string, fallback: string) =>
   joinClass('var(--af-picker-popup-size-', size, '-', slot, ',', fallback, ')')
 
-const mutedNeutralText = 'text-[color-mix(in_oklch,var(--color-neutral-text)_68%,transparent)]'
-const mutedNeutralPlaceholder = 'placeholder:text-[color-mix(in_oklch,var(--color-neutral-text)_68%,transparent)]'
-
 export const pickerPopupBase =
   'overflow-hidden rounded-[var(--element-border-radius,0.375rem)] border border-neutral bg-neutral-surface text-neutral [box-shadow:var(--shadow-2)]'
 
@@ -32,7 +29,7 @@ export const pickerPopupViewportBySize: Record<PickerPopupSize, string> = mapPic
   ].join(' '),
 )
 
-export const pickerStatusRowBase = joinClass('border-b border-neutral ', mutedNeutralText)
+export const pickerStatusRowBase = 'border-b border-neutral text-muted'
 
 export const pickerStatusRowBySize: Record<PickerPopupSize, string> = mapPickerPopupSizeTokens((size, token) =>
   [
@@ -43,7 +40,7 @@ export const pickerStatusRowBySize: Record<PickerPopupSize, string> = mapPickerP
   ].join(' '),
 )
 
-export const pickerEmptyStateBase = joinClass('text-center ', mutedNeutralText)
+export const pickerEmptyStateBase = 'text-center text-muted'
 
 export const pickerEmptyStateBySize: Record<PickerPopupSize, string> = mapPickerPopupSizeTokens((size, token) =>
   [
@@ -56,8 +53,7 @@ export const pickerEmptyStateBySize: Record<PickerPopupSize, string> = mapPicker
 export const pickerSearchRowBase = 'flex items-center p-0'
 
 export const pickerSearchInputBase = joinClass(
-  'w-full border-0 border-b border-neutral bg-transparent p-0 ',
-  mutedNeutralPlaceholder,
+  'w-full border-0 border-b border-neutral bg-transparent p-0 placeholder:text-muted',
 )
 
 export const pickerSearchInputBySize: Record<PickerPopupSize, string> = mapPickerPopupSizeTokens((size, token) =>
@@ -88,7 +84,7 @@ export const pickerIndicatorBySize: Record<PickerPopupSize, string> = mapPickerP
   ].join(' '),
 )
 
-export const pickerFooterStatusBase = joinClass('border-t border-neutral ', mutedNeutralText)
+export const pickerFooterStatusBase = 'border-t border-neutral text-muted'
 
 export const pickerFooterActionsBase = 'flex items-center justify-end gap-1 border-t border-neutral'
 

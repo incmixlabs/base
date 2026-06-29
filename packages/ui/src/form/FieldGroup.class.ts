@@ -18,7 +18,7 @@ export const fieldGroupRowDescription = 'mt-[var(--af-field-group-row-descriptio
 
 export const fieldGroupLabelText = 'text-sm font-medium text-neutral'
 
-export const fieldGroupDescriptionText = 'text-sm text-neutral opacity-70'
+export const fieldGroupDescriptionText = 'text-sm text-muted'
 
 export const fieldGroupRowGapClasses: Record<FieldGroupGap, string> = {
   '0': 'gap-0',

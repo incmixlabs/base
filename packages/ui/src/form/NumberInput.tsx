@@ -374,7 +374,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
               <button
                 type="button"
                 className={cn(
-                  'flex h-1/2 w-full items-center justify-center border-b border-border/60 text-muted-foreground transition-colors',
+                  'flex h-1/2 w-full items-center justify-center border-b border-border/60 text-muted transition-colors',
                   'hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
                   !canIncrement && 'pointer-events-none opacity-50',
                 )}
@@ -389,7 +389,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
               <button
                 type="button"
                 className={cn(
-                  'flex h-1/2 w-full items-center justify-center text-muted-foreground transition-colors',
+                  'flex h-1/2 w-full items-center justify-center text-muted transition-colors',
                   'hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
                   !canDecrement && 'pointer-events-none opacity-50',
                 )}

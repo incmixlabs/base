@@ -141,7 +141,7 @@ const CheckboxGroupItem = React.forwardRef<HTMLButtonElement, CheckboxGroupItemP
               {displayLabel}
             </Label>
             {description && (
-              <Text size="xs" className="mt-1 text-neutral opacity-70">
+              <Text size="xs" className="mt-1 text-muted">
                 {description}
               </Text>
             )}

@@ -311,7 +311,7 @@ export function parseMentionMarkdownInline(
             height: parsed?.height,
           })
         ) : (
-          <span key={key} className="text-neutral opacity-70">
+          <span key={key} className="text-muted">
             [image]
           </span>
         ),
@@ -325,7 +325,7 @@ export function parseMentionMarkdownInline(
         safeSrc ? (
           renderPreviewImage(key, safeSrc, alt)
         ) : (
-          <span key={key} className="text-neutral opacity-70">{`[image: ${alt}]`}</span>
+          <span key={key} className="text-muted">{`[image: ${alt}]`}</span>
         ),
       )
     } else if (match[6]) {
@@ -366,7 +366,7 @@ export function parseMentionMarkdownInline(
       if (interstitial) nodes.push(interstitial)
       const content = m.slice(2, -2)
       nodes.push(
-        <s key={key} className="text-neutral opacity-70">
+        <s key={key} className="text-muted">
           {parseMentionMarkdownInline(content, triggerChars, sources)}
         </s>,
       )
@@ -443,7 +443,7 @@ export function MentionMarkdownPreview({
             .map(l => l.replace(/^>\s?/, ''))
             .join(' ')
           return (
-            <blockquote key={bi} className="border-l-2 border-neutral pl-4 italic text-neutral opacity-70 mb-3">
+            <blockquote key={bi} className="border-l-2 border-neutral pl-4 italic text-muted mb-3">
               {parseMentionMarkdownInline(content, triggerChars, sources)}
             </blockquote>
           )
