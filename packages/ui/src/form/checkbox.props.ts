@@ -54,7 +54,7 @@ export interface CheckboxWithLabelProps extends CheckboxProps {
 }
 
 const checkboxSharedPropDefs = {
-  size: { type: 'enum', values: checkboxSizes, default: 'sm', responsive: true },
+  size: { type: 'enum', values: checkboxSizes, default: 'sm' },
   variant: { type: 'enum', values: checkboxVariants, default: 'solid' },
   ...colorPropDef,
   ...highContrastPropDef,

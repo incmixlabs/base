@@ -102,6 +102,7 @@ import {
   separatorWithContent,
 } from './src/elements/separator/separator.class'
 import { tooltipContentBase, tooltipPositionerBase } from './src/elements/tooltip/tooltip.class'
+import { checkboxClassNames } from './src/form/checkbox.class'
 import { aspectRatioByRatio } from './src/layouts/aspect-ratio/aspect-ratio.class'
 import { boxRootBase, boxSurfaceColorClassNames } from './src/layouts/box/box.class'
 import {
@@ -383,6 +384,8 @@ export default defineConfig({
       ...splitClasses(progressClassNames),
       // Scroll area styles
       ...splitClasses(scrollAreaClassNames),
+      // Checkbox styles
+      ...splitClasses(checkboxClassNames),
       // Box styles
       boxRootBase,
       ...splitClasses(boxSurfaceColorClassNames),

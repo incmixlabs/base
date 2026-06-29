@@ -17,7 +17,7 @@ import { SemanticColor } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color, Radius, Size } from '@/theme/tokens'
-import { checkboxColorVariants, checkboxHighContrastByVariant } from './checkbox.css'
+import { checkboxColorVariants, checkboxHighContrastByVariant } from './checkbox.class'
 import { type CheckboxCardSize, checkboxCardSizeVariants } from './checkbox-cards.css'
 import {
   checkboxCardsColumnValues,
