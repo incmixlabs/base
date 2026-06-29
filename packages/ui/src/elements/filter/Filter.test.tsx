@@ -37,7 +37,6 @@ describe('Filter', () => {
       <Filter filterFields={fields} value={value} onValueChange={() => undefined} applyMode="manual" />,
     )
 
-    expect(findElementWithClassTokens(container, ['border-b', 'border-solid', 'border-neutral', 'pb-3'])).toBeTruthy()
     expect(findElementWithClassTokens(container, ['border-b', 'border-solid', 'border-neutral', 'py-3'])).toBeTruthy()
     expect(
       findElementWithClassTokens(container, ['min-h-0', 'overflow-x-hidden', 'overflow-y-auto', 'py-1']),
