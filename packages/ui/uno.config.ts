@@ -72,6 +72,7 @@ import {
   dialogTitleBySize,
 } from './src/elements/dialog/dialog.class'
 import { menuSharedClassNames } from './src/elements/menu/menu.shared.class'
+import { navigationMenuClassNames } from './src/elements/navigation-menu/NavigationMenu.class'
 import {
   floatingSurfaceArrowColorVariants,
   floatingSurfaceColorVariants,
@@ -371,6 +372,8 @@ export default defineConfig({
       ...floatingSurfaceSafelist,
       // Menu styles
       ...splitClasses(menuSharedClassNames),
+      // Navigation menu styles
+      ...splitClasses(navigationMenuClassNames),
       // Box styles
       boxRootBase,
       ...splitClasses(boxSurfaceColorClassNames),

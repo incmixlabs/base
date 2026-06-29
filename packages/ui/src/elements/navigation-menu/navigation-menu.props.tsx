@@ -1,7 +1,7 @@
-import { colorPropDef, SemanticColor } from '@/theme/props/color.prop'
-import { highContrastPropDef } from '@/theme/props/high-contrast.prop'
-import type { PropDef } from '@/theme/props/prop-def'
-import { radiusPropDef } from '@/theme/props/radius.prop'
+import { colorPropDef, SemanticColor } from '../../theme/props/color.prop'
+import { highContrastPropDef } from '../../theme/props/high-contrast.prop'
+import type { PropDef } from '../../theme/props/prop-def'
+import { radiusPropDef } from '../../theme/props/radius.prop'
 
 const navigationMenuSizes = ['sm', 'md', 'lg'] as const
 const navigationMenuVariants = ['solid', 'soft'] as const

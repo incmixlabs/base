@@ -39,12 +39,13 @@ import {
   navigationMenuRootBase,
   navigationMenuRootBaseCls,
   navigationMenuRootVerticalCls,
+  navigationMenuSimpleLinkBase,
   navigationMenuTriggerBase,
   navigationMenuTriggerBaseCls,
   navigationMenuTriggerBySize,
   navigationMenuViewportBase,
   navigationMenuViewportBaseCls,
-} from './NavigationMenu.css'
+} from './NavigationMenu.class'
 import { type NavigationMenuSize, type NavigationMenuVariant, navigationMenuPropDefs } from './navigation-menu.props'
 
 type NavigationMenuValue = string | null
@@ -374,9 +375,9 @@ const NavigationMenuLink = React.forwardRef<HTMLAnchorElement, NavigationMenuLin
       <NavigationMenuPrimitive.Link
         ref={ref}
         className={cn(
-          navigationMenuLinkBaseCls,
-          navigationMenuLinkBase,
-          navigationMenuLinkBySize[size],
+          hasStructuredContent
+            ? [navigationMenuLinkBaseCls, navigationMenuLinkBase, navigationMenuLinkBySize[size]]
+            : [navigationMenuTriggerBaseCls, navigationMenuSimpleLinkBase, navigationMenuTriggerBySize[size]],
           navigationMenuColor[color],
           highContrast && 'af-high-contrast',
           className,
