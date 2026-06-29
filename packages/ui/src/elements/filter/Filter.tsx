@@ -621,8 +621,8 @@ function FilterCalendarField<TData>({
                         datePickerCalendarCellRadiusStyles[radius],
                         datePickerCalendarDayInteractive,
                         datePickerCalendarSelectedColorStyles[color],
-                        'text-foreground',
-                        'data-[outside-month]:text-muted-foreground/60',
+                        'text-neutral',
+                        'data-[outside-month]:text-neutral/60',
                       )}
                       onClick={() => {
                         if (nonInteractive) return
@@ -666,8 +666,8 @@ function FilterCalendarField<TData>({
                       rangeCalendarCell,
                       rangeCalendarDayInteractive,
                       rangeCalendarSelectedColorStyles[color],
-                      'text-foreground',
-                      'data-[outside-month]:text-muted-foreground/60',
+                      'text-neutral',
+                      'data-[outside-month]:text-neutral/60',
                     )}
                     onClick={() => {
                       if (nonInteractive) return

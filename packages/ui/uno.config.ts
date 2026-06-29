@@ -71,6 +71,7 @@ import {
   dialogPopupBaseCls,
   dialogTitleBySize,
 } from './src/elements/dialog/dialog.class'
+import { filterClassNames } from './src/elements/filter/filter.class'
 import { menuSharedClassNames } from './src/elements/menu/menu.shared.class'
 import { navigationMenuClassNames } from './src/elements/navigation-menu/NavigationMenu.class'
 import {
@@ -83,6 +84,8 @@ import {
   floatingSurfaceSizeVariants,
   popoverContentBase,
 } from './src/elements/popover/popover.class'
+import { progressClassNames } from './src/elements/progress/progress.class'
+import { scrollAreaClassNames } from './src/elements/scroll-area/scroll-area.class'
 import {
   separatorAlignEnd,
   separatorAlignStart,
@@ -374,6 +377,12 @@ export default defineConfig({
       ...splitClasses(menuSharedClassNames),
       // Navigation menu styles
       ...splitClasses(navigationMenuClassNames),
+      // Filter styles
+      ...splitClasses(filterClassNames),
+      // Progress styles
+      ...splitClasses(progressClassNames),
+      // Scroll area styles
+      ...splitClasses(scrollAreaClassNames),
       // Box styles
       boxRootBase,
       ...splitClasses(boxSurfaceColorClassNames),

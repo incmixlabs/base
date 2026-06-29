@@ -10,7 +10,7 @@ import {
   scrollAreaSurfaceColorVariants,
   scrollAreaThumbColorVariants,
   scrollAreaTrackColorVariants,
-} from './scroll-area.css'
+} from './scroll-area.class'
 
 afterEach(() => {
   cleanup()
