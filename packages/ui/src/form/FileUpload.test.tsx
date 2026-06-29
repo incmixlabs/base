@@ -17,7 +17,7 @@ describe('FileUpload', () => {
       '[data-slot="file-upload-dropzone"][data-invalid="true"]',
     ) as HTMLElement | null
     expect(dropzone).toBeInTheDocument()
-    expect(dropzone?.className).toContain('border-[color:var(--color-error-border)]')
+    expect(dropzone?.className).toContain('[border-color:var(--color-error-border)]')
     expect(dropzone).toHaveAttribute('aria-invalid', 'true')
   })
 
@@ -26,6 +26,20 @@ describe('FileUpload', () => {
 
     const dropzone = container.querySelector('[data-slot="file-upload-dropzone"]') as HTMLElement | null
     expect(dropzone?.style.getPropertyValue('--element-border-radius')).toBeTruthy()
+  })
+
+  it('keeps bordered dropzone variants visible without relying on global border defaults', () => {
+    const { container, rerender } = render(<FileUpload variant="minimal" />)
+
+    let dropzone = container.querySelector('[data-slot="file-upload-dropzone"]') as HTMLElement | null
+    expect(dropzone).toHaveClass('border', 'border-solid')
+    expect(dropzone?.className).toContain('[border-color:var(--color-neutral-border)]')
+
+    rerender(<FileUpload variant="card" />)
+
+    dropzone = container.querySelector('[data-slot="file-upload-dropzone"]') as HTMLElement | null
+    expect(dropzone).toHaveClass('border', 'border-solid')
+    expect(dropzone?.className).toContain('[border-color:var(--color-neutral-border)]')
   })
 
   it('inherits size from FieldGroup context', () => {

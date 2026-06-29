@@ -30,6 +30,7 @@ describe('Button', () => {
     )
 
     const button = screen.getByRole('button', { name: 'Click' })
+    expect(button).toHaveClass('border-solid')
     expect(button.className).toContain(buttonColorVariants.info.soft)
     expect(button.className).toContain(buttonHoverColorVariants.info.soft)
     expect(button.className).not.toContain('surface-color-')

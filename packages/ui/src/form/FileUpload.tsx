@@ -618,37 +618,37 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
 
             // Variant styles
             variant === 'default' && [
-              'border-2 border-dashed rounded-[var(--element-border-radius)]',
+              'border-2 border-dashed [border-color:var(--color-neutral-border)] rounded-[var(--element-border-radius)]',
               'p-[var(--file-upload-container-padding)]',
               !error &&
-                'hover:border-[color:var(--color-primary-border)] hover:bg-[var(--color-neutral-surface-hover)]',
-              isDragActive && 'border-[color:var(--color-primary-border)] bg-[var(--color-primary-surface)]',
-              isDragReject && 'border-[color:var(--color-error-border)] bg-[var(--color-error-surface)]',
+                'hover:[border-color:var(--color-primary-border)] hover:bg-[var(--color-neutral-surface-hover)]',
+              isDragActive && '[border-color:var(--color-primary-border)] bg-[var(--color-primary-surface)]',
+              isDragReject && '[border-color:var(--color-error-border)] bg-[var(--color-error-surface)]',
               error &&
                 !isDragActive &&
                 !isDragReject &&
-                'border-[color:var(--color-error-border)] bg-[var(--color-error-surface)] hover:border-[color:var(--color-error-border)]',
+                '[border-color:var(--color-error-border)] bg-[var(--color-error-surface)] hover:[border-color:var(--color-error-border)]',
               isPickerDisabled &&
-                'opacity-50 cursor-not-allowed hover:border-[color:var(--color-neutral-border)] hover:bg-transparent',
+                'opacity-50 cursor-not-allowed hover:[border-color:var(--color-neutral-border)] hover:bg-transparent',
             ],
 
             variant === 'minimal' && [
-              'border border-[color:var(--color-neutral-border)] rounded-[var(--element-border-radius)]',
+              'border border-solid [border-color:var(--color-neutral-border)] rounded-[var(--element-border-radius)]',
               'p-[var(--file-upload-container-padding)]',
               !error && 'hover:bg-[var(--color-neutral-surface-hover)]',
-              isDragActive && 'border-[color:var(--color-primary-border)] bg-[var(--color-primary-surface)]',
-              isDragReject && 'border-[color:var(--color-error-border)] bg-[var(--color-error-surface)]',
-              error && !isDragActive && 'border-[color:var(--color-error-border)] bg-[var(--color-error-surface)]',
+              isDragActive && '[border-color:var(--color-primary-border)] bg-[var(--color-primary-surface)]',
+              isDragReject && '[border-color:var(--color-error-border)] bg-[var(--color-error-surface)]',
+              error && !isDragActive && '[border-color:var(--color-error-border)] bg-[var(--color-error-surface)]',
               isPickerDisabled && 'opacity-50 cursor-not-allowed',
             ],
 
             variant === 'card' && [
-              'border rounded-[var(--element-border-radius)] bg-[var(--color-neutral-background)] shadow-sm',
+              'border border-solid [border-color:var(--color-neutral-border)] rounded-[var(--element-border-radius)] bg-[var(--color-neutral-background)] shadow-sm',
               'p-[var(--file-upload-container-padding)]',
-              !error && 'hover:shadow-md hover:border-[color:var(--color-primary-border)]',
-              isDragActive && 'border-[color:var(--color-primary-border)] shadow-md',
-              isDragReject && 'border-[color:var(--color-error-border)] bg-[var(--color-error-surface)]',
-              error && !isDragActive && 'border-[color:var(--color-error-border)] bg-[var(--color-error-surface)]',
+              !error && 'hover:shadow-md hover:[border-color:var(--color-primary-border)]',
+              isDragActive && '[border-color:var(--color-primary-border)] shadow-md',
+              isDragReject && '[border-color:var(--color-error-border)] bg-[var(--color-error-surface)]',
+              error && !isDragActive && '[border-color:var(--color-error-border)] bg-[var(--color-error-surface)]',
               isPickerDisabled && 'opacity-50 cursor-not-allowed hover:shadow-sm',
             ],
           )}
