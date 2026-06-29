@@ -6,11 +6,12 @@ import { ToggleGroup } from '@/elements/toggle/Toggle'
 import { cn } from '@/lib/utils'
 import type { Color } from '@/theme/tokens'
 import {
+  floatingToolbarButtonBase,
+  floatingToolbarRoot,
   toolbarButtonActiveVariants,
   toolbarButtonColorVariants,
   toolbarSeparatorCls,
-  toolbarSurfaceCls,
-} from './FloatingToolbar.css'
+} from './FloatingToolbar.class'
 
 // ── Types ──
 
@@ -162,13 +163,7 @@ export function FloatingToolbar({
       ref={ref}
       role="toolbar"
       aria-label="Text formatting"
-      className={cn(
-        'fixed z-[9999] flex items-center gap-0.5',
-        'rounded-lg border px-1 py-1 shadow-lg',
-        'animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-2',
-        toolbarSurfaceCls,
-        className,
-      )}
+      className={cn(floatingToolbarRoot, className)}
       style={{
         top: position.top,
         left: position.left,
@@ -234,9 +229,7 @@ export function FloatingToolbarButton({
       aria-pressed={active}
       title={label}
       className={cn(
-        'flex items-center justify-center rounded-md p-1.5',
-        'transition-colors duration-150',
-        'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
+        floatingToolbarButtonBase,
         active ? toolbarButtonActiveVariants[color] : toolbarButtonColorVariants[color],
         cls,
       )}
