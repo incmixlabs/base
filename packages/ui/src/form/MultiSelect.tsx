@@ -13,6 +13,7 @@ import { SemanticColor } from '@/theme/props/color.prop'
 import type { Color, Radius, Size, TextFieldVariant } from '@/theme/tokens'
 import { Text } from '@/typography'
 import { useFieldGroup } from './FieldGroupContext'
+import { formControlBorderFrame, formControlNeutralBackground } from './form-control.class'
 import type { ExtendedFormSize } from './form-size'
 import { Label } from './Label'
 import {
@@ -729,9 +730,10 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                   ],
                   floatingStyle === 'outlined' && [
                     'left-[var(--tf-padding-x)] top-2 z-10',
-                    '-translate-y-4 scale-75 bg-background px-1',
+                    '-translate-y-4 scale-75 px-1',
+                    formControlNeutralBackground,
                     'peer-data-[placeholder]:scale-100 peer-data-[placeholder]:translate-y-3',
-                    'peer-data-[popup-open]:-translate-y-4 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--tf-color-primary)] peer-data-[popup-open]:bg-background peer-data-[popup-open]:px-1',
+                    'peer-data-[popup-open]:-translate-y-4 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--tf-color-primary)] peer-data-[popup-open]:px-1',
                   ],
                   floatingStyle === 'standard' && [
                     'left-0 top-3 z-10',
@@ -767,9 +769,10 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
               aria-invalid={ariaInvalid ?? (error || undefined)}
               className={cn(
                 textFieldInputBaseCls,
-                'w-full box-border border',
+                'w-full box-border',
                 'min-h-[var(--tf-height)] px-[var(--tf-padding-x)] py-[var(--tf-padding-y)] text-left',
-                'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)] rounded-[var(--element-border-radius)]',
+                'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+                formControlBorderFrame,
                 textFieldColorVariants[effectiveColor][surfaceVariant],
                 disabled && 'opacity-50 cursor-not-allowed',
               )}
