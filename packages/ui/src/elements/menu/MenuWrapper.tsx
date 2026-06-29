@@ -394,7 +394,7 @@ export function MenuWrapper({
       <ContextMenu.Root>
         <ContextMenu.Trigger className={cn('inline-flex outline-none', className)}>
           {trigger ?? (
-            <div className="inline-flex min-h-24 min-w-72 items-center justify-center rounded-md border border-border bg-background px-4 text-sm text-muted-foreground">
+            <div className="inline-flex min-h-24 min-w-72 items-center justify-center rounded-md border border-neutral bg-neutral-surface px-4 text-sm text-neutral">
               Right click to open menu
             </div>
           )}

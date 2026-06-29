@@ -2,12 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { FileText, FolderOpen, Image, Music, Video } from 'lucide-react'
 import * as React from 'react'
 import { Box } from '@/layouts/box/Box'
-import { colorPropDef, SemanticColor } from '@/theme/props/color.prop'
+import { SemanticColor } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
 import { ContextMenu } from './ContextMenu'
 import { contextMenuContentPropDefs } from './context-menu.props'
 
-const colors = getPropDefValues(colorPropDef.color)
+const colors = getPropDefValues(contextMenuContentPropDefs.color)
 const contentSizes = getPropDefValues(contextMenuContentPropDefs.size)
 const menuVariants = getPropDefValues(contextMenuContentPropDefs.variant)
 
@@ -60,8 +60,8 @@ export const Playground: PlaygroundStory = {
     return (
       <ContextMenu.Root>
         <ContextMenu.Trigger>
-          <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
-            <span className="text-sm text-muted-foreground">Right-click here</span>
+          <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-neutral bg-neutral-soft">
+            <span className="text-sm text-neutral">Right-click here</span>
           </div>
         </ContextMenu.Trigger>
         <ContextMenu.Content size={size} variant={variant} color={color}>
@@ -87,8 +87,8 @@ export const Default: Story = {
   render: () => (
     <ContextMenu.Root>
       <ContextMenu.Trigger>
-        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
-          <span className="text-sm text-muted-foreground">Right-click here</span>
+        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-neutral bg-neutral-soft">
+          <span className="text-sm text-neutral">Right-click here</span>
         </div>
       </ContextMenu.Trigger>
       <ContextMenu.Content>
@@ -107,8 +107,8 @@ export const WithShortcuts: Story = {
   render: () => (
     <ContextMenu.Root>
       <ContextMenu.Trigger>
-        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
-          <span className="text-sm text-muted-foreground">Right-click here</span>
+        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-neutral bg-neutral-soft">
+          <span className="text-sm text-neutral">Right-click here</span>
         </div>
       </ContextMenu.Trigger>
       <ContextMenu.Content>
@@ -137,8 +137,8 @@ export const AllSizes: Story = {
           <h3 className="text-sm font-medium mb-3">size="{size}"</h3>
           <ContextMenu.Root>
             <ContextMenu.Trigger>
-              <div className="flex h-28 w-40 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
-                <span className="text-xs text-muted-foreground">Right-click</span>
+              <div className="flex h-28 w-40 items-center justify-center rounded-lg border-2 border-dashed border-neutral bg-neutral-soft">
+                <span className="text-xs text-neutral">Right-click</span>
               </div>
             </ContextMenu.Trigger>
             <ContextMenu.Content size={size}>
@@ -167,8 +167,8 @@ export const VariantSolid: Story = {
   render: args => (
     <ContextMenu.Root>
       <ContextMenu.Trigger>
-        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
-          <span className="text-sm text-muted-foreground">Solid variant</span>
+        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-neutral bg-neutral-soft">
+          <span className="text-sm text-neutral">Solid variant</span>
         </div>
       </ContextMenu.Trigger>
       <ContextMenu.Content size={args.size} variant={args.variant} color={args.color}>
@@ -189,8 +189,8 @@ export const VariantSoft: Story = {
   render: args => (
     <ContextMenu.Root>
       <ContextMenu.Trigger>
-        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
-          <span className="text-sm text-muted-foreground">Soft variant</span>
+        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-neutral bg-neutral-soft">
+          <span className="text-sm text-neutral">Soft variant</span>
         </div>
       </ContextMenu.Trigger>
       <ContextMenu.Content size={args.size} variant={args.variant} color={args.color}>
@@ -210,8 +210,8 @@ export const ItemColors: Story = {
   render: () => (
     <ContextMenu.Root>
       <ContextMenu.Trigger>
-        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
-          <span className="text-sm text-muted-foreground">Items with colors</span>
+        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-neutral bg-neutral-soft">
+          <span className="text-sm text-neutral">Items with colors</span>
         </div>
       </ContextMenu.Trigger>
       <ContextMenu.Content>
@@ -235,8 +235,8 @@ export const WithLabelsAndGroups: Story = {
   render: () => (
     <ContextMenu.Root>
       <ContextMenu.Trigger>
-        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
-          <span className="text-sm text-muted-foreground">Labels and groups</span>
+        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-neutral bg-neutral-soft">
+          <span className="text-sm text-neutral">Labels and groups</span>
         </div>
       </ContextMenu.Trigger>
       <ContextMenu.Content>
@@ -270,8 +270,8 @@ export const CheckboxItems: Story = {
     return (
       <ContextMenu.Root>
         <ContextMenu.Trigger>
-          <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
-            <span className="text-sm text-muted-foreground">Checkbox items</span>
+          <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-neutral bg-neutral-soft">
+            <span className="text-sm text-neutral">Checkbox items</span>
           </div>
         </ContextMenu.Trigger>
         <ContextMenu.Content>
@@ -302,8 +302,8 @@ export const RadioItems: Story = {
     return (
       <ContextMenu.Root>
         <ContextMenu.Trigger>
-          <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
-            <span className="text-sm text-muted-foreground">Radio items</span>
+          <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-neutral bg-neutral-soft">
+            <span className="text-sm text-neutral">Radio items</span>
           </div>
         </ContextMenu.Trigger>
         <ContextMenu.Content>
@@ -328,8 +328,8 @@ export const WithSubmenus: Story = {
   render: () => (
     <ContextMenu.Root>
       <ContextMenu.Trigger>
-        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
-          <span className="text-sm text-muted-foreground">With submenus</span>
+        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-neutral bg-neutral-soft">
+          <span className="text-sm text-neutral">With submenus</span>
         </div>
       </ContextMenu.Trigger>
       <ContextMenu.Content>
@@ -370,8 +370,8 @@ export const DisabledItems: Story = {
   render: () => (
     <ContextMenu.Root>
       <ContextMenu.Trigger>
-        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
-          <span className="text-sm text-muted-foreground">Disabled items</span>
+        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-neutral bg-neutral-soft">
+          <span className="text-sm text-neutral">Disabled items</span>
         </div>
       </ContextMenu.Trigger>
       <ContextMenu.Content>
@@ -406,7 +406,7 @@ export const FileBrowserContext: Story = {
     return (
       <ContextMenu.Root>
         <ContextMenu.Trigger>
-          <div className="p-4 rounded-lg border bg-card">
+          <div className="p-4 rounded-lg border bg-neutral-surface">
             <div className="grid grid-cols-4 gap-4">
               {[
                 { name: 'Documents', icon: FolderOpen },
@@ -418,9 +418,9 @@ export const FileBrowserContext: Story = {
               ].map(item => (
                 <div
                   key={item.name}
-                  className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-accent cursor-pointer"
+                  className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-accent-soft cursor-pointer"
                 >
-                  <item.icon className="h-10 w-10 text-muted-foreground" />
+                  <item.icon className="h-10 w-10 text-neutral" />
                   <span className="text-xs truncate max-w-full">{item.name}</span>
                 </div>
               ))}
@@ -472,8 +472,8 @@ export const Animated: Story = {
   render: () => (
     <ContextMenu.Root open>
       <ContextMenu.Trigger>
-        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
-          <span className="text-sm text-muted-foreground">Right-click here</span>
+        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-neutral bg-neutral-soft">
+          <span className="text-sm text-neutral">Right-click here</span>
         </div>
       </ContextMenu.Trigger>
       <ContextMenu.Content animated>
@@ -494,8 +494,8 @@ export const AnimatedSoft: Story = {
   render: () => (
     <ContextMenu.Root open>
       <ContextMenu.Trigger>
-        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
-          <span className="text-sm text-muted-foreground">Right-click here</span>
+        <div className="flex h-40 w-80 items-center justify-center rounded-lg border-2 border-dashed border-neutral bg-neutral-soft">
+          <span className="text-sm text-neutral">Right-click here</span>
         </div>
       </ContextMenu.Trigger>
       <ContextMenu.Content animated variant="soft">
@@ -525,8 +525,8 @@ export const TextEditorContext: Story = {
     return (
       <ContextMenu.Root>
         <ContextMenu.Trigger>
-          <div className="w-96 h-48 rounded-lg border bg-card font-mono text-sm p-4 overflow-hidden">
-            <div className="text-muted-foreground">
+          <div className="w-96 h-48 rounded-lg border bg-neutral-surface font-mono text-sm p-4 overflow-hidden">
+            <div className="text-neutral">
               {`function greet(name) {
   console.log("Hello, " + name);
 }

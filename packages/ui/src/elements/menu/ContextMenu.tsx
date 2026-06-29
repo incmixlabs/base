@@ -12,11 +12,10 @@ import type { Color } from '@/theme/tokens'
 import { getShortcutAccessibleLabel } from './menu.a11y'
 import type { MenuSize, MenuVariant } from './menu.props'
 import {
+  menuCheckIndicatorIconBySize,
   menuContentBase,
-  menuContentBySize,
   menuContentByVariant,
   menuHighlightBgByVariant,
-  menuIconBySize,
   menuIndicatorBaseCls,
   menuItemBase,
   menuItemBaseCls,
@@ -37,17 +36,19 @@ import {
   menuPanelVariants,
   menuPopupBaseCls,
   menuPositionerBase,
+  menuRadioIndicatorIconBySize,
   menuSeparatorBase,
   menuSeparatorBySize,
   menuShortcutBase,
   menuShortcutBaseCls,
   menuShortcutBySize,
   menuSubTriggerIcon,
+  menuSubTriggerIconBySize,
   menuSubTriggerIconCls,
   menuViewportBase,
   menuViewportBaseCls,
   menuViewportBySize,
-} from './menu.shared.css'
+} from './menu.shared.class'
 import { MenuHighlight } from './menu-highlight'
 
 // Context for sharing props across components
@@ -177,15 +178,7 @@ const ContextMenuContent = React.forwardRef<HTMLDivElement, ContextMenuContentPr
                       transition={menuPanelTransition}
                     />
                   }
-                  className={cn(
-                    menuPopupBaseCls,
-                    'af-PopperContent',
-                    'origin-[var(--transform-origin)]',
-                    menuContentBase,
-                    menuContentByVariant[variant],
-                    menuContentBySize[size],
-                    className,
-                  )}
+                  className={cn(menuPopupBaseCls, menuContentBase, menuContentByVariant[variant], className)}
                   {...props}
                 >
                   {animated ? (
@@ -336,7 +329,7 @@ const ContextMenuCheckboxItem = React.forwardRef<HTMLDivElement, ContextMenuChec
       >
         <span className={cn(menuIndicatorBaseCls, menuItemIndicatorBySize[context.size])}>
           <ContextMenuPrimitive.CheckboxItemIndicator>
-            <Check className={menuIconBySize[context.size]} strokeWidth={2.5} />
+            <Check className={menuCheckIndicatorIconBySize[context.size]} strokeWidth={2.5} />
           </ContextMenuPrimitive.CheckboxItemIndicator>
         </span>
         <span
@@ -434,7 +427,7 @@ const ContextMenuRadioItem = React.forwardRef<HTMLDivElement, ContextMenuRadioIt
       >
         <span className={cn(menuIndicatorBaseCls, menuItemIndicatorBySize[context.size])}>
           <ContextMenuPrimitive.RadioItemIndicator>
-            <Circle className={cn(menuIconBySize[context.size], 'fill-current')} strokeWidth={0} />
+            <Circle className={cn(menuRadioIndicatorIconBySize[context.size], 'fill-current')} strokeWidth={0} />
           </ContextMenuPrimitive.RadioItemIndicator>
         </span>
         <span
@@ -596,7 +589,9 @@ const ContextMenuSubTrigger = React.forwardRef<HTMLDivElement, ContextMenuSubTri
         >
           {children}
         </span>
-        <ChevronRight className={cn(menuSubTriggerIconCls, menuSubTriggerIcon, menuIconBySize[context.size])} />
+        <ChevronRight
+          className={cn(menuSubTriggerIconCls, menuSubTriggerIcon, menuSubTriggerIconBySize[context.size])}
+        />
       </ContextMenuPrimitive.SubmenuTrigger>
     )
   },
@@ -632,13 +627,7 @@ const ContextMenuSubContent = React.forwardRef<HTMLDivElement, ContextMenuSubCon
         >
           <ContextMenuPrimitive.Popup
             ref={ref}
-            className={cn(
-              menuPopupBaseCls,
-              menuContentBase,
-              menuContentByVariant[context.variant],
-              menuContentBySize[context.size],
-              className,
-            )}
+            className={cn(menuPopupBaseCls, menuContentBase, menuContentByVariant[context.variant], className)}
             {...props}
           >
             {context.animated ? (

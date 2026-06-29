@@ -1,10 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import * as React from 'react'
 import { Button } from '@/elements/button/Button'
+import { getPropDefValues } from '@/theme/props/prop-def'
 import { ContextMenu } from './ContextMenu'
 import { DropdownMenu } from './DropdownMenu'
 import { MenuWrapper } from './MenuWrapper'
 import type { MenuWrapperData, MenuWrapperEntry, MenuWrapperProps } from './menu-wrapper.types'
+import { baseMenuContentPropDefs } from './menu.props'
+
+const menuWrapperModes = ['dropdown', 'context'] as const
+const menuWrapperSizes = getPropDefValues(baseMenuContentPropDefs.size)
+const menuWrapperVariants = getPropDefValues(baseMenuContentPropDefs.variant)
+const menuWrapperColors = getPropDefValues(baseMenuContentPropDefs.color)
 
 const demoData: MenuWrapperData = [
   {
@@ -108,10 +115,10 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    mode: { control: 'inline-radio', options: ['dropdown', 'context'] },
-    variant: { control: 'select', options: ['solid', 'soft', 'surface'] },
-    color: { control: 'select' },
-    size: { control: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl', '2x'] },
+    mode: { control: 'inline-radio', options: menuWrapperModes },
+    variant: { control: 'select', options: menuWrapperVariants },
+    color: { control: 'select', options: menuWrapperColors },
+    size: { control: 'select', options: menuWrapperSizes },
   },
 } satisfies Meta<MenuWrapperProps>
 
@@ -177,7 +184,7 @@ export const WrapperVsPrimitive: Story = {
           <div className="text-sm font-medium">Context primitive</div>
           <ContextMenu.Root>
             <ContextMenu.Trigger>
-              <div className="inline-flex min-h-10 items-center justify-center rounded-md border border-border px-3 text-sm">
+              <div className="inline-flex min-h-10 items-center justify-center rounded-md border border-neutral px-3 text-sm">
                 Right click
               </div>
             </ContextMenu.Trigger>

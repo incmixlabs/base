@@ -1,4 +1,3 @@
-import { asChildPropDef } from '@/theme/props/as-child.prop'
 import { colorPropDef } from '@/theme/props/color.prop'
 import { heightPropDefs } from '@/theme/props/height.props'
 import { highContrastPropDef } from '@/theme/props/high-contrast.prop'
@@ -11,7 +10,6 @@ const contentSizes = ['xs', 'sm', 'md', 'lg'] as const
 const maxWidthValues = ['xs', 'sm', 'md', 'lg', 'xl', 'none'] as const
 
 const popoverContentPropDefs = {
-  ...asChildPropDef,
   variant: {
     type: 'enum',
     values: contentVariants,
@@ -44,7 +42,7 @@ const popoverContentPropDefs = {
 }
 
 type PopoverContentOwnProps = GetPropDefTypes<
-  typeof popoverContentPropDefs & typeof asChildPropDef & typeof widthPropDefs & typeof heightPropDefs
+  typeof popoverContentPropDefs & typeof widthPropDefs & typeof heightPropDefs
 >
 
 type PopoverContentVariant = (typeof contentVariants)[number]

@@ -1,12 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Copy, HelpCircle, Info, Settings, Trash2 } from 'lucide-react'
 import { Button, IconButton, SimpleTooltip, Tooltip } from '@/elements'
-import type {
-  PopoverContentMaxWidth,
-  PopoverContentSize,
-  PopoverContentVariant,
-} from '@/elements/popover/popover.props'
-import { popoverContentPropDefs } from '@/elements/popover/popover.props'
 import { Label } from '@/form'
 import { Flex } from '@/layouts'
 import { colorPropDef } from '@/theme/props/color.prop'
@@ -14,17 +8,19 @@ import { getPropDefValues } from '@/theme/props/prop-def'
 import { selectArgType } from '@/theme/props/storybook'
 import type { Color } from '@/theme/tokens'
 import { Text } from '@/typography'
+import type { TooltipMaxWidth, TooltipSize, TooltipVariant } from './Tooltip'
+import { tooltipContentPropDefs } from './tooltip.props'
 
-const tooltipContentSizes = getPropDefValues(popoverContentPropDefs.size)
-const tooltipContentVariants = getPropDefValues(popoverContentPropDefs.variant)
-const tooltipMaxWidthValues = getPropDefValues(popoverContentPropDefs.maxWidthToken)
+const tooltipContentSizes = getPropDefValues(tooltipContentPropDefs.size)
+const tooltipContentVariants = getPropDefValues(tooltipContentPropDefs.variant)
+const tooltipMaxWidthValues = getPropDefValues(tooltipContentPropDefs.maxWidthToken)
 const tooltipColors = getPropDefValues(colorPropDef.color)
 
 type TooltipStoryArgs = {
-  variant: PopoverContentVariant
+  variant: TooltipVariant
   color: Color
-  size: PopoverContentSize
-  maxWidth: PopoverContentMaxWidth
+  size: TooltipSize
+  maxWidth: TooltipMaxWidth
   highContrast: boolean
   side: 'top' | 'right' | 'bottom' | 'left'
   align: 'start' | 'center' | 'end'
@@ -44,7 +40,7 @@ const meta: Meta<TooltipStoryArgs> = {
   ],
   argTypes: {
     variant: {
-      ...selectArgType(popoverContentPropDefs.variant),
+      ...selectArgType(tooltipContentPropDefs.variant),
       description: 'Surface visual variant',
     },
     color: {
@@ -52,11 +48,11 @@ const meta: Meta<TooltipStoryArgs> = {
       description: 'Semantic color lane',
     },
     size: {
-      ...selectArgType(popoverContentPropDefs.size),
+      ...selectArgType(tooltipContentPropDefs.size),
       description: 'Content padding size',
     },
     maxWidth: {
-      ...selectArgType(popoverContentPropDefs.maxWidthToken),
+      ...selectArgType(tooltipContentPropDefs.maxWidthToken),
       description: 'Maximum width token',
     },
     highContrast: {

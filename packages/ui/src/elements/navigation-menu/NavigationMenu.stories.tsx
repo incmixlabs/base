@@ -211,7 +211,7 @@ export const Sizes: Story = {
     <div className="flex flex-col gap-8">
       {navigationMenuPropDefs.Root.size.values.map(size => (
         <div key={size} className="flex flex-col gap-2">
-          <p className="text-sm font-medium text-muted-foreground">Size {size}</p>
+          <p className="text-sm font-medium text-neutral opacity-70">Size {size}</p>
           <ExampleNavigationMenu size={size} />
         </div>
       ))}
@@ -224,7 +224,7 @@ export const Colors: Story = {
     <div className="flex flex-col gap-8">
       {semanticColorKeys.map(color => (
         <div key={color} className="flex flex-col gap-2">
-          <p className="text-sm font-medium capitalize text-muted-foreground">{color}</p>
+          <p className="text-sm font-medium capitalize text-neutral opacity-70">{color}</p>
           <ExampleNavigationMenu color={color} />
         </div>
       ))}

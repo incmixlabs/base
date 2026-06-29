@@ -13,11 +13,10 @@ import type { Color, Radius } from '@/theme/tokens'
 import { getShortcutAccessibleLabel } from './menu.a11y'
 import type { MenuSize, MenuVariant } from './menu.props'
 import {
+  menuCheckIndicatorIconBySize,
   menuContentBase,
-  menuContentBySize,
   menuContentByVariant,
   menuHighlightBgByVariant,
-  menuIconBySize,
   menuIndicatorBaseCls,
   menuItemBase,
   menuItemBaseCls,
@@ -39,17 +38,19 @@ import {
   menuPopupBaseCls,
   menuPopupOverflowVisibleCls,
   menuPositionerBase,
+  menuRadioIndicatorIconBySize,
   menuSeparatorBase,
   menuSeparatorBySize,
   menuShortcutBase,
   menuShortcutBaseCls,
   menuShortcutBySize,
   menuSubTriggerIcon,
+  menuSubTriggerIconBySize,
   menuSubTriggerIconCls,
   menuViewportBase,
   menuViewportBaseCls,
   menuViewportBySize,
-} from './menu.shared.css'
+} from './menu.shared.class'
 import { MenuHighlight } from './menu-highlight'
 
 // Context for sharing props
@@ -100,7 +101,7 @@ function DropdownMenuItemLabel({ children, title, subtitle, bold, italic, strike
       >
         {primary}
       </span>
-      {hasSubtitle ? <span className="truncate text-xs text-foreground/70">{subtitle}</span> : null}
+      {hasSubtitle ? <span className="truncate text-xs text-neutral opacity-70">{subtitle}</span> : null}
     </span>
   )
 }
@@ -315,15 +316,7 @@ const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContent
                       transition={menuPanelTransition}
                     />
                   }
-                  className={cn(
-                    menuPopupBaseCls,
-                    'af-PopperContent',
-                    'origin-[var(--transform-origin)]',
-                    menuContentBase,
-                    menuContentByVariant[variant],
-                    menuContentBySize[size],
-                    className,
-                  )}
+                  className={cn(menuPopupBaseCls, menuContentBase, menuContentByVariant[variant], className)}
                   style={getRadiusStyles(radius)}
                   {...props}
                 >
@@ -481,7 +474,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<HTMLDivElement, DropdownMenuCh
       >
         <span className={cn(menuIndicatorBaseCls, menuItemIndicatorBySize[context.size])}>
           <MenuPrimitive.CheckboxItemIndicator>
-            <Check className={menuIconBySize[context.size]} strokeWidth={2.5} />
+            <Check className={menuCheckIndicatorIconBySize[context.size]} strokeWidth={2.5} />
           </MenuPrimitive.CheckboxItemIndicator>
         </span>
         <DropdownMenuItemLabel bold={bold} italic={italic} strikethrough={strikethrough}>
@@ -572,7 +565,7 @@ const DropdownMenuRadioItem = React.forwardRef<HTMLDivElement, DropdownMenuRadio
       >
         <span className={cn(menuIndicatorBaseCls, menuItemIndicatorBySize[context.size])}>
           <MenuPrimitive.RadioItemIndicator>
-            <Circle className={cn(menuIconBySize[context.size], 'fill-current')} strokeWidth={0} />
+            <Circle className={cn(menuRadioIndicatorIconBySize[context.size], 'fill-current')} strokeWidth={0} />
           </MenuPrimitive.RadioItemIndicator>
         </span>
         <DropdownMenuItemLabel bold={bold} italic={italic} strikethrough={strikethrough}>
@@ -748,7 +741,9 @@ const DropdownMenuSubTrigger = React.forwardRef<HTMLDivElement, DropdownMenuSubT
         <DropdownMenuItemLabel bold={bold} italic={italic} strikethrough={strikethrough}>
           {children}
         </DropdownMenuItemLabel>
-        <ChevronRight className={cn(menuSubTriggerIconCls, menuSubTriggerIcon, menuIconBySize[context.size])} />
+        <ChevronRight
+          className={cn(menuSubTriggerIconCls, menuSubTriggerIcon, menuSubTriggerIconBySize[context.size])}
+        />
       </MenuPrimitive.SubmenuTrigger>
     )
   },
@@ -803,11 +798,9 @@ const DropdownMenuSubContent = React.forwardRef<HTMLDivElement, DropdownMenuSubC
                 }
                 className={cn(
                   menuPopupBaseCls,
-                  'origin-[var(--transform-origin)]',
                   overflowVisible && menuPopupOverflowVisibleCls,
                   menuContentBase,
                   menuContentByVariant[context.variant],
-                  menuContentBySize[context.size],
                   className,
                 )}
                 style={getRadiusStyles(context.radius)}
