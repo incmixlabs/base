@@ -12,7 +12,7 @@ const checkboxCardsGapValues = ['1', '2', '3', '4', '5', '6'] as const
 
 const checkboxCardsRootPropDefs = {
   ...asChildPropDef,
-  size: { type: 'enum', values: checkboxCardsSizes, default: 'sm', responsive: true },
+  size: { type: 'enum', values: checkboxCardsSizes, default: 'sm' },
   variant: { type: 'enum', values: checkboxCardsVariants, default: 'surface' },
   ...colorPropDef,
   ...radiusPropDef,
