@@ -114,9 +114,12 @@ describe('RadioCards', () => {
     )
 
     const radioCard = screen.getByRole('radio', { name: 'Standard' })
+    const row = radioCard.querySelector('div')
+    const content = row?.lastElementChild
     const indicatorShell = radioCard.querySelector('span')
     const indicatorInner = indicatorShell?.firstElementChild
 
+    expectClassTokens(content?.className, ['text-xs', 'leading-4'])
     expectClassTokens(indicatorShell?.className, ['box-border', '[height:0.75rem]', '[width:0.75rem]'])
     expectClassTokens(indicatorInner?.className, [
       '[background-color:var(--color-light-primary)]',

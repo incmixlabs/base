@@ -41,11 +41,6 @@ function createValidTheme() {
       mentionTextarea: { previewMinHeight: '96px' },
       date: { size: { md: { calendarDaySize: '2.75rem' } } },
       textField: { size: { sm: { paddingInline: '0.75rem' } } },
-      checkbox: { size: { sm: { boxSize: '1rem' } } },
-      checkboxGroup: { gap: '0.5rem', inlineGap: '1rem', itemGap: '0.5rem' },
-      checkboxCards: { size: { md: { padding: '1rem' } } },
-      radio: { size: { md: { radioSize: '1.25rem' } }, group: { gap: '0.5rem', inlineGap: '1rem' } },
-      radioCards: { size: { md: { indicatorInnerSize: '0.625rem' } } },
       switch: { size: { sm: { rootWidth: '2.25rem' } }, group: { gap: '0.5rem', inlineGap: '1rem' } },
       iconButton: { size: { sm: { iconSize: '1rem' } } },
       toggle: { size: { sm: { iconSize: '1rem' } }, group: { gap: '0.25rem' } },
@@ -249,8 +244,6 @@ describe('theme-contract', () => {
     delete (theme.component as Record<string, unknown>).badge
     delete (theme.component as Record<string, unknown>).callout
     delete (theme.component as Record<string, unknown>).card
-    delete (theme.component as Record<string, unknown>).checkbox
-    delete (theme.component as Record<string, unknown>).checkboxCards
     delete (theme.component as Record<string, unknown>).fileUpload
     delete (theme.component as Record<string, unknown>).fieldGroup
     delete (theme.component as Record<string, unknown>).iconButton
@@ -261,9 +254,6 @@ describe('theme-contract', () => {
     delete (theme.component as Record<string, unknown>).tooltip
     delete (theme.component as Record<string, unknown>).progress
     delete (theme.component as Record<string, unknown>).dialog
-    delete (theme.component as Record<string, unknown>).checkboxGroup
-    delete (theme.component as Record<string, unknown>).radio
-    delete (theme.component as Record<string, unknown>).radioCards
     delete (theme.component as Record<string, unknown>).slider
     delete (theme.component as Record<string, unknown>).stepper
     delete (theme.component as Record<string, unknown>).switch
@@ -282,8 +272,6 @@ describe('theme-contract', () => {
       expect(result.value.component.badge).toEqual({})
       expect(result.value.component.callout).toEqual({})
       expect(result.value.component.card).toEqual({})
-      expect(result.value.component.checkbox).toEqual({})
-      expect(result.value.component.checkboxCards).toEqual({})
       expect(result.value.component.fileUpload).toEqual({})
       expect(result.value.component.fieldGroup).toEqual({})
       expect(result.value.component.iconButton).toEqual({})
@@ -294,9 +282,6 @@ describe('theme-contract', () => {
       expect(result.value.component.tooltip).toEqual({})
       expect(result.value.component.progress).toEqual({})
       expect(result.value.component.dialog).toEqual({})
-      expect(result.value.component.checkboxGroup).toEqual({})
-      expect(result.value.component.radio).toEqual({})
-      expect(result.value.component.radioCards).toEqual({})
       expect(result.value.component.slider).toEqual({})
       expect(result.value.component.stepper).toEqual({})
       expect(result.value.component.switch).toEqual({})

@@ -7,7 +7,7 @@ import {
   checkboxControlIconSizeVariants,
   checkboxControlSizeVariants,
   radioCheckboxCardSizes,
-  radioCheckboxCardTextSizeVariants,
+  radioCheckboxCardTextVariants,
 } from './radio-checkbox.shared.class'
 
 export type CheckboxCardSize = FormSize
@@ -15,9 +15,7 @@ export type CheckboxCardSize = FormSize
 export const checkboxCardSizeVariants = Object.fromEntries(
   radioCheckboxCardSizes.map(size => [
     size,
-    [checkboxCardPaddingVariants[size], checkboxCardGapVariants[size], radioCheckboxCardTextSizeVariants[size]].join(
-      ' ',
-    ),
+    [checkboxCardPaddingVariants[size], checkboxCardGapVariants[size], radioCheckboxCardTextVariants[size]].join(' '),
   ]),
 ) as Record<CheckboxCardSize, string>
 

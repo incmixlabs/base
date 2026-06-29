@@ -11,6 +11,13 @@ export const radioCheckboxCardTextSizeVariants = {
   lg: 'text-lg',
 } as const satisfies Record<FormSize, string>
 
+export const radioCheckboxCardTextVariants = {
+  xs: `${radioCheckboxCardTextSizeVariants.xs} leading-4`,
+  sm: `${radioCheckboxCardTextSizeVariants.sm} leading-5`,
+  md: `${radioCheckboxCardTextSizeVariants.md} leading-6`,
+  lg: `${radioCheckboxCardTextSizeVariants.lg} leading-7`,
+} as const satisfies Record<FormSize, string>
+
 export const checkboxControlSizeVariants = {
   xs: 'h-3.5 w-3.5',
   sm: 'h-4 w-4',

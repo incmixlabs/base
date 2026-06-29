@@ -29,6 +29,7 @@ import {
   radioCardPaddingVariants,
   radioCardRootBase,
   radioCardRootColorVariants,
+  radioCheckboxCardTextVariants,
 } from './radio-cards.class'
 import { type RadioCardsGap, radioCardsGapValues, radioCardsRootPropDefs } from './radio-cards.props'
 import { radioHighContrastByVariant } from './radio-group.class'
@@ -241,7 +242,7 @@ const RadioCardsItem = React.forwardRef<HTMLButtonElement, RadioCardsItemProps>(
             />
           </span>
           {/* Content */}
-          <div className={radioCardContentBase}>{children}</div>
+          <div className={cn(radioCardContentBase, radioCheckboxCardTextVariants[context.size])}>{children}</div>
         </div>
       </RadioPrimitive.Root>
     )
