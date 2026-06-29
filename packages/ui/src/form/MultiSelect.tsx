@@ -696,26 +696,22 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
               textFieldFloatingWrapperColorVariants[effectiveColor],
             )}
           >
-            <Row
+            <div
               {...triggerProps}
-              display="inline-flex"
-              align="center"
-              justify="between"
               aria-describedby={ariaDescribedby}
               aria-invalid={ariaInvalid ?? (error || undefined)}
               data-placeholder={selectedOptions.length === 0 ? '' : undefined}
               data-popup-open={open ? '' : undefined}
-              className={cn(
-                'peer w-full outline-none transition-all duration-150 ease-in-out',
+              className={`${cn(
+                'peer inline-flex w-full items-center justify-between outline-none transition-all duration-150 ease-in-out',
                 'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)]',
                 floatingInputBaseCls,
                 floatingStyle && floatingInputStyleVariants[floatingStyle],
-                floatingStyle && textFieldFloatingColorVariants[effectiveColor]?.[floatingStyle],
                 disabled && 'opacity-50 cursor-not-allowed',
-              )}
+              )} ${floatingStyle ? textFieldFloatingColorVariants[effectiveColor]?.[floatingStyle] : ''}`}
             >
               {triggerContent}
-            </Row>
+            </div>
             {floatingLabel ? (
               <label
                 id={labelId}
@@ -759,26 +755,21 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                 {label}
               </Label>
             ) : null}
-            <Row
+            <div
               {...triggerProps}
-              display="inline-flex"
-              align="center"
-              justify="between"
-              gap="2"
               aria-describedby={ariaDescribedby}
               aria-invalid={ariaInvalid ?? (error || undefined)}
-              className={cn(
+              className={`${cn(
                 textFieldInputBaseCls,
-                'w-full box-border',
+                'inline-flex w-full box-border items-center justify-between gap-2',
                 'min-h-[var(--tf-height)] px-[var(--tf-padding-x)] py-[var(--tf-padding-y)] text-left',
                 'text-[length:var(--tf-font-size)] leading-[var(--tf-line-height)]',
                 formControlBorderFrame,
-                textFieldColorVariants[effectiveColor][surfaceVariant],
                 disabled && 'opacity-50 cursor-not-allowed',
-              )}
+              )} ${textFieldColorVariants[effectiveColor][surfaceVariant]}`}
             >
               {triggerContent}
-            </Row>
+            </div>
           </Column>
         )}
 

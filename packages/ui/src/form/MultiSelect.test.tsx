@@ -20,7 +20,17 @@ describe('MultiSelect', () => {
 
     expect(trigger).toHaveClass('box-border', 'border', 'border-solid')
     expect(trigger.className).toContain('rounded-[var(--element-border-radius,var(--radius-md))]')
+    expect(trigger.className).toContain('text-slate')
     expect(trigger.className).not.toContain('border-input')
     expect(trigger.className).not.toContain('bg-background')
+  })
+
+  it('keeps the error text color class on the trigger', () => {
+    render(<MultiSelect options={options} placeholder="Select skills..." error />)
+
+    const trigger = screen.getByRole('button', { name: 'Select skills...' })
+
+    expect(trigger.className).toContain('border-error')
+    expect(trigger.className).toContain('text-error')
   })
 })
