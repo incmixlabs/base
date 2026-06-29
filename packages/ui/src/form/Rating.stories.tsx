@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Button } from '@/elements/button/Button'
 import { getPropDefValues } from '@/theme/props/prop-def'
 import { selectArgType } from '@/theme/props/storybook'
+import { Label } from './Label'
 import { Rating, RatingItem } from './Rating'
 import { ratingPropDefs } from './rating.props'
 
@@ -241,8 +242,10 @@ export const FormIntegration: Story = {
         className="space-y-4"
       >
         <div>
-          <label className="mb-2 block text-sm font-medium">Your Rating</label>
-          <Rating name="rating" defaultValue={0} required>
+          <Label id="rating-label" className="mb-2 block text-sm font-medium">
+            Your Rating
+          </Label>
+          <Rating name="rating" defaultValue={0} required aria-labelledby="rating-label">
             {Array.from({ length: 5 }, (_, i) => (
               <RatingItem key={i} />
             ))}

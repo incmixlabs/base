@@ -18,7 +18,12 @@ import {
   checkboxSizeVariants,
 } from './checkbox.class'
 import type { CheckboxSize, CheckboxVariant } from './checkbox.props'
-import { checkboxGroupItemBase, checkboxGroupRootBase, checkboxGroupRootOrientation } from './checkbox-group.class'
+import {
+  checkboxGroupItemBase,
+  checkboxGroupItemGap,
+  checkboxGroupRootBase,
+  checkboxGroupRootOrientation,
+} from './checkbox-group.class'
 import type { CheckboxGroupItemProps, CheckboxGroupRootProps } from './checkbox-group.props'
 import { checkboxGroupRootPropDefs } from './checkbox-group.props'
 import { useFieldGroup } from './FieldGroupContext'
@@ -107,7 +112,7 @@ const CheckboxGroupItem = React.forwardRef<HTMLButtonElement, CheckboxGroupItemP
     const displayLabel = label || children
 
     return (
-      <div className={cn(checkboxGroupItemBase, className)}>
+      <div className={cn(checkboxGroupItemBase, checkboxGroupItemGap[context.size], className)}>
         <CheckboxPrimitive.Root
           ref={ref}
           id={id}

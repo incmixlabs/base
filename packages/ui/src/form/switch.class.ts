@@ -63,7 +63,7 @@ export const switchRootBase =
 export const switchRootSize = 'h-[var(--sw-root-height)] w-[var(--sw-root-width)] [forced-color-adjust:none]'
 
 export const switchThumbBase =
-  'pointer-events-none block rounded-full bg-light-surface shadow-lg ring-0 transition-transform h-[var(--sw-thumb-size)] w-[var(--sw-thumb-size)] translate-x-0 data-[checked]:translate-x-[var(--sw-thumb-translate)]'
+  'pointer-events-none block rounded-full bg-light-surface shadow-lg ring-0 transition-transform h-[var(--sw-thumb-size)] w-[var(--sw-thumb-size)] translate-x-0 data-[checked]:translate-x-[var(--sw-thumb-translate)] data-[checked]:rtl:-translate-x-[var(--sw-thumb-translate)]'
 
 export const switchSegmentedRootBase = 'relative inline-grid grid-cols-[1fr_1fr] items-center font-medium'
 

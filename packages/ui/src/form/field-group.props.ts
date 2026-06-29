@@ -34,12 +34,14 @@ const fieldGroupPropDefs = {
 } satisfies {
   size: PropDef<(typeof fieldGroupSizes)[number]>
   variant: PropDef<(typeof fieldGroupVariants)[number]>
-  gap: PropDef<Spacing>
+  gap: PropDef<FieldGroupGap>
   layout: PropDef<FieldGroupLayout>
   columns: PropDef<(typeof gridPropDefs.columns.values)[number]>
   align: PropDef<AlignItems>
   disabled: PropDef<boolean>
 }
+
+export type FieldGroupGap = (typeof fieldGroupGaps)[number]
 
 export {
   fieldGroupAlignments,

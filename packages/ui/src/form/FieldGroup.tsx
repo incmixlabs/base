@@ -12,7 +12,6 @@ import type {
   Radius,
   Responsive,
   Size,
-  Spacing,
   TextFieldVariant,
 } from '@/theme/tokens'
 import {
@@ -28,6 +27,7 @@ import {
   fieldGroupSideLabelsBase,
 } from './FieldGroup.class'
 import { FieldGroupProvider } from './FieldGroupContext'
+import type { FieldGroupGap } from './field-group.props'
 
 // ============================================================================
 // FieldGroup Root Component
@@ -45,7 +45,7 @@ export interface FieldGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Whether child form fields should be read-only */
   readOnly?: boolean
   /** Gap between child elements */
-  gap?: Spacing
+  gap?: FieldGroupGap
   /** Layout mode */
   layout?: FieldGroupLayout
   /** Grid columns (for grid layout) */
@@ -159,7 +159,7 @@ export interface FieldGroupSectionProps extends React.HTMLAttributes<HTMLDivElem
   /** Whether to show a separator above (default: true). Pass false for the first section. */
   separator?: boolean
   /** Gap between fields in the section */
-  gap?: Spacing
+  gap?: FieldGroupGap
 }
 
 const FieldGroupSection = React.forwardRef<HTMLDivElement, FieldGroupSectionProps>(
@@ -193,7 +193,7 @@ export interface FieldGroupRowProps extends React.HTMLAttributes<HTMLDivElement>
   /** Row description */
   description?: string
   /** Gap between fields in the row */
-  gap?: Spacing
+  gap?: FieldGroupGap
 }
 
 const FieldGroupRow = React.forwardRef<HTMLDivElement, FieldGroupRowProps>(

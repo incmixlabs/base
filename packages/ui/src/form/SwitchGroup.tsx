@@ -23,6 +23,7 @@ import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { radiusClassByToken } from '@/theme/helpers'
 import { SemanticColor } from '@/theme/props/color.prop'
+import { normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color, Radius } from '@/theme/tokens'
 import { Text } from '@/typography'
 import { useFieldGroup } from './FieldGroupContext'
@@ -37,6 +38,7 @@ import {
   switchThumbBase,
 } from './switch.class'
 import type { SwitchVariant } from './switch.props'
+import { switchPropDefs } from './switch.props'
 import type { SwitchGroupItemProps, SwitchGroupRootProps, SwitchGroupSize } from './switch-group.props'
 
 export type { SwitchGroupItemProps, SwitchGroupRootProps, SwitchGroupSize } from './switch-group.props'
@@ -84,6 +86,10 @@ const SwitchGroupRoot = React.forwardRef<HTMLDivElement, SwitchGroupRootProps>(
     const fieldGroup = useFieldGroup()
     const size = resolveFormSize(sizeProp ?? fieldGroup.size)
     const radius = radiusProp ?? fieldGroup.radius ?? 'full'
+    const safeVariant = (normalizeEnumPropValue(switchPropDefs.variant, variant) ??
+      switchPropDefs.variant.default) as SwitchVariant
+    const safeColor = (normalizeEnumPropValue(switchPropDefs.color, color) ?? SemanticColor.primary) as Color
+    const safeRadius = (normalizeEnumPropValue(switchPropDefs.radius, radius) ?? 'full') as Radius
     const effectiveDisabled = disabled || fieldGroup.disabled
 
     const [internalValue, setInternalValue] = React.useState<string[]>(defaultValue)
@@ -104,7 +110,15 @@ const SwitchGroupRoot = React.forwardRef<HTMLDivElement, SwitchGroupRootProps>(
 
     return (
       <SwitchGroupContext.Provider
-        value={{ size, variant, color, radius, disabled: effectiveDisabled, values, onValueChange: handleValueChange }}
+        value={{
+          size,
+          variant: safeVariant,
+          color: safeColor,
+          radius: safeRadius,
+          disabled: effectiveDisabled,
+          values,
+          onValueChange: handleValueChange,
+        }}
       >
         <div
           ref={ref}

@@ -1,4 +1,4 @@
-import type { Spacing } from '../theme/tokens'
+import type { FieldGroupGap } from './field-group.props'
 
 export const fieldGroupSideLabelsBase = '[container-type:inline-size]'
 
@@ -20,7 +20,7 @@ export const fieldGroupLabelText = 'text-sm font-medium text-neutral'
 
 export const fieldGroupDescriptionText = 'text-sm text-neutral opacity-70'
 
-export const fieldGroupRowGapClasses: Record<Spacing, string> = {
+export const fieldGroupRowGapClasses: Record<FieldGroupGap, string> = {
   '0': 'gap-0',
   '1': 'gap-1',
   '2': 'gap-2',

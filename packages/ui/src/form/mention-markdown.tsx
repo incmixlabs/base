@@ -243,7 +243,7 @@ function renderResolvedMentionToken(
     return (
       <span
         key={key}
-        className="inline-flex items-center gap-1 rounded-full bg-muted/60 px-1.5 py-0.5 align-baseline text-primary font-medium"
+        className="inline-flex items-center gap-1 rounded-full bg-neutral-soft px-1.5 py-0.5 align-baseline text-primary font-medium"
         data-mention-token
       >
         <Avatar
@@ -263,7 +263,7 @@ function renderResolvedMentionToken(
     return (
       <span
         key={key}
-        className="inline-flex items-center rounded-full bg-secondary/70 px-2 py-0.5 align-baseline text-secondary-foreground font-medium"
+        className="inline-flex items-center rounded-full bg-neutral-soft px-2 py-0.5 align-baseline text-neutral font-medium"
         data-mention-token
       >
         {displayText}
@@ -296,7 +296,7 @@ export function parseMentionMarkdownInline(
     if (match[1]) {
       if (interstitial) nodes.push(interstitial)
       nodes.push(
-        <code key={key} className="rounded bg-muted px-1.5 py-0.5 text-sm font-mono">
+        <code key={key} className="rounded bg-neutral-soft px-1.5 py-0.5 text-sm font-mono">
           {m.slice(1, -1)}
         </code>,
       )
@@ -311,7 +311,7 @@ export function parseMentionMarkdownInline(
             height: parsed?.height,
           })
         ) : (
-          <span key={key} className="text-muted-foreground">
+          <span key={key} className="text-neutral opacity-70">
             [image]
           </span>
         ),
@@ -325,7 +325,7 @@ export function parseMentionMarkdownInline(
         safeSrc ? (
           renderPreviewImage(key, safeSrc, alt)
         ) : (
-          <span key={key} className="text-muted-foreground">{`[image: ${alt}]`}</span>
+          <span key={key} className="text-neutral opacity-70">{`[image: ${alt}]`}</span>
         ),
       )
     } else if (match[6]) {
@@ -366,7 +366,7 @@ export function parseMentionMarkdownInline(
       if (interstitial) nodes.push(interstitial)
       const content = m.slice(2, -2)
       nodes.push(
-        <s key={key} className="text-muted-foreground">
+        <s key={key} className="text-neutral opacity-70">
           {parseMentionMarkdownInline(content, triggerChars, sources)}
         </s>,
       )
@@ -443,10 +443,7 @@ export function MentionMarkdownPreview({
             .map(l => l.replace(/^>\s?/, ''))
             .join(' ')
           return (
-            <blockquote
-              key={bi}
-              className="border-l-2 border-muted-foreground/30 pl-4 italic text-muted-foreground mb-3"
-            >
+            <blockquote key={bi} className="border-l-2 border-neutral pl-4 italic text-neutral opacity-70 mb-3">
               {parseMentionMarkdownInline(content, triggerChars, sources)}
             </blockquote>
           )

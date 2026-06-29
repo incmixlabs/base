@@ -238,6 +238,7 @@ function Rating(props: RatingProps) {
   const dir = useDirection(dirProp)
   const instanceId = React.useId()
   const rootId = id ?? instanceId
+  const safeMax = Math.max(1, Math.floor(max))
 
   const listenersRef = useLazyRef(() => new Set<() => void>())
   const stateRef = useLazyRef<StoreState>(() => ({
@@ -417,12 +418,12 @@ function Rating(props: RatingProps) {
       readOnly,
       size,
       color,
-      max,
+      max: safeMax,
       step,
       clearable,
       getAutoIndex,
     }),
-    [rootId, dir, orientation, activationMode, disabled, readOnly, size, color, max, step, clearable, getAutoIndex],
+    [rootId, dir, orientation, activationMode, disabled, readOnly, size, color, safeMax, step, clearable, getAutoIndex],
   )
 
   const focusContextValue = React.useMemo<FocusContextValue>(
