@@ -301,18 +301,23 @@ function FilterPageDemo({
                 key={row.id}
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: '8rem minmax(0, 1fr) 7rem',
-                  gap: '1rem',
+                  gridTemplateColumns: 'clamp(4.5rem, 18%, 8rem) minmax(0, 1fr) max-content',
+                  columnGap: 'clamp(0.75rem, 2vw, 1rem)',
+                  alignItems: 'center',
                   border: '1px solid var(--color-neutral-border-subtle)',
                   borderRadius: '0.75rem',
                   padding: '0.875rem 1rem',
-                  background: 'var(--color-background)',
+                  background: 'var(--color-neutral-background)',
                   minWidth: 0,
                 }}
               >
-                <div style={{ fontWeight: 600 }}>{row.method}</div>
-                <div style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>{row.host}</div>
-                <div style={{ textAlign: 'right', color: 'var(--color-slate-text)' }}>{row.latency}ms</div>
+                <div style={{ fontWeight: 600, whiteSpace: 'nowrap' }}>{row.method}</div>
+                <div style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {row.host}
+                </div>
+                <div style={{ textAlign: 'right', color: 'var(--color-slate-text)', whiteSpace: 'nowrap' }}>
+                  {row.latency}ms
+                </div>
               </div>
             ))}
           </div>

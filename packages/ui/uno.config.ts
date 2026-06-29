@@ -71,6 +71,7 @@ import {
   dialogPopupBaseCls,
   dialogTitleBySize,
 } from './src/elements/dialog/dialog.class'
+import { filterClassNames } from './src/elements/filter/filter.class'
 import { menuSharedClassNames } from './src/elements/menu/menu.shared.class'
 import { navigationMenuClassNames } from './src/elements/navigation-menu/NavigationMenu.class'
 import {
@@ -374,6 +375,8 @@ export default defineConfig({
       ...splitClasses(menuSharedClassNames),
       // Navigation menu styles
       ...splitClasses(navigationMenuClassNames),
+      // Filter styles
+      ...splitClasses(filterClassNames),
       // Box styles
       boxRootBase,
       ...splitClasses(boxSurfaceColorClassNames),
