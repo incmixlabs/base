@@ -1,12 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import * as React from 'react'
 import { Label, Textarea } from '@/form'
-import { SemanticColor } from '@/theme/props/color.prop'
+import { SemanticColor, semanticColorKeys } from '@/theme/props/color.prop'
 import type { AvatarItem } from './AvatarPicker'
 import { type MentionItem, MentionTextarea } from './MentionTextarea'
 import { MentionMarkdownPreview } from './mention-markdown'
 import { AvatarMentionPicker, MultiSelectMentionPicker } from './mention-pickers'
 import { SelectionToolbar } from './SelectionToolbar'
+import { textFieldRootPropDefs } from './text-field.props'
 
 const meta: Meta<typeof MentionTextarea> = {
   title: 'Form/MentionTextarea',
@@ -56,8 +57,8 @@ const avatarToMentionItem = (a: AvatarItem): MentionItem => ({
   hoverCard: true,
 })
 
-const mentionBaseVariants = ['classic', 'solid', 'soft', 'surface', 'outline', 'ghost'] as const
-const mentionFloatingVariants = ['floating-filled', 'floating-standard', 'floating-outlined'] as const
+const mentionBaseVariants = textFieldRootPropDefs.variant.values.filter(variant => !variant.startsWith('floating-'))
+const mentionFloatingVariants = textFieldRootPropDefs.variant.values.filter(variant => variant.startsWith('floating-'))
 
 export const Default: Story = {
   render: () => {
@@ -73,7 +74,7 @@ export const Default: Story = {
           placeholder="Type @ to mention someone..."
           rows={4}
         />
-        <p className="text-xs text-muted-foreground">Try typing @jo to mention John</p>
+        <p className="text-xs text-neutral opacity-70">Try typing @jo to mention John</p>
       </div>
     )
   },
@@ -95,7 +96,7 @@ export const WithCallback: Story = {
           placeholder="Type @ to mention someone..."
           rows={4}
         />
-        {lastMention && <p className="text-sm text-green-600">Last mentioned: {lastMention}</p>}
+        {lastMention && <p className="text-sm text-success">Last mentioned: {lastMention}</p>}
       </div>
     )
   },
@@ -116,7 +117,7 @@ export const CustomTrigger: Story = {
           placeholder="Type # to reference a channel..."
           rows={4}
         />
-        <p className="text-xs text-muted-foreground">Use # instead of @ to reference channels</p>
+        <p className="text-xs text-neutral opacity-70">Use # instead of @ to reference channels</p>
       </div>
     )
   },
@@ -166,7 +167,7 @@ export const WithAutoSize: Story = {
           minRows={2}
           maxRows={6}
         />
-        <p className="text-xs text-muted-foreground">Textarea grows as you type</p>
+        <p className="text-xs text-neutral opacity-70">Textarea grows as you type</p>
       </div>
     )
   },
@@ -253,7 +254,7 @@ export const DisabledItems: Story = {
           placeholder="Type @ to mention someone..."
           rows={4}
         />
-        <p className="text-xs text-muted-foreground">Some users are disabled and cannot be selected</p>
+        <p className="text-xs text-neutral opacity-70">Some users are disabled and cannot be selected</p>
       </div>
     )
   },
@@ -291,7 +292,7 @@ export const CustomRenderer: Story = {
               <div className={`flex items-center gap-2 px-3 py-2 cursor-pointer ${isHighlighted ? 'bg-accent' : ''}`}>
                 <span className={`w-2 h-2 rounded-full ${statusColors[user.status]}`} />
                 <span>{user.label}</span>
-                <span className="ml-auto text-xs text-muted-foreground capitalize">{user.status}</span>
+                <span className="ml-auto text-xs text-neutral opacity-70 capitalize">{user.status}</span>
               </div>
             )
           }}
@@ -316,7 +317,7 @@ export const ChatExample: Story = {
     return (
       <div className="w-[400px] border rounded-lg overflow-hidden">
         {/* Chat header */}
-        <div className="px-4 py-3 border-b bg-muted/50">
+        <div className="px-4 py-3 border-b bg-neutral-soft">
           <h3 className="font-semibold">#general</h3>
         </div>
 
@@ -392,14 +393,16 @@ export const MultiTrigger: Story = {
 export const HighlightColors: Story = {
   render: () => {
     const [values, setValues] = React.useState<Record<string, string>>({})
-    const colors = [
-      SemanticColor.slate,
-      SemanticColor.primary,
-      SemanticColor.info,
-      SemanticColor.success,
-      SemanticColor.warning,
-      SemanticColor.error,
-    ] as const
+    const colors = semanticColorKeys.filter(color =>
+      [
+        SemanticColor.slate,
+        SemanticColor.primary,
+        SemanticColor.info,
+        SemanticColor.success,
+        SemanticColor.warning,
+        SemanticColor.error,
+      ].includes(color),
+    )
 
     return (
       <div className="w-96 space-y-4">
@@ -472,7 +475,7 @@ export const MultipleTriggersSameTextarea: Story = {
           rows={4}
           toolbar
         />
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-neutral opacity-70">
           Try typing @jo for users (primary highlight) or #gen for channels (info highlight)
         </p>
       </div>
@@ -495,12 +498,12 @@ export const WithToolbar: Story = {
           rows={6}
           toolbar
         />
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-neutral opacity-70">
           Select text to see the formatting toolbar. Use @ to mention people.
         </p>
         {value && (
-          <div className="mt-4 p-3 rounded-md border bg-muted/30">
-            <p className="text-xs font-medium text-muted-foreground mb-1">Raw markdown:</p>
+          <div className="mt-4 p-3 rounded-md border bg-neutral-soft">
+            <p className="text-xs font-medium text-neutral opacity-70 mb-1">Raw markdown:</p>
             <pre className="text-xs whitespace-pre-wrap font-mono">{value}</pre>
           </div>
         )}
@@ -562,7 +565,7 @@ export const MediumStyleEditor: Story = {
       <div className="w-[680px] mx-auto space-y-4">
         <div className="space-y-1">
           <h2 className="text-2xl font-bold tracking-tight">Write your story</h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-neutral opacity-70">
             Click the preview to edit. Select text for the formatting toolbar.
           </p>
         </div>
@@ -606,12 +609,12 @@ export const MediumStyleEditor: Story = {
             }}
             role="button"
             tabIndex={0}
-            className="min-h-[200px] rounded-md border border-transparent hover:border-input px-4 py-3 cursor-text transition-colors"
+            className="min-h-[200px] rounded-md border border-transparent hover:border-neutral px-4 py-3 cursor-text transition-colors"
           >
             {value ? (
               <MentionMarkdownPreview markdown={value} />
             ) : (
-              <p className="text-muted-foreground">Click to start writing...</p>
+              <p className="text-neutral opacity-70">Click to start writing...</p>
             )}
           </div>
         )}
@@ -619,8 +622,10 @@ export const MediumStyleEditor: Story = {
         {/* Raw markdown */}
         {value && (
           <details className="text-xs">
-            <summary className="cursor-pointer text-muted-foreground font-medium">View raw .md</summary>
-            <pre className="mt-2 p-3 rounded-md border bg-muted/30 whitespace-pre-wrap font-mono text-xs">{value}</pre>
+            <summary className="cursor-pointer text-neutral opacity-70 font-medium">View raw .md</summary>
+            <pre className="mt-2 p-3 rounded-md border bg-neutral-soft whitespace-pre-wrap font-mono text-xs">
+              {value}
+            </pre>
           </details>
         )}
       </div>
@@ -643,7 +648,7 @@ export const SlackStyleInput: Story = {
 
     return (
       <div className="w-[450px] border rounded-lg">
-        <div className="px-4 py-3 border-b bg-muted/50">
+        <div className="px-4 py-3 border-b bg-neutral-soft">
           <h3 className="font-semibold">#general</h3>
         </div>
         <div className="p-4">
@@ -661,7 +666,7 @@ export const SlackStyleInput: Story = {
             maxRows={6}
           />
         </div>
-        <div className="px-4 py-2 border-t text-xs text-muted-foreground">
+        <div className="px-4 py-2 border-t text-xs text-neutral opacity-70">
           <span className="font-medium">@</span> mention user •<span className="font-medium ml-2">#</span> link channel
           •<span className="font-medium ml-2">:</span> add emoji
         </div>
@@ -702,7 +707,7 @@ export const MultiSelectMentions: Story = {
           placeholder="Type @ to multi-select users, # for channels..."
           rows={4}
         />
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-neutral opacity-70">
           Type @ to open AvatarPicker — check multiple users, then click Add.
         </p>
       </div>
@@ -754,7 +759,7 @@ export const ResolvedIdentityPreview: Story = {
           ]}
         />
       </div>
-      <p className="text-xs text-muted-foreground">
+      <p className="text-xs text-neutral opacity-70">
         Preview resolves stable <code>user:</code> and <code>tag:</code> refs into inline display labels and avatar
         hover cards without showing the stored token format.
       </p>
@@ -793,7 +798,7 @@ export const MultiSelectTags: Story = {
           placeholder="Type @ for users, # for multi-select tags..."
           rows={4}
         />
-        <p className="text-xs text-muted-foreground">Type # to open tag picker — select multiple tags.</p>
+        <p className="text-xs text-neutral opacity-70">Type # to open tag picker — select multiple tags.</p>
       </div>
     )
   },
@@ -809,7 +814,7 @@ export const ToolbarWithActiveStates: Story = {
       <div className="w-[600px] space-y-2">
         <Label>Toolbar with active state detection</Label>
         <MentionTextarea mentions={users} value={value} onValueChange={setValue} rows={8} toolbar />
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-neutral opacity-70">
           Select formatted text — the toolbar buttons will reflect active formatting. E.g., select the bold text to see
           the Bold toggle pressed.
         </p>
@@ -853,8 +858,8 @@ export const FullFeatured: Story = {
         />
         {value && (
           <details className="text-xs">
-            <summary className="cursor-pointer text-muted-foreground">View raw markdown</summary>
-            <pre className="mt-2 p-3 rounded-md border bg-muted/30 whitespace-pre-wrap font-mono">{value}</pre>
+            <summary className="cursor-pointer text-neutral opacity-70">View raw markdown</summary>
+            <pre className="mt-2 p-3 rounded-md border bg-neutral-soft whitespace-pre-wrap font-mono">{value}</pre>
           </details>
         )}
       </div>
@@ -879,10 +884,14 @@ export const ToolbarDiagnostic: Story = {
           <SelectionToolbar textareaRef={textareaRef} value={value} onValueChange={setValue} />
         </div>
         <div className="rounded-md border p-3 min-h-[60px]">
-          <p className="text-xs font-medium text-muted-foreground mb-2">Preview:</p>
-          {value ? <MentionMarkdownPreview markdown={value} /> : <p className="text-sm text-muted-foreground">Empty</p>}
+          <p className="text-xs font-medium text-neutral opacity-70 mb-2">Preview:</p>
+          {value ? (
+            <MentionMarkdownPreview markdown={value} />
+          ) : (
+            <p className="text-sm text-neutral opacity-70">Empty</p>
+          )}
         </div>
-        <pre className="text-xs p-2 rounded bg-muted/30 border whitespace-pre-wrap font-mono">{value}</pre>
+        <pre className="text-xs p-2 rounded bg-neutral-soft border whitespace-pre-wrap font-mono">{value}</pre>
       </div>
     )
   },
@@ -914,10 +923,12 @@ export const ImageDragAndDrop: Story = {
           placeholder="Type a message… drag & drop or paste an image"
           rows={6}
         />
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-neutral opacity-70">
           Drop an image onto the textarea, or paste one from your clipboard. A placeholder is inserted while uploading.
         </p>
-        <pre className="text-xs p-2 rounded bg-muted/30 border whitespace-pre-wrap font-mono">{value || '(empty)'}</pre>
+        <pre className="text-xs p-2 rounded bg-neutral-soft border whitespace-pre-wrap font-mono">
+          {value || '(empty)'}
+        </pre>
       </div>
     )
   },

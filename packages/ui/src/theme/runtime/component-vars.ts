@@ -64,17 +64,6 @@ export type FileUploadSizeTokenSlot =
   | 'iconSize'
   | 'titleFontSize'
   | 'descriptionFontSize'
-export type MentionTextareaTokenSlot =
-  | 'suggestionMinWidth'
-  | 'suggestionMaxWidth'
-  | 'suggestionFontSize'
-  | 'suggestionEmptyPaddingInline'
-  | 'suggestionEmptyPaddingBlock'
-  | 'dragOverlayFontSize'
-  | 'previewMinHeight'
-  | 'previewPaddingInline'
-  | 'previewPaddingBlock'
-  | 'previewFontSize'
 export type DateSizeTokenSlot =
   | 'controlHeight'
   | 'controlFontSize'
@@ -156,10 +145,6 @@ export function pickerPopupSizeVar(size: string, slot: PickerPopupSizeTokenSlot,
 
 export function fileUploadSizeVar(size: string, slot: FileUploadSizeTokenSlot, fallback: string): string {
   return withFallback(`--af-file-upload-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function mentionTextareaVar(slot: MentionTextareaTokenSlot, fallback: string): string {
-  return withFallback(`--af-mention-textarea-${toKebabCase(slot)}`, fallback)
 }
 
 export function dateSizeVar(size: string, slot: DateSizeTokenSlot, fallback: string): string {
