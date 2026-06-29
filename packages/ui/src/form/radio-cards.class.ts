@@ -8,7 +8,7 @@ export type RadioCardSize = FormSize
 const radioCardSizes = ['xs', 'sm', 'md', 'lg'] as const satisfies readonly FormSize[]
 
 const indicatorSizeBySize: Record<FormSize, string> = {
-  xs: '0.75rem',
+  xs: '0.875rem',
   sm: '1rem',
   md: '1.25rem',
   lg: '1.5rem',
