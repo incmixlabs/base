@@ -525,7 +525,7 @@ const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
     return (
       <div
         ref={setRootRefs}
-        className={
+        className={[
           cn(
             scrollAreaBaseCls,
             scrollAreaRoot,
@@ -534,11 +534,12 @@ const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
             'rounded-[var(--element-border-radius)]',
             marginProps.className,
             paddingProps.className,
-            className,
-          ) +
-          ' ' +
-          configClasses
-        }
+          ),
+          configClasses,
+          className,
+        ]
+          .filter(Boolean)
+          .join(' ')}
         data-controls={controls ? 'true' : 'false'}
         data-scrollarea-thumb-style={safeThumbStyle}
         data-vertical-rail={showVerticalRail ? 'true' : 'false'}
