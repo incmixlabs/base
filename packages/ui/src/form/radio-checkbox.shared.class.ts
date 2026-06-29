@@ -1,6 +1,6 @@
 import type { FormSize } from './form-size'
 
-type RadioCheckboxCardComponent = 'checkbox-cards' | 'radio-cards'
+type RadioCheckboxCardComponent = 'checkbox-cards'
 
 export type RadioCheckboxCardSize = FormSize
 
@@ -46,5 +46,4 @@ export const radioCheckboxCardClassNames = [
   radioCheckboxCardPaddingClass,
   radioCheckboxCardGapClass,
   ...Object.values(createRadioCheckboxCardSizeVariants('checkbox-cards')),
-  ...Object.values(createRadioCheckboxCardSizeVariants('radio-cards')),
 ]

@@ -17,4 +17,17 @@ describe('CheckboxGroup', () => {
 
     expect(screen.getByRole('checkbox')).not.toBeDisabled()
   })
+
+  it('uses the af checkbox group item-gap token', () => {
+    render(
+      <CheckboxGroup.Root size="lg">
+        <CheckboxGroup.Item value="updates" label="Updates" />
+      </CheckboxGroup.Root>,
+    )
+
+    expect(screen.getByRole('checkbox').parentElement?.className).toContain(
+      'gap-[var(--af-checkbox-group-item-gap,0.5rem)]',
+    )
+    expect(screen.getByRole('checkbox').parentElement?.className).not.toContain('--component-checkbox-group')
+  })
 })

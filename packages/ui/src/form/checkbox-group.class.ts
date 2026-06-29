@@ -12,10 +12,10 @@ export const checkboxGroupRootOrientation = {
 export const checkboxGroupItemBase = 'flex items-start'
 
 export const checkboxGroupItemGap: Record<FormSize, string> = {
-  xs: 'gap-[var(--component-checkbox-group-size-xs-item-gap,0.5rem)]',
-  sm: 'gap-[var(--component-checkbox-group-size-sm-item-gap,0.5rem)]',
-  md: 'gap-[var(--component-checkbox-group-size-md-item-gap,0.5rem)]',
-  lg: 'gap-[var(--component-checkbox-group-size-lg-item-gap,0.5rem)]',
+  xs: 'gap-[var(--af-checkbox-group-item-gap,0.5rem)]',
+  sm: 'gap-[var(--af-checkbox-group-item-gap,0.5rem)]',
+  md: 'gap-[var(--af-checkbox-group-item-gap,0.5rem)]',
+  lg: 'gap-[var(--af-checkbox-group-item-gap,0.5rem)]',
 }
 
 export const checkboxGroupClassNames = [

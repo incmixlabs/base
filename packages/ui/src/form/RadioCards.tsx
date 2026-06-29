@@ -19,16 +19,18 @@ import { useFieldGroup } from './FieldGroupContext'
 import { resolveFormSize } from './form-size'
 import {
   type RadioCardSize,
+  radioCardContentBase,
+  radioCardGapVariants,
   radioCardIndicatorBase,
   radioCardIndicatorColorVariants,
   radioCardIndicatorInner,
+  radioCardIndicatorInnerSizeVariants,
   radioCardIndicatorSizeVariants,
+  radioCardPaddingVariants,
   radioCardRootBase,
   radioCardRootColorVariants,
-  radioCardSizeVariants,
 } from './radio-cards.class'
 import { type RadioCardsGap, radioCardsGapValues, radioCardsRootPropDefs } from './radio-cards.props'
-import { radioCheckboxCardGapClass, radioCheckboxCardPaddingClass } from './radio-checkbox.shared.class'
 import { radioHighContrastByVariant } from './radio-group.class'
 
 export type { RadioCardSize }
@@ -211,9 +213,7 @@ const RadioCardsItem = React.forwardRef<HTMLButtonElement, RadioCardsItemProps>(
         disabled={isDisabled}
         className={cn(
           radioCardRootBase,
-          radioCardSizeVariants[context.size],
-          radioCardIndicatorSizeVariants[context.size],
-          radioCheckboxCardPaddingClass,
+          radioCardPaddingVariants[context.size],
           surfaceColorVariants[context.color][context.variant === 'surface' ? 'surface' : 'classic'],
           !isDisabled && surfaceHoverEnabledClass,
           context.highContrast && 'af-high-contrast',
@@ -225,20 +225,23 @@ const RadioCardsItem = React.forwardRef<HTMLButtonElement, RadioCardsItemProps>(
         )}
         {...props}
       >
-        <div className={cn('flex w-full items-start', radioCheckboxCardGapClass)}>
+        <div className={cn('flex w-full items-start', radioCardGapVariants[context.size])}>
           {/* Radio indicator */}
           <span
             className={cn(
               radioCardIndicatorBase,
+              radioCardIndicatorSizeVariants[context.size],
               radioCardIndicatorColorVariants[context.color],
               context.highContrast && 'af-high-contrast',
               context.highContrast && radioHighContrastByVariant.surface,
             )}
           >
-            <RadioPrimitive.Indicator className={radioCardIndicatorInner} />
+            <RadioPrimitive.Indicator
+              className={cn(radioCardIndicatorInner, radioCardIndicatorInnerSizeVariants[context.size])}
+            />
           </span>
           {/* Content */}
-          <div className="flex-1">{children}</div>
+          <div className={radioCardContentBase}>{children}</div>
         </div>
       </RadioPrimitive.Root>
     )

@@ -89,4 +89,39 @@ describe('RadioCards', () => {
 
     expect(screen.getByTestId('radio-cards')).toHaveClass('gap-7')
   })
+
+  it('uses direct radio-card spacing and text classes', () => {
+    render(
+      <RadioCards.Root size="md" value="standard">
+        <RadioCards.Item value="standard">Standard</RadioCards.Item>
+      </RadioCards.Root>,
+    )
+
+    const radioCard = screen.getByRole('radio', { name: 'Standard' })
+    const row = radioCard.querySelector('div')
+    const content = row?.lastElementChild
+
+    expectClassTokens(radioCard.className, ['box-border', 'p-4'])
+    expectClassTokens(row?.className, ['gap-4'])
+    expectClassTokens(content?.className, ['text-base', 'leading-6'])
+  })
+
+  it('keeps the xs radio indicator on the original direct size scale', () => {
+    render(
+      <RadioCards.Root size="xs" value="standard">
+        <RadioCards.Item value="standard">Standard</RadioCards.Item>
+      </RadioCards.Root>,
+    )
+
+    const radioCard = screen.getByRole('radio', { name: 'Standard' })
+    const indicatorShell = radioCard.querySelector('span')
+    const indicatorInner = indicatorShell?.firstElementChild
+
+    expectClassTokens(indicatorShell?.className, ['box-border', '[height:0.75rem]', '[width:0.75rem]'])
+    expectClassTokens(indicatorInner?.className, [
+      '[background-color:var(--color-light-primary)]',
+      '[height:0.375rem]',
+      '[width:0.375rem]',
+    ])
+  })
 })

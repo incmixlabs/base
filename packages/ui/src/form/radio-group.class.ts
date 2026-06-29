@@ -5,7 +5,10 @@ import type { RadioGroupOrientation, RadioSize, RadioVariant } from './radio-gro
 const radioClassVariants = ['classic', 'surface', 'soft'] as const satisfies readonly RadioVariant[]
 
 export const radioBaseCls =
-  'peer inline-flex items-center justify-center rounded-full border-2 border-solid transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50'
+  'peer inline-flex box-border items-center justify-center rounded-full border-2 border-solid transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50'
+
+export const radioIndicatorCls =
+  'box-border rounded-full [background-color:var(--color-light-primary)] w-[var(--radio-indicator-size)] h-[var(--radio-indicator-size)]'
 
 const joinClass = (...parts: string[]) => parts.join('')
 const colorVar = (color: string, token: string) => joinClass('var(--color-', color, '-', token, ')')
@@ -91,6 +94,7 @@ export const radioGroupRootOrientation = {
 
 export const radioGroupClassNames = [
   radioBaseCls,
+  radioIndicatorCls,
   ...radioClassVariants.flatMap(variant => semanticColorKeys.map(color => radioColorVariants[color][variant])),
   ...Object.values(radioHighContrastByVariant),
   ...Object.values(radioSizeVariants),

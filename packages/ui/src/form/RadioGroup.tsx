@@ -17,6 +17,7 @@ import {
   radioGapVariants,
   radioGroupRootOrientation,
   radioHighContrastByVariant,
+  radioIndicatorCls,
   radioSizeVariants,
 } from './radio-group.class'
 import type { RadioGroupItemProps, RadioGroupRootProps, RadioSize, RadioVariant } from './radio-group.props'
@@ -157,7 +158,7 @@ const RadioGroupItem = React.forwardRef<HTMLButtonElement, RadioGroupItemProps>(
           )}
           {...props}
         >
-          <RadioPrimitive.Indicator className="rounded-full bg-white w-[var(--radio-indicator-size)] h-[var(--radio-indicator-size)]" />
+          <RadioPrimitive.Indicator className={radioIndicatorCls} />
         </RadioPrimitive.Root>
         {(label || children) && (
           <Text size={context.size} weight="medium">
