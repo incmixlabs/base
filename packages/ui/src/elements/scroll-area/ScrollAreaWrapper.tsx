@@ -36,16 +36,20 @@ export function ScrollAreaWrapper({
         <div className="space-y-3">
           {data.map(item => {
             const defaultLeading = hasContent(item.leading) ? (
-              <div className="shrink-0 text-muted-foreground">{item.leading}</div>
+              <div className="shrink-0 text-slate">{item.leading}</div>
             ) : null
-            const defaultTitle = hasContent(item.title) ? <div className="text-sm font-medium">{item.title}</div> : null
+            const defaultTitle = hasContent(item.title) ? (
+              <div className="text-sm font-medium text-neutral">{item.title}</div>
+            ) : null
             const defaultDescription = hasContent(item.description) ? (
-              <div className="text-xs text-muted-foreground">{item.description}</div>
+              <div className="text-xs text-neutral opacity-70">{item.description}</div>
             ) : null
             const defaultTrailing = hasContent(item.trailing) ? (
-              <div className="shrink-0 text-xs text-muted-foreground">{item.trailing}</div>
+              <div className="shrink-0 text-xs text-neutral opacity-70">{item.trailing}</div>
             ) : null
-            const defaultContent = hasContent(item.content) ? <div className="text-sm">{item.content}</div> : null
+            const defaultContent = hasContent(item.content) ? (
+              <div className="text-sm text-neutral">{item.content}</div>
+            ) : null
 
             const overrides = renderItem?.(item, {
               leading: defaultLeading,
@@ -66,7 +70,7 @@ export function ScrollAreaWrapper({
             return (
               <div
                 key={item.id}
-                className={cn('rounded-lg border border-border/60 bg-background/60 p-3', itemClassName)}
+                className={cn('rounded-lg border border-neutral bg-neutral-surface p-3', itemClassName)}
               >
                 {hasHeader && (
                   <div className="flex items-start gap-3">

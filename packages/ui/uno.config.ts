@@ -85,6 +85,7 @@ import {
   popoverContentBase,
 } from './src/elements/popover/popover.class'
 import { progressClassNames } from './src/elements/progress/progress.class'
+import { scrollAreaClassNames } from './src/elements/scroll-area/scroll-area.class'
 import {
   separatorAlignEnd,
   separatorAlignStart,
@@ -380,6 +381,8 @@ export default defineConfig({
       ...splitClasses(filterClassNames),
       // Progress styles
       ...splitClasses(progressClassNames),
+      // Scroll area styles
+      ...splitClasses(scrollAreaClassNames),
       // Box styles
       boxRootBase,
       ...splitClasses(boxSurfaceColorClassNames),

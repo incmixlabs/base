@@ -41,7 +41,7 @@ import {
   scrollAreaTrackHorizontal,
   scrollAreaTrackVertical,
   scrollAreaViewport,
-} from './scroll-area.css'
+} from './scroll-area.class'
 import {
   type ScrollAreaArrowTone,
   type ScrollAreaRailTone,
@@ -505,31 +505,40 @@ const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
     const showHorizontalRail = safeSize !== 'none' && wantsHorizontal && horizontalMetrics.visible
     const isDotThumb = safeThumbStyle === 'dot'
 
+    const configClasses = [
+      scrollAreaBySize[safeSize],
+      scrollAreaByThickness[safeThickness],
+      scrollAreaByTrackShape[safeTrackShape],
+      scrollAreaByThumbStyle[safeThumbStyle],
+      scrollAreaTrackColorVariants[safeTrackColor][safeVariant],
+      scrollAreaThumbColorVariants[safeColor][safeVariant],
+      safeSurfaceColor
+        ? scrollAreaSurfaceColorVariants[safeSurfaceColor][safeSurfaceVariant]
+        : scrollAreaSurfaceVariant[safeSurfaceVariant],
+      scrollAreaTrackerColorVariants[safeTracker],
+      scrollAreaRailToneVariants[safeRail],
+      scrollAreaArrowToneVariants[safeArrow],
+    ]
+      .filter(Boolean)
+      .join(' ')
+
     return (
       <div
         ref={setRootRefs}
-        className={cn(
-          scrollAreaBaseCls,
-          scrollAreaRoot,
-          scrollAreaByType[safeType],
-          scrollAreaByDirection[safeScrollbars],
-          scrollAreaBySize[safeSize],
-          scrollAreaByThickness[safeThickness],
-          scrollAreaByTrackShape[safeTrackShape],
-          scrollAreaByThumbStyle[safeThumbStyle],
-          scrollAreaTrackColorVariants[safeTrackColor][safeVariant],
-          scrollAreaThumbColorVariants[safeColor][safeVariant],
-          safeSurfaceColor
-            ? scrollAreaSurfaceColorVariants[safeSurfaceColor][safeSurfaceVariant]
-            : scrollAreaSurfaceVariant[safeSurfaceVariant],
-          scrollAreaTrackerColorVariants[safeTracker],
-          scrollAreaRailToneVariants[safeRail],
-          scrollAreaArrowToneVariants[safeArrow],
-          'rounded-[var(--element-border-radius)]',
-          marginProps.className,
-          paddingProps.className,
-          className,
-        )}
+        className={
+          cn(
+            scrollAreaBaseCls,
+            scrollAreaRoot,
+            scrollAreaByType[safeType],
+            scrollAreaByDirection[safeScrollbars],
+            'rounded-[var(--element-border-radius)]',
+            marginProps.className,
+            paddingProps.className,
+            className,
+          ) +
+          ' ' +
+          configClasses
+        }
         data-controls={controls ? 'true' : 'false'}
         data-scrollarea-thumb-style={safeThumbStyle}
         data-vertical-rail={showVerticalRail ? 'true' : 'false'}
