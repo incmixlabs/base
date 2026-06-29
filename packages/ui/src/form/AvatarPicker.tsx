@@ -19,9 +19,10 @@ import { Text } from '@/typography'
 import {
   avatarPickerDropdownCls,
   avatarPickerInlineCls,
+  avatarPickerOverflowCountCls,
   avatarPickerRootCls,
   avatarPickerTriggerContentCls,
-} from './avatar-picker.css'
+} from './avatar-picker.class'
 import { avatarPickerPropDefs } from './avatar-picker.props'
 import { useFieldGroup } from './FieldGroupContext'
 import { formColorVars } from './form-color'
@@ -497,14 +498,7 @@ const AvatarPickerMultiTrigger = React.forwardRef<HTMLDivElement, AvatarPickerMu
                   max={AVATAR_PICKER_MAX_VISIBLE_AVATARS}
                   hoverCard={false}
                   renderOverflow={count => (
-                    <span
-                      className={cn(
-                        'inline-flex shrink-0 items-center justify-center rounded-full border bg-muted text-muted-foreground font-medium',
-                        avatarSizeStyles[avatarSize],
-                      )}
-                    >
-                      +{count}
-                    </span>
+                    <span className={cn(avatarPickerOverflowCountCls, avatarSizeStyles[avatarSize])}>+{count}</span>
                   )}
                 >
                   {selectedItems.map(item => (
@@ -535,14 +529,7 @@ const AvatarPickerMultiTrigger = React.forwardRef<HTMLDivElement, AvatarPickerMu
                 max={AVATAR_PICKER_MAX_VISIBLE_AVATARS}
                 hoverCard={false}
                 renderOverflow={count => (
-                  <span
-                    className={cn(
-                      'inline-flex shrink-0 items-center justify-center rounded-full border bg-muted text-muted-foreground font-medium',
-                      avatarSizeStyles[avatarSize],
-                    )}
-                  >
-                    +{count}
-                  </span>
+                  <span className={cn(avatarPickerOverflowCountCls, avatarSizeStyles[avatarSize])}>+{count}</span>
                 )}
               >
                 {selectedItems.map(item => (

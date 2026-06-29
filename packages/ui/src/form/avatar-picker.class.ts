@@ -14,3 +14,16 @@ export const avatarPickerInlineCls = 'min-w-[12rem]'
 
 /** Single-select dropdown: absolute positioning below trigger */
 export const avatarPickerDropdownCls = 'absolute z-50 mt-1 w-full min-w-[8rem] animate-in fade-in-0 zoom-in-95'
+
+/** Overflow counter shown inside selected avatar groups */
+export const avatarPickerOverflowCountCls =
+  'inline-flex shrink-0 items-center justify-center rounded-full border border-neutral bg-neutral-soft font-medium text-neutral'
+
+export const avatarPickerClassNames = [
+  avatarPickerRootCls,
+  avatarPickerTriggerContentCls,
+  avatarPickerTriggerActionsCls,
+  avatarPickerInlineCls,
+  avatarPickerDropdownCls,
+  avatarPickerOverflowCountCls,
+]

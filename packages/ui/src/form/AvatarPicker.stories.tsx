@@ -164,7 +164,7 @@ export const InFieldLayout: Story = {
     return (
       <div className="w-80 space-y-2">
         <Label>Assignee</Label>
-        <div className="text-sm text-muted-foreground">Choose the person responsible for this task.</div>
+        <div className="text-sm text-neutral opacity-70">Choose the person responsible for this task.</div>
         <AvatarPicker items={itemsWithAvatars} value={assignee} onValueChange={setAssignee} />
       </div>
     )

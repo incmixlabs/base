@@ -102,6 +102,7 @@ import {
   separatorWithContent,
 } from './src/elements/separator/separator.class'
 import { tooltipContentBase, tooltipPositionerBase } from './src/elements/tooltip/tooltip.class'
+import { avatarPickerClassNames } from './src/form/avatar-picker.class'
 import { checkboxClassNames } from './src/form/checkbox.class'
 import { checkboxCardsClassNames } from './src/form/checkbox-cards.class'
 import { checkboxGroupClassNames } from './src/form/checkbox-group.class'
@@ -394,6 +395,8 @@ export default defineConfig({
       ...splitClasses(progressClassNames),
       // Scroll area styles
       ...splitClasses(scrollAreaClassNames),
+      // Avatar picker styles
+      ...splitClasses(avatarPickerClassNames),
       // Checkbox styles
       ...splitClasses(checkboxClassNames),
       // Checkbox cards styles
