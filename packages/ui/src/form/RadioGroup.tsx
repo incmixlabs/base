@@ -18,6 +18,7 @@ import {
   radioGroupRootOrientation,
   radioHighContrastByVariant,
   radioIndicatorCls,
+  radioIndicatorSizeVariants,
   radioSizeVariants,
 } from './radio-group.class'
 import type { RadioGroupItemProps, RadioGroupRootProps, RadioSize, RadioVariant } from './radio-group.props'
@@ -139,7 +140,6 @@ const RadioGroupItem = React.forwardRef<HTMLButtonElement, RadioGroupItemProps>(
         className={cn(
           'flex items-center cursor-pointer',
           radioGapVariants[context.size],
-          'gap-[var(--radio-gap)]',
           isDisabled && 'cursor-not-allowed opacity-50',
           className,
         )}
@@ -158,7 +158,7 @@ const RadioGroupItem = React.forwardRef<HTMLButtonElement, RadioGroupItemProps>(
           )}
           {...props}
         >
-          <RadioPrimitive.Indicator className={radioIndicatorCls} />
+          <RadioPrimitive.Indicator className={cn(radioIndicatorCls, radioIndicatorSizeVariants[context.size])} />
         </RadioPrimitive.Root>
         {(label || children) && (
           <Text size={context.size} weight="medium">

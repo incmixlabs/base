@@ -83,14 +83,8 @@ export type TextFieldSizeTokenSlot =
   | 'iconSize'
   | 'gap'
   | 'floatingOutlinedPlaceholderTranslate'
-export type CheckboxSizeTokenSlot = 'boxSize' | 'iconSize' | 'borderRadius'
-export type CheckboxGroupTokenSlot = 'gap' | 'inlineGap' | 'itemGap'
-export type CheckboxCardsSizeTokenSlot = 'padding' | 'boxSize' | 'iconSize' | 'gap'
 export type SwitchSizeTokenSlot = 'rootHeight' | 'rootWidth' | 'thumbSize' | 'thumbTranslate' | 'gap'
 export type SwitchGroupTokenSlot = 'gap' | 'inlineGap'
-export type RadioSizeTokenSlot = 'radioSize' | 'indicatorSize' | 'gap'
-export type RadioGroupTokenSlot = 'gap' | 'inlineGap'
-export type RadioCardsSizeTokenSlot = 'padding' | 'gap' | 'indicatorSize' | 'indicatorInnerSize'
 export type ToggleSizeTokenSlot = 'height' | 'paddingInline' | 'fontSize' | 'iconSize' | 'gap'
 export type ToggleGroupTokenSlot = 'gap'
 export type RatingSizeTokenSlot = 'iconSize' | 'gap'
@@ -171,36 +165,12 @@ export function textFieldSizeVar(size: string, slot: TextFieldSizeTokenSlot, fal
   return withFallback(`--af-text-field-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
-export function checkboxSizeVar(size: string, slot: CheckboxSizeTokenSlot, fallback: string): string {
-  return withFallback(`--af-checkbox-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function checkboxGroupVar(slot: CheckboxGroupTokenSlot, fallback: string): string {
-  return componentVar('checkbox-group', slot, fallback)
-}
-
-export function checkboxCardsSizeVar(size: string, slot: CheckboxCardsSizeTokenSlot, fallback: string): string {
-  return withFallback(`--af-checkbox-cards-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
-
 export function switchSizeVar(size: string, slot: SwitchSizeTokenSlot, fallback: string): string {
   return withFallback(`--af-switch-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function switchGroupVar(slot: SwitchGroupTokenSlot, fallback: string): string {
   return componentVar('switch-group', slot, fallback)
-}
-
-export function radioSizeVar(size: string, slot: RadioSizeTokenSlot, fallback: string): string {
-  return withFallback(`--af-radio-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function radioGroupVar(slot: RadioGroupTokenSlot, fallback: string): string {
-  return componentVar('radio-group', slot, fallback)
-}
-
-export function radioCardsSizeVar(size: string, slot: RadioCardsSizeTokenSlot, fallback: string): string {
-  return withFallback(`--af-radio-cards-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function toggleSizeVar(size: string, slot: ToggleSizeTokenSlot, fallback: string): string {

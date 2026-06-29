@@ -1,6 +1,9 @@
 import { semanticColorKeys } from '../theme/props/color.prop'
 import type { Color } from '../theme/tokens'
 import type { FormSize } from './form-size'
+import { radioCardGapVariants, radioCardPaddingVariants } from './radio-checkbox.shared.class'
+
+export { radioCardGapVariants, radioCardPaddingVariants } from './radio-checkbox.shared.class'
 
 export type RadioCardSize = FormSize
 
@@ -16,20 +19,6 @@ export const radioCardIndicatorBase =
   'mt-1 inline-flex box-border shrink-0 items-center justify-center rounded-full border-2 border-solid transition-all duration-150'
 
 export const radioCardIndicatorInner = 'rounded-full [background-color:var(--color-light-primary)]'
-
-export const radioCardPaddingVariants = {
-  xs: 'p-2',
-  sm: 'p-3',
-  md: 'p-4',
-  lg: 'p-5',
-} as const satisfies Record<RadioCardSize, string>
-
-export const radioCardGapVariants = {
-  xs: 'gap-2',
-  sm: 'gap-3',
-  md: 'gap-4',
-  lg: 'gap-5',
-} as const satisfies Record<RadioCardSize, string>
 
 export const radioCardContentBase = 'flex-1 text-base leading-6'
 

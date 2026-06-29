@@ -1,6 +1,7 @@
 import { semanticColorKeys } from '../theme/props/color.prop'
 import type { Color } from '../theme/tokens'
 import type { CheckboxSize, CheckboxVariant } from './checkbox.props'
+import { checkboxControlIconSizeVariants, checkboxControlSizeVariants } from './radio-checkbox.shared.class'
 
 const checkboxClassVariants = ['solid', 'soft', 'outline'] as const satisfies readonly CheckboxVariant[]
 
@@ -9,8 +10,7 @@ export const checkboxBase =
 
 export const checkboxBaseCls = 'peer'
 
-export const checkboxIndicator =
-  'flex shrink-0 items-center justify-center text-inherit w-[var(--cb-icon-size)] h-[var(--cb-icon-size)]'
+export const checkboxIndicator = 'flex shrink-0 items-center justify-center text-inherit'
 
 const joinClass = (...parts: string[]) => parts.join('')
 const colorVar = (color: string, token: string) => joinClass('var(--color-', color, '-', token, ')')
@@ -87,10 +87,14 @@ export const checkboxHighContrastByVariant: Record<CheckboxVariant, string> = {
 }
 
 export const checkboxSizeVariants = {
-  xs: 'w-[var(--af-checkbox-size-xs-box-size,0.875rem)] h-[var(--af-checkbox-size-xs-box-size,0.875rem)] rounded-[var(--af-checkbox-size-xs-border-radius,0.125rem)] [--cb-icon-size:var(--af-checkbox-size-xs-icon-size,0.75rem)]',
-  sm: 'w-[var(--af-checkbox-size-sm-box-size,1rem)] h-[var(--af-checkbox-size-sm-box-size,1rem)] rounded-[var(--af-checkbox-size-sm-border-radius,0.125rem)] [--cb-icon-size:var(--af-checkbox-size-sm-icon-size,0.875rem)]',
-  md: 'w-[var(--af-checkbox-size-md-box-size,1.25rem)] h-[var(--af-checkbox-size-md-box-size,1.25rem)] rounded-[var(--af-checkbox-size-md-border-radius,0.25rem)] [--cb-icon-size:var(--af-checkbox-size-md-icon-size,1rem)]',
-  lg: 'w-[var(--af-checkbox-size-lg-box-size,1.5rem)] h-[var(--af-checkbox-size-lg-box-size,1.5rem)] rounded-[var(--af-checkbox-size-lg-border-radius,0.25rem)] [--cb-icon-size:var(--af-checkbox-size-lg-icon-size,1.25rem)]',
+  xs: `${checkboxControlSizeVariants.xs} rounded-sm`,
+  sm: `${checkboxControlSizeVariants.sm} rounded-sm`,
+  md: `${checkboxControlSizeVariants.md} rounded`,
+  lg: `${checkboxControlSizeVariants.lg} rounded`,
+} as const satisfies Record<CheckboxSize, string>
+
+export const checkboxIndicatorSizeVariants = {
+  ...checkboxControlIconSizeVariants,
 } as const satisfies Record<CheckboxSize, string>
 
 export const checkboxClassNames = [
@@ -100,4 +104,5 @@ export const checkboxClassNames = [
   ...checkboxClassVariants.flatMap(variant => semanticColorKeys.map(color => checkboxColorVariants[color][variant])),
   ...Object.values(checkboxHighContrastByVariant),
   ...Object.values(checkboxSizeVariants),
+  ...Object.values(checkboxIndicatorSizeVariants),
 ]

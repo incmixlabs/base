@@ -1,17 +1,32 @@
 import { semanticColorKeys } from '../theme/props/color.prop'
 import type { Color } from '../theme/tokens'
 import type { FormSize } from './form-size'
-import { createRadioCheckboxCardSizeVariants } from './radio-checkbox.shared.class'
+import {
+  checkboxCardGapVariants,
+  checkboxCardPaddingVariants,
+  checkboxControlIconSizeVariants,
+  checkboxControlSizeVariants,
+  radioCheckboxCardSizes,
+  radioCheckboxCardTextSizeVariants,
+} from './radio-checkbox.shared.class'
 
 export type CheckboxCardSize = FormSize
 
-export const checkboxCardSizeVariants = createRadioCheckboxCardSizeVariants('checkbox-cards')
+export const checkboxCardSizeVariants = Object.fromEntries(
+  radioCheckboxCardSizes.map(size => [
+    size,
+    [checkboxCardPaddingVariants[size], checkboxCardGapVariants[size], radioCheckboxCardTextSizeVariants[size]].join(
+      ' ',
+    ),
+  ]),
+) as Record<CheckboxCardSize, string>
 
 export const checkboxCardControlSizeVariants = {
-  xs: '[--af-checkbox-card-box-size:var(--af-checkbox-cards-size-xs-box-size,0.875rem)] [--af-checkbox-card-icon-size:var(--af-checkbox-cards-size-xs-icon-size,0.75rem)]',
-  sm: '[--af-checkbox-card-box-size:var(--af-checkbox-cards-size-sm-box-size,1rem)] [--af-checkbox-card-icon-size:var(--af-checkbox-cards-size-sm-icon-size,0.875rem)]',
-  md: '[--af-checkbox-card-box-size:var(--af-checkbox-cards-size-md-box-size,1.25rem)] [--af-checkbox-card-icon-size:var(--af-checkbox-cards-size-md-icon-size,1rem)]',
-  lg: '[--af-checkbox-card-box-size:var(--af-checkbox-cards-size-lg-box-size,1.5rem)] [--af-checkbox-card-icon-size:var(--af-checkbox-cards-size-lg-icon-size,1.25rem)]',
+  ...checkboxControlSizeVariants,
+} as const satisfies Record<CheckboxCardSize, string>
+
+export const checkboxCardIconSizeVariants = {
+  ...checkboxControlIconSizeVariants,
 } as const satisfies Record<CheckboxCardSize, string>
 
 const joinClass = (...parts: string[]) => parts.join('')
@@ -30,5 +45,6 @@ export const checkboxCardSelectionColorVariants = Object.fromEntries(
 export const checkboxCardsClassNames = [
   ...Object.values(checkboxCardSizeVariants),
   ...Object.values(checkboxCardControlSizeVariants),
+  ...Object.values(checkboxCardIconSizeVariants),
   ...Object.values(checkboxCardSelectionColorVariants),
 ]

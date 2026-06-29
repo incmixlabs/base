@@ -14,6 +14,7 @@ import {
   checkboxColorVariants,
   checkboxHighContrastByVariant,
   checkboxIndicator,
+  checkboxIndicatorSizeVariants,
   checkboxSizeVariants,
 } from './checkbox.class'
 import type { CheckboxProps, CheckboxSize, CheckboxWithLabelProps } from './checkbox.props'
@@ -95,7 +96,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
       >
         <svg
           aria-hidden="true"
-          className={checkboxIndicator}
+          className={cn(checkboxIndicator, checkboxIndicatorSizeVariants[resolvedSize])}
           fill="none"
           stroke="currentColor"
           strokeWidth="3.5"
