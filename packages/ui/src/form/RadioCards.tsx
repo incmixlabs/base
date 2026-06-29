@@ -24,7 +24,7 @@ import {
   radioCardSizeVariants,
 } from './radio-cards.css'
 import { type RadioCardsGap, radioCardsGapValues, radioCardsRootPropDefs } from './radio-cards.props'
-import { radioHighContrastByVariant } from './radio-group.css'
+import { radioHighContrastByVariant } from './radio-group.class'
 
 export type { RadioCardSize }
 

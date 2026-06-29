@@ -105,6 +105,7 @@ import { tooltipContentBase, tooltipPositionerBase } from './src/elements/toolti
 import { checkboxClassNames } from './src/form/checkbox.class'
 import { checkboxCardsClassNames } from './src/form/checkbox-cards.class'
 import { checkboxGroupClassNames } from './src/form/checkbox-group.class'
+import { radioGroupClassNames } from './src/form/radio-group.class'
 import { aspectRatioByRatio } from './src/layouts/aspect-ratio/aspect-ratio.class'
 import { boxRootBase, boxSurfaceColorClassNames } from './src/layouts/box/box.class'
 import {
@@ -392,6 +393,8 @@ export default defineConfig({
       ...splitClasses(checkboxCardsClassNames),
       // Checkbox group styles
       ...splitClasses(checkboxGroupClassNames),
+      // Radio group styles
+      ...splitClasses(radioGroupClassNames),
       // Box styles
       boxRootBase,
       ...splitClasses(boxSurfaceColorClassNames),

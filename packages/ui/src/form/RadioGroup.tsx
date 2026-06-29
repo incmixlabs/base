@@ -18,7 +18,7 @@ import {
   radioGroupRootOrientation,
   radioHighContrastByVariant,
   radioSizeVariants,
-} from './radio-group.css'
+} from './radio-group.class'
 import type { RadioGroupItemProps, RadioGroupRootProps, RadioSize, RadioVariant } from './radio-group.props'
 import { radioGroupRootPropDefs } from './radio-group.props'
 

@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { RadioGroup } from './RadioGroup'
-import { radioColorVariants, radioHighContrastByVariant } from './radio-group.css'
+import { radioColorVariants, radioHighContrastByVariant } from './radio-group.class'
 
 afterEach(() => {
   cleanup()
