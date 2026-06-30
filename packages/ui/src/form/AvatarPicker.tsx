@@ -46,7 +46,7 @@ import {
   textFieldInputBaseCls,
   textFieldSizeVariants,
   textFieldSurfaceColorVariants,
-} from './text-field.css'
+} from './text-field.class'
 import { resolveSurfaceVariant } from './text-field-variant'
 import { highlightColorStyles } from './textFieldStyles'
 
@@ -477,8 +477,8 @@ const AvatarPickerMultiTrigger = React.forwardRef<HTMLDivElement, AvatarPickerMu
             cn(
               textFieldInputBaseCls,
               'inline-flex w-full items-center justify-between gap-2 box-border border',
-              'min-h-[var(--tf-height)] px-[var(--tf-padding-x)] py-[var(--tf-padding-y)] text-left',
-              '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)] rounded-[var(--element-border-radius)]',
+              'min-h-[var(--af-text-field-height)] px-[var(--af-text-field-padding-x)] py-[var(--af-text-field-padding-y)] text-left',
+              '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)] rounded-[var(--element-border-radius)]',
               textFieldSurfaceColorVariants[highlightColor][surfaceVariant],
               disabled && 'cursor-not-allowed opacity-50',
             ),
@@ -1000,8 +1000,8 @@ const AvatarPickerSingle = React.forwardRef<HTMLDivElement, AvatarPickerSinglePr
             cn(
               textFieldInputBaseCls,
               'inline-flex w-full items-center justify-between gap-2 box-border border',
-              'min-h-[var(--tf-height)] px-[var(--tf-padding-x)] py-[var(--tf-padding-y)] text-left',
-              '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)] rounded-[var(--element-border-radius)]',
+              'min-h-[var(--af-text-field-height)] px-[var(--af-text-field-padding-x)] py-[var(--af-text-field-padding-y)] text-left',
+              '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)] rounded-[var(--element-border-radius)]',
               textFieldSurfaceColorVariants[highlightColor][surfaceVariant],
               disabled && 'cursor-not-allowed opacity-50',
             ),

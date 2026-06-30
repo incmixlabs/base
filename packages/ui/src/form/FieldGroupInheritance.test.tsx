@@ -11,7 +11,7 @@ import { SignatureInput } from './SignatureInput'
 import { Switch } from './Switch'
 import { Textarea } from './Textarea'
 import { TextField } from './TextField'
-import { textFieldColorVariants, textFieldSizeVariants } from './text-field.css'
+import { textFieldColorVariants, textFieldSizeVariants } from './text-field.class'
 import { withFieldGroup } from './withFieldGroup'
 
 afterEach(() => {

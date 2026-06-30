@@ -320,7 +320,7 @@ export function DateRangePicker({
     selectedRange?.to && !Number.isNaN(selectedRange.to.getTime()) ? formatDate(selectedRange.to, dateFormat) : ''
   const dateInputClassName = cn(
     floatingStyle
-      ? 'flex min-w-0 flex-1 items-center gap-0 text-[var(--tf-font-size)] leading-[var(--tf-line-height)]'
+      ? 'flex min-w-0 flex-1 items-center gap-0 text-[var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]'
       : rangeDateInput,
     'text-foreground',
   )

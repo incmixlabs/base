@@ -10,7 +10,7 @@ import {
   textFieldFloatingWrapperColorVariants,
   textFieldSizeVariants,
   textFieldSurfaceColorVariants,
-} from '@/form/text-field.css'
+} from '@/form/text-field.class'
 import type { FloatingStyle } from '@/form/text-field-variant'
 import { resolveSurfaceVariant } from '@/form/text-field-variant'
 import { cn } from '@/lib/utils'
@@ -18,9 +18,9 @@ import type { Color, Radius, TextFieldVariant } from '@/theme/tokens'
 import { datePickerTriggerGroupRadiusStyles } from './DatePicker.css'
 
 export const dateSegmentInputClassName = cn(
-  'flex h-full min-w-0 flex-1 items-center gap-0 bg-transparent px-[var(--tf-padding-x)]',
-  'pr-[calc(var(--tf-padding-x)*2+var(--tf-icon-size))]',
-  'text-foreground outline-none text-[var(--tf-font-size)] leading-[var(--tf-line-height)]',
+  'flex h-full min-w-0 flex-1 items-center gap-0 bg-transparent px-[var(--af-text-field-padding-x)]',
+  'pr-[calc(var(--af-text-field-padding-x)*2+var(--af-text-field-icon-size))]',
+  'text-foreground outline-none text-[var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
 )
 
 export const dateSegmentClassName = cn(
@@ -56,8 +56,8 @@ export const dateIconSlotClassName = cn(
 )
 
 export const dateRangeInputSurfaceClassName = cn(
-  'flex min-w-0 flex-1 items-center gap-[var(--element-gap)] bg-transparent px-[var(--tf-padding-x)]',
-  'pr-[calc(var(--tf-padding-x)*2+var(--tf-icon-size))]',
+  'flex min-w-0 flex-1 items-center gap-[var(--element-gap)] bg-transparent px-[var(--af-text-field-padding-x)]',
+  'pr-[calc(var(--af-text-field-padding-x)*2+var(--af-text-field-icon-size))]',
 )
 
 export const dateGhostIconButtonClassName = cn(
@@ -85,27 +85,24 @@ export function getDateFieldSurfaceClassName({
       textFieldSizeVariants[textFieldSize],
       datePickerTriggerGroupRadiusStyles[radius],
       floatingStyle
-        ? [
-            'peer bg-background',
-            floatingInputBaseCls,
-            floatingInputStyleVariants[floatingStyle],
-            textFieldFloatingColorVariants[color]?.[floatingStyle],
-          ]
-        : ['h-[var(--tf-height)] border', textFieldSurfaceColorVariants[color]?.[surfaceVariant]],
+        ? ['peer bg-background', floatingInputBaseCls]
+        : ['h-[var(--af-text-field-height)] border', textFieldSurfaceColorVariants[color]?.[surfaceVariant]],
     ),
+    floatingStyle && floatingInputStyleVariants[floatingStyle],
+    floatingStyle && textFieldFloatingColorVariants[color]?.[floatingStyle],
     !floatingStyle && textFieldEnhancementVariants[color]?.[surfaceVariant],
   )
 }
 
 export function getDateFloatingLabelClassName(floatingStyle: FloatingStyle | null, isFloatingActive: boolean) {
   return cn(
-    'pointer-events-none absolute origin-[0] select-none [font-size:var(--tf-font-size)] text-[color:var(--tf-color-text)] duration-300',
+    'pointer-events-none absolute origin-[0] select-none [font-size:var(--af-text-field-font-size)] text-[color:var(--af-text-field-color-text)] duration-300',
     floatingStyle === 'filled' && [
-      'left-[var(--tf-padding-x)] top-[0.875rem] z-10',
+      'left-[var(--af-text-field-padding-x)] top-[0.875rem] z-10',
       isFloatingActive ? '-translate-y-4 scale-75' : 'translate-y-0 scale-100',
     ],
     floatingStyle === 'outlined' && [
-      'left-[var(--tf-padding-x)] top-[0.375rem] z-10',
+      'left-[var(--af-text-field-padding-x)] top-[0.375rem] z-10',
       isFloatingActive ? '-translate-y-4 scale-75 bg-background px-1' : 'translate-y-3 scale-100 bg-transparent px-0',
     ],
     floatingStyle === 'standard' && [

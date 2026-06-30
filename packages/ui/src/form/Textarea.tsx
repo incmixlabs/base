@@ -22,7 +22,7 @@ import {
   textFieldRootCls,
   textFieldSizeVariants,
   textFieldSurfaceColorVariants,
-} from './text-field.css'
+} from './text-field.class'
 import { getFloatingStyle, isFloatingVariant, resolveSurfaceVariant } from './text-field-variant'
 
 export type { TextareaProps } from './text-area.props'
@@ -126,12 +126,12 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               cn(
                 textFieldInputBaseCls,
                 'peer',
-                'box-border h-auto min-h-[calc(var(--tf-height)*2)]',
+                'box-border h-auto min-h-[calc(var(--af-text-field-height)*2)]',
                 'disabled:opacity-50 disabled:cursor-not-allowed',
                 resizeClass,
                 className,
               ),
-              // VE classes must be joined outside tailwind-merge or one generated class can be dropped.
+              // Keep prop-map classes outside tailwind-merge so arbitrary selectors remain intact.
               floatingStyle && textFieldFloatingColorVariants[effectiveColor]?.[floatingStyle],
               floatingStyle && floatingInputStyleVariants[floatingStyle],
             )}
@@ -146,7 +146,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
                 'absolute duration-300 origin-[0]',
                 'pointer-events-none select-none',
 
-                // VE: floating label positioning by style
+                // Floating label positioning by style
                 floatingStyle && floatingLabelStyleVariants[floatingStyle],
               )}
             >
@@ -164,9 +164,9 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       cn(
         textFieldInputBaseCls,
         'box-border',
-        'min-h-[calc(var(--tf-height)*2)]',
-        'px-[var(--tf-padding-x)] py-[var(--tf-padding-y)]',
-        '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+        'min-h-[calc(var(--af-text-field-height)*2)]',
+        'px-[var(--af-text-field-padding-x)] py-[var(--af-text-field-padding-y)]',
+        '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
         'rounded-[var(--element-border-radius)]',
         'border',
         resizeClass,

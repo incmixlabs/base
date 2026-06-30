@@ -22,7 +22,7 @@ import {
   textFieldFloatingWrapperColorVariants,
   textFieldSizeVariants,
   textFieldSurfaceColorVariants,
-} from './text-field.css'
+} from './text-field.class'
 import { getFloatingStyle, isFloatingVariant, resolveSurfaceVariant } from './text-field-variant'
 
 export type { SelectItemProps, SelectProps } from './select.props'
@@ -131,11 +131,11 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
               className={clsx(
                 cn(
                   'peer inline-flex items-center justify-between w-full outline-none transition-all duration-150 ease-in-out',
-                  '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+                  '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
                   floatingInputBaseCls,
                   className,
                 ),
-                // VE classes must be joined outside tailwind-merge or one generated class can be dropped.
+                // Keep prop-map classes outside tailwind-merge so arbitrary selectors remain intact.
                 floatingStyle && floatingInputStyleVariants[floatingStyle],
                 floatingStyle && textFieldFloatingColorVariants[effectiveColor]?.[floatingStyle],
               )}
@@ -192,9 +192,9 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
               cn(
                 'inline-flex items-center justify-between w-full outline-none transition-all duration-150 ease-in-out',
                 'border',
-                'h-[var(--tf-height)]',
-                'px-[var(--tf-padding-x)] py-[var(--tf-padding-y)]',
-                '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+                'h-[var(--af-text-field-height)]',
+                'px-[var(--af-text-field-padding-x)] py-[var(--af-text-field-padding-y)]',
+                '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
                 'rounded-[var(--element-border-radius)]',
                 textFieldSurfaceColorVariants[effectiveColor]?.[surfaceVariant],
                 effectiveDisabled && 'opacity-50 cursor-not-allowed',

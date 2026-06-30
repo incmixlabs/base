@@ -45,6 +45,7 @@ import {
   LayoutGrid,
   List,
   ListChecks,
+  Lock,
   type LucideIcon,
   type LucideProps,
   Mail,
@@ -76,6 +77,7 @@ import {
   Trash2,
   TriangleAlert,
   Upload,
+  User,
   Users,
   X,
 } from 'lucide-react'
@@ -133,6 +135,7 @@ const iconAliasMap: Record<string, string[]> = {
   list: ['List'],
   checklist: ['ListChecks'],
   'list-checks': ['ListChecks'],
+  lock: ['Lock'],
   mail: ['Mail'],
   'map-pin': ['MapPin'],
   menu: ['Menu'],
@@ -159,6 +162,7 @@ const iconAliasMap: Record<string, string[]> = {
   tablet: ['Tablet'],
   trash: ['Trash2'],
   upload: ['Upload'],
+  user: ['User'],
   users: ['Users'],
   warning: ['TriangleAlert'],
 }
@@ -208,6 +212,7 @@ const SafeListIcons: Record<string, LucideIconComponent> = {
   LayoutGrid,
   List,
   ListChecks,
+  Lock,
   Mail,
   MapPin,
   Menu,
@@ -237,6 +242,7 @@ const SafeListIcons: Record<string, LucideIconComponent> = {
   Trash2,
   TriangleAlert,
   Upload,
+  User,
   Users,
   X,
 }
