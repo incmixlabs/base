@@ -126,6 +126,7 @@ import { radioGroupClassNames } from './src/form/radio-group.class'
 import { sliderClassNames } from './src/form/Slider.class'
 import { switchClassNames } from './src/form/switch.class'
 import { textFieldClassNames } from './src/form/text-field.class'
+import { appShellClassNames } from './src/layouts/app-shell/app-shell.class'
 import { aspectRatioByRatio } from './src/layouts/aspect-ratio/aspect-ratio.class'
 import { boxRootBase, boxSurfaceColorClassNames } from './src/layouts/box/box.class'
 import {
@@ -152,6 +153,7 @@ import {
   containerDisplayResponsive,
   containerSizeResponsive,
 } from './src/layouts/container/container.class'
+import { dashboardLayoutClassNames } from './src/layouts/dashboard/dashboard-layout.class'
 import {
   flexBase,
   flexBaseCls,
@@ -187,6 +189,7 @@ import {
   sectionDisplayResponsive,
   sectionSizeResponsive,
 } from './src/layouts/section/section.class'
+import { sidebarClassNames } from './src/layouts/sidebar/Sidebar.class'
 import { containerBreakpoints } from './src/theme/tokens'
 import {
   codeBase,
@@ -453,6 +456,8 @@ export default defineConfig({
       ...splitClasses(switchClassNames),
       // Text field styles
       ...splitClasses(textFieldClassNames),
+      // App shell styles
+      ...splitClasses(appShellClassNames),
       // Box styles
       boxRootBase,
       ...splitClasses(boxSurfaceColorClassNames),
@@ -480,6 +485,8 @@ export default defineConfig({
         shortcutRow,
         shortcutKey,
       ]),
+      // Dashboard layout styles
+      ...splitClasses(dashboardLayoutClassNames),
       // Flex styles
       flexBaseCls,
       flexBase,
@@ -507,6 +514,8 @@ export default defineConfig({
       // Header styles
       headerRoot,
       headerSticky,
+      // Sidebar styles
+      ...splitClasses(sidebarClassNames),
       // Section styles
       sectionBaseCls,
       sectionBase,

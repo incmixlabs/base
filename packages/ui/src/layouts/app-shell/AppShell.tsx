@@ -17,9 +17,8 @@ import { ThemeToggle } from '@/theme/ThemeToggle'
 import { useOptionalThemeProviderContext } from '@/theme/theme-provider.context'
 import { CommandSearchInput } from '../command-search/CommandSearch'
 import { Sidebar, useSidebar } from '../sidebar/Sidebar'
-import { sidebarColorStyles } from '../sidebar/Sidebar.css'
+import { sidebarColorStyles } from '../sidebar/Sidebar.class'
 import type { SidebarVariant } from '../sidebar/sidebar.props'
-import { AppShellContext, type AppShellContextValue, useAppShell } from './app-shell.context'
 import {
   appShellBody,
   appShellBodyWithSecondary,
@@ -30,7 +29,8 @@ import {
   appShellSecondaryResizeHandleLeft,
   appShellSecondaryResizeHandleRight,
   appShellSecondaryRight,
-} from './app-shell.css'
+} from './app-shell.class'
+import { AppShellContext, type AppShellContextValue, useAppShell } from './app-shell.context'
 import type { AppShellProps } from './app-shell.props'
 import {
   type AppShellDrawerTab,
@@ -386,16 +386,16 @@ export function AppShellHeaderEnd({ showThemeToggle, className, children, ...pro
 export function AppShellBody({ className, children, ...props }: AppShellProps.Body) {
   const { overlay, secondaryOpen, secondaryRegistered, secondarySide } = useAppShell()
   const hasInlineSecondary = !overlay && secondaryOpen && secondaryRegistered
+  const bodyLayoutClass = hasInlineSecondary
+    ? secondarySide === 'right'
+      ? appShellBodyWithSecondaryRight
+      : appShellBodyWithSecondary
+    : appShellBody
 
   return (
     <div
       data-slot="app-shell-body"
-      className={cn(
-        'grid min-h-0 w-full min-w-0 flex-1 overflow-hidden',
-        appShellBody,
-        hasInlineSecondary && (secondarySide === 'right' ? appShellBodyWithSecondaryRight : appShellBodyWithSecondary),
-        className,
-      )}
+      className={cn('grid min-h-0 w-full min-w-0 flex-1 overflow-hidden', bodyLayoutClass, className)}
       {...props}
     >
       {children}

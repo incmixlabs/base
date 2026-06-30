@@ -20,7 +20,7 @@ import {
   presetPicker,
   presetPreview,
   presetPreviewCell,
-} from './dashboard-layout.css'
+} from './dashboard-layout.class'
 
 export type DashboardLayoutMode = 'grid' | 'masonry'
 export type DashboardLayoutBreakpoint = 'initial' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'

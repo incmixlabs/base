@@ -1,5 +1,5 @@
 export const commandDialogContent =
-  'fixed z-50 box-border inset-x-4 top-[10vh] mx-auto max-h-[calc(100dvh-2rem)] w-[92vw] max-w-[37.5rem] overflow-hidden rounded-[calc(var(--radius-factor)_*_1rem)] border border-solid border-neutral bg-neutral-surface text-neutral shadow-[0_24px_64px_color-mix(in_oklch,black_24%,transparent)] focus:outline-none data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95'
+  'fixed z-50 box-border inset-x-4 top-[10vh] mx-auto max-h-[calc(100dvh-2rem)] w-[92vw] max-w-[37.5rem] overflow-hidden rounded-[calc(var(--radius-factor)_*_1rem)] border border-solid border-neutral bg-neutral-surface text-neutral shadow-[var(--shadow-5)] focus:outline-none data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95'
 
 export const commandDialogRoot = 'flex flex-col text-neutral'
 
