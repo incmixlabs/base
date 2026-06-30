@@ -125,7 +125,7 @@ function findTreeItemById(items: TreeDataItem[] | TreeDataItem, id: string): Tre
 }
 
 function canContainTreeItems(item: TreeDataItem) {
-  return item.droppable === true || Array.isArray(item.children)
+  return item.droppable === true || !!item.children?.length
 }
 
 // ── Root ──
