@@ -247,7 +247,7 @@ export const Justify: Story = {
       {(['start', 'center', 'end'] as const).map(justify => (
         <div key={justify}>
           <Text as="p" size="sm" color="neutral" muted mb="2" className="capitalize">
-            justify="{justify}"
+            {`justify="${justify}"`}
           </Text>
           <Tabs.Root variant="line" defaultValue="tab1" className="w-[400px]">
             <Tabs.List justify={justify} className="w-full">

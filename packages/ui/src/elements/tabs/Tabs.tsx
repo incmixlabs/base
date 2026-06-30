@@ -2,6 +2,7 @@
 
 import { Tabs as TabsPrimitive } from '@base-ui/react/tabs'
 import * as React from 'react'
+import { useComposedRefs } from '@/lib/compose-refs'
 import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
@@ -43,6 +44,7 @@ import {
   tabsPanelStackItem,
 } from './tabs.class'
 import { tabsPropDefs } from './tabs.props'
+import { useExitTransitionFallback } from './tabs-transition'
 import { useAnimatedIndicator } from './useAnimatedIndicator'
 
 export const TabsVariants = {
@@ -375,15 +377,55 @@ export interface TabsContentProps {
   forceMount?: boolean
   className?: string
   children: React.ReactNode
+  onTransitionEnd?: React.TransitionEventHandler<HTMLDivElement>
 }
 
 const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
-  ({ value, forceMount, className, children, ...props }, ref) => {
+  ({ value, forceMount, className, children, onTransitionEnd, ...props }, ref) => {
     const { size, variant, animated, activeValue } = React.useContext(TabsContext)
     const sizeConfig = selectSegmentedControlVariantSizeMap(variant, TabsVariants.surface, surfaceSizes, lineSizes)[
       size
     ]
     const isActive = activeValue === value
+    const wasActiveRef = React.useRef(isActive)
+    const [isExiting, setIsExiting] = React.useState(false)
+    const shouldExit = animated && wasActiveRef.current && !isActive
+    const shouldRender = isActive || forceMount || shouldExit || isExiting
+    const shouldKeepPanelMounted = forceMount || (animated && shouldRender)
+    const panelRef = React.useRef<HTMLDivElement>(null)
+    const composedRef = useComposedRefs(ref, panelRef)
+    const completeExit = React.useCallback(() => {
+      setIsExiting(false)
+    }, [])
+
+    React.useEffect(() => {
+      if (!animated) {
+        setIsExiting(false)
+        wasActiveRef.current = isActive
+        return
+      }
+
+      if (isActive) {
+        setIsExiting(false)
+      } else if (wasActiveRef.current) {
+        setIsExiting(true)
+      }
+
+      wasActiveRef.current = isActive
+    }, [animated, isActive])
+
+    const handleTransitionEnd = React.useCallback<React.TransitionEventHandler<HTMLDivElement>>(
+      event => {
+        onTransitionEnd?.(event)
+        if (event.target !== event.currentTarget) return
+        if (animated && !isActive) {
+          completeExit()
+        }
+      },
+      [animated, completeExit, isActive, onTransitionEnd],
+    )
+
+    useExitTransitionFallback(panelRef, animated && !isActive && (shouldExit || isExiting), completeExit)
 
     const panelClassName = cn(
       tabsPanelBase,
@@ -394,15 +436,18 @@ const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
       className,
     )
 
+    if (!shouldRender) return null
+
     return (
       <TabsPrimitive.Panel
-        ref={ref}
+        ref={composedRef}
         value={value}
-        keepMounted={forceMount || animated}
+        keepMounted={shouldKeepPanelMounted}
         hidden={animated ? false : undefined}
         aria-hidden={animated && !isActive ? true : undefined}
         inert={animated && !isActive ? true : undefined}
         tabIndex={animated && !isActive ? -1 : undefined}
+        onTransitionEnd={handleTransitionEnd}
         className={panelClassName}
         {...props}
       >

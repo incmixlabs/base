@@ -23,7 +23,9 @@ const copiedDeclarationMarker = join(packageRoot, 'dist/index.d.ts')
 
 if (existsSync(declarationSource)) {
   await copyAsset(declarationSource, join(packageRoot, 'dist'))
-} else if (!existsSync(copiedDeclarationMarker)) {
+}
+
+if (!existsSync(copiedDeclarationMarker)) {
   throw new Error(`Expected TypeScript declaration output at ${declarationSource}`)
 }
 

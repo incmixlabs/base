@@ -1,10 +1,11 @@
 import '@testing-library/jest-dom/vitest'
-import { cleanup, render, screen, waitFor } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { SegmentedControl } from './SegmentedControl'
 
 afterEach(() => {
+  vi.restoreAllMocks()
   cleanup()
 })
 
@@ -18,6 +19,23 @@ function expectClassTokens(className: string | undefined, tokens: readonly strin
 function expectNoClassToken(className: string | undefined, token: string) {
   const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
   expect(classTokens).not.toContain(token)
+}
+
+function mockTransitionStyle(transitionDuration: string) {
+  const originalGetComputedStyle = window.getComputedStyle.bind(window)
+
+  return vi.spyOn(window, 'getComputedStyle').mockImplementation((element, pseudoElement) => {
+    const style = originalGetComputedStyle(element, pseudoElement)
+    return new Proxy(style, {
+      get(target, property, receiver) {
+        if (property === 'transitionDelay') return '0s'
+        if (property === 'transitionDuration') return transitionDuration
+
+        const value = Reflect.get(target, property, receiver)
+        return typeof value === 'function' ? value.bind(target) : value
+      },
+    })
+  })
 }
 
 describe('SegmentedControl', () => {
@@ -133,8 +151,9 @@ describe('SegmentedControl', () => {
     })
   })
 
-  it('keeps animated content panels mounted in a stable grid stack', async () => {
+  it('keeps only active and exiting animated content panels in a stable grid stack', async () => {
     const user = userEvent.setup()
+    const getComputedStyleSpy = mockTransitionStyle('200ms')
     const { container } = render(
       <SegmentedControl.Root animated defaultValue="a">
         <SegmentedControl.Item value="a">A</SegmentedControl.Item>
@@ -144,19 +163,45 @@ describe('SegmentedControl', () => {
       </SegmentedControl.Root>,
     )
 
-    const panels = Array.from(container.querySelectorAll('[role="tabpanel"]'))
-    expect(panels).toHaveLength(2)
-    expectClassTokens(panels[0]?.parentElement?.className, ['grid', 'min-w-0'])
-    expectClassTokens(panels[0]?.className, ['col-start-1', 'row-start-1', 'opacity-100'])
-    expectClassTokens(panels[1]?.className, ['col-start-1', 'row-start-1', 'opacity-0', 'pointer-events-none'])
-    expect(panels[1]).toHaveAttribute('aria-hidden', 'true')
-    expect(panels[1]).toHaveAttribute('inert')
+    const getPanels = () => Array.from(container.querySelectorAll('[role="tabpanel"]'))
+    expect(getPanels()).toHaveLength(1)
+    expectClassTokens(getPanels()[0]?.parentElement?.className, ['grid', 'min-w-0'])
+    expectClassTokens(getPanels()[0]?.className, ['col-start-1', 'row-start-1', 'opacity-100'])
 
     await user.click(screen.getByRole('radio', { name: 'B' }))
 
+    const panels = getPanels()
+    expect(panels).toHaveLength(2)
     expectClassTokens(panels[0]?.className, ['opacity-0', 'pointer-events-none'])
     expect(panels[0]).toHaveAttribute('aria-hidden', 'true')
     expectClassTokens(panels[1]?.className, ['opacity-100'])
     expect(panels[1]).not.toHaveAttribute('aria-hidden')
+
+    fireEvent.transitionEnd(panels[0] as Element)
+    expect(getPanels()).toHaveLength(1)
+    expect(getPanels()[0]).toHaveTextContent('B panel')
+    getComputedStyleSpy.mockRestore()
+  })
+
+  it('cleans up animated content panels when transitions are disabled', async () => {
+    const user = userEvent.setup()
+    const getComputedStyleSpy = mockTransitionStyle('0s')
+    const { container } = render(
+      <SegmentedControl.Root animated defaultValue="a">
+        <SegmentedControl.Item value="a">A</SegmentedControl.Item>
+        <SegmentedControl.Item value="b">B</SegmentedControl.Item>
+        <SegmentedControl.Content value="a">A panel</SegmentedControl.Content>
+        <SegmentedControl.Content value="b">B panel</SegmentedControl.Content>
+      </SegmentedControl.Root>,
+    )
+
+    await user.click(screen.getByRole('radio', { name: 'B' }))
+
+    await waitFor(() => {
+      const panels = Array.from(container.querySelectorAll('[role="tabpanel"]'))
+      expect(panels).toHaveLength(1)
+      expect(panels[0]).toHaveTextContent('B panel')
+    })
+    getComputedStyleSpy.mockRestore()
   })
 })

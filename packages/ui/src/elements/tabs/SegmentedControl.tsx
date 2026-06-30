@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { useComposedRefs } from '@/lib/compose-refs'
 import { cn } from '@/lib/utils'
 import { radiusClassByToken } from '@/theme/helpers'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
@@ -34,6 +35,7 @@ import {
 } from './segmented-control.shared.class'
 import { renderTabLabelWithIcon, type TabIconsConfig } from './tab-icons'
 import { tabsPanelActive, tabsPanelAnimated, tabsPanelInactive, tabsPanelStack, tabsPanelStackItem } from './tabs.class'
+import { useExitTransitionFallback } from './tabs-transition'
 import { useAnimatedIndicator } from './useAnimatedIndicator'
 
 export const SegmentedControlVariants = {
@@ -64,10 +66,11 @@ export interface SegmentedControlContentProps {
   value: string
   className?: string
   children: React.ReactNode
+  onTransitionEnd?: React.TransitionEventHandler<HTMLDivElement>
 }
 
 const SegmentedControlContent = React.forwardRef<HTMLDivElement, SegmentedControlContentProps>(
-  ({ value, className, children, ...props }, ref) => {
+  ({ value, className, children, onTransitionEnd, ...props }, ref) => {
     const context = React.useContext(SegmentedControlContext)
 
     if (!context) {
@@ -76,12 +79,50 @@ const SegmentedControlContent = React.forwardRef<HTMLDivElement, SegmentedContro
 
     const { value: activeValue, animated } = context
     const isActive = activeValue === value
+    const wasActiveRef = React.useRef(isActive)
+    const [isExiting, setIsExiting] = React.useState(false)
+    const shouldExit = animated && wasActiveRef.current && !isActive
+    const shouldRender = isActive || shouldExit || isExiting
+    const panelRef = React.useRef<HTMLDivElement>(null)
+    const composedRef = useComposedRefs(ref, panelRef)
+    const completeExit = React.useCallback(() => {
+      setIsExiting(false)
+    }, [])
 
-    if (!animated && !isActive) return null
+    React.useEffect(() => {
+      if (!animated) {
+        setIsExiting(false)
+        wasActiveRef.current = isActive
+        return
+      }
+
+      if (isActive) {
+        setIsExiting(false)
+      } else if (wasActiveRef.current) {
+        setIsExiting(true)
+      }
+
+      wasActiveRef.current = isActive
+    }, [animated, isActive])
+
+    const handleTransitionEnd = React.useCallback<React.TransitionEventHandler<HTMLDivElement>>(
+      event => {
+        onTransitionEnd?.(event)
+        if (event.target !== event.currentTarget) return
+        if (animated && !isActive) {
+          completeExit()
+        }
+      },
+      [animated, completeExit, isActive, onTransitionEnd],
+    )
+
+    useExitTransitionFallback(panelRef, animated && !isActive && (shouldExit || isExiting), completeExit)
+
+    if (!shouldRender) return null
 
     return (
       <div
-        ref={ref}
+        ref={composedRef}
         role="tabpanel"
         aria-hidden={animated && !isActive ? true : undefined}
         inert={animated && !isActive ? true : undefined}
@@ -92,6 +133,7 @@ const SegmentedControlContent = React.forwardRef<HTMLDivElement, SegmentedContro
           animated && (isActive ? tabsPanelActive : tabsPanelInactive),
           className,
         )}
+        onTransitionEnd={handleTransitionEnd}
         {...props}
       >
         {children}
