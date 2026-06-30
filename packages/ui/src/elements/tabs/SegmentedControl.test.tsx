@@ -2,19 +2,23 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it } from 'vitest'
-import { SemanticColor } from '@/theme/props/color.prop'
 import { SegmentedControl } from './SegmentedControl'
-import {
-  segmentedSurfaceIndicatorByColor,
-  segmentedSurfaceRootBySize,
-  segmentedSurfaceSelectedHighContrastTextByColor,
-  segmentedUnderlineIndicatorByColor,
-  segmentedUnderlineRootBySize,
-} from './segmented-control.shared.css'
 
 afterEach(() => {
   cleanup()
 })
+
+function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
+  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
+  for (const token of tokens) {
+    expect(classTokens).toContain(token)
+  }
+}
+
+function expectNoClassToken(className: string | undefined, token: string) {
+  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
+  expect(classTokens).not.toContain(token)
+}
 
 describe('SegmentedControl', () => {
   it('normalizes whitespace around size, variant, and color', () => {
@@ -32,9 +36,9 @@ describe('SegmentedControl', () => {
     )
 
     const root = screen.getByTestId('segmented')
-    expect(root.className).toContain(segmentedUnderlineRootBySize.xl)
+    expectClassTokens(root.className, ['[height:calc(2.75rem_+_1px)]', 'gap-[0.6875rem]', 'pb-px'])
     const indicator = root.querySelector('[aria-hidden="true"]')
-    expect(indicator?.className).toContain(segmentedUnderlineIndicatorByColor.info)
+    expectClassTokens(indicator?.className, ['bg-info-solid'])
   })
 
   it('falls back to defaults for invalid values', () => {
@@ -52,9 +56,14 @@ describe('SegmentedControl', () => {
     )
 
     const root = screen.getByTestId('segmented')
-    expect(root.className).toContain(segmentedSurfaceRootBySize.md)
+    expectClassTokens(root.className, ['h-8', 'p-0', 'gap-2'])
     const indicator = root.querySelector('[aria-hidden="true"]')
-    expect(indicator?.className).toContain(segmentedSurfaceIndicatorByColor[SemanticColor.slate])
+    expectClassTokens(indicator?.className, [
+      '[background-color:var(--color-slate-background)]',
+      'border',
+      'border-solid',
+      'border-slate',
+    ])
   })
 
   it('applies high-contrast styles for selected items', () => {
@@ -66,7 +75,7 @@ describe('SegmentedControl', () => {
     )
 
     const selected = screen.getByRole('radio', { name: 'A' })
-    expect(selected.className).toContain(segmentedSurfaceSelectedHighContrastTextByColor.success)
+    expectClassTokens(selected.className, ['[color:var(--color-success-primary)]'])
   })
 
   it('enables hover classes by default and allows disabling them', () => {
@@ -78,7 +87,7 @@ describe('SegmentedControl', () => {
     )
 
     const item = screen.getByRole('radio', { name: 'B' })
-    expect(item.className).toContain('enabled:hover:bg-muted')
+    expectClassTokens(item.className, ['enabled:hover:bg-neutral-soft'])
     expect(item.className).toContain('enabled:cursor-pointer')
 
     rerender(
@@ -89,7 +98,7 @@ describe('SegmentedControl', () => {
     )
 
     expect(item.className).toContain('cursor-default')
-    expect(item.className).not.toContain('enabled:hover:bg-muted')
+    expectNoClassToken(item.className, 'enabled:hover:bg-neutral-soft')
   })
 
   it('renders configured icons and shows a tooltip for icon-only items', async () => {

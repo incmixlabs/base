@@ -1,8 +1,6 @@
 'use client'
 
 import { Tabs as TabsPrimitive } from '@base-ui/react/tabs'
-import { AnimatePresence } from 'motion/react'
-import * as m from 'motion/react-m'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
@@ -10,7 +8,6 @@ import { SemanticColor } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color } from '@/theme/tokens'
-import { getInteractiveElementBaseClasses } from '@/theme/tokens'
 import { SimpleTooltip } from '../tooltip/Tooltip'
 import { createTabsSizeConfigs, selectSegmentedControlVariantSizeMap } from './segmented-control.shared'
 import {
@@ -25,6 +22,7 @@ import {
   segmentedSurfaceRootBySize,
   segmentedSurfaceSelectedHighContrastTextByColor,
   segmentedSurfaceSelectedTextByColor,
+  segmentedTabInteractiveCls,
   segmentedUnderlineIndicatorByColor,
   segmentedUnderlineIndicatorCls,
   segmentedUnderlineIndicatorVerticalCls,
@@ -34,9 +32,9 @@ import {
   segmentedUnderlineRootVerticalByColor,
   segmentedUnderlineSelectedByColor,
   segmentedUnderlineUnselectedCls,
-} from './segmented-control.shared.css'
+} from './segmented-control.shared.class'
 import { renderTabLabelWithIcon, type TabIconsConfig } from './tab-icons'
-import { tabsPanelTransition, tabsPanelVariants } from './tabs.css'
+import { tabsPanelAnimated, tabsPanelBase, tabsPanelInactive } from './tabs.class'
 import { tabsPropDefs } from './tabs.props'
 import { useAnimatedIndicator } from './useAnimatedIndicator'
 
@@ -173,6 +171,7 @@ const TabsRoot = React.forwardRef<HTMLDivElement, TabsRootProps>(
           onValueChange={handleValueChange}
           orientation={orientation}
           className={cn(
+            safeAnimated && 'relative',
             orientation === 'vertical' && 'flex gap-4',
             safeHighContrast && 'af-high-contrast',
             marginProps.className,
@@ -303,7 +302,8 @@ const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
         aria-label={renderedLabel.ariaLabel}
         className={cn(
           segmentedItemBaseCls,
-          getInteractiveElementBaseClasses({ transition: 'all' }),
+          segmentedTabInteractiveCls,
+          'transition-all',
           sizeConfig.trigger,
           variant === TabsVariants.surface && '!items-end',
           variant === TabsVariants.surface && 'border-0',
@@ -314,10 +314,10 @@ const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
           hover &&
             variant === TabsVariants.surface &&
             !isActive &&
-            'enabled:hover:text-foreground enabled:hover:bg-muted',
-          hover && variant === TabsVariants.line && !isActive && 'enabled:hover:text-foreground',
+            'enabled:hover:text-neutral enabled:hover:bg-neutral-soft',
+          hover && variant === TabsVariants.line && !isActive && 'enabled:hover:text-neutral',
           !hover && 'cursor-default',
-          !isActive && 'text-muted-foreground',
+          !isActive && 'text-muted',
           isActive &&
             variant === TabsVariants.surface &&
             (highContrast
@@ -362,68 +362,27 @@ const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
     const isActive = activeValue === value
 
     const panelClassName = cn(
-      'ring-offset-background',
-      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+      tabsPanelBase,
+      animated && isActive && tabsPanelAnimated,
+      animated && !isActive && tabsPanelInactive,
       sizeConfig.content,
       className,
     )
 
-    if (!animated) {
-      return (
-        <TabsPrimitive.Panel ref={ref} value={value} keepMounted={forceMount} className={panelClassName} {...props}>
-          {children}
-        </TabsPrimitive.Panel>
-      )
-    }
-
-    if (forceMount) {
-      return (
-        <TabsPrimitive.Panel
-          ref={ref}
-          value={value}
-          keepMounted
-          hidden={false}
-          render={
-            <m.div
-              variants={tabsPanelVariants}
-              initial={false}
-              animate={isActive ? 'animate' : 'exit'}
-              transition={tabsPanelTransition}
-            />
-          }
-          className={panelClassName}
-          {...props}
-        >
-          {children}
-        </TabsPrimitive.Panel>
-      )
-    }
-
     return (
-      <AnimatePresence mode="wait">
-        {isActive && (
-          <TabsPrimitive.Panel
-            ref={ref}
-            value={value}
-            keepMounted
-            hidden={false}
-            render={
-              <m.div
-                key={value}
-                variants={tabsPanelVariants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                transition={tabsPanelTransition}
-              />
-            }
-            className={panelClassName}
-            {...props}
-          >
-            {children}
-          </TabsPrimitive.Panel>
-        )}
-      </AnimatePresence>
+      <TabsPrimitive.Panel
+        ref={ref}
+        value={value}
+        keepMounted={forceMount || animated}
+        hidden={animated ? false : undefined}
+        aria-hidden={animated && !isActive ? true : undefined}
+        inert={animated && !isActive ? true : undefined}
+        tabIndex={animated && !isActive ? -1 : undefined}
+        className={panelClassName}
+        {...props}
+      >
+        {children}
+      </TabsPrimitive.Panel>
     )
   },
 )

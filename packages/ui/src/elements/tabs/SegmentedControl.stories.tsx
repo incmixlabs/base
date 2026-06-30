@@ -4,6 +4,7 @@ import { SemanticColor, semanticColorKeys } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
 import { radiusPropDef } from '@/theme/props/radius.prop'
 import { createKeyedStateMap } from '@/theme/tokens'
+import { Text } from '@/typography'
 import { SegmentedControl } from './SegmentedControl'
 import { segmentedControlRootPropDefs } from './segmented-control.props'
 
@@ -103,19 +104,25 @@ export const Animated: Story = {
         <SegmentedControl.Content value="overview">
           <div className="space-y-2 pt-4">
             <h3 className="font-medium">Overview</h3>
-            <p className="text-sm text-muted-foreground">High-level metrics and summary information.</p>
+            <Text as="p" size="sm" color="neutral" muted>
+              High-level metrics and summary information.
+            </Text>
           </div>
         </SegmentedControl.Content>
         <SegmentedControl.Content value="analytics">
           <div className="space-y-2 pt-4">
             <h3 className="font-medium">Analytics</h3>
-            <p className="text-sm text-muted-foreground">Detailed breakdowns and trend analysis.</p>
+            <Text as="p" size="sm" color="neutral" muted>
+              Detailed breakdowns and trend analysis.
+            </Text>
           </div>
         </SegmentedControl.Content>
         <SegmentedControl.Content value="reports">
           <div className="space-y-2 pt-4">
             <h3 className="font-medium">Reports</h3>
-            <p className="text-sm text-muted-foreground">Generated reports and export options.</p>
+            <Text as="p" size="sm" color="neutral" muted>
+              Generated reports and export options.
+            </Text>
           </div>
         </SegmentedControl.Content>
       </SegmentedControl.Root>
@@ -126,45 +133,28 @@ export const Animated: Story = {
 // Sizes
 export const Sizes: Story = {
   render: () => {
-    const [value1, setValue1] = React.useState('a')
-    const [value2, setValue2] = React.useState('a')
-    const [value3, setValue3] = React.useState('a')
-    const [value4, setValue4] = React.useState('a')
+    const sizes = getPropDefValues(segmentedControlRootPropDefs.size)
+    const [values, setValues] = React.useState(createKeyedStateMap(sizes, () => 'a'))
 
     return (
       <div className="flex flex-col gap-4 items-start">
-        <div>
-          <p className="text-sm text-muted-foreground mb-2">sm</p>
-          <SegmentedControl.Root size="sm" value={value1} onValueChange={setValue1}>
-            <SegmentedControl.Item value="a">Option A</SegmentedControl.Item>
-            <SegmentedControl.Item value="b">Option B</SegmentedControl.Item>
-            <SegmentedControl.Item value="c">Option C</SegmentedControl.Item>
-          </SegmentedControl.Root>
-        </div>
-        <div>
-          <p className="text-sm text-muted-foreground mb-2">md (default)</p>
-          <SegmentedControl.Root size="md" value={value2} onValueChange={setValue2}>
-            <SegmentedControl.Item value="a">Option A</SegmentedControl.Item>
-            <SegmentedControl.Item value="b">Option B</SegmentedControl.Item>
-            <SegmentedControl.Item value="c">Option C</SegmentedControl.Item>
-          </SegmentedControl.Root>
-        </div>
-        <div>
-          <p className="text-sm text-muted-foreground mb-2">lg</p>
-          <SegmentedControl.Root size="lg" value={value3} onValueChange={setValue3}>
-            <SegmentedControl.Item value="a">Option A</SegmentedControl.Item>
-            <SegmentedControl.Item value="b">Option B</SegmentedControl.Item>
-            <SegmentedControl.Item value="c">Option C</SegmentedControl.Item>
-          </SegmentedControl.Root>
-        </div>
-        <div>
-          <p className="text-sm text-muted-foreground mb-2">xl</p>
-          <SegmentedControl.Root size="xl" value={value4} onValueChange={setValue4}>
-            <SegmentedControl.Item value="a">Option A</SegmentedControl.Item>
-            <SegmentedControl.Item value="b">Option B</SegmentedControl.Item>
-            <SegmentedControl.Item value="c">Option C</SegmentedControl.Item>
-          </SegmentedControl.Root>
-        </div>
+        {sizes.map(size => (
+          <div key={size}>
+            <Text as="p" size="sm" color="neutral" muted mb="2">
+              {size}
+              {size === segmentedControlRootPropDefs.size.default ? ' (default)' : ''}
+            </Text>
+            <SegmentedControl.Root
+              size={size}
+              value={values[size]}
+              onValueChange={value => setValues(prev => ({ ...prev, [size]: value }))}
+            >
+              <SegmentedControl.Item value="a">Option A</SegmentedControl.Item>
+              <SegmentedControl.Item value="b">Option B</SegmentedControl.Item>
+              <SegmentedControl.Item value="c">Option C</SegmentedControl.Item>
+            </SegmentedControl.Root>
+          </div>
+        ))}
       </div>
     )
   },
@@ -173,54 +163,28 @@ export const Sizes: Story = {
 // Radius
 export const Radius: Story = {
   render: () => {
-    const [v1, setV1] = React.useState('a')
-    const [v2, setV2] = React.useState('a')
-    const [v3, setV3] = React.useState('a')
-    const [v4, setV4] = React.useState('a')
-    const [v5, setV5] = React.useState('a')
+    const radii = getPropDefValues(radiusPropDef.radius)
+    const [values, setValues] = React.useState(createKeyedStateMap(radii, () => 'a'))
 
     return (
       <div className="flex flex-col gap-4 items-start">
-        <div>
-          <p className="text-sm text-muted-foreground mb-2">None</p>
-          <SegmentedControl.Root radius="none" value={v1} onValueChange={setV1}>
-            <SegmentedControl.Item value="a">A</SegmentedControl.Item>
-            <SegmentedControl.Item value="b">B</SegmentedControl.Item>
-            <SegmentedControl.Item value="c">C</SegmentedControl.Item>
-          </SegmentedControl.Root>
-        </div>
-        <div>
-          <p className="text-sm text-muted-foreground mb-2">Small</p>
-          <SegmentedControl.Root radius="sm" value={v2} onValueChange={setV2}>
-            <SegmentedControl.Item value="a">A</SegmentedControl.Item>
-            <SegmentedControl.Item value="b">B</SegmentedControl.Item>
-            <SegmentedControl.Item value="c">C</SegmentedControl.Item>
-          </SegmentedControl.Root>
-        </div>
-        <div>
-          <p className="text-sm text-muted-foreground mb-2">Medium (default)</p>
-          <SegmentedControl.Root radius="md" value={v3} onValueChange={setV3}>
-            <SegmentedControl.Item value="a">A</SegmentedControl.Item>
-            <SegmentedControl.Item value="b">B</SegmentedControl.Item>
-            <SegmentedControl.Item value="c">C</SegmentedControl.Item>
-          </SegmentedControl.Root>
-        </div>
-        <div>
-          <p className="text-sm text-muted-foreground mb-2">Large</p>
-          <SegmentedControl.Root radius="lg" value={v4} onValueChange={setV4}>
-            <SegmentedControl.Item value="a">A</SegmentedControl.Item>
-            <SegmentedControl.Item value="b">B</SegmentedControl.Item>
-            <SegmentedControl.Item value="c">C</SegmentedControl.Item>
-          </SegmentedControl.Root>
-        </div>
-        <div>
-          <p className="text-sm text-muted-foreground mb-2">Full</p>
-          <SegmentedControl.Root radius="full" value={v5} onValueChange={setV5}>
-            <SegmentedControl.Item value="a">A</SegmentedControl.Item>
-            <SegmentedControl.Item value="b">B</SegmentedControl.Item>
-            <SegmentedControl.Item value="c">C</SegmentedControl.Item>
-          </SegmentedControl.Root>
-        </div>
+        {radii.map(radius => (
+          <div key={radius}>
+            <Text as="p" size="sm" color="neutral" muted mb="2" className="capitalize">
+              {radius}
+              {radius === radiusPropDef.radius.default ? ' (default)' : ''}
+            </Text>
+            <SegmentedControl.Root
+              radius={radius}
+              value={values[radius]}
+              onValueChange={value => setValues(prev => ({ ...prev, [radius]: value }))}
+            >
+              <SegmentedControl.Item value="a">A</SegmentedControl.Item>
+              <SegmentedControl.Item value="b">B</SegmentedControl.Item>
+              <SegmentedControl.Item value="c">C</SegmentedControl.Item>
+            </SegmentedControl.Root>
+          </div>
+        ))}
       </div>
     )
   },
@@ -291,7 +255,9 @@ export const Colors: Story = {
       <div className="flex flex-col gap-4 items-start">
         {colors.map(color => (
           <div key={color}>
-            <p className="text-sm text-muted-foreground mb-2 capitalize">{color}</p>
+            <Text as="p" size="sm" color="neutral" muted mb="2" className="capitalize">
+              {color}
+            </Text>
             <SegmentedControl.Root
               color={color}
               value={values[color]}

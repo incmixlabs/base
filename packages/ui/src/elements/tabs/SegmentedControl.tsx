@@ -1,20 +1,20 @@
 'use client'
 
-import { AnimatePresence } from 'motion/react'
-import * as m from 'motion/react-m'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
+import { radiusClassByToken } from '@/theme/helpers'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color, Radius } from '@/theme/tokens'
-import { getInteractiveElementBaseClasses, SurfaceVariants, surfaceRadiusClasses } from '@/theme/tokens'
+import { SurfaceVariants } from '@/theme/tokens'
 import { SimpleTooltip } from '../tooltip/Tooltip'
 import { useThemeRadius } from '../utils'
 import { segmentedControlRootPropDefs } from './segmented-control.props'
 import { selectSegmentedControlVariantSizeMap } from './segmented-control.shared'
 import {
+  segmentedControlInteractiveCls,
   segmentedIndicatorBaseCls,
   segmentedItemBaseCls,
   segmentedItemBySize,
@@ -31,9 +31,9 @@ import {
   segmentedUnderlineRootBySize,
   segmentedUnderlineSelectedByColor,
   segmentedUnderlineUnselectedCls,
-} from './segmented-control.shared.css'
+} from './segmented-control.shared.class'
 import { renderTabLabelWithIcon, type TabIconsConfig } from './tab-icons'
-import { tabsPanelTransition, tabsPanelVariants } from './tabs.css'
+import { tabsPanelAnimated } from './tabs.class'
 import { useAnimatedIndicator } from './useAnimatedIndicator'
 
 export const SegmentedControlVariants = {
@@ -77,34 +77,12 @@ const SegmentedControlContent = React.forwardRef<HTMLDivElement, SegmentedContro
     const { value: activeValue, animated } = context
     const isActive = activeValue === value
 
-    if (!animated) {
-      if (!isActive) return null
-      return (
-        <div ref={ref} role="tabpanel" className={className} {...props}>
-          {children}
-        </div>
-      )
-    }
+    if (!isActive) return null
 
     return (
-      <AnimatePresence mode="wait">
-        {isActive && (
-          <m.div
-            ref={ref}
-            key={value}
-            role="tabpanel"
-            variants={tabsPanelVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            transition={tabsPanelTransition}
-            className={className}
-            {...props}
-          >
-            {children}
-          </m.div>
-        )}
-      </AnimatePresence>
+      <div ref={ref} role="tabpanel" className={cn(animated && tabsPanelAnimated, className)} {...props}>
+        {children}
+      </div>
     )
   },
 )
@@ -249,7 +227,7 @@ const SegmentedControlRoot = React.forwardRef<HTMLDivElement, SegmentedControlRo
           className={cn(
             segmentedRootBaseCls,
             rootSizeClass,
-            safeVariant === SegmentedControlVariants.surface && surfaceRadiusClasses[radius],
+            safeVariant === SegmentedControlVariants.surface && radiusClassByToken[radius],
             safeVariant === SegmentedControlVariants.surface && segmentedSurfaceRootByColor[safeColor],
             safeVariant === SegmentedControlVariants.underline && segmentedUnderlineRootByColor[safeColor],
             safeHighContrast && 'af-high-contrast',
@@ -263,7 +241,7 @@ const SegmentedControlRoot = React.forwardRef<HTMLDivElement, SegmentedControlRo
             aria-hidden="true"
             className={cn(
               segmentedIndicatorBaseCls,
-              safeVariant === SegmentedControlVariants.surface && surfaceRadiusClasses[radius],
+              safeVariant === SegmentedControlVariants.surface && radiusClassByToken[radius],
               safeVariant === SegmentedControlVariants.underline && segmentedUnderlineIndicatorCls,
               safeVariant === SegmentedControlVariants.surface
                 ? segmentedSurfaceIndicatorByColor[safeColor]
@@ -331,9 +309,9 @@ const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedContro
         onClick={() => onValueChange(value)}
         className={cn(
           segmentedItemBaseCls,
-          getInteractiveElementBaseClasses({ ringOffset: '1' }),
+          segmentedControlInteractiveCls,
           sizeClass,
-          variant === SegmentedControlVariants.surface && surfaceRadiusClasses[radius],
+          variant === SegmentedControlVariants.surface && radiusClassByToken[radius],
           variant === SegmentedControlVariants.surface && '!items-end',
           variant === SegmentedControlVariants.surface && 'border-0',
           variant === SegmentedControlVariants.underline && '!items-end',
@@ -341,13 +319,13 @@ const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedContro
           hover &&
             variant === SegmentedControlVariants.surface &&
             !isSelected &&
-            'enabled:hover:text-foreground enabled:hover:bg-muted enabled:cursor-pointer',
+            'enabled:hover:text-neutral enabled:hover:bg-neutral-soft enabled:cursor-pointer',
           hover &&
             variant === SegmentedControlVariants.underline &&
             !isSelected &&
-            'enabled:hover:text-foreground enabled:cursor-pointer',
+            'enabled:hover:text-neutral enabled:cursor-pointer',
           !hover && 'cursor-default',
-          !isSelected && 'text-muted-foreground',
+          !isSelected && 'text-muted',
           isSelected &&
             variant === SegmentedControlVariants.surface &&
             (highContrast

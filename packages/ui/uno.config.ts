@@ -104,6 +104,8 @@ import {
 import { sheetClassNames } from './src/elements/sheet/sheet.class'
 import { spinnerClassNames } from './src/elements/spinner/spinner.class'
 import { stepperClassNames } from './src/elements/stepper/stepper.class'
+import { segmentedControlClassNames } from './src/elements/tabs/segmented-control.shared.class'
+import { tabsClassNames } from './src/elements/tabs/tabs.class'
 import { timelineClassNames } from './src/elements/timeline/timeline.class'
 import { tooltipContentBase, tooltipPositionerBase } from './src/elements/tooltip/tooltip.class'
 import { avatarPickerClassNames } from './src/form/avatar-picker.class'
@@ -408,6 +410,8 @@ export default defineConfig({
       ...splitClasses(spinnerClassNames),
       // Stepper styles
       ...splitClasses(stepperClassNames),
+      // Tabs/segmented control styles
+      ...splitClasses([...segmentedControlClassNames, ...tabsClassNames]),
       // Timeline styles
       ...splitClasses(timelineClassNames),
       // Avatar picker styles

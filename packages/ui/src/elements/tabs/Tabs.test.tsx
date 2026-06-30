@@ -2,21 +2,23 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it } from 'vitest'
-import { SemanticColor } from '@/theme/props/color.prop'
-import {
-  segmentedItemBySize,
-  segmentedSurfaceIndicatorByColor,
-  segmentedSurfaceRootBySize,
-  segmentedSurfaceSelectedHighContrastTextByColor,
-  segmentedUnderlineIndicatorByColor,
-  segmentedUnderlineItemBySize,
-  segmentedUnderlineRootBySize,
-} from './segmented-control.shared.css'
 import { Tabs } from './Tabs'
 
 afterEach(() => {
   cleanup()
 })
+
+function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
+  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
+  for (const token of tokens) {
+    expect(classTokens).toContain(token)
+  }
+}
+
+function expectNoClassToken(className: string | undefined, token: string) {
+  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
+  expect(classTokens).not.toContain(token)
+}
 
 describe('Tabs', () => {
   it('normalizes whitespace around size, variant, and color', () => {
@@ -29,9 +31,14 @@ describe('Tabs', () => {
     )
 
     const list = screen.getByTestId('list')
-    expect(list.className).toContain(segmentedSurfaceRootBySize.lg)
+    expectClassTokens(list.className, ['h-10', 'p-0', 'gap-2.5'])
     const indicator = list.querySelector('[aria-hidden="true"]')
-    expect(indicator?.className).toContain(segmentedSurfaceIndicatorByColor.info)
+    expectClassTokens(indicator?.className, [
+      '[background-color:var(--color-info-background)]',
+      'border',
+      'border-solid',
+      'border-info',
+    ])
   })
 
   it('falls back to defaults for invalid values', () => {
@@ -44,9 +51,9 @@ describe('Tabs', () => {
     )
 
     const list = screen.getByTestId('list')
-    expect(list.className).toContain(segmentedUnderlineRootBySize.md)
+    expectClassTokens(list.className, ['[height:calc(2rem_+_1px)]', 'gap-1', 'pb-px'])
     const indicator = list.querySelector('[aria-hidden="true"]')
-    expect(indicator?.className).toContain(segmentedUnderlineIndicatorByColor[SemanticColor.slate])
+    expectClassTokens(indicator?.className, ['bg-slate-solid'])
   })
 
   it('uses defaults when props are undefined', () => {
@@ -59,9 +66,9 @@ describe('Tabs', () => {
     )
 
     const list = screen.getByTestId('list')
-    expect(list.className).toContain(segmentedUnderlineRootBySize.md)
+    expectClassTokens(list.className, ['[height:calc(2rem_+_1px)]', 'gap-1', 'pb-px'])
     const indicator = list.querySelector('[aria-hidden="true"]')
-    expect(indicator?.className).toContain(segmentedUnderlineIndicatorByColor[SemanticColor.slate])
+    expectClassTokens(indicator?.className, ['bg-slate-solid'])
   })
 
   it('applies valid values and high-contrast styles', () => {
@@ -74,12 +81,24 @@ describe('Tabs', () => {
     )
 
     const list = screen.getByTestId('list')
-    expect(list.className).toContain(segmentedSurfaceRootBySize.xl)
+    expectClassTokens(list.className, ['h-11', 'p-0', 'gap-[0.6875rem]'])
     const indicator = list.querySelector('[aria-hidden="true"]')
-    expect(indicator?.className).toContain(segmentedSurfaceIndicatorByColor.success)
+    expectClassTokens(indicator?.className, [
+      '[background-color:var(--color-success-background)]',
+      'border',
+      'border-solid',
+      'border-success',
+    ])
     const trigger = screen.getByRole('tab', { name: 'A' })
-    expect(trigger.className).toContain(segmentedItemBySize.xl)
-    expect(trigger.className).toContain(segmentedSurfaceSelectedHighContrastTextByColor.success)
+    expectClassTokens(trigger.className, [
+      'px-3.5',
+      'h-11',
+      '[padding-top:calc(0.5rem_+_2px)]',
+      '[padding-bottom:calc(0.5rem_-_2px)]',
+      'text-xl',
+      'leading-7',
+      '[color:var(--color-success-primary)]',
+    ])
   })
 
   it('uses underline size classes for line variant triggers', () => {
@@ -92,7 +111,13 @@ describe('Tabs', () => {
     )
 
     const trigger = screen.getByRole('tab', { name: 'A' })
-    expect(trigger.className).toContain(segmentedUnderlineItemBySize.lg)
+    expectClassTokens(trigger.className, [
+      'px-3.5',
+      '[padding-top:calc(0.4375rem_-_8px)]',
+      'pb-2',
+      'text-lg',
+      'leading-[1.625rem]',
+    ])
   })
 
   it('maps trigger sizing by variant consistently', () => {
@@ -114,8 +139,21 @@ describe('Tabs', () => {
     const surfaceTrigger = screen.getByRole('tab', { name: 'Surface Trigger' })
     const lineTrigger = screen.getByRole('tab', { name: 'Line Trigger' })
 
-    expect(surfaceTrigger.className).toContain(segmentedItemBySize.md)
-    expect(lineTrigger.className).toContain(segmentedUnderlineItemBySize.md)
+    expectClassTokens(surfaceTrigger.className, [
+      'px-3',
+      'h-8',
+      '[padding-top:calc(0.25rem_+_2px)]',
+      '[padding-bottom:calc(0.25rem_-_2px)]',
+      'text-base',
+      'leading-6',
+    ])
+    expectClassTokens(lineTrigger.className, [
+      'px-3',
+      '[padding-top:calc(0.25rem_-_8px)]',
+      'pb-2',
+      'text-base',
+      'leading-6',
+    ])
   })
 
   it('enables hover classes by default and allows disabling them', () => {
@@ -129,7 +167,7 @@ describe('Tabs', () => {
     )
 
     const trigger = screen.getByRole('tab', { name: 'B' })
-    expect(trigger.className).toContain('enabled:hover:text-foreground')
+    expectClassTokens(trigger.className, ['enabled:hover:text-neutral'])
     expect(trigger.className).toContain('enabled:cursor-pointer')
 
     rerender(
@@ -142,7 +180,7 @@ describe('Tabs', () => {
     )
 
     expect(trigger.className).toContain('cursor-default')
-    expect(trigger.className).not.toContain('enabled:hover:text-foreground')
+    expectNoClassToken(trigger.className, 'enabled:hover:text-neutral')
   })
 
   it('renders configured icons and shows a tooltip for icon-only tabs', async () => {
