@@ -34,7 +34,16 @@ import {
   segmentedUnderlineUnselectedCls,
 } from './segmented-control.shared.class'
 import { renderTabLabelWithIcon, type TabIconsConfig } from './tab-icons'
-import { tabsPanelActive, tabsPanelAnimated, tabsPanelInactive, tabsPanelStack, tabsPanelStackItem } from './tabs.class'
+import {
+  tabsPanelActive,
+  tabsPanelAnimated,
+  tabsPanelCurrent,
+  tabsPanelExiting,
+  tabsPanelInactive,
+  tabsPanelStack,
+  tabsPanelStackItem,
+} from './tabs.class'
+import { partitionStackedPanels } from './tabs-children'
 import { useExitTransitionFallback } from './tabs-transition'
 import { useAnimatedIndicator } from './useAnimatedIndicator'
 
@@ -69,8 +78,12 @@ export interface SegmentedControlContentProps {
   onTransitionEnd?: React.TransitionEventHandler<HTMLDivElement>
 }
 
-const SegmentedControlContent = React.forwardRef<HTMLDivElement, SegmentedControlContentProps>(
-  ({ value, className, children, onTransitionEnd, ...props }, ref) => {
+type SegmentedControlContentInternalProps = SegmentedControlContentProps & {
+  __stacked?: boolean
+}
+
+const SegmentedControlContentImpl = React.forwardRef<HTMLDivElement, SegmentedControlContentInternalProps>(
+  ({ value, className, children, onTransitionEnd, __stacked = false, ...props }, ref) => {
     const context = React.useContext(SegmentedControlContext)
 
     if (!context) {
@@ -79,10 +92,12 @@ const SegmentedControlContent = React.forwardRef<HTMLDivElement, SegmentedContro
 
     const { value: activeValue, animated } = context
     const isActive = activeValue === value
+    const isStackedAnimated = animated && __stacked
     const wasActiveRef = React.useRef(isActive)
     const [isExiting, setIsExiting] = React.useState(false)
-    const shouldExit = animated && wasActiveRef.current && !isActive
+    const shouldExit = isStackedAnimated && wasActiveRef.current && !isActive
     const shouldRender = isActive || shouldExit || isExiting
+    const isLeaving = isStackedAnimated && !isActive && (shouldExit || isExiting)
     const panelRef = React.useRef<HTMLDivElement>(null)
     const composedRef = useComposedRefs(ref, panelRef)
     const completeExit = React.useCallback(() => {
@@ -90,7 +105,7 @@ const SegmentedControlContent = React.forwardRef<HTMLDivElement, SegmentedContro
     }, [])
 
     React.useEffect(() => {
-      if (!animated) {
+      if (!isStackedAnimated) {
         setIsExiting(false)
         wasActiveRef.current = isActive
         return
@@ -103,20 +118,20 @@ const SegmentedControlContent = React.forwardRef<HTMLDivElement, SegmentedContro
       }
 
       wasActiveRef.current = isActive
-    }, [animated, isActive])
+    }, [isStackedAnimated, isActive])
 
     const handleTransitionEnd = React.useCallback<React.TransitionEventHandler<HTMLDivElement>>(
       event => {
         onTransitionEnd?.(event)
         if (event.target !== event.currentTarget) return
-        if (animated && !isActive) {
+        if (isStackedAnimated && !isActive) {
           completeExit()
         }
       },
-      [animated, completeExit, isActive, onTransitionEnd],
+      [completeExit, isActive, isStackedAnimated, onTransitionEnd],
     )
 
-    useExitTransitionFallback(panelRef, animated && !isActive && (shouldExit || isExiting), completeExit)
+    useExitTransitionFallback(panelRef, isStackedAnimated && !isActive && (shouldExit || isExiting), completeExit)
 
     if (!shouldRender) return null
 
@@ -124,13 +139,14 @@ const SegmentedControlContent = React.forwardRef<HTMLDivElement, SegmentedContro
       <div
         ref={composedRef}
         role="tabpanel"
-        aria-hidden={animated && !isActive ? true : undefined}
-        inert={animated && !isActive ? true : undefined}
-        tabIndex={animated && !isActive ? -1 : undefined}
+        aria-hidden={isStackedAnimated && !isActive ? true : undefined}
+        inert={isStackedAnimated && !isActive ? true : undefined}
+        tabIndex={isStackedAnimated && !isActive ? -1 : undefined}
         className={cn(
-          animated && tabsPanelStackItem,
-          animated && tabsPanelAnimated,
-          animated && (isActive ? tabsPanelActive : tabsPanelInactive),
+          isStackedAnimated && tabsPanelStackItem,
+          isStackedAnimated && tabsPanelAnimated,
+          isStackedAnimated && (isActive ? tabsPanelActive : tabsPanelInactive),
+          isStackedAnimated && (isLeaving ? tabsPanelExiting : tabsPanelCurrent),
           className,
         )}
         onTransitionEnd={handleTransitionEnd}
@@ -142,7 +158,11 @@ const SegmentedControlContent = React.forwardRef<HTMLDivElement, SegmentedContro
   },
 )
 
-SegmentedControlContent.displayName = 'SegmentedControl.Content'
+SegmentedControlContentImpl.displayName = 'SegmentedControl.Content'
+
+const SegmentedControlContent = SegmentedControlContentImpl as React.ForwardRefExoticComponent<
+  SegmentedControlContentProps & React.RefAttributes<HTMLDivElement>
+>
 
 export interface SegmentedControlRootProps extends MarginProps {
   size?: SegmentedSize
@@ -249,16 +269,7 @@ const SegmentedControlRoot = React.forwardRef<HTMLDivElement, SegmentedControlRo
       [controlledValue, onValueChange],
     )
 
-    const items: React.ReactNode[] = []
-    const contentPanels: React.ReactNode[] = []
-
-    React.Children.forEach(children, child => {
-      if (React.isValidElement(child) && child.type === SegmentedControlContent) {
-        contentPanels.push(child)
-      } else {
-        items.push(child)
-      }
-    })
+    const { panels: contentPanels, nonPanels: items } = partitionStackedPanels(children, SegmentedControlContent)
 
     return (
       <SegmentedControlContext.Provider

@@ -12,6 +12,10 @@ export const tabsPanelActive = 'opacity-100'
 
 export const tabsPanelInactive = 'opacity-0 pointer-events-none'
 
+export const tabsPanelCurrent = 'z-0'
+
+export const tabsPanelExiting = 'z-10'
+
 export const tabsClassNames = [
   tabsPanelBase,
   tabsPanelAnimated,
@@ -19,4 +23,6 @@ export const tabsClassNames = [
   tabsPanelStackItem,
   tabsPanelActive,
   tabsPanelInactive,
+  tabsPanelCurrent,
+  tabsPanelExiting,
 ]

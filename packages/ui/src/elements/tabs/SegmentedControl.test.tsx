@@ -166,21 +166,72 @@ describe('SegmentedControl', () => {
     const getPanels = () => Array.from(container.querySelectorAll('[role="tabpanel"]'))
     expect(getPanels()).toHaveLength(1)
     expectClassTokens(getPanels()[0]?.parentElement?.className, ['grid', 'min-w-0'])
-    expectClassTokens(getPanels()[0]?.className, ['col-start-1', 'row-start-1', 'opacity-100'])
+    expectClassTokens(getPanels()[0]?.className, ['col-start-1', 'row-start-1', 'opacity-100', 'z-0'])
 
     await user.click(screen.getByRole('radio', { name: 'B' }))
 
     const panels = getPanels()
     expect(panels).toHaveLength(2)
-    expectClassTokens(panels[0]?.className, ['opacity-0', 'pointer-events-none'])
+    expectClassTokens(panels[0]?.className, ['opacity-0', 'pointer-events-none', 'z-10'])
     expect(panels[0]).toHaveAttribute('aria-hidden', 'true')
-    expectClassTokens(panels[1]?.className, ['opacity-100'])
+    expectClassTokens(panels[1]?.className, ['opacity-100', 'z-0'])
     expect(panels[1]).not.toHaveAttribute('aria-hidden')
 
     fireEvent.transitionEnd(panels[0] as Element)
     expect(getPanels()).toHaveLength(1)
     expect(getPanels()[0]).toHaveTextContent('B panel')
     getComputedStyleSpy.mockRestore()
+  })
+
+  it('stacks animated content panels inside fragments', () => {
+    const { container } = render(
+      <SegmentedControl.Root animated defaultValue="a">
+        <SegmentedControl.Item value="a">A</SegmentedControl.Item>
+        <SegmentedControl.Item value="b">B</SegmentedControl.Item>
+        <>
+          <SegmentedControl.Content value="a">A panel</SegmentedControl.Content>
+          <SegmentedControl.Content value="b">B panel</SegmentedControl.Content>
+        </>
+      </SegmentedControl.Root>,
+    )
+
+    const panels = Array.from(container.querySelectorAll('[role="tabpanel"]'))
+    expect(panels).toHaveLength(1)
+    expectClassTokens(panels[0]?.parentElement?.className, ['grid', 'min-w-0'])
+    expectClassTokens(panels[0]?.className, ['col-start-1', 'row-start-1', 'opacity-100', 'z-0'])
+  })
+
+  it('does not apply animated stack classes to content hidden behind a wrapper component', async () => {
+    const user = userEvent.setup()
+
+    function WrappedPanels() {
+      return (
+        <>
+          <SegmentedControl.Content value="a">A panel</SegmentedControl.Content>
+          <SegmentedControl.Content value="b">B panel</SegmentedControl.Content>
+        </>
+      )
+    }
+
+    const { container } = render(
+      <SegmentedControl.Root animated defaultValue="a">
+        <SegmentedControl.Item value="a">A</SegmentedControl.Item>
+        <SegmentedControl.Item value="b">B</SegmentedControl.Item>
+        <WrappedPanels />
+      </SegmentedControl.Root>,
+    )
+
+    const getPanels = () => Array.from(container.querySelectorAll('[role="tabpanel"]'))
+    expect(getPanels()).toHaveLength(1)
+    expectNoClassToken(getPanels()[0]?.className, 'col-start-1')
+    expectNoClassToken(getPanels()[0]?.className, 'opacity-100')
+
+    await user.click(screen.getByRole('radio', { name: 'B' }))
+
+    expect(getPanels()).toHaveLength(1)
+    expect(getPanels()[0]).toHaveTextContent('B panel')
+    expectNoClassToken(getPanels()[0]?.className, 'col-start-1')
+    expectNoClassToken(getPanels()[0]?.className, 'opacity-100')
   })
 
   it('cleans up animated content panels when transitions are disabled', async () => {

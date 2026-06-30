@@ -1,8 +1,10 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import * as React from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Tabs } from './Tabs'
+import { partitionStackedPanels } from './tabs-children'
 
 afterEach(() => {
   vi.restoreAllMocks()
@@ -252,21 +254,93 @@ describe('Tabs', () => {
     const getPanels = () => Array.from(container.querySelectorAll('[role="tabpanel"]'))
     expect(getPanels()).toHaveLength(1)
     expectClassTokens(getPanels()[0]?.parentElement?.className, ['grid', 'min-w-0'])
-    expectClassTokens(getPanels()[0]?.className, ['col-start-1', 'row-start-1', 'opacity-100'])
+    expectClassTokens(getPanels()[0]?.className, ['col-start-1', 'row-start-1', 'opacity-100', 'z-0'])
 
     await user.click(screen.getByRole('tab', { name: 'B' }))
 
     const panels = getPanels()
     expect(panels).toHaveLength(2)
-    expectClassTokens(panels[0]?.className, ['opacity-0', 'pointer-events-none'])
+    expectClassTokens(panels[0]?.className, ['opacity-0', 'pointer-events-none', 'z-10'])
     expect(panels[0]).toHaveAttribute('aria-hidden', 'true')
-    expectClassTokens(panels[1]?.className, ['opacity-100'])
+    expectClassTokens(panels[1]?.className, ['opacity-100', 'z-0'])
     expect(panels[1]).not.toHaveAttribute('aria-hidden')
 
     fireEvent.transitionEnd(panels[0] as Element)
     expect(getPanels()).toHaveLength(1)
     expect(getPanels()[0]).toHaveTextContent('B panel')
     getComputedStyleSpy.mockRestore()
+  })
+
+  it('stacks animated content panels inside fragments', () => {
+    const { container } = render(
+      <Tabs.Root animated defaultValue="a">
+        <Tabs.List>
+          <Tabs.Trigger value="a">A</Tabs.Trigger>
+          <Tabs.Trigger value="b">B</Tabs.Trigger>
+        </Tabs.List>
+        <>
+          <Tabs.Content value="a">A panel</Tabs.Content>
+          <Tabs.Content value="b">B panel</Tabs.Content>
+        </>
+      </Tabs.Root>,
+    )
+
+    const panels = Array.from(container.querySelectorAll('[role="tabpanel"]'))
+    expect(panels).toHaveLength(1)
+    expectClassTokens(panels[0]?.parentElement?.className, ['grid', 'min-w-0'])
+    expectClassTokens(panels[0]?.className, ['col-start-1', 'row-start-1', 'opacity-100', 'z-0'])
+  })
+
+  it('scopes stacked panel keys inside separate fragments', () => {
+    const { panels } = partitionStackedPanels(
+      <>
+        <>
+          <Tabs.Content value="a">A panel</Tabs.Content>
+        </>
+        <>
+          <Tabs.Content value="b">B panel</Tabs.Content>
+        </>
+      </>,
+      Tabs.Content,
+    )
+    const keys = panels.map(panel => (React.isValidElement(panel) ? panel.key : null))
+
+    expect(new Set(keys).size).toBe(keys.length)
+  })
+
+  it('does not apply animated stack classes to content hidden behind a wrapper component', async () => {
+    const user = userEvent.setup()
+
+    function WrappedPanels() {
+      return (
+        <>
+          <Tabs.Content value="a">A panel</Tabs.Content>
+          <Tabs.Content value="b">B panel</Tabs.Content>
+        </>
+      )
+    }
+
+    const { container } = render(
+      <Tabs.Root animated defaultValue="a">
+        <Tabs.List>
+          <Tabs.Trigger value="a">A</Tabs.Trigger>
+          <Tabs.Trigger value="b">B</Tabs.Trigger>
+        </Tabs.List>
+        <WrappedPanels />
+      </Tabs.Root>,
+    )
+
+    const getPanels = () => Array.from(container.querySelectorAll('[role="tabpanel"]'))
+    expect(getPanels()).toHaveLength(1)
+    expectNoClassToken(getPanels()[0]?.className, 'col-start-1')
+    expectNoClassToken(getPanels()[0]?.className, 'opacity-100')
+
+    await user.click(screen.getByRole('tab', { name: 'B' }))
+
+    expect(getPanels()).toHaveLength(1)
+    expect(getPanels()[0]).toHaveTextContent('B panel')
+    expectNoClassToken(getPanels()[0]?.className, 'col-start-1')
+    expectNoClassToken(getPanels()[0]?.className, 'opacity-100')
   })
 
   it('cleans up animated panels when transitions are disabled', async () => {

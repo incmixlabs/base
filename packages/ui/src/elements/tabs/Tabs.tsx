@@ -39,11 +39,14 @@ import {
   tabsPanelActive,
   tabsPanelAnimated,
   tabsPanelBase,
+  tabsPanelCurrent,
+  tabsPanelExiting,
   tabsPanelInactive,
   tabsPanelStack,
   tabsPanelStackItem,
 } from './tabs.class'
 import { tabsPropDefs } from './tabs.props'
+import { partitionStackedPanels } from './tabs-children'
 import { useExitTransitionFallback } from './tabs-transition'
 import { useAnimatedIndicator } from './useAnimatedIndicator'
 
@@ -149,17 +152,7 @@ const TabsRoot = React.forwardRef<HTMLDivElement, TabsRootProps>(
     const [internalValue, setInternalValue] = React.useState<string | undefined>(defaultValue)
     const activeValue = value ?? internalValue ?? null
     const marginProps = getMarginProps({ m: mProp, mx, my, mt, mr, mb, ml })
-    const rootChildren = React.Children.toArray(children)
-    const tabPanels: React.ReactNode[] = []
-    const nonPanelChildren: React.ReactNode[] = []
-
-    for (const child of rootChildren) {
-      if (React.isValidElement(child) && child.type === TabsContent) {
-        tabPanels.push(child)
-      } else {
-        nonPanelChildren.push(child)
-      }
-    }
+    const { panels: tabPanels, nonPanels: nonPanelChildren } = partitionStackedPanels(children, TabsContent)
 
     const handleValueChange = React.useCallback(
       (newValue: string) => {
@@ -380,18 +373,24 @@ export interface TabsContentProps {
   onTransitionEnd?: React.TransitionEventHandler<HTMLDivElement>
 }
 
-const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
-  ({ value, forceMount, className, children, onTransitionEnd, ...props }, ref) => {
+type TabsContentInternalProps = TabsContentProps & {
+  __stacked?: boolean
+}
+
+const TabsContentImpl = React.forwardRef<HTMLDivElement, TabsContentInternalProps>(
+  ({ value, forceMount, className, children, onTransitionEnd, __stacked = false, ...props }, ref) => {
     const { size, variant, animated, activeValue } = React.useContext(TabsContext)
     const sizeConfig = selectSegmentedControlVariantSizeMap(variant, TabsVariants.surface, surfaceSizes, lineSizes)[
       size
     ]
     const isActive = activeValue === value
+    const isStackedAnimated = animated && __stacked
     const wasActiveRef = React.useRef(isActive)
     const [isExiting, setIsExiting] = React.useState(false)
-    const shouldExit = animated && wasActiveRef.current && !isActive
+    const shouldExit = isStackedAnimated && wasActiveRef.current && !isActive
     const shouldRender = isActive || forceMount || shouldExit || isExiting
-    const shouldKeepPanelMounted = forceMount || (animated && shouldRender)
+    const shouldKeepPanelMounted = forceMount || (isStackedAnimated && shouldRender)
+    const isLeaving = isStackedAnimated && !isActive && (shouldExit || isExiting)
     const panelRef = React.useRef<HTMLDivElement>(null)
     const composedRef = useComposedRefs(ref, panelRef)
     const completeExit = React.useCallback(() => {
@@ -399,7 +398,7 @@ const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
     }, [])
 
     React.useEffect(() => {
-      if (!animated) {
+      if (!isStackedAnimated) {
         setIsExiting(false)
         wasActiveRef.current = isActive
         return
@@ -412,26 +411,27 @@ const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
       }
 
       wasActiveRef.current = isActive
-    }, [animated, isActive])
+    }, [isStackedAnimated, isActive])
 
     const handleTransitionEnd = React.useCallback<React.TransitionEventHandler<HTMLDivElement>>(
       event => {
         onTransitionEnd?.(event)
         if (event.target !== event.currentTarget) return
-        if (animated && !isActive) {
+        if (isStackedAnimated && !isActive) {
           completeExit()
         }
       },
-      [animated, completeExit, isActive, onTransitionEnd],
+      [completeExit, isActive, isStackedAnimated, onTransitionEnd],
     )
 
-    useExitTransitionFallback(panelRef, animated && !isActive && (shouldExit || isExiting), completeExit)
+    useExitTransitionFallback(panelRef, isStackedAnimated && !isActive && (shouldExit || isExiting), completeExit)
 
     const panelClassName = cn(
       tabsPanelBase,
-      animated && tabsPanelStackItem,
-      animated && tabsPanelAnimated,
-      animated && (isActive ? tabsPanelActive : tabsPanelInactive),
+      isStackedAnimated && tabsPanelStackItem,
+      isStackedAnimated && tabsPanelAnimated,
+      isStackedAnimated && (isActive ? tabsPanelActive : tabsPanelInactive),
+      isStackedAnimated && (isLeaving ? tabsPanelExiting : tabsPanelCurrent),
       sizeConfig.content,
       className,
     )
@@ -443,10 +443,10 @@ const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
         ref={composedRef}
         value={value}
         keepMounted={shouldKeepPanelMounted}
-        hidden={animated ? false : undefined}
-        aria-hidden={animated && !isActive ? true : undefined}
-        inert={animated && !isActive ? true : undefined}
-        tabIndex={animated && !isActive ? -1 : undefined}
+        hidden={isStackedAnimated ? false : undefined}
+        aria-hidden={isStackedAnimated && !isActive ? true : undefined}
+        inert={isStackedAnimated && !isActive ? true : undefined}
+        tabIndex={isStackedAnimated && !isActive ? -1 : undefined}
         onTransitionEnd={handleTransitionEnd}
         className={panelClassName}
         {...props}
@@ -457,7 +457,11 @@ const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
   },
 )
 
-TabsContent.displayName = 'Tabs.Content'
+TabsContentImpl.displayName = 'Tabs.Content'
+
+const TabsContent = TabsContentImpl as React.ForwardRefExoticComponent<
+  TabsContentProps & React.RefAttributes<HTMLDivElement>
+>
 
 export const Tabs = {
   Root: TabsRoot,
