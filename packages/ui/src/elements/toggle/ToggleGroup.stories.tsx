@@ -119,6 +119,21 @@ export const Alignment: Story = {
   render: args => <AlignmentToggleGroup key={JSON.stringify(args)} {...args} />,
 }
 
+export const AlignmentVertical: Story = {
+  args: {
+    multiple: false,
+    defaultValue: ['center'],
+    orientation: 'vertical',
+  },
+  argTypes: {
+    defaultValue: {
+      control: 'check',
+      options: ['left', 'center', 'right'],
+    },
+  },
+  render: args => <AlignmentToggleGroup key={JSON.stringify(args)} {...args} />,
+}
+
 export const Variants: Story = {
   render: () => (
     <Box display="flex" className="items-center gap-4">

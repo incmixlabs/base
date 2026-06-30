@@ -81,4 +81,19 @@ describe('ToggleGroup', () => {
       `aria-[pressed=true]:[background-color:var(--color-${SemanticColor.slate}-primary)]`,
     ])
   })
+
+  it('applies vertical flush classes for grouped items', () => {
+    render(
+      <ToggleGroup.Root orientation="vertical" defaultValue={['left']} multiple={false}>
+        <ToggleGroup.Item value="left">Left</ToggleGroup.Item>
+        <ToggleGroup.Item value="center">Center</ToggleGroup.Item>
+      </ToggleGroup.Root>,
+    )
+
+    const buttons = screen.getAllByRole('button')
+    expectClassTokens(buttons[1]?.className, [
+      '[&:not(:first-child)]:-mt-px',
+      '[&:last-child:not(:first-child)]:rounded-t-none',
+    ])
+  })
 })
