@@ -36,7 +36,7 @@ import {
   sidebarMenuSubFloatingPanel,
   sidebarPanelSurface,
   sidebarSkeletonTone,
-} from './Sidebar.css'
+} from './Sidebar.class'
 import type {
   SidebarCollapsible,
   SidebarColor,

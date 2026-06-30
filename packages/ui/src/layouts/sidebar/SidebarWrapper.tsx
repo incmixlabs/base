@@ -17,7 +17,7 @@ import {
   sidebarInitialsText,
   sidebarMetaText,
   sidebarTitleText,
-} from './Sidebar.css'
+} from './Sidebar.class'
 import type {
   SidebarWrapperData,
   SidebarWrapperGroup,

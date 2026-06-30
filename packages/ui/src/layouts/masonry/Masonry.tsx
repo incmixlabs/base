@@ -601,14 +601,18 @@ function usePositioner(
       return -1
     }
 
+    const safeWidth = Math.max(1, width)
     const computedColumnCount =
       columnCount ||
       Math.min(
-        Math.floor((width + columnGap) / (columnWidth + columnGap)),
+        Math.floor((safeWidth + columnGap) / (columnWidth + columnGap)),
         maxColumnCount || Number.POSITIVE_INFINITY,
       ) ||
       1
-    const computedColumnWidth = Math.floor((width - columnGap * (computedColumnCount - 1)) / computedColumnCount)
+    const computedColumnWidth = Math.max(
+      1,
+      Math.floor((safeWidth - columnGap * (computedColumnCount - 1)) / computedColumnCount),
+    )
 
     const intervalTree = createIntervalTree()
     const columnHeights: number[] = new Array(computedColumnCount).fill(0)
@@ -1282,8 +1286,9 @@ function MasonryRoot({
     }
   }, [containerPosition, size])
 
+  const positionerWidth = containerPosition.width > 0 ? containerPosition.width : size.width
   const positioner = usePositioner({
-    width: containerPosition.width ?? size.width,
+    width: positionerWidth,
     columnWidth,
     columnGap,
     rowGap,
@@ -1293,6 +1298,7 @@ function MasonryRoot({
   })
   const itemMap = React.useRef(new WeakMap<ItemElement, number>()).current
   const resizeObserver = useResizeObserver(positioner, itemMap)
+  const [, forceLayout] = React.useReducer((version: number) => version + 1, 0)
   const { scrollTop, isScrolling } = useScroller({
     offset: containerPosition.offset,
     fps: scrollFps,
@@ -1309,6 +1315,7 @@ function MasonryRoot({
       }
       if (positioner.get(index) === void 0) {
         positioner.set(index, node.offsetHeight)
+        forceLayout()
       }
     },
     [itemMap, positioner, resizeObserver],
@@ -1386,7 +1393,8 @@ function MasonryViewport(props: DivProps) {
   const overscanPixels = context.windowHeight * context.overscan
   const rangeStart = Math.max(0, context.scrollTop - overscanPixels / 2)
   const rangeEnd = context.scrollTop + overscanPixels
-  const layoutOutdated = shortestColumnSize < rangeEnd && measuredCount < itemCount
+  const needsInitialMeasurement = measuredCount === 0 && itemCount > 0
+  const layoutOutdated = measuredCount < itemCount && (needsInitialMeasurement || shortestColumnSize < rangeEnd)
 
   const positionedChildren: React.ReactElement[] = []
 
@@ -1442,13 +1450,10 @@ function MasonryViewport(props: DivProps) {
   })
 
   if (layoutOutdated && mounted) {
-    const batchSize = Math.min(
-      itemCount - measuredCount,
-      Math.ceil(
-        ((context.scrollTop + overscanPixels - shortestColumnSize) / context.itemHeight) *
-          context.positioner.columnCount,
-      ),
+    const estimatedBatchSize = Math.ceil(
+      ((context.scrollTop + overscanPixels - shortestColumnSize) / context.itemHeight) * context.positioner.columnCount,
     )
+    const batchSize = Math.min(itemCount - measuredCount, Math.max(context.positioner.columnCount, estimatedBatchSize))
 
     for (let index = measuredCount; index < measuredCount + batchSize; index++) {
       const child = validChildren[index]
