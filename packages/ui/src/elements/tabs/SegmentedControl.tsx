@@ -137,6 +137,7 @@ const SegmentedControlContentImpl = React.forwardRef<HTMLDivElement, SegmentedCo
 
     return (
       <div
+        {...props}
         ref={composedRef}
         role="tabpanel"
         aria-hidden={isStackedAnimated && !isActive ? true : undefined}
@@ -150,7 +151,6 @@ const SegmentedControlContentImpl = React.forwardRef<HTMLDivElement, SegmentedCo
           className,
         )}
         onTransitionEnd={handleTransitionEnd}
-        {...props}
       >
         {children}
       </div>

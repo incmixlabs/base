@@ -279,6 +279,32 @@ describe('Tabs', () => {
     getComputedStyleSpy.mockRestore()
   })
 
+  it('keeps animated inactive panel guards authoritative over caller props', async () => {
+    const user = userEvent.setup()
+    const getComputedStyleSpy = mockTransitionStyle('200ms')
+    const unsafePanelProps = { 'aria-hidden': false, inert: false, tabIndex: 0 } as any
+    const { container } = render(
+      <Tabs.Root animated defaultValue="a">
+        <Tabs.List>
+          <Tabs.Trigger value="a">A</Tabs.Trigger>
+          <Tabs.Trigger value="b">B</Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="a" {...unsafePanelProps}>
+          A panel
+        </Tabs.Content>
+        <Tabs.Content value="b">B panel</Tabs.Content>
+      </Tabs.Root>,
+    )
+
+    await user.click(screen.getByRole('tab', { name: 'B' }))
+
+    const exitingPanel = Array.from(container.querySelectorAll('[role="tabpanel"]'))[0]
+    expect(exitingPanel).toHaveAttribute('aria-hidden', 'true')
+    expect(exitingPanel).toHaveAttribute('inert')
+    expect(exitingPanel).toHaveAttribute('tabindex', '-1')
+    getComputedStyleSpy.mockRestore()
+  })
+
   it('stacks animated content panels inside fragments', () => {
     const { container } = render(
       <Tabs.Root animated defaultValue="a">

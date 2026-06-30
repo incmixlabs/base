@@ -183,6 +183,30 @@ describe('SegmentedControl', () => {
     getComputedStyleSpy.mockRestore()
   })
 
+  it('keeps animated inactive panel guards authoritative over caller props', async () => {
+    const user = userEvent.setup()
+    const getComputedStyleSpy = mockTransitionStyle('200ms')
+    const unsafePanelProps = { 'aria-hidden': false, inert: false, tabIndex: 0 } as any
+    const { container } = render(
+      <SegmentedControl.Root animated defaultValue="a">
+        <SegmentedControl.Item value="a">A</SegmentedControl.Item>
+        <SegmentedControl.Item value="b">B</SegmentedControl.Item>
+        <SegmentedControl.Content value="a" {...unsafePanelProps}>
+          A panel
+        </SegmentedControl.Content>
+        <SegmentedControl.Content value="b">B panel</SegmentedControl.Content>
+      </SegmentedControl.Root>,
+    )
+
+    await user.click(screen.getByRole('radio', { name: 'B' }))
+
+    const exitingPanel = Array.from(container.querySelectorAll('[role="tabpanel"]'))[0]
+    expect(exitingPanel).toHaveAttribute('aria-hidden', 'true')
+    expect(exitingPanel).toHaveAttribute('inert')
+    expect(exitingPanel).toHaveAttribute('tabindex', '-1')
+    getComputedStyleSpy.mockRestore()
+  })
+
   it('stacks animated content panels inside fragments', () => {
     const { container } = render(
       <SegmentedControl.Root animated defaultValue="a">

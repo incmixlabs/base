@@ -440,6 +440,7 @@ const TabsContentImpl = React.forwardRef<HTMLDivElement, TabsContentInternalProp
 
     return (
       <TabsPrimitive.Panel
+        {...props}
         ref={composedRef}
         value={value}
         keepMounted={shouldKeepPanelMounted}
@@ -449,7 +450,6 @@ const TabsContentImpl = React.forwardRef<HTMLDivElement, TabsContentInternalProp
         tabIndex={isStackedAnimated && !isActive ? -1 : undefined}
         onTransitionEnd={handleTransitionEnd}
         className={panelClassName}
-        {...props}
       >
         {children}
       </TabsPrimitive.Panel>
