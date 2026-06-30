@@ -2,15 +2,7 @@ import { asChildPropDef } from '@/theme/props/as-child.prop'
 import { colorPropDef } from '@/theme/props/color.prop'
 import { highContrastPropDef } from '@/theme/props/high-contrast.prop'
 import { radiusPropDef } from '@/theme/props/radius.prop'
-import { possibleSizes } from '@/theme/tokens'
-
-const controlButtonSizes = [
-  possibleSizes.xs,
-  possibleSizes.sm,
-  possibleSizes.md,
-  possibleSizes.lg,
-  possibleSizes.xl,
-] as const
+import { controlButtonSizes } from './control-button-sizes'
 
 function createControlButtonPropDefs<const Variants extends readonly string[]>({
   variants,

@@ -63,8 +63,6 @@ export type TextFieldSizeTokenSlot =
   | 'floatingOutlinedPlaceholderTranslate'
 export type SwitchSizeTokenSlot = 'rootHeight' | 'rootWidth' | 'thumbSize' | 'thumbTranslate' | 'gap'
 export type SwitchGroupTokenSlot = 'gap' | 'inlineGap'
-export type ToggleSizeTokenSlot = 'height' | 'paddingInline' | 'fontSize' | 'iconSize' | 'gap'
-export type ToggleGroupTokenSlot = 'gap'
 export type RatingSizeTokenSlot = 'iconSize' | 'gap'
 export type AppShellLayoutTokenSlot =
   | 'bodyGridTemplateColumns'
@@ -141,14 +139,6 @@ export function switchSizeVar(size: string, slot: SwitchSizeTokenSlot, fallback:
 
 export function switchGroupVar(slot: SwitchGroupTokenSlot, fallback: string): string {
   return componentVar('switch-group', slot, fallback)
-}
-
-export function toggleSizeVar(size: string, slot: ToggleSizeTokenSlot, fallback: string): string {
-  return componentSizeVar('toggle', size, slot, fallback)
-}
-
-export function toggleGroupVar(slot: ToggleGroupTokenSlot, fallback: string): string {
-  return componentVar('toggle-group', slot, fallback)
 }
 
 export function ratingSizeVar(size: string, slot: RatingSizeTokenSlot, fallback: string): string {

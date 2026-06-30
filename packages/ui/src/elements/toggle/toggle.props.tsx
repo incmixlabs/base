@@ -1,7 +1,6 @@
 import type { PropDef } from '@/theme/props/prop-def'
 import { buttonPropDefs } from '../button/button.props'
-
-const toggleVariants = ['soft', 'solid'] as const
+import { toggleVariants } from './toggle.constants'
 
 const togglePropDefs = {
   size: buttonPropDefs.size,

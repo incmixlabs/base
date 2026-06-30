@@ -30,7 +30,7 @@ const meta: Meta<typeof Toggle> = {
     disabled: false,
     pressed: false,
     'aria-label': 'Bold',
-    children: <Bold className="h-4 w-4" />,
+    children: <Bold />,
   },
 }
 
@@ -43,13 +43,13 @@ export const Variants: Story = {
   render: () => (
     <Box display="flex" className="items-center gap-3">
       <Toggle aria-label="Bold soft" variant="soft" pressed>
-        <Bold className="h-4 w-4" />
+        <Bold />
       </Toggle>
       <Toggle aria-label="Italic solid" variant="solid" pressed>
-        <Italic className="h-4 w-4" />
+        <Italic />
       </Toggle>
       <Toggle aria-label="Underline off" variant="soft">
-        <Underline className="h-4 w-4" />
+        <Underline />
       </Toggle>
     </Box>
   ),
@@ -60,13 +60,13 @@ export const GroupSingle: Story = {
     return (
       <ToggleGroup.Root defaultValue={['left']} multiple={false}>
         <ToggleGroup.Item value="left" aria-label="Align left">
-          <AlignCenter className="h-4 w-4 rotate-180" />
+          <AlignCenter className="rotate-180" />
         </ToggleGroup.Item>
         <ToggleGroup.Item value="center" aria-label="Align center">
-          <AlignCenter className="h-4 w-4" />
+          <AlignCenter />
         </ToggleGroup.Item>
         <ToggleGroup.Item value="list" aria-label="List">
-          <List className="h-4 w-4" />
+          <List />
         </ToggleGroup.Item>
       </ToggleGroup.Root>
     )
@@ -78,13 +78,13 @@ export const GroupMultiple: Story = {
     return (
       <ToggleGroup.Root multiple defaultValue={['bold']} variant="solid">
         <ToggleGroup.Item value="bold" aria-label="Bold">
-          <Bold className="h-4 w-4" />
+          <Bold />
         </ToggleGroup.Item>
         <ToggleGroup.Item value="italic" aria-label="Italic">
-          <Italic className="h-4 w-4" />
+          <Italic />
         </ToggleGroup.Item>
         <ToggleGroup.Item value="underline" aria-label="Underline">
-          <Underline className="h-4 w-4" />
+          <Underline />
         </ToggleGroup.Item>
       </ToggleGroup.Root>
     )

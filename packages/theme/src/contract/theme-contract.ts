@@ -243,20 +243,6 @@ export type IconButtonComponentTokens = {
   >
 }
 
-export type ToggleComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      height: string
-      fontSize: string
-      iconSize: string
-    }>
-  >
-  group?: Partial<{
-    gap: string
-  }>
-}
-
 export type RatingComponentTokens = {
   size?: Record<
     string,
@@ -427,7 +413,6 @@ export type ThemeContract = {
     textField: TextFieldComponentTokens
     switch: SwitchComponentTokens
     iconButton: IconButtonComponentTokens
-    toggle: ToggleComponentTokens
     badge: BadgeComponentTokens
     callout: CalloutComponentTokens
     card: CardComponentTokens
@@ -638,7 +623,7 @@ export function validateThemeContract(input: unknown): ThemeContractValidation {
 
   if (!isObject(semantic.color)) errors.push('semantic.color must be an object')
 
-  const retiredComponent = ['checkbox', 'checkboxGroup', 'checkboxCards', 'radio', 'radioCards']
+  const retiredComponent = ['checkbox', 'checkboxGroup', 'checkboxCards', 'radio', 'radioCards', 'toggle']
   for (const key of retiredComponent) {
     if (component[key] !== undefined) {
       errors.push(`component.${key} is retired; component sizing uses shared UI size maps`)
@@ -656,7 +641,6 @@ export function validateThemeContract(input: unknown): ThemeContractValidation {
     'textField',
     'switch',
     'iconButton',
-    'toggle',
     'badge',
     'callout',
     'card',

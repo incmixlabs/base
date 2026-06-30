@@ -107,6 +107,7 @@ import { stepperClassNames } from './src/elements/stepper/stepper.class'
 import { segmentedControlClassNames } from './src/elements/tabs/segmented-control.shared.class'
 import { tabsClassNames } from './src/elements/tabs/tabs.class'
 import { timelineClassNames } from './src/elements/timeline/timeline.class'
+import { toggleClassNames } from './src/elements/toggle/toggle.class'
 import { tooltipContentBase, tooltipPositionerBase } from './src/elements/tooltip/tooltip.class'
 import { avatarPickerClassNames } from './src/form/avatar-picker.class'
 import { checkboxClassNames } from './src/form/checkbox.class'
@@ -414,6 +415,8 @@ export default defineConfig({
       ...splitClasses([...segmentedControlClassNames, ...tabsClassNames]),
       // Timeline styles
       ...splitClasses(timelineClassNames),
+      // Toggle styles
+      ...splitClasses(toggleClassNames),
       // Avatar picker styles
       ...splitClasses(avatarPickerClassNames),
       // Checkbox styles

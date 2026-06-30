@@ -39,7 +39,6 @@ function createTheme(): ThemeContract {
       textField: { size: { sm: { paddingInline: '0.75rem' } } },
       switch: { size: { sm: { rootWidth: '2.25rem' } } },
       iconButton: { size: { sm: { iconSize: '1rem' } } },
-      toggle: { size: { sm: { iconSize: '1rem' } }, group: { gap: '0.25rem' } },
       badge: { size: { sm: { paddingInline: '0.75rem', deleteButtonMarginStart: '0.2rem' } } },
       callout: { size: { lg: { padding: '1rem' } } },
       card: { size: { md: { padding: '1rem' } } },
