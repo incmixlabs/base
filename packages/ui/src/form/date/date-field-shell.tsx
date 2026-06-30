@@ -85,14 +85,11 @@ export function getDateFieldSurfaceClassName({
       textFieldSizeVariants[textFieldSize],
       datePickerTriggerGroupRadiusStyles[radius],
       floatingStyle
-        ? [
-            'peer bg-background',
-            floatingInputBaseCls,
-            floatingInputStyleVariants[floatingStyle],
-            textFieldFloatingColorVariants[color]?.[floatingStyle],
-          ]
+        ? ['peer bg-background', floatingInputBaseCls]
         : ['h-[var(--af-text-field-height)] border', textFieldSurfaceColorVariants[color]?.[surfaceVariant]],
     ),
+    floatingStyle && floatingInputStyleVariants[floatingStyle],
+    floatingStyle && textFieldFloatingColorVariants[color]?.[floatingStyle],
     !floatingStyle && textFieldEnhancementVariants[color]?.[surfaceVariant],
   )
 }

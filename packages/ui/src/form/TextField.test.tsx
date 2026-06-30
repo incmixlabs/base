@@ -87,6 +87,7 @@ describe('TextField', () => {
 
     expect(input).toHaveClass(floatingInputWithLeftIconCls)
     expect(label).toHaveClass(floatingLabelWithLeftIconCls)
+    expect(label).toHaveClass(floatingLabelStyleVariants.outlined)
     expect(floatingInputStyleVariants.outlined).toContain('[padding-left:var(--af-text-field-input-padding-left')
     expect(floatingLabelStyleVariants.outlined).toContain('[left:var(--af-text-field-label-left')
   })
