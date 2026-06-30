@@ -121,7 +121,7 @@ describe('CheckboxCards', () => {
     const label = screen.getByText('Widgets').closest('label')
     const checkbox = screen.getByRole('checkbox')
 
-    expectClassTokens(label?.className, ['p-4', 'gap-2', 'text-sm', 'leading-5'])
+    expectClassTokens(label?.className, ['p-3', 'gap-2', 'text-base', 'leading-6'])
     expectClassTokens(checkbox.className, ['box-border', 'h-4', 'w-4', 'rounded-[0.25rem]'])
   })
 
