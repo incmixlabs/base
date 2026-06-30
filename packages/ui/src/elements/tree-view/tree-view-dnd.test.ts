@@ -61,6 +61,24 @@ describe('moveTreeItem', () => {
     expect(folderB?.children?.map(item => item.id)).toEqual(['file-b1'])
   })
 
+  it('moves into an empty droppable target without a children array', () => {
+    const data: TreeDataItem[] = [
+      {
+        id: 'folder-a',
+        name: 'Folder A',
+        children: [{ id: 'file-a1', name: 'File A1' }],
+      },
+      { id: 'folder-b', name: 'Folder B', droppable: true },
+    ]
+
+    const moved = moveTreeItem(data, 'file-a1', 'folder-b')
+    const folderA = moved.find(item => item.id === 'folder-a')
+    const folderB = moved.find(item => item.id === 'folder-b')
+
+    expect(folderA?.children).toEqual([])
+    expect(folderB?.children?.map(item => item.id)).toEqual(['file-a1'])
+  })
+
   it('appends to root when a different-parent item is dropped on a root-level leaf', () => {
     const data: TreeDataItem[] = [
       {
