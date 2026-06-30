@@ -706,7 +706,7 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
               data-popup-open={open ? '' : undefined}
               className={`${cn(
                 'peer inline-flex w-full items-center justify-between outline-none transition-all duration-150 ease-in-out',
-                '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+                '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
                 floatingInputBaseCls,
                 floatingStyle && floatingInputStyleVariants[floatingStyle],
                 disabled && 'opacity-50 cursor-not-allowed',
@@ -719,25 +719,25 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                 id={labelId}
                 onPointerDown={() => triggerRef.current?.focus()}
                 className={cn(
-                  'absolute [font-size:var(--tf-font-size)] text-[color:var(--tf-color-text)] duration-300 origin-[0] select-none cursor-text',
+                  'absolute [font-size:var(--af-text-field-font-size)] text-[color:var(--af-text-field-color-text)] duration-300 origin-[0] select-none cursor-text',
                   floatingStyle === 'filled' && [
-                    'left-[var(--tf-padding-x)] top-4 z-10',
+                    'left-[var(--af-text-field-padding-x)] top-4 z-10',
                     '-translate-y-4 scale-75',
                     'peer-data-[placeholder]:scale-100 peer-data-[placeholder]:translate-y-0',
-                    'peer-data-[popup-open]:-translate-y-4 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--tf-color-primary)]',
+                    'peer-data-[popup-open]:-translate-y-4 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--af-text-field-color-primary)]',
                   ],
                   floatingStyle === 'outlined' && [
-                    'left-[var(--tf-padding-x)] top-2 z-10',
+                    'left-[var(--af-text-field-padding-x)] top-2 z-10',
                     '-translate-y-4 scale-75 px-1',
                     formControlNeutralBackground,
                     'peer-data-[placeholder]:scale-100 peer-data-[placeholder]:translate-y-3',
-                    'peer-data-[popup-open]:-translate-y-4 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--tf-color-primary)] peer-data-[popup-open]:px-1',
+                    'peer-data-[popup-open]:-translate-y-4 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--af-text-field-color-primary)] peer-data-[popup-open]:px-1',
                   ],
                   floatingStyle === 'standard' && [
                     'left-0 top-3 z-10',
                     '-translate-y-6 scale-75',
                     'peer-data-[placeholder]:scale-100 peer-data-[placeholder]:translate-y-0',
-                    'peer-data-[popup-open]:-translate-y-6 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--tf-color-primary)]',
+                    'peer-data-[popup-open]:-translate-y-6 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--af-text-field-color-primary)]',
                   ],
                 )}
               >
@@ -765,8 +765,8 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                 cn(
                   textFieldInputBaseCls,
                   'inline-flex w-full box-border items-center justify-between gap-2',
-                  'min-h-[var(--tf-height)] px-[var(--tf-padding-x)] py-[var(--tf-padding-y)] text-left',
-                  '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+                  'min-h-[var(--af-text-field-height)] px-[var(--af-text-field-padding-x)] py-[var(--af-text-field-padding-y)] text-left',
+                  '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
                   formControlBorderFrame,
                   textFieldSurfaceColorVariants[effectiveColor][surfaceVariant],
                   disabled && 'opacity-50 cursor-not-allowed',

@@ -131,7 +131,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
               className={clsx(
                 cn(
                   'peer inline-flex items-center justify-between w-full outline-none transition-all duration-150 ease-in-out',
-                  '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+                  '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
                   floatingInputBaseCls,
                   className,
                 ),
@@ -192,9 +192,9 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
               cn(
                 'inline-flex items-center justify-between w-full outline-none transition-all duration-150 ease-in-out',
                 'border',
-                'h-[var(--tf-height)]',
-                'px-[var(--tf-padding-x)] py-[var(--tf-padding-y)]',
-                '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+                'h-[var(--af-text-field-height)]',
+                'px-[var(--af-text-field-padding-x)] py-[var(--af-text-field-padding-y)]',
+                '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
                 'rounded-[var(--element-border-radius)]',
                 textFieldSurfaceColorVariants[effectiveColor]?.[surfaceVariant],
                 effectiveDisabled && 'opacity-50 cursor-not-allowed',

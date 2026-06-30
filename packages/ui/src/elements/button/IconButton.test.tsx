@@ -141,6 +141,8 @@ describe('IconButton', () => {
     expect(resolveIconExport('chevrons-up-down')).not.toBeNull()
     expect(resolveIconExport('indent-decrease')).not.toBeNull()
     expect(resolveIconExport('indent-increase')).not.toBeNull()
+    expect(resolveIconExport('lock')).not.toBeNull()
+    expect(resolveIconExport('user')).not.toBeNull()
   })
 
   it('fetches non-safelisted lucide icons from the BFF api path', async () => {

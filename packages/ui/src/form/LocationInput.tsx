@@ -148,7 +148,7 @@ function SearchableSelect<T>({
             'inline-flex items-center justify-between w-full outline-none transition-all duration-150 ease-in-out',
             floating
               ? [
-                  'peer [font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+                  'peer [font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
                   floatingInputBaseCls,
                   floatingStyle && floatingInputStyleVariants[floatingStyle],
                   floatingStyle && textFieldFloatingColorVariants[error ? 'error' : 'slate']?.[floatingStyle],
@@ -211,23 +211,23 @@ function SearchableSelect<T>({
           <label
             htmlFor={triggerId}
             className={cn(
-              'absolute [font-size:var(--tf-font-size)] text-[color:var(--tf-color-text)]',
+              'absolute [font-size:var(--af-text-field-font-size)] text-[color:var(--af-text-field-color-text)]',
               'duration-300 origin-[0]',
               'pointer-events-none select-none',
               floatingStyle === 'filled' && [
-                'left-[var(--tf-padding-x)] top-[0.875rem] z-10',
+                'left-[var(--af-text-field-padding-x)] top-[0.875rem] z-10',
                 '-translate-y-4 scale-75',
-                'peer-data-[popup-open]:text-[color:var(--tf-color-primary)]',
+                'peer-data-[popup-open]:text-[color:var(--af-text-field-color-primary)]',
               ],
               floatingStyle === 'outlined' && [
-                'left-[var(--tf-padding-x)] top-[0.375rem] z-10',
+                'left-[var(--af-text-field-padding-x)] top-[0.375rem] z-10',
                 '-translate-y-4 scale-75 bg-background px-1',
-                'peer-data-[popup-open]:text-[color:var(--tf-color-primary)] peer-data-[popup-open]:bg-background peer-data-[popup-open]:px-1',
+                'peer-data-[popup-open]:text-[color:var(--af-text-field-color-primary)] peer-data-[popup-open]:bg-background peer-data-[popup-open]:px-1',
               ],
               floatingStyle === 'standard' && [
                 'left-0 top-[0.625rem] z-10',
                 '-translate-y-6 scale-75',
-                'peer-data-[popup-open]:text-[color:var(--tf-color-primary)]',
+                'peer-data-[popup-open]:text-[color:var(--af-text-field-color-primary)]',
               ],
             )}
           >

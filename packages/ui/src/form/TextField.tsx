@@ -116,11 +116,11 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
       } as React.CSSProperties
       const leftSlotStyle = {
         ...floatingIconStyle,
-        left: 'calc(var(--tf-padding-x) + var(--tf-gap))',
+        left: 'calc(var(--af-text-field-padding-x) + var(--af-text-field-gap))',
       } as React.CSSProperties
       const rightSlotStyle = {
         ...floatingIconStyle,
-        right: 'calc(var(--tf-padding-x) + var(--tf-gap))',
+        right: 'calc(var(--af-text-field-padding-x) + var(--af-text-field-gap))',
       } as React.CSSProperties
 
       return (
@@ -272,9 +272,9 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           className={clsx(
             cn(
               textFieldInputBaseCls,
-              'box-border h-[var(--tf-height)]',
-              'px-[var(--tf-padding-x)] py-[var(--tf-padding-y)]',
-              '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+              'box-border h-[var(--af-text-field-height)]',
+              'px-[var(--af-text-field-padding-x)] py-[var(--af-text-field-padding-y)]',
+              '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
               formControlBorderFrame,
               textFieldSurfaceColorVariants[effectiveColor]?.[surfaceVariant],
 

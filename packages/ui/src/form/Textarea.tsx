@@ -126,7 +126,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               cn(
                 textFieldInputBaseCls,
                 'peer',
-                'box-border h-auto min-h-[calc(var(--tf-height)*2)]',
+                'box-border h-auto min-h-[calc(var(--af-text-field-height)*2)]',
                 'disabled:opacity-50 disabled:cursor-not-allowed',
                 resizeClass,
                 className,
@@ -164,9 +164,9 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       cn(
         textFieldInputBaseCls,
         'box-border',
-        'min-h-[calc(var(--tf-height)*2)]',
-        'px-[var(--tf-padding-x)] py-[var(--tf-padding-y)]',
-        '[font-size:var(--tf-font-size)] leading-[var(--tf-line-height)]',
+        'min-h-[calc(var(--af-text-field-height)*2)]',
+        'px-[var(--af-text-field-padding-x)] py-[var(--af-text-field-padding-y)]',
+        '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
         'rounded-[var(--element-border-radius)]',
         'border',
         resizeClass,

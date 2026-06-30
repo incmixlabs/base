@@ -191,7 +191,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
     )
 
     const textFieldStyle = {
-      '--tf-left-slot-width': '8.75rem',
+      '--af-text-field-left-slot-width': '8.75rem',
       ...style,
     } as React.CSSProperties
     const resolvedPlaceholder = placeholder ?? phonePlaceholder
@@ -218,7 +218,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
         style={textFieldStyle}
         leftElement={
           <Flex
-            height="var(--tf-height)"
+            height="var(--af-text-field-height)"
             align="center"
             className={cn('relative w-full', effectiveDisabled && 'opacity-50')}
           >
