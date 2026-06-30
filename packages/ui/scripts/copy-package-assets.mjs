@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs'
 import { cp, mkdir, rm } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -17,7 +18,16 @@ await copyAsset(join(packageRoot, 'src/theme/animations.css'), join(packageRoot,
 await rm(join(packageRoot, 'dist/fonts'), { recursive: true, force: true })
 await copyAsset(join(packageRoot, 'src/fonts'), join(packageRoot, 'dist/fonts'))
 
-await copyAsset(join(packageRoot, 'dist/ui/src'), join(packageRoot, 'dist'))
+const declarationSource = join(packageRoot, 'dist/ui/src')
+const copiedDeclarationMarker = join(packageRoot, 'dist/index.d.ts')
+
+if (existsSync(declarationSource)) {
+  await copyAsset(declarationSource, join(packageRoot, 'dist'))
+}
+
+if (!existsSync(copiedDeclarationMarker)) {
+  throw new Error(`Expected TypeScript declaration output at ${declarationSource}`)
+}
 
 await Promise.all([
   rm(join(packageRoot, 'dist/theme/src'), { recursive: true, force: true }),

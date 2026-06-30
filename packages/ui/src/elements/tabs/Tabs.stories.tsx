@@ -4,6 +4,7 @@ import { Button, Tabs } from '@/elements'
 import { Label, Switch, TextField } from '@/form'
 import { SemanticColor, semanticColorKeys } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
+import { Text } from '@/typography'
 import { tabsPropDefs } from './tabs.props'
 
 const meta = {
@@ -79,19 +80,25 @@ export const Default: Story = {
       <Tabs.Content value="account">
         <div className="space-y-4">
           <h3 className="font-medium">Account Settings</h3>
-          <p className="text-sm text-muted-foreground">Manage your account settings and preferences.</p>
+          <Text as="p" size="sm" color="neutral" muted>
+            Manage your account settings and preferences.
+          </Text>
         </div>
       </Tabs.Content>
       <Tabs.Content value="password">
         <div className="space-y-4">
           <h3 className="font-medium">Password</h3>
-          <p className="text-sm text-muted-foreground">Change your password here.</p>
+          <Text as="p" size="sm" color="neutral" muted>
+            Change your password here.
+          </Text>
         </div>
       </Tabs.Content>
       <Tabs.Content value="settings">
         <div className="space-y-4">
           <h3 className="font-medium">Settings</h3>
-          <p className="text-sm text-muted-foreground">Configure your application settings.</p>
+          <Text as="p" size="sm" color="neutral" muted>
+            Configure your application settings.
+          </Text>
         </div>
       </Tabs.Content>
     </Tabs.Root>
@@ -103,7 +110,9 @@ export const Sizes: Story = {
     <div className="flex flex-col gap-8">
       {tabsPropDefs.Root.size.values.map(size => (
         <div key={size}>
-          <p className="text-sm text-muted-foreground mb-2">Size {size}</p>
+          <Text as="p" size="sm" color="neutral" muted mb="2">
+            Size {size}
+          </Text>
           <Tabs.Root size={size} defaultValue="tab1" className="w-[400px]">
             <Tabs.List>
               <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
@@ -124,7 +133,9 @@ export const Variants: Story = {
   render: () => (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="text-sm text-muted-foreground mb-2">Line (underline style - default)</p>
+        <Text as="p" size="sm" color="neutral" muted mb="2">
+          Line (underline style - default)
+        </Text>
         <Tabs.Root variant="line" defaultValue="tab1" className="w-[400px]">
           <Tabs.List>
             <Tabs.Trigger value="tab1">Overview</Tabs.Trigger>
@@ -137,7 +148,9 @@ export const Variants: Story = {
         </Tabs.Root>
       </div>
       <div>
-        <p className="text-sm text-muted-foreground mb-2">Surface (segmented control style)</p>
+        <Text as="p" size="sm" color="neutral" muted mb="2">
+          Surface (segmented control style)
+        </Text>
         <Tabs.Root variant="surface" defaultValue="tab1" className="w-[400px]">
           <Tabs.List>
             <Tabs.Trigger value="tab1">Overview</Tabs.Trigger>
@@ -159,7 +172,9 @@ export const Colors: Story = {
       <p className="text-sm font-medium">Line variant with colors:</p>
       {semanticColorKeys.map(color => (
         <div key={color}>
-          <p className="text-sm text-muted-foreground mb-2 capitalize">{color}</p>
+          <Text as="p" size="sm" color="neutral" muted mb="2" className="capitalize">
+            {color}
+          </Text>
           <Tabs.Root variant="line" color={color} defaultValue="tab1" className="w-[400px]">
             <Tabs.List>
               <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
@@ -179,7 +194,9 @@ export const ColorsWithSurface: Story = {
       <p className="text-sm font-medium">Surface variant with colors:</p>
       {semanticColorKeys.map(color => (
         <div key={color}>
-          <p className="text-sm text-muted-foreground mb-2 capitalize">{color}</p>
+          <Text as="p" size="sm" color="neutral" muted mb="2" className="capitalize">
+            {color}
+          </Text>
           <Tabs.Root variant="surface" color={color} defaultValue="tab1" className="w-[400px]">
             <Tabs.List>
               <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
@@ -197,7 +214,9 @@ export const HighContrast: Story = {
   render: () => (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="text-sm text-muted-foreground mb-2">Normal contrast</p>
+        <Text as="p" size="sm" color="neutral" muted mb="2">
+          Normal contrast
+        </Text>
         <Tabs.Root variant="line" color="primary" defaultValue="tab1" className="w-[400px]">
           <Tabs.List>
             <Tabs.Trigger value="tab1">Overview</Tabs.Trigger>
@@ -207,7 +226,9 @@ export const HighContrast: Story = {
         </Tabs.Root>
       </div>
       <div>
-        <p className="text-sm text-muted-foreground mb-2">High contrast</p>
+        <Text as="p" size="sm" color="neutral" muted mb="2">
+          High contrast
+        </Text>
         <Tabs.Root variant="line" color="primary" highContrast defaultValue="tab1" className="w-[400px]">
           <Tabs.List>
             <Tabs.Trigger value="tab1">Overview</Tabs.Trigger>
@@ -225,7 +246,9 @@ export const Justify: Story = {
     <div className="flex flex-col gap-8">
       {(['start', 'center', 'end'] as const).map(justify => (
         <div key={justify}>
-          <p className="text-sm text-muted-foreground mb-2 capitalize">justify="{justify}"</p>
+          <Text as="p" size="sm" color="neutral" muted mb="2" className="capitalize">
+            {`justify="${justify}"`}
+          </Text>
           <Tabs.Root variant="line" defaultValue="tab1" className="w-[400px]">
             <Tabs.List justify={justify} className="w-full">
               <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
@@ -249,19 +272,25 @@ export const Animated: Story = {
       <Tabs.Content value="account">
         <div className="space-y-4">
           <h3 className="font-medium">Account Settings</h3>
-          <p className="text-sm text-muted-foreground">Manage your account settings and preferences.</p>
+          <Text as="p" size="sm" color="neutral" muted>
+            Manage your account settings and preferences.
+          </Text>
         </div>
       </Tabs.Content>
       <Tabs.Content value="password">
         <div className="space-y-4">
           <h3 className="font-medium">Password</h3>
-          <p className="text-sm text-muted-foreground">Change your password here.</p>
+          <Text as="p" size="sm" color="neutral" muted>
+            Change your password here.
+          </Text>
         </div>
       </Tabs.Content>
       <Tabs.Content value="settings">
         <div className="space-y-4">
           <h3 className="font-medium">Settings</h3>
-          <p className="text-sm text-muted-foreground">Configure your application settings.</p>
+          <Text as="p" size="sm" color="neutral" muted>
+            Configure your application settings.
+          </Text>
         </div>
       </Tabs.Content>
     </Tabs.Root>
@@ -290,9 +319,9 @@ export const Controlled: Story = {
             <p>Reports content here.</p>
           </Tabs.Content>
         </Tabs.Root>
-        <p className="mt-4 text-sm text-muted-foreground">
+        <Text as="p" size="sm" color="neutral" muted mt="4">
           Current tab: <span className="font-medium">{value}</span>
-        </p>
+        </Text>
       </div>
     )
   },
@@ -361,26 +390,34 @@ export const AccountSettings: Story = {
         </Tabs.Content>
         <Tabs.Content value="notifications">
           <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">Configure how you receive notifications.</p>
+            <Text as="p" size="sm" color="neutral" muted>
+              Configure how you receive notifications.
+            </Text>
             <div className="space-y-3">
               <div className="flex items-center justify-between p-3 border rounded-lg">
                 <div>
                   <p className="font-medium text-sm">Email Notifications</p>
-                  <p className="text-xs text-muted-foreground">Receive updates via email</p>
+                  <Text as="p" size="xs" color="neutral" muted>
+                    Receive updates via email
+                  </Text>
                 </div>
                 <Switch defaultChecked aria-label="Email notifications" />
               </div>
               <div className="flex items-center justify-between p-3 border rounded-lg">
                 <div>
                   <p className="font-medium text-sm">Push Notifications</p>
-                  <p className="text-xs text-muted-foreground">Receive push notifications</p>
+                  <Text as="p" size="xs" color="neutral" muted>
+                    Receive push notifications
+                  </Text>
                 </div>
                 <Switch aria-label="Push notifications" />
               </div>
               <div className="flex items-center justify-between p-3 border rounded-lg">
                 <div>
                   <p className="font-medium text-sm">SMS Notifications</p>
-                  <p className="text-xs text-muted-foreground">Receive SMS updates</p>
+                  <Text as="p" size="xs" color="neutral" muted>
+                    Receive SMS updates
+                  </Text>
                 </div>
                 <Switch aria-label="SMS notifications" />
               </div>
