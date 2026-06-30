@@ -1,5 +1,47 @@
 /* Design Token CSS Variables */
 :root {
+  /* Core theme bridge tokens consumed by shared utilities. */
+  --background: var(--color-neutral-background);
+  --foreground: var(--color-neutral-text);
+  --border: var(--color-neutral-border);
+  --ring: var(--color-primary-primary);
+  --radius: 0.625rem;
+  --spacing: 0.25rem;
+  --spacing-0: 0;
+  --spacing-1: calc(var(--spacing) * 1);
+  --spacing-2: calc(var(--spacing) * 2);
+  --spacing-3: calc(var(--spacing) * 3);
+  --spacing-4: calc(var(--spacing) * 4);
+  --spacing-5: calc(var(--spacing) * 5);
+  --spacing-6: calc(var(--spacing) * 6);
+  --spacing-7: calc(var(--spacing) * 7);
+  --spacing-8: calc(var(--spacing) * 8);
+  --spacing-9: calc(var(--spacing) * 9);
+  --radius-factor: 1;
+  --radius-none: 0;
+  --radius-xs: calc(var(--radius) - 6px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-DEFAULT: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --shadow-2xs: 0 1px rgb(0 0 0 / 0.05);
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-1: var(--shadow-xs);
+  --shadow-2: var(--shadow-sm);
+  --shadow-3: var(--shadow-md);
+  --shadow-4: var(--shadow-lg);
+  --shadow-5: var(--shadow-xl);
+  --shadow-6: var(--shadow-2xl);
+
   /* Primary Colors (semantic teal lane, independent from theme accent) */
   --color-primary-border: var(--teal-9);
   --color-primary-border-subtle: var(--teal-7);

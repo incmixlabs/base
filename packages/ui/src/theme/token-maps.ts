@@ -2,15 +2,15 @@ import { designTokens, type Radius } from './tokens'
 
 export const space = {
   '0': '0',
-  '1': 'var(--space-1)',
-  '2': 'var(--space-2)',
-  '3': 'var(--space-3)',
-  '4': 'var(--space-4)',
-  '5': 'var(--space-5)',
-  '6': 'var(--space-6)',
-  '7': 'var(--space-7)',
-  '8': 'var(--space-8)',
-  '9': 'var(--space-9)',
+  '1': 'var(--spacing-1)',
+  '2': 'var(--spacing-2)',
+  '3': 'var(--spacing-3)',
+  '4': 'var(--spacing-4)',
+  '5': 'var(--spacing-5)',
+  '6': 'var(--spacing-6)',
+  '7': 'var(--spacing-7)',
+  '8': 'var(--spacing-8)',
+  '9': 'var(--spacing-9)',
 } as const
 
 /** Concrete space values in rem — portal-safe, for VE styles in floating/card components */

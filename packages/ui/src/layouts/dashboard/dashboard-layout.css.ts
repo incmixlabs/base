@@ -33,7 +33,7 @@ export const presetButton = style({
   padding: '0.5rem',
   border: '1px solid var(--border)',
   borderRadius: '0.375rem',
-  backgroundColor: 'var(--card)',
+  backgroundColor: 'var(--color-neutral-surface)',
   color: 'var(--foreground)',
   textAlign: 'left',
   outline: 'none',
