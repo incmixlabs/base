@@ -20,19 +20,6 @@ export type TooltipSizeTokenSlot = 'padding' | 'fontSize' | 'lineHeight'
 export type TooltipMaxWidthTokenSlot = 'maxWidth'
 export type SliderSizeTokenSlot = 'trackHeight' | 'thumbSize'
 export type SliderVariantTokenSlot = 'boxShadow'
-export type StepperSizeTokenSlot =
-  | 'rootGap'
-  | 'navGap'
-  | 'itemGap'
-  | 'triggerGap'
-  | 'triggerFontSize'
-  | 'indicatorSize'
-  | 'titleFontSize'
-  | 'descriptionFontSize'
-  | 'panelPadding'
-  | 'footerGap'
-  | 'footerMetaFontSize'
-  | 'separatorOffset'
 export type TimelineSizeTokenSlot =
   | 'indicatorSize'
   | 'itemOffset'
@@ -151,10 +138,6 @@ export function sliderSizeVar(size: string, slot: SliderSizeTokenSlot, fallback:
 
 export function sliderVariantVar(variant: string, slot: SliderVariantTokenSlot, fallback: string): string {
   return withFallback(`--af-slider-variant-${toKebabCase(variant)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function stepperSizeVar(size: string, slot: StepperSizeTokenSlot, fallback: string): string {
-  return componentSizeVar('stepper', size, slot, fallback)
 }
 
 export function timelineSizeVar(size: string, slot: TimelineSizeTokenSlot, fallback: string): string {

@@ -52,7 +52,6 @@ function createValidTheme() {
       progress: { size: { sm: { height: '0.4rem' } } },
       dialog: { size: { md: { maxWidth: '28rem' } } },
       slider: { size: { md: { thumbSize: '1.3rem' } } },
-      stepper: { size: { md: { indicatorSize: '1.75rem' } } },
       surface: { variant: { surface: { boxShadow: '0 0 0 1px red' } } },
       timeline: { size: { md: { itemOffset: '2.25rem' } } },
       rating: { size: { md: { iconSize: '1.25rem' } } },
@@ -255,7 +254,6 @@ describe('theme-contract', () => {
     delete (theme.component as Record<string, unknown>).progress
     delete (theme.component as Record<string, unknown>).dialog
     delete (theme.component as Record<string, unknown>).slider
-    delete (theme.component as Record<string, unknown>).stepper
     delete (theme.component as Record<string, unknown>).switch
     delete (theme.component as Record<string, unknown>).toggle
     delete (theme.component as Record<string, unknown>).appShell
@@ -283,7 +281,6 @@ describe('theme-contract', () => {
       expect(result.value.component.progress).toEqual({})
       expect(result.value.component.dialog).toEqual({})
       expect(result.value.component.slider).toEqual({})
-      expect(result.value.component.stepper).toEqual({})
       expect(result.value.component.switch).toEqual({})
       expect(result.value.component.toggle).toEqual({})
       expect(result.value.component.appShell).toEqual({})

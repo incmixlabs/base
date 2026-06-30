@@ -3,6 +3,7 @@ import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { Text } from '@/typography'
 import { Stepper, type StepperProps, type StepperStep } from './Stepper'
+import { stepperPropDefs } from './stepper.props'
 
 const demoSteps: StepperStep[] = [
   {
@@ -28,13 +29,33 @@ const demoSteps: StepperStep[] = [
 const meta: Meta<typeof Stepper> = {
   title: 'Elements/Stepper',
   component: Stepper,
+  argTypes: {
+    orientation: {
+      control: 'inline-radio',
+      options: stepperPropDefs.orientation.values,
+    },
+    variant: {
+      control: 'inline-radio',
+      options: stepperPropDefs.variant.values,
+    },
+    size: {
+      control: 'inline-radio',
+      options: stepperPropDefs.size.values,
+    },
+    allowStepSelect: {
+      control: 'boolean',
+    },
+    showControls: {
+      control: 'boolean',
+    },
+  },
   args: {
     steps: demoSteps,
-    orientation: 'horizontal',
-    variant: 'default',
-    size: 'md',
-    allowStepSelect: true,
-    showControls: true,
+    orientation: stepperPropDefs.orientation.default,
+    variant: stepperPropDefs.variant.default,
+    size: stepperPropDefs.size.default,
+    allowStepSelect: stepperPropDefs.allowStepSelect.default,
+    showControls: stepperPropDefs.showControls.default,
   },
   parameters: {
     layout: 'centered',

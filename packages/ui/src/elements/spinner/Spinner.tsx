@@ -8,7 +8,10 @@ import type { Color } from '@/theme/tokens'
 import {
   codeSpinnerBase,
   codeSpinnerBrace,
+  codeSpinnerBraceFirst,
+  codeSpinnerBraceLast,
   codeSpinnerSizeVariants,
+  sparkleGlyphBase,
   sparkleGlyphBig,
   sparkleGlyphSmallBottom,
   sparkleGlyphSmallTop,
@@ -20,7 +23,7 @@ import {
   spinnerSizeVariants,
   spinnerSrOnly,
   spinnerVisual,
-} from './Spinner.css'
+} from './spinner.class'
 import { spinnerPropDefs } from './spinner.props'
 
 export type SpinnerSize = (typeof spinnerPropDefs.size.values)[number]
@@ -74,8 +77,8 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
             className={cn(spinnerColorVariants[safeColor], codeSpinnerBase, codeSpinnerSizeVariants[spinnerSize])}
             aria-hidden
           >
-            <span className={codeSpinnerBrace}>{'{'}</span>
-            <span className={codeSpinnerBrace}>{'}'}</span>
+            <span className={cn(codeSpinnerBrace, codeSpinnerBraceFirst)}>{'{'}</span>
+            <span className={cn(codeSpinnerBrace, codeSpinnerBraceLast)}>{'}'}</span>
           </span>
           <span className={spinnerSrOnly}>Loading...</span>
         </div>
@@ -90,13 +93,13 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
             aria-hidden
           >
             <span className={sparkleSpinnerHalo} />
-            <svg viewBox="0 0 24 24" className={sparkleGlyphBig}>
+            <svg viewBox="0 0 24 24" className={cn(sparkleGlyphBase, sparkleGlyphBig)}>
               <path d="M12 0.9 14.6 9.4 23.1 12l-8.5 2.6L12 23.1l-2.6-8.5L0.9 12l8.5-2.6z" />
             </svg>
-            <svg viewBox="0 0 24 24" className={sparkleGlyphSmallTop}>
+            <svg viewBox="0 0 24 24" className={cn(sparkleGlyphBase, sparkleGlyphSmallTop)}>
               <path d="M12 2.4 13.8 10.2 21.6 12l-7.8 1.8L12 21.6l-1.8-7.8L2.4 12l7.8-1.8z" />
             </svg>
-            <svg viewBox="0 0 24 24" className={sparkleGlyphSmallBottom}>
+            <svg viewBox="0 0 24 24" className={cn(sparkleGlyphBase, sparkleGlyphSmallBottom)}>
               <path d="M12 3.2 13.5 10.5 20.8 12l-7.3 1.5L12 20.8l-1.5-7.3L3.2 12l7.3-1.5z" />
             </svg>
           </span>

@@ -8,6 +8,7 @@ import { normalizeEnumPropValue } from '@/theme/props/prop-def'
 import { Button } from '../button/Button'
 import {
   stepperDescription,
+  stepperDescriptionSize,
   stepperFooter,
   stepperFooterActions,
   stepperFooterMeta,
@@ -23,14 +24,14 @@ import {
   stepperSeparator,
   stepperSeparatorCompleted,
   stepperSeparatorOffset,
-  stepperSizeVars,
   stepperText,
   stepperTitle,
+  stepperTitleSize,
   stepperTriggerBase,
   stepperTriggerOrientation,
   stepperTriggerSize,
   stepperTriggerVariant,
-} from './Stepper.css'
+} from './stepper.class'
 import { stepperPropDefs } from './stepper.props'
 
 type StepperOrientation = (typeof stepperPropDefs.orientation.values)[number]
@@ -181,7 +182,7 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
       : null
 
     return (
-      <div ref={ref} className={cn(stepperRoot, stepperSizeVars[resolvedSize], className)} {...props}>
+      <div ref={ref} className={cn(stepperRoot, className)} {...props}>
         <div className={stepperNav[resolvedOrientation]} role="tablist" aria-orientation={resolvedOrientation}>
           {steps.map((step, index) => {
             const isActive = index === activeIndex
@@ -207,7 +208,7 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                   className={cn(
                     stepperTriggerBase,
                     stepperTriggerOrientation[resolvedOrientation],
-                    stepperTriggerSize,
+                    stepperTriggerSize[resolvedSize],
                     stepperTriggerVariant[resolvedVariant],
                   )}
                   onClick={() => {
@@ -265,7 +266,11 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                   }}
                 >
                   <span
-                    className={cn(stepperIndicatorBase, stepperIndicatorSize, stepperIndicatorVariant[resolvedVariant])}
+                    className={cn(
+                      stepperIndicatorBase,
+                      stepperIndicatorSize[resolvedSize],
+                      stepperIndicatorVariant[resolvedVariant],
+                    )}
                     data-state={isCompleted ? 'completed' : isActive ? 'active' : 'inactive'}
                   >
                     {renderIndicator
@@ -275,8 +280,12 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                         : index + 1}
                   </span>
                   <span className={stepperText}>
-                    <span className={stepperTitle}>{step.title}</span>
-                    {step.description ? <span className={stepperDescription}>{step.description}</span> : null}
+                    <span className={cn(stepperTitle, stepperTitleSize[resolvedSize])}>{step.title}</span>
+                    {step.description ? (
+                      <span className={cn(stepperDescription, stepperDescriptionSize[resolvedSize])}>
+                        {step.description}
+                      </span>
+                    ) : null}
                   </span>
                 </button>
                 {index < steps.length - 1 ? (
@@ -284,7 +293,7 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                     aria-hidden="true"
                     className={cn(
                       stepperSeparator[resolvedOrientation],
-                      resolvedOrientation === 'vertical' && stepperSeparatorOffset,
+                      resolvedOrientation === 'vertical' && stepperSeparatorOffset[resolvedSize],
                       isCompleted && stepperSeparatorCompleted,
                     )}
                   />

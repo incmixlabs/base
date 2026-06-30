@@ -41,7 +41,7 @@ export const toolbarButtonActiveVariants = Object.fromEntries(
   ]),
 ) as Record<Color, string>
 
-export const toolbarSeparatorCls = 'bg-neutral-border'
+export const toolbarSeparatorCls = 'bg-[var(--color-neutral-border)]'
 
 export const floatingToolbarClassNames = [
   floatingToolbarRoot,

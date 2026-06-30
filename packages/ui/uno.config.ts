@@ -101,6 +101,9 @@ import {
   separatorVerticalWithContent,
   separatorWithContent,
 } from './src/elements/separator/separator.class'
+import { sheetClassNames } from './src/elements/sheet/sheet.class'
+import { spinnerClassNames } from './src/elements/spinner/spinner.class'
+import { stepperClassNames } from './src/elements/stepper/stepper.class'
 import { tooltipContentBase, tooltipPositionerBase } from './src/elements/tooltip/tooltip.class'
 import { avatarPickerClassNames } from './src/form/avatar-picker.class'
 import { checkboxClassNames } from './src/form/checkbox.class'
@@ -398,6 +401,12 @@ export default defineConfig({
       ...splitClasses(progressClassNames),
       // Scroll area styles
       ...splitClasses(scrollAreaClassNames),
+      // Sheet styles
+      ...splitClasses(sheetClassNames),
+      // Spinner styles
+      ...splitClasses(spinnerClassNames),
+      // Stepper styles
+      ...splitClasses(stepperClassNames),
       // Avatar picker styles
       ...splitClasses(avatarPickerClassNames),
       // Checkbox styles

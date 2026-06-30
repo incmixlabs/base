@@ -48,7 +48,6 @@ function createTheme(): ThemeContract {
       progress: { size: { sm: { height: '0.4rem' } } },
       dialog: { size: { md: { maxWidth: '28rem' } } },
       slider: { size: { md: { thumbSize: '1.3rem' } } },
-      stepper: { size: { md: { indicatorSize: '1.75rem' } } },
       surface: { variant: { surface: { boxShadow: '0 0 0 1px red' } } },
       timeline: { size: { md: { itemOffset: '2.25rem' } } },
       rating: { size: { md: { iconSize: '1.25rem' } } },

@@ -109,6 +109,66 @@
   }
 }
 
+@keyframes af-spinner-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes af-spinner-brace-pulse {
+  to {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+}
+
+@keyframes af-spinner-sparkle-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes af-spinner-sparkle-pulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(0deg);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1.1) rotate(90deg);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.6) rotate(180deg);
+  }
+  75% {
+    opacity: 1;
+    transform: scale(1.05) rotate(270deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.3) rotate(360deg);
+  }
+}
+
+@keyframes af-spinner-sparkle-halo-pulse {
+  0%,
+  100% {
+    opacity: 0.1;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(1.15);
+  }
+}
+
 .af-shimmer-overlay {
   position: absolute;
   inset: 0;
