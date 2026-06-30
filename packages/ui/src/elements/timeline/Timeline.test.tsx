@@ -67,10 +67,10 @@ describe('Timeline', () => {
       'gap-1',
     ])
     expectClassTokens(indicators[0]?.className, [
-      '!absolute',
+      'absolute',
       'inline-flex',
       'rounded-full',
-      '!border-2',
+      'border-2',
       'border-success',
       'text-success',
       'bg-transparent',

@@ -35,7 +35,7 @@ export const timelineItemByOrientationAndSize = {
 export const timelineItemGap = 'gap-1'
 
 export const timelineIndicatorBase =
-  '!absolute inline-flex shrink-0 items-center justify-center box-border !border-2 rounded-full transition-[border-color,background-color,color] duration-150 ease-in-out'
+  'absolute inline-flex shrink-0 items-center justify-center box-border border-2 rounded-full transition-[border-color,background-color,color] duration-150 ease-in-out'
 
 export const timelineIndicatorSize = {
   xs: 'h-3 w-3',
