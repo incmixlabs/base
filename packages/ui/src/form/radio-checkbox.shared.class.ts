@@ -4,6 +4,9 @@ export type RadioCheckboxCardSize = FormSize
 
 export const radioCheckboxCardSizes = ['xs', 'sm', 'md', 'lg'] as const satisfies readonly FormSize[]
 
+export const radioCheckboxCardShellBase =
+  'absolute inset-0 rounded-[var(--element-border-radius)] [border-width:1px] border-solid transition-all duration-150 -z-0'
+
 export const radioCheckboxCardTextSizeVariants = {
   xs: 'text-xs',
   sm: 'text-sm',
@@ -25,11 +28,20 @@ export const checkboxControlSizeVariants = {
   lg: 'h-6 w-6',
 } as const satisfies Record<FormSize, string>
 
+export const checkboxControlBoxBase = 'box-border'
+
 export const checkboxControlIconSizeVariants = {
   xs: 'h-3 w-3',
   sm: 'h-3.5 w-3.5',
   md: 'h-4 w-4',
   lg: 'h-5 w-5',
+} as const satisfies Record<FormSize, string>
+
+export const checkboxControlRadiusVariants = {
+  xs: 'rounded-[0.125rem]',
+  sm: 'rounded-[0.25rem]',
+  md: 'rounded-[0.25rem]',
+  lg: 'rounded-[0.25rem]',
 } as const satisfies Record<FormSize, string>
 
 export const radioControlSizeVariants = {
@@ -69,7 +81,7 @@ export const radioCardGapVariants = {
 
 export const checkboxCardPaddingVariants = {
   xs: 'p-3',
-  sm: 'p-3',
+  sm: 'p-4',
   md: 'p-4',
   lg: 'p-5',
 } as const satisfies Record<FormSize, string>

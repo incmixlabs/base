@@ -1,12 +1,16 @@
 import { semanticColorKeys } from '../theme/props/color.prop'
 import type { Color } from '../theme/tokens'
 import type { CheckboxSize, CheckboxVariant } from './checkbox.props'
-import { checkboxControlIconSizeVariants, checkboxControlSizeVariants } from './radio-checkbox.shared.class'
+import {
+  checkboxControlBoxBase,
+  checkboxControlIconSizeVariants,
+  checkboxControlRadiusVariants,
+  checkboxControlSizeVariants,
+} from './radio-checkbox.shared.class'
 
 const checkboxClassVariants = ['solid', 'soft', 'outline'] as const satisfies readonly CheckboxVariant[]
 
-export const checkboxBase =
-  'inline-flex shrink-0 items-center justify-center outline-none transition-colors duration-150 ease-in-out'
+export const checkboxBase = `${checkboxControlBoxBase} inline-flex shrink-0 items-center justify-center outline-none transition-colors duration-150 ease-in-out`
 
 export const checkboxBaseCls = 'peer'
 
@@ -87,10 +91,10 @@ export const checkboxHighContrastByVariant: Record<CheckboxVariant, string> = {
 }
 
 export const checkboxSizeVariants = {
-  xs: `${checkboxControlSizeVariants.xs} rounded-sm`,
-  sm: `${checkboxControlSizeVariants.sm} rounded-sm`,
-  md: `${checkboxControlSizeVariants.md} rounded`,
-  lg: `${checkboxControlSizeVariants.lg} rounded`,
+  xs: `${checkboxControlSizeVariants.xs} ${checkboxControlRadiusVariants.xs}`,
+  sm: `${checkboxControlSizeVariants.sm} ${checkboxControlRadiusVariants.sm}`,
+  md: `${checkboxControlSizeVariants.md} ${checkboxControlRadiusVariants.md}`,
+  lg: `${checkboxControlSizeVariants.lg} ${checkboxControlRadiusVariants.lg}`,
 } as const satisfies Record<CheckboxSize, string>
 
 export const checkboxIndicatorSizeVariants = {

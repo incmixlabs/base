@@ -5,9 +5,11 @@ import { CheckboxGroup as CheckboxGroupPrimitive } from '@base-ui/react/checkbox
 import { Check } from 'lucide-react'
 import * as React from 'react'
 import {
-  surfaceColorVariants,
   surfaceHighContrastByVariant,
   surfaceHoverEnabledClass,
+  surfaceUnoColorVariants,
+  surfaceUnoHighContrastColorVariants,
+  surfaceUnoHoverColorVariants,
 } from '@/elements/surface/surface.class'
 import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
 import { getSpacingClasses } from '@/layouts/layout-utils'
@@ -20,17 +22,20 @@ import type { Color, Radius, Size } from '@/theme/tokens'
 import { checkboxColorVariants, checkboxHighContrastByVariant } from './checkbox.class'
 import {
   type CheckboxCardSize,
+  checkboxCardControlRadiusVariants,
   checkboxCardControlSizeVariants,
   checkboxCardIconSizeVariants,
   checkboxCardSelectionColorVariants,
   checkboxCardSizeVariants,
+  checkboxControlBoxBase,
+  radioCheckboxCardShellBase,
 } from './checkbox-cards.class'
 import {
   checkboxCardsColumnValues,
   type checkboxCardsGapValues,
   checkboxCardsRootPropDefs,
 } from './checkbox-cards.props'
-import { useFieldGroup } from './FieldGroupContext'
+import { useFieldGroupOptional } from './FieldGroupContext'
 import { resolveFormSize } from './form-size'
 
 export type { CheckboxCardSize }
@@ -139,8 +144,8 @@ const CheckboxCardsRoot = React.forwardRef<HTMLDivElement, CheckboxCardsRootProp
     },
     ref,
   ) => {
-    const fieldGroup = useFieldGroup()
-    const size = sizeProp ?? fieldGroup.size
+    const fieldGroup = useFieldGroupOptional()
+    const size = resolveFormSize(sizeProp ?? fieldGroup?.size ?? checkboxCardsRootPropDefs.size.default)
     const safeVariant =
       normalizeEnumPropValue(checkboxCardsRootPropDefs.variant, variant) ?? checkboxCardsRootPropDefs.variant.default
     const safeColor = normalizeEnumPropValue(checkboxCardsRootPropDefs.color, color) ?? SemanticColor.neutral
@@ -151,7 +156,7 @@ const CheckboxCardsRoot = React.forwardRef<HTMLDivElement, CheckboxCardsRootProp
       normalizeBooleanPropValue(checkboxCardsRootPropDefs.showCheckbox, showCheckbox) ??
       checkboxCardsRootPropDefs.showCheckbox.default
     const safeDisabled = typeof disabled === 'boolean' ? disabled : false
-    const effectiveDisabled = safeDisabled || fieldGroup.disabled
+    const effectiveDisabled = safeDisabled || fieldGroup?.disabled === true
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
     const gridStyle: React.CSSProperties = {
       ...marginProps.style,
@@ -207,6 +212,7 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
     const id = React.useId()
     const checkboxRef = React.useRef<HTMLButtonElement>(null)
     const resolvedSize = resolveFormSize(context.size)
+    const surfaceVariant = context.variant === 'surface' ? 'surface' : 'outline'
     const radius = useThemeRadius(context.radius)
     const isDisabled = disabled || context.disabled
     const handleClick = React.useCallback(
@@ -264,8 +270,10 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
             'peer',
             context.showCheckbox
               ? [
-                  'relative z-10 inline-flex shrink-0 items-center justify-center rounded',
+                  'relative z-10 inline-flex shrink-0 items-center justify-center',
+                  checkboxControlBoxBase,
                   checkboxCardControlSizeVariants[resolvedSize],
+                  checkboxCardControlRadiusVariants[resolvedSize],
                   'transition-all duration-150',
                   // Keep checkbox token mapping stable for legibility; card `variant` styles the container span.
                   checkboxColorVariants[context.color].solid,
@@ -286,11 +294,14 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
         {/* Background span - uses peer modifier to respond to checkbox state */}
         <span
           className={cn(
-            'absolute inset-0 rounded-[var(--element-border-radius)] border transition-all duration-150 -z-0',
-            surfaceColorVariants[context.color][context.variant === 'surface' ? 'surface' : 'outline'],
+            radioCheckboxCardShellBase,
+            context.highContrast
+              ? surfaceUnoHighContrastColorVariants[context.color][surfaceVariant]
+              : surfaceUnoColorVariants[context.color][surfaceVariant],
             !isDisabled && surfaceHoverEnabledClass,
+            !isDisabled && surfaceUnoHoverColorVariants[context.color][surfaceVariant],
             context.highContrast && 'af-high-contrast',
-            context.highContrast && surfaceHighContrastByVariant[context.variant === 'surface' ? 'surface' : 'outline'],
+            context.highContrast && surfaceHighContrastByVariant[surfaceVariant],
             checkboxCardSelectionColorVariants[context.color],
           )}
           aria-hidden="true"

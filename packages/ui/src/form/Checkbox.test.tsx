@@ -32,4 +32,10 @@ describe('Checkbox', () => {
     expect(checkbox.querySelector('line')).toBeInTheDocument()
     expect(checkbox.querySelector('path')).not.toBeInTheDocument()
   })
+
+  it('uses the fixed checkbox control radius instead of the theme element radius', () => {
+    render(<Checkbox data-testid="checkbox" />)
+
+    expect(screen.getByTestId('checkbox')).toHaveClass('box-border', 'rounded-[0.25rem]')
+  })
 })

@@ -104,10 +104,47 @@ describe('CheckboxCards', () => {
     const indicator = checkbox.firstElementChild
 
     expectClassTokens(label?.className, ['p-4', 'gap-3', 'text-base'])
-    expectClassTokens(checkbox.className, ['h-5', 'w-5'])
+    expectClassTokens(checkbox.className, ['box-border', 'h-5', 'w-5', 'rounded-[0.25rem]'])
     expectClassTokens(indicator?.className, ['h-4', 'w-4'])
     expect(label?.className).not.toContain('--af-radio-checkbox-card')
     expect(checkbox.className).not.toContain('--af-checkbox-card')
     expect(indicator?.className).not.toContain('--af-checkbox-card')
+  })
+
+  it('keeps the default sm card and checkbox on the shared form scale', () => {
+    render(
+      <CheckboxCards.Root defaultValue={['widgets']}>
+        <CheckboxCards.Item value="widgets">Widgets</CheckboxCards.Item>
+      </CheckboxCards.Root>,
+    )
+
+    const label = screen.getByText('Widgets').closest('label')
+    const checkbox = screen.getByRole('checkbox')
+
+    expectClassTokens(label?.className, ['p-4', 'gap-2', 'text-sm', 'leading-5'])
+    expectClassTokens(checkbox.className, ['box-border', 'h-4', 'w-4', 'rounded-[0.25rem]'])
+  })
+
+  it('uses the shared surface token classes for the card shell border', () => {
+    render(
+      <CheckboxCards.Root size="md" defaultValue={['widgets']}>
+        <CheckboxCards.Item value="widgets">Widgets</CheckboxCards.Item>
+      </CheckboxCards.Root>,
+    )
+
+    const label = screen.getByText('Widgets').closest('label')
+    const shell = label?.querySelector('span[aria-hidden="true"]')
+
+    expectClassTokens(shell?.className, [
+      '[border-width:1px]',
+      'border-solid',
+      'border-neutral',
+      'bg-neutral-surface',
+      'text-neutral',
+      'hover:bg-[var(--color-neutral-surface-hover)]',
+    ])
+    const shellTokens = new Set((shell?.className ?? '').split(/\s+/).filter(Boolean))
+    expect(shellTokens).not.toContain('surface-color-neutral')
+    expect(shellTokens).not.toContain('surface-variant-surface')
   })
 })
