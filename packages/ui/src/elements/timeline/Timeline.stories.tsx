@@ -2,9 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { cn } from '@/lib/utils'
 import { colorPropDef } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
+import { Text } from '@/typography'
 import { Timeline, type TimelineRootProps } from './Timeline'
 import { TimelineWrapper, type TimelineWrapperProps } from './TimelineWrapper'
-import { timelineVariants } from './timeline.props'
+import { timelineOrientations, timelinePropDefs, timelineSizes, timelineVariants } from './timeline.props'
 
 // ─── Compound component stories ──────────────────────────────────────────────
 
@@ -59,9 +60,9 @@ const meta: Meta<typeof Timeline.Root> = {
   component: Timeline.Root,
   args: {
     color: 'primary',
-    orientation: 'vertical',
-    size: 'md',
-    variant: 'solid',
+    orientation: timelinePropDefs.orientation.default,
+    size: timelinePropDefs.size.default,
+    variant: timelinePropDefs.variant.default,
     value: 2,
   },
   argTypes: {
@@ -72,6 +73,14 @@ const meta: Meta<typeof Timeline.Root> = {
     variant: {
       control: 'inline-radio',
       options: timelineVariants,
+    },
+    orientation: {
+      control: 'inline-radio',
+      options: timelineOrientations,
+    },
+    size: {
+      control: 'inline-radio',
+      options: timelineSizes,
     },
   },
   parameters: {
@@ -111,9 +120,11 @@ export const NoActiveStep: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="grid gap-8">
-      {(['xs', 'sm', 'md', 'lg'] as const).map(size => (
+      {timelineSizes.map(size => (
         <div key={size}>
-          <div className="mb-2 text-xs font-medium text-muted-foreground">size=&quot;{size}&quot;</div>
+          <Text as="div" className="mb-2" size="xs" weight="medium" color="neutral" muted>
+            size=&quot;{size}&quot;
+          </Text>
           <CompoundDemo size={size} value={2} />
         </div>
       ))}

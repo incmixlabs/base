@@ -77,6 +77,18 @@ describe('theme contract validation', () => {
     }
   })
 
+  it('strips migrated retired timeline component tokens', () => {
+    const theme = createValidThemeContract()
+    ;(theme.component as Record<string, unknown>).timeline = { size: { md: { itemOffset: '2.25rem' } } }
+
+    const result = validateThemeContract(theme)
+
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect((result.value.component as Record<string, unknown>).timeline).toBeUndefined()
+    }
+  })
+
   it('aliases legacy component.dateNext to component.date', () => {
     const theme = createValidThemeContract()
     const dateTokens = { cell: { borderRadius: 'var(--radius-md)' } }

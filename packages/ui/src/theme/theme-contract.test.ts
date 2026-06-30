@@ -53,7 +53,6 @@ function createValidTheme() {
       dialog: { size: { md: { maxWidth: '28rem' } } },
       slider: { size: { md: { thumbSize: '1.3rem' } } },
       surface: { variant: { surface: { boxShadow: '0 0 0 1px red' } } },
-      timeline: { size: { md: { itemOffset: '2.25rem' } } },
       rating: { size: { md: { iconSize: '1.25rem' } } },
       appShell: {
         content: { paddingInline: '1rem', paddingInlineDesktop: '1.5rem' },
@@ -257,7 +256,6 @@ describe('theme-contract', () => {
     delete (theme.component as Record<string, unknown>).switch
     delete (theme.component as Record<string, unknown>).toggle
     delete (theme.component as Record<string, unknown>).appShell
-    delete (theme.component as Record<string, unknown>).timeline
     delete (theme.component as Record<string, unknown>).rating
     delete (theme.component as Record<string, unknown>).scrollArea
     delete (theme.component as Record<string, unknown>).treeView
@@ -284,7 +282,6 @@ describe('theme-contract', () => {
       expect(result.value.component.switch).toEqual({})
       expect(result.value.component.toggle).toEqual({})
       expect(result.value.component.appShell).toEqual({})
-      expect(result.value.component.timeline).toEqual({})
       expect(result.value.component.rating).toEqual({})
       expect(result.value.component.scrollArea).toEqual({})
       expect(result.value.component.treeView).toEqual({})

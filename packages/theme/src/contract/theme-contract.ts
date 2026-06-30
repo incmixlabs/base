@@ -257,22 +257,6 @@ export type ToggleComponentTokens = {
   }>
 }
 
-export type TimelineComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      indicatorSize: string
-      itemOffset: string
-      itemGap: string
-      itemPaddingInlineEnd: string
-      itemPaddingBlockEnd: string
-      titleFontSize: string
-      dateFontSize: string
-      contentFontSize: string
-    }>
-  >
-}
-
 export type RatingComponentTokens = {
   size?: Record<
     string,
@@ -453,7 +437,6 @@ export type ThemeContract = {
     dialog: DialogComponentTokens
     slider: SliderComponentTokens
     surface: SurfaceComponentTokens
-    timeline: TimelineComponentTokens
     rating: RatingComponentTokens
     appShell: AppShellComponentTokens
     scrollArea: ScrollAreaComponentTokens
@@ -464,7 +447,7 @@ export type ThemeContract = {
 export type ThemeContractValidation = { ok: true; value: ThemeContract } | { ok: false; errors: string[] }
 
 const lifecycleValues: ThemeLifecycle[] = ['draft', 'review', 'published']
-const migratedRetiredComponentKeys = ['stepper'] as const
+const migratedRetiredComponentKeys = ['stepper', 'timeline'] as const
 
 function isObject(value: unknown): value is Record<string, unknown> {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) {
@@ -683,7 +666,6 @@ export function validateThemeContract(input: unknown): ThemeContractValidation {
     'dialog',
     'slider',
     'surface',
-    'timeline',
     'rating',
     'appShell',
     'scrollArea',
