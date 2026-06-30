@@ -59,6 +59,24 @@ export const accordionChevronSizeVariants = {
   '2x': 'h-[1.75rem] w-[1.75rem]',
 } as const satisfies Record<AccordionSize, string>
 
+export const accordionClassNames = [
+  accordionRootBase,
+  accordionRootBorderless,
+  accordionItemBase,
+  accordionItemBorderless,
+  accordionHeaderBase,
+  accordionTriggerPaddingless,
+  accordionTriggerBase,
+  accordionChevron,
+  accordionContentBase,
+  accordionContentInner,
+  accordionContentPaddingless,
+  ...Object.values(accordionTextSizeVariants),
+  ...Object.values(accordionTriggerSizeVariants),
+  ...Object.values(accordionContentSizeVariants),
+  ...Object.values(accordionChevronSizeVariants),
+]
+
 // Motion variants
 export const accordionPanelVariants: Variants = {
   initial: { height: 0, opacity: 0 },

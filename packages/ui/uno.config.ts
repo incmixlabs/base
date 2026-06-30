@@ -1,5 +1,6 @@
 import { baseUnoConfig } from '@incmix/config/uno.config'
 import { defineConfig } from 'unocss'
+import { accordionClassNames } from './src/elements/accordion/accordion.class'
 import {
   avatarGroupOverflowStackMarginBySize,
   avatarGroupSpreadBySize,
@@ -317,6 +318,8 @@ export default defineConfig({
   safelist: [
     ...(baseUnoConfig.safelist ?? []),
     ...splitClasses([
+      // Accordion styles
+      ...accordionClassNames,
       ...Object.values(avatarSizeBySize),
       ...Object.values(avatarPresenceBySize),
       ...Object.values(avatarPresenceBusyLineBySize),
