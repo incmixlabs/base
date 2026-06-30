@@ -5,6 +5,7 @@ import * as React from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Tabs } from './Tabs'
 import { partitionStackedPanels } from './tabs-children'
+import { getMaxTransitionTime } from './tabs-transition'
 
 afterEach(() => {
   vi.restoreAllMocks()
@@ -23,14 +24,14 @@ function expectNoClassToken(className: string | undefined, token: string) {
   expect(classTokens).not.toContain(token)
 }
 
-function mockTransitionStyle(transitionDuration: string) {
+function mockTransitionStyle(transitionDuration: string, transitionDelay = '0s') {
   const originalGetComputedStyle = window.getComputedStyle.bind(window)
 
   return vi.spyOn(window, 'getComputedStyle').mockImplementation((element, pseudoElement) => {
     const style = originalGetComputedStyle(element, pseudoElement)
     return new Proxy(style, {
       get(target, property, receiver) {
-        if (property === 'transitionDelay') return '0s'
+        if (property === 'transitionDelay') return transitionDelay
         if (property === 'transitionDuration') return transitionDuration
 
         const value = Reflect.get(target, property, receiver)
@@ -41,6 +42,13 @@ function mockTransitionStyle(transitionDuration: string) {
 }
 
 describe('Tabs', () => {
+  it('accounts for mismatched transition duration and delay lists', () => {
+    const getComputedStyleSpy = mockTransitionStyle('50ms', '0ms, 250ms')
+
+    expect(getMaxTransitionTime(document.createElement('div'))).toBe(300)
+    getComputedStyleSpy.mockRestore()
+  })
+
   it('normalizes whitespace around size, variant, and color', () => {
     render(
       <Tabs.Root defaultValue="a" size={' lg ' as any} variant={' surface ' as any} color={' info ' as any}>

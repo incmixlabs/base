@@ -8,15 +8,21 @@ function parseTransitionTime(value: string) {
   return Number.parseFloat(trimmed) || 0
 }
 
-function getMaxTransitionTime(element: HTMLElement) {
+export function getMaxTransitionTime(element: HTMLElement) {
   const styles = window.getComputedStyle(element)
   const durations = styles.transitionDuration.split(',').map(parseTransitionTime)
   const delays = styles.transitionDelay.split(',').map(parseTransitionTime)
 
-  return durations.reduce((maxTime, duration, index) => {
-    const delay = delays[index] ?? delays[0] ?? 0
-    return Math.max(maxTime, duration + delay)
-  }, 0)
+  const transitionCount = Math.max(durations.length, delays.length)
+  let maxTransitionTime = 0
+
+  for (let index = 0; index < transitionCount; index++) {
+    const duration = durations[index % durations.length] ?? 0
+    const delay = delays[index % delays.length] ?? 0
+    maxTransitionTime = Math.max(maxTransitionTime, duration + delay)
+  }
+
+  return maxTransitionTime
 }
 
 export function useExitTransitionFallback(
