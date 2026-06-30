@@ -4,35 +4,27 @@ import { useState } from 'react'
 import type { WheelPickerOption } from './wheel-picker'
 import { WheelPicker, WheelPickerWrapper } from './wheel-picker'
 
-const numberOptions: WheelPickerOption<number>[] = Array.from({ length: 12 }, (_, index) => {
-  const value = index + 1
-  return { value, label: String(value).padStart(2, '0') }
-})
+function paddedRange(length: number, start = 1, step = 1): WheelPickerOption<number>[] {
+  return Array.from({ length }, (_, index) => {
+    const value = start + index * step
+    return { value, label: String(value).padStart(2, '0') }
+  })
+}
 
-const monthOptions: WheelPickerOption<number>[] = Array.from({ length: 12 }, (_, index) => {
-  const value = index + 1
-  return { value, label: String(value).padStart(2, '0') }
-})
+const numberOptions = paddedRange(12)
 
-const dayOptions: WheelPickerOption<number>[] = Array.from({ length: 31 }, (_, index) => {
-  const value = index + 1
-  return { value, label: String(value).padStart(2, '0') }
-})
+const monthOptions = paddedRange(12)
+
+const dayOptions = paddedRange(31)
 
 const yearOptions: WheelPickerOption<number>[] = Array.from({ length: 9 }, (_, index) => {
   const value = 2022 + index
   return { value, label: String(value) }
 })
 
-const hourOptions: WheelPickerOption<number>[] = Array.from({ length: 12 }, (_, index) => {
-  const value = index + 1
-  return { value, label: String(value).padStart(2, '0') }
-})
+const hourOptions = paddedRange(12)
 
-const minuteOptions: WheelPickerOption<number>[] = Array.from({ length: 12 }, (_, index) => {
-  const value = index * 5
-  return { value, label: String(value).padStart(2, '0') }
-})
+const minuteOptions = paddedRange(12, 0, 5)
 
 const periodOptions: WheelPickerOption<string>[] = [
   { value: 'am', label: 'AM' },

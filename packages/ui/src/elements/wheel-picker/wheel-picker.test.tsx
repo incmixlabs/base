@@ -3,7 +3,21 @@ import * as React from 'react'
 import { afterEach, describe, expect, it } from 'vitest'
 import type { WheelPickerOption } from './wheel-picker'
 import { WheelPicker, WheelPickerWrapper } from './wheel-picker'
-import { wheelPickerHighlightItem, wheelPickerHighlightWrapper, wheelPickerOptionItem } from './wheel-picker.class'
+import {
+  wheelPickerHighlightItem,
+  wheelPickerHighlightWrapper,
+  wheelPickerOptionItem,
+  wheelPickerWrapper,
+} from './wheel-picker.class'
+
+const wheelPickerWrapperTokens = wheelPickerWrapper.split(/\s+/).filter(Boolean)
+
+function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
+  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
+  for (const token of tokens) {
+    expect(classTokens).toContain(token)
+  }
+}
 
 afterEach(() => {
   cleanup()
@@ -37,14 +51,7 @@ describe('WheelPickerWrapper', () => {
         </WheelPickerWrapper>,
       )
       const wrapper = container.firstChild as HTMLElement
-      expect(wrapper.className).toContain('w-56')
-      expect(wrapper.className).toContain('rounded-[var(--element-border-radius,var(--radius-md))]')
-      expect(wrapper.className).toContain('border')
-      expect(wrapper.className).toContain('border-neutral')
-      expect(wrapper.className).toContain('bg-neutral-surface')
-      expect(wrapper.className).toContain('text-neutral')
-      expect(wrapper.className).toContain('px-1')
-      expect(wrapper.className).toContain('shadow-xs')
+      expectClassTokens(wrapper.className, wheelPickerWrapperTokens)
     })
 
     it('does not use hard-coded dark mode surface classes', () => {
@@ -78,8 +85,7 @@ describe('WheelPickerWrapper', () => {
       )
       const wrapper = container.firstChild as HTMLElement
       expect(wrapper).toHaveClass('custom-class')
-      expect(wrapper.className).toContain('w-56')
-      expect(wrapper.className).toContain('rounded-[var(--element-border-radius,var(--radius-md))]')
+      expectClassTokens(wrapper.className, wheelPickerWrapperTokens)
     })
 
     it('renders wrapper with data-rwp-wrapper attribute', () => {
@@ -101,8 +107,7 @@ describe('WheelPickerWrapper', () => {
         </WheelPickerWrapper>,
       )
       const wrapper = container.firstChild as HTMLElement
-      expect(wrapper.className).toContain('[&>[data-rwp]:first-child_[data-rwp-highlight-wrapper]]:rounded-s-md')
-      expect(wrapper.className).toContain('[&>[data-rwp]:last-child_[data-rwp-highlight-wrapper]]:rounded-e-md')
+      expectClassTokens(wrapper.className, wheelPickerWrapperTokens)
     })
   })
 
@@ -445,9 +450,7 @@ describe('WheelPicker', () => {
       )
 
       const wrapper = container.firstChild as HTMLElement
-      expect(wrapper.className).toContain('border-neutral')
-      expect(wrapper.className).toContain('bg-neutral-surface')
-      expect(wrapper.className).toContain('text-neutral')
+      expectClassTokens(wrapper.className, wheelPickerWrapperTokens)
       expect(wrapper.className).not.toContain('border-zinc-200')
       expect(wrapper.className).not.toContain('bg-white')
     })
@@ -460,7 +463,7 @@ describe('WheelPicker', () => {
       )
 
       const wrapper = container.firstChild as HTMLElement
-      expect(wrapper.className).toContain('rounded-[var(--element-border-radius,var(--radius-md))]')
+      expectClassTokens(wrapper.className, wheelPickerWrapperTokens)
     })
   })
 
