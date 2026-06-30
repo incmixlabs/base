@@ -35,7 +35,7 @@ export const timelineItemByOrientationAndSize = {
 export const timelineItemGap = 'gap-1'
 
 export const timelineIndicatorBase =
-  'absolute inline-flex shrink-0 items-center justify-center box-border rounded-full border-2 border-solid border-neutral text-neutral transition-[border-color,background-color,color] duration-150 ease-in-out'
+  '!absolute inline-flex shrink-0 items-center justify-center box-border !border-2 rounded-full transition-[border-color,background-color,color] duration-150 ease-in-out'
 
 export const timelineIndicatorSize = {
   xs: 'h-3 w-3',
@@ -58,35 +58,6 @@ export const timelineIndicatorPosition = {
     lg: 'left-[-2.5rem] top-0.5 translate-x-1/2',
   },
 } as const satisfies Record<TimelineOrientation, Record<TimelineSize, string>>
-
-export const timelineIndicatorVariant = {
-  solid: Object.fromEntries(
-    semanticColorKeys.map(color => [
-      color,
-      [
-        joinClass('data-[state=completed]:bg-', color, '-solid'),
-        joinClass('data-[state=completed]:[border-color:var(--color-', color, '-primary)]'),
-        joinClass('data-[state=completed]:text-', color, '-contrast'),
-        joinClass('data-[state=active]:bg-', color, '-solid'),
-        joinClass('data-[state=active]:[border-color:var(--color-', color, '-primary)]'),
-        joinClass('data-[state=active]:text-', color, '-contrast'),
-      ].join(' '),
-    ]),
-  ),
-  outline: Object.fromEntries(
-    semanticColorKeys.map(color => [
-      color,
-      [
-        'data-[state=completed]:bg-transparent',
-        joinClass('data-[state=completed]:[border-color:var(--color-', color, '-primary)]'),
-        joinClass('data-[state=completed]:text-', color),
-        'data-[state=active]:bg-transparent',
-        joinClass('data-[state=active]:[border-color:var(--color-', color, '-primary)]'),
-        joinClass('data-[state=active]:text-', color),
-      ].join(' '),
-    ]),
-  ),
-} as Record<TimelineVariant, Record<SemanticColorKey, string>>
 
 export const timelineSeparatorBase =
   'absolute bg-[var(--color-neutral-border)] transition-[background-color] duration-150 ease-in-out'
@@ -120,8 +91,6 @@ export const timelineClassNames = [
   ...Object.values(timelineIndicatorSize),
   ...Object.values(timelineIndicatorPosition.horizontal),
   ...Object.values(timelineIndicatorPosition.vertical),
-  ...Object.values(timelineIndicatorVariant.solid),
-  ...Object.values(timelineIndicatorVariant.outline),
   timelineSeparatorBase,
   ...Object.values(timelineSeparatorPosition.horizontal),
   ...Object.values(timelineSeparatorPosition.vertical),

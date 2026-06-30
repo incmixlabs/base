@@ -6,11 +6,11 @@ import { cn } from '@/lib/utils'
 import { normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Color } from '@/theme/tokens'
 import { Heading, type HeadingProps, Text, type TextProps } from '@/typography'
+import { Surface } from '../surface/Surface'
 import {
   timelineIndicatorBase,
   timelineIndicatorPosition,
   timelineIndicatorSize,
-  timelineIndicatorVariant,
   timelineItemByOrientationAndSize,
   timelineItemGap,
   timelineItemOrientation,
@@ -218,23 +218,26 @@ const TimelineIndicator = React.forwardRef<HTMLDivElement, TimelineIndicatorProp
             ? 'active'
             : 'inactive'
         : undefined
+    const isResolved = state === 'completed' || state === 'active'
+    const indicatorColor = isResolved ? color : 'neutral'
+    const indicatorVariant = isResolved ? variant : 'outline'
 
     return (
-      <div
-        ref={ref}
-        aria-hidden
-        data-state={state}
-        className={cn(
-          timelineIndicatorBase,
-          timelineIndicatorVariant[variant][color],
-          timelineIndicatorSize[size],
-          timelineIndicatorPosition[orientation][size],
-          className,
-        )}
-        {...props}
-      >
-        {children}
-      </div>
+      <Surface asChild color={indicatorColor} variant={indicatorVariant} radius="full" shape="circle" square ref={ref}>
+        <div
+          aria-hidden
+          data-state={state}
+          className={cn(
+            timelineIndicatorBase,
+            timelineIndicatorSize[size],
+            timelineIndicatorPosition[orientation][size],
+            className,
+          )}
+          {...props}
+        >
+          {children}
+        </div>
+      </Surface>
     )
   },
 )

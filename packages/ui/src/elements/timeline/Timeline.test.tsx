@@ -67,17 +67,18 @@ describe('Timeline', () => {
       'gap-1',
     ])
     expectClassTokens(indicators[0]?.className, [
-      'absolute',
+      '!absolute',
       'inline-flex',
       'rounded-full',
-      'border-neutral',
+      '!border-2',
+      'border-success',
+      'text-success',
+      'bg-transparent',
       'h-[1.125rem]',
       'w-[1.125rem]',
       'left-[-2.25rem]',
       'top-0.5',
       'translate-x-1/2',
-      'data-[state=completed]:[border-color:var(--color-success-primary)]',
-      'data-[state=completed]:text-success',
     ])
     expect(indicators[0]).toHaveAttribute('data-state', 'completed')
     expect(indicators[1]).toHaveAttribute('data-state', 'active')
