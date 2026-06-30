@@ -34,7 +34,14 @@ import {
   segmentedUnderlineUnselectedCls,
 } from './segmented-control.shared.class'
 import { renderTabLabelWithIcon, type TabIconsConfig } from './tab-icons'
-import { tabsPanelAnimated, tabsPanelBase, tabsPanelInactive } from './tabs.class'
+import {
+  tabsPanelActive,
+  tabsPanelAnimated,
+  tabsPanelBase,
+  tabsPanelInactive,
+  tabsPanelStack,
+  tabsPanelStackItem,
+} from './tabs.class'
 import { tabsPropDefs } from './tabs.props'
 import { useAnimatedIndicator } from './useAnimatedIndicator'
 
@@ -140,6 +147,17 @@ const TabsRoot = React.forwardRef<HTMLDivElement, TabsRootProps>(
     const [internalValue, setInternalValue] = React.useState<string | undefined>(defaultValue)
     const activeValue = value ?? internalValue ?? null
     const marginProps = getMarginProps({ m: mProp, mx, my, mt, mr, mb, ml })
+    const rootChildren = React.Children.toArray(children)
+    const tabPanels: React.ReactNode[] = []
+    const nonPanelChildren: React.ReactNode[] = []
+
+    for (const child of rootChildren) {
+      if (React.isValidElement(child) && child.type === TabsContent) {
+        tabPanels.push(child)
+      } else {
+        nonPanelChildren.push(child)
+      }
+    }
 
     const handleValueChange = React.useCallback(
       (newValue: string) => {
@@ -171,7 +189,6 @@ const TabsRoot = React.forwardRef<HTMLDivElement, TabsRootProps>(
           onValueChange={handleValueChange}
           orientation={orientation}
           className={cn(
-            safeAnimated && 'relative',
             orientation === 'vertical' && 'flex gap-4',
             safeHighContrast && 'af-high-contrast',
             marginProps.className,
@@ -180,7 +197,14 @@ const TabsRoot = React.forwardRef<HTMLDivElement, TabsRootProps>(
           style={{ ...marginProps.style, ...style }}
           {...props}
         >
-          {children}
+          {safeAnimated && tabPanels.length > 0 ? (
+            <>
+              {nonPanelChildren}
+              <div className={tabsPanelStack}>{tabPanels}</div>
+            </>
+          ) : (
+            children
+          )}
         </TabsPrimitive.Root>
       </TabsContext.Provider>
     )
@@ -363,8 +387,9 @@ const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
 
     const panelClassName = cn(
       tabsPanelBase,
-      animated && isActive && tabsPanelAnimated,
-      animated && !isActive && tabsPanelInactive,
+      animated && tabsPanelStackItem,
+      animated && tabsPanelAnimated,
+      animated && (isActive ? tabsPanelActive : tabsPanelInactive),
       sizeConfig.content,
       className,
     )

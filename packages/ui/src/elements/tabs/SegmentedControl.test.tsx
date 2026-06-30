@@ -132,4 +132,31 @@ describe('SegmentedControl', () => {
       expect(screen.getAllByText('Phone').length).toBeGreaterThan(1)
     })
   })
+
+  it('keeps animated content panels mounted in a stable grid stack', async () => {
+    const user = userEvent.setup()
+    const { container } = render(
+      <SegmentedControl.Root animated defaultValue="a">
+        <SegmentedControl.Item value="a">A</SegmentedControl.Item>
+        <SegmentedControl.Item value="b">B</SegmentedControl.Item>
+        <SegmentedControl.Content value="a">A panel</SegmentedControl.Content>
+        <SegmentedControl.Content value="b">B panel</SegmentedControl.Content>
+      </SegmentedControl.Root>,
+    )
+
+    const panels = Array.from(container.querySelectorAll('[role="tabpanel"]'))
+    expect(panels).toHaveLength(2)
+    expectClassTokens(panels[0]?.parentElement?.className, ['grid', 'min-w-0'])
+    expectClassTokens(panels[0]?.className, ['col-start-1', 'row-start-1', 'opacity-100'])
+    expectClassTokens(panels[1]?.className, ['col-start-1', 'row-start-1', 'opacity-0', 'pointer-events-none'])
+    expect(panels[1]).toHaveAttribute('aria-hidden', 'true')
+    expect(panels[1]).toHaveAttribute('inert')
+
+    await user.click(screen.getByRole('radio', { name: 'B' }))
+
+    expectClassTokens(panels[0]?.className, ['opacity-0', 'pointer-events-none'])
+    expect(panels[0]).toHaveAttribute('aria-hidden', 'true')
+    expectClassTokens(panels[1]?.className, ['opacity-100'])
+    expect(panels[1]).not.toHaveAttribute('aria-hidden')
+  })
 })

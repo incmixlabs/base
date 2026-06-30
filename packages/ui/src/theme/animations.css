@@ -109,17 +109,6 @@
   }
 }
 
-@keyframes af-tabs-panel-enter {
-  from {
-    opacity: 0;
-    filter: blur(4px);
-  }
-  to {
-    opacity: 1;
-    filter: blur(0);
-  }
-}
-
 @keyframes af-spinner-rotate {
   from {
     transform: rotate(0deg);

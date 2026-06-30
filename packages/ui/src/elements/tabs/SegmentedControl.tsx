@@ -33,7 +33,7 @@ import {
   segmentedUnderlineUnselectedCls,
 } from './segmented-control.shared.class'
 import { renderTabLabelWithIcon, type TabIconsConfig } from './tab-icons'
-import { tabsPanelAnimated } from './tabs.class'
+import { tabsPanelActive, tabsPanelAnimated, tabsPanelInactive, tabsPanelStack, tabsPanelStackItem } from './tabs.class'
 import { useAnimatedIndicator } from './useAnimatedIndicator'
 
 export const SegmentedControlVariants = {
@@ -77,10 +77,23 @@ const SegmentedControlContent = React.forwardRef<HTMLDivElement, SegmentedContro
     const { value: activeValue, animated } = context
     const isActive = activeValue === value
 
-    if (!isActive) return null
+    if (!animated && !isActive) return null
 
     return (
-      <div ref={ref} role="tabpanel" className={cn(animated && tabsPanelAnimated, className)} {...props}>
+      <div
+        ref={ref}
+        role="tabpanel"
+        aria-hidden={animated && !isActive ? true : undefined}
+        inert={animated && !isActive ? true : undefined}
+        tabIndex={animated && !isActive ? -1 : undefined}
+        className={cn(
+          animated && tabsPanelStackItem,
+          animated && tabsPanelAnimated,
+          animated && (isActive ? tabsPanelActive : tabsPanelInactive),
+          className,
+        )}
+        {...props}
+      >
         {children}
       </div>
     )
@@ -251,7 +264,11 @@ const SegmentedControlRoot = React.forwardRef<HTMLDivElement, SegmentedControlRo
           />
           {items}
         </div>
-        {contentPanels}
+        {safeAnimated && contentPanels.length > 0 ? (
+          <div className={tabsPanelStack}>{contentPanels}</div>
+        ) : (
+          contentPanels
+        )}
       </SegmentedControlContext.Provider>
     )
   },
