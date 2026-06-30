@@ -9,14 +9,14 @@ export const radioCheckboxCardShellBase =
 
 export const radioCheckboxCardTextSizeVariants = {
   xs: 'text-xs',
-  sm: 'text-sm',
+  sm: 'text-base',
   md: 'text-base',
   lg: 'text-lg',
 } as const satisfies Record<FormSize, string>
 
 export const radioCheckboxCardTextVariants = {
   xs: `${radioCheckboxCardTextSizeVariants.xs} leading-4`,
-  sm: `${radioCheckboxCardTextSizeVariants.sm} leading-5`,
+  sm: `${radioCheckboxCardTextSizeVariants.sm} leading-6`,
   md: `${radioCheckboxCardTextSizeVariants.md} leading-6`,
   lg: `${radioCheckboxCardTextSizeVariants.lg} leading-7`,
 } as const satisfies Record<FormSize, string>
@@ -81,7 +81,7 @@ export const radioCardGapVariants = {
 
 export const checkboxCardPaddingVariants = {
   xs: 'p-3',
-  sm: 'p-4',
+  sm: 'p-3',
   md: 'p-4',
   lg: 'p-5',
 } as const satisfies Record<FormSize, string>
