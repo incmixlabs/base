@@ -25,9 +25,10 @@ describe('CheckboxGroup', () => {
       </CheckboxGroup.Root>,
     )
 
-    const itemClassName = screen.getByRole('checkbox').parentElement?.className
+    const itemClassName = screen.getByRole('checkbox').parentElement?.className ?? ''
+    const itemClassTokens = new Set(itemClassName.split(/\s+/).filter(Boolean))
 
-    expect(itemClassName).toContain('gap-2')
+    expect(itemClassTokens).toContain('gap-2')
     expect(itemClassName).not.toContain('--af-checkbox-group')
     expect(itemClassName).not.toContain('--component-checkbox-group')
   })

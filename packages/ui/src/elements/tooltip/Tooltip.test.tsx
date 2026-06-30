@@ -101,8 +101,11 @@ describe('TooltipWrapper', () => {
       />,
     )
 
-    expect(document.querySelector('.text-sm.font-semibold')).toBeNull()
-    expect(document.querySelector('.rounded-md.border.border-neutral')).toBeNull()
-    expect(document.querySelector('.opacity-70')).toBeNull()
+    const tooltip = document.body.querySelector('[data-base-ui-portal] [data-base-ui-focusable]')
+
+    expect(tooltip).not.toBeNull()
+    expect(tooltip?.querySelector('.text-sm.font-semibold')).toBeNull()
+    expect(tooltip?.querySelector('.rounded-md.border.border-neutral')).toBeNull()
+    expect(tooltip?.querySelector('.opacity-70')).toBeNull()
   })
 })
