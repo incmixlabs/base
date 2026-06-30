@@ -61,7 +61,7 @@ describe('Sheet', () => {
       'w-3',
       'cursor-col-resize',
       'touch-none',
-      'after:bg-neutral-border',
+      'after:bg-[var(--color-neutral-border)]',
       'hover:after:bg-primary',
       'focus-visible:after:bg-primary',
       'data-[resizing]:after:bg-primary',

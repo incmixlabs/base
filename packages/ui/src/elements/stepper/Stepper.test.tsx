@@ -62,7 +62,7 @@ describe('Stepper', () => {
       'data-[state=completed]:bg-primary-solid',
     ])
     expectClassTokens(description.className, ['text-muted', 'text-[length:0.8125rem]'])
-    expectClassTokens(separator?.className, ['h-px', 'min-w-4', 'flex-auto', 'bg-neutral-border'])
+    expectClassTokens(separator?.className, ['h-px', 'min-w-4', 'flex-auto', 'bg-[var(--color-neutral-border)]'])
     expectClassTokens(panel.className, ['min-h-40', 'rounded-2xl', 'border-neutral', 'p-4'])
     expectClassTokens(footerMeta.className, ['text-muted', 'text-sm'])
     expect(root?.className).not.toContain('Stepper_')

@@ -77,8 +77,8 @@ export const stepperDescriptionSize = {
 } as const satisfies Record<StepperSize, string>
 
 export const stepperSeparator = {
-  horizontal: 'self-center h-px min-w-4 flex-auto bg-neutral-border',
-  vertical: 'h-8 w-px bg-neutral-border',
+  horizontal: 'self-center h-px min-w-4 flex-auto bg-[var(--color-neutral-border)]',
+  vertical: 'h-8 w-px bg-[var(--color-neutral-border)]',
 } as const satisfies Record<StepperOrientation, string>
 
 export const stepperSeparatorOffset = {

@@ -243,26 +243,6 @@ export type IconButtonComponentTokens = {
   >
 }
 
-export type StepperComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      rootGap: string
-      navGap: string
-      itemGap: string
-      triggerGap: string
-      triggerFontSize: string
-      indicatorSize: string
-      titleFontSize: string
-      descriptionFontSize: string
-      panelPadding: string
-      footerGap: string
-      footerMetaFontSize: string
-      separatorOffset: string
-    }>
-  >
-}
-
 export type ToggleComponentTokens = {
   size?: Record<
     string,
@@ -472,7 +452,6 @@ export type ThemeContract = {
     progress: ProgressComponentTokens
     dialog: DialogComponentTokens
     slider: SliderComponentTokens
-    stepper: StepperComponentTokens
     surface: SurfaceComponentTokens
     timeline: TimelineComponentTokens
     rating: RatingComponentTokens
@@ -663,10 +642,10 @@ export function validateThemeContract(input: unknown): ThemeContractValidation {
 
   if (!isObject(semantic.color)) errors.push('semantic.color must be an object')
 
-  const retiredComponent = ['checkbox', 'checkboxGroup', 'checkboxCards', 'radio', 'radioCards']
+  const retiredComponent = ['checkbox', 'checkboxGroup', 'checkboxCards', 'radio', 'radioCards', 'stepper']
   for (const key of retiredComponent) {
     if (component[key] !== undefined) {
-      errors.push(`component.${key} is retired; checkbox/radio sizing uses shared UI size maps`)
+      errors.push(`component.${key} is retired; component sizing uses shared UI size maps`)
     }
   }
 
@@ -690,7 +669,6 @@ export function validateThemeContract(input: unknown): ThemeContractValidation {
     'progress',
     'dialog',
     'slider',
-    'stepper',
     'surface',
     'timeline',
     'rating',

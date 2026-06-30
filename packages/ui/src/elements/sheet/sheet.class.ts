@@ -54,7 +54,7 @@ export const sheetPanelBySide: Record<SheetSide, string> = {
 }
 
 export const sheetResizeHandle =
-  'absolute inset-y-0 z-30 w-3 border-0 bg-transparent p-0 cursor-col-resize touch-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary after:content-[""] after:absolute after:left-1/2 after:top-1/2 after:h-12 after:w-1 after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full after:bg-neutral-border hover:after:bg-primary focus-visible:after:bg-primary data-[resizing]:after:bg-primary'
+  'absolute inset-y-0 z-30 w-3 border-0 bg-transparent p-0 cursor-col-resize touch-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary after:content-[""] after:absolute after:left-1/2 after:top-1/2 after:h-12 after:w-1 after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full after:bg-[var(--color-neutral-border)] hover:after:bg-primary focus-visible:after:bg-primary data-[resizing]:after:bg-primary'
 
 export const sheetResizeHandleLeft = 'right-0'
 
