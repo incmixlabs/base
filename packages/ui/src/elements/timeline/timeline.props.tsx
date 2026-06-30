@@ -10,7 +10,7 @@ type TimelineColor = (typeof colorPropDef.color.values)[number]
 const timelinePropDefs = {
   color: { ...colorPropDef.color, default: 'primary' as TimelineColor },
   orientation: { type: 'enum', values: timelineOrientations, default: 'vertical' },
-  size: { type: 'enum', values: timelineSizes, default: 'md', responsive: true },
+  size: { type: 'enum', values: timelineSizes, default: 'md' },
   variant: { type: 'enum', values: timelineVariants, default: 'solid' },
 } satisfies {
   color: PropDef<TimelineColor>

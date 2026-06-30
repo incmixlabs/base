@@ -49,7 +49,6 @@ function createTheme(): ThemeContract {
       dialog: { size: { md: { maxWidth: '28rem' } } },
       slider: { size: { md: { thumbSize: '1.3rem' } } },
       surface: { variant: { surface: { boxShadow: '0 0 0 1px red' } } },
-      timeline: { size: { md: { itemOffset: '2.25rem' } } },
       rating: { size: { md: { iconSize: '1.25rem' } } },
       appShell: {
         content: { paddingInline: '1rem', paddingInlineDesktop: '1.5rem' },

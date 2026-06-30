@@ -20,15 +20,6 @@ export type TooltipSizeTokenSlot = 'padding' | 'fontSize' | 'lineHeight'
 export type TooltipMaxWidthTokenSlot = 'maxWidth'
 export type SliderSizeTokenSlot = 'trackHeight' | 'thumbSize'
 export type SliderVariantTokenSlot = 'boxShadow'
-export type TimelineSizeTokenSlot =
-  | 'indicatorSize'
-  | 'itemOffset'
-  | 'itemGap'
-  | 'itemPaddingInlineEnd'
-  | 'itemPaddingBlockEnd'
-  | 'titleFontSize'
-  | 'dateFontSize'
-  | 'contentFontSize'
 export type FieldGroupSectionTokenSlot = 'separatorMarginBlock' | 'headerMarginBottom' | 'descriptionMarginTop'
 export type FieldGroupRowTokenSlot = 'rootGap' | 'columnGap' | 'descriptionMarginTop'
 export type FileUploadSizeTokenSlot =
@@ -138,10 +129,6 @@ export function sliderSizeVar(size: string, slot: SliderSizeTokenSlot, fallback:
 
 export function sliderVariantVar(variant: string, slot: SliderVariantTokenSlot, fallback: string): string {
   return withFallback(`--af-slider-variant-${toKebabCase(variant)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function timelineSizeVar(size: string, slot: TimelineSizeTokenSlot, fallback: string): string {
-  return componentSizeVar('timeline', size, slot, fallback)
 }
 
 export function textFieldSizeVar(size: string, slot: TextFieldSizeTokenSlot, fallback: string): string {
