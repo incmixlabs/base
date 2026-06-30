@@ -15,12 +15,15 @@ import { semanticColorVar } from '@/theme/props/color.prop'
 import type { Color, Radius } from '@/theme/tokens'
 import {
   datePickerCalendarButton,
+  datePickerCalendarButtonSizeStyles,
   datePickerCalendarIcon,
+  datePickerCalendarIconControlSizeStyles,
   datePickerInput,
+  datePickerInputSizeStyles,
   datePickerTriggerGroupBase,
   datePickerTriggerGroupRadiusStyles,
   datePickerTriggerGroupSizeStyles,
-} from './DatePicker.css'
+} from './DatePicker.class'
 import { type DateSize, dateCalendarDaySizeBySize, dateControlFontSizeBySize, isDateSize } from './date.props'
 import {
   buildHourOptions,
@@ -273,6 +276,7 @@ export function TimePicker({
           onClick={() => (isOpen ? cancelPicker() : openPicker())}
           className={cn(
             datePickerInput,
+            datePickerInputSizeStyles[size],
             'w-full text-left outline-none cursor-pointer',
             'disabled:cursor-not-allowed disabled:opacity-50',
             displayText ? 'text-foreground' : 'text-muted-foreground',
@@ -285,9 +289,13 @@ export function TimePicker({
           aria-label="Open time picker"
           disabled={effectiveIsDisabled}
           onClick={() => (isOpen ? cancelPicker() : openPicker())}
-          className={cn(datePickerCalendarButton, 'text-muted-foreground transition-colors hover:text-foreground')}
+          className={cn(
+            datePickerCalendarButton,
+            datePickerCalendarButtonSizeStyles[size],
+            'text-muted-foreground transition-colors hover:text-foreground',
+          )}
         >
-          <Clock className={datePickerCalendarIcon} />
+          <Clock className={cn(datePickerCalendarIcon, datePickerCalendarIconControlSizeStyles[size])} />
         </button>
       </Group>
 

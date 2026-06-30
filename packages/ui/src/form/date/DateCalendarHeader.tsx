@@ -15,9 +15,6 @@ export interface DateCalendarHeaderProps {
   radius: Radius
   navButtonVariant: 'soft' | 'outline' | 'ghost'
   navButtonBordered: boolean
-  accentColor: string
-  softColor: string
-  foregroundColor: string
   onPrevious: () => void
   onNext: () => void
   previousDisabled?: boolean
@@ -79,9 +76,6 @@ export function DateCalendarHeader({
   radius,
   navButtonVariant,
   navButtonBordered,
-  accentColor,
-  softColor,
-  foregroundColor,
   onPrevious,
   onNext,
   previousDisabled = false,
@@ -223,17 +217,14 @@ export function DateCalendarHeader({
   const showNextArrow = arrowPosition === 'both' || arrowPosition === 'right'
 
   return (
-    <div className={cn('flex h-(--cell-size) items-center gap-2', className)}>
-      <div className={cn('flex h-(--cell-size) w-(--cell-size) items-center justify-start', navClassName)}>
+    <div className={cn('flex items-center gap-2', className)}>
+      <div className={cn('flex items-center justify-start', navClassName)}>
         {showPreviousArrow ? (
           <DateCalendarNavButton
             color={color}
             radius={radius}
             variant={navButtonVariant}
             bordered={navButtonBordered}
-            accentColor={accentColor}
-            softColor={softColor}
-            foregroundColor={foregroundColor}
             className={navButtonClassName}
             aria-label={previousAriaLabel}
             onClick={onPrevious}
@@ -279,16 +270,13 @@ export function DateCalendarHeader({
           </span>
         )}
       </div>
-      <div className={cn('flex h-(--cell-size) w-(--cell-size) items-center justify-end', navClassName)}>
+      <div className={cn('flex items-center justify-end', navClassName)}>
         {showNextArrow ? (
           <DateCalendarNavButton
             color={color}
             radius={radius}
             variant={navButtonVariant}
             bordered={navButtonBordered}
-            accentColor={accentColor}
-            softColor={softColor}
-            foregroundColor={foregroundColor}
             className={navButtonClassName}
             aria-label={nextAriaLabel}
             onClick={onNext}

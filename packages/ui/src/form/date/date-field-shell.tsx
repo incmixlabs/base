@@ -15,7 +15,7 @@ import type { FloatingStyle } from '@/form/text-field-variant'
 import { resolveSurfaceVariant } from '@/form/text-field-variant'
 import { cn } from '@/lib/utils'
 import type { Color, Radius, TextFieldVariant } from '@/theme/tokens'
-import { datePickerTriggerGroupRadiusStyles } from './DatePicker.css'
+import { datePickerTriggerGroupRadiusStyles } from './DatePicker.class'
 
 export const dateSegmentInputClassName = cn(
   'flex h-full min-w-0 flex-1 items-center gap-0 bg-transparent px-[var(--af-text-field-padding-x)]',

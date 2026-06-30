@@ -5,7 +5,7 @@ import { I18nProvider } from 'react-aria-components'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { FieldGroup } from '../FieldGroup'
 import { DateRangePicker } from './DateRangePicker'
-import { rangeTriggerGroupBase, rangeTriggerGroupSizeStyles } from './DateRangePicker.css'
+import { rangeTriggerGroupBase, rangeTriggerGroupSizeStyles } from './DateRangePicker.class'
 
 const DUAL_MONTH_INTERACTION_TEST_TIMEOUT_MS = 15_000
 const DUAL_MONTH_HEADING_TOGGLE_TEST_TIMEOUT_MS = 15_000
@@ -14,6 +14,10 @@ const DUAL_MONTH_SLOW_INTERACTION_TEST_TIMEOUT_MS = 30_000
 afterEach(() => {
   cleanup()
 })
+
+function hasClassTokens(element: HTMLElement, className: string) {
+  return className.split(/\s+/).every(token => element.classList.contains(token))
+}
 
 describe('DateRangePicker', () => {
   it('does not render hidden inputs when name is not provided', () => {
@@ -31,10 +35,10 @@ describe('DateRangePicker', () => {
     )
 
     const triggerGroup = Array.from(container.querySelectorAll<HTMLElement>('div')).find(element =>
-      element.classList.contains(rangeTriggerGroupBase),
+      hasClassTokens(element, rangeTriggerGroupBase),
     )
     expect(triggerGroup).toBeDefined()
-    expect(triggerGroup?.classList.contains(rangeTriggerGroupSizeStyles.lg)).toBe(true)
+    expect(triggerGroup).toHaveClass(...rangeTriggerGroupSizeStyles.lg.split(/\s+/))
   })
 
   it('keeps hidden inputs empty when range is undefined', () => {

@@ -21,13 +21,13 @@ import {
   datePickerCalendarWeekdayGrid,
   datePickerNavButton,
   datePickerNavButtonSizeStyles,
-} from './DatePicker.css'
+} from './DatePicker.class'
 import type { WeekStartsOn } from './date.props'
 import { type DateSize, isDateSize } from './date.props'
 import { normalizeDay, toDayKey } from './date-calendar-core'
 import { calendarArrowKeyMoves, isCalendarArrowKey } from './date-keyboard'
 import { mapDateSizeToButtonSize } from './date-size-maps'
-import { dateElementRadiusStyles } from './date-surface.shared.css'
+import { dateElementRadiusStyles } from './date-surface.shared.class'
 import { MonthYearPicker } from './MonthYearPicker'
 import { useDateCalendar } from './useDateCalendar'
 

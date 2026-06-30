@@ -10,16 +10,20 @@ import { DateCalendarPanel } from './DateCalendarPanel'
 import { type DateNavButtonVariant, type DateSize, isDateSize } from './date.props'
 import {
   miniCalendarBody,
-  miniCalendarDayColorStyles,
+  miniCalendarBodySizeStyles,
   miniCalendarHeader,
+  miniCalendarHeaderSizeStyles,
   miniCalendarHeaderTitle,
+  miniCalendarHeaderTitleSizeStyles,
   miniCalendarNavButton,
+  miniCalendarNavButtonSizeStyles,
   miniCalendarNavIcon,
+  miniCalendarNavIconSizeStyles,
   miniCalendarRadiusStyles,
   miniCalendarRoot,
   miniCalendarRootDisabled,
   miniCalendarSizeStyles,
-} from './MiniCalendar.css'
+} from './MiniCalendar.class'
 import { useDateFormatters } from './useDateFormatters'
 
 export interface MiniCalendarProps {
@@ -102,29 +106,27 @@ export function MiniCalendar({
         miniCalendarRoot,
         miniCalendarSizeStyles[resolvedSize],
         miniCalendarRadiusStyles[radius],
-        miniCalendarDayColorStyles[color],
         disabled && miniCalendarRootDisabled,
         className,
       )}
     >
-      <div className={miniCalendarBody}>
+      <div className={cn(miniCalendarBody, miniCalendarBodySizeStyles[resolvedSize])}>
         {showHeader ? (
           <DateCalendarHeader
             title={title}
-            titleClassName={miniCalendarHeaderTitle}
-            className={miniCalendarHeader}
-            navButtonClassName={miniCalendarNavButton}
+            titleClassName={cn(miniCalendarHeaderTitle, miniCalendarHeaderTitleSizeStyles[resolvedSize])}
+            className={cn(miniCalendarHeader, miniCalendarHeaderSizeStyles[resolvedSize])}
+            navButtonClassName={cn(miniCalendarNavButton, miniCalendarNavButtonSizeStyles[resolvedSize])}
             color={color}
             radius={radius}
             navButtonVariant={navButtonVariant}
             navButtonBordered={navButtonBordered}
-            accentColor="var(--mini-cal-accent)"
-            softColor="var(--mini-cal-soft)"
-            foregroundColor="var(--mini-cal-fg)"
             previousAriaLabel="Previous week"
             nextAriaLabel="Next week"
-            previousIcon={<ChevronLeft className={miniCalendarNavIcon} />}
-            nextIcon={<ChevronRight className={miniCalendarNavIcon} />}
+            previousIcon={
+              <ChevronLeft className={cn(miniCalendarNavIcon, miniCalendarNavIconSizeStyles[resolvedSize])} />
+            }
+            nextIcon={<ChevronRight className={cn(miniCalendarNavIcon, miniCalendarNavIconSizeStyles[resolvedSize])} />}
             onPrevious={() => {
               if (canGoPrevious) setCurrentDate(prev => subWeeks(prev, 1))
             }}

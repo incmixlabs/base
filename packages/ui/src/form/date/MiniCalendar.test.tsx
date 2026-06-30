@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
+import { dateCalendarNavButtonColorStyles } from './date-surface.shared.class'
 import { MiniCalendar } from './MiniCalendar'
 
 describe('MiniCalendar', () => {
@@ -14,6 +15,24 @@ describe('MiniCalendar', () => {
     // CalendarHeader also has nav buttons with aria-label, so filter to day buttons
     const dayOnlyButtons = Array.from(dayButtons).filter(button => !button.getAttribute('aria-label')?.includes('week'))
     expect(dayOnlyButtons).toHaveLength(7)
+  })
+
+  it('renders visible week navigation arrows', () => {
+    render(<MiniCalendar value={new Date(2026, 0, 15)} color="slate" navButtonVariant="soft" />)
+
+    const previousButton = document.querySelector<HTMLButtonElement>('button[aria-label="Previous week"]')
+    const nextButton = document.querySelector<HTMLButtonElement>('button[aria-label="Next week"]')
+
+    expect(previousButton).not.toBeNull()
+    expect(nextButton).not.toBeNull()
+    if (!previousButton || !nextButton) {
+      throw new Error('Expected week navigation buttons to exist')
+    }
+
+    expect(previousButton.querySelector('svg')).not.toBeNull()
+    expect(nextButton.querySelector('svg')).not.toBeNull()
+    expect(previousButton).toHaveClass(...dateCalendarNavButtonColorStyles.slate.soft.split(/\s+/))
+    expect(nextButton).toHaveClass(...dateCalendarNavButtonColorStyles.slate.soft.split(/\s+/))
   })
 
   it('calls onChange when selecting an enabled date', async () => {

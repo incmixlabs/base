@@ -10,7 +10,7 @@ import {
   pricingDayInteractive,
   pricingPriceLabel,
   pricingSelectedColorStyles,
-} from './CalendarWithPricing.css'
+} from './CalendarWithPricing.class'
 import { DateCalendarPanel, type DayRenderState } from './DateCalendarPanel'
 import type { WeekStartsOn } from './date.props'
 import { type DateSize, isDateSize } from './date.props'
@@ -141,7 +141,15 @@ export const CalendarWithPricing = forwardRef<HTMLDivElement, CalendarWithPricin
         >
           <span>{state.dayNumberFormatter.format(state.normalized.getDate())}</span>
           {showPrice && priceData ? (
-            <span className={pricingPriceLabel}>{formatPriceDisplay(priceData.price)}</span>
+            <span
+              className={cn(
+                pricingPriceLabel,
+                highlighted && 'text-success font-semibold opacity-100',
+                state.selected && 'opacity-90',
+              )}
+            >
+              {formatPriceDisplay(priceData.price)}
+            </span>
           ) : null}
         </button>
       )

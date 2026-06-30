@@ -26,7 +26,7 @@ import { cn } from '@/lib/utils'
 import { semanticColorVar } from '@/theme/props/color.prop'
 import type { Color, Radius, TextFieldVariant } from '@/theme/tokens'
 import { DateCalendarPanel } from './DateCalendarPanel'
-import { datePickerTriggerGroupRadiusStyles, datePickerTriggerGroupSizeStyles } from './DatePicker.css'
+import { datePickerTriggerGroupRadiusStyles, datePickerTriggerGroupSizeStyles } from './DatePicker.class'
 import {
   type DateSize,
   dateCalendarDaySizeBySize,
