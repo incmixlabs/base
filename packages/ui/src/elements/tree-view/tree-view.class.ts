@@ -71,7 +71,7 @@ function indentGuideOffsetClass(size: TreeViewSize) {
 export const treeViewRootBase = 'relative min-h-0 flex-1 overflow-x-hidden overflow-y-auto'
 
 export const treeViewItemBase =
-  'group/tree-view-item relative flex w-full cursor-pointer select-none items-center rounded-md border-0 bg-transparent text-left font-[inherit] text-inherit transition-colors duration-[120ms] ease-[var(--af-ease-standard)] hover:bg-slate-soft focus-visible:bg-primary-soft-hover focus-visible:text-primary focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--color-primary-primary)] focus-visible:[box-shadow:inset_3px_0_0_var(--color-primary-primary)] data-[selected]:bg-primary-soft-hover data-[selected]:text-primary data-[selected]:[box-shadow:inset_3px_0_0_var(--color-primary-primary)] data-[active]:bg-primary-soft-hover data-[active]:text-primary data-[active]:[box-shadow:inset_3px_0_0_var(--color-primary-primary)] data-[disabled]:pointer-events-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 data-[drag-over]:bg-[color-mix(in_oklch,var(--color-primary-primary)_20%,transparent)]'
+  'group/tree-view-item relative flex w-full cursor-pointer select-none items-center rounded-md border-0 bg-transparent text-left font-[inherit] text-inherit transition-colors duration-[120ms] ease-[var(--af-ease-standard)] hover:bg-slate-soft focus-visible:bg-primary-soft-hover focus-visible:text-primary focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--color-primary-primary)] data-[selected]:bg-primary-soft-hover data-[selected]:text-primary data-[active]:bg-primary-soft-hover data-[active]:text-primary data-[disabled]:pointer-events-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 data-[drag-over]:bg-[color-mix(in_oklch,var(--color-primary-primary)_20%,transparent)] data-[drag-over]:[box-shadow:inset_3px_0_0_var(--color-primary-primary)]'
 
 export const treeViewItemSizeVariants = Object.fromEntries(
   treeViewSizes.map(size => {
@@ -104,6 +104,15 @@ export const treeViewIconSizeVariants = Object.fromEntries(
 export const treeViewActions =
   'ms-auto flex items-center opacity-0 transition-opacity duration-[120ms] ease-[var(--af-ease-standard)] hover:opacity-100 group-hover/tree-view-item:opacity-100 group-focus/tree-view-item:opacity-100 group-focus-visible/tree-view-item:opacity-100 group-data-[selected]/tree-view-item:opacity-100 group-data-[active]/tree-view-item:opacity-100'
 
+export const treeViewBranchContent =
+  'grid overflow-hidden transition-[grid-template-rows,opacity] duration-[var(--af-motion-medium)] ease-[var(--af-ease-standard)] motion-reduce:transition-none'
+
+export const treeViewBranchContentOpen = 'grid-rows-[1fr] opacity-100'
+
+export const treeViewBranchContentClosed = 'grid-rows-[0fr] opacity-0 pointer-events-none'
+
+export const treeViewBranchContentInner = 'min-h-0 overflow-hidden'
+
 export const treeViewIndentGuide = 'border-s border-neutral'
 
 export const treeViewIndentGuideSizeVariants = Object.fromEntries(
@@ -120,6 +129,10 @@ export const treeViewClassNames = [
   treeViewIcon,
   ...Object.values(treeViewIconSizeVariants),
   treeViewActions,
+  treeViewBranchContent,
+  treeViewBranchContentOpen,
+  treeViewBranchContentClosed,
+  treeViewBranchContentInner,
   treeViewIndentGuide,
   ...Object.values(treeViewIndentGuideSizeVariants),
 ]
