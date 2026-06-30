@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Box } from '@/layouts'
 import { getPropDefValues } from '@/theme/props/prop-def'
-import { Blockquote } from '@/typography'
+import { Blockquote, Text } from '@/typography'
 import {
   EmbeddedResponsiveShell,
   EmbeddedResponsiveTabs,
@@ -111,12 +111,16 @@ export const RealWorldExamples: Story = {
 
       <Blockquote size="md" color="info">
         "Simplicity is the ultimate sophistication."
-        <cite className="block mt-2 text-sm not-italic opacity-70">— Leonardo da Vinci</cite>
+        <Text as="cite" size="sm" muted className="block mt-2 not-italic">
+          — Leonardo da Vinci
+        </Text>
       </Blockquote>
 
       <Blockquote size="md" color="success">
         "The best way to predict the future is to invent it."
-        <cite className="block mt-2 text-sm not-italic opacity-70">— Alan Kay</cite>
+        <Text as="cite" size="sm" muted className="block mt-2 not-italic">
+          — Alan Kay
+        </Text>
       </Blockquote>
 
       <Blockquote size="sm" color="warning">

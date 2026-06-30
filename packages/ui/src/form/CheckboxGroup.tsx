@@ -15,6 +15,7 @@ import {
   checkboxColorVariants,
   checkboxHighContrastByVariant,
   checkboxIndicator,
+  checkboxIndicatorSizeVariants,
   checkboxSizeVariants,
 } from './checkbox.class'
 import type { CheckboxSize, CheckboxVariant } from './checkbox.props'
@@ -130,7 +131,7 @@ const CheckboxGroupItem = React.forwardRef<HTMLButtonElement, CheckboxGroupItemP
           )}
           {...props}
         >
-          <CheckboxPrimitive.Indicator className={checkboxIndicator}>
+          <CheckboxPrimitive.Indicator className={cn(checkboxIndicator, checkboxIndicatorSizeVariants[context.size])}>
             <Check className="h-full w-full stroke-current" strokeWidth={3} />
           </CheckboxPrimitive.Indicator>
         </CheckboxPrimitive.Root>

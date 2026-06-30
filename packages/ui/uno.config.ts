@@ -113,7 +113,6 @@ import { mentionTextareaClassNames } from './src/form/MentionTextarea.class'
 import { pickerPopupClassNames } from './src/form/picker-popup.class'
 import { ratingClassNames } from './src/form/Rating.class'
 import { radioCardsClassNames } from './src/form/radio-cards.class'
-import { radioCheckboxCardClassNames } from './src/form/radio-checkbox.shared.class'
 import { radioGroupClassNames } from './src/form/radio-group.class'
 import { sliderClassNames } from './src/form/Slider.class'
 import { switchClassNames } from './src/form/switch.class'
@@ -416,8 +415,6 @@ export default defineConfig({
       ...splitClasses(mentionTextareaClassNames),
       // Picker popup styles
       ...splitClasses(pickerPopupClassNames),
-      // Shared radio/checkbox card styles
-      ...splitClasses(radioCheckboxCardClassNames),
       // Radio cards styles
       ...splitClasses(radioCardsClassNames),
       // Radio group styles

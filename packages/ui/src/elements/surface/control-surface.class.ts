@@ -3,7 +3,7 @@ import {
   type SemanticColorClassRecipe,
 } from '@/theme/helpers/semantic-color-recipe'
 import type { Color } from '@/theme/tokens'
-import { surfaceVariantSurfaceShadow } from './Surface.css'
+import { surfaceVariantSurfaceShadow } from './surface.class'
 
 export type ControlSurfaceVariant = 'classic' | 'solid' | 'soft' | 'surface' | 'outline' | 'ghost'
 

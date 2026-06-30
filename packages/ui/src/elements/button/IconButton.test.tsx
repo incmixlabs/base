@@ -208,6 +208,12 @@ describe('IconButton', () => {
     }
   })
 
+  it('applies muted opacity when rendered through Icon directly', () => {
+    const { container } = render(<Icon icon="search" muted aria-label="Muted icon" />)
+
+    expect(container.firstElementChild).toHaveClass('opacity-70')
+  })
+
   it('does not render a stale remote SVG when the icon name changes', async () => {
     let resolveSecondSvg: (svg: string) => void = () => undefined
     const secondSvg = new Promise<string>(resolve => {

@@ -202,23 +202,6 @@ export type TextFieldComponentTokens = {
   >
 }
 
-export type CheckboxComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      boxSize: string
-      iconSize: string
-      borderRadius: string
-    }>
-  >
-}
-
-export type CheckboxGroupComponentTokens = {
-  gap?: string
-  inlineGap?: string
-  itemGap?: string
-}
-
 export type SwitchComponentTokens = {
   size?: Record<
     string,
@@ -227,21 +210,6 @@ export type SwitchComponentTokens = {
       rootWidth: string
       thumbSize: string
       thumbTranslate: string
-      gap: string
-    }>
-  >
-  group?: Partial<{
-    gap: string
-    inlineGap: string
-  }>
-}
-
-export type RadioComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      radioSize: string
-      indicatorSize: string
       gap: string
     }>
   >
@@ -262,30 +230,6 @@ export type FieldGroupComponentTokens = {
     columnGap: string
     descriptionMarginTop: string
   }>
-}
-
-export type CheckboxCardsComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      padding: string
-      boxSize: string
-      iconSize: string
-      gap: string
-    }>
-  >
-}
-
-export type RadioCardsComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      padding: string
-      gap: string
-      indicatorSize: string
-      indicatorInnerSize: string
-    }>
-  >
 }
 
 export type IconButtonComponentTokens = {
@@ -517,11 +461,6 @@ export type ThemeContract = {
     mentionTextarea: MentionTextareaComponentTokens
     date: DateComponentTokens
     textField: TextFieldComponentTokens
-    checkbox: CheckboxComponentTokens
-    checkboxGroup: CheckboxGroupComponentTokens
-    checkboxCards: CheckboxCardsComponentTokens
-    radio: RadioComponentTokens
-    radioCards: RadioCardsComponentTokens
     switch: SwitchComponentTokens
     iconButton: IconButtonComponentTokens
     toggle: ToggleComponentTokens
@@ -724,6 +663,13 @@ export function validateThemeContract(input: unknown): ThemeContractValidation {
 
   if (!isObject(semantic.color)) errors.push('semantic.color must be an object')
 
+  const retiredComponent = ['checkbox', 'checkboxGroup', 'checkboxCards', 'radio', 'radioCards']
+  for (const key of retiredComponent) {
+    if (component[key] !== undefined) {
+      errors.push(`component.${key} is retired; checkbox/radio sizing uses shared UI size maps`)
+    }
+  }
+
   const requiredComponent = [
     'button',
     'accordion',
@@ -733,11 +679,6 @@ export function validateThemeContract(input: unknown): ThemeContractValidation {
     'mentionTextarea',
     'date',
     'textField',
-    'checkbox',
-    'checkboxGroup',
-    'checkboxCards',
-    'radio',
-    'radioCards',
     'switch',
     'iconButton',
     'toggle',

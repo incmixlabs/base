@@ -1,5 +1,10 @@
 import { semanticColorKeys } from '../theme/props/color.prop'
 import type { Color } from '../theme/tokens'
+import {
+  radioControlIndicatorSizeVariants,
+  radioControlLabelGapVariants,
+  radioControlSizeVariants,
+} from './radio-checkbox.shared.class'
 import type { RadioGroupOrientation, RadioSize, RadioVariant } from './radio-group.props'
 
 const radioClassVariants = ['classic', 'surface', 'soft'] as const satisfies readonly RadioVariant[]
@@ -7,8 +12,7 @@ const radioClassVariants = ['classic', 'surface', 'soft'] as const satisfies rea
 export const radioBaseCls =
   'peer inline-flex box-border items-center justify-center rounded-full border-2 border-solid transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50'
 
-export const radioIndicatorCls =
-  'box-border rounded-full [background-color:var(--color-light-primary)] w-[var(--radio-indicator-size)] h-[var(--radio-indicator-size)]'
+export const radioIndicatorCls = 'box-border rounded-full [background-color:var(--color-light-primary)]'
 
 const joinClass = (...parts: string[]) => parts.join('')
 const colorVar = (color: string, token: string) => joinClass('var(--color-', color, '-', token, ')')
@@ -74,22 +78,20 @@ export const radioHighContrastByVariant: Record<RadioVariant, string> = {
 }
 
 export const radioSizeVariants = {
-  xs: 'w-[var(--af-radio-size-xs-radio-size,0.75rem)] h-[var(--af-radio-size-xs-radio-size,0.75rem)] [--radio-indicator-size:var(--af-radio-size-xs-indicator-size,calc(0.75rem/2))]',
-  sm: 'w-[var(--af-radio-size-sm-radio-size,1rem)] h-[var(--af-radio-size-sm-radio-size,1rem)] [--radio-indicator-size:var(--af-radio-size-sm-indicator-size,calc(1rem/2))]',
-  md: 'w-[var(--af-radio-size-md-radio-size,1.25rem)] h-[var(--af-radio-size-md-radio-size,1.25rem)] [--radio-indicator-size:var(--af-radio-size-md-indicator-size,calc(1.25rem/2))]',
-  lg: 'w-[var(--af-radio-size-lg-radio-size,1.5rem)] h-[var(--af-radio-size-lg-radio-size,1.5rem)] [--radio-indicator-size:var(--af-radio-size-lg-indicator-size,calc(1.5rem/2))]',
+  ...radioControlSizeVariants,
+} as const satisfies Record<RadioSize, string>
+
+export const radioIndicatorSizeVariants = {
+  ...radioControlIndicatorSizeVariants,
 } as const satisfies Record<RadioSize, string>
 
 export const radioGapVariants = {
-  xs: '[--radio-gap:var(--af-radio-size-xs-gap,0.25rem)]',
-  sm: '[--radio-gap:var(--af-radio-size-sm-gap,0.375rem)]',
-  md: '[--radio-gap:var(--af-radio-size-md-gap,0.5rem)]',
-  lg: '[--radio-gap:var(--af-radio-size-lg-gap,0.625rem)]',
+  ...radioControlLabelGapVariants,
 } as const satisfies Record<RadioSize, string>
 
 export const radioGroupRootOrientation = {
-  vertical: 'flex-col gap-[var(--af-radio-group-gap,0.5rem)]',
-  horizontal: 'flex-row gap-[var(--af-radio-group-inline-gap,1rem)]',
+  vertical: 'flex-col gap-2',
+  horizontal: 'flex-row gap-4',
 } as const satisfies Record<RadioGroupOrientation, string>
 
 export const radioGroupClassNames = [
@@ -98,6 +100,7 @@ export const radioGroupClassNames = [
   ...radioClassVariants.flatMap(variant => semanticColorKeys.map(color => radioColorVariants[color][variant])),
   ...Object.values(radioHighContrastByVariant),
   ...Object.values(radioSizeVariants),
+  ...Object.values(radioIndicatorSizeVariants),
   ...Object.values(radioGapVariants),
   ...Object.values(radioGroupRootOrientation),
 ]

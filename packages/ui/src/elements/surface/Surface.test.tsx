@@ -33,7 +33,7 @@ describe('Surface', () => {
     expect(surface.className).toContain('border-primary')
     expect(surface.className).toContain('text-primary')
     expect(surface.className).not.toContain('surface-color-primary')
-    expect(surface.className).not.toContain('surface-variant-surface')
+    expect(surface.className.split(' ')).not.toContain('surface-variant-surface')
   })
 
   it.each(['chart1', 'chart-1'] as const)('supports chart surface tone %s', color => {
@@ -187,7 +187,7 @@ describe('Surface', () => {
     expect(surface.className).toContain('af-high-contrast')
     expect(surface.className).toContain(surfaceUnoHighContrastColorVariants.primary.surface)
     expect(surface.className).toContain('border-[var(--color-primary-text)]')
-    expect(surface.className).not.toContain('surface-variant-surface')
+    expect(surface.className.split(' ')).not.toContain('surface-variant-surface')
   })
 
   it('replaces normal fill and border classes for solid high-contrast states', () => {

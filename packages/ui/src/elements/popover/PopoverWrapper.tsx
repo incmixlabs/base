@@ -4,6 +4,7 @@ import * as React from 'react'
 import { Button } from '@/elements/button/Button'
 import { Flex } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
+import { Text } from '@/typography'
 import { Popover } from './Popover'
 import type {
   PopoverWrapperAction,
@@ -23,10 +24,14 @@ function FieldRow({
 }) {
   const defaultRender = (
     <div className="rounded-md border border-neutral bg-neutral-surface p-2">
-      <div className="text-xs text-neutral opacity-70">{field.label}</div>
+      <Text as="div" size="xs" color="neutral" muted>
+        {field.label}
+      </Text>
       {field.value != null ? <div className="text-sm font-medium text-neutral">{field.value}</div> : null}
       {field.description != null ? (
-        <div className="mt-1 text-xs text-neutral opacity-70">{field.description}</div>
+        <Text as="div" size="xs" color="neutral" muted className="mt-1">
+          {field.description}
+        </Text>
       ) : null}
     </div>
   )
@@ -139,16 +144,24 @@ export function PopoverWrapper({
 
         <Flex direction="column" gap="3">
           {data.title != null ? <div className="text-sm font-semibold">{data.title}</div> : null}
-          {data.description != null ? <div className="text-xs text-neutral opacity-70">{data.description}</div> : null}
+          {data.description != null ? (
+            <Text as="div" size="xs" color="neutral" muted>
+              {data.description}
+            </Text>
+          ) : null}
 
           {data.sections.map(section => {
             const defaultSectionRender = (
               <Flex key={section.id} direction="column" gap="2" className="rounded-md border border-neutral p-2">
                 {section.title != null ? (
-                  <div className="text-xs font-semibold uppercase text-neutral opacity-70">{section.title}</div>
+                  <Text as="div" size="xs" weight="semibold" color="neutral" muted className="uppercase">
+                    {section.title}
+                  </Text>
                 ) : null}
                 {section.description != null ? (
-                  <div className="text-xs text-neutral opacity-70">{section.description}</div>
+                  <Text as="div" size="xs" color="neutral" muted>
+                    {section.description}
+                  </Text>
                 ) : null}
 
                 {section.fields?.length ? (

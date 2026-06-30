@@ -1,49 +1,94 @@
 import type { FormSize } from './form-size'
 
-type RadioCheckboxCardComponent = 'checkbox-cards'
-
 export type RadioCheckboxCardSize = FormSize
 
-const radioCheckboxCardSizes = ['xs', 'sm', 'md', 'lg'] as const satisfies readonly FormSize[]
+export const radioCheckboxCardSizes = ['xs', 'sm', 'md', 'lg'] as const satisfies readonly FormSize[]
 
-const radioCheckboxCardTokens: Record<FormSize, { padding: string; gap: string; textSize: string }> = {
-  xs: { padding: '0.75rem', gap: '0.5rem', textSize: 'text-xs' },
-  sm: { padding: '0.75rem', gap: '0.5rem', textSize: 'text-sm' },
-  md: { padding: '1rem', gap: '0.75rem', textSize: 'text-base' },
-  lg: { padding: '1.25rem', gap: '0.75rem', textSize: 'text-lg' },
-}
+export const radioCheckboxCardShellBase =
+  'absolute inset-0 rounded-[var(--element-border-radius)] [border-width:1px] border-solid transition-all duration-150 -z-0'
 
-const joinClass = (...parts: string[]) => parts.join('')
+export const radioCheckboxCardTextSizeVariants = {
+  xs: 'text-xs',
+  sm: 'text-base',
+  md: 'text-base',
+  lg: 'text-lg',
+} as const satisfies Record<FormSize, string>
 
-const componentSizeVar = (component: RadioCheckboxCardComponent, size: string, slot: string, fallback: string) =>
-  joinClass('var(--af-', component, '-size-', size, '-', slot, ',', fallback, ')')
+export const radioCheckboxCardTextVariants = {
+  xs: `${radioCheckboxCardTextSizeVariants.xs} leading-4`,
+  sm: `${radioCheckboxCardTextSizeVariants.sm} leading-6`,
+  md: `${radioCheckboxCardTextSizeVariants.md} leading-6`,
+  lg: `${radioCheckboxCardTextSizeVariants.lg} leading-7`,
+} as const satisfies Record<FormSize, string>
 
-export const radioCheckboxCardPaddingClass = 'p-[var(--af-radio-checkbox-card-padding)]'
-export const radioCheckboxCardGapClass = 'gap-[var(--af-radio-checkbox-card-gap)]'
+export const checkboxControlSizeVariants = {
+  xs: 'h-3.5 w-3.5',
+  sm: 'h-4 w-4',
+  md: 'h-5 w-5',
+  lg: 'h-6 w-6',
+} as const satisfies Record<FormSize, string>
 
-export function createRadioCheckboxCardSizeVariants(component: RadioCheckboxCardComponent) {
-  return Object.fromEntries(
-    radioCheckboxCardSizes.map(size => {
-      const token = radioCheckboxCardTokens[size]
+export const checkboxControlBoxBase = 'box-border'
 
-      return [
-        size,
-        [
-          joinClass(
-            '[--af-radio-checkbox-card-padding:',
-            componentSizeVar(component, size, 'padding', token.padding),
-            ']',
-          ),
-          joinClass('[--af-radio-checkbox-card-gap:', componentSizeVar(component, size, 'gap', token.gap), ']'),
-          token.textSize,
-        ].join(' '),
-      ]
-    }),
-  ) as Record<FormSize, string>
-}
+export const checkboxControlIconSizeVariants = {
+  xs: 'h-3 w-3',
+  sm: 'h-3.5 w-3.5',
+  md: 'h-4 w-4',
+  lg: 'h-5 w-5',
+} as const satisfies Record<FormSize, string>
 
-export const radioCheckboxCardClassNames = [
-  radioCheckboxCardPaddingClass,
-  radioCheckboxCardGapClass,
-  ...Object.values(createRadioCheckboxCardSizeVariants('checkbox-cards')),
-]
+export const checkboxControlRadiusVariants = {
+  xs: 'rounded-[0.125rem]',
+  sm: 'rounded-[0.25rem]',
+  md: 'rounded-[0.25rem]',
+  lg: 'rounded-[0.25rem]',
+} as const satisfies Record<FormSize, string>
+
+export const radioControlSizeVariants = {
+  xs: 'h-3 w-3',
+  sm: 'h-4 w-4',
+  md: 'h-5 w-5',
+  lg: 'h-6 w-6',
+} as const satisfies Record<FormSize, string>
+
+export const radioControlIndicatorSizeVariants = {
+  xs: 'h-1.5 w-1.5',
+  sm: 'h-2 w-2',
+  md: 'h-2.5 w-2.5',
+  lg: 'h-3 w-3',
+} as const satisfies Record<FormSize, string>
+
+export const radioControlLabelGapVariants = {
+  xs: 'gap-1',
+  sm: 'gap-1.5',
+  md: 'gap-2',
+  lg: 'gap-2.5',
+} as const satisfies Record<FormSize, string>
+
+export const radioCardPaddingVariants = {
+  xs: 'p-2',
+  sm: 'p-3',
+  md: 'p-4',
+  lg: 'p-5',
+} as const satisfies Record<FormSize, string>
+
+export const radioCardGapVariants = {
+  xs: 'gap-2',
+  sm: 'gap-3',
+  md: 'gap-4',
+  lg: 'gap-5',
+} as const satisfies Record<FormSize, string>
+
+export const checkboxCardPaddingVariants = {
+  xs: 'p-3',
+  sm: 'p-3',
+  md: 'p-4',
+  lg: 'p-5',
+} as const satisfies Record<FormSize, string>
+
+export const checkboxCardGapVariants = {
+  xs: 'gap-2',
+  sm: 'gap-2',
+  md: 'gap-3',
+  lg: 'gap-3',
+} as const satisfies Record<FormSize, string>

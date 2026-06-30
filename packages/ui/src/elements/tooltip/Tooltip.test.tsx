@@ -103,6 +103,6 @@ describe('TooltipWrapper', () => {
 
     expect(document.querySelector('.text-sm.font-semibold')).toBeNull()
     expect(document.querySelector('.rounded-md.border.border-neutral')).toBeNull()
-    expect(document.querySelector('.text-xs.text-neutral.opacity-70')).toBeNull()
+    expect(document.querySelector('.opacity-70')).toBeNull()
   })
 })

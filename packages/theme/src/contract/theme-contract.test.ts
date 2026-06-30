@@ -30,7 +30,6 @@ function createValidThemeContract() {
     },
     component: {
       button: { size: { sm: { paddingInline: '0.75rem' } } },
-      checkboxGroup: { gap: '0.5rem', inlineGap: '1rem', itemGap: '0.5rem' },
     },
   }
 }
@@ -54,15 +53,15 @@ describe('theme contract validation', () => {
     }
   })
 
-  it('rejects nested empty component token branches', () => {
+  it('rejects retired checkbox/radio component token branches', () => {
     const theme = createValidThemeContract()
-    theme.component.checkboxGroup.gap = {} as never
+    ;(theme.component as Record<string, unknown>).checkboxGroup = { gap: '0.5rem' }
 
     const result = validateThemeContract(theme)
 
     expect(result.ok).toBe(false)
     if (!result.ok) {
-      expect(result.errors.join(' ')).toContain('component.checkboxGroup.gap')
+      expect(result.errors.join(' ')).toContain('component.checkboxGroup is retired')
     }
   })
 
