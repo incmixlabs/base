@@ -26,7 +26,6 @@ describe('Theme token CSS ownership', () => {
       '--ring:',
       '--radius:',
       '--spacing:',
-      '--space-1:',
       '--card:',
       '--card-foreground:',
       '--popover:',
@@ -38,6 +37,14 @@ describe('Theme token CSS ownership', () => {
       '--shadow-xs:',
     ]) {
       expect(globalsCssSource).not.toContain(token)
+    }
+
+    for (const step of ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) {
+      expect(globalsCssSource).not.toContain(`--spacing-${step}:`)
+    }
+
+    for (const step of ['1', '2', '3', '4', '5', '6', '7', '8', '9']) {
+      expect(globalsCssSource).not.toContain(`--space-${step}:`)
     }
   })
 })
