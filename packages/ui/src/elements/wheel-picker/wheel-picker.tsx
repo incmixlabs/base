@@ -3,7 +3,12 @@ import '@ncdai/react-wheel-picker/style.css'
 import * as WheelPickerPrimitive from '@ncdai/react-wheel-picker'
 
 import { cn } from '@/lib/utils'
-import { wheelPickerHighlightItem, wheelPickerHighlightWrapper, wheelPickerOptionItem } from './wheel-picker.css'
+import {
+  wheelPickerHighlightItem,
+  wheelPickerHighlightWrapper,
+  wheelPickerOptionItem,
+  wheelPickerWrapper,
+} from './wheel-picker.class'
 
 type WheelPickerValue = WheelPickerPrimitive.WheelPickerValue
 
@@ -23,17 +28,7 @@ function WheelPickerWrapper({
   className,
   ...props
 }: React.ComponentProps<typeof WheelPickerPrimitive.WheelPickerWrapper> & { style?: React.CSSProperties }) {
-  return (
-    <WheelPickerPrimitive.WheelPickerWrapper
-      className={cn(
-        'w-56 rounded-lg border border-border bg-popover px-1 text-popover-foreground shadow-xs',
-        '*:data-rwp:first:*:data-rwp-highlight-wrapper:rounded-s-md',
-        '*:data-rwp:last:*:data-rwp-highlight-wrapper:rounded-e-md',
-        className,
-      )}
-      {...props}
-    />
-  )
+  return <WheelPickerPrimitive.WheelPickerWrapper className={cn(wheelPickerWrapper, className)} {...props} />
 }
 
 /**
