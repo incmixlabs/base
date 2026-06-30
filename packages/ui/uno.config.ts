@@ -110,6 +110,7 @@ import { timelineClassNames } from './src/elements/timeline/timeline.class'
 import { toggleClassNames } from './src/elements/toggle/toggle.class'
 import { tooltipContentBase, tooltipPositionerBase } from './src/elements/tooltip/tooltip.class'
 import { treeViewClassNames } from './src/elements/tree-view/tree-view.class'
+import { wheelPickerClassNames } from './src/elements/wheel-picker/wheel-picker.class'
 import { avatarPickerClassNames } from './src/form/avatar-picker.class'
 import { checkboxClassNames } from './src/form/checkbox.class'
 import { checkboxCardsClassNames } from './src/form/checkbox-cards.class'
@@ -420,6 +421,8 @@ export default defineConfig({
       ...splitClasses(toggleClassNames),
       // Tree view styles
       ...splitClasses(treeViewClassNames),
+      // Wheel picker styles
+      ...splitClasses(wheelPickerClassNames),
       // Avatar picker styles
       ...splitClasses(avatarPickerClassNames),
       // Checkbox styles
