@@ -2,11 +2,17 @@ import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { Toggle, ToggleGroup } from './Toggle'
-import { toggleColorVariants, toggleSizeVariants } from './Toggle.css'
 
 afterEach(() => {
   cleanup()
 })
+
+function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
+  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
+  for (const token of tokens) {
+    expect(classTokens).toContain(token)
+  }
+}
 
 describe('Toggle', () => {
   it('normalizes whitespace around color and variant', () => {
@@ -17,7 +23,13 @@ describe('Toggle', () => {
     )
 
     const button = screen.getByRole('button', { name: 'Test' })
-    expect(button.className).toContain(toggleColorVariants.info.solid)
+    expectClassTokens(button.className, [
+      'bg-transparent',
+      '[color:var(--color-info-text)]',
+      '[border-color:var(--color-info-border)]',
+      'hover:[background-color:var(--color-info-soft)]',
+      'aria-[pressed=true]:[background-color:var(--color-info-primary)]',
+    ])
   })
 
   it('falls back to primary color and variant for invalid values', () => {
@@ -28,7 +40,13 @@ describe('Toggle', () => {
     )
 
     const button = screen.getByRole('button', { name: 'Test' })
-    expect(button.className).toContain(toggleColorVariants[SemanticColor.primary].soft)
+    expectClassTokens(button.className, [
+      'bg-transparent',
+      `[color:var(--color-${SemanticColor.primary}-text)]`,
+      `[border-color:var(--color-${SemanticColor.primary}-border)]`,
+      `hover:[background-color:var(--color-${SemanticColor.primary}-soft-hover)]`,
+      `aria-[pressed=true]:[background-color:var(--color-${SemanticColor.primary}-soft)]`,
+    ])
   })
 
   it('falls back to default size for invalid values', () => {
@@ -39,7 +57,7 @@ describe('Toggle', () => {
     )
 
     const button = screen.getByRole('button', { name: 'Test' })
-    expect(button.className).toContain(toggleSizeVariants.md)
+    expectClassTokens(button.className, ['h-8', 'min-w-8', 'px-3', 'text-base', 'gap-2', '[&_svg]:h-4'])
   })
 })
 
@@ -54,7 +72,13 @@ describe('ToggleGroup', () => {
     )
 
     const button = screen.getByRole('button', { name: 'Bold' })
-    expect(button.className).toContain(toggleColorVariants[SemanticColor.slate].solid)
-    expect(button.className).toContain(toggleSizeVariants.xs)
+    expectClassTokens(button.className, [
+      'h-6',
+      'min-w-6',
+      'px-2',
+      `[color:var(--color-${SemanticColor.slate}-text)]`,
+      `[border-color:var(--color-${SemanticColor.slate}-border)]`,
+      `aria-[pressed=true]:[background-color:var(--color-${SemanticColor.slate}-primary)]`,
+    ])
   })
 })

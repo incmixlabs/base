@@ -12,13 +12,13 @@ function FormattingToggleGroup(args: ToggleGroupRootProps) {
   return (
     <ToggleGroup.Root {...args}>
       <ToggleGroup.Item value="bold" aria-label="Bold">
-        <Bold className="h-4 w-4" />
+        <Bold />
       </ToggleGroup.Item>
       <ToggleGroup.Item value="italic" aria-label="Italic">
-        <Italic className="h-4 w-4" />
+        <Italic />
       </ToggleGroup.Item>
       <ToggleGroup.Item value="underline" aria-label="Underline">
-        <Underline className="h-4 w-4" />
+        <Underline />
       </ToggleGroup.Item>
     </ToggleGroup.Root>
   )
@@ -28,13 +28,13 @@ function AlignmentToggleGroup(args: ToggleGroupRootProps) {
   return (
     <ToggleGroup.Root {...args}>
       <ToggleGroup.Item value="left" aria-label="Align left">
-        <AlignLeft className="h-4 w-4" />
+        <AlignLeft />
       </ToggleGroup.Item>
       <ToggleGroup.Item value="center" aria-label="Align center">
-        <AlignCenter className="h-4 w-4" />
+        <AlignCenter />
       </ToggleGroup.Item>
       <ToggleGroup.Item value="right" aria-label="Align right">
-        <AlignRight className="h-4 w-4" />
+        <AlignRight />
       </ToggleGroup.Item>
     </ToggleGroup.Root>
   )

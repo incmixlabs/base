@@ -11,13 +11,13 @@ import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
   toggleBase,
   toggleColorVariants,
-  toggleGroupItemFlush,
+  toggleGroupItemFlushByOrientation,
   toggleGroupRoot,
   toggleGroupRootLoose,
+  toggleGroupRootVertical,
   toggleHighContrastByVariant,
-  toggleIconScope,
   toggleSizeVariants,
-} from './Toggle.css'
+} from './toggle.class'
 import { togglePropDefs, type toggleVariants } from './toggle.props'
 
 type ToggleVariant = (typeof toggleVariants)[number]
@@ -36,6 +36,7 @@ interface ToggleContextValue {
   radius: Radius
   highContrast: boolean
   flush: boolean
+  orientation: 'horizontal' | 'vertical'
 }
 
 const ToggleGroupContext = React.createContext<ToggleContextValue | null>(null)
@@ -82,16 +83,16 @@ const ToggleInner = React.forwardRef<HTMLButtonElement, ToggleProps>(
     const safeHighContrast = normalizeBooleanPropValue(togglePropDefs.highContrast, highContrast) ?? false
     const effectiveHighContrast = context?.highContrast ?? safeHighContrast
     const flush = context?.flush ?? false
+    const orientation = context?.orientation ?? 'horizontal'
     const radiusStyles = getRadiusStyles(radius)
     const staticClassName = cn(
       'rounded-[var(--element-border-radius)]',
       toggleBase,
       toggleSizeVariants[safeSize],
-      toggleIconScope,
       toggleColorVariants[safeColor][safeVariant],
       effectiveHighContrast && 'af-high-contrast',
       effectiveHighContrast && toggleHighContrastByVariant[safeVariant],
-      flush && toggleGroupItemFlush,
+      flush && toggleGroupItemFlushByOrientation[orientation],
     )
     const combinedStyles: BaseTogglePrimitiveProps['style'] =
       typeof style === 'function'
@@ -143,6 +144,7 @@ const ToggleGroupRootInner = React.forwardRef<HTMLDivElement, ToggleGroupRootPro
       radius: radiusProp = 'sm',
       highContrast = false,
       flush = true,
+      orientation = 'horizontal',
       className,
       style,
       children,
@@ -158,7 +160,11 @@ const ToggleGroupRootInner = React.forwardRef<HTMLDivElement, ToggleGroupRootPro
     const safeHighContrast = normalizeBooleanPropValue(togglePropDefs.highContrast, highContrast) ?? false
     const safeFlush = normalizeBooleanPropValue(togglePropDefs.flush, flush) ?? true
     const radius = useThemeRadius(safeRadius)
-    const staticClassName = cn(toggleGroupRoot, !safeFlush && toggleGroupRootLoose)
+    const staticClassName = cn(
+      toggleGroupRoot,
+      orientation === 'vertical' && toggleGroupRootVertical,
+      !safeFlush && toggleGroupRootLoose,
+    )
     const combinedClassName: BaseToggleGroupPrimitiveProps['className'] =
       typeof className === 'function'
         ? (state: BaseToggleGroupState) => cn(staticClassName, className(state))
@@ -173,9 +179,16 @@ const ToggleGroupRootInner = React.forwardRef<HTMLDivElement, ToggleGroupRootPro
           radius,
           highContrast: safeHighContrast,
           flush: safeFlush,
+          orientation,
         }}
       >
-        <ToggleGroupPrimitive ref={ref} className={combinedClassName} style={style} {...props}>
+        <ToggleGroupPrimitive
+          ref={ref}
+          className={combinedClassName}
+          style={style}
+          orientation={orientation}
+          {...props}
+        >
           {children}
         </ToggleGroupPrimitive>
       </ToggleGroupContext.Provider>
