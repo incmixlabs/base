@@ -110,43 +110,32 @@ function CustomControls() {
 
 ## CSS Variables
 
-The theme system uses CSS custom properties. Override them in your CSS:
+The theme system uses semantic CSS custom properties. Override the semantic lanes rather than legacy HSL aliases:
 
 ```css
 :root {
-  --background: 0 0% 100%;
-  --foreground: 240 10% 3.9%;
-  --primary: 240 5.9% 10%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 240 4.8% 95.9%;
-  --secondary-foreground: 240 5.9% 10%;
-  --muted: 240 4.8% 95.9%;
-  --muted-foreground: 240 3.8% 46.1%;
-  --accent: 240 4.8% 95.9%;
-  --accent-foreground: 240 5.9% 10%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 0 0% 98%;
-  --border: 240 5.9% 90%;
-  --input: 240 5.9% 90%;
-  --ring: 240 5.9% 10%;
+  --color-primary-primary: oklch(0.61 0.11 222);
+  --color-primary-text: oklch(0.44 0.11 222);
+  --color-primary-contrast: oklch(0.98 0.02 201);
+  --color-neutral-surface: oklch(1 0 0);
+  --color-neutral-text: oklch(0.22 0 0);
+  --color-neutral-border: color-mix(in oklch, black 12%, white);
   --radius: 0.5rem;
 }
 
 .dark {
-  --background: 240 10% 3.9%;
-  --foreground: 0 0% 98%;
-  --primary: 0 0% 98%;
-  --primary-foreground: 240 5.9% 10%;
-  /* ... other dark mode values */
+  --color-neutral-surface: oklch(0.23 0 0);
+  --color-neutral-text: oklch(0.95 0 0);
+  --color-neutral-border: color-mix(in oklch, white 20%, black);
 }
 ```
 
 ### Color Format
 
-Colors use HSL format without the `hsl()` wrapper:
+Colors use CSS color values directly:
 
 ```css
---primary: 221.2 83.2% 53.3%;  /* Blue */
+--color-primary-primary: oklch(0.62 0.18 250);
 ```
 
 In Tailwind classes, use:
