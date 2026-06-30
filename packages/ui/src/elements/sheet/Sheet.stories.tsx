@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button } from '@/elements'
-import { Label } from '@/form/Label'
+import { Textarea, TextField } from '@/form'
+import { Text } from '@/typography'
 import { Sheet } from './Sheet'
+import { sheetSides, type SheetSide } from './sheet.props'
 
 const meta: Meta = {
   title: 'Elements/Sheet',
@@ -24,7 +26,9 @@ export const Right: StoryObj = {
           <Sheet.Close />
         </Sheet.Header>
         <Sheet.Body>
-          <p className="text-sm text-muted-foreground">This sheet slides in from the right with a spring animation.</p>
+          <Text as="p" size="sm" color="neutral" muted>
+            This sheet slides in from the right with a spring animation.
+          </Text>
         </Sheet.Body>
       </Sheet.Content>
     </Sheet.Root>
@@ -43,7 +47,9 @@ export const Left: StoryObj = {
           <Sheet.Close />
         </Sheet.Header>
         <Sheet.Body>
-          <p className="text-sm text-muted-foreground">This sheet slides in from the left with a spring animation.</p>
+          <Text as="p" size="sm" color="neutral" muted>
+            This sheet slides in from the left with a spring animation.
+          </Text>
         </Sheet.Body>
       </Sheet.Content>
     </Sheet.Root>
@@ -62,7 +68,9 @@ export const Bottom: StoryObj = {
           <Sheet.Close />
         </Sheet.Header>
         <Sheet.Body>
-          <p className="text-sm text-muted-foreground">This sheet slides up from the bottom with a spring animation.</p>
+          <Text as="p" size="sm" color="neutral" muted>
+            This sheet slides up from the bottom with a spring animation.
+          </Text>
         </Sheet.Body>
       </Sheet.Content>
     </Sheet.Root>
@@ -81,10 +89,37 @@ export const Top: StoryObj = {
           <Sheet.Close />
         </Sheet.Header>
         <Sheet.Body>
-          <p className="text-sm text-muted-foreground">This sheet slides down from the top with a spring animation.</p>
+          <Text as="p" size="sm" color="neutral" muted>
+            This sheet slides down from the top with a spring animation.
+          </Text>
         </Sheet.Body>
       </Sheet.Content>
     </Sheet.Root>
+  ),
+}
+
+export const Sides: StoryObj = {
+  render: () => (
+    <div className="flex flex-wrap gap-3">
+      {sheetSides.map(side => (
+        <Sheet.Root key={side}>
+          <Sheet.Trigger>
+            <Button variant="outline">{sideLabel(side)}</Button>
+          </Sheet.Trigger>
+          <Sheet.Content side={side}>
+            <Sheet.Header>
+              <Sheet.Title>{sideLabel(side)}</Sheet.Title>
+              <Sheet.Close />
+            </Sheet.Header>
+            <Sheet.Body>
+              <Text as="p" size="sm" color="neutral" muted>
+                This sheet renders from the {side} side.
+              </Text>
+            </Sheet.Body>
+          </Sheet.Content>
+        </Sheet.Root>
+      ))}
+    </div>
   ),
 }
 
@@ -101,35 +136,16 @@ export const WithContent: StoryObj = {
         </Sheet.Header>
         <Sheet.Body>
           <div className="flex flex-col gap-4">
-            <div>
-              <Label htmlFor="sheet-name">Name</Label>
-              <input
-                id="sheet-name"
-                className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
-                defaultValue="John Doe"
-              />
-            </div>
-            <div>
-              <Label htmlFor="sheet-email">Email</Label>
-              <input
-                id="sheet-email"
-                type="email"
-                className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
-                defaultValue="john@example.com"
-              />
-            </div>
-            <div>
-              <Label htmlFor="sheet-bio">Bio</Label>
-              <textarea
-                id="sheet-bio"
-                className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
-                rows={4}
-                defaultValue="Software developer"
-              />
-            </div>
+            <TextField id="sheet-name" label="Name" defaultValue="John Doe" />
+            <TextField id="sheet-email" label="Email" type="email" defaultValue="john@example.com" />
+            <Textarea id="sheet-bio" label="Bio" rows={4} defaultValue="Software developer" />
           </div>
         </Sheet.Body>
       </Sheet.Content>
     </Sheet.Root>
   ),
+}
+
+function sideLabel(side: SheetSide) {
+  return `${side.charAt(0).toUpperCase()}${side.slice(1)} sheet`
 }

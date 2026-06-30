@@ -10,15 +10,19 @@ import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
 import { cn } from '@/lib/utils'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Radius } from '@/theme/tokens'
+import { Text } from '@/typography'
 import {
+  sheetBackdropBase,
   sheetBackdropTransition,
   sheetBackdropVariants,
+  sheetPanelBase,
+  sheetPanelBySide,
   sheetPanelTransition,
   sheetPanelVariants,
   sheetResizeHandle,
   sheetResizeHandleLeft,
   sheetResizeHandleRight,
-} from './sheet.css'
+} from './sheet.class'
 import type { SheetSide } from './sheet.props'
 
 const SheetOpenContext = React.createContext<boolean>(false)
@@ -123,13 +127,6 @@ export interface SheetContentProps extends React.ComponentPropsWithoutRef<typeof
   resize?: boolean
   resizeMinWidth?: number
   resizeMaxWidth?: number
-}
-
-const borderSideStyle: Record<SheetSide, React.CSSProperties> = {
-  right: { borderLeft: '1px solid var(--color-neutral-border)' },
-  left: { borderRight: '1px solid var(--color-neutral-border)' },
-  top: { borderBottom: '1px solid var(--color-neutral-border)' },
-  bottom: { borderTop: '1px solid var(--color-neutral-border)' },
 }
 
 const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
@@ -328,7 +325,7 @@ const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
                   transition={sheetBackdropTransition}
                 />
               }
-              style={{ position: 'fixed', inset: 0, zIndex: 100, backgroundColor: 'rgba(0, 0, 0, 0.25)' }}
+              className={sheetBackdropBase}
             />
             <DialogPrimitive.Popup
               ref={setPopupRef}
@@ -344,19 +341,11 @@ const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
                 />
               }
               style={{
-                position: 'fixed',
-                zIndex: 110,
-                background: 'var(--color-neutral-surface)',
-                boxShadow: 'var(--shadow-2xl, 0 25px 50px -12px rgba(0,0,0,0.25))',
                 ...getRadiusStyles(radius),
-                ...borderSideStyle[side],
-                ...(side === 'top' || side === 'bottom'
-                  ? { width: '100%', height: 'min(420px, 100dvh)', left: 0, [side]: 0 }
-                  : { height: '100%', width: '100%', maxWidth: 420, top: 0, [side]: 0 }),
                 ...style,
                 ...resizeStyle,
               }}
-              className={className}
+              className={cn(sheetPanelBase, sheetPanelBySide[side], className)}
               {...props}
             >
               {resize && isHorizontal ? (
@@ -431,9 +420,17 @@ export interface SheetDescriptionProps {
 const SheetDescription = React.forwardRef<HTMLParagraphElement, SheetDescriptionProps>(
   ({ className, children, ...props }, ref) => {
     return (
-      <DialogPrimitive.Description ref={ref} className={cn('mt-1 text-sm text-muted-foreground', className)} {...props}>
-        {children}
-      </DialogPrimitive.Description>
+      <Text
+        asChild
+        ref={ref as React.Ref<HTMLElement>}
+        size="sm"
+        color="neutral"
+        muted
+        className={cn('mt-1', className)}
+        {...props}
+      >
+        <DialogPrimitive.Description>{children}</DialogPrimitive.Description>
+      </Text>
     )
   },
 )
