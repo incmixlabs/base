@@ -464,6 +464,7 @@ export type ThemeContract = {
 export type ThemeContractValidation = { ok: true; value: ThemeContract } | { ok: false; errors: string[] }
 
 const lifecycleValues: ThemeLifecycle[] = ['draft', 'review', 'published']
+const migratedRetiredComponentKeys = ['stepper'] as const
 
 function isObject(value: unknown): value is Record<string, unknown> {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) {
@@ -479,16 +480,28 @@ export function migrateThemeContract(input: unknown): unknown {
 
   const component = input.component
   if (!isObject(component)) return input
-  if (component.date !== undefined || component.dateNext === undefined) return input
 
-  const { dateNext, ...nextComponent } = component
+  const nextComponent = { ...component }
+  let changed = false
+
+  for (const key of migratedRetiredComponentKeys) {
+    if (key in nextComponent) {
+      delete nextComponent[key]
+      changed = true
+    }
+  }
+
+  if (component.date === undefined && component.dateNext !== undefined) {
+    nextComponent.date = component.dateNext
+    delete nextComponent.dateNext
+    changed = true
+  }
+
+  if (!changed) return input
 
   return {
     ...input,
-    component: {
-      ...nextComponent,
-      date: dateNext,
-    },
+    component: nextComponent,
   }
 }
 
@@ -642,7 +655,7 @@ export function validateThemeContract(input: unknown): ThemeContractValidation {
 
   if (!isObject(semantic.color)) errors.push('semantic.color must be an object')
 
-  const retiredComponent = ['checkbox', 'checkboxGroup', 'checkboxCards', 'radio', 'radioCards', 'stepper']
+  const retiredComponent = ['checkbox', 'checkboxGroup', 'checkboxCards', 'radio', 'radioCards']
   for (const key of retiredComponent) {
     if (component[key] !== undefined) {
       errors.push(`component.${key} is retired; component sizing uses shared UI size maps`)

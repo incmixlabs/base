@@ -65,6 +65,18 @@ describe('theme contract validation', () => {
     }
   })
 
+  it('strips migrated retired stepper component tokens', () => {
+    const theme = createValidThemeContract()
+    ;(theme.component as Record<string, unknown>).stepper = { size: { md: { indicatorSize: '1.75rem' } } }
+
+    const result = validateThemeContract(theme)
+
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect((result.value.component as Record<string, unknown>).stepper).toBeUndefined()
+    }
+  })
+
   it('aliases legacy component.dateNext to component.date', () => {
     const theme = createValidThemeContract()
     const dateTokens = { cell: { borderRadius: 'var(--radius-md)' } }
