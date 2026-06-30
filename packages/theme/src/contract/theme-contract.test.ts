@@ -57,6 +57,7 @@ describe('theme contract validation', () => {
     const theme = createValidThemeContract()
     ;(theme.component as Record<string, unknown>).checkboxGroup = { gap: '0.5rem' }
     ;(theme.component as Record<string, unknown>).toggle = { size: { md: { iconSize: '1rem' } } }
+    ;(theme.component as Record<string, unknown>).treeView = { size: { md: { itemPaddingInline: '0.875rem' } } }
 
     const result = validateThemeContract(theme)
 
@@ -64,6 +65,7 @@ describe('theme contract validation', () => {
     if (!result.ok) {
       expect(result.errors.join(' ')).toContain('component.checkboxGroup is retired')
       expect(result.errors.join(' ')).toContain('component.toggle is retired')
+      expect(result.errors.join(' ')).toContain('component.treeView is retired')
     }
   })
 

@@ -1,29 +1,37 @@
 'use client'
 
 import { ChevronRight } from 'lucide-react'
-import { AnimatePresence } from 'motion/react'
+import { AnimatePresence, type Transition, type Variants } from 'motion/react'
 import * as m from 'motion/react-m'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { normalizeEnumPropValue } from '@/theme/props/prop-def'
 import {
   treeViewActions,
-  treeViewBranchTransition,
-  treeViewBranchVariants,
   treeViewChevron,
   treeViewChevronOpen,
   treeViewIcon,
+  treeViewIconSizeVariants,
   treeViewIndentGuide,
+  treeViewIndentGuideSizeVariants,
   treeViewItemBase,
+  treeViewItemSizeVariants,
   treeViewLeafSpacer,
   treeViewRootBase,
-  treeViewSizeVars,
-} from './TreeView.css'
+} from './tree-view.class'
 import { treeViewRootPropDefs } from './tree-view.props'
 
 // ── Types ──
 
 type TreeViewSize = (typeof treeViewRootPropDefs.size.values)[number]
+
+const treeViewBranchVariants: Variants = {
+  initial: { height: 0, opacity: 0 },
+  animate: { height: 'auto', opacity: 1 },
+  exit: { height: 0, opacity: 0 },
+}
+
+const treeViewBranchTransition: Transition = { duration: 0.2, ease: 'easeInOut' }
 
 export interface TreeDataItem {
   id: string
@@ -265,7 +273,7 @@ const TreeViewRoot = React.forwardRef<HTMLDivElement, TreeViewRootProps>(
         <div
           ref={ref}
           role="tree"
-          className={cn(treeViewRootBase, treeViewSizeVars[safeSize], className)}
+          className={cn(treeViewRootBase, className)}
           style={{ overflow: scroll, ...style }}
           {...props}
         >
@@ -357,7 +365,7 @@ function TreeViewBranch({ item, level }: TreeViewBranchProps) {
         aria-expanded={isOpen}
         aria-selected={isSelected}
         tabIndex={isSelected ? 0 : -1}
-        className={cn(treeViewItemBase, item.className)}
+        className={cn(treeViewItemBase, treeViewItemSizeVariants[ctx.size], item.className)}
         style={{ paddingInlineStart: `calc(0.5rem + ${level} * 1rem)` }}
         data-selected={isVisuallySelected ? '' : undefined}
         data-active={isActive ? '' : undefined}
@@ -415,7 +423,10 @@ function TreeViewBranch({ item, level }: TreeViewBranchProps) {
           ctx.renderItem({ item, level, isLeaf: false, isSelected, isOpen, hasChildren })
         ) : (
           <>
-            <ChevronRight className={cn(treeViewChevron, isOpen && treeViewChevronOpen)} aria-hidden="true" />
+            <ChevronRight
+              className={cn(treeViewChevron, treeViewIconSizeVariants[ctx.size], isOpen && treeViewChevronOpen)}
+              aria-hidden="true"
+            />
             <TreeViewIcon item={item} isSelected={isSelected} isOpen={isOpen} defaultIcon={ctx.defaultNodeIcon} />
             <span className="truncate flex-1">{item.name}</span>
           </>
@@ -448,7 +459,11 @@ function TreeViewBranch({ item, level }: TreeViewBranchProps) {
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
           >
-            <div className={ctx.showIndentGuides ? treeViewIndentGuide : undefined}>
+            <div
+              className={
+                ctx.showIndentGuides ? cn(treeViewIndentGuide, treeViewIndentGuideSizeVariants[ctx.size]) : undefined
+              }
+            >
               {item.children?.map(child =>
                 child.children?.length ? (
                   <TreeViewBranch key={child.id} item={child} level={level + 1} />
@@ -522,7 +537,7 @@ function TreeViewLeaf({ item, level }: TreeViewLeafProps) {
       role="treeitem"
       aria-selected={isSelected}
       tabIndex={isSelected ? 0 : -1}
-      className={cn(treeViewItemBase, item.className)}
+      className={cn(treeViewItemBase, treeViewItemSizeVariants[ctx.size], item.className)}
       style={{ paddingInlineStart: `calc(0.5rem + ${level} * 1rem)` }}
       data-selected={isVisuallySelected ? '' : undefined}
       data-active={isActive ? '' : undefined}
@@ -572,7 +587,7 @@ function TreeViewLeaf({ item, level }: TreeViewLeafProps) {
         ctx.renderItem({ item, level, isLeaf: true, isSelected: isSelected, hasChildren: false })
       ) : (
         <>
-          <span className={treeViewLeafSpacer} />
+          <span className={cn(treeViewLeafSpacer, treeViewIconSizeVariants[ctx.size])} />
           <TreeViewIcon item={item} isSelected={isSelected} defaultIcon={ctx.defaultLeafIcon} />
           <span className="truncate flex-1">{item.name}</span>
         </>
@@ -604,6 +619,7 @@ function TreeViewIcon({
   isSelected?: boolean
   defaultIcon?: React.ComponentType<{ className?: string }>
 }) {
+  const ctx = React.useContext(TreeViewContext)
   let Icon: React.ComponentType<{ className?: string }> | undefined = defaultIcon
   if (isSelected && item.selectedIcon) {
     Icon = item.selectedIcon
@@ -612,7 +628,7 @@ function TreeViewIcon({
   } else if (item.icon) {
     Icon = item.icon
   }
-  return Icon ? <Icon className={treeViewIcon} /> : null
+  return Icon ? <Icon className={cn(treeViewIcon, treeViewIconSizeVariants[ctx.size])} /> : null
 }
 
 // ── Compound export ──

@@ -1,15 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { File, FileText, Folder, FolderOpen, Image } from 'lucide-react'
 import * as React from 'react'
+import { getPropDefValues } from '@/theme/props/prop-def'
+import { Text } from '@/typography'
 import type { TreeDataItem } from './TreeView'
 import { TreeViewWrapper } from './TreeViewWrapper'
 import { moveTreeItem } from './tree-view-dnd'
+import { treeViewRootPropDefs } from './tree-view.props'
 
 const meta = {
   title: 'Elements/TreeView',
   component: TreeViewWrapper,
   parameters: { layout: 'centered' },
   argTypes: {
+    size: {
+      control: 'select',
+      options: getPropDefValues(treeViewRootPropDefs.size),
+    },
+    expandAll: {
+      control: 'boolean',
+    },
     showIndentGuides: {
       control: 'boolean',
       description: 'Shows vertical indent guide lines for expanded branch groups.',
@@ -96,9 +106,11 @@ export const WithInitialSelection: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="flex gap-8">
-      {(['sm', 'md', 'lg'] as const).map(size => (
+      {getPropDefValues(treeViewRootPropDefs.size).map(size => (
         <div key={size} className="flex-1">
-          <p className="text-xs text-muted-foreground mb-2">{size}</p>
+          <Text as="p" size="xs" color="neutral" muted className="mb-2">
+            {size}
+          </Text>
           <TreeViewWrapper
             size={size}
             expandAll

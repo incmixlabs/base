@@ -23,6 +23,13 @@ describe('TreeView', () => {
     },
   ]
 
+  function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
+    const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
+    for (const token of tokens) {
+      expect(classTokens).toContain(token)
+    }
+  }
+
   it('calls onItemDrag when drop resolves the source item from dataTransfer', () => {
     const onItemDrag = vi.fn()
 
@@ -74,6 +81,14 @@ describe('TreeView', () => {
 
     expect(branchContent).toBeTruthy()
     expect(branchContent).not.toHaveAttribute('class')
+  })
+
+  it('applies concrete item size utilities', () => {
+    render(<TreeView.Root data={data} expandAll size="sm" />)
+
+    const item = screen.getByRole('treeitem', { name: /Folder A/i })
+
+    expectClassTokens(item.className, ['text-sm', 'leading-5', 'px-2.5', 'py-1', 'gap-1.5'])
   })
 
   it('visually marks only the active item when controlled selection points elsewhere', () => {

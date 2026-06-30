@@ -72,14 +72,6 @@ export type AppShellContentTokenSlot = 'paddingInline' | 'paddingBlock' | 'paddi
 export type ContentBodyTokenSlot = 'background' | 'foreground' | 'borderColor'
 export type ScrollAreaSizeTokenSlot = 'thickness' | 'thumbInset'
 export type ScrollAreaShapeTokenSlot = 'radius'
-export type TreeViewSizeTokenSlot =
-  | 'itemPaddingInline'
-  | 'itemPaddingBlock'
-  | 'fontSize'
-  | 'lineHeight'
-  | 'gap'
-  | 'iconSize'
-  | 'itemRadius'
 
 export function surfaceVariantVar(variant: string, slot: SurfaceVariantTokenSlot, fallback: string): string {
   return withFallback(`--af-surface-variant-${toKebabCase(variant)}-${toKebabCase(slot)}`, fallback)
@@ -163,8 +155,4 @@ export function scrollAreaSizeVar(size: string, slot: ScrollAreaSizeTokenSlot, f
 
 export function scrollAreaShapeVar(shape: string, slot: ScrollAreaShapeTokenSlot, fallback: string): string {
   return withFallback(`--af-scroll-area-shape-${toKebabCase(shape)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function treeViewSizeVar(size: string, slot: TreeViewSizeTokenSlot, fallback: string): string {
-  return componentSizeVar('tree-view', size, slot, fallback)
 }
