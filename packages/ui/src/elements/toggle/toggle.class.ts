@@ -6,12 +6,12 @@ import {
   type SemanticColorKey,
   type SemanticColorToken,
   semanticColorKeys,
-} from '@/theme/props/color.prop'
-import type { Color } from '@/theme/tokens'
-import { togglePropDefs, type toggleVariants } from './toggle.props'
+} from '../../theme/props/color.prop'
+import type { Color } from '../../theme/tokens'
+import { toggleSizes, toggleVariants } from './toggle.constants'
 
+type ToggleSize = (typeof toggleSizes)[number]
 type ToggleVariant = (typeof toggleVariants)[number]
-type ToggleSize = (typeof togglePropDefs.size.values)[number]
 
 const cls = (...tokens: Array<string | false | null | undefined>) => tokens.filter(Boolean).join(' ')
 const joinClass = (...parts: string[]) => parts.join('')
@@ -154,7 +154,7 @@ export const toggleBase =
   'inline-flex shrink-0 appearance-none select-none items-center justify-center border border-solid p-0 m-0 box-border leading-none outline-none transition-[background-color,color,border-color,filter,box-shadow] duration-[var(--af-motion-fast)] ease-[var(--af-ease-standard)] enabled:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:shrink-0 [&:has(>svg:only-child)]:px-0'
 
 export const toggleSizeVariants = Object.fromEntries(
-  togglePropDefs.size.values.map(size => {
+  toggleSizes.map(size => {
     const token = themeSizeTokens[size]
     return [
       size,
@@ -173,9 +173,7 @@ export const toggleSizeVariants = Object.fromEntries(
 export const toggleColorVariants = Object.fromEntries(
   semanticColorKeys.map(color => [
     color,
-    Object.fromEntries(
-      togglePropDefs.variant.values.map(variant => [variant, createToggleColorVariant(color, variant)]),
-    ),
+    Object.fromEntries(toggleVariants.map(variant => [variant, createToggleColorVariant(color, variant)])),
   ]),
 ) as Record<Color, Record<ToggleVariant, string>>
 
