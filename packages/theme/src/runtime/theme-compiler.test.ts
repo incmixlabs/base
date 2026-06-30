@@ -54,7 +54,6 @@ function createTheme(): ThemeContract {
         layout: { bodyWithSecondaryRightGridTemplateColumns: 'auto minmax(0, 1fr) 20rem' },
       },
       scrollArea: { size: { sm: { thickness: '0.375rem' } }, shape: { circle: { radius: '9999px' } } },
-      treeView: { size: { md: { itemPaddingInline: '0.875rem' } } },
     },
   }
 }

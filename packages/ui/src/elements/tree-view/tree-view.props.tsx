@@ -1,12 +1,10 @@
 import type { PropDef } from '@/theme/props/prop-def'
-import { sizesXsTo2x } from '@/theme/props/scales'
-
-const sizes = sizesXsTo2x
+import { treeViewSizes } from './tree-view.constants'
 
 export const treeViewRootPropDefs = {
-  size: { type: 'enum', values: sizes, default: 'md' },
+  size: { type: 'enum', values: treeViewSizes, default: 'md' },
   expandAll: { type: 'boolean', default: false },
 } satisfies {
-  size: PropDef<(typeof sizes)[number]>
+  size: PropDef<(typeof treeViewSizes)[number]>
   expandAll: PropDef<boolean>
 }

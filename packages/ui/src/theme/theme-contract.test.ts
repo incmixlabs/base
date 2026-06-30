@@ -58,7 +58,6 @@ function createValidTheme() {
         layout: { bodyWithSecondaryRightGridTemplateColumns: 'auto minmax(0, 1fr) 20rem' },
       },
       scrollArea: { size: { sm: { thickness: '0.375rem' } }, shape: { circle: { radius: '9999px' } } },
-      treeView: { size: { md: { itemPaddingInline: '0.875rem' } } },
     },
   }
 }
@@ -256,7 +255,6 @@ describe('theme-contract', () => {
     delete (theme.component as Record<string, unknown>).appShell
     delete (theme.component as Record<string, unknown>).rating
     delete (theme.component as Record<string, unknown>).scrollArea
-    delete (theme.component as Record<string, unknown>).treeView
 
     const result = validateThemeContract(theme)
 
@@ -281,7 +279,6 @@ describe('theme-contract', () => {
       expect(result.value.component.appShell).toEqual({})
       expect(result.value.component.rating).toEqual({})
       expect(result.value.component.scrollArea).toEqual({})
-      expect(result.value.component.treeView).toEqual({})
     }
   })
 

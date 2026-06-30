@@ -38,6 +38,21 @@ function findParentId(items: TreeDataItem[], childId: string, parentId: string |
   return null
 }
 
+function findTreeItemInfo(
+  items: TreeDataItem[],
+  itemId: string,
+  parentId: string | null = null,
+): { item: TreeDataItem; parentId: string | null } | null {
+  for (const item of items) {
+    if (item.id === itemId) return { item, parentId }
+    if (item.children?.length) {
+      const found = findTreeItemInfo(item.children, itemId, item.id)
+      if (found) return found
+    }
+  }
+  return null
+}
+
 function insertTreeItem(items: TreeDataItem[], targetId: string, itemToInsert: TreeDataItem): TreeDataItem[] {
   return items.map(item => {
     if (item.id === targetId) {
@@ -113,7 +128,10 @@ export function moveTreeItem(items: TreeDataItem[], sourceId: string, targetId: 
   if (isDescendant(items, sourceId, targetId)) return items
 
   const sourceParentId = findParentId(items, sourceId)
-  const targetParentId = findParentId(items, targetId)
+  const targetInfo = findTreeItemInfo(items, targetId)
+  if (!targetInfo) return items
+
+  const targetParentId = targetInfo.parentId
 
   if (sourceParentId === targetParentId) {
     return reorderWithinParent(items, sourceParentId, sourceId, targetId)
@@ -122,5 +140,10 @@ export function moveTreeItem(items: TreeDataItem[], sourceId: string, targetId: 
   const [removedItem, withoutSource] = removeTreeItem(items, sourceId)
   if (!removedItem) return items
 
-  return insertTreeItem(withoutSource, targetId, removedItem)
+  const targetCanContainChildren = targetInfo.item.droppable === true || Array.isArray(targetInfo.item.children)
+  const targetContainerId = targetCanContainChildren ? targetId : targetParentId
+
+  if (targetContainerId === null) return [...withoutSource, removedItem]
+
+  return insertTreeItem(withoutSource, targetContainerId, removedItem)
 }

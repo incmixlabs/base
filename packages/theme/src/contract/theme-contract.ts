@@ -361,21 +361,6 @@ export type ScrollAreaComponentTokens = {
   >
 }
 
-export type TreeViewComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      itemPaddingInline: string
-      itemPaddingBlock: string
-      fontSize: string
-      lineHeight: string
-      gap: string
-      iconSize: string
-      itemRadius: string
-    }>
-  >
-}
-
 export type ThemeContract = {
   metadata: {
     schemaVersion: typeof THEME_CONTRACT_SCHEMA_VERSION
@@ -425,7 +410,6 @@ export type ThemeContract = {
     rating: RatingComponentTokens
     appShell: AppShellComponentTokens
     scrollArea: ScrollAreaComponentTokens
-    treeView: TreeViewComponentTokens
   }
 }
 
@@ -623,7 +607,7 @@ export function validateThemeContract(input: unknown): ThemeContractValidation {
 
   if (!isObject(semantic.color)) errors.push('semantic.color must be an object')
 
-  const retiredComponent = ['checkbox', 'checkboxGroup', 'checkboxCards', 'radio', 'radioCards', 'toggle']
+  const retiredComponent = ['checkbox', 'checkboxGroup', 'checkboxCards', 'radio', 'radioCards', 'toggle', 'treeView']
   for (const key of retiredComponent) {
     if (component[key] !== undefined) {
       errors.push(`component.${key} is retired; component sizing uses shared UI size maps`)
@@ -653,7 +637,6 @@ export function validateThemeContract(input: unknown): ThemeContractValidation {
     'rating',
     'appShell',
     'scrollArea',
-    'treeView',
   ]
   for (const key of requiredComponent) {
     const value = component[key]

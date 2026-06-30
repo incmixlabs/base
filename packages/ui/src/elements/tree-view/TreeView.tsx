@@ -1,24 +1,26 @@
 'use client'
 
 import { ChevronRight } from 'lucide-react'
-import { AnimatePresence } from 'motion/react'
-import * as m from 'motion/react-m'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { normalizeEnumPropValue } from '@/theme/props/prop-def'
 import {
   treeViewActions,
-  treeViewBranchTransition,
-  treeViewBranchVariants,
+  treeViewBranchContent,
+  treeViewBranchContentClosed,
+  treeViewBranchContentInner,
+  treeViewBranchContentOpen,
   treeViewChevron,
   treeViewChevronOpen,
   treeViewIcon,
+  treeViewIconSizeVariants,
   treeViewIndentGuide,
+  treeViewIndentGuideSizeVariants,
   treeViewItemBase,
+  treeViewItemSizeVariants,
   treeViewLeafSpacer,
   treeViewRootBase,
-  treeViewSizeVars,
-} from './TreeView.css'
+} from './tree-view.class'
 import { treeViewRootPropDefs } from './tree-view.props'
 
 // ── Types ──
@@ -122,6 +124,10 @@ function findTreeItemById(items: TreeDataItem[] | TreeDataItem, id: string): Tre
   return undefined
 }
 
+function canContainTreeItems(item: TreeDataItem) {
+  return item.droppable === true || !!item.children?.length
+}
+
 // ── Root ──
 
 export interface TreeViewRootProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -199,10 +205,12 @@ const TreeViewRoot = React.forwardRef<HTMLDivElement, TreeViewRootProps>(
 
     const handleDragStart = React.useCallback((item: TreeDataItem) => {
       draggedItemRef.current = item
+      setActiveItemId(undefined)
     }, [])
 
     const handleDragEnd = React.useCallback(() => {
       draggedItemRef.current = null
+      setActiveItemId(undefined)
     }, [])
 
     const canDropOnItem = React.useCallback((targetItem: TreeDataItem, draggedItemId?: string | null) => {
@@ -218,6 +226,7 @@ const TreeViewRoot = React.forwardRef<HTMLDivElement, TreeViewRootProps>(
           onItemDrag(source, targetItem)
         }
         draggedItemRef.current = null
+        setActiveItemId(undefined)
       },
       [data, onItemDrag],
     )
@@ -265,12 +274,12 @@ const TreeViewRoot = React.forwardRef<HTMLDivElement, TreeViewRootProps>(
         <div
           ref={ref}
           role="tree"
-          className={cn(treeViewRootBase, treeViewSizeVars[safeSize], className)}
+          className={cn(treeViewRootBase, className)}
           style={{ overflow: scroll, ...style }}
           {...props}
         >
           {items.map(item =>
-            item.children?.length ? (
+            canContainTreeItems(item) ? (
               <TreeViewBranch key={item.id} item={item} level={0} />
             ) : (
               <TreeViewLeaf key={item.id} item={item} level={0} />
@@ -301,12 +310,39 @@ function TreeViewBranch({ item, level }: TreeViewBranchProps) {
 
   const shouldBeOpen = ctx.expandedItemIds.includes(item.id)
   const [isOpen, setIsOpen] = React.useState(shouldBeOpen)
+  const [shouldRenderChildren, setShouldRenderChildren] = React.useState(shouldBeOpen)
 
   React.useEffect(() => {
+    if (shouldBeOpen) setShouldRenderChildren(true)
     setIsOpen(shouldBeOpen)
   }, [shouldBeOpen])
 
-  const toggleOpen = () => setIsOpen(prev => !prev)
+  React.useEffect(() => {
+    if (isOpen || !shouldRenderChildren) return
+
+    const timeoutId = window.setTimeout(() => setShouldRenderChildren(false), 220)
+    return () => window.clearTimeout(timeoutId)
+  }, [isOpen, shouldRenderChildren])
+
+  const openBranch = () => {
+    setShouldRenderChildren(true)
+    setIsOpen(true)
+  }
+
+  const closeBranch = () => setIsOpen(false)
+
+  const toggleOpen = () => {
+    if (!isOpen) {
+      openBranch()
+      return
+    }
+    closeBranch()
+  }
+
+  const handleBranchTransitionEnd = (event: React.TransitionEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget) return
+    if (!isOpen) setShouldRenderChildren(false)
+  }
 
   const handleDragStart = (e: React.DragEvent) => {
     if (!item.draggable || item.disabled) {
@@ -357,7 +393,7 @@ function TreeViewBranch({ item, level }: TreeViewBranchProps) {
         aria-expanded={isOpen}
         aria-selected={isSelected}
         tabIndex={isSelected ? 0 : -1}
-        className={cn(treeViewItemBase, item.className)}
+        className={cn(treeViewItemBase, treeViewItemSizeVariants[ctx.size], item.className)}
         style={{ paddingInlineStart: `calc(0.5rem + ${level} * 1rem)` }}
         data-selected={isVisuallySelected ? '' : undefined}
         data-active={isActive ? '' : undefined}
@@ -397,10 +433,10 @@ function TreeViewBranch({ item, level }: TreeViewBranchProps) {
             item.onClick?.()
           } else if (e.key === 'ArrowRight' && !isOpen) {
             e.preventDefault()
-            setIsOpen(true)
+            openBranch()
           } else if (e.key === 'ArrowLeft' && isOpen) {
             e.preventDefault()
-            setIsOpen(false)
+            closeBranch()
           }
         }}
         draggable={!!item.draggable && !item.disabled}
@@ -415,7 +451,10 @@ function TreeViewBranch({ item, level }: TreeViewBranchProps) {
           ctx.renderItem({ item, level, isLeaf: false, isSelected, isOpen, hasChildren })
         ) : (
           <>
-            <ChevronRight className={cn(treeViewChevron, isOpen && treeViewChevronOpen)} aria-hidden="true" />
+            <ChevronRight
+              className={cn(treeViewChevron, treeViewIconSizeVariants[ctx.size], isOpen && treeViewChevronOpen)}
+              aria-hidden="true"
+            />
             <TreeViewIcon item={item} isSelected={isSelected} isOpen={isOpen} defaultIcon={ctx.defaultNodeIcon} />
             <span className="truncate flex-1">{item.name}</span>
           </>
@@ -431,35 +470,36 @@ function TreeViewBranch({ item, level }: TreeViewBranchProps) {
           </span>
         )}
       </div>
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <m.div
-            key="tree-branch-content"
-            role="group"
-            variants={treeViewBranchVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            transition={treeViewBranchTransition}
-            style={{ overflow: 'hidden' }}
-            data-drag-over={isDragOver ? '' : undefined}
-            onDragEnter={handleDragEnter}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
+      {shouldRenderChildren && (
+        <div
+          role="group"
+          aria-hidden={!isOpen}
+          className={cn(treeViewBranchContent, isOpen ? treeViewBranchContentOpen : treeViewBranchContentClosed)}
+          data-drag-over={isDragOver ? '' : undefined}
+          data-state={isOpen ? 'open' : 'closed'}
+          onDragEnter={handleDragEnter}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onTransitionEnd={handleBranchTransitionEnd}
+        >
+          <div
+            className={cn(
+              treeViewBranchContentInner,
+              ctx.showIndentGuides && treeViewIndentGuide,
+              ctx.showIndentGuides && treeViewIndentGuideSizeVariants[ctx.size],
+            )}
           >
-            <div className={ctx.showIndentGuides ? treeViewIndentGuide : undefined}>
-              {item.children?.map(child =>
-                child.children?.length ? (
-                  <TreeViewBranch key={child.id} item={child} level={level + 1} />
-                ) : (
-                  <TreeViewLeaf key={child.id} item={child} level={level + 1} />
-                ),
-              )}
-            </div>
-          </m.div>
-        )}
-      </AnimatePresence>
+            {item.children?.map(child =>
+              canContainTreeItems(child) ? (
+                <TreeViewBranch key={child.id} item={child} level={level + 1} />
+              ) : (
+                <TreeViewLeaf key={child.id} item={child} level={level + 1} />
+              ),
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -522,7 +562,7 @@ function TreeViewLeaf({ item, level }: TreeViewLeafProps) {
       role="treeitem"
       aria-selected={isSelected}
       tabIndex={isSelected ? 0 : -1}
-      className={cn(treeViewItemBase, item.className)}
+      className={cn(treeViewItemBase, treeViewItemSizeVariants[ctx.size], item.className)}
       style={{ paddingInlineStart: `calc(0.5rem + ${level} * 1rem)` }}
       data-selected={isVisuallySelected ? '' : undefined}
       data-active={isActive ? '' : undefined}
@@ -572,7 +612,7 @@ function TreeViewLeaf({ item, level }: TreeViewLeafProps) {
         ctx.renderItem({ item, level, isLeaf: true, isSelected: isSelected, hasChildren: false })
       ) : (
         <>
-          <span className={treeViewLeafSpacer} />
+          <span className={cn(treeViewLeafSpacer, treeViewIconSizeVariants[ctx.size])} />
           <TreeViewIcon item={item} isSelected={isSelected} defaultIcon={ctx.defaultLeafIcon} />
           <span className="truncate flex-1">{item.name}</span>
         </>
@@ -604,6 +644,7 @@ function TreeViewIcon({
   isSelected?: boolean
   defaultIcon?: React.ComponentType<{ className?: string }>
 }) {
+  const ctx = React.useContext(TreeViewContext)
   let Icon: React.ComponentType<{ className?: string }> | undefined = defaultIcon
   if (isSelected && item.selectedIcon) {
     Icon = item.selectedIcon
@@ -612,7 +653,7 @@ function TreeViewIcon({
   } else if (item.icon) {
     Icon = item.icon
   }
-  return Icon ? <Icon className={treeViewIcon} /> : null
+  return Icon ? <Icon className={cn(treeViewIcon, treeViewIconSizeVariants[ctx.size])} /> : null
 }
 
 // ── Compound export ──
