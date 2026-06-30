@@ -7,7 +7,7 @@ import {
   floatingLabelStyleVariants,
   textFieldFloatingColorVariants,
   textFieldFloatingWrapperColorVariants,
-} from './text-field.css'
+} from './text-field.class'
 
 afterEach(() => {
   cleanup()
@@ -26,7 +26,7 @@ function getLabel(container: HTMLElement) {
 }
 
 describe('Textarea floating variants', () => {
-  it.each(floatingCases)('uses shared VE classes for %s', (variant, floatingStyle) => {
+  it.each(floatingCases)('uses shared floating classes for %s', (variant, floatingStyle) => {
     const { container } = render(<Textarea data-testid="textarea" variant={variant} label="Notes" />)
 
     const textarea = screen.getByTestId('textarea')

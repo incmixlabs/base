@@ -116,6 +116,7 @@ import { radioCardsClassNames } from './src/form/radio-cards.class'
 import { radioGroupClassNames } from './src/form/radio-group.class'
 import { sliderClassNames } from './src/form/Slider.class'
 import { switchClassNames } from './src/form/switch.class'
+import { textFieldClassNames } from './src/form/text-field.class'
 import { aspectRatioByRatio } from './src/layouts/aspect-ratio/aspect-ratio.class'
 import { boxRootBase, boxSurfaceColorClassNames } from './src/layouts/box/box.class'
 import {
@@ -425,6 +426,8 @@ export default defineConfig({
       ...splitClasses(sliderClassNames),
       // Switch styles
       ...splitClasses(switchClassNames),
+      // Text field styles
+      ...splitClasses(textFieldClassNames),
       // Box styles
       boxRootBase,
       ...splitClasses(boxSurfaceColorClassNames),

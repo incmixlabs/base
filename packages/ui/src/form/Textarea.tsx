@@ -22,7 +22,7 @@ import {
   textFieldRootCls,
   textFieldSizeVariants,
   textFieldSurfaceColorVariants,
-} from './text-field.css'
+} from './text-field.class'
 import { getFloatingStyle, isFloatingVariant, resolveSurfaceVariant } from './text-field-variant'
 
 export type { TextareaProps } from './text-area.props'
@@ -131,7 +131,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
                 resizeClass,
                 className,
               ),
-              // VE classes must be joined outside tailwind-merge or one generated class can be dropped.
+              // Keep prop-map classes outside tailwind-merge so arbitrary selectors remain intact.
               floatingStyle && textFieldFloatingColorVariants[effectiveColor]?.[floatingStyle],
               floatingStyle && floatingInputStyleVariants[floatingStyle],
             )}
@@ -146,7 +146,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
                 'absolute duration-300 origin-[0]',
                 'pointer-events-none select-none',
 
-                // VE: floating label positioning by style
+                // Floating label positioning by style
                 floatingStyle && floatingLabelStyleVariants[floatingStyle],
               )}
             >

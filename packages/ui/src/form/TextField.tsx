@@ -32,7 +32,7 @@ import {
   textFieldRootCls,
   textFieldSizeVariants,
   textFieldSurfaceColorVariants,
-} from './text-field.css'
+} from './text-field.class'
 import type { TextFieldProps } from './text-field.props'
 import { getFloatingStyle, isFloatingVariant, resolveSurfaceVariant } from './text-field-variant'
 
@@ -170,7 +170,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             data-focused={floatingFocused ? '' : undefined}
             className={clsx(
               cn(textFieldInputBaseCls, 'peer', floatingInputBaseCls),
-              // VE classes must be joined outside tailwind-merge or one generated class can be dropped.
+              // Keep prop-map classes outside tailwind-merge so arbitrary selectors remain intact.
               floatingStyle && textFieldFloatingColorVariants[effectiveColor]?.[floatingStyle],
               floatingStyle && floatingInputStyleVariants[floatingStyle],
               (leftIcon || leftElement) && floatingInputWithLeftIconCls,
@@ -200,7 +200,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
                   'absolute duration-300 origin-[0]',
                   'pointer-events-none select-none',
                 ),
-                // VE classes must be joined outside tailwind-merge or generated positioning can be dropped.
+                // Keep prop-map classes outside tailwind-merge so peer selector variants remain intact.
                 floatingStyle && floatingLabelStyleVariants[floatingStyle],
                 (leftIcon || leftElement) && floatingLabelWithLeftIconCls,
               )}
@@ -280,7 +280,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
 
               effectiveDisabled && 'opacity-50 cursor-not-allowed',
             ),
-            // VE classes must be joined outside tailwind-merge or generated class names can drop `text-*` utilities.
+            // Keep prop-map classes outside tailwind-merge so semantic text utilities are not merged away.
             (leftIcon || leftElement) && textFieldInputWithLeftElementCls,
             (rightIcon || rightElement) && textFieldInputWithRightElementCls,
             textFieldEnhancementVariants[effectiveColor]?.[surfaceVariant],

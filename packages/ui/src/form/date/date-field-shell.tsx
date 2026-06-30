@@ -10,7 +10,7 @@ import {
   textFieldFloatingWrapperColorVariants,
   textFieldSizeVariants,
   textFieldSurfaceColorVariants,
-} from '@/form/text-field.css'
+} from '@/form/text-field.class'
 import type { FloatingStyle } from '@/form/text-field-variant'
 import { resolveSurfaceVariant } from '@/form/text-field-variant'
 import { cn } from '@/lib/utils'

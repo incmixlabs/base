@@ -7,7 +7,7 @@ import {
   floatingLabelStyleVariants,
   textFieldFloatingColorVariants,
   textFieldFloatingWrapperColorVariants,
-} from './text-field.css'
+} from './text-field.class'
 
 afterEach(() => {
   cleanup()
@@ -26,7 +26,7 @@ function getLabel(container: HTMLElement) {
 }
 
 describe('Select floating variants', () => {
-  it.each(floatingCases)('uses shared VE classes for %s', (variant, floatingStyle) => {
+  it.each(floatingCases)('uses shared floating classes for %s', (variant, floatingStyle) => {
     const { container } = render(
       <Select data-testid="select" variant={variant} label="Department">
         <SelectItem value="sales">Sales</SelectItem>
@@ -38,7 +38,7 @@ describe('Select floating variants', () => {
 
     expect(trigger).toHaveClass(floatingInputStyleVariants[floatingStyle])
     expect(label).toHaveClass(floatingLabelStyleVariants[floatingStyle])
-    expect(label.className).not.toContain('peer-data')
+    expect(label.className).toContain('peer-focus')
   })
 
   it('uses placeholder text as the floating label when label is omitted', () => {

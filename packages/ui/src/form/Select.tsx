@@ -22,7 +22,7 @@ import {
   textFieldFloatingWrapperColorVariants,
   textFieldSizeVariants,
   textFieldSurfaceColorVariants,
-} from './text-field.css'
+} from './text-field.class'
 import { getFloatingStyle, isFloatingVariant, resolveSurfaceVariant } from './text-field-variant'
 
 export type { SelectItemProps, SelectProps } from './select.props'
@@ -135,7 +135,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                   floatingInputBaseCls,
                   className,
                 ),
-                // VE classes must be joined outside tailwind-merge or one generated class can be dropped.
+                // Keep prop-map classes outside tailwind-merge so arbitrary selectors remain intact.
                 floatingStyle && floatingInputStyleVariants[floatingStyle],
                 floatingStyle && textFieldFloatingColorVariants[effectiveColor]?.[floatingStyle],
               )}

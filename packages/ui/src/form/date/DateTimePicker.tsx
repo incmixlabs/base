@@ -18,7 +18,7 @@ import { iconButtonBase, iconButtonColorVariants, iconButtonSizeVariants } from 
 import { useThemeRadius } from '@/elements/utils'
 import { WheelPicker, WheelPickerWrapper } from '@/elements/wheel-picker/wheel-picker'
 import { useFieldGroup } from '@/form/FieldGroupContext'
-import type { TextFieldSize } from '@/form/text-field.css'
+import type { TextFieldSize } from '@/form/text-field.class'
 import { getFloatingStyle } from '@/form/text-field-variant'
 import { Flex } from '@/layouts/flex/Flex'
 import { KEYBOARD_KEYS } from '@/lib/keyboard-keys'

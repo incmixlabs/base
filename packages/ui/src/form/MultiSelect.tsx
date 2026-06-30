@@ -44,7 +44,7 @@ import {
   textFieldRootCls,
   textFieldSizeVariants,
   textFieldSurfaceColorVariants,
-} from './text-field.css'
+} from './text-field.class'
 import { getFloatingStyle, isFloatingVariant, resolveSurfaceVariant } from './text-field-variant'
 
 const multiSelectTextSizeBySize: Record<ExtendedFormSize, 'xs' | 'sm' | 'md' | 'lg' | 'xl'> = {

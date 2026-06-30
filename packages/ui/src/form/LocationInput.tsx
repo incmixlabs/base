@@ -16,7 +16,7 @@ import {
   textFieldFloatingColorVariants,
   textFieldFloatingWrapperColorVariants,
   textFieldSizeVariants,
-} from './text-field.css'
+} from './text-field.class'
 import { type FloatingStyle, getFloatingStyle, isFloatingVariant, toBaseTextFieldVariant } from './text-field-variant'
 // TBD - need to use our Select Component instead of re-implementing select logic here. This is currently separate to avoid adding @base-ui/react as a dependency to the entire ui package, but we may want to move the Select component into ui at some point which would allow us to unify the select logic and styles.
 // ============================================================================

@@ -1,9 +1,9 @@
-import { asChildPropDef } from '@/theme/props/as-child.prop'
-import { surfaceColorPropDef, surfaceTonePropDef } from '@/theme/props/color.prop'
-import { highContrastPropDef } from '@/theme/props/high-contrast.prop'
-import { hoverPropDefTrue } from '@/theme/props/hover.prop'
-import type { PropDef } from '@/theme/props/prop-def'
-import { radiusPropDef } from '@/theme/props/radius.prop'
+import { asChildPropDef } from '../../theme/props/as-child.prop'
+import { surfaceColorPropDef, surfaceTonePropDef } from '../../theme/props/color.prop'
+import { highContrastPropDef } from '../../theme/props/high-contrast.prop'
+import { hoverPropDefTrue } from '../../theme/props/hover.prop'
+import type { PropDef } from '../../theme/props/prop-def'
+import { radiusPropDef } from '../../theme/props/radius.prop'
 
 const surfaceVariants = ['classic', 'solid', 'soft', 'surface', 'outline', 'ghost'] as const
 const surfaceShapes = ['rect', 'square', 'ellipse', 'circle', 'hexagon', 'pill'] as const

@@ -46,7 +46,7 @@ import {
   textFieldInputBaseCls,
   textFieldSizeVariants,
   textFieldSurfaceColorVariants,
-} from './text-field.css'
+} from './text-field.class'
 import { resolveSurfaceVariant } from './text-field-variant'
 import { highlightColorStyles } from './textFieldStyles'
 
