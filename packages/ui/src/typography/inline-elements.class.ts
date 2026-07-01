@@ -46,7 +46,7 @@ const codeSizeClassName = (size: TypographySize) =>
   ].join(' ')
 
 const createCodeColorClasses = (color: Color): Record<CodeVariant, string> => ({
-  solid: `bg-${color}-solid ${arbitraryUtility('border', semanticColorVar(color, 'primary'))} text-${color}-contrast`,
+  solid: `bg-${color}-solid ${arbitraryUtility('border', semanticColorVar(color, 'solid'))} text-${color}-contrast`,
   soft: `bg-${color}-soft border-${color} text-${color}`,
   outline: `bg-transparent border-${color} text-${color}`,
   ghost: `bg-transparent border-transparent text-${color} pt-0 pb-0 pl-0 pr-0 rounded-none`,

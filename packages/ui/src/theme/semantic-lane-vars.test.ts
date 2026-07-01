@@ -27,8 +27,8 @@ describe('semantic lane vars', () => {
 
     expect(vars['--color-primary-border']).toBe('var(--teal-9)')
     expect(vars['--color-primary-border-subtle']).toBe('var(--teal-7)')
-    expect(vars['--color-primary-primary']).toBe('var(--teal-9)')
-    expect(vars['--color-primary-primary-alpha']).toBe('color-mix(in oklch, var(--teal-9) 12%, transparent)')
+    expect(vars['--color-primary-solid']).toBe('var(--teal-9)')
+    expect(vars['--color-primary-solid-alpha']).toBe('color-mix(in oklch, var(--teal-9) 12%, transparent)')
   })
 
   it('emits alias lanes through the canonical surface lanes and skips self-alias writes', () => {
@@ -42,7 +42,7 @@ describe('semantic lane vars', () => {
     expect(vars['--color-accent-border']).toBe('var(--color-neutral-border)')
     expect(vars['--color-accent-background']).toBe('var(--color-neutral-background)')
     expect(vars['--color-info-text']).toBe('var(--color-light-text)')
-    expect(vars['--color-success-primary']).toBe('var(--color-dark-primary)')
+    expect(vars['--color-success-solid']).toBe('var(--color-dark-solid)')
     expect(vars['--color-slate-border']).toBe('var(--gray-7)')
   })
 
@@ -66,7 +66,7 @@ describe('semantic lane vars', () => {
     expect(vars['--color-info-surface']).toBe('var(--blue-2)')
     expect(vars['--color-info-surface-hover']).toBe('var(--blue-7)')
     expect(vars['--color-info-soft']).toBe('var(--blue-5)')
-    expect(vars['--color-info-primary']).toBe('var(--blue-8)')
+    expect(vars['--color-info-solid']).toBe('var(--blue-8)')
     expect(vars['--color-info-text']).toBe('var(--blue-10)')
   })
 

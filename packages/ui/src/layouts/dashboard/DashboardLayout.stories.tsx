@@ -126,7 +126,7 @@ export const ThemeGapPreference: Story = {
                 aria-pressed={option.id === gapId}
                 className={`rounded border px-3 py-1.5 font-medium text-sm ${
                   option.id === gapId
-                    ? 'border-primary bg-primary text-primary-foreground'
+                    ? 'border-primary bg-primary text-primary-contrast'
                     : 'border-neutral bg-neutral-surface'
                 }`}
                 onClick={() => setGapId(option.id)}
@@ -213,7 +213,7 @@ export const PackingComparison: Story = {
               aria-pressed={packing === option}
               className={`rounded border px-3 py-1.5 font-medium text-sm ${
                 packing === option
-                  ? 'border-primary bg-primary text-primary-foreground'
+                  ? 'border-primary bg-primary text-primary-contrast'
                   : 'border-neutral bg-neutral-surface'
               }`}
               onClick={() => setPacking(option)}

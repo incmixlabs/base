@@ -53,8 +53,7 @@ function surfaceRoleValue(recipe: SemanticColorClassRecipe, role: 'solid' | 'sof
   const chartValue = chartSurfaceRoleValue(recipe.colorName, role)
   if (chartValue) return chartValue
 
-  const semanticToken = role === 'solid' ? 'primary' : role
-  return colorToken(recipe, semanticToken)
+  return colorToken(recipe, role)
 }
 
 function highContrastSolidFillValue(recipe: SemanticColorClassRecipe) {
@@ -62,7 +61,7 @@ function highContrastSolidFillValue(recipe: SemanticColorClassRecipe) {
 }
 
 function highContrastSoftFillValue(recipe: SemanticColorClassRecipe) {
-  if (chromaticSurfaceColorSet.has(recipe.colorName)) return colorToken(recipe, 'primary-alpha')
+  if (chromaticSurfaceColorSet.has(recipe.colorName)) return colorToken(recipe, 'solid-alpha')
 
   const chartColor = normalizeChartColor(recipe.colorName)
   if (chartColor) {

@@ -18,10 +18,10 @@ export const avatarPresenceBySize = {
 } as const satisfies Record<AvatarSize, string>
 
 export const avatarPresenceByState = {
-  online: 'bg-[var(--color-success-primary)]',
-  offline: 'bg-[var(--color-warning-primary)]',
+  online: 'bg-[var(--color-success-solid)]',
+  offline: 'bg-[var(--color-warning-solid)]',
   unknown: 'bg-[var(--color-neutral-text)]',
-  busy: 'bg-[var(--color-error-primary)]',
+  busy: 'bg-[var(--color-error-solid)]',
 } as const
 
 export const avatarPresenceBusyLineBySize = {

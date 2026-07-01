@@ -78,14 +78,14 @@ const Slot: React.FC<SlotProps> = ({ char, isActive, hasFakeCaret, variant, erro
         variant === 'outline' && [
           formControlSubtleBorderedSurface,
           formControlNeutralBackground,
-          isActive && `${formControlPrimaryBorderColor} ring-2 ring-[var(--color-primary-primary)] ring-offset-2`,
+          isActive && `${formControlPrimaryBorderColor} ring-2 ring-[var(--color-primary-solid)] ring-offset-2`,
           error && formControlErrorBorderColor,
         ],
 
         variant === 'filled' && [
           `border-0 ${formControlRadius} bg-neutral-soft`,
           isActive &&
-            '[background-color:var(--color-neutral-soft-hover)] ring-2 ring-[var(--color-primary-primary)] ring-offset-2',
+            '[background-color:var(--color-neutral-soft-hover)] ring-2 ring-[var(--color-primary-solid)] ring-offset-2',
           error && 'bg-error-soft',
         ],
 

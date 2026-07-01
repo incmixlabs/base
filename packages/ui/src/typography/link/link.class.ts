@@ -60,8 +60,8 @@ const linkColorClassName = (color: Color) =>
   [
     `text-${color}`,
     arbitraryDeclaration('text-decoration-color', semanticColorVar(color, 'border')),
-    hoverNotDisabled(arbitraryUtility('text', semanticColorVar(color, 'primary'))),
-    hoverNotDisabled(arbitraryDeclaration('text-decoration-color', semanticColorVar(color, 'primary'))),
+    hoverNotDisabled(arbitraryUtility('text', semanticColorVar(color, 'solid'))),
+    hoverNotDisabled(arbitraryDeclaration('text-decoration-color', semanticColorVar(color, 'solid'))),
   ].join(' ')
 
 export const linkByColor = Object.fromEntries(

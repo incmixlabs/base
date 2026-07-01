@@ -35,7 +35,7 @@ import { compileThemeTokens, createConcreteThemeResolver } from '@incmix/theme'
 const { tokenMap } = compileThemeTokens(themeContract)
 const resolver = createConcreteThemeResolver(tokenMap)
 
-resolver('semantic.color.primary.primary') // Material primary if the contract defines it
+resolver('semantic.color.primary.solid') // Material primary solid role if the contract defines it
 ```
 
 ## Email Inline Styles

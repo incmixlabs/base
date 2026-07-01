@@ -166,7 +166,7 @@ export const WithError: Story = {
     <div className="w-[500px] space-y-2">
       <Label>With error</Label>
       <LocationInput error />
-      <p className="text-xs text-destructive">Please select a valid location</p>
+      <p className="text-xs text-error">Please select a valid location</p>
     </div>
   ),
 }
@@ -206,7 +206,7 @@ export const FormExample: Story = {
 
         <button
           type="button"
-          className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-md font-medium"
+          className="w-full py-2 px-4 bg-primary text-primary-contrast rounded-md font-medium"
           onClick={() => alert(JSON.stringify(formData, null, 2))}
         >
           Submit

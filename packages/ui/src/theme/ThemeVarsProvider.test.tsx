@@ -56,7 +56,7 @@ describe('ThemeVarsProvider', () => {
     const root = container.firstElementChild as HTMLDivElement | null
 
     expect(root?.dataset.themeVarsTheme).toBe('radix')
-    expect(root?.style.getPropertyValue('--color-info-primary')).toBe('')
+    expect(root?.style.getPropertyValue('--color-info-solid')).toBe('')
     expect(root?.style.getPropertyValue('--color-info-surface-hover')).toBe('')
   })
 
@@ -76,7 +76,7 @@ describe('ThemeVarsProvider', () => {
 
     expect(screen.getByTestId('info-hue')).toHaveTextContent('green')
     const root = screen.getByTestId('info-hue').closest('[style]') as HTMLDivElement | null
-    expect(root?.style.getPropertyValue('--color-info-primary')).toBe('var(--green-9)')
+    expect(root?.style.getPropertyValue('--color-info-solid')).toBe('var(--green-9)')
   })
 
   it('emits cumulative token snapshots for back-to-back updates', async () => {

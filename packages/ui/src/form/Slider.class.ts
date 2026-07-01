@@ -19,7 +19,7 @@ const sliderSizeVar = (size: string, slot: string, fallback: string) =>
 const sliderFocusClassName = (color: string) =>
   joinClass(
     'focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:[outline-color:',
-    colorVar(color, 'primary-alpha'),
+    colorVar(color, 'solid-alpha'),
     ']',
   )
 
@@ -64,7 +64,7 @@ export const sliderTrackVariantStyles = {
 } as const satisfies Record<SliderVariant, string>
 
 export const sliderSolidTrackColorStyles = Object.fromEntries(
-  semanticColorKeys.map(color => [color, joinClass('bg-[', colorVar(color, 'primary-alpha'), ']')]),
+  semanticColorKeys.map(color => [color, joinClass('bg-[', colorVar(color, 'solid-alpha'), ']')]),
 ) as Record<SemanticColorKey, string>
 
 export const sliderIndicatorColorStyles = Object.fromEntries(
@@ -78,7 +78,7 @@ export const sliderSoftIndicatorColorStyles = Object.fromEntries(
 export const sliderThumbColorStyles = Object.fromEntries(
   semanticColorKeys.map(color => [
     color,
-    [joinClass('[border-color:', colorVar(color, 'primary'), ']'), sliderFocusClassName(color)].join(' '),
+    [joinClass('[border-color:', colorVar(color, 'solid'), ']'), sliderFocusClassName(color)].join(' '),
   ]),
 ) as Record<SemanticColorKey, string>
 

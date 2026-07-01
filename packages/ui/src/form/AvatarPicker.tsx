@@ -888,7 +888,7 @@ const AvatarPickerSingle = React.forwardRef<HTMLDivElement, AvatarPickerSinglePr
             </Text>
           ) : null}
         </Flex>
-        {isSelected && <Check className={cn('shrink-0 text-[color:var(--fc-primary)]', pickerIndicatorBySize[size])} />}
+        {isSelected && <Check className={cn('shrink-0 text-[color:var(--fc-solid)]', pickerIndicatorBySize[size])} />}
       </Flex>
     )
 

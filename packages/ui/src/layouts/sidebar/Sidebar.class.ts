@@ -13,7 +13,7 @@ export const sidebarMenuButtonVariantStyles = {
 
 const variantBgToken = {
   surface: 'surface',
-  solid: 'primary',
+  solid: 'solid',
   soft: 'soft',
 } as const
 
@@ -38,11 +38,11 @@ function createSidebarColorClassName(panelColor: Color, variant: SidebarVisualVa
     variant === 'surface' ? semanticColorVar('neutral', 'text') : semanticColorVar(panelColor, 'text')
   const activeBackground = semanticColorVar(
     panelColor,
-    variant === 'solid' ? 'primary' : variant === 'surface' ? 'soft' : 'soft-hover',
+    variant === 'solid' ? 'solid' : variant === 'surface' ? 'soft' : 'soft-hover',
   )
   const activeForeground =
     variant === 'solid' ? semanticColorVar(panelColor, 'contrast') : semanticColorVar(panelColor, 'text')
-  const ringColor = semanticColorVar(panelColor, 'primary')
+  const ringColor = semanticColorVar(panelColor, 'solid')
 
   return [
     sidebarVarClass('sidebar', panelBackground),

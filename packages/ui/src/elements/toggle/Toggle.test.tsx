@@ -28,7 +28,7 @@ describe('Toggle', () => {
       '[color:var(--color-info-text)]',
       '[border-color:var(--color-info-border)]',
       'hover:[background-color:var(--color-info-soft)]',
-      'aria-[pressed=true]:[background-color:var(--color-info-primary)]',
+      'aria-[pressed=true]:[background-color:var(--color-info-solid)]',
     ])
   })
 
@@ -78,7 +78,7 @@ describe('ToggleGroup', () => {
       'px-2',
       `[color:var(--color-${SemanticColor.slate}-text)]`,
       `[border-color:var(--color-${SemanticColor.slate}-border)]`,
-      `aria-[pressed=true]:[background-color:var(--color-${SemanticColor.slate}-primary)]`,
+      `aria-[pressed=true]:[background-color:var(--color-${SemanticColor.slate}-solid)]`,
     ])
   })
 

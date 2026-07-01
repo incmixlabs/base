@@ -26,7 +26,7 @@ export const radioCardRootBase =
 export const radioCardIndicatorBase =
   'mt-1 inline-flex box-border shrink-0 items-center justify-center rounded-full border-2 border-solid transition-all duration-150'
 
-export const radioCardIndicatorInner = 'rounded-full [background-color:var(--color-light-primary)]'
+export const radioCardIndicatorInner = 'rounded-full [background-color:var(--color-light-solid)]'
 
 export const radioCardContentBase = 'flex-1'
 
@@ -54,7 +54,7 @@ export const radioCardIndicatorColorVariants = Object.fromEntries(
         joinClass('border-', color),
         joinClass('bg-', color, '-surface'),
         joinClass('text-', selectedColor),
-        joinClass('group-data-[checked]:[border-color:', colorVar(selectedColor, 'primary'), ']'),
+        joinClass('group-data-[checked]:[border-color:', colorVar(selectedColor, 'solid'), ']'),
         joinClass('group-data-[checked]:bg-', selectedColor, '-solid'),
       ].join(' '),
     ]
@@ -70,12 +70,12 @@ export const radioCardRootColorVariants = Object.fromEntries(
       [
         joinClass(
           'focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:[outline-color:',
-          colorVar(selectedColor, 'primary-alpha'),
+          colorVar(selectedColor, 'solid-alpha'),
           ']',
         ),
-        joinClass('data-[checked]:[border-color:', colorVar(selectedColor, 'primary'), ']'),
+        joinClass('data-[checked]:[border-color:', colorVar(selectedColor, 'solid'), ']'),
         joinClass('data-[checked]:bg-', selectedColor, '-soft'),
-        joinClass('data-[checked]:[box-shadow:0_0_0_2px_', colorVar(selectedColor, 'primary-alpha'), ']'),
+        joinClass('data-[checked]:[box-shadow:0_0_0_2px_', colorVar(selectedColor, 'solid-alpha'), ']'),
         joinClass('data-[checked]:hover:bg-', selectedColor, '-soft-hover'),
       ].join(' '),
     ]

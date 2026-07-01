@@ -50,7 +50,7 @@ export const dateCalendarMonthPickerIcon = 'h-[48%] w-[48%] shrink-0 opacity-85'
 export const dateSurfaceControlFrame = 'border border-solid border-neutral bg-neutral-background text-neutral'
 
 const dateSurfaceFocusRingStyle =
-  '[border-color:var(--color-primary-border)] [box-shadow:0_0_0_2px_var(--color-primary-primary-alpha)]'
+  '[border-color:var(--color-primary-border)] [box-shadow:0_0_0_2px_var(--color-primary-solid-alpha)]'
 
 const prefixDateSurfaceFocusRing = (prefix: 'focus-within' | 'focus-visible') =>
   dateSurfaceFocusRingStyle

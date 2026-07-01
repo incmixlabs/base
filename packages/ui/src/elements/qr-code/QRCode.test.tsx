@@ -24,7 +24,7 @@ afterEach(() => {
   vi.clearAllMocks()
   HTMLCanvasElement.prototype.getContext = originalGetContext
   document.documentElement.style.removeProperty('--color-neutral-text')
-  document.documentElement.style.removeProperty('--color-neutral-primary')
+  document.documentElement.style.removeProperty('--color-neutral-solid')
 })
 
 describe('QRCode', () => {
@@ -103,7 +103,7 @@ describe('QRCode', () => {
 
   it('uses neutral readable foreground tokens by default', async () => {
     document.documentElement.style.setProperty('--color-neutral-text', '#222222')
-    document.documentElement.style.setProperty('--color-neutral-primary', '#ffffff')
+    document.documentElement.style.setProperty('--color-neutral-solid', '#ffffff')
     toCanvas.mockResolvedValue(undefined)
     toDataURL.mockResolvedValue('data:image/png;base64,qr')
     toString.mockResolvedValue('<svg viewBox="0 0 1 1" />')

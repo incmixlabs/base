@@ -132,7 +132,7 @@ export const WithError: Story = {
         <SelectItem value="option1">Option 1</SelectItem>
         <SelectItem value="option2">Option 2</SelectItem>
       </Select>
-      <p className="text-sm text-destructive">Please select an option</p>
+      <p className="text-sm text-error">Please select an option</p>
     </div>
   ),
 }

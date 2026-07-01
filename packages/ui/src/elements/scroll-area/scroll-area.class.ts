@@ -46,7 +46,7 @@ export const scrollAreaByType = {
 
 export const scrollAreaSurfaceVariant = {
   soft: '[--scroll-area-surface-color:var(--color-slate-soft)]',
-  solid: '[--scroll-area-surface-color:var(--color-slate-primary)]',
+  solid: '[--scroll-area-surface-color:var(--color-slate-solid)]',
   surface: '[--scroll-area-surface-color:var(--color-slate-surface)]',
 } satisfies Record<ScrollAreaSurfaceVariant, string>
 

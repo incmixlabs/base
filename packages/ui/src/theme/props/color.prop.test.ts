@@ -23,7 +23,7 @@ describe('interactive color resolution', () => {
     expect(resolveInteractiveUnfilledColor(SemanticColor.light)).toBe(SemanticColor.neutral)
     expect(resolveInteractiveUnfilledColor(SemanticColor.dark)).toBe(SemanticColor.neutral)
     expect(resolveInteractiveForegroundToken(SemanticColor.neutral)).toBe('text')
-    expect(resolveInteractiveForegroundToken(SemanticColor.inverse)).toBe('primary')
+    expect(resolveInteractiveForegroundToken(SemanticColor.inverse)).toBe('solid')
     expect(resolveInteractiveForegroundToken(SemanticColor.light)).toBe('text')
     expect(resolveInteractiveForegroundToken(SemanticColor.dark)).toBe('text')
   })
@@ -36,7 +36,7 @@ describe('interactive color resolution', () => {
   })
 
   it('rejects unsupported runtime semantic lanes', () => {
-    expect(() => semanticColorVar('default' as never, 'primary')).toThrow('Unsupported semantic color: default')
+    expect(() => semanticColorVar('default' as never, 'solid')).toThrow('Unsupported semantic color: default')
     expect(() => resolveInteractiveFillColor('default' as never)).toThrow('Unsupported semantic color: default')
   })
 })
@@ -66,12 +66,12 @@ describe('surface color and text resolution helpers', () => {
     // Chart solid vs soft
     expect(resolveSurfaceForegroundColor('chart1', undefined, 'solid')).toBe('var(--chart-1-contrast)')
     expect(resolveSurfaceForegroundColor('chart1', undefined, 'soft')).toBe(
-      'color-mix(in oklch, var(--chart-1) 34%, var(--color-dark-primary))',
+      'color-mix(in oklch, var(--chart-1) 34%, var(--color-dark-solid))',
     )
   })
 
   it('resolves semantic and chart background colors', () => {
-    expect(resolveSurfaceBackgroundColor('primary', 'solid')).toBe('var(--color-primary-primary)')
+    expect(resolveSurfaceBackgroundColor('primary', 'solid')).toBe('var(--color-primary-solid)')
     expect(resolveSurfaceBackgroundColor('primary', 'soft')).toBe('var(--color-primary-soft)')
     expect(resolveSurfaceBackgroundColor('primary', 'surface')).toBe('var(--color-primary-surface)')
 

@@ -183,7 +183,7 @@ export const WithError: Story = {
     <div className="w-80 space-y-2">
       <Label>With Error</Label>
       <CreditCardInput error />
-      <p className="text-xs text-destructive">Please enter valid card details</p>
+      <p className="text-xs text-error">Please enter valid card details</p>
     </div>
   ),
 }
@@ -288,7 +288,7 @@ export const CheckoutForm: Story = {
 
         <button
           type="button"
-          className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-md font-medium disabled:opacity-50"
+          className="w-full py-2 px-4 bg-primary text-primary-contrast rounded-md font-medium disabled:opacity-50"
           disabled={!card.isValid || !email}
         >
           Pay $29.99

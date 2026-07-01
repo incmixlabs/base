@@ -112,8 +112,8 @@ export const datePickerTriggerGroupBorderColorStyles: Record<Color, string> = Ob
     color,
     [
       joinClass('border-', color),
-      joinClass('focus-within:[border-color:', colorVar(color, 'primary'), ']'),
-      joinClass('focus-within:[box-shadow:0_0_0_2px_', colorVar(color, 'primary-alpha'), ']'),
+      joinClass('focus-within:[border-color:', colorVar(color, 'solid'), ']'),
+      joinClass('focus-within:[box-shadow:0_0_0_2px_', colorVar(color, 'solid-alpha'), ']'),
     ].join(' '),
   ]),
 ) as Record<Color, string>
@@ -122,10 +122,10 @@ export const datePickerTriggerGroupSolidColorStyles: Record<Color, string> = Obj
   semanticColorKeys.map(color => [
     color,
     [
-      joinClass('bg-[', colorVar(color, 'primary-alpha'), ']'),
-      joinClass('hover:bg-[color-mix(in_srgb,', colorVar(color, 'primary'), '_22%,transparent)]'),
-      joinClass('focus-within:bg-[color-mix(in_srgb,', colorVar(color, 'primary'), '_28%,transparent)]'),
-      joinClass('focus-within:[box-shadow:0_0_0_2px_', colorVar(color, 'primary-alpha'), ']'),
+      joinClass('bg-[', colorVar(color, 'solid-alpha'), ']'),
+      joinClass('hover:bg-[color-mix(in_srgb,', colorVar(color, 'solid'), '_22%,transparent)]'),
+      joinClass('focus-within:bg-[color-mix(in_srgb,', colorVar(color, 'solid'), '_28%,transparent)]'),
+      joinClass('focus-within:[box-shadow:0_0_0_2px_', colorVar(color, 'solid-alpha'), ']'),
     ].join(' '),
   ]),
 ) as Record<Color, string>
@@ -137,7 +137,7 @@ export const datePickerTriggerGroupSoftColorStyles: Record<Color, string> = Obje
       joinClass('bg-', color, '-soft'),
       joinClass('hover:bg-[', colorVar(color, 'soft-hover'), ']'),
       joinClass('focus-within:bg-[', colorVar(color, 'soft-hover'), ']'),
-      joinClass('focus-within:[box-shadow:0_0_0_2px_', colorVar(color, 'primary-alpha'), ']'),
+      joinClass('focus-within:[box-shadow:0_0_0_2px_', colorVar(color, 'solid-alpha'), ']'),
     ].join(' '),
   ]),
 ) as Record<Color, string>
@@ -148,10 +148,10 @@ export const datePickerCalendarSelectedColorStyles: Record<Color, string> = Obje
     [
       joinClass(
         '[&:hover:not([data-selected]):not([data-unavailable]):not(:disabled)]:bg-[',
-        colorVar(color, 'primary-alpha'),
+        colorVar(color, 'solid-alpha'),
         ']',
       ),
-      joinClass('[&[data-today]:not([data-selected])]:bg-[', colorVar(color, 'primary-alpha'), ']'),
+      joinClass('[&[data-today]:not([data-selected])]:bg-[', colorVar(color, 'solid-alpha'), ']'),
       joinClass('data-[selected]:bg-', color, '-solid'),
       joinClass('data-[selected]:text-', color, '-contrast'),
     ].join(' '),

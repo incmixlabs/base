@@ -4,7 +4,7 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 # Theming
 
-This library provides flexible theming options from quick presets to fine-grained CSS variable control.
+This library provides flexible theming through `Theme` context props and semantic CSS variable control.
 
 ## Theme Component
 
@@ -57,64 +57,13 @@ function ThemeDisplay() {
 }
 ```
 
-## Theme Editor
-
-For advanced customization, use the `ThemeEditor` component. This provides a visual interface for customizing all design tokens.
-
-```tsx
-import { ThemeEditorProvider, ThemeEditor, ThemePreview } from "@incmix/ui";
-
-function ThemeCustomizer() {
-  return (
-    <ThemeEditorProvider>
-      <div className="flex">
-        <ThemeEditor className="w-80" />
-        <ThemePreview className="flex-1" />
-      </div>
-    </ThemeEditorProvider>
-  );
-}
-```
-
-### Theme Editor Features
-
-- **Color Customization**: Edit all color tokens in HSL format for both light and dark modes
-- **Typography**: Configure font families and letter spacing
-- **Layout**: Adjust border radius and spacing
-- **Presets**: Quick apply preset themes (zinc, slate, rose, blue, green, orange, violet)
-- **Export**: Copy generated CSS or JSON configuration
-
-### Using Theme Editor Hook
-
-```tsx
-import { useThemeEditor } from "@incmix/ui";
-
-function CustomControls() {
-  const editor = useThemeEditor();
-
-  return (
-    <div>
-      <button onClick={() => editor.setMode("dark")}>
-        Dark Mode
-      </button>
-      <button onClick={() => editor.applyPreset("blue")}>
-        Blue Theme
-      </button>
-      <button onClick={() => navigator.clipboard.writeText(editor.exportCSS())}>
-        Copy CSS
-      </button>
-    </div>
-  );
-}
-```
-
 ## CSS Variables
 
 The theme system uses semantic CSS custom properties. Override the semantic lanes rather than legacy HSL aliases:
 
 ```css
 :root {
-  --color-primary-primary: oklch(0.61 0.11 222);
+  --color-primary-solid: oklch(0.61 0.11 222);
   --color-primary-text: oklch(0.44 0.11 222);
   --color-primary-contrast: oklch(0.98 0.02 201);
   --color-neutral-surface: oklch(1 0 0);
@@ -135,35 +84,13 @@ The theme system uses semantic CSS custom properties. Override the semantic lane
 Colors use CSS color values directly:
 
 ```css
---color-primary-primary: oklch(0.62 0.18 250);
+--color-primary-solid: oklch(0.62 0.18 250);
 ```
 
 In Tailwind classes, use:
 
 ```tsx
-<div className="bg-primary text-primary-foreground" />
-```
-
-## Preset Themes
-
-Built-in presets for quick styling:
-
-| Preset | Description |
-|--------|-------------|
-| `default` | Neutral zinc-based theme |
-| `zinc` | Cool gray tones |
-| `slate` | Blue-gray tones |
-| `rose` | Pink/rose accent |
-| `blue` | Classic blue accent |
-| `green` | Natural green accent |
-| `orange` | Warm orange accent |
-| `violet` | Purple/violet accent |
-
-Apply programmatically:
-
-```tsx
-const editor = useThemeEditor();
-editor.applyPreset("blue");
+<div className="bg-primary text-primary-contrast" />
 ```
 
 ## Dark Mode
@@ -209,5 +136,4 @@ module.exports = {
 
 ## See Also
 
-- [ThemeEditor Stories](/docs/elements-themeeditor--docs) - Interactive theme editor examples
 - [Theme Stories](/docs/elements-theme--docs) - Theme component examples

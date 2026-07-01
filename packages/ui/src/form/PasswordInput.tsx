@@ -52,11 +52,11 @@ const defaultStrengthCalculator = (password: string): number => {
 
 const strengthLabels = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong']
 const strengthColors = [
-  'bg-[var(--color-error-primary)]',
-  'bg-[var(--color-error-primary)]',
-  'bg-[var(--color-warning-primary)]',
-  'bg-[var(--color-success-primary)]',
-  'bg-[var(--color-success-primary)]',
+  'bg-[var(--color-error-solid)]',
+  'bg-[var(--color-error-solid)]',
+  'bg-[var(--color-warning-solid)]',
+  'bg-[var(--color-success-solid)]',
+  'bg-[var(--color-success-solid)]',
 ]
 
 // ============================================================================

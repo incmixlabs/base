@@ -43,8 +43,8 @@ export const checkboxCardSelectionColorVariants = Object.fromEntries(
   semanticColorKeys.map(color => [
     color,
     [
-      joinClass('peer-data-[checked]:[box-shadow:0_0_0_2px_', colorVar(color, 'primary-alpha'), ']'),
-      joinClass('peer-focus-visible:[box-shadow:0_0_0_2px_', colorVar(color, 'primary-alpha'), ']'),
+      joinClass('peer-data-[checked]:[box-shadow:0_0_0_2px_', colorVar(color, 'solid-alpha'), ']'),
+      joinClass('peer-focus-visible:[box-shadow:0_0_0_2px_', colorVar(color, 'solid-alpha'), ']'),
     ].join(' '),
   ]),
 ) as Record<Color, string>

@@ -228,7 +228,7 @@ export const Error: Story = {
   render: () => (
     <div className="w-80 space-y-2">
       <LabeledCombobox label="Country" options={countryOptions} error placeholder="Select a country..." />
-      <p className="text-sm text-destructive">Select a supported country.</p>
+      <p className="text-sm text-error">Select a supported country.</p>
     </div>
   ),
 }

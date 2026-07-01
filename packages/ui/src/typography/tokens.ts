@@ -26,7 +26,7 @@ export const typographyTokens = {
       {
         text: designTokens.color[key].text,
         solid: designTokens.color[key].text,
-        soft: designTokens.color[key].primary,
+        soft: designTokens.color[key].solid,
         muted: designTokens.color[key].border,
       },
     ]),

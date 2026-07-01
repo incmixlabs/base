@@ -30,7 +30,7 @@ export const mentionDragOverlayText = 'text-[length:var(--af-mention-textarea-dr
 export const mentionDragOverlayColorVariants = Object.fromEntries(
   semanticColorKeys.map(color => [
     color,
-    joinClass('[border-color:', colorVar(color, 'primary'), '] bg-[', colorVar(color, 'primary-alpha'), ']'),
+    joinClass('[border-color:', colorVar(color, 'solid'), '] bg-[', colorVar(color, 'solid-alpha'), ']'),
   ]),
 ) as Record<Color, string>
 

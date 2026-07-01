@@ -24,7 +24,7 @@ describe('Spinner', () => {
 
     expectClassTokens(root.className, ['inline-flex', 'items-center', 'justify-center'])
     expectClassTokens(visual?.className, [
-      'text-[var(--color-success-primary)]',
+      'text-[var(--color-success-solid)]',
       'block',
       'box-border',
       'rounded-full',

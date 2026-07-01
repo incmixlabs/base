@@ -178,7 +178,7 @@ export const menuItemColor = Object.fromEntries(
     color,
     cls(
       colorClass('text', color),
-      property('--af-menu-item-solid-bg', colorVar(color, 'primary')),
+      property('--af-menu-item-solid-bg', colorVar(color, 'solid')),
       property('--af-menu-item-solid-color', colorVar(color, 'contrast')),
       property('--af-menu-item-soft-bg', colorVar(color, 'soft')),
       property('--af-menu-item-soft-hover', colorVar(color, 'soft-hover')),

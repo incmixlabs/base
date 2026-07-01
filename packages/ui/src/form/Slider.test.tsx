@@ -35,7 +35,7 @@ describe('Slider', () => {
       'rounded-lg',
       'h-[var(--af-slider-track-height)]',
       'border-0',
-      'bg-[var(--color-info-primary-alpha)]',
+      'bg-[var(--color-info-solid-alpha)]',
     ])
     expectClassTokens(indicator?.className, ['absolute', 'rounded-lg', 'bg-info-solid', 'h-full'])
     expectClassTokens(thumb?.className, [
@@ -44,8 +44,8 @@ describe('Slider', () => {
       'bg-light-surface',
       'h-[var(--af-slider-thumb-size)]',
       'w-[var(--af-slider-thumb-size)]',
-      '[border-color:var(--color-info-primary)]',
-      'focus-visible:[outline-color:var(--color-info-primary-alpha)]',
+      '[border-color:var(--color-info-solid)]',
+      'focus-visible:[outline-color:var(--color-info-solid-alpha)]',
     ])
     expect(root?.className).not.toContain('Slider_sliderSizeVariants')
   })

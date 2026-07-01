@@ -38,10 +38,10 @@ export const pricingSelectedColorStyles: Record<Color, string> = Object.fromEntr
     [
       joinClass(
         '[&:hover:not([data-selected]):not([data-unavailable]):not(:disabled)]:bg-[',
-        colorVar(color, 'primary-alpha'),
+        colorVar(color, 'solid-alpha'),
         ']',
       ),
-      joinClass('[&[data-today]:not([data-selected])]:bg-[', colorVar(color, 'primary-alpha'), ']'),
+      joinClass('[&[data-today]:not([data-selected])]:bg-[', colorVar(color, 'solid-alpha'), ']'),
       joinClass('data-[selected]:bg-', color, '-solid'),
       joinClass('data-[selected]:text-', color, '-contrast'),
     ].join(' '),

@@ -9,8 +9,8 @@ import { designTokens } from '@/theme/tokens'
  * static scanner can always extract the class names at build time.
  *
  * Token properties mapped:
- *   --fc-primary         → color.primary        (border, bg on checked)
- *   --fc-primary-alpha   → color.primaryAlpha    (ring on focus/checked)
+ *   --fc-solid         → color.solid        (border, bg on checked)
+ *   --fc-solid-alpha   → color.solidAlpha    (ring on focus/checked)
  *   --fc-contrast        → color.contrast        (text on solid checked)
  *   --fc-text            → color.text            (text on soft/outline)
  *   --fc-soft-bg         → color.softBackground  (bg for soft variant)
@@ -20,8 +20,8 @@ import { designTokens } from '@/theme/tokens'
 const sc = designTokens.color
 
 export interface FormColorVars {
-  '--fc-primary': string
-  '--fc-primary-alpha': string
+  '--fc-solid': string
+  '--fc-solid-alpha': string
   '--fc-contrast': string
   '--fc-text': string
   '--fc-soft-bg': string
@@ -30,8 +30,8 @@ export interface FormColorVars {
 
 function buildVars(c: (typeof sc)[keyof typeof sc]): FormColorVars {
   return {
-    '--fc-primary': c.primary,
-    '--fc-primary-alpha': c.primaryAlpha,
+    '--fc-solid': c.solid,
+    '--fc-solid-alpha': c.solidAlpha,
     '--fc-contrast': c.contrast,
     '--fc-text': c.text,
     '--fc-soft-bg': c.softBackground,

@@ -79,19 +79,19 @@ function colorRecord(defaultCls: string, semanticCls: string): Record<Color, str
 /** Color styles for single inputs (focus pseudo-class). */
 export const colorStyles = colorRecord(
   '',
-  '[border-color:var(--fc-primary)] focus:[border-color:var(--fc-primary)] focus:[outline-color:var(--fc-primary-alpha)]',
+  '[border-color:var(--fc-solid)] focus:[border-color:var(--fc-solid)] focus:[outline-color:var(--fc-solid-alpha)]',
 )
 
 /** Color styles for compound inputs (focus-within pseudo-class). */
 export const containerColorStyles = colorRecord(
   '',
-  '[border-color:var(--fc-primary)] focus-within:[border-color:var(--fc-primary)] focus-within:[outline-color:var(--fc-primary-alpha)]',
+  '[border-color:var(--fc-solid)] focus-within:[border-color:var(--fc-solid)] focus-within:[outline-color:var(--fc-solid-alpha)]',
 )
 
 /** Solid variant color styles (background colors). */
 export const solidColorStyles = colorRecord(
   '',
-  'bg-[color:var(--fc-soft-bg)] text-[color:var(--fc-text)] focus:bg-[color:var(--fc-soft-bg-hover)] focus-within:bg-[color:var(--fc-soft-bg-hover)] focus:[outline-color:var(--fc-primary-alpha)] focus-within:[outline-color:var(--fc-primary-alpha)]',
+  'bg-[color:var(--fc-soft-bg)] text-[color:var(--fc-text)] focus:bg-[color:var(--fc-soft-bg-hover)] focus-within:bg-[color:var(--fc-soft-bg-hover)] focus:[outline-color:var(--fc-solid-alpha)] focus-within:[outline-color:var(--fc-solid-alpha)]',
 )
 
 /** Highlight color styles for dropdowns/listboxes. */

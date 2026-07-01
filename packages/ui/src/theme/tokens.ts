@@ -88,8 +88,8 @@ export const designTokens = {
       surfaceHover: 'var(--color-slate-surface-hover)',
       softBackground: 'var(--color-slate-soft)',
       softBackgroundHover: 'var(--color-slate-soft-hover)',
-      primary: 'var(--color-slate-primary)',
-      primaryAlpha: 'var(--color-slate-primary-alpha)',
+      solid: 'var(--color-slate-solid)',
+      solidAlpha: 'var(--color-slate-solid-alpha)',
       text: 'var(--color-slate-text)',
       contrast: 'var(--color-slate-contrast)',
       background: 'var(--color-slate-background)',
@@ -101,8 +101,8 @@ export const designTokens = {
       surfaceHover: 'var(--color-primary-surface-hover)',
       softBackground: 'var(--color-primary-soft)',
       softBackgroundHover: 'var(--color-primary-soft-hover)',
-      primary: 'var(--color-primary-primary)',
-      primaryAlpha: 'var(--color-primary-primary-alpha)',
+      solid: 'var(--color-primary-solid)',
+      solidAlpha: 'var(--color-primary-solid-alpha)',
       text: 'var(--color-primary-text)',
       contrast: 'var(--color-primary-contrast)',
       background: 'var(--color-primary-background)',
@@ -114,8 +114,8 @@ export const designTokens = {
       surfaceHover: 'var(--color-secondary-surface-hover)',
       softBackground: 'var(--color-secondary-soft)',
       softBackgroundHover: 'var(--color-secondary-soft-hover)',
-      primary: 'var(--color-secondary-primary)',
-      primaryAlpha: 'var(--color-secondary-primary-alpha)',
+      solid: 'var(--color-secondary-solid)',
+      solidAlpha: 'var(--color-secondary-solid-alpha)',
       text: 'var(--color-secondary-text)',
       contrast: 'var(--color-secondary-contrast)',
       background: 'var(--color-secondary-background)',
@@ -127,8 +127,8 @@ export const designTokens = {
       surfaceHover: 'var(--color-accent-surface-hover)',
       softBackground: 'var(--color-accent-soft)',
       softBackgroundHover: 'var(--color-accent-soft-hover)',
-      primary: 'var(--color-accent-primary)',
-      primaryAlpha: 'var(--color-accent-primary-alpha)',
+      solid: 'var(--color-accent-solid)',
+      solidAlpha: 'var(--color-accent-solid-alpha)',
       text: 'var(--color-accent-text)',
       contrast: 'var(--color-accent-contrast)',
       background: 'var(--color-accent-background)',
@@ -141,8 +141,8 @@ export const designTokens = {
       surfaceHover: 'var(--color-neutral-surface-hover)',
       softBackground: 'var(--color-neutral-soft)',
       softBackgroundHover: 'var(--color-neutral-soft-hover)',
-      primary: 'var(--color-neutral-primary)',
-      primaryAlpha: 'var(--color-neutral-primary-alpha)',
+      solid: 'var(--color-neutral-solid)',
+      solidAlpha: 'var(--color-neutral-solid-alpha)',
       text: 'var(--color-neutral-text)',
       contrast: 'var(--color-neutral-contrast)',
       background: 'var(--color-neutral-background)',
@@ -154,8 +154,8 @@ export const designTokens = {
       surfaceHover: 'var(--color-info-surface-hover)',
       softBackground: 'var(--color-info-soft)',
       softBackgroundHover: 'var(--color-info-soft-hover)',
-      primary: 'var(--color-info-primary)',
-      primaryAlpha: 'var(--color-info-primary-alpha)',
+      solid: 'var(--color-info-solid)',
+      solidAlpha: 'var(--color-info-solid-alpha)',
       text: 'var(--color-info-text)',
       contrast: 'var(--color-info-contrast)',
       background: 'var(--color-info-background)',
@@ -167,8 +167,8 @@ export const designTokens = {
       surfaceHover: 'var(--color-success-surface-hover)',
       softBackground: 'var(--color-success-soft)',
       softBackgroundHover: 'var(--color-success-soft-hover)',
-      primary: 'var(--color-success-primary)',
-      primaryAlpha: 'var(--color-success-primary-alpha)',
+      solid: 'var(--color-success-solid)',
+      solidAlpha: 'var(--color-success-solid-alpha)',
       text: 'var(--color-success-text)',
       contrast: 'var(--color-success-contrast)',
       background: 'var(--color-success-background)',
@@ -180,8 +180,8 @@ export const designTokens = {
       surfaceHover: 'var(--color-warning-surface-hover)',
       softBackground: 'var(--color-warning-soft)',
       softBackgroundHover: 'var(--color-warning-soft-hover)',
-      primary: 'var(--color-warning-primary)',
-      primaryAlpha: 'var(--color-warning-primary-alpha)',
+      solid: 'var(--color-warning-solid)',
+      solidAlpha: 'var(--color-warning-solid-alpha)',
       text: 'var(--color-warning-text)',
       contrast: 'var(--color-warning-contrast)',
       background: 'var(--color-warning-background)',
@@ -193,8 +193,8 @@ export const designTokens = {
       surfaceHover: 'var(--color-error-surface-hover)',
       softBackground: 'var(--color-error-soft)',
       softBackgroundHover: 'var(--color-error-soft-hover)',
-      primary: 'var(--color-error-primary)',
-      primaryAlpha: 'var(--color-error-primary-alpha)',
+      solid: 'var(--color-error-solid)',
+      solidAlpha: 'var(--color-error-solid-alpha)',
       text: 'var(--color-error-text)',
       contrast: 'var(--color-error-contrast)',
       background: 'var(--color-error-background)',
@@ -206,8 +206,8 @@ export const designTokens = {
       surfaceHover: 'var(--color-inverse-surface-hover)',
       softBackground: 'var(--color-inverse-soft)',
       softBackgroundHover: 'var(--color-inverse-soft-hover)',
-      primary: 'var(--color-inverse-primary)',
-      primaryAlpha: 'var(--color-inverse-primary-alpha)',
+      solid: 'var(--color-inverse-solid)',
+      solidAlpha: 'var(--color-inverse-solid-alpha)',
       text: 'var(--color-inverse-text)',
       contrast: 'var(--color-inverse-contrast)',
       background: 'var(--color-inverse-background)',
@@ -219,8 +219,8 @@ export const designTokens = {
       surfaceHover: 'var(--color-light-surface-hover)',
       softBackground: 'var(--color-light-soft)',
       softBackgroundHover: 'var(--color-light-soft-hover)',
-      primary: 'var(--color-light-primary)',
-      primaryAlpha: 'var(--color-light-primary-alpha)',
+      solid: 'var(--color-light-solid)',
+      solidAlpha: 'var(--color-light-solid-alpha)',
       text: 'var(--color-light-text)',
       contrast: 'var(--color-light-contrast)',
       background: 'var(--color-light-background)',
@@ -232,8 +232,8 @@ export const designTokens = {
       surfaceHover: 'var(--color-dark-surface-hover)',
       softBackground: 'var(--color-dark-soft)',
       softBackgroundHover: 'var(--color-dark-soft-hover)',
-      primary: 'var(--color-dark-primary)',
-      primaryAlpha: 'var(--color-dark-primary-alpha)',
+      solid: 'var(--color-dark-solid)',
+      solidAlpha: 'var(--color-dark-solid-alpha)',
       text: 'var(--color-dark-text)',
       contrast: 'var(--color-dark-contrast)',
       background: 'var(--color-dark-background)',
@@ -280,8 +280,8 @@ export { CHART_COLOR_ALIASES, CHART_COLOR_KEYS, type ChartColorAlias, type Chart
 export const SURFACE_COLOR_KEYS = [...semanticColorScale, ...CHART_COLOR_KEYS, ...CHART_COLOR_ALIASES] as const
 export type SurfaceColorKey = (typeof SURFACE_COLOR_KEYS)[number]
 export type ThemeColorToken = PaletteColorToken | SemanticColorToken | ChartColorToken
-export const BLACK = 'var(--color-dark-primary)'
-export const WHITE = 'var(--color-light-primary)'
+export const BLACK = 'var(--color-dark-solid)'
+export const WHITE = 'var(--color-light-solid)'
 
 const semanticColorTokenSet = new Set<string>(SEMANTIC_COLOR_VAR_TOKENS)
 const chartColorTokenSet = new Set<string>(CHART_COLOR_KEYS)
@@ -372,17 +372,17 @@ export const SEMANTIC_HUE_OPTIONS = [
   {
     value: 'slate' as const,
     label: semanticHueLabels.slate,
-    swatchColor: 'var(--color-slate-primary)',
+    swatchColor: 'var(--color-slate-solid)',
   },
   {
     value: 'neutral' as const,
     label: semanticHueLabels.neutral,
-    swatchColor: 'var(--color-neutral-primary)',
+    swatchColor: 'var(--color-neutral-solid)',
   },
   {
     value: 'inverse' as const,
     label: semanticHueLabels.inverse,
-    swatchColor: 'var(--color-inverse-primary)',
+    swatchColor: 'var(--color-inverse-solid)',
   },
   {
     value: 'white' as const,
@@ -573,7 +573,7 @@ export type Responsive<T> =
     }
 
 export type ThemeColorVars = {
-  primary: string
+  solid: string
   softBg: string
   surface: string
   text: string
@@ -589,7 +589,7 @@ export const panelTokens = {
 export function getThemeColorVars(color: Color): ThemeColorVars {
   const tokens = designTokens.color[color]
   return {
-    primary: tokens.primary,
+    solid: tokens.solid,
     softBg: tokens.softBackground,
     surface: tokens.surface,
     text: tokens.text,
@@ -653,16 +653,16 @@ export function resolveSurfaceStyles({
 
   if (variant === SurfaceVariants.underline) {
     return {
-      indicatorBg: tokens.primaryAlpha,
-      activeText: tokens.primary,
-      activeUnderline: tokens.primary,
+      indicatorBg: tokens.solidAlpha,
+      activeText: tokens.solid,
+      activeUnderline: tokens.solid,
     }
   }
 
   return {
     indicatorBg: tokens.softBackground,
-    activeText: highContrast ? tokens.primary : tokens.text,
-    activeUnderline: tokens.primary,
+    activeText: highContrast ? tokens.solid : tokens.text,
+    activeUnderline: tokens.solid,
   }
 }
 
