@@ -374,8 +374,8 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
               <button
                 type="button"
                 className={cn(
-                  'flex h-1/2 w-full items-center justify-center border-b border-border/60 text-muted transition-colors',
-                  'hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
+                  'flex h-1/2 w-full items-center justify-center border-b border-neutral text-muted transition-colors',
+                  'hover:bg-neutral-soft hover:text-neutral focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary',
                   !canIncrement && 'pointer-events-none opacity-50',
                 )}
                 aria-label={incrementLabel}
@@ -390,7 +390,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                 type="button"
                 className={cn(
                   'flex h-1/2 w-full items-center justify-center text-muted transition-colors',
-                  'hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
+                  'hover:bg-neutral-soft hover:text-neutral focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary',
                   !canDecrement && 'pointer-events-none opacity-50',
                 )}
                 aria-label={decrementLabel}

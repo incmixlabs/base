@@ -294,10 +294,10 @@ export const SignatureInput = React.forwardRef<HTMLCanvasElement, SignatureInput
           className={cn(
             'relative overflow-hidden',
             'rounded-[var(--element-border-radius)]',
-            baseVariant === 'outline' && 'border border-input',
-            baseVariant === 'soft' && 'bg-secondary',
-            baseVariant === 'surface' && 'border border-input bg-background shadow-sm',
-            error && 'border-destructive',
+            baseVariant === 'outline' && 'border border-neutral bg-neutral-background text-neutral',
+            baseVariant === 'soft' && 'bg-neutral-soft text-neutral',
+            baseVariant === 'surface' && 'border border-neutral bg-neutral-background text-neutral shadow-sm',
+            error && 'border-error',
           )}
           style={radiusStyles}
         >
@@ -334,9 +334,9 @@ export const SignatureInput = React.forwardRef<HTMLCanvasElement, SignatureInput
             disabled={mutationsDisabled || history.length === 0}
             className={cn(
               'inline-flex items-center gap-1 px-2 py-1 text-xs rounded-md',
-              'border border-input bg-background hover:bg-accent',
+              'border border-neutral bg-neutral-background text-neutral hover:bg-neutral-soft',
               'disabled:opacity-50 disabled:cursor-not-allowed',
-              'focus:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+              'focus:outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
             )}
             aria-label="Undo"
           >
@@ -349,9 +349,9 @@ export const SignatureInput = React.forwardRef<HTMLCanvasElement, SignatureInput
             disabled={mutationsDisabled || isEmpty}
             className={cn(
               'inline-flex items-center gap-1 px-2 py-1 text-xs rounded-md',
-              'border border-input bg-background hover:bg-accent',
+              'border border-neutral bg-neutral-background text-neutral hover:bg-neutral-soft',
               'disabled:opacity-50 disabled:cursor-not-allowed',
-              'focus:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+              'focus:outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
             )}
             aria-label="Clear"
           >

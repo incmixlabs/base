@@ -18,12 +18,15 @@ export const Fieldset = React.forwardRef<HTMLFieldSetElement, FieldsetProps>(
     return (
       <fieldset
         ref={ref}
-        className={cn('min-w-0 rounded-2xl border border-border bg-background px-5 py-5', className)}
+        className={cn(
+          'min-w-0 rounded-2xl border border-neutral bg-neutral-background px-5 py-5 text-neutral',
+          className,
+        )}
         aria-describedby={description ? descriptionId : undefined}
         {...props}
       >
         {legend ? (
-          <legend className={cn('px-1 text-base font-medium text-foreground', legendClassName)}>{legend}</legend>
+          <legend className={cn('px-1 text-base font-medium text-neutral', legendClassName)}>{legend}</legend>
         ) : null}
         <div className={cn(legend ? 'mt-3' : undefined, contentClassName)}>
           {description ? (

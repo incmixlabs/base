@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils'
 import type { Color, Radius, Size, TextFieldVariant } from '@/theme/tokens'
 import { Text } from '@/typography'
 import { useFieldGroup } from './FieldGroupContext'
+import { pickerOptionItemBase, pickerPopupBase } from './picker-popup.class'
 import { TextField } from './TextField'
 import { toBaseTextFieldVariant } from './text-field-variant'
 
@@ -230,8 +231,8 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
               onClick={() => !effectiveDisabled && setDropdownOpen(!dropdownOpen)}
               disabled={effectiveDisabled}
               className={cn(
-                'h-full gap-1 border-y-0 border-l-0 border-r border-input/50 px-2 py-0',
-                'focus-visible:ring-inset',
+                'h-full gap-1 border-y-0 border-l-0 border-r border-neutral/50 px-2 py-0',
+                'focus-visible:outline-offset-[-2px]',
                 'rounded-l-[var(--element-border-radius)]',
                 effectiveDisabled && 'cursor-not-allowed',
               )}
@@ -265,7 +266,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
                 className={cn(
                   'absolute left-0 top-full mt-1 z-50',
                   'w-64 max-h-[200px] overflow-y-auto',
-                  'rounded-md border bg-popover text-popover-foreground shadow-md',
+                  pickerPopupBase,
                   'animate-in fade-in-0 zoom-in-95',
                 )}
                 role="listbox"
@@ -282,9 +283,8 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
                     }}
                     className={cn(
                       'flex items-center gap-2 px-3 py-2 text-sm cursor-pointer',
-                      'hover:bg-accent hover:text-accent-foreground',
-                      'focus:bg-accent focus:text-accent-foreground focus:outline-none',
-                      selectedCountry?.isoCode === country.isoCode && 'bg-accent/50',
+                      pickerOptionItemBase,
+                      selectedCountry?.isoCode === country.isoCode && 'bg-accent-soft text-accent',
                     )}
                     role="option"
                     aria-selected={selectedCountry?.isoCode === country.isoCode}

@@ -223,7 +223,7 @@ const FileItem: React.FC<FileItemProps> = ({ file, onRemove, disabled, display =
             onClick={onRemove}
             disabled={disabled}
             className={cn(
-              'opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-ring',
+              'opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
               disabled && 'pointer-events-none',
             )}
             variant="soft"

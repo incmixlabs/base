@@ -10,6 +10,7 @@ import type { BaseTextFieldVariant, Color, Radius, Size, TextFieldVariant } from
 import { useFieldGroup } from './FieldGroupContext'
 import type { ExtendedFormSize } from './form-size'
 import { Label } from './Label'
+import { pickerOptionItemBase, pickerPopupBase } from './picker-popup.class'
 import {
   floatingInputBaseCls,
   floatingInputStyleVariants,
@@ -161,28 +162,27 @@ function SearchableSelect<T>({
                   'text-[var(--color-text)]',
 
                   variant === 'outline' && [
-                    'border border-input',
-                    'bg-background',
-                    'hover:bg-accent hover:text-accent-foreground',
-                    'focus:ring-2 focus:ring-ring focus:ring-offset-2',
+                    'border border-neutral',
+                    'bg-neutral-background',
+                    'hover:bg-neutral-soft hover:text-neutral',
+                    'focus:outline-solid focus:outline-2 focus:outline-offset-2 focus:outline-primary',
                   ],
                   variant === 'soft' && [
                     'border-0',
-                    'bg-secondary text-secondary-foreground',
-                    'hover:bg-secondary/80',
-                    'focus:ring-2 focus:ring-ring focus:ring-offset-2',
+                    'bg-neutral-soft text-neutral',
+                    'hover:bg-neutral-soft-hover',
+                    'focus:outline-solid focus:outline-2 focus:outline-offset-2 focus:outline-primary',
                   ],
                   variant === 'ghost' && [
                     'border-0',
                     'bg-transparent',
-                    'hover:bg-accent hover:text-accent-foreground',
-                    'focus:ring-2 focus:ring-ring focus:ring-offset-2',
+                    'hover:bg-neutral-soft hover:text-neutral',
+                    'focus:outline-solid focus:outline-2 focus:outline-offset-2 focus:outline-primary',
                   ],
 
                   error && [
-                    'border-destructive focus:border-destructive',
-                    'focus:ring-destructive/20',
-                    variant === 'soft' && 'bg-destructive/10',
+                    'border-error focus:border-error focus:outline-error',
+                    variant === 'soft' && 'bg-error-soft text-error',
                   ],
                 ],
             disabled && ['opacity-50 cursor-not-allowed'],
@@ -221,8 +221,8 @@ function SearchableSelect<T>({
               ],
               floatingStyle === 'outlined' && [
                 'left-[var(--af-text-field-padding-x)] top-[0.375rem] z-10',
-                '-translate-y-4 scale-75 bg-background px-1',
-                'peer-data-[popup-open]:text-[color:var(--af-text-field-color-primary)] peer-data-[popup-open]:bg-background peer-data-[popup-open]:px-1',
+                '-translate-y-4 scale-75 bg-neutral-background px-1',
+                'peer-data-[popup-open]:text-[color:var(--af-text-field-color-primary)] peer-data-[popup-open]:bg-neutral-background peer-data-[popup-open]:px-1',
               ],
               floatingStyle === 'standard' && [
                 'left-0 top-[0.625rem] z-10',
@@ -240,7 +240,8 @@ function SearchableSelect<T>({
         <SelectPrimitive.Positioner sideOffset={4} className="z-50">
           <SelectPrimitive.Popup
             className={cn(
-              'relative min-w-[12rem] max-h-[300px] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md',
+              'relative min-w-[12rem] max-h-[300px]',
+              pickerPopupBase,
               'data-open:animate-in data-closed:animate-out',
               'data-closed:fade-out-0 data-open:fade-in-0',
               'data-closed:zoom-out-95 data-open:zoom-in-95',
@@ -268,8 +269,7 @@ function SearchableSelect<T>({
                     value={getItemValue(item)}
                     className={cn(
                       'relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none',
-                      'focus:bg-accent focus:text-accent-foreground',
-                      'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+                      pickerOptionItemBase,
                     )}
                   >
                     <SelectPrimitive.ItemText>
