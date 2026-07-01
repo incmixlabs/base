@@ -684,7 +684,7 @@ function MediaPlayerImpl(props: MediaPlayerRootProps) {
           onKeyDown={onKeyDown}
           onKeyUp={onKeyUp}
           className={cn(
-            'dark relative isolate flex flex-col overflow-hidden rounded-lg bg-background outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_video]:relative [&_video]:object-contain',
+            'relative isolate flex flex-col overflow-hidden rounded-lg bg-dark-background text-dark outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_video]:relative [&_video]:object-contain',
             'in-[:fullscreen]:flex in-[:fullscreen]:h-full in-[:fullscreen]:max-h-screen in-[:fullscreen]:flex-col in-[:fullscreen]:justify-between data-[state=fullscreen]:[&_video]:size-full',
             "**:data-slider:relative [&_[data-slider]::before]:absolute [&_[data-slider]::before]:inset-x-0 [&_[data-slider]::before]:-top-4 [&_[data-slider]::before]:-bottom-2 [&_[data-slider]::before]:z-10 [&_[data-slider]::before]:h-8 [&_[data-slider]::before]:cursor-pointer [&_[data-slider]::before]:content-[''] [&_[data-slot='media-player-seek']:not([data-hovering])::before]:cursor-default",
             '[&_video::-webkit-media-text-track-display]:top-auto! [&_video::-webkit-media-text-track-display]:bottom-[4%]! [&_video::-webkit-media-text-track-display]:mb-0! data-[state=fullscreen]:data-controls-visible:[&_video::-webkit-media-text-track-display]:bottom-[9%]! data-[state=fullscreen]:[&_video::-webkit-media-text-track-display]:bottom-[7%]! data-controls-visible:[&_video::-webkit-media-text-track-display]:bottom-[13%]!',
@@ -802,7 +802,7 @@ function MediaPlayerControls(props: DivProps) {
       data-visible={controlsVisible ? '' : undefined}
       dir={context.dir}
       className={cn(
-        'dark pointer-events-none absolute end-0 bottom-0 start-0 z-50 flex items-center gap-2 in-[:fullscreen]:px-6 px-4 in-[:fullscreen]:py-4 py-3 opacity-0 transition-opacity duration-200 data-visible:pointer-events-auto data-visible:opacity-100',
+        'pointer-events-none absolute end-0 bottom-0 start-0 z-50 flex items-center gap-2 in-[:fullscreen]:px-6 px-4 in-[:fullscreen]:py-4 py-3 opacity-0 transition-opacity duration-200 data-[visible]:pointer-events-auto data-[visible]:opacity-100',
         className,
       )}
       {...controlsProps}
@@ -1108,7 +1108,7 @@ function MediaPlayerControlsOverlay(props: DivProps) {
       data-visible={controlsVisible ? '' : undefined}
       {...overlayProps}
       className={cn(
-        'pointer-events-none absolute inset-0 -z-10 bg-linear-to-t from-black/80 to-transparent opacity-0 transition-opacity duration-200 data-visible:opacity-100',
+        'pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgb(0_0_0_/_0.8),transparent)] opacity-0 transition-opacity duration-200 data-[visible]:opacity-100',
         className,
       )}
     />
@@ -1152,7 +1152,7 @@ function MediaPlayerPlay(props: React.ComponentProps<typeof Button>) {
         disabled={isDisabled}
         {...playButtonProps}
         variant="ghost"
-        className={cn("size-8 p-0 [&_svg:not([class*='fill-'])]:fill-current", className)}
+        className={cn("h-8 w-8 shrink-0 p-0 [&_svg:not([class*='fill-'])]:fill-current", className)}
         onClick={onPlayToggle}
       >
         {children ?? (mediaPaused ? <PlayIcon /> : <PauseIcon />)}
@@ -1201,7 +1201,7 @@ function MediaPlayerSeekBackward(props: MediaPlayerSeekBackwardProps) {
         disabled={isDisabled}
         {...seekBackwardProps}
         variant="ghost"
-        className={cn('size-8 p-0', className)}
+        className={cn('h-8 w-8 shrink-0 p-0', className)}
         onClick={onSeekBackward}
       >
         {children ?? <RewindIcon />}
@@ -1250,7 +1250,7 @@ function MediaPlayerSeekForward(props: MediaPlayerSeekForwardProps) {
         disabled={isDisabled}
         {...seekForwardProps}
         variant="ghost"
-        className={cn('size-8 p-0', className)}
+        className={cn('h-8 w-8 shrink-0 p-0', className)}
         onClick={onSeekForward}
       >
         {children ?? <FastForwardIcon />}
@@ -1763,7 +1763,7 @@ function MediaPlayerSeek(props: MediaPlayerSeekProps) {
           role="presentation"
           aria-hidden="true"
           data-slot="media-player-seek-chapter-separator"
-          className="absolute top-0 h-full bg-background"
+          className="absolute top-0 h-full bg-dark-text"
           style={{
             width: '.1563rem',
             left: `${position}%`,
@@ -2081,7 +2081,7 @@ function MediaPlayerVolume(props: MediaPlayerVolumeProps) {
           data-slot="media-player-volume-trigger"
           data-state={mediaMuted ? 'on' : 'off'}
           variant="ghost"
-          className="size-8 p-0"
+          className="h-8 w-8 shrink-0 p-0"
           disabled={isDisabled}
           onClick={onMute}
         >
@@ -2173,7 +2173,7 @@ function MediaPlayerTime(props: MediaPlayerTimeProps) {
         data-variant={variant}
         dir={context.dir}
         {...timeProps}
-        className={cn('text-foreground/80 text-sm tabular-nums', className)}
+        className={cn('text-dark text-sm tabular-nums opacity-80', className)}
       >
         {times[variant]}
       </TimePrimitive>
@@ -2186,7 +2186,7 @@ function MediaPlayerTime(props: MediaPlayerTimeProps) {
       data-variant={variant}
       dir={context.dir}
       {...timeProps}
-      className={cn('flex items-center gap-1 text-foreground/80 text-sm', className)}
+      className={cn('flex items-center gap-1 text-dark text-sm opacity-80', className)}
     >
       <span className="tabular-nums">{times.current}</span>
       <span role="separator" aria-hidden="true" aria-valuenow={0} tabIndex={-1}>
@@ -2337,7 +2337,7 @@ function MediaPlayerLoop(props: React.ComponentProps<typeof Button>) {
         disabled={isDisabled}
         {...loopProps}
         variant="ghost"
-        className={cn('size-8 p-0', className)}
+        className={cn('h-8 w-8 shrink-0 p-0', className)}
         onClick={onLoopToggle}
       >
         {children ?? (isLooping ? <RepeatIcon className="text-muted-foreground" /> : <RepeatIcon />)}
@@ -2383,7 +2383,7 @@ function MediaPlayerFullscreen(props: React.ComponentProps<typeof Button>) {
         disabled={isDisabled}
         {...fullscreenProps}
         variant="ghost"
-        className={cn('size-8 p-0', className)}
+        className={cn('h-8 w-8 shrink-0 p-0', className)}
         onClick={onFullscreen}
       >
         {children ?? (isFullscreen ? <Minimize2Icon /> : <Maximize2Icon />)}
@@ -2447,7 +2447,7 @@ function MediaPlayerPiP(props: MediaPlayerPiPProps) {
         disabled={isDisabled}
         {...pipButtonProps}
         variant="ghost"
-        className={cn('size-8 p-0', className)}
+        className={cn('h-8 w-8 shrink-0 p-0', className)}
         onClick={onPictureInPicture}
       >
         {typeof children === 'function'
@@ -2494,7 +2494,7 @@ function MediaPlayerCaptions(props: React.ComponentProps<typeof Button>) {
         disabled={isDisabled}
         {...captionsProps}
         variant="ghost"
-        className={cn('size-8 p-0', className)}
+        className={cn('h-8 w-8 shrink-0 p-0', className)}
         onClick={onCaptionsToggle}
       >
         {children ?? (isSubtitlesActive ? <SubtitlesIcon /> : <CaptionsOffIcon />)}
@@ -2543,7 +2543,7 @@ function MediaPlayerDownload(props: React.ComponentProps<typeof Button>) {
         disabled={isDisabled}
         {...downloadProps}
         variant="ghost"
-        className={cn('size-8 p-0', className)}
+        className={cn('h-8 w-8 shrink-0 p-0', className)}
         onClick={onDownload}
       >
         {children ?? <DownloadIcon />}
@@ -2665,7 +2665,7 @@ function MediaPlayerSettings(props: MediaPlayerSettingsProps) {
             disabled={isDisabled}
             {...settingsProps}
             variant="ghost"
-            className={cn('size-8 p-0 aria-expanded:bg-accent/50', className)}
+            className={cn('h-8 w-8 shrink-0 p-0 aria-expanded:bg-accent/50', className)}
           >
             <SettingsIcon />
           </Button>
@@ -2807,7 +2807,11 @@ function MediaPlayerTooltip(props: MediaPlayerTooltipProps) {
 
   return (
     <Tooltip.Root>
-      <Tooltip.Trigger className="text-foreground focus-visible:ring-ring/50">{children}</Tooltip.Trigger>
+      {React.isValidElement(children) ? (
+        <Tooltip.Trigger render={children} />
+      ) : (
+        <Tooltip.Trigger className="focus-visible:ring-ring/50">{children}</Tooltip.Trigger>
+      )}
       <Tooltip.Content
         container={context.portalContainer as HTMLElement | null}
         sideOffset={context.tooltipSideOffset}
