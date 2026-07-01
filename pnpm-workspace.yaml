@@ -16,9 +16,9 @@ catalog:
   '@mdx-js/loader': ^3.1.0
   '@mdx-js/react': ^3.1.0
   '@rsbuild/core': ^2.0.1
-  '@storybook/addon-docs': 10.4.2
-  '@storybook/react': 10.4.2
-  '@storybook/react-vite': 10.4.2
+  '@storybook/addon-docs': 10.4.6
+  '@storybook/react': 10.4.6
+  '@storybook/react-vite': 10.4.6
   '@faker-js/faker': ^10.0.0
   '@testing-library/jest-dom': ^6.9.1
   '@testing-library/react': ^16.3.0
@@ -30,7 +30,7 @@ catalog:
   '@tanstack/router-plugin': ^1.167.23
   '@types/eslint': ^9.6.1
   '@types/node': ^25.2.2
-  '@types/react': ^19.2.7
+  '@types/react': ^19.2.17
   '@types/react-dom': ^19.2.3
   '@xstate/react': ^6.1.0
   '@xstate/store': ^3.14.1
@@ -40,7 +40,7 @@ catalog:
   esbuild: ^0.27.2
   autoprefixer: 10.4.24
   eslint: ^9.18.0
-  eslint-plugin-storybook: ^10.4.2
+  eslint-plugin-storybook: ^10.4.6
   glob: ^11.0.7
   husky: ^9.1.7
   jsdom: ^29.0.2
@@ -48,11 +48,11 @@ catalog:
   postcss: 8.5.10
   postcss-load-config: ^6.0.1
   prettier: ^3.8.1
-  react: 19.2.4
-  react-dom: 19.2.4
+  react: 19.2.7
+  react-dom: 19.2.7
   react-hook-form: ^7.71.1
   rollup-plugin-visualizer: ^5.14.0
-  storybook: 10.4.2
+  storybook: 10.4.6
   tailwind-merge: ^3.4.0
   tailwindcss: ^4.1.10
   tailwindcss-animate: ^1.0.7

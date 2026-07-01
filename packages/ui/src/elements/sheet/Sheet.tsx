@@ -153,7 +153,8 @@ const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
     const cleanupResizeRef = React.useRef<(() => void) | null>(null)
     const hasUserResizedRef = React.useRef(false)
     const isHorizontal = side === 'left' || side === 'right'
-    const parsedStyleWidth = React.useMemo(() => parseCssLengthToPixels(style?.width), [style?.width])
+    const staticStyle = typeof style === 'function' ? undefined : style
+    const parsedStyleWidth = React.useMemo(() => parseCssLengthToPixels(staticStyle?.width), [staticStyle?.width])
     const initialResizeWidth = React.useMemo(
       () => clampSheetWidth(parsedStyleWidth ?? resizeMinWidth, resizeMinWidth, resizeMaxWidth),
       [parsedStyleWidth, resizeMaxWidth, resizeMinWidth],
@@ -340,11 +341,19 @@ const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
                   transition={sheetPanelTransition}
                 />
               }
-              style={{
-                ...getRadiusStyles(radius),
-                ...style,
-                ...resizeStyle,
-              }}
+              style={
+                typeof style === 'function'
+                  ? state => ({
+                      ...getRadiusStyles(radius),
+                      ...(style(state) ?? {}),
+                      ...resizeStyle,
+                    })
+                  : {
+                      ...getRadiusStyles(radius),
+                      ...style,
+                      ...resizeStyle,
+                    }
+              }
               className={cn(sheetPanelBase, sheetPanelBySide[side], className)}
               {...props}
             >

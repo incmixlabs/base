@@ -31,6 +31,11 @@ import {
 } from './accordion.class'
 import { accordionRootPropDefs } from './accordion.props'
 
+type PrimitiveAccordionRootProps = Omit<
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root>,
+  'defaultValue' | 'onValueChange' | 'value'
+>
+type AccordionValue = string | string[]
 type AccordionSize = (typeof accordionRootPropDefs.size.values)[number]
 type AccordionTriggerIconPosition = (typeof accordionRootPropDefs.triggerIconPosition.values)[number]
 
@@ -54,13 +59,21 @@ const AccordionContext = React.createContext<AccordionContextValue>({
 
 const AccordionItemContext = React.createContext<{ isOpen: boolean }>({ isOpen: false })
 
-export interface AccordionRootProps extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root> {
+export interface AccordionRootProps extends PrimitiveAccordionRootProps {
   size?: AccordionSize
   border?: boolean
   triggerPadding?: boolean
   contentPadding?: boolean
   radius?: Radius
   triggerIconPosition?: AccordionTriggerIconPosition
+  value?: AccordionValue
+  defaultValue?: AccordionValue
+  onValueChange?: (value: AccordionValue, eventDetails: AccordionPrimitive.Root.ChangeEventDetails) => void
+}
+
+function normalizeAccordionValue(value: AccordionValue | undefined): string[] | undefined {
+  if (value === undefined) return undefined
+  return Array.isArray(value) ? value : [value]
 }
 
 // TODO(accordion-tests): Add component tests covering border={false}, triggerPadding={false},
@@ -80,6 +93,7 @@ const AccordionRoot = React.forwardRef<HTMLDivElement, AccordionRootProps>(
       value: valueProp,
       defaultValue,
       onValueChange: onValueChangeProp,
+      multiple,
       ...props
     },
     ref,
@@ -92,27 +106,27 @@ const AccordionRoot = React.forwardRef<HTMLDivElement, AccordionRootProps>(
     ) ?? accordionRootPropDefs.triggerIconPosition.default) as AccordionTriggerIconPosition
     const safeRadius = useThemeRadius(radiusProp)
     const rootRadiusStyles = getRadiusStyles(safeRadius)
+    const rootValue = normalizeAccordionValue(valueProp)
+    const rootDefaultValue = normalizeAccordionValue(defaultValue)
 
     const [openItems, setOpenItems] = React.useState<string[]>(() => {
-      const init = valueProp ?? defaultValue
-      if (!init) return []
-      return Array.isArray(init) ? init : [init]
+      return normalizeAccordionValue(valueProp ?? defaultValue) ?? []
     })
 
     React.useEffect(() => {
       if (valueProp !== undefined) {
-        setOpenItems(Array.isArray(valueProp) ? valueProp : [valueProp])
+        setOpenItems(normalizeAccordionValue(valueProp) ?? [])
       }
     }, [valueProp])
 
     const handleValueChange = React.useCallback(
-      (newValue: string | string[], eventDetails: unknown) => {
+      (newValue: string[], eventDetails: AccordionPrimitive.Root.ChangeEventDetails) => {
         if (valueProp === undefined) {
-          setOpenItems(Array.isArray(newValue) ? newValue : [newValue])
+          setOpenItems(newValue)
         }
-        ;(onValueChangeProp as (...args: unknown[]) => void)?.(newValue, eventDetails)
+        onValueChangeProp?.(multiple ? newValue : (newValue[0] ?? ''), eventDetails)
       },
-      [onValueChangeProp, valueProp],
+      [multiple, onValueChangeProp, valueProp],
     )
 
     return (
@@ -128,8 +142,9 @@ const AccordionRoot = React.forwardRef<HTMLDivElement, AccordionRootProps>(
       >
         <AccordionPrimitive.Root
           ref={ref}
-          value={valueProp}
-          defaultValue={defaultValue}
+          value={rootValue}
+          defaultValue={rootDefaultValue}
+          multiple={multiple}
           onValueChange={handleValueChange}
           className={
             typeof className === 'function'

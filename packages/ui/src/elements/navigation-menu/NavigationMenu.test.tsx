@@ -86,7 +86,7 @@ describe('NavigationMenu', () => {
 
     const root = screen
       .getAllByRole('navigation')
-      .find(element => element.getAttribute('aria-orientation') === 'horizontal')
+      .find(element => element.className.split(/\s+/).includes('max-w-full'))
     expect(root).toBeTruthy()
     expectClassTokens(root?.className, ['relative', 'z-10', 'flex', 'text-neutral'])
     expect(root?.className).not.toContain('NavigationMenu')
