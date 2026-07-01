@@ -7,6 +7,14 @@ export const tourSpotlightBase =
 export const tourSpotlightRingBase = 'pointer-events-none fixed z-50 border-primary ring-[3px] ring-primary/50'
 
 export const tourCloseBase =
-  "absolute top-4 right-4 inline-flex h-4 w-4 appearance-none items-center justify-center rounded-xs border-0 bg-transparent p-0 text-neutral opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+  'absolute top-4 right-4 inline-flex h-4 w-4 appearance-none cursor-pointer items-center justify-center rounded-xs border-0 bg-transparent p-0 opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:pointer-events-none'
 
-export const tourClassNames = [tourStepBase, tourSpotlightBase, tourSpotlightRingBase, tourCloseBase]
+export const tourControlButtonBase = 'h-6 px-2'
+
+export const tourClassNames = [
+  tourStepBase,
+  tourSpotlightBase,
+  tourSpotlightRingBase,
+  tourCloseBase,
+  tourControlButtonBase,
+]

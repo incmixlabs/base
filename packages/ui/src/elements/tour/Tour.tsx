@@ -12,10 +12,10 @@ import {
   shift,
   useFloating,
 } from '@floating-ui/react-dom'
-import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Button, type ButtonProps } from '@/elements/button/Button'
+import { Icon } from '@/elements/button/Icon'
 import { useAsRef } from '@/hooks/use-as-ref'
 import { useIsomorphicLayoutEffect } from '@/hooks/use-isomorphic-layout-effect'
 import { useLazyRef } from '@/hooks/use-lazy-ref'
@@ -24,7 +24,13 @@ import { useComposedRefs } from '@/lib/compose-refs'
 import { cn } from '@/lib/utils'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
-import { tourCloseBase, tourSpotlightBase, tourSpotlightRingBase, tourStepBase } from './tour.class'
+import {
+  tourCloseBase,
+  tourControlButtonBase,
+  tourSpotlightBase,
+  tourSpotlightRingBase,
+  tourStepBase,
+} from './tour.class'
 import {
   type TourAlign,
   type TourDirection,
@@ -1532,7 +1538,7 @@ function TourClose(props: TourCloseProps) {
       className={cn(tourCloseBase, defaultClassName, className)}
       onClick={onClick}
     >
-      {children ?? defaultChildren ?? <X className="size-4" />}
+      {children ?? defaultChildren ?? <Icon icon="close" size="md" color="neutral" />}
     </ClosePrimitive>
   )
 }
@@ -1568,7 +1574,7 @@ function TourPrev(props: ButtonProps) {
 
   const fallbackChildren = (
     <>
-      <ChevronLeft />
+      <Icon icon="chevron-left" size="xs" color="neutral" style={{ color: 'inherit' }} />
       {context.prevLabel}
     </>
   )
@@ -1587,7 +1593,7 @@ function TourPrev(props: ButtonProps) {
       variant="outline"
       {...defaultPrevButtonProps}
       {...prevButtonProps}
-      className={cn(defaultClassName, className)}
+      className={cn(tourControlButtonBase, defaultClassName, className)}
       onClick={onClick}
       disabled={disabled ?? defaultDisabled}
     >
@@ -1628,7 +1634,7 @@ function TourNext(props: ButtonProps) {
   const fallbackChildren = (
     <>
       {label}
-      {!isLastStep && <ChevronRight />}
+      {!isLastStep && <Icon icon="chevron-right" size="xs" color="neutral" style={{ color: 'inherit' }} />}
     </>
   )
   const buttonChildren = children ?? defaultChildren ?? fallbackChildren
@@ -1649,7 +1655,7 @@ function TourNext(props: ButtonProps) {
       size="xs"
       {...defaultNextButtonProps}
       {...nextButtonProps}
-      className={cn(defaultClassName, className)}
+      className={cn(tourControlButtonBase, defaultClassName, className)}
       onClick={onClick}
       disabled={disabled ?? defaultDisabled}
     >
@@ -1701,7 +1707,7 @@ function TourSkip(props: ButtonProps) {
       variant="outline"
       {...defaultSkipButtonProps}
       {...skipButtonProps}
-      className={cn(defaultClassName, className)}
+      className={cn(tourControlButtonBase, defaultClassName, className)}
       onClick={onClick}
       disabled={isRequiredStep || (disabled ?? defaultDisabled)}
     >
