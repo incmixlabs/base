@@ -12,6 +12,7 @@ import type { Color } from '@/theme/tokens'
 import { useFieldGroup } from './FieldGroupContext'
 import type { ExtendedFormSize } from './form-size'
 import { Label } from './Label'
+import { pickerOptionItemBase, pickerPopupBase } from './picker-popup.class'
 import type { SelectItemProps, SelectProps } from './select.props'
 import {
   floatingInputBaseCls,
@@ -91,7 +92,8 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
         <SelectPrimitive.Positioner sideOffset={4} className="z-50">
           <SelectPrimitive.Popup
             className={cn(
-              'isolate relative min-w-[8rem] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md',
+              'isolate relative min-w-[8rem]',
+              pickerPopupBase,
               'data-open:animate-in data-closed:animate-out',
               'data-closed:fade-out-0 data-open:fade-in-0',
               'data-closed:zoom-out-95 data-open:zoom-in-95',
@@ -225,8 +227,7 @@ export function SelectItem({ className, children, ...props }: SelectItemProps) {
     <SelectPrimitive.Item
       className={cn(
         'relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none',
-        'focus:bg-accent focus:text-accent-foreground',
-        'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+        pickerOptionItemBase,
         className,
       )}
       {...props}

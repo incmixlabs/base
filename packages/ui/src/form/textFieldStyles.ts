@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils'
-import type { Color } from '@/theme/tokens'
+import { cn } from '../lib/utils'
+import type { Color } from '../theme/tokens'
 
 /**
  * Shared text-field styling utilities.
@@ -13,46 +13,27 @@ import type { Color } from '@/theme/tokens'
 // Variant Styles - Input Focus (for single inputs like TextField)
 // ============================================================================
 
+const inputFocus =
+  'focus:border-primary focus:outline-solid focus:outline-2 focus:outline-offset-2 focus:outline-primary'
+
+const containerFocus =
+  'focus-within:border-primary focus-within:outline-solid focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary'
+
+const classicSurface = 'border border-neutral bg-neutral-surface text-neutral shadow-sm'
+const outlineSurface = 'border border-neutral bg-neutral-background text-neutral'
+const solidSurface = 'border-0 bg-primary-soft text-primary'
+const softSurface = 'border-0 bg-neutral-soft text-neutral'
+const ghostSurface = 'border-0 bg-transparent text-neutral'
+const ghostInteraction = 'hover:bg-neutral-soft focus:bg-neutral-soft'
+
 /** variantStyles export. */
 export const variantStyles: Record<string, string> = {
-  classic: cn(
-    'border border-input',
-    'bg-gradient-to-b from-background to-muted/30 text-foreground shadow-sm',
-    'focus:border-ring',
-    'focus:ring-2 focus:ring-ring focus:ring-offset-2',
-  ),
-  solid: cn(
-    'border-0',
-    'bg-primary/10 text-foreground',
-    'focus:bg-primary/15',
-    'focus:ring-2 focus:ring-ring focus:ring-offset-2',
-  ),
-  soft: cn(
-    'border-0',
-    'bg-secondary text-foreground',
-    'hover:bg-secondary/80',
-    'focus:bg-secondary/80',
-    'focus:ring-2 focus:ring-ring focus:ring-offset-2',
-  ),
-  surface: cn(
-    'border border-input',
-    'bg-background text-foreground shadow-sm',
-    'focus:border-ring',
-    'focus:ring-2 focus:ring-ring focus:ring-offset-2',
-  ),
-  outline: cn(
-    'border border-input',
-    'bg-background text-foreground',
-    'focus:border-ring',
-    'focus:ring-2 focus:ring-ring focus:ring-offset-2',
-  ),
-  ghost: cn(
-    'border-0',
-    'bg-transparent text-foreground',
-    'hover:bg-accent',
-    'focus:bg-accent',
-    'focus:ring-2 focus:ring-ring focus:ring-offset-2',
-  ),
+  classic: cn(classicSurface, inputFocus),
+  solid: cn(solidSurface, 'focus:bg-primary-soft-hover', inputFocus),
+  soft: cn(softSurface, 'hover:bg-neutral-soft-hover focus:bg-neutral-soft-hover', inputFocus),
+  surface: cn(outlineSurface, 'shadow-sm', inputFocus),
+  outline: cn(outlineSurface, inputFocus),
+  ghost: cn(ghostSurface, ghostInteraction, inputFocus),
 }
 
 // ============================================================================
@@ -61,44 +42,12 @@ export const variantStyles: Record<string, string> = {
 
 /** containerVariantStyles export. */
 export const containerVariantStyles: Record<string, string> = {
-  classic: cn(
-    'border border-input',
-    'bg-gradient-to-b from-background to-muted/30 text-foreground shadow-sm',
-    'focus-within:border-ring',
-    'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
-  ),
-  solid: cn(
-    'border-0',
-    'bg-primary/10 text-foreground',
-    'focus-within:bg-primary/15',
-    'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
-  ),
-  soft: cn(
-    'border-0',
-    'bg-secondary text-foreground',
-    'hover:bg-secondary/80',
-    'focus-within:bg-secondary/80',
-    'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
-  ),
-  surface: cn(
-    'border border-input',
-    'bg-background text-foreground shadow-sm',
-    'focus-within:border-ring',
-    'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
-  ),
-  outline: cn(
-    'border border-input',
-    'bg-background text-foreground',
-    'focus-within:border-ring',
-    'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
-  ),
-  ghost: cn(
-    'border-0',
-    'bg-transparent text-foreground',
-    'hover:bg-accent',
-    'focus-within:bg-accent',
-    'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
-  ),
+  classic: cn(classicSurface, containerFocus),
+  solid: cn(solidSurface, 'focus-within:bg-primary-soft-hover', containerFocus),
+  soft: cn(softSurface, 'hover:bg-neutral-soft-hover focus-within:bg-neutral-soft-hover', containerFocus),
+  surface: cn(outlineSurface, 'shadow-sm', containerFocus),
+  outline: cn(outlineSurface, containerFocus),
+  ghost: cn(ghostSurface, 'hover:bg-neutral-soft focus-within:bg-neutral-soft', containerFocus),
 }
 
 // ============================================================================
@@ -130,23 +79,35 @@ function colorRecord(defaultCls: string, semanticCls: string): Record<Color, str
 /** Color styles for single inputs (focus pseudo-class). */
 export const colorStyles = colorRecord(
   '',
-  'border-[color:var(--fc-primary)] focus:border-[color:var(--fc-primary)] focus:ring-[color:var(--fc-primary-alpha)]',
+  '[border-color:var(--fc-primary)] focus:[border-color:var(--fc-primary)] focus:[outline-color:var(--fc-primary-alpha)]',
 )
 
 /** Color styles for compound inputs (focus-within pseudo-class). */
 export const containerColorStyles = colorRecord(
   '',
-  'border-[color:var(--fc-primary)] focus-within:border-[color:var(--fc-primary)] focus-within:ring-[color:var(--fc-primary-alpha)]',
+  '[border-color:var(--fc-primary)] focus-within:[border-color:var(--fc-primary)] focus-within:[outline-color:var(--fc-primary-alpha)]',
 )
 
 /** Solid variant color styles (background colors). */
 export const solidColorStyles = colorRecord(
   '',
-  'bg-[color:var(--fc-soft-bg)] focus:bg-[color:var(--fc-soft-bg-hover)] focus-within:bg-[color:var(--fc-soft-bg-hover)] focus:ring-[color:var(--fc-primary-alpha)] focus-within:ring-[color:var(--fc-primary-alpha)]',
+  'bg-[color:var(--fc-soft-bg)] text-[color:var(--fc-text)] focus:bg-[color:var(--fc-soft-bg-hover)] focus-within:bg-[color:var(--fc-soft-bg-hover)] focus:[outline-color:var(--fc-primary-alpha)] focus-within:[outline-color:var(--fc-primary-alpha)]',
 )
 
 /** Highlight color styles for dropdowns/listboxes. */
-export const highlightColorStyles = colorRecord('bg-accent', 'bg-[color:var(--fc-soft-bg)] text-[color:var(--fc-text)]')
+export const highlightColorStyles = colorRecord(
+  'bg-accent-soft text-accent',
+  'bg-[color:var(--fc-soft-bg)] text-[color:var(--fc-text)]',
+)
+
+export const textFieldStylesClassNames = [
+  ...Object.values(variantStyles),
+  ...Object.values(containerVariantStyles),
+  ...Object.values(colorStyles),
+  ...Object.values(containerColorStyles),
+  ...Object.values(solidColorStyles),
+  ...Object.values(highlightColorStyles),
+]
 
 // ============================================================================
 // Helper Functions
