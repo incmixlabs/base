@@ -809,7 +809,7 @@ export function AppShellSecondarySidebar({
     <AppShellSecondary className={className} scroll="hidden" {...props}>
       <AppShellSecondaryContent gap="4">
         <Column data-slot="app-shell-secondary-sidebar-header" className={headerClassName} gap="4" pt="0">
-          <Flex align="center" gap="2" className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          <Flex align="center" gap="2" className="text-xs font-semibold uppercase tracking-wide text-muted">
             {title}
           </Flex>
           {description ? (
