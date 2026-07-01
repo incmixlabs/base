@@ -43,6 +43,7 @@ import {
   getDateFieldSurfaceClassName,
   getDateSegmentClassName,
 } from './date-field-shell'
+import { dateSurfaceFooterDivider, dateSurfacePopover } from './date-surface.shared.class'
 import { fromDateValue, toDateValue } from './date-value-boundary'
 import {
   buildHourOptions,
@@ -123,7 +124,11 @@ export function DateTimePicker({
   const [displayMonth, setDisplayMonth] = useState<Date>(() => startOfMonth(value ?? new Date()))
   const [showTimePicker, setShowTimePicker] = useState(false)
   const clockTriggerRef = useRef<HTMLButtonElement | null>(null)
-  const timeSnapshotRef = useRef<{ hours: number; minutes: number; seconds: number }>({
+  const timeSnapshotRef = useRef<{
+    hours: number
+    minutes: number
+    seconds: number
+  }>({
     hours: 0,
     minutes: 0,
     seconds: 0,
@@ -288,13 +293,26 @@ export function DateTimePicker({
       className="flex w-full min-w-0 flex-col gap-2"
     >
       {name ? <input type="text" hidden readOnly name={name} value={hiddenValue} /> : null}
-      <Group className={getDateFieldSurfaceClassName({ color, radius, variant, floatingStyle, textFieldSize })}>
+      <Group
+        className={getDateFieldSurfaceClassName({
+          color,
+          radius,
+          variant,
+          floatingStyle,
+          textFieldSize,
+        })}
+      >
         <DateInput className={dateSegmentInputClassName}>
           {segment => (
             <DateSegment
               segment={segment}
               className={({ type, isPlaceholder, isFocused, isFocusVisible }) =>
-                getDateSegmentClassName({ type, isPlaceholder, isFocused, isFocusVisible })
+                getDateSegmentClassName({
+                  type,
+                  isPlaceholder,
+                  isFocused,
+                  isFocusVisible,
+                })
               }
             />
           )}
@@ -319,7 +337,8 @@ export function DateTimePicker({
         isNonModal
         className={cn(
           datePickerTriggerGroupSizeStyles[size],
-          'z-50 border border-border bg-popover p-3 text-popover-foreground shadow-md outline-none',
+          dateSurfacePopover,
+          'z-50 p-3 outline-none',
           datePickerTriggerGroupRadiusStyles[radius],
           'data-[entering]:animate-in data-[exiting]:animate-out',
           'data-[entering]:fade-in-0 data-[exiting]:fade-out-0',
@@ -347,7 +366,7 @@ export function DateTimePicker({
             />
 
             {/* Clock trigger footer */}
-            <Flex align="center" justify="center" className="border-t border-border mt-2 pt-2">
+            <Flex align="center" justify="center" className={cn('mt-2 pt-2', dateSurfaceFooterDivider)}>
               <Button
                 ref={clockTriggerRef}
                 type="button"
@@ -379,7 +398,8 @@ export function DateTimePicker({
                   role="dialog"
                   aria-label="Select time"
                   className={cn(
-                    'absolute inset-x-0 z-50 flex flex-col items-center overflow-hidden border border-border bg-popover p-1 shadow-md',
+                    'absolute inset-x-0 z-50 flex flex-col items-center overflow-hidden p-1',
+                    dateSurfacePopover,
                     datePickerTriggerGroupRadiusStyles[radius],
                   )}
                   style={
@@ -400,7 +420,9 @@ export function DateTimePicker({
                 >
                   <WheelPickerWrapper
                     className="!border-0 !rounded-none !bg-transparent !p-0 !shadow-none"
-                    style={{ width: `calc(${cellSize} * ${showSeconds ? 6 : 4})` }}
+                    style={{
+                      width: `calc(${cellSize} * ${showSeconds ? 6 : 4})`,
+                    }}
                   >
                     <WheelPicker<number>
                       options={hourOptions}
@@ -423,7 +445,7 @@ export function DateTimePicker({
                       />
                     )}
                   </WheelPickerWrapper>
-                  <Flex align="center" justify="center" gap="2" className="border-t border-border" px="2" py="1">
+                  <Flex align="center" justify="center" gap="2" className={dateSurfaceFooterDivider} px="2" py="1">
                     <Button
                       type="button"
                       variant="ghost"

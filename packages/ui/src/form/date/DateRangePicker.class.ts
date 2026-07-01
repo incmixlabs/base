@@ -1,7 +1,14 @@
 import { semanticColorKeys } from '../../theme/props/color.prop'
 import type { Color } from '../../theme/tokens'
 import type { DateSize } from './date.props'
-import { dateElementRadiusStyles } from './date-surface.shared.class'
+import {
+  dateElementRadiusStyles,
+  dateSurfaceButtonFrame,
+  dateSurfaceDayHover,
+  dateSurfaceDayMutedState,
+  dateSurfaceFocusOutline,
+  dateSurfaceInputFrame,
+} from './date-surface.shared.class'
 
 const joinClass = (...parts: string[]) => parts.join('')
 
@@ -16,8 +23,10 @@ export const rangeTriggerGroupSizeStyles = {
   '2x': 'gap-3.5',
 } as const satisfies Record<DateSize, string>
 
-export const rangeInputSurface =
-  'flex items-center rounded-[var(--element-border-radius,var(--radius-md))] border border-solid border-border bg-background transition-[background-color,border-color,box-shadow] duration-150 ease-in-out focus-within:border-ring focus-within:[box-shadow:0_0_0_2px_color-mix(in_srgb,var(--ring)_24%,transparent)]'
+export const rangeInputSurface = [
+  'flex items-center rounded-[var(--element-border-radius,var(--radius-md))]',
+  dateSurfaceInputFrame,
+].join(' ')
 
 export const rangeInputSurfaceSizeStyles = {
   xs: 'h-6 min-w-[calc(7rem*2+0.25rem)] gap-1 px-2 py-1',
@@ -39,8 +48,10 @@ export const rangeDateInputSizeStyles = {
   '2x': 'min-w-[13rem] text-2xl leading-[1.875rem]',
 } as const satisfies Record<DateSize, string>
 
-export const rangeCalendarButton =
-  'inline-flex items-center justify-center rounded-[var(--element-border-radius,var(--radius-md))] border border-solid border-border bg-background transition-[background-color,border-color,box-shadow] duration-150 ease-in-out focus-visible:border-ring focus-visible:[box-shadow:0_0_0_2px_color-mix(in_srgb,var(--ring)_24%,transparent)]'
+export const rangeCalendarButton = [
+  'inline-flex items-center justify-center rounded-[var(--element-border-radius,var(--radius-md))]',
+  dateSurfaceButtonFrame,
+].join(' ')
 
 export const rangeCalendarButtonSizeStyles = {
   xs: 'h-6 w-6',
@@ -122,8 +133,12 @@ export const rangeCalendarMonthHeadingButtonSizeStyles = {
   '2x': 'gap-3.5 text-3xl leading-9',
 } as const satisfies Record<DateSize, string>
 
-export const rangeCalendarDayInteractive =
-  'appearance-none border-0 bg-transparent p-0 m-0 font-[inherit] text-inherit cursor-pointer text-center outline-none data-[outside-month]:text-muted-foreground/60 data-[unavailable]:text-muted-foreground/60 data-[unavailable]:line-through [&:hover:not([data-unavailable]):not([data-selected])]:bg-accent data-[unavailable]:hover:bg-transparent focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-default disabled:opacity-100'
+export const rangeCalendarDayInteractive = [
+  'appearance-none border-0 bg-transparent p-0 m-0 font-[inherit] text-inherit cursor-pointer text-center outline-none data-[unavailable]:line-through disabled:cursor-default disabled:opacity-100',
+  dateSurfaceDayMutedState,
+  dateSurfaceDayHover,
+  dateSurfaceFocusOutline,
+].join(' ')
 
 export const rangeTriggerGroupRadiusStyles = dateElementRadiusStyles
 

@@ -64,6 +64,7 @@ import {
   getDateFieldSurfaceClassName,
   getDateSegmentClassName,
 } from './date-field-shell'
+import { dateSurfaceIconText, dateSurfacePopover } from './date-surface.shared.class'
 import { fromDateValue, toDateValue } from './date-value-boundary'
 
 export interface DatePickerProps {
@@ -391,7 +392,8 @@ export function DatePicker({
         className={cn(
           datePickerCalendarButton,
           datePickerCalendarButtonSizeStyles[size],
-          'text-muted-foreground transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-50',
+          dateSurfaceIconText,
+          'disabled:pointer-events-none disabled:opacity-50',
         )}
       >
         <CalendarIcon className={cn(datePickerCalendarIcon, datePickerCalendarIconControlSizeStyles[size])} />
@@ -448,7 +450,8 @@ export function DatePicker({
                 datePickerCalendarPopover,
                 datePickerCalendarPopoverSizeStyles[size],
                 datePickerTriggerGroupRadiusStyles[radius],
-                'z-50 overflow-auto border border-border bg-popover text-popover-foreground shadow-md outline-none',
+                dateSurfacePopover,
+                'z-50 overflow-auto outline-none',
               )}
               style={calendarPopoverStyle}
             >
@@ -479,7 +482,7 @@ export function DatePicker({
             )}
           </div>
           {inputValidationError ? (
-            <p id={generatedErrorId} className="text-sm text-destructive">
+            <p id={generatedErrorId} className="text-sm text-error">
               {inputValidationError}
             </p>
           ) : null}
@@ -521,7 +524,13 @@ export function DatePicker({
         className={cn(
           datePickerTriggerGroupBase,
           datePickerTriggerGroupSizeStyles[size],
-          getDateFieldSurfaceClassName({ color, radius, variant, floatingStyle, textFieldSize }),
+          getDateFieldSurfaceClassName({
+            color,
+            radius,
+            variant,
+            floatingStyle,
+            textFieldSize,
+          }),
         )}
       >
         <DateInput className={dateSegmentInputClassName}>
@@ -529,7 +538,12 @@ export function DatePicker({
             <DateSegment
               segment={segment}
               className={({ type, isPlaceholder, isFocused, isFocusVisible }) =>
-                getDateSegmentClassName({ type, isPlaceholder, isFocused, isFocusVisible })
+                getDateSegmentClassName({
+                  type,
+                  isPlaceholder,
+                  isFocused,
+                  isFocusVisible,
+                })
               }
             />
           )}
@@ -546,7 +560,8 @@ export function DatePicker({
           datePickerCalendarPopover,
           datePickerCalendarPopoverSizeStyles[size],
           datePickerTriggerGroupRadiusStyles[radius],
-          'z-50 max-h-[85vh] overflow-auto border border-border bg-popover text-popover-foreground shadow-md outline-none',
+          dateSurfacePopover,
+          'z-50 max-h-[85vh] overflow-auto outline-none',
           'data-[entering]:animate-in data-[exiting]:animate-out',
           'data-[entering]:fade-in-0 data-[exiting]:fade-out-0',
           'data-[entering]:zoom-in-95 data-[exiting]:zoom-out-95',

@@ -8,6 +8,7 @@ import { WheelPicker, WheelPickerWrapper } from '@/elements/wheel-picker/wheel-p
 import { cn } from '@/lib/utils'
 import type { Color, Radius } from '@/theme/tokens'
 import { DateCalendarNavButton } from './DateCalendarNavButton'
+import { dateSurfaceTextHover } from './date-surface.shared.class'
 
 export interface DateCalendarHeaderProps {
   title: React.ReactNode
@@ -247,7 +248,8 @@ export function DateCalendarHeader({
             onClick={handleTitleClick}
             className={cn(
               'inline-flex max-w-full items-center justify-center gap-1 truncate text-sm font-medium select-none',
-              'cursor-pointer transition-colors hover:text-foreground/60',
+              'cursor-pointer transition-colors',
+              dateSurfaceTextHover,
               'appearance-none border-0 bg-transparent p-0 m-0 text-inherit font-inherit',
               titleClassName,
             )}

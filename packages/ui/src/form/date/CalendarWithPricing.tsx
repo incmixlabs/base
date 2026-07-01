@@ -15,6 +15,7 @@ import { DateCalendarPanel, type DayRenderState } from './DateCalendarPanel'
 import type { WeekStartsOn } from './date.props'
 import { type DateSize, isDateSize } from './date.props'
 import { normalizeDay, toDayKey } from './date-calendar-core'
+import { dateSurfaceText } from './date-surface.shared.class'
 
 export interface DayPrice {
   /** The date */
@@ -131,8 +132,7 @@ export const CalendarWithPricing = forwardRef<HTMLDivElement, CalendarWithPricin
             pricingDayCellRadiusStyles[radius],
             pricingDayInteractive,
             pricingSelectedColorStyles[color],
-            'text-foreground',
-            'data-[outside-month]:text-muted-foreground/60',
+            dateSurfaceText,
           )}
           onClick={() => {
             if (nonInteractive) return

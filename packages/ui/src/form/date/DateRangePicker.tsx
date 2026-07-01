@@ -71,6 +71,12 @@ import {
   dateCalendarNavButtonSizeStyles,
   dateCalendarNavIcon,
   dateCalendarNavIconSizeStyles,
+  dateSurfaceFocusOutline,
+  dateSurfaceIconText,
+  dateSurfaceMutedText,
+  dateSurfacePopover,
+  dateSurfaceText,
+  dateSurfaceTextHover,
 } from './date-surface.shared.class'
 import { toDateValue } from './date-value-boundary'
 import { MonthYearPicker } from './MonthYearPicker'
@@ -149,7 +155,9 @@ export function DateRangePicker({
   const selectedRange = isControlled ? value : uncontrolledValue
 
   /* ── Always controlled for AriaDateRangePicker (both modes use custom calendar) ── */
-  const pickerValueProps = { value: toDateRangeValue(selectedRange) ?? undefined }
+  const pickerValueProps = {
+    value: toDateRangeValue(selectedRange) ?? undefined,
+  }
 
   /* ── Unavailable dates ── */
   const unavailableDateKeys = new Set((disabledDates ?? []).map(d => toDayKey(normalizeDay(d))))
@@ -297,8 +305,7 @@ export function DateRangePicker({
           rangeCalendarCellSizeStyles[size],
           rangeCalendarDayInteractive,
           rangeCalendarSelectedColorStyles[color],
-          'text-foreground',
-          'data-[outside-month]:text-muted-foreground/60',
+          dateSurfaceText,
         )}
         onClick={() => {
           if (nonInteractive) return
@@ -314,7 +321,8 @@ export function DateRangePicker({
   const calendarNavButtonClass = cn(
     'inline-flex items-center justify-center shrink-0 select-none appearance-none cursor-pointer',
     'p-0 m-0 leading-none rounded-sm transition-colors',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+    'focus-visible:outline-none',
+    dateSurfaceFocusOutline,
     'disabled:pointer-events-none disabled:opacity-50',
     iconButtonBase,
     dateCalendarNavButton,
@@ -326,7 +334,12 @@ export function DateRangePicker({
     <DateSegment
       segment={segment}
       className={({ type, isPlaceholder, isFocused, isFocusVisible }) =>
-        getDateSegmentClassName({ type, isPlaceholder, isFocused, isFocusVisible })
+        getDateSegmentClassName({
+          type,
+          isPlaceholder,
+          isFocused,
+          isFocusVisible,
+        })
       }
     />
   )
@@ -339,7 +352,7 @@ export function DateRangePicker({
     floatingStyle
       ? 'flex min-w-0 flex-1 items-center gap-0 text-[var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]'
       : cn(rangeDateInput, rangeDateInputSizeStyles[size]),
-    'text-foreground',
+    dateSurfaceText,
   )
 
   const picker = (
@@ -379,7 +392,13 @@ export function DateRangePicker({
         className={cn(
           rangeTriggerGroupBase,
           rangeTriggerGroupSizeStyles[size],
-          getDateFieldSurfaceClassName({ color, radius, variant, floatingStyle, textFieldSize }),
+          getDateFieldSurfaceClassName({
+            color,
+            radius,
+            variant,
+            floatingStyle,
+            textFieldSize,
+          }),
         )}
       >
         <div
@@ -391,7 +410,7 @@ export function DateRangePicker({
           <DateInput slot="start" className={dateInputClassName}>
             {renderDateSegment}
           </DateInput>
-          <span aria-hidden className="text-muted-foreground">
+          <span aria-hidden className={dateSurfaceMutedText}>
             -
           </span>
           <DateInput slot="end" className={dateInputClassName}>
@@ -403,7 +422,7 @@ export function DateRangePicker({
           className={cn(
             floatingStyle ? [dateIconSlotClassName, dateGhostIconButtonClassName] : rangeCalendarButton,
             !floatingStyle && rangeCalendarButtonSizeStyles[size],
-            'text-muted-foreground transition-colors hover:text-foreground',
+            dateSurfaceIconText,
           )}
         >
           <CalendarIcon className={cn(rangeCalendarIcon, rangeCalendarIconSizeStyles[size])} />
@@ -423,7 +442,8 @@ export function DateRangePicker({
           'data-[placement=top]:data-[entering]:slide-in-from-bottom-2',
           rangeCalendarPopover,
           rangeCalendarPopoverSizeStyles[size],
-          'z-50 max-h-[85vh] overflow-auto border border-border bg-popover text-popover-foreground shadow-md',
+          dateSurfacePopover,
+          'z-50 max-h-[85vh] overflow-auto',
           rangeTriggerGroupRadiusStyles[radius],
         )}
       >
@@ -451,7 +471,9 @@ export function DateRangePicker({
                     rangeCalendarMonthHeadingButton,
                     rangeCalendarMonthHeadingButtonSizeStyles[size],
                     'inline-flex max-w-full items-center justify-center truncate font-medium select-none',
-                    'cursor-pointer transition-colors hover:text-foreground/60',
+                    dateSurfaceText,
+                    'cursor-pointer transition-colors',
+                    dateSurfaceTextHover,
                     'appearance-none border-0 bg-transparent p-0 m-0 text-inherit font-inherit',
                   )}
                   onClick={() => setMonthYearPickerPanel(0)}
@@ -469,7 +491,9 @@ export function DateRangePicker({
                     rangeCalendarMonthHeadingButton,
                     rangeCalendarMonthHeadingButtonSizeStyles[size],
                     'inline-flex max-w-full items-center justify-center truncate font-medium select-none',
-                    'cursor-pointer transition-colors hover:text-foreground/60',
+                    dateSurfaceText,
+                    'cursor-pointer transition-colors',
+                    dateSurfaceTextHover,
                     'appearance-none border-0 bg-transparent p-0 m-0 text-inherit font-inherit',
                   )}
                   onClick={() => setMonthYearPickerPanel(1)}

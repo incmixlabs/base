@@ -47,6 +47,61 @@ export const dateCalendarNavIcon = 'shrink-0'
 
 export const dateCalendarMonthPickerIcon = 'h-[48%] w-[48%] shrink-0 opacity-85'
 
+export const dateSurfaceControlFrame = 'border border-solid border-neutral bg-neutral-background text-neutral'
+
+const dateSurfaceFocusRingStyle =
+  '[border-color:var(--color-primary-border)] [box-shadow:0_0_0_2px_var(--color-primary-primary-alpha)]'
+
+const prefixDateSurfaceFocusRing = (prefix: 'focus-within' | 'focus-visible') =>
+  dateSurfaceFocusRingStyle
+    .split(' ')
+    .map(className => `${prefix}:${className}`)
+    .join(' ')
+
+export const dateSurfaceFocusWithin = prefixDateSurfaceFocusRing('focus-within')
+
+export const dateSurfaceFocusVisible = prefixDateSurfaceFocusRing('focus-visible')
+
+export const dateSurfaceFocusOutline =
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
+
+export const dateSurfaceFrameTransition =
+  'transition-[background-color,border-color,box-shadow] duration-150 ease-in-out'
+
+export const dateSurfaceInputFrame = [dateSurfaceControlFrame, dateSurfaceFocusWithin, dateSurfaceFrameTransition].join(
+  ' ',
+)
+
+export const dateSurfaceButtonFrame = [
+  dateSurfaceControlFrame,
+  dateSurfaceFocusVisible,
+  dateSurfaceFrameTransition,
+].join(' ')
+
+export const dateSurfacePopover = 'border border-neutral bg-neutral-surface text-neutral shadow-md'
+
+export const dateSurfacePanel = 'border border-neutral bg-neutral-background text-neutral'
+
+export const dateSurfaceDivider = 'border-neutral'
+
+export const dateSurfaceFooterDivider = `border-t ${dateSurfaceDivider}`
+
+export const dateSurfaceText = 'text-neutral'
+
+export const dateSurfaceMutedText = 'text-muted'
+
+export const dateSurfaceSubtleText = 'text-muted opacity-60'
+
+export const dateSurfaceTextHover = 'hover:text-neutral hover:opacity-70'
+
+export const dateSurfaceIconText = 'text-muted transition-colors hover:text-neutral hover:opacity-100'
+
+export const dateSurfaceDayMutedState =
+  'data-[outside-month]:text-muted data-[outside-month]:opacity-60 data-[unavailable]:text-muted data-[unavailable]:opacity-60'
+
+export const dateSurfaceDayHover =
+  '[&:hover:not([data-unavailable]):not([data-selected])]:bg-accent-soft data-[unavailable]:hover:bg-transparent'
+
 export const dateCalendarNavButtonSizeStyles = {
   xs: 'h-7 w-7',
   sm: 'h-8 w-8',
@@ -72,6 +127,24 @@ export const dateSurfaceSharedClassNames = [
   ...Object.values(dateCalendarNavButtonColorStyles).flatMap(variantMap => Object.values(variantMap)),
   dateCalendarNavIcon,
   dateCalendarMonthPickerIcon,
+  dateSurfaceControlFrame,
+  dateSurfaceFocusWithin,
+  dateSurfaceFocusVisible,
+  dateSurfaceFocusOutline,
+  dateSurfaceFrameTransition,
+  dateSurfaceInputFrame,
+  dateSurfaceButtonFrame,
+  dateSurfacePopover,
+  dateSurfacePanel,
+  dateSurfaceDivider,
+  dateSurfaceFooterDivider,
+  dateSurfaceText,
+  dateSurfaceMutedText,
+  dateSurfaceSubtleText,
+  dateSurfaceTextHover,
+  dateSurfaceIconText,
+  dateSurfaceDayMutedState,
+  dateSurfaceDayHover,
   ...Object.values(dateCalendarNavButtonSizeStyles),
   ...Object.values(dateCalendarNavIconSizeStyles),
 ]

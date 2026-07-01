@@ -27,7 +27,13 @@ import { type DateSize, isDateSize } from './date.props'
 import { normalizeDay, toDayKey } from './date-calendar-core'
 import { calendarArrowKeyMoves, isCalendarArrowKey } from './date-keyboard'
 import { mapDateSizeToButtonSize } from './date-size-maps'
-import { dateElementRadiusStyles } from './date-surface.shared.class'
+import {
+  dateElementRadiusStyles,
+  dateSurfaceFocusOutline,
+  dateSurfaceMutedText,
+  dateSurfaceText,
+  dateSurfaceTextHover,
+} from './date-surface.shared.class'
 import { MonthYearPicker } from './MonthYearPicker'
 import { useDateCalendar } from './useDateCalendar'
 
@@ -234,7 +240,8 @@ export function DateCalendarPanel({
   const calendarNavButtonClass = cn(
     'inline-flex items-center justify-center shrink-0 select-none appearance-none cursor-pointer',
     'p-0 m-0 leading-none rounded-sm transition-colors',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+    'focus-visible:outline-none',
+    dateSurfaceFocusOutline,
     'disabled:pointer-events-none disabled:opacity-50',
     iconButtonBase,
     iconButtonSizeVariants[mapDateSizeToButtonSize(size)],
@@ -276,8 +283,10 @@ export function DateCalendarPanel({
             className={cn(
               datePickerCalendarHeadingSizeStyles[size],
               datePickerCalendarHeadingButton,
-              'inline-flex items-center justify-center font-medium text-foreground select-none',
-              'cursor-pointer transition-colors hover:text-foreground/60',
+              'inline-flex items-center justify-center font-medium select-none',
+              dateSurfaceText,
+              'cursor-pointer transition-colors',
+              dateSurfaceTextHover,
               'appearance-none border-0 bg-transparent p-0 m-0 text-inherit font-inherit',
               'disabled:pointer-events-none disabled:opacity-50',
             )}
@@ -288,7 +297,7 @@ export function DateCalendarPanel({
           </button>
         ) : (
           <span
-            className={cn(datePickerCalendarHeadingSizeStyles[size], 'font-medium text-foreground select-none')}
+            className={cn(datePickerCalendarHeadingSizeStyles[size], 'font-medium select-none', dateSurfaceText)}
             role="heading"
             aria-level={2}
           >
@@ -344,7 +353,8 @@ export function DateCalendarPanel({
         className={cn(
           datePickerCalendarWeekdayGrid,
           datePickerCalendarGridSizeStyles[size],
-          'text-center text-muted-foreground',
+          'text-center',
+          dateSurfaceMutedText,
         )}
       >
         {weekDayLabels.map((label, index) => (
@@ -407,8 +417,7 @@ export function DateCalendarPanel({
                 datePickerCalendarCellRadiusStyles[radius],
                 datePickerCalendarDayInteractive,
                 datePickerCalendarSelectedColorStyles[color],
-                'text-foreground',
-                'data-[outside-month]:text-muted-foreground/60',
+                dateSurfaceText,
               )}
               onClick={() => {
                 if (unavailable || isDisabled) return

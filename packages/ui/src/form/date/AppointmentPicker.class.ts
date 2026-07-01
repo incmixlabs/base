@@ -1,8 +1,9 @@
 import { semanticColorKeys } from '../../theme/props/color.prop'
 import type { Color } from '../../theme/tokens'
 import type { DateSize } from './date.props'
+import { dateSurfacePanel, dateSurfaceText } from './date-surface.shared.class'
 
-export const appointmentPickerRoot = 'border border-solid border-border bg-background'
+export const appointmentPickerRoot = dateSurfacePanel
 
 export const appointmentPickerRootDisabled = 'opacity-50 pointer-events-none'
 
@@ -20,7 +21,10 @@ export const appointmentPickerTitle = 'font-semibold'
 export const appointmentPickerTitleSizeStyles = appointmentPickerSizeStyles
 
 export const appointmentPickerSlotHoverColorStyles: Record<Color, string> = Object.fromEntries(
-  semanticColorKeys.map(color => [color, `hover:!bg-${color}-soft hover:!text-foreground`]),
+  semanticColorKeys.map(color => [
+    color,
+    [`hover:!bg-${color}-soft`, ...dateSurfaceText.split(' ').map(className => `hover:!${className}`)].join(' '),
+  ]),
 ) as Record<Color, string>
 
 export const appointmentPickerFooterText = ''
