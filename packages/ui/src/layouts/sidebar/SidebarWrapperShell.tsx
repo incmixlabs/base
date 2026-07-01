@@ -68,7 +68,7 @@ export function SidebarWrapperShell({
       onOpenChange={onOpenChange}
       defaultSecondaryOpen={defaultSecondaryOpen}
       secondaryLabel={typeof secondaryTitle === 'string' ? secondaryTitle : 'Secondary panel'}
-      className={cn('bg-background', className)}
+      className={cn('bg-neutral-background', className)}
     >
       <AppShell.Body className="min-w-0">
         <AppShell.Sidebar variant={variant} collapsible={collapsible} color={color} side={side}>

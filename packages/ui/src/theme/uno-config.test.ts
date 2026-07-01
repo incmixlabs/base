@@ -13,4 +13,10 @@ describe('base Uno config', () => {
     expect(unoConfigSource).not.toContain('semanticMutedTextColor')
     expect(unoConfigSource).not.toContain("foreground: 'color-mix")
   })
+
+  it('generates semantic background role utilities', () => {
+    expect(unoConfigSource).toContain('solid|soft|surface|background')
+    expect(unoConfigSource).toContain('background: `var(--color-${color}-background)`')
+    expect(unoConfigSource).toContain('`bg-${color}-background`')
+  })
 })

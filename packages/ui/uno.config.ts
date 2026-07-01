@@ -189,6 +189,7 @@ import {
   gridTemplateRowsCustomResponsive,
 } from './src/layouts/grid/Grid.classes'
 import { headerRoot, headerSticky } from './src/layouts/header/header.class'
+import { layoutFocusClassNames } from './src/layouts/layout-focus.class'
 import {
   sectionBase,
   sectionBaseCls,
@@ -546,6 +547,7 @@ export default defineConfig({
       // Header styles
       headerRoot,
       headerSticky,
+      ...splitClasses(layoutFocusClassNames),
       // Sidebar styles
       ...splitClasses(sidebarClassNames),
       // Section styles
