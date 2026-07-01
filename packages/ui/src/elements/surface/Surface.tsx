@@ -10,7 +10,6 @@ import type { Radius, SurfaceColorKey } from '@/theme/tokens'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
   surfaceHighContrastByVariant,
-  surfaceHoverEnabledClass,
   surfaceShapeVariants,
   surfaceSquare,
   surfaceUnoColorVariants,
@@ -82,7 +81,6 @@ export const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(
           'border-solid',
           radiusClassByToken[radius],
           colorVariantClassName,
-          safeHover && surfaceHoverEnabledClass,
           safeHover && surfaceUnoHoverColorVariants[safeColor][safeVariant],
           safeFocus && surfaceUnoFocusColorVariants[safeColor],
           safeSelected && surfaceUnoSelectedColorVariants[safeColor],

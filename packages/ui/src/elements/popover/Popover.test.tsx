@@ -51,11 +51,12 @@ describe('Popover', () => {
       'bg-neutral-surface',
       'border-neutral',
       'text-neutral',
+      '[fill:var(--color-neutral-surface)]',
       '[box-shadow:var(--shadow-xs)]',
     ])
 
-    const arrow = document.body.querySelector('.surface-floating-arrow')
+    const arrow = document.body.querySelector('svg')?.parentElement
     expect(arrow).not.toBeNull()
-    expectClassTokens(arrow?.className, ['[fill:var(--color-neutral-surface)]', '[color:var(--color-neutral-border)]'])
+    expectClassTokens(arrow?.className, ['flex'])
   })
 })

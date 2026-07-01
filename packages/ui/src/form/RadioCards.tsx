@@ -4,9 +4,10 @@ import { Radio as RadioPrimitive } from '@base-ui/react/radio'
 import { RadioGroup as RadioGroupPrimitive } from '@base-ui/react/radio-group'
 import * as React from 'react'
 import {
-  surfaceColorVariants,
   surfaceHighContrastByVariant,
-  surfaceHoverEnabledClass,
+  surfaceUnoColorVariants,
+  surfaceUnoHighContrastColorVariants,
+  surfaceUnoHoverColorVariants,
 } from '@/elements/surface/surface.class'
 import { getSpacingClasses } from '@/layouts/layout-utils'
 import { cn } from '@/lib/utils'
@@ -206,6 +207,7 @@ const RadioCardsItem = React.forwardRef<HTMLButtonElement, RadioCardsItemProps>(
     const context = React.useContext(RadioCardsContext)
     const safeDisabled = normalizeBooleanPropValue(radioCardsRootPropDefs.disabled, disabled) ?? false
     const isDisabled = safeDisabled || context.disabled
+    const surfaceVariant = context.variant === 'surface' ? 'surface' : 'classic'
 
     return (
       <RadioPrimitive.Root
@@ -215,10 +217,12 @@ const RadioCardsItem = React.forwardRef<HTMLButtonElement, RadioCardsItemProps>(
         className={cn(
           radioCardRootBase,
           radioCardPaddingVariants[context.size],
-          surfaceColorVariants[context.color][context.variant === 'surface' ? 'surface' : 'classic'],
-          !isDisabled && surfaceHoverEnabledClass,
+          context.highContrast
+            ? surfaceUnoHighContrastColorVariants[context.color][surfaceVariant]
+            : surfaceUnoColorVariants[context.color][surfaceVariant],
+          !isDisabled && surfaceUnoHoverColorVariants[context.color][surfaceVariant],
           context.highContrast && 'af-high-contrast',
-          context.highContrast && surfaceHighContrastByVariant[context.variant === 'surface' ? 'surface' : 'classic'],
+          context.highContrast && surfaceHighContrastByVariant[surfaceVariant],
           radioCardRootColorVariants[context.color],
           // Disabled state
           isDisabled && 'cursor-not-allowed opacity-50',

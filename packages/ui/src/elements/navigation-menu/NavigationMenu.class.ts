@@ -76,11 +76,13 @@ export const navigationMenuPopupByVariant = {
   solid: cls(
     '[background-color:var(--color-neutral-background)]',
     '[border-color:var(--color-neutral-border)]',
+    '[fill:var(--color-neutral-background)]',
     '[box-shadow:0_18px_48px_color-mix(in_oklch,black_16%,transparent),0_4px_16px_color-mix(in_oklch,black_10%,transparent)]',
   ),
   soft: cls(
     '[background-color:var(--color-neutral-surface)]',
     '[border-color:var(--color-neutral-border-subtle)]',
+    '[fill:var(--color-neutral-surface)]',
     'backdrop-saturate-[140%] backdrop-blur-[10px]',
     '[box-shadow:inset_0_1px_0_var(--color-panel-highlight),0_18px_48px_color-mix(in_oklch,black_12%,transparent),0_4px_16px_color-mix(in_oklch,black_8%,transparent)]',
   ),
@@ -127,11 +129,6 @@ export const navigationMenuSimpleLinkBase = cls(
   'data-[active]:[color:var(--af-navigation-menu-accent-text)]',
   '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--af-navigation-menu-accent-primary)]',
 )
-
-export const navigationMenuArrowByVariant = {
-  solid: '[fill:var(--color-neutral-background)] [color:var(--color-neutral-border)]',
-  soft: '[fill:var(--color-neutral-surface)] [color:var(--color-neutral-border-subtle)]',
-} as const satisfies Record<NavigationMenuVariant, string>
 
 export const navigationMenuBackdropBase =
   'fixed inset-0 [background-color:color-mix(in_oklch,black_8%,transparent)] backdrop-blur-[1px]'
@@ -180,7 +177,6 @@ export const navigationMenuClassNames = [
   navigationMenuLinkDescriptionBase,
   ...Object.values(navigationMenuLinkDescriptionBySize),
   navigationMenuSimpleLinkBase,
-  ...Object.values(navigationMenuArrowByVariant),
   navigationMenuBackdropBase,
   ...Object.values(navigationMenuColor),
 ]

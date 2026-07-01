@@ -50,6 +50,9 @@ describe('RadioCards', () => {
       'group-data-[checked]:bg-primary-solid',
       'group-data-[checked]:[border-color:var(--color-primary-primary)]',
     ])
+    const radioCardTokens = new Set(radioCard.className.split(/\s+/).filter(Boolean))
+    expect(radioCardTokens).not.toContain('surface-color-primary')
+    expect(radioCardTokens).not.toContain('surface-variant-classic')
   })
 
   it('emits value changes when an enabled card is selected', async () => {

@@ -6,7 +6,6 @@ import { Check } from 'lucide-react'
 import * as React from 'react'
 import {
   surfaceHighContrastByVariant,
-  surfaceHoverEnabledClass,
   surfaceUnoColorVariants,
   surfaceUnoHighContrastColorVariants,
   surfaceUnoHoverColorVariants,
@@ -298,7 +297,6 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
             context.highContrast
               ? surfaceUnoHighContrastColorVariants[context.color][surfaceVariant]
               : surfaceUnoColorVariants[context.color][surfaceVariant],
-            !isDisabled && surfaceHoverEnabledClass,
             !isDisabled && surfaceUnoHoverColorVariants[context.color][surfaceVariant],
             context.highContrast && 'af-high-contrast',
             context.highContrast && surfaceHighContrastByVariant[surfaceVariant],

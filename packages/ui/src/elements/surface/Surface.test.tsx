@@ -6,7 +6,6 @@ import { radiusClassByToken } from '@/theme/helpers'
 import { designTokens } from '@/theme/tokens'
 import { Surface } from './Surface'
 import {
-  surfaceHoverEnabledClass,
   surfaceUnoColorVariants,
   surfaceUnoFocusColorVariants,
   surfaceUnoHighContrastColorVariants,
@@ -94,9 +93,9 @@ describe('Surface', () => {
     }
 
     if (hasHover) {
-      expect(surface.className).toContain(surfaceHoverEnabledClass)
+      expect(surface.className).toContain(surfaceUnoHoverColorVariants.neutral.surface)
     } else {
-      expect(surface.className).not.toContain(surfaceHoverEnabledClass)
+      expect(surface.className).not.toContain(surfaceUnoHoverColorVariants.neutral.surface)
     }
   })
 

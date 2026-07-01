@@ -12,7 +12,6 @@ import { FloatingArrowSvg } from '../surface/FloatingArrowSvg'
 import { floatingArrowBase } from '../surface/surface.class'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
-  navigationMenuArrowByVariant,
   navigationMenuBackdropBase,
   navigationMenuColor,
   navigationMenuContentBase,
@@ -487,23 +486,14 @@ NavigationMenuViewport.displayName = 'NavigationMenu.Viewport'
 export interface NavigationMenuArrowProps extends Omit<PrimitiveArrowProps, 'className' | 'children'> {
   /** Additional class names. */
   className?: string
-  /** Floating panel variant. Defaults to the root variant. */
-  variant?: NavigationMenuVariant
   /** Arrow content. Defaults to the shared floating arrow SVG. */
   children?: React.ReactNode
 }
 
 const NavigationMenuArrow = React.forwardRef<HTMLDivElement, NavigationMenuArrowProps>(
-  ({ className, variant, children, ...props }, ref) => {
-    const context = React.useContext(NavigationMenuContext)
-    const safeVariant = (normalizeEnumPropValue(navigationMenuPropDefs.Root.variant, variant ?? context.variant) ??
-      navigationMenuPropDefs.Root.variant.default) as NavigationMenuVariant
+  ({ className, children, ...props }, ref) => {
     return (
-      <NavigationMenuPrimitive.Arrow
-        ref={ref}
-        className={cn(floatingArrowBase, navigationMenuArrowByVariant[safeVariant], className)}
-        {...props}
-      >
+      <NavigationMenuPrimitive.Arrow ref={ref} className={cn(floatingArrowBase, className)} {...props}>
         {children ?? <FloatingArrowSvg />}
       </NavigationMenuPrimitive.Arrow>
     )
@@ -559,7 +549,7 @@ const NavigationMenuPopup = React.forwardRef<HTMLElement, NavigationMenuPopupPro
       >
         {children ?? (
           <>
-            <NavigationMenuArrow variant={safeVariant} />
+            <NavigationMenuArrow />
             <NavigationMenuViewport />
           </>
         )}

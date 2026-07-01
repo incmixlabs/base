@@ -17,9 +17,7 @@ import { FloatingArrowSvg } from '../surface/FloatingArrowSvg'
 import { floatingArrowBase } from '../surface/surface.class'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
-  floatingSurfaceArrowColorVariants,
   floatingSurfaceColorVariants,
-  floatingSurfaceHighContrastArrowColorVariants,
   floatingSurfaceHighContrastColorVariants,
   floatingSurfaceHighContrastEffectByVariant,
   floatingSurfaceMaxWidthVariants,
@@ -274,41 +272,15 @@ PopoverClose.displayName = 'Popover.Close'
 export interface PopoverArrowProps {
   /** Additional class names */
   className?: string
-  /** Surface visual variant */
-  variant?: PopoverContentVariant
-  /** Surface color lane */
-  color?: Color
-  /** High contrast treatment */
-  highContrast?: boolean
 }
 
-const PopoverArrow = React.forwardRef<HTMLDivElement, PopoverArrowProps>(
-  ({ className, variant, color, highContrast, ...props }, ref) => {
-    const visualContext = React.useContext(PopoverVisualContext)
-    const safeVariant = (normalizeEnumPropValue(popoverContentPropDefs.variant, variant ?? visualContext.variant) ??
-      popoverContentPropDefs.variant.default) as PopoverContentVariant
-    const safeColor = (normalizeEnumPropValue(popoverContentPropDefs.color, color ?? visualContext.color) ??
-      SemanticColor.neutral) as Color
-    const safeHighContrast =
-      normalizeBooleanPropValue(popoverContentPropDefs.highContrast, highContrast ?? visualContext.highContrast) ??
-      false
-    return (
-      <PopoverPrimitive.Arrow
-        ref={ref}
-        className={cn(
-          floatingArrowBase,
-          safeHighContrast
-            ? floatingSurfaceHighContrastArrowColorVariants[safeColor][safeVariant]
-            : floatingSurfaceArrowColorVariants[safeColor][safeVariant],
-          className,
-        )}
-        {...props}
-      >
-        <FloatingArrowSvg />
-      </PopoverPrimitive.Arrow>
-    )
-  },
-)
+const PopoverArrow = React.forwardRef<HTMLDivElement, PopoverArrowProps>(({ className, ...props }, ref) => {
+  return (
+    <PopoverPrimitive.Arrow ref={ref} className={cn(floatingArrowBase, className)} {...props}>
+      <FloatingArrowSvg />
+    </PopoverPrimitive.Arrow>
+  )
+})
 
 PopoverArrow.displayName = 'Popover.Arrow'
 

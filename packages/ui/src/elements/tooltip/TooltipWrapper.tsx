@@ -90,7 +90,7 @@ export function TooltipWrapper({
         alignOffset={alignOffset}
         className={contentClassName}
       >
-        {showArrow ? <Tooltip.Arrow variant={variant} color={color} /> : null}
+        {showArrow ? <Tooltip.Arrow /> : null}
         <Flex direction="column" gap="2">
           {hasRenderableContent(data.title) ? <div className="text-sm font-semibold">{data.title}</div> : null}
           {hasRenderableContent(data.description) ? (
