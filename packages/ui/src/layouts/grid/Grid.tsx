@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { resolveSpacingValue } from '@/theme/helpers'
-import { gapResponsiveClasses, gapResponsiveVars } from '@/theme/helpers/gap-responsive.css'
+import { gapResponsiveClasses, gapResponsiveVars } from '@/theme/helpers/gap-responsive'
 import {
   type AlignContent,
   type AlignItems,

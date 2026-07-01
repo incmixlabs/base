@@ -11,7 +11,7 @@
   "scripts": {
     "lint": "biome lint .",
     "lint:fix": "biome lint . --write",
-    "generate:theme-runtime": "tsx scripts/generate-runtime-palette-source.ts && tsx scripts/generate-design-tokens-css.ts",
+    "generate:theme-runtime": "tsx scripts/generate-runtime-palette-source.ts && tsx scripts/generate-design-tokens-css.ts && tsx scripts/generate-chart-tokens-css.ts",
     "pretypecheck": "pnpm generate:theme-runtime",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "pretypecheck:active": "pnpm generate:theme-runtime",
@@ -28,7 +28,7 @@
     "build:analyze:lib": "vite build --config vite.analyze.config.ts",
     "check:bundle": "node scripts/check-bundle-guards.mjs",
     "generate:hues": "node scripts/generate-hue-palette.mjs",
-    "generate:theme-css": "tsx scripts/generate-design-tokens-css.ts",
+    "generate:theme-css": "tsx scripts/generate-design-tokens-css.ts && tsx scripts/generate-chart-tokens-css.ts",
     "generate:tokens": "pnpm generate:theme-runtime",
     "smoke:exports": "node --import ./scripts/register-smoke-css-loader.mjs scripts/smoke-package-exports.mjs"
   },
@@ -231,10 +231,6 @@
     "@types/qrcode": "^1.5.6",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "@vanilla-extract/css": "catalog:",
-    "@vanilla-extract/esbuild-plugin": "catalog:",
-    "@vanilla-extract/recipes": "catalog:",
-    "@vanilla-extract/vite-plugin": "catalog:",
     "@vitejs/plugin-react": "^5.0.4",
     "autoprefixer": "catalog:",
     "babel-plugin-react-compiler": "catalog:",
@@ -266,7 +262,6 @@
     "@ncdai/react-wheel-picker": "^1.2.0",
     "@tanstack/react-query": "^5.91.2",
     "@types/canvas-confetti": "^1.9.0",
-    "@vanilla-extract/dynamic": "catalog:",
     "@xstate/react": "catalog:",
     "@xstate/store": "catalog:",
     "@xstate/store-react": "catalog:",
@@ -296,7 +291,6 @@
   "sideEffects": [
     "*.css",
     "**/*.css",
-    "*.css.ts",
     "./dist/**/*.css",
     "./dist/index.js",
     "./dist/globals.css"

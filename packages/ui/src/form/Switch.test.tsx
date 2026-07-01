@@ -33,7 +33,6 @@ describe('Switch', () => {
       'af-high-contrast',
       'saturate-[1.2]',
     ])
-    expect(switchControl.className).not.toContain('radius_radiusStyleVariants')
 
     const thumb = switchControl.querySelector('[data-slot="thumb"],span')
     expectClassTokens(thumb?.className, [

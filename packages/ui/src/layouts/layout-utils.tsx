@@ -4,7 +4,7 @@ import * as React from 'react'
 import { composeRefs } from '@/lib/compose-refs'
 import { cn } from '@/lib/utils'
 import { getHeightProps, getMarginProps, getPaddingProps, getWidthProps, resolveSpacingValue } from '@/theme/helpers'
-import { gapResponsiveClasses, gapResponsiveVars } from '@/theme/helpers/gap-responsive.css'
+import { gapResponsiveClasses, gapResponsiveVars } from '@/theme/helpers/gap-responsive'
 import { getThemeColorUtilityClass } from '@/theme/helpers/token-class-maps'
 import type { HeightProps } from '@/theme/props/height.props'
 import {

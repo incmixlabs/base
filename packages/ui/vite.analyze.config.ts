@@ -1,13 +1,11 @@
 import { resolve } from 'node:path'
 import { reactCompilerBabelPlugins } from '@incmix/config/react-compiler.js'
-import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin'
 import react from '@vitejs/plugin-react'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
-    vanillaExtractPlugin(),
     react({
       babel: {
         plugins: reactCompilerBabelPlugins,

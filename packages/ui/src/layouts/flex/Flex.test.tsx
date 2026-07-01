@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
-import { gapResponsiveClasses, gapResponsiveVars } from '@/theme/helpers/gap-responsive.css'
+import { gapResponsiveClasses, gapResponsiveVars } from '@/theme/helpers/gap-responsive'
 import { flexByDirection } from './Flex.classes'
 import { Flex } from './Flex'
 

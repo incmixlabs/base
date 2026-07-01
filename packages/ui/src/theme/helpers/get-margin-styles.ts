@@ -3,7 +3,7 @@ import type * as React from 'react'
 import { cn } from '@/lib/utils'
 import type { MarginProps } from '@/theme/props/margin.props'
 import { space } from '@/theme/token-maps'
-import { marginResponsiveClasses, marginResponsiveVars } from './margin-responsive.css'
+import { marginResponsiveClasses, marginResponsiveVars } from './margin-responsive'
 import { resolveSpacingValue } from './resolve-spacing-value'
 import { type ResponsiveBreakpoint, responsiveBreakpointsArray } from './responsive/breakpoints'
 import {

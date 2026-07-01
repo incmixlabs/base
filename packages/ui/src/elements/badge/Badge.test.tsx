@@ -48,7 +48,6 @@ describe('Badge', () => {
 
     const badge = screen.getByText('Test')
     expect(badge.className).toContain(radiusClassByToken.full)
-    expect(badge.className).not.toContain('radius_radiusStyleVariants')
   })
 
   it('composes asChild and margin props with the badge control classes', () => {

@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
-import { heightResponsiveClasses, heightResponsiveVars } from '@/theme/helpers/height-responsive.css'
+import { heightResponsiveClasses, heightResponsiveVars } from '@/theme/helpers/height-responsive'
 import { Theme } from '@/theme/ThemeProvider'
 import { designTokens } from '@/theme/tokens'
 import { Dialog } from './Dialog'
