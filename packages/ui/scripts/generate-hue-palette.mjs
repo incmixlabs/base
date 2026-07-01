@@ -15,15 +15,19 @@
 import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 const require = createRequire(import.meta.url)
 const RADIX_DIR = dirname(require.resolve('@radix-ui/colors/package.json'))
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const UI_ROOT = resolve(__dirname, '..')
+const PACKAGES_ROOT = resolve(UI_ROOT, '..')
 
 // ── Config ──────────────────────────────────────────────────────────────────
 
-/** Hue order loaded from src/theme/tokens.ts (single source of truth) */
-const TOKENS_TS_PATH = resolve(process.cwd(), 'packages/ui/src/theme/tokens.ts')
-const HUES = readHuesFromTokensSource(TOKENS_TS_PATH)
+/** Hue order loaded from @incmix/theme token constants (single source of truth) */
+const TOKEN_CONSTANTS_TS_PATH = resolve(PACKAGES_ROOT, 'theme/src/token-constants.ts')
+const HUES = readHuesFromTokenConstantsSource(TOKEN_CONSTANTS_TS_PATH)
 
 /** Radix steps we use — numbers match our --{color}-{step} tokens */
 const STEPS = [3, 4, 5, 6, 7, 8, 9, 10, 11]
@@ -55,11 +59,11 @@ const CONTRAST = {
 /** Dark-mode contrast — same as light for now */
 const CONTRAST_DARK = { ...CONTRAST }
 
-function readHuesFromTokensSource(filePath) {
+function readHuesFromTokenConstantsSource(filePath) {
   const source = readFileSync(filePath, 'utf8')
-  const match = source.match(/export const HUES = \[(.*?)\] as const/s)
+  const match = source.match(/export const HUE_NAMES = \[(.*?)\] as const/s)
   if (!match?.[1]) {
-    throw new Error(`Unable to read HUES from ${filePath}`)
+    throw new Error(`Unable to read HUE_NAMES from ${filePath}`)
   }
   return [...match[1].matchAll(/'([^']+)'/g)].map(entry => entry[1])
 }

@@ -11,6 +11,7 @@ import {
   textFieldFloatingColorVariants,
   textFieldIconContainerCls,
 } from './text-field.class'
+import { formControlNeutralBackground } from './form-control.class'
 import { TextField } from './TextField'
 
 afterEach(() => {
@@ -90,7 +91,7 @@ describe('TextField', () => {
     expect(label).toHaveClass(floatingLabelStyleVariants.outlined)
     expect(floatingInputStyleVariants.outlined).toContain('[padding-left:var(--af-text-field-input-padding-left')
     expect(floatingLabelStyleVariants.outlined).toContain('[left:var(--af-text-field-label-left')
-    expect(floatingLabelStyleVariants.outlined).toContain('bg-[var(--color-neutral-background)]')
+    expect(floatingLabelStyleVariants.outlined).toContain(formControlNeutralBackground)
     expect(floatingLabelStyleVariants.outlined).not.toContain('var(--background)')
   })
 })
