@@ -26,7 +26,7 @@ import {
 } from './DatePicker.class'
 import { type DateSize, dateCalendarDaySizeBySize, dateControlFontSizeBySize, isDateSize } from './date.props'
 import {
-  dateSurfaceDivider,
+  dateSurfaceFooterDivider,
   dateSurfaceIconText,
   dateSurfaceMutedText,
   dateSurfacePopover,
@@ -369,7 +369,7 @@ export function TimePicker({
               align="center"
               justify="center"
               gap="2"
-              className={cn('w-full border-t', dateSurfaceDivider)}
+              className={cn('w-full', dateSurfaceFooterDivider)}
               px="2"
               py="1"
             >

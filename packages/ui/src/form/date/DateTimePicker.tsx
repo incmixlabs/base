@@ -43,7 +43,7 @@ import {
   getDateFieldSurfaceClassName,
   getDateSegmentClassName,
 } from './date-field-shell'
-import { dateSurfaceDivider, dateSurfacePopover } from './date-surface.shared.class'
+import { dateSurfaceFooterDivider, dateSurfacePopover } from './date-surface.shared.class'
 import { fromDateValue, toDateValue } from './date-value-boundary'
 import {
   buildHourOptions,
@@ -366,7 +366,7 @@ export function DateTimePicker({
             />
 
             {/* Clock trigger footer */}
-            <Flex align="center" justify="center" className={cn('mt-2 border-t pt-2', dateSurfaceDivider)}>
+            <Flex align="center" justify="center" className={cn('mt-2 pt-2', dateSurfaceFooterDivider)}>
               <Button
                 ref={clockTriggerRef}
                 type="button"
@@ -445,14 +445,7 @@ export function DateTimePicker({
                       />
                     )}
                   </WheelPickerWrapper>
-                  <Flex
-                    align="center"
-                    justify="center"
-                    gap="2"
-                    className={cn('border-t', dateSurfaceDivider)}
-                    px="2"
-                    py="1"
-                  >
+                  <Flex align="center" justify="center" gap="2" className={dateSurfaceFooterDivider} px="2" py="1">
                     <Button
                       type="button"
                       variant="ghost"

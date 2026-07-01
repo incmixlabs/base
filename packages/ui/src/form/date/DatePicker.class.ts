@@ -7,12 +7,11 @@ import {
   dateCalendarNavIconSizeStyles,
   dateElementRadiusStyles,
   dateRadiusClassStyles,
-  dateSurfaceControlFrame,
+  dateSurfaceButtonFrame,
   dateSurfaceDayHover,
   dateSurfaceDayMutedState,
   dateSurfaceFocusOutline,
-  dateSurfaceFocusVisible,
-  dateSurfaceFocusWithin,
+  dateSurfaceInputFrame,
 } from './date-surface.shared.class'
 
 const joinClass = (...parts: string[]) => parts.join('')
@@ -40,18 +39,14 @@ export const datePickerControlSizeStyles = {
 
 export const datePickerInput = [
   'flex flex-1 w-full min-w-0 items-center gap-1 rounded-[var(--element-border-radius,var(--radius-md))]',
-  dateSurfaceControlFrame,
-  dateSurfaceFocusWithin,
-  'transition-[background-color,border-color,box-shadow] duration-150 ease-in-out',
+  dateSurfaceInputFrame,
 ].join(' ')
 
 export const datePickerInputSizeStyles = datePickerControlSizeStyles
 
 export const datePickerCalendarButton = [
   'inline-flex items-center justify-center rounded-[var(--element-border-radius,var(--radius-md))]',
-  dateSurfaceControlFrame,
-  dateSurfaceFocusVisible,
-  'transition-[background-color,border-color,box-shadow] duration-150 ease-in-out',
+  dateSurfaceButtonFrame,
 ].join(' ')
 
 export const datePickerCalendarButtonSizeStyles = {

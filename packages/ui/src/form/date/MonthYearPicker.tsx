@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils'
 import { semanticColorVar } from '@/theme/props/color.prop'
 import type { Color } from '@/theme/tokens'
 import { type DateSize, dateCalendarDaySizeBySize, dateControlFontSizeBySize, dateHeaderGapBySize } from './date.props'
-import { dateSurfaceDivider, dateSurfacePopover } from './date-surface.shared.class'
+import { dateSurfaceFooterDivider, dateSurfacePopover } from './date-surface.shared.class'
 import { buttonSizeByDateSize } from './time-wheel-utils'
 
 function buildMonthOptions(
@@ -238,7 +238,7 @@ export function MonthYearPicker({
             }}
           />
         </WheelPickerWrapper>
-        <Flex align="center" justify="center" gap="2" className={cn('border-t', dateSurfaceDivider)} px="2" py="1">
+        <Flex align="center" justify="center" gap="2" className={dateSurfaceFooterDivider} px="2" py="1">
           <Button type="button" variant="ghost" size={buttonSize} onClick={handleCancel}>
             Cancel
           </Button>

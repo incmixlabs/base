@@ -3,12 +3,11 @@ import type { Color } from '../../theme/tokens'
 import type { DateSize } from './date.props'
 import {
   dateElementRadiusStyles,
-  dateSurfaceControlFrame,
+  dateSurfaceButtonFrame,
   dateSurfaceDayHover,
   dateSurfaceDayMutedState,
   dateSurfaceFocusOutline,
-  dateSurfaceFocusVisible,
-  dateSurfaceFocusWithin,
+  dateSurfaceInputFrame,
 } from './date-surface.shared.class'
 
 const joinClass = (...parts: string[]) => parts.join('')
@@ -26,9 +25,7 @@ export const rangeTriggerGroupSizeStyles = {
 
 export const rangeInputSurface = [
   'flex items-center rounded-[var(--element-border-radius,var(--radius-md))]',
-  dateSurfaceControlFrame,
-  dateSurfaceFocusWithin,
-  'transition-[background-color,border-color,box-shadow] duration-150 ease-in-out',
+  dateSurfaceInputFrame,
 ].join(' ')
 
 export const rangeInputSurfaceSizeStyles = {
@@ -53,9 +50,7 @@ export const rangeDateInputSizeStyles = {
 
 export const rangeCalendarButton = [
   'inline-flex items-center justify-center rounded-[var(--element-border-radius,var(--radius-md))]',
-  dateSurfaceControlFrame,
-  dateSurfaceFocusVisible,
-  'transition-[background-color,border-color,box-shadow] duration-150 ease-in-out',
+  dateSurfaceButtonFrame,
 ].join(' ')
 
 export const rangeCalendarButtonSizeStyles = {

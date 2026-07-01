@@ -49,20 +49,42 @@ export const dateCalendarMonthPickerIcon = 'h-[48%] w-[48%] shrink-0 opacity-85'
 
 export const dateSurfaceControlFrame = 'border border-solid border-neutral bg-neutral-background text-neutral'
 
-export const dateSurfaceFocusWithin =
-  'focus-within:[border-color:var(--color-primary-border)] focus-within:[box-shadow:0_0_0_2px_var(--color-primary-primary-alpha)]'
+const dateSurfaceFocusRingStyle =
+  '[border-color:var(--color-primary-border)] [box-shadow:0_0_0_2px_var(--color-primary-primary-alpha)]'
 
-export const dateSurfaceFocusVisible =
-  'focus-visible:[border-color:var(--color-primary-border)] focus-visible:[box-shadow:0_0_0_2px_var(--color-primary-primary-alpha)]'
+const prefixDateSurfaceFocusRing = (prefix: 'focus-within' | 'focus-visible') =>
+  dateSurfaceFocusRingStyle
+    .split(' ')
+    .map(className => `${prefix}:${className}`)
+    .join(' ')
+
+export const dateSurfaceFocusWithin = prefixDateSurfaceFocusRing('focus-within')
+
+export const dateSurfaceFocusVisible = prefixDateSurfaceFocusRing('focus-visible')
 
 export const dateSurfaceFocusOutline =
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
+
+export const dateSurfaceFrameTransition =
+  'transition-[background-color,border-color,box-shadow] duration-150 ease-in-out'
+
+export const dateSurfaceInputFrame = [dateSurfaceControlFrame, dateSurfaceFocusWithin, dateSurfaceFrameTransition].join(
+  ' ',
+)
+
+export const dateSurfaceButtonFrame = [
+  dateSurfaceControlFrame,
+  dateSurfaceFocusVisible,
+  dateSurfaceFrameTransition,
+].join(' ')
 
 export const dateSurfacePopover = 'border border-neutral bg-neutral-surface text-neutral shadow-md'
 
 export const dateSurfacePanel = 'border border-neutral bg-neutral-background text-neutral'
 
 export const dateSurfaceDivider = 'border-neutral'
+
+export const dateSurfaceFooterDivider = `border-t ${dateSurfaceDivider}`
 
 export const dateSurfaceText = 'text-neutral'
 
@@ -109,9 +131,13 @@ export const dateSurfaceSharedClassNames = [
   dateSurfaceFocusWithin,
   dateSurfaceFocusVisible,
   dateSurfaceFocusOutline,
+  dateSurfaceFrameTransition,
+  dateSurfaceInputFrame,
+  dateSurfaceButtonFrame,
   dateSurfacePopover,
   dateSurfacePanel,
   dateSurfaceDivider,
+  dateSurfaceFooterDivider,
   dateSurfaceText,
   dateSurfaceMutedText,
   dateSurfaceSubtleText,
