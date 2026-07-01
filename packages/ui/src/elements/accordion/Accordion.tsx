@@ -109,20 +109,15 @@ const AccordionRoot = React.forwardRef<HTMLDivElement, AccordionRootProps>(
     const rootValue = normalizeAccordionValue(valueProp)
     const rootDefaultValue = normalizeAccordionValue(defaultValue)
 
-    const [openItems, setOpenItems] = React.useState<string[]>(() => {
+    const [uncontrolledOpenItems, setUncontrolledOpenItems] = React.useState<string[]>(() => {
       return normalizeAccordionValue(valueProp ?? defaultValue) ?? []
     })
-
-    React.useEffect(() => {
-      if (valueProp !== undefined) {
-        setOpenItems(normalizeAccordionValue(valueProp) ?? [])
-      }
-    }, [valueProp])
+    const openItems = rootValue ?? uncontrolledOpenItems
 
     const handleValueChange = React.useCallback(
       (newValue: string[], eventDetails: AccordionPrimitive.Root.ChangeEventDetails) => {
         if (valueProp === undefined) {
-          setOpenItems(newValue)
+          setUncontrolledOpenItems(newValue)
         }
         onValueChangeProp?.(multiple ? newValue : (newValue[0] ?? ''), eventDetails)
       },

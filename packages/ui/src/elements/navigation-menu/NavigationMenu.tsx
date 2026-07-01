@@ -175,6 +175,7 @@ const NavigationMenuRoot = React.forwardRef<HTMLElement, NavigationMenuRootProps
           defaultValue={defaultValue}
           onValueChange={handleValueChange}
           orientation={orientation}
+          data-orientation={orientation}
           className={cn(
             navigationMenuRootBaseCls,
             navigationMenuRootBase,
