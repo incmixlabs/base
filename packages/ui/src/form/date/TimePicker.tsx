@@ -26,6 +26,13 @@ import {
 } from './DatePicker.class'
 import { type DateSize, dateCalendarDaySizeBySize, dateControlFontSizeBySize, isDateSize } from './date.props'
 import {
+  dateSurfaceDivider,
+  dateSurfaceIconText,
+  dateSurfaceMutedText,
+  dateSurfacePopover,
+  dateSurfaceText,
+} from './date-surface.shared.class'
+import {
   buildHourOptions,
   buildMinuteOptions,
   buildSecondOptions,
@@ -279,7 +286,7 @@ export function TimePicker({
             datePickerInputSizeStyles[size],
             'w-full text-left outline-none cursor-pointer',
             'disabled:cursor-not-allowed disabled:opacity-50',
-            displayText ? 'text-foreground' : 'text-muted-foreground',
+            displayText ? dateSurfaceText : dateSurfaceMutedText,
           )}
         >
           {displayText || placeholder}
@@ -289,11 +296,7 @@ export function TimePicker({
           aria-label="Open time picker"
           disabled={effectiveIsDisabled}
           onClick={() => (isOpen ? cancelPicker() : openPicker())}
-          className={cn(
-            datePickerCalendarButton,
-            datePickerCalendarButtonSizeStyles[size],
-            'text-muted-foreground transition-colors hover:text-foreground',
-          )}
+          className={cn(datePickerCalendarButton, datePickerCalendarButtonSizeStyles[size], dateSurfaceIconText)}
         >
           <Clock className={cn(datePickerCalendarIcon, datePickerCalendarIconControlSizeStyles[size])} />
         </button>
@@ -314,7 +317,8 @@ export function TimePicker({
             aria-modal="true"
             aria-label="Time picker"
             className={cn(
-              'absolute left-0 top-full z-50 mt-1 flex flex-col items-center overflow-hidden border border-border bg-popover p-1 shadow-md',
+              'absolute left-0 top-full z-50 mt-1 flex flex-col items-center overflow-hidden p-1',
+              dateSurfacePopover,
               datePickerTriggerGroupRadiusStyles[radius],
             )}
             style={
@@ -361,7 +365,14 @@ export function TimePicker({
                 />
               )}
             </WheelPickerWrapper>
-            <Flex align="center" justify="center" gap="2" className="w-full border-t border-border" px="2" py="1">
+            <Flex
+              align="center"
+              justify="center"
+              gap="2"
+              className={cn('w-full border-t', dateSurfaceDivider)}
+              px="2"
+              py="1"
+            >
               <Button type="button" variant="ghost" size={buttonSize} onClick={cancelPicker}>
                 Cancel
               </Button>

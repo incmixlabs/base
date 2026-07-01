@@ -7,9 +7,11 @@ import type { WheelPickerOption } from '@/elements/wheel-picker/wheel-picker'
 import { WheelPicker, WheelPickerWrapper } from '@/elements/wheel-picker/wheel-picker'
 import { Flex } from '@/layouts/flex/Flex'
 import { KEYBOARD_KEYS } from '@/lib/keyboard-keys'
+import { cn } from '@/lib/utils'
 import { semanticColorVar } from '@/theme/props/color.prop'
 import type { Color } from '@/theme/tokens'
 import { type DateSize, dateCalendarDaySizeBySize, dateControlFontSizeBySize, dateHeaderGapBySize } from './date.props'
+import { dateSurfaceDivider, dateSurfacePopover } from './date-surface.shared.class'
 import { buttonSizeByDateSize } from './time-wheel-utils'
 
 function buildMonthOptions(
@@ -92,7 +94,10 @@ export function MonthYearPicker({
 
   const [pickerMonth, setPickerMonth] = useState(displayMonth.getMonth())
   const [pickerYear, setPickerYear] = useState(displayMonth.getFullYear())
-  const snapshotRef = useRef({ month: displayMonth.getMonth(), year: displayMonth.getFullYear() })
+  const snapshotRef = useRef({
+    month: displayMonth.getMonth(),
+    year: displayMonth.getFullYear(),
+  })
 
   const rawStartYear = minMonthBound?.getFullYear() ?? displayMonth.getFullYear() - 100
   const rawEndYear = maxMonthBound?.getFullYear() ?? displayMonth.getFullYear() + 100
@@ -178,7 +183,7 @@ export function MonthYearPicker({
         role="dialog"
         aria-label="Select month and year"
         aria-modal="true"
-        className="absolute z-50 left-1/2 -translate-x-1/2 overflow-hidden rounded-md border border-border bg-popover p-1 shadow-md"
+        className={cn('absolute left-1/2 z-50 -translate-x-1/2 overflow-hidden rounded-md p-1', dateSurfacePopover)}
         style={
           {
             top: `calc(${cellSize} + ${gap})`,
@@ -233,7 +238,7 @@ export function MonthYearPicker({
             }}
           />
         </WheelPickerWrapper>
-        <Flex align="center" justify="center" gap="2" className="border-t border-border" px="2" py="1">
+        <Flex align="center" justify="center" gap="2" className={cn('border-t', dateSurfaceDivider)} px="2" py="1">
           <Button type="button" variant="ghost" size={buttonSize} onClick={handleCancel}>
             Cancel
           </Button>

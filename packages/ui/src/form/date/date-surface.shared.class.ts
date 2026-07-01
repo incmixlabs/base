@@ -47,6 +47,39 @@ export const dateCalendarNavIcon = 'shrink-0'
 
 export const dateCalendarMonthPickerIcon = 'h-[48%] w-[48%] shrink-0 opacity-85'
 
+export const dateSurfaceControlFrame = 'border border-solid border-neutral bg-neutral-background text-neutral'
+
+export const dateSurfaceFocusWithin =
+  'focus-within:[border-color:var(--color-primary-border)] focus-within:[box-shadow:0_0_0_2px_var(--color-primary-primary-alpha)]'
+
+export const dateSurfaceFocusVisible =
+  'focus-visible:[border-color:var(--color-primary-border)] focus-visible:[box-shadow:0_0_0_2px_var(--color-primary-primary-alpha)]'
+
+export const dateSurfaceFocusOutline =
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
+
+export const dateSurfacePopover = 'border border-neutral bg-neutral-surface text-neutral shadow-md'
+
+export const dateSurfacePanel = 'border border-neutral bg-neutral-background text-neutral'
+
+export const dateSurfaceDivider = 'border-neutral'
+
+export const dateSurfaceText = 'text-neutral'
+
+export const dateSurfaceMutedText = 'text-muted'
+
+export const dateSurfaceSubtleText = 'text-muted opacity-60'
+
+export const dateSurfaceTextHover = 'hover:text-neutral hover:opacity-70'
+
+export const dateSurfaceIconText = 'text-muted transition-colors hover:text-neutral hover:opacity-100'
+
+export const dateSurfaceDayMutedState =
+  'data-[outside-month]:text-muted data-[outside-month]:opacity-60 data-[unavailable]:text-muted data-[unavailable]:opacity-60'
+
+export const dateSurfaceDayHover =
+  '[&:hover:not([data-unavailable]):not([data-selected])]:bg-accent-soft data-[unavailable]:hover:bg-transparent'
+
 export const dateCalendarNavButtonSizeStyles = {
   xs: 'h-7 w-7',
   sm: 'h-8 w-8',
@@ -72,6 +105,20 @@ export const dateSurfaceSharedClassNames = [
   ...Object.values(dateCalendarNavButtonColorStyles).flatMap(variantMap => Object.values(variantMap)),
   dateCalendarNavIcon,
   dateCalendarMonthPickerIcon,
+  dateSurfaceControlFrame,
+  dateSurfaceFocusWithin,
+  dateSurfaceFocusVisible,
+  dateSurfaceFocusOutline,
+  dateSurfacePopover,
+  dateSurfacePanel,
+  dateSurfaceDivider,
+  dateSurfaceText,
+  dateSurfaceMutedText,
+  dateSurfaceSubtleText,
+  dateSurfaceTextHover,
+  dateSurfaceIconText,
+  dateSurfaceDayMutedState,
+  dateSurfaceDayHover,
   ...Object.values(dateCalendarNavButtonSizeStyles),
   ...Object.values(dateCalendarNavIconSizeStyles),
 ]

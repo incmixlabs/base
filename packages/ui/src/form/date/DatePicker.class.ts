@@ -7,6 +7,12 @@ import {
   dateCalendarNavIconSizeStyles,
   dateElementRadiusStyles,
   dateRadiusClassStyles,
+  dateSurfaceControlFrame,
+  dateSurfaceDayHover,
+  dateSurfaceDayMutedState,
+  dateSurfaceFocusOutline,
+  dateSurfaceFocusVisible,
+  dateSurfaceFocusWithin,
 } from './date-surface.shared.class'
 
 const joinClass = (...parts: string[]) => parts.join('')
@@ -32,13 +38,21 @@ export const datePickerControlSizeStyles = {
   '2x': 'h-[5rem] px-5 py-[1.5625rem] text-2xl leading-[1.875rem]',
 } as const satisfies Record<DateSize, string>
 
-export const datePickerInput =
-  'flex flex-1 w-full min-w-0 items-center gap-1 rounded-[var(--element-border-radius,var(--radius-md))] border border-solid border-border bg-background transition-[background-color,border-color,box-shadow] duration-150 ease-in-out focus-within:border-ring focus-within:[box-shadow:0_0_0_2px_color-mix(in_srgb,var(--ring)_24%,transparent)]'
+export const datePickerInput = [
+  'flex flex-1 w-full min-w-0 items-center gap-1 rounded-[var(--element-border-radius,var(--radius-md))]',
+  dateSurfaceControlFrame,
+  dateSurfaceFocusWithin,
+  'transition-[background-color,border-color,box-shadow] duration-150 ease-in-out',
+].join(' ')
 
 export const datePickerInputSizeStyles = datePickerControlSizeStyles
 
-export const datePickerCalendarButton =
-  'inline-flex items-center justify-center rounded-[var(--element-border-radius,var(--radius-md))] border border-solid border-border bg-background transition-[background-color,border-color,box-shadow] duration-150 ease-in-out focus-visible:border-ring focus-visible:[box-shadow:0_0_0_2px_color-mix(in_srgb,var(--ring)_24%,transparent)]'
+export const datePickerCalendarButton = [
+  'inline-flex items-center justify-center rounded-[var(--element-border-radius,var(--radius-md))]',
+  dateSurfaceControlFrame,
+  dateSurfaceFocusVisible,
+  'transition-[background-color,border-color,box-shadow] duration-150 ease-in-out',
+].join(' ')
 
 export const datePickerCalendarButtonSizeStyles = {
   xs: 'h-6 w-6',
@@ -79,19 +93,23 @@ export const datePickerCalendarCellSizeStyles = {
 
 export const datePickerCalendarCellRadiusStyles = dateRadiusClassStyles
 
-export const datePickerCalendarDayInteractive =
-  'appearance-none border-0 bg-transparent p-0 m-0 font-[inherit] text-inherit cursor-pointer text-center outline-none data-[outside-month]:text-muted-foreground/60 data-[unavailable]:text-muted-foreground/60 [&:hover:not([data-unavailable]):not([data-selected])]:bg-accent data-[unavailable]:hover:bg-transparent focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-default disabled:opacity-100'
+export const datePickerCalendarDayInteractive = [
+  'appearance-none border-0 bg-transparent p-0 m-0 font-[inherit] text-inherit cursor-pointer text-center outline-none disabled:cursor-default disabled:opacity-100',
+  dateSurfaceDayMutedState,
+  dateSurfaceDayHover,
+  dateSurfaceFocusOutline,
+].join(' ')
 
 export const datePickerTriggerGroupRadiusStyles = dateElementRadiusStyles
 
 export const datePickerTriggerGroupVariantStyles = {
   soft: 'border-0 bg-neutral-soft',
   surface: 'border border-solid border-neutral bg-neutral-surface shadow-xs',
-  outline: 'border border-solid border-neutral bg-background',
+  outline: 'border border-solid border-neutral bg-neutral-background',
   ghost: 'border-0 bg-transparent',
-  'floating-filled': 'border border-solid border-neutral bg-background',
-  'floating-standard': 'border border-solid border-neutral bg-background',
-  'floating-outlined': 'border border-solid border-neutral bg-background',
+  'floating-filled': 'border border-solid border-neutral bg-neutral-background',
+  'floating-standard': 'border border-solid border-neutral bg-neutral-background',
+  'floating-outlined': 'border border-solid border-neutral bg-neutral-background',
 } as const satisfies Record<DateVariant, string>
 
 export const datePickerTriggerGroupBorderColorStyles: Record<Color, string> = Object.fromEntries(

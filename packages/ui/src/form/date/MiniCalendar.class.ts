@@ -1,9 +1,9 @@
 import { semanticColorKeys } from '../../theme/props/color.prop'
 import type { Color } from '../../theme/tokens'
 import type { DateSize } from './date.props'
-import { dateRadiusClassStyles } from './date-surface.shared.class'
+import { dateRadiusClassStyles, dateSurfacePanel, dateSurfaceText } from './date-surface.shared.class'
 
-export const miniCalendarRoot = 'inline-flex w-max max-w-full flex-col border border-solid border-border bg-background'
+export const miniCalendarRoot = ['inline-flex w-max max-w-full flex-col', dateSurfacePanel].join(' ')
 
 export const miniCalendarRootDisabled = 'opacity-50 pointer-events-none'
 
@@ -29,7 +29,7 @@ export const miniCalendarBodySizeStyles = {
   '2x': 'gap-3.5 p-[1.5625rem]',
 } as const satisfies Record<DateSize, string>
 
-export const miniCalendarHeaderTitle = 'font-medium text-foreground'
+export const miniCalendarHeaderTitle = ['font-medium', dateSurfaceText].join(' ')
 
 export const miniCalendarHeaderTitleSizeStyles = {
   xs: 'text-xs leading-[1.2]',

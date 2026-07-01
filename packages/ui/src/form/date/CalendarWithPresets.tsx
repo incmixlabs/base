@@ -41,7 +41,14 @@ import type { WeekStartsOn } from './date.props'
 import { type DateSize, isDateSize } from './date.props'
 import { normalizeDay, toDayKey } from './date-calendar-core'
 import { mapDateSizeToButtonSize } from './date-size-maps'
-import { dateElementRadiusStyles } from './date-surface.shared.class'
+import {
+  dateElementRadiusStyles,
+  dateSurfaceDivider,
+  dateSurfaceFocusOutline,
+  dateSurfacePanel,
+  dateSurfaceText,
+  dateSurfaceTextHover,
+} from './date-surface.shared.class'
 import { MonthYearPicker } from './MonthYearPicker'
 import { useDateFormatters } from './useDateFormatters'
 
@@ -374,8 +381,7 @@ export const CalendarWithPresets = forwardRef<HTMLDivElement, CalendarWithPreset
             datePickerCalendarCellSizeStyles[size],
             rangeCalendarDayInteractive,
             rangeCalendarSelectedColorStyles[color],
-            'text-foreground',
-            'data-[outside-month]:text-muted-foreground/60',
+            dateSurfaceText,
           )}
           onClick={() => {
             if (nonInteractive) return
@@ -394,7 +400,8 @@ export const CalendarWithPresets = forwardRef<HTMLDivElement, CalendarWithPreset
       ? cn(
           'inline-flex items-center justify-center shrink-0 select-none appearance-none cursor-pointer',
           'p-0 m-0 leading-none rounded-sm transition-colors',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+          'focus-visible:outline-none',
+          dateSurfaceFocusOutline,
           'disabled:pointer-events-none disabled:opacity-50',
           iconButtonBase,
           iconButtonSizeVariants[mapDateSizeToButtonSize(size)],
@@ -408,7 +415,8 @@ export const CalendarWithPresets = forwardRef<HTMLDivElement, CalendarWithPreset
       <div
         ref={ref}
         className={cn(
-          'rounded-lg border bg-background p-4',
+          'rounded-lg p-4',
+          dateSurfacePanel,
           isHorizontal ? 'flex gap-4' : 'flex flex-col gap-4',
           isDisabled && 'opacity-50 pointer-events-none',
           dateElementRadiusStyles[radius],
@@ -416,7 +424,7 @@ export const CalendarWithPresets = forwardRef<HTMLDivElement, CalendarWithPreset
         )}
       >
         {showCalendar && (
-          <div className={cn('relative', isHorizontal && 'border-r pr-4')}>
+          <div className={cn('relative', isHorizontal && ['border-r pr-4', dateSurfaceDivider])}>
             {isDual ? (
               <>
                 {/* Dual-month custom header */}
@@ -439,8 +447,10 @@ export const CalendarWithPresets = forwardRef<HTMLDivElement, CalendarWithPreset
                       aria-expanded={monthYearPickerPanel === 0}
                       className={cn(
                         datePickerCalendarHeadingSizeStyles[size],
-                        'inline-flex items-center justify-center gap-1 font-medium text-foreground select-none',
-                        'cursor-pointer transition-colors hover:text-foreground/60',
+                        'inline-flex items-center justify-center gap-1 font-medium select-none',
+                        dateSurfaceText,
+                        'cursor-pointer transition-colors',
+                        dateSurfaceTextHover,
                         'appearance-none border-0 bg-transparent p-0 m-0 text-inherit font-inherit',
                       )}
                       onClick={() => setMonthYearPickerPanel(0)}
@@ -456,8 +466,10 @@ export const CalendarWithPresets = forwardRef<HTMLDivElement, CalendarWithPreset
                       aria-expanded={monthYearPickerPanel === 1}
                       className={cn(
                         datePickerCalendarHeadingSizeStyles[size],
-                        'inline-flex items-center justify-center gap-1 font-medium text-foreground select-none',
-                        'cursor-pointer transition-colors hover:text-foreground/60',
+                        'inline-flex items-center justify-center gap-1 font-medium select-none',
+                        dateSurfaceText,
+                        'cursor-pointer transition-colors',
+                        dateSurfaceTextHover,
                         'appearance-none border-0 bg-transparent p-0 m-0 text-inherit font-inherit',
                       )}
                       onClick={() => setMonthYearPickerPanel(1)}
