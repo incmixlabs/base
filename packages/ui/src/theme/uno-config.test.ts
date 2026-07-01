@@ -9,9 +9,14 @@ const unoConfigSource = readFileSync(resolve(thisDir, '../../../config/uno.confi
 describe('base Uno config', () => {
   it('keeps muted text as neutral text plus opacity utility', () => {
     expect(unoConfigSource).toContain("'text-muted': 'text-neutral opacity-70'")
-    expect(unoConfigSource).toContain("foreground: 'var(--color-neutral-text)'")
     expect(unoConfigSource).not.toContain('semanticMutedTextColor')
-    expect(unoConfigSource).not.toContain("foreground: 'color-mix")
+    expect(unoConfigSource).not.toContain(`'${['muted', 'foreground'].join('-')}'`)
+    expect(unoConfigSource).not.toContain("background: 'var(--background)'")
+    expect(unoConfigSource).not.toContain("foreground: 'var(--foreground)'")
+    expect(unoConfigSource).not.toContain('muted: {')
+    expect(unoConfigSource).not.toContain("border: 'var(--color-neutral-border)'")
+    expect(unoConfigSource).not.toContain("input: 'var(--color-neutral-border-subtle)'")
+    expect(unoConfigSource).not.toContain("ring: 'var(--color-primary-primary)'")
   })
 
   it('generates semantic background role utilities', () => {

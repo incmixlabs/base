@@ -48,10 +48,10 @@ export const Default: Story = {
     <Card.Root className="w-[360px] overflow-hidden">
       <Inset {...args}>
         <div className="space-y-4">
-          <div className="aspect-[16/9] rounded-lg bg-muted" />
+          <div className="aspect-[16/9] rounded-lg bg-neutral-soft" />
           <div className="space-y-1">
             <div className="text-sm font-medium">Inset content</div>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-muted">
               Bleed media to the edge while body content stays aligned to a token grid.
             </div>
           </div>
@@ -70,7 +70,7 @@ export const MediaBleed: Story = {
       <Inset px="current" py="0">
         <div className="space-y-2">
           <div className="text-sm font-medium">Campaign performance</div>
-          <div className="text-sm text-muted-foreground">
+          <div className="text-sm text-muted">
             The hero media bleeds horizontally, while the summary stays aligned with the card rhythm.
           </div>
         </div>

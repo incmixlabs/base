@@ -129,7 +129,7 @@ export const Controlled: Story = {
           onValueChange={setValue}
           placeholder="Search frameworks..."
         />
-        <div className="rounded-md bg-muted p-3 text-sm">
+        <div className="rounded-md bg-neutral-soft p-3 text-sm">
           <strong>Selected:</strong> {value || 'None'}
         </div>
       </div>

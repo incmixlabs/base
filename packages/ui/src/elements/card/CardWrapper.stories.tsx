@@ -12,9 +12,9 @@ const accountCard: CardWrapperData = {
   description: 'Usage and billing summary',
   content: (
     <div className="space-y-2">
-      <div className="text-sm text-muted-foreground">Projects: 18 / 25</div>
-      <div className="text-sm text-muted-foreground">Seats: 12 / 15</div>
-      <div className="text-sm text-muted-foreground">Storage: 132 GB / 250 GB</div>
+      <div className="text-sm text-muted">Projects: 18 / 25</div>
+      <div className="text-sm text-muted">Seats: 12 / 15</div>
+      <div className="text-sm text-muted">Storage: 132 GB / 250 GB</div>
     </div>
   ),
   footer: (
@@ -76,7 +76,7 @@ export const RenderOverrides: Story = {
       }}
       renderSlot={(slot, defaultRender) => {
         if (slot !== 'header') return defaultRender
-        return <div className="rounded-md border border-border/60 bg-background/60 p-3">{defaultRender}</div>
+        return <div className="rounded-md border border-neutral bg-neutral-background p-3">{defaultRender}</div>
       }}
     />
   ),
@@ -93,9 +93,9 @@ export const WrapperVsPrimitive: Story = {
         </Card.Header>
         <Card.Content>
           <div className="space-y-2">
-            <div className="text-sm text-muted-foreground">Projects: 18 / 25</div>
-            <div className="text-sm text-muted-foreground">Seats: 12 / 15</div>
-            <div className="text-sm text-muted-foreground">Storage: 132 GB / 250 GB</div>
+            <div className="text-sm text-muted">Projects: 18 / 25</div>
+            <div className="text-sm text-muted">Seats: 12 / 15</div>
+            <div className="text-sm text-muted">Storage: 132 GB / 250 GB</div>
           </div>
         </Card.Content>
         <Card.Footer className="justify-between gap-2">

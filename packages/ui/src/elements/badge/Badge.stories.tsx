@@ -141,7 +141,7 @@ export const SizeComparison: Story = {
     <div className="space-y-6">
       {getPropDefValues(badgePropDefs.size).map(size => (
         <div key={size} className="space-y-2">
-          <span className="text-xs text-muted-foreground font-mono">{size}</span>
+          <span className="text-xs text-muted font-mono">{size}</span>
           <div className="flex items-center gap-3">
             {getPropDefValues(badgePropDefs.variant).map(variant => (
               <Badge key={variant} size={size} variant={variant}>
@@ -225,7 +225,7 @@ export const InContext: Story = {
         <div className="flex items-start justify-between">
           <div>
             <h4 className="font-medium">New Feature Request</h4>
-            <p className="text-sm text-muted-foreground">Submitted 2 hours ago</p>
+            <p className="text-sm text-muted">Submitted 2 hours ago</p>
           </div>
           <div className="flex gap-2">
             <Badge color="primary" variant="soft" size="xs">

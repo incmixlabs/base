@@ -47,18 +47,7 @@ const radiusUtilities = [
   'rounded-full',
 ] as const
 const sizeTokens = ['xs', 'sm', 'md', 'lg', 'xl', '2x', '3x', '4x', '5x'] as const
-const semanticColorUtilities = [
-  'background',
-  'foreground',
-  'muted',
-  'muted-foreground',
-  'border',
-  'primary',
-  'primary-foreground',
-  'accent',
-  'accent-foreground',
-  'secondary',
-] as const
+const semanticColorUtilities = ['primary', 'primary-foreground', 'accent', 'accent-foreground', 'secondary'] as const
 const stateColorUtilities = [
   '[var(--color-neutral-primary)]',
   '[var(--color-info-primary)]',
@@ -441,16 +430,6 @@ export const baseUnoConfig = {
   ],
   theme: {
     colors: {
-      background: 'var(--background)',
-      foreground: 'var(--foreground)',
-      card: {
-        DEFAULT: 'var(--color-neutral-surface)',
-        foreground: 'var(--color-neutral-text)',
-      },
-      popover: {
-        DEFAULT: 'var(--color-neutral-surface)',
-        foreground: 'var(--color-neutral-text)',
-      },
       primary: {
         DEFAULT: 'var(--color-primary-primary)',
         foreground: 'var(--color-primary-contrast)',
@@ -458,10 +437,6 @@ export const baseUnoConfig = {
       secondary: {
         DEFAULT: 'var(--color-secondary-soft)',
         foreground: 'var(--color-secondary-text)',
-      },
-      muted: {
-        DEFAULT: 'var(--color-neutral-soft)',
-        foreground: 'var(--color-neutral-text)',
       },
       accent: {
         DEFAULT: 'var(--color-accent-soft)',
@@ -471,9 +446,6 @@ export const baseUnoConfig = {
         DEFAULT: 'var(--color-error-primary)',
         foreground: 'var(--color-error-contrast)',
       },
-      border: 'var(--color-neutral-border)',
-      input: 'var(--color-neutral-border-subtle)',
-      ring: 'var(--color-primary-primary)',
       chart: {
         1: 'var(--chart-1)',
         2: 'var(--chart-2)',

@@ -53,14 +53,14 @@ function TourDemo({
   const [open, setOpen] = React.useState(defaultOpen)
 
   return (
-    <div className="min-h-[520px] bg-background p-8 text-foreground">
+    <div className="min-h-[520px] bg-neutral-background p-8 text-neutral">
       <div className="mx-auto flex max-w-4xl flex-col gap-6">
         <div className="flex items-center justify-between gap-4">
           <div>
             <h1 id="tour-overview-title" className="font-semibold text-2xl">
               Operations Dashboard
             </h1>
-            <p className="mt-1 text-muted-foreground text-sm">Review fulfillment health and team activity.</p>
+            <p className="mt-1 text-muted text-sm">Review fulfillment health and team activity.</p>
           </div>
           <Button id="tour-start-button" onClick={() => setOpen(true)}>
             Start Tour
@@ -68,20 +68,20 @@ function TourDemo({
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">
-          <section id="tour-card-orders" className="rounded-lg border bg-card p-4 shadow-sm">
-            <div className="text-muted-foreground text-sm">Orders</div>
+          <section id="tour-card-orders" className="rounded-lg border bg-neutral-surface p-4 shadow-sm">
+            <div className="text-muted text-sm">Orders</div>
             <div className="mt-2 font-semibold text-3xl">1,284</div>
-            <p className="mt-2 text-muted-foreground text-sm">Live order intake across connected stores.</p>
+            <p className="mt-2 text-muted text-sm">Live order intake across connected stores.</p>
           </section>
-          <section id="tour-card-risk" className="rounded-lg border bg-card p-4 shadow-sm">
-            <div className="text-muted-foreground text-sm">Risk Queue</div>
+          <section id="tour-card-risk" className="rounded-lg border bg-neutral-surface p-4 shadow-sm">
+            <div className="text-muted text-sm">Risk Queue</div>
             <div className="mt-2 font-semibold text-3xl">18</div>
-            <p className="mt-2 text-muted-foreground text-sm">Verification holds that need operator review.</p>
+            <p className="mt-2 text-muted text-sm">Verification holds that need operator review.</p>
           </section>
-          <section id="tour-card-team" className="rounded-lg border bg-card p-4 shadow-sm">
-            <div className="text-muted-foreground text-sm">Team</div>
+          <section id="tour-card-team" className="rounded-lg border bg-neutral-surface p-4 shadow-sm">
+            <div className="text-muted text-sm">Team</div>
             <div className="mt-2 font-semibold text-3xl">42</div>
-            <p className="mt-2 text-muted-foreground text-sm">Active teammates across warehouse shifts.</p>
+            <p className="mt-2 text-muted text-sm">Active teammates across warehouse shifts.</p>
           </section>
         </div>
       </div>
@@ -165,13 +165,13 @@ export const Open: Story = {
 
 export const Placements: Story = {
   render: () => (
-    <div className="min-h-[520px] bg-background p-8 text-foreground">
+    <div className="min-h-[520px] bg-neutral-background p-8 text-neutral">
       <div className="mx-auto grid max-w-4xl grid-cols-2 gap-8">
         {tourSides.map((side, index) => (
           <div
             key={side}
             id={`tour-placement-${side}`}
-            className="flex h-28 items-center justify-center rounded-lg border bg-card text-sm shadow-sm"
+            className="flex h-28 items-center justify-center rounded-lg border bg-neutral-surface text-sm shadow-sm"
           >
             {side}
             <Tour open modal={false}>

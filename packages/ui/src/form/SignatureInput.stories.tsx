@@ -41,7 +41,7 @@ export const Controlled: Story = {
           <Label>Your Signature</Label>
           <SignatureInput value={signature} onChange={setSignature} />
         </div>
-        <div className="p-3 bg-muted rounded-md text-sm">
+        <div className="p-3 bg-neutral-soft rounded-md text-sm">
           <strong>Signature status:</strong> {signature ? 'Signed' : 'Empty'}
         </div>
         {signature && (
@@ -158,7 +158,7 @@ export const ContractForm: Story = {
       <div className="w-[500px] p-6 border rounded-lg space-y-6">
         <h3 className="font-semibold text-lg">Terms Agreement</h3>
 
-        <div className="p-4 bg-muted rounded-md text-sm max-h-40 overflow-y-auto">
+        <div className="p-4 bg-neutral-soft rounded-md text-sm max-h-40 overflow-y-auto">
           <p className="mb-2">By signing below, you agree to the following terms and conditions:</p>
           <ul className="list-disc list-inside space-y-1 text-muted">
             <li>You will comply with all applicable laws and regulations</li>
@@ -188,7 +188,7 @@ export const ContractForm: Story = {
         </div>
 
         <div className="flex gap-3">
-          <button type="button" className="flex-1 py-2 px-4 border rounded-md font-medium hover:bg-muted">
+          <button type="button" className="flex-1 py-2 px-4 border rounded-md font-medium hover:bg-neutral-soft">
             Cancel
           </button>
           <button

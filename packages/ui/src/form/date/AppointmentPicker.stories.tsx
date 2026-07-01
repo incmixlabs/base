@@ -163,7 +163,7 @@ export const AllSizes: Story = {
       const [appointment, setAppointment] = React.useState<AppointmentValue | undefined>()
       return (
         <div className="space-y-1">
-          <p className="text-sm font-medium text-muted-foreground">size=&quot;{size}&quot;</p>
+          <p className="text-sm font-medium text-muted">size=&quot;{size}&quot;</p>
           <AppointmentPicker
             {...args}
             size={size}
@@ -197,7 +197,7 @@ export const AllColors: Story = {
       })
       return (
         <div className="space-y-1">
-          <p className="text-sm font-medium text-muted-foreground">{color}</p>
+          <p className="text-sm font-medium text-muted">{color}</p>
           <AppointmentPicker
             {...args}
             size="sm"

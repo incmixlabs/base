@@ -37,7 +37,7 @@ export function ThemePanel({ className, pickerSize = 'sm', showHeading = true, .
           <Text size="md" weight="medium">
             Theme
           </Text>
-          <Text size="xs" className="mt-1 block text-muted-foreground">
+          <Text size="xs" className="mt-1 block text-muted">
             Customize shared theme settings.
           </Text>
         </div>

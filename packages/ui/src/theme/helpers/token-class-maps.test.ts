@@ -8,9 +8,9 @@ import { getSemanticColorClassRecipe, semanticColorClassRecipes } from './semant
 
 describe('theme token class maps', () => {
   it('maps common semantic color tokens to clean utility classes', () => {
-    expect(getThemeColorUtilityClass('bg', 'primary-primary')).toBe('bg-primary')
-    expect(getThemeColorUtilityClass('text', 'primary-contrast')).toBe('text-primary-foreground')
-    expect(getThemeColorUtilityClass('border', 'neutral-border')).toBe('border-border')
+    expect(getThemeColorUtilityClass('bg', 'primary-primary')).toBe('bg-primary-solid')
+    expect(getThemeColorUtilityClass('text', 'primary-contrast')).toBe('text-primary-contrast')
+    expect(getThemeColorUtilityClass('border', 'neutral-border')).toBe('border-neutral')
   })
 
   it('maps raw palette tokens to arbitrary variable utilities', () => {

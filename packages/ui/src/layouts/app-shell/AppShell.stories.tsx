@@ -94,13 +94,13 @@ function DemoSidebarContent() {
 function DemoSecondaryContent() {
   return (
     <AppShell.SecondaryContent gap="4">
-      <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+      <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted">
         <Filter className="size-3.5" />
         Filters
       </div>
       <div className="flex flex-col gap-3">
         <div>
-          <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Status</label>
+          <label className="mb-1.5 block text-xs font-medium text-muted">Status</label>
           <div className="flex flex-col gap-1.5">
             {['Active', 'Inactive', 'Pending', 'Archived'].map(status => (
               <label key={status} className="flex cursor-pointer items-center gap-2 text-sm">
@@ -111,7 +111,7 @@ function DemoSecondaryContent() {
           </div>
         </div>
         <div>
-          <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Type</label>
+          <label className="mb-1.5 block text-xs font-medium text-muted">Type</label>
           <div className="flex flex-col gap-1.5">
             {['Document', 'Spreadsheet', 'Presentation'].map(type => (
               <label key={type} className="flex cursor-pointer items-center gap-2 text-sm">
@@ -129,14 +129,14 @@ function DemoSecondaryContent() {
 function DemoLayoutEditorContent() {
   return (
     <AppShell.SecondaryContent gap="4">
-      <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Layout Editor</div>
-      <div className="rounded-lg border border-border bg-card p-3">
+      <div className="text-xs font-semibold uppercase tracking-wider text-muted">Layout Editor</div>
+      <div className="rounded-lg border border-neutral bg-neutral-surface p-3">
         <div className="text-sm font-medium">Canvas</div>
-        <div className="mt-2 text-xs text-muted-foreground">Marketing Landing Page</div>
+        <div className="mt-2 text-xs text-muted">Marketing Landing Page</div>
       </div>
       <div className="space-y-3">
         <div>
-          <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Grid</label>
+          <label className="mb-1.5 block text-xs font-medium text-muted">Grid</label>
           <div className="flex flex-col gap-1.5">
             {['12 column', '8 column', 'Freeform'].map(option => (
               <label key={option} className="flex cursor-pointer items-center gap-2 text-sm">
@@ -147,7 +147,7 @@ function DemoLayoutEditorContent() {
           </div>
         </div>
         <div>
-          <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Panels</label>
+          <label className="mb-1.5 block text-xs font-medium text-muted">Panels</label>
           <div className="flex flex-col gap-1.5">
             {['Inspector', 'Comments', 'Outline'].map(option => (
               <label key={option} className="flex cursor-pointer items-center gap-2 text-sm">
@@ -158,7 +158,7 @@ function DemoLayoutEditorContent() {
           </div>
         </div>
       </div>
-      <div className="rounded-lg border border-dashed border-border p-3 text-xs text-muted-foreground">
+      <div className="rounded-lg border border-dashed border-neutral p-3 text-xs text-muted">
         Secondary regions can host tools like layout editors, inspectors, and contextual controls, not only filters.
       </div>
     </AppShell.SecondaryContent>
@@ -172,21 +172,21 @@ function DemoContent() {
     <>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {['Total Revenue', 'Subscriptions', 'Sales', 'Active Now'].map(title => (
-          <div key={title} className="rounded-lg border border-border bg-card p-6">
-            <div className="text-sm font-medium text-muted-foreground">{title}</div>
+          <div key={title} className="rounded-lg border border-neutral bg-neutral-surface p-6">
+            <div className="text-sm font-medium text-muted">{title}</div>
             <div className="mt-2 text-2xl font-bold">$45,231.89</div>
-            <div className="mt-1 text-xs text-muted-foreground">+20.1% from last month</div>
+            <div className="mt-1 text-xs text-muted">+20.1% from last month</div>
           </div>
         ))}
       </div>
-      <div className="mt-6 rounded-lg border border-border bg-card p-6">
+      <div className="mt-6 rounded-lg border border-neutral bg-neutral-surface p-6">
         <h2 className="mb-4 text-lg font-semibold">Recent Activity</h2>
         <div className="space-y-4">
           {Array.from({ length: 8 }, (_, i) => (
-            <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0">
+            <div key={i} className="flex items-center justify-between border-b border-neutral pb-3 last:border-0">
               <div>
                 <div className="text-sm font-medium">Activity item {i + 1}</div>
-                <div className="text-xs text-muted-foreground">2 hours ago</div>
+                <div className="text-xs text-muted">2 hours ago</div>
               </div>
               <Badge size="sm" variant="surface" color={i % 3 === 0 ? 'success' : i % 3 === 1 ? 'warning' : 'slate'}>
                 {i % 3 === 0 ? 'Completed' : i % 3 === 1 ? 'Pending' : 'In Progress'}
@@ -273,7 +273,7 @@ export const WithoutSecondary: StoryObj = {
             </AppShell.Header>
 
             <AppShell.Content>
-              <p className="text-muted-foreground">This layout has no secondary panel — just sidebar and content.</p>
+              <p className="text-muted">This layout has no secondary panel — just sidebar and content.</p>
             </AppShell.Content>
           </AppShell.Main>
         </AppShell.Body>
@@ -307,9 +307,7 @@ export const SecondaryClosed: StoryObj = {
             </AppShell.Header>
 
             <AppShell.Content>
-              <p className="text-muted-foreground">
-                The secondary panel starts closed. Click the toggle icon to open it.
-              </p>
+              <p className="text-muted">The secondary panel starts closed. Click the toggle icon to open it.</p>
             </AppShell.Content>
           </AppShell.Main>
 
@@ -347,7 +345,7 @@ export const Overlay: StoryObj = {
             </AppShell.Header>
 
             <AppShell.Content>
-              <p className="text-muted-foreground">
+              <p className="text-muted">
                 Overlay mode — sidebar and secondary are in a drawer with tabs. Click the triggers in the header to
                 open.
               </p>
@@ -387,9 +385,9 @@ export const SecondaryAsEditor: StoryObj = {
             </AppShell.Header>
 
             <AppShell.Content>
-              <div className="rounded-lg border border-border bg-card p-6">
+              <div className="rounded-lg border border-neutral bg-neutral-surface p-6">
                 <h2 className="text-base font-semibold">Editing Surface</h2>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <p className="mt-2 text-sm text-muted">
                   This story documents the secondary region as a generic page tool area rather than a filter-only panel.
                 </p>
               </div>

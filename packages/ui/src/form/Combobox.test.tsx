@@ -64,10 +64,6 @@ describe('Combobox', () => {
       'focus:bg-accent-soft',
     ])
     expectClassTokens(vueOption.className, ['appearance-none', 'border-0', 'bg-transparent'])
-
-    expect(popup?.className).not.toContain('bg-popover')
-    expect(popup?.className).not.toContain('text-popover-foreground')
-    expect(reactOption.className).not.toContain('border-input')
     expect(reactOption).toHaveAttribute('tabindex', '-1')
   })
 

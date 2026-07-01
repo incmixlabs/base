@@ -727,7 +727,7 @@ export const ResolvedIdentityPreview: Story = {
   render: () => (
     <div className="w-[560px] space-y-3">
       <Label>Resolved mention preview</Label>
-      <div className="rounded-xl border border-border bg-background p-4">
+      <div className="rounded-xl border border-neutral bg-neutral-background p-4">
         <MentionMarkdownPreview
           markdown={
             '@[John Doe](user:1) @[Jane Smith](user:2)\n\nCoordinate with #[Documentation](tag:docs) #[Urgent](tag:urgent).'

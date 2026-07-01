@@ -6,7 +6,7 @@ import * as ReactDOM from 'react-dom'
 import { cn } from '@/lib/utils'
 
 const fpsVariants = cva(
-  'z-50 flex shrink-0 items-center gap-2 rounded-sm border bg-background/80 px-3 py-1.5 font-mono text-foreground text-sm backdrop-blur-sm',
+  'z-50 flex shrink-0 items-center gap-2 rounded-sm border bg-neutral-background px-3 py-1.5 font-mono text-neutral text-sm backdrop-blur-sm',
   {
     variants: {
       strategy: {
@@ -114,7 +114,7 @@ function Fps(props: FpsProps) {
       className={cn(fpsVariants({ strategy, position, status }), className)}
     >
       {label && (
-        <span data-slot="fps-label" className="text-muted-foreground">
+        <span data-slot="fps-label" className="text-muted">
           {label}:
         </span>
       )}

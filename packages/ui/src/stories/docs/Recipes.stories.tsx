@@ -54,7 +54,7 @@ export const LoginForm: StoryObj = {
         </form>
       </Card.Content>
       <Card.Footer className="justify-center">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted">
           Don't have an account?{' '}
           <a href="#" className="text-primary hover:underline">
             Sign up
@@ -131,8 +131,8 @@ export const ProfileCard: StoryObj = {
                 Verified
               </Badge>
             </div>
-            <p className="text-sm text-muted-foreground">john@example.com</p>
-            <p className="text-sm text-muted-foreground">Software Engineer</p>
+            <p className="text-sm text-muted">john@example.com</p>
+            <p className="text-sm text-muted">Software Engineer</p>
           </div>
         </div>
       </Card.Content>
@@ -162,7 +162,7 @@ const StatCard: React.FC<{
     <Card.Root>
       <Card.Content className="pt-6">
         <div className="flex items-center justify-between">
-          <p className="text-sm font-medium text-muted-foreground">{title}</p>
+          <p className="text-sm font-medium text-muted">{title}</p>
           <Badge color={isPositive ? SemanticColor.success : SemanticColor.error} variant="soft" size="sm">
             {isPositive ? '+' : ''}
             {change}%

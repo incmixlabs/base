@@ -129,7 +129,7 @@ function ToastDemo(args: DemoArgs) {
     <>
       <Flex className="min-h-screen p-8" direction="column" gap="4">
         <h3 className="text-xl font-semibold">Toast Playground</h3>
-        <p className="text-muted-foreground">Trigger one toast or push multiple to verify stacking.</p>
+        <p className="text-muted">Trigger one toast or push multiple to verify stacking.</p>
         <div className="flex items-center gap-3">
           <Button variant="solid" onClick={pushOne}>
             Show toast

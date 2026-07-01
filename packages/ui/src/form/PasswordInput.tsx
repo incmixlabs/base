@@ -75,7 +75,7 @@ const StrengthIndicator: React.FC<StrengthIndicatorProps> = ({ strength }) => (
           key={index}
           className={cn(
             'h-1 flex-1 rounded-full transition-colors',
-            index < strength ? strengthColors[strength] : 'bg-muted',
+            index < strength ? strengthColors[strength] : 'bg-neutral-soft',
           )}
         />
       ))}

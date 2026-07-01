@@ -13,7 +13,7 @@ function TriggerLayout({ item }: { item: AccordionSchemaWrapperItem }) {
   return (
     <span className="flex min-w-0 flex-col items-start gap-1 text-left">
       <span>{item.title}</span>
-      {item.description ? <span className="text-xs text-muted-foreground">{item.description}</span> : null}
+      {item.description ? <span className="text-xs text-muted">{item.description}</span> : null}
     </span>
   )
 }
@@ -23,8 +23,8 @@ function MetaGrid({ item }: { item: AccordionSchemaWrapperItem }) {
   return (
     <div className="grid gap-3 sm:grid-cols-2">
       {item.meta.map(meta => (
-        <div key={meta.id} className="rounded-md border border-border p-3">
-          <div className="text-xs uppercase tracking-wide text-muted-foreground">{meta.label}</div>
+        <div key={meta.id} className="rounded-md border border-neutral p-3">
+          <div className="text-xs uppercase tracking-wide text-muted">{meta.label}</div>
           <div className="mt-1 text-sm">{meta.value}</div>
         </div>
       ))}
@@ -101,7 +101,7 @@ export function AccordionSchemaWrapper({
   return (
     <div>
       {schema.title ? <div className="text-base font-semibold">{schema.title}</div> : null}
-      {schema.description ? <div className="mt-1 text-sm text-muted-foreground">{schema.description}</div> : null}
+      {schema.description ? <div className="mt-1 text-sm text-muted">{schema.description}</div> : null}
       <div className={schema.title || schema.description ? 'mt-3' : undefined}>
         <Accordion.Root
           multiple={multiple}

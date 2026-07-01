@@ -48,7 +48,7 @@ export const Default: Story = {
     return (
       <div className="w-[320px] space-y-2">
         <DatePicker {...args} value={value} onChange={setValue} />
-        <Text as="p" size="sm" className="text-muted-foreground">
+        <Text as="p" size="sm" className="text-muted">
           {value ? value.toDateString() : 'No date selected'}.
           {!args.enableNaturalLanguage ? ' Segmented placeholders are locale-aware.' : ''}
         </Text>
@@ -82,7 +82,7 @@ export const WithBounds: Story = {
     return (
       <div className="w-[320px] space-y-2">
         <DatePicker {...args} value={value} onChange={setValue} minValue={min} maxValue={max} />
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted">
           {value ? `Selected: ${value.toDateString()}` : 'No date selected'} (next 14 days only)
         </p>
       </div>
@@ -95,7 +95,7 @@ export const WithDefaultValue: Story = {
     return (
       <div className="w-[320px] space-y-2">
         <DatePicker {...args} defaultValue={new Date(2026, 0, 15)} />
-        <p className="text-sm text-muted-foreground">Uncontrolled picker with default date (Jan 15, 2026)</p>
+        <p className="text-sm text-muted">Uncontrolled picker with default date (Jan 15, 2026)</p>
       </div>
     )
   },
@@ -107,7 +107,7 @@ export const WithCustomFormat: Story = {
     return (
       <div className="w-[320px] space-y-2">
         <DatePicker {...args} value={value} onChange={setValue} dateFormat="dd/MM/yyyy" name="startDate" />
-        <Text as="p" size="sm" className="text-muted-foreground">
+        <Text as="p" size="sm" className="text-muted">
           Hidden form value uses `dd/MM/yyyy` when `name` is provided.
         </Text>
       </div>
@@ -127,7 +127,7 @@ export const NaturalLanguage: Story = {
           enableNaturalLanguage
           placeholder="Tomorrow or next week"
         />
-        <Text as="p" size="sm" className="text-muted-foreground">
+        <Text as="p" size="sm" className="text-muted">
           Type a natural-language date phrase; parsed value updates when valid and allowed.
         </Text>
       </div>
@@ -147,10 +147,10 @@ export const BoundaryDebug: Story = {
     return (
       <div className="w-[320px] space-y-2">
         <DatePicker {...args} value={value} onChange={setValue} minValue={min} maxValue={max} />
-        <Text as="p" size="sm" className="text-muted-foreground">
+        <Text as="p" size="sm" className="text-muted">
           Selected: {value ? toLocalYmd(value) : 'none'}
         </Text>
-        <Text as="p" size="sm" className="text-muted-foreground">
+        <Text as="p" size="sm" className="text-muted">
           Bounds: {toLocalYmd(min)} to {toLocalYmd(max)}
         </Text>
       </div>
@@ -166,7 +166,7 @@ export const WithDisabledDates: Story = {
     return (
       <div className="w-[320px] space-y-2">
         <DatePicker {...args} value={value} onChange={setValue} disabledDates={disabledDates} />
-        <Text as="p" size="sm" className="text-muted-foreground">
+        <Text as="p" size="sm" className="text-muted">
           Disabled dates: 2026-01-16, 2026-01-18
         </Text>
       </div>
@@ -181,7 +181,7 @@ export const KeyboardParity: Story = {
     return (
       <div className="w-[320px] space-y-2">
         <DatePicker {...args} value={value} onChange={setValue} />
-        <Text as="p" size="sm" className="text-muted-foreground">
+        <Text as="p" size="sm" className="text-muted">
           Keyboard checks: Enter opens calendar, Escape closes dialog, Tab leaves trigger, Arrow keys edit segments.
         </Text>
       </div>
@@ -197,7 +197,7 @@ export const LocaleArabicEgypt: Story = {
       <I18nProvider locale="ar-EG">
         <div className="w-[320px] space-y-2">
           <DatePicker {...args} value={value} onChange={setValue} />
-          <Text as="p" size="sm" className="text-muted-foreground">
+          <Text as="p" size="sm" className="text-muted">
             Locale: `ar-EG` (Arabic numerals in date segments).
           </Text>
         </div>
@@ -214,7 +214,7 @@ export const LocalePersianGregorian: Story = {
       <I18nProvider locale="fa-IR-u-ca-gregory">
         <div className="w-[320px] space-y-2">
           <DatePicker {...args} value={value} onChange={setValue} />
-          <Text as="p" size="sm" className="text-muted-foreground">
+          <Text as="p" size="sm" className="text-muted">
             Locale: `fa-IR-u-ca-gregory` (Persian numerals, Gregorian calendar).
           </Text>
         </div>
@@ -231,7 +231,7 @@ export const AllSizes: Story = {
       <div className="w-[420px] space-y-3">
         {sizes.map(size => (
           <div key={size} className="space-y-1">
-            <Text as="p" size="sm" className="text-muted-foreground">
+            <Text as="p" size="sm" className="text-muted">
               Size: {size}
             </Text>
             <DatePicker
@@ -253,7 +253,7 @@ export const AllVariants: Story = {
       <div className="w-[420px] space-y-3">
         {dateVariantValues.map(variant => (
           <div key={variant} className="space-y-1">
-            <Text as="p" size="sm" className="text-muted-foreground capitalize">
+            <Text as="p" size="sm" className="text-muted capitalize">
               {variant}
             </Text>
             <DatePicker
@@ -276,13 +276,13 @@ export const AllColorsByVariant: Story = {
       <div className="w-[920px] space-y-5">
         {dateVariantValues.map(variant => (
           <div key={variant} className="space-y-2">
-            <Text as="p" size="sm" className="text-muted-foreground capitalize">
+            <Text as="p" size="sm" className="text-muted capitalize">
               {variant}
             </Text>
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               {dateColorValues.map(color => (
                 <div key={`${variant}_${color}`} className="space-y-1">
-                  <Text as="p" size="sm" className="text-muted-foreground capitalize">
+                  <Text as="p" size="sm" className="text-muted capitalize">
                     {color}
                   </Text>
                   <DatePicker
@@ -311,13 +311,13 @@ export const AllSizesByVariant: Story = {
       <div className="w-[920px] space-y-5">
         {sizeVariantValues.map(variant => (
           <div key={variant} className="space-y-2">
-            <Text as="p" size="sm" className="text-muted-foreground capitalize">
+            <Text as="p" size="sm" className="text-muted capitalize">
               {variant}
             </Text>
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               {dateSizeValues.map(size => (
                 <div key={`${variant}_${size}`} className="space-y-1">
-                  <Text as="p" size="sm" className="text-muted-foreground">
+                  <Text as="p" size="sm" className="text-muted">
                     Size: {size}
                   </Text>
                   <DatePicker

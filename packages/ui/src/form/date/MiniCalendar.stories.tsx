@@ -36,7 +36,7 @@ export const Default: Story = {
     return (
       <div className="w-[420px] space-y-2">
         <MiniCalendar {...args} value={value} onChange={setValue} />
-        <Text as="p" size="sm" className="text-muted-foreground">
+        <Text as="p" size="sm" className="text-muted">
           Selected: {value.toLocaleDateString()}
         </Text>
       </div>
@@ -53,7 +53,7 @@ export const Bounds: Story = {
     return (
       <div className="w-[420px] space-y-2">
         <MiniCalendar {...args} value={value} onChange={setValue} minDate={minDate} maxDate={maxDate} />
-        <Text as="p" size="sm" className="text-muted-foreground">
+        <Text as="p" size="sm" className="text-muted">
           Bounds: {minDate.toLocaleDateString()} to {maxDate.toLocaleDateString()}
         </Text>
       </div>

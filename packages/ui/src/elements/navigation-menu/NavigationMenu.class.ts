@@ -16,7 +16,7 @@ export const navigationMenuListVerticalCls = 'flex-col items-stretch'
 export const navigationMenuItemBaseCls = 'relative list-none'
 
 export const navigationMenuTriggerBaseCls =
-  'group inline-flex shrink-0 items-center justify-center whitespace-nowrap border border-transparent outline-none transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-2'
+  'group inline-flex shrink-0 items-center justify-center whitespace-nowrap border border-transparent outline-none transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2'
 
 const navigationMenuActionBase = cls(
   'cursor-pointer bg-transparent text-neutral tracking-normal',
@@ -94,7 +94,7 @@ export const navigationMenuViewportBaseCls = 'box-border overflow-auto'
 export const navigationMenuViewportBase = 'w-max min-w-full max-w-[calc(100vw_-_2rem)] max-h-[var(--available-height)]'
 
 export const navigationMenuLinkBaseCls =
-  'group flex min-w-0 gap-3 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-2'
+  'group flex min-w-0 gap-3 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2'
 
 export const navigationMenuLinkBase = cls(
   'text-neutral no-underline tracking-normal',

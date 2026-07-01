@@ -341,7 +341,7 @@ const SheetHeader = React.forwardRef<HTMLDivElement, SheetHeaderProps>(({ classN
   return (
     <div
       ref={ref}
-      className={cn('flex items-center justify-between gap-3 border-b border-border px-6 py-4', className)}
+      className={cn('flex items-center justify-between gap-3 border-b border-neutral px-6 py-4', className)}
       {...props}
     />
   )
@@ -364,7 +364,7 @@ export interface SheetTitleProps {
 
 const SheetTitle = React.forwardRef<HTMLHeadingElement, SheetTitleProps>(({ className, children, ...props }, ref) => {
   return (
-    <DialogPrimitive.Title ref={ref} className={cn('text-lg font-semibold text-foreground', className)} {...props}>
+    <DialogPrimitive.Title ref={ref} className={cn('text-lg font-semibold text-neutral', className)} {...props}>
       {children}
     </DialogPrimitive.Title>
   )

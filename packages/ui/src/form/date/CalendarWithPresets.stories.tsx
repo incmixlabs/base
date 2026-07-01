@@ -36,7 +36,7 @@ export const Default: Story = {
       <div className="w-[360px]">
         <CalendarWithPresets {...args} value={range} onChange={setRange} />
         {range?.from && (
-          <p className="text-sm text-muted-foreground mt-4 text-center">
+          <p className="text-sm text-muted mt-4 text-center">
             Selected: {range.from.toLocaleDateString()}
             {range.to && ` - ${range.to.toLocaleDateString()}`}
           </p>
@@ -75,7 +75,7 @@ export const PresetsOnly: Story = {
       <div className="w-[360px]">
         <CalendarWithPresets {...args} value={range} onChange={setRange} showCalendar={false} />
         {range?.from && (
-          <p className="text-sm text-muted-foreground mt-4 text-center">
+          <p className="text-sm text-muted mt-4 text-center">
             Selected: {range.from.toLocaleDateString()}
             {range.to && ` - ${range.to.toLocaleDateString()}`}
           </p>
@@ -145,7 +145,7 @@ export const WithMinMaxDate: Story = {
     return (
       <div className="w-[360px]">
         <CalendarWithPresets {...args} value={range} onChange={setRange} minValue={minDate} maxValue={maxDate} />
-        <p className="text-xs text-muted-foreground mt-2 text-center">
+        <p className="text-xs text-muted mt-2 text-center">
           Only dates within 30 days of the reference date are selectable
         </p>
       </div>

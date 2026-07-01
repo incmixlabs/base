@@ -67,7 +67,7 @@ describe('Sheet', () => {
       'data-[resizing]:after:bg-primary',
       'left-0',
     ])
-    expect(description.className).not.toContain('text-muted-foreground')
+    expect(description.className).toContain('opacity-70')
     expect(dialog.className).not.toContain('sheet_')
 
     unmount()

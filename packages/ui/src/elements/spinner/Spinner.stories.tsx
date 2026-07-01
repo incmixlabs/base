@@ -66,11 +66,11 @@ export const Sizes: Story = {
     <div className="flex flex-col gap-6">
       {variants.map(variant => (
         <div key={variant} className="flex items-center gap-6">
-          <span className="w-16 text-xs text-muted-foreground">{variant}</span>
+          <span className="w-16 text-xs text-muted">{variant}</span>
           {sizes.map(size => (
             <div key={size} className="flex flex-col items-center gap-2">
               <Spinner size={size} variant={variant} />
-              <span className="text-xs text-muted-foreground">{size}</span>
+              <span className="text-xs text-muted">{size}</span>
             </div>
           ))}
         </div>
@@ -98,7 +98,7 @@ export const SemanticAI: Story = {
     size: 'lg',
   },
   render: args => (
-    <div className="flex items-center gap-6 rounded-[1.75rem] border border-border/60 bg-[radial-gradient(circle_at_top,_rgba(38,38,45,0.96),_rgba(12,12,16,1)_72%)] px-8 py-6 text-white">
+    <div className="flex items-center gap-6 rounded-[1.75rem] border border-neutral bg-[radial-gradient(circle_at_top,_rgba(38,38,45,0.96),_rgba(12,12,16,1)_72%)] px-8 py-6 text-white">
       <Spinner {...args} color="light" />
       <Spinner {...args} color="primary" />
       <Spinner {...args} color="accent" />
@@ -151,9 +151,9 @@ export const LoadingOverlay: Story = {
     <div className="relative w-64 h-32 border rounded-lg">
       <div className="p-4">
         <h4 className="font-medium">Card Content</h4>
-        <p className="text-sm text-muted-foreground">This content is loading...</p>
+        <p className="text-sm text-muted">This content is loading...</p>
       </div>
-      <div className="absolute inset-0 flex items-center justify-center bg-background/80 rounded-lg">
+      <div className="absolute inset-0 flex items-center justify-center bg-neutral-background rounded-lg">
         <Spinner size="md" />
       </div>
     </div>
@@ -166,7 +166,7 @@ export const FullPageLoading: Story = {
       <Spinner size="lg" color="primary" />
       <div className="text-center">
         <p className="font-medium">Loading your dashboard</p>
-        <p className="text-sm text-muted-foreground">Please wait a moment...</p>
+        <p className="text-sm text-muted">Please wait a moment...</p>
       </div>
     </div>
   ),
@@ -190,8 +190,8 @@ export const LoadingList: Story = {
         <div key={i} className="p-3 flex items-center gap-3">
           <Spinner size="sm" color="inverse" />
           <div className="flex-1">
-            <div className="h-4 w-3/4 bg-muted rounded animate-pulse" />
-            <div className="h-3 w-1/2 bg-muted rounded animate-pulse mt-1" />
+            <div className="h-4 w-3/4 bg-neutral-soft rounded animate-pulse" />
+            <div className="h-3 w-1/2 bg-neutral-soft rounded animate-pulse mt-1" />
           </div>
         </div>
       ))}
@@ -211,7 +211,7 @@ export const ConditionalLoading: Story = {
         <Spinner loading={loading}>
           <div className="p-4 border rounded-lg">
             <h4 className="font-medium">Content Loaded</h4>
-            <p className="text-sm text-muted-foreground">This content is now visible.</p>
+            <p className="text-sm text-muted">This content is now visible.</p>
           </div>
         </Spinner>
       </div>
@@ -221,7 +221,7 @@ export const ConditionalLoading: Story = {
 
 function PulsingArrowFlowPreview() {
   return (
-    <div className="flex min-h-48 w-80 items-center justify-center rounded-[2rem] border border-border/70 bg-gradient-to-b from-stone-50 to-stone-200 p-8 text-stone-900">
+    <div className="flex min-h-48 w-80 items-center justify-center rounded-[2rem] border border-neutral bg-gradient-to-b from-stone-50 to-stone-200 p-8 text-stone-900">
       <style>{`
         @keyframes spinner-story-arrow-left {
           0%, 100% {

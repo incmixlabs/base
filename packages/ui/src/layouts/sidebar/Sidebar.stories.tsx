@@ -203,7 +203,7 @@ function SidebarDemo({
         </header>
         <main className="p-6">
           <h2 className="text-xl font-semibold">Sidebar Layout Demo</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted">
             Use the controls to switch sidebar variant, side, and collapse behavior.
           </p>
         </main>
@@ -265,11 +265,11 @@ function ControlledSidebarDemo({
           >
             {open ? 'Collapse' : 'Expand'}
           </button>
-          <span className="text-sm text-muted-foreground">Controlled state: {open ? 'open' : 'closed'}</span>
+          <span className="text-sm text-muted">Controlled state: {open ? 'open' : 'closed'}</span>
         </header>
         <main className="space-y-3 p-6">
           <h2 className="text-xl font-semibold">Controlled Sidebar Demo</h2>
-          <p className="max-w-2xl text-sm text-muted-foreground">
+          <p className="max-w-2xl text-sm text-muted">
             This story exercises the controlled `open` / `onOpenChange` API so persistence can be handled outside the
             component with local storage, session storage, or cookies later.
           </p>
@@ -393,7 +393,7 @@ function OverflowDemo({ variant = 'surface', color = 'slate' }: DemoArgs) {
         </header>
         <main className="p-6">
           <h2 className="text-xl font-semibold">Overflow Test</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted">
             The middle group should scroll while top (Pinned) and bottom (Settings) stay sticky.
           </p>
         </main>
@@ -531,7 +531,7 @@ function HoverHighlightDemo({ variant = 'surface', color = 'neutral' }: DemoArgs
         </header>
         <main className="p-6">
           <h2 className="text-xl font-semibold">Hover Highlight</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted">
             Hover over the sidebar menu items to see the animated highlight follow your cursor. Click "Inbox" to
             expand/collapse sub-items. The highlight also follows keyboard focus (Tab through items).
           </p>
@@ -709,7 +709,7 @@ function SidebarDropdownMenuDemo({ variant = 'surface', color = 'neutral' }: Dem
         </header>
         <main className="p-6">
           <h2 className="text-xl font-semibold">Sidebar with Dropdown Menu</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted">
             Click the user button at the bottom to open an animated dropdown menu. The highlight follows your
             cursor/keyboard across menu items.
           </p>

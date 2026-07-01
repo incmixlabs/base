@@ -133,21 +133,30 @@ export function getResponsiveSpacingUtilityClasses(
   return classes.length > 0 ? classes.join(' ') : undefined
 }
 
-const semanticColorUtilityByToken = {
-  background: 'background',
-  foreground: 'foreground',
-  'neutral-surface': 'card',
-  'neutral-text': 'card-foreground',
-  'neutral-border': 'border',
-  'primary-primary': 'primary',
-  'primary-contrast': 'primary-foreground',
-  'secondary-soft': 'secondary',
-  'secondary-text': 'secondary-foreground',
-  'accent-soft': 'accent',
-  'accent-text': 'accent-foreground',
-  'error-primary': 'destructive',
-  'error-contrast': 'destructive-foreground',
-} as const satisfies Partial<Record<ThemeColorToken | 'background' | 'foreground', string>>
+const semanticColorUtilityByPrefixAndToken = {
+  bg: {
+    background: 'neutral-background',
+    'neutral-surface': 'neutral-surface',
+    'primary-primary': 'primary-solid',
+    'secondary-soft': 'secondary-soft',
+    'accent-soft': 'accent-soft',
+    'error-primary': 'error-solid',
+  },
+  text: {
+    foreground: 'neutral',
+    'neutral-text': 'neutral',
+    'primary-contrast': 'primary-contrast',
+    'secondary-text': 'secondary',
+    'accent-text': 'accent',
+    'error-contrast': 'error-contrast',
+  },
+  border: {
+    'neutral-border': 'neutral',
+  },
+} as const satisfies Record<
+  'bg' | 'text' | 'border',
+  Partial<Record<ThemeColorToken | 'background' | 'foreground', string>>
+>
 
 const arbitraryThemeColorTokenSet = new Set<string>([
   ...HUE_NAMES.flatMap(hue => HUE_STEPS.map(step => `${hue}-${step}`)),
@@ -161,7 +170,10 @@ export function getThemeColorUtilityClass(
 ): string | undefined {
   if (!token) return undefined
 
-  const utilityValue = semanticColorUtilityByToken[token as keyof typeof semanticColorUtilityByToken]
+  const utilityValue =
+    semanticColorUtilityByPrefixAndToken[prefix][
+      token as keyof (typeof semanticColorUtilityByPrefixAndToken)[typeof prefix]
+    ]
   if (utilityValue) return `${prefix}-${utilityValue}`
 
   if (!arbitraryThemeColorTokenSet.has(token)) return undefined

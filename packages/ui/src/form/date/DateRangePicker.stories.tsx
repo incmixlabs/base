@@ -68,7 +68,7 @@ export const Default: Story = {
     return (
       <div className="w-[420px] space-y-2">
         <DateRangePicker {...args} value={value} onChange={setValue} />
-        <Text as="p" size="sm" className="text-muted-foreground">
+        <Text as="p" size="sm" className="text-muted">
           Selected: {value?.from ? toLocalYmd(value.from) : 'none'} to {value?.to ? toLocalYmd(value.to) : 'none'}
         </Text>
       </div>
@@ -85,7 +85,7 @@ export const InteractiveKnobs: Story = {
     return (
       <div className="w-[520px] space-y-2">
         <DateRangePicker {...args} />
-        <Text as="p" size="sm" className="text-muted-foreground">
+        <Text as="p" size="sm" className="text-muted">
           Knobs: set `visibleMonths=2`, then click month headings to open month/year wheel picker.
         </Text>
       </div>
@@ -115,10 +115,10 @@ export const BoundsAndDisabledDates: Story = {
           maxValue={maxRangeDate}
           disabledDates={disabledRangeDates}
         />
-        <Text as="p" size="sm" className="text-muted-foreground">
+        <Text as="p" size="sm" className="text-muted">
           Selected: {value?.from ? toLocalYmd(value.from) : 'none'} to {value?.to ? toLocalYmd(value.to) : 'none'}
         </Text>
-        <Text as="p" size="sm" className="text-muted-foreground">
+        <Text as="p" size="sm" className="text-muted">
           Bounds: {toLocalYmd(minRangeDate)} to {toLocalYmd(maxRangeDate)}
         </Text>
       </div>
@@ -139,10 +139,10 @@ export const MultiMonth: Story = {
     return (
       <div className="w-[760px] space-y-2">
         <DateRangePicker {...args} value={value} onChange={setValue} />
-        <Text as="p" size="sm" className="text-muted-foreground">
+        <Text as="p" size="sm" className="text-muted">
           Multi-month: two months visible for easier cross-month range selection.
         </Text>
-        <Text as="p" size="sm" className="text-muted-foreground">
+        <Text as="p" size="sm" className="text-muted">
           Selected: {value?.from ? toLocalYmd(value.from) : 'none'} to {value?.to ? toLocalYmd(value.to) : 'none'}
         </Text>
       </div>
@@ -153,7 +153,7 @@ export const KeyboardParity: Story = {
   render: args => (
     <div className="w-[420px] space-y-2">
       <DateRangePicker {...args} defaultValue={defaultRange} />
-      <Text as="p" size="sm" className="text-muted-foreground">
+      <Text as="p" size="sm" className="text-muted">
         Keyboard check: focus trigger and press Enter to open, Escape to close, Tab to move across segments.
       </Text>
     </div>
@@ -166,7 +166,7 @@ export const LocaleArabicEgypt: Story = {
       <I18nProvider locale="ar-EG">
         <DateRangePicker {...args} defaultValue={defaultRange} />
       </I18nProvider>
-      <Text as="p" size="sm" className="text-muted-foreground">
+      <Text as="p" size="sm" className="text-muted">
         Locale: `ar-EG` (Arabic numerals in date segments).
       </Text>
     </div>
@@ -179,7 +179,7 @@ export const SurfaceColorVariants: Story = {
       <div className="w-[680px] space-y-3">
         {dateColorValues.map(color => (
           <div key={color} className="space-y-1">
-            <Text as="p" size="sm" className="text-muted-foreground capitalize">
+            <Text as="p" size="sm" className="text-muted capitalize">
               {color}
             </Text>
             <DateRangePicker
@@ -202,7 +202,7 @@ export const AllVariants: Story = {
       <div className="w-[680px] space-y-3">
         {dateVariantValues.map(variant => (
           <div key={variant} className="space-y-1">
-            <Text as="p" size="sm" className="text-muted-foreground capitalize">
+            <Text as="p" size="sm" className="text-muted capitalize">
               {variant}
             </Text>
             <DateRangePicker
@@ -224,13 +224,13 @@ export const AllColorsByVariant: Story = {
       <div className="w-[920px] space-y-5">
         {dateVariantValues.map(variant => (
           <div key={variant} className="space-y-2">
-            <Text as="p" size="sm" className="text-muted-foreground capitalize">
+            <Text as="p" size="sm" className="text-muted capitalize">
               {variant}
             </Text>
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               {dateColorValues.map(color => (
                 <div key={`${variant}_${color}`} className="space-y-1">
-                  <Text as="p" size="sm" className="text-muted-foreground capitalize">
+                  <Text as="p" size="sm" className="text-muted capitalize">
                     {color}
                   </Text>
                   <DateRangePicker
@@ -256,13 +256,13 @@ export const AllSizesByVariant: Story = {
       <div className="w-[760px] space-y-5">
         {dateVariantValues.map(variant => (
           <div key={variant} className="space-y-2">
-            <Text as="p" size="sm" className="text-muted-foreground capitalize">
+            <Text as="p" size="sm" className="text-muted capitalize">
               {variant}
             </Text>
             <div className="space-y-3">
               {dateSizeValues.map(size => (
                 <div key={`${variant}_${size}`} className="space-y-1">
-                  <Text as="p" size="sm" className="text-muted-foreground">
+                  <Text as="p" size="sm" className="text-muted">
                     Size: {size}
                   </Text>
                   <DateRangePicker

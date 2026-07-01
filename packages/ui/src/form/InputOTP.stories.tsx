@@ -358,7 +358,7 @@ export const PatternShowcase: Story = {
       <div className="space-y-6">
         <div className="space-y-2">
           <Label>
-            Digits only <code className="text-xs bg-muted px-1 rounded">REGEXP_ONLY_DIGITS</code>
+            Digits only <code className="text-xs bg-neutral-soft px-1 rounded">REGEXP_ONLY_DIGITS</code>
           </Label>
           <InputOTP
             maxLength={4}
@@ -370,13 +370,13 @@ export const PatternShowcase: Story = {
         </div>
         <div className="space-y-2">
           <Label>
-            Letters only <code className="text-xs bg-muted px-1 rounded">REGEXP_ONLY_CHARS</code>
+            Letters only <code className="text-xs bg-neutral-soft px-1 rounded">REGEXP_ONLY_CHARS</code>
           </Label>
           <InputOTP maxLength={4} value={chars} onChange={setChars} pattern={REGEXP_ONLY_CHARS} inputMode="text" />
         </div>
         <div className="space-y-2">
           <Label>
-            Alphanumeric <code className="text-xs bg-muted px-1 rounded">REGEXP_ONLY_DIGITS_AND_CHARS</code>
+            Alphanumeric <code className="text-xs bg-neutral-soft px-1 rounded">REGEXP_ONLY_DIGITS_AND_CHARS</code>
           </Label>
           <InputOTP
             maxLength={4}

@@ -16,7 +16,7 @@ export interface StatusPageProps extends Omit<React.HTMLAttributes<HTMLDivElemen
 
 export function StatusPage({ title, description, action, className, children, ...props }: StatusPageProps) {
   return (
-    <Box className={cn('min-h-screen bg-background text-foreground', className)} {...props}>
+    <Box className={cn('min-h-screen bg-neutral-background text-neutral', className)} {...props}>
       <Flex direction="column" align="center" justify="center" gap="4" className="min-h-screen px-6 text-center">
         <Heading as="h1" size="lg">
           {title}

@@ -350,7 +350,7 @@ export const AutoSizeChatInput: Story = {
   render: () => (
     <div className="w-96 border rounded-lg p-4 space-y-4">
       <h3 className="font-semibold">Chat</h3>
-      <div className="space-y-2 p-2 bg-muted/50 rounded">
+      <div className="space-y-2 p-2 bg-neutral-soft rounded">
         <p className="text-sm">Hello! How can I help you today?</p>
       </div>
       <div className="flex gap-2 items-end">

@@ -599,7 +599,7 @@ const QRCodeOverlay = React.forwardRef<HTMLDivElement, QRCodeOverlayProps>(
         ref={ref}
         data-slot="qr-code-overlay"
         className={cn(
-          'absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-sm bg-background',
+          'absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-sm bg-neutral-background',
           className,
         )}
         {...props}
@@ -629,7 +629,7 @@ const QRCodeSkeleton = React.forwardRef<HTMLDivElement, QRCodeSkeletonProps>(
         ref={ref}
         aria-hidden="true"
         data-slot="qr-code-skeleton"
-        className={cn('absolute animate-pulse rounded-md bg-muted', className)}
+        className={cn('absolute animate-pulse rounded-md bg-neutral-soft', className)}
         style={{ width: context.size, height: context.size, ...style }}
         {...props}
       />
