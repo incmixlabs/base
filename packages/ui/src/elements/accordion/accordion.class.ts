@@ -1,4 +1,3 @@
-import type { Transition, Variants } from 'motion/react'
 import type { accordionRootPropDefs } from './accordion.props'
 
 export type AccordionSize = (typeof accordionRootPropDefs.size.values)[number]
@@ -19,7 +18,7 @@ export const accordionChevron =
   'shrink-0 transition-transform duration-[var(--af-motion-fast)] ease-[var(--af-ease-standard)]'
 
 export const accordionContentBase =
-  'overflow-hidden [color:color-mix(in_oklch,var(--color-neutral-text)_68%,transparent)]'
+  'overflow-hidden [height:var(--accordion-panel-height)] opacity-100 transition-[height,opacity] duration-[350ms] ease-in-out data-[starting-style]:[height:0] data-[starting-style]:opacity-0 data-[ending-style]:[height:0] data-[ending-style]:opacity-0 [color:color-mix(in_oklch,var(--color-neutral-text)_68%,transparent)]'
 export const accordionContentInner = 'px-4'
 export const accordionContentPaddingless = 'p-0'
 
@@ -76,12 +75,3 @@ export const accordionClassNames = [
   ...Object.values(accordionContentSizeVariants),
   ...Object.values(accordionChevronSizeVariants),
 ]
-
-// Motion variants
-export const accordionPanelVariants: Variants = {
-  initial: { height: 0, opacity: 0 },
-  animate: { height: 'auto', opacity: 1 },
-  exit: { height: 0, opacity: 0 },
-}
-
-export const accordionPanelTransition: Transition = { duration: 0.35, ease: 'easeInOut' }

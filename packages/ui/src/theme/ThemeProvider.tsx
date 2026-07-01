@@ -21,7 +21,6 @@ import type { SidebarVariant } from '@/layouts/sidebar/sidebar.props'
 import { cn } from '@/lib/utils'
 import { escapeCssString, extractPrimaryFontFamily } from '@/utils/strings'
 import { getMatchingGrayColor } from './helpers/get-matching-gray-color'
-import { MotionProvider } from './MotionProvider'
 import { buildThemeResponsiveProfileVars } from './profile-vars'
 import { getThemeRadiusValue } from './radius-utils'
 import { buildRuntimePaletteVars } from './runtime-palette-vars'
@@ -862,19 +861,17 @@ export const ThemeProvider = React.forwardRef<HTMLDivElement, ThemeProviderProps
           <ThemePortalContainerContext.Provider value={portalContainer}>
             <ThemeRadiusProvider value={radius}>
               <AvatarProvider variant={avatarVariant} radius={avatarRadius}>
-                <MotionProvider>
-                  {React.cloneElement(
-                    child,
-                    {
-                      ...props,
-                      ref: themeDivRef,
-                      className: cn(child.props.className, themeClassName),
-                      style: { ...themeStyles, ...child.props.style, ...propsStyle },
-                      ...themeDataAttributes,
-                    },
-                    composedChildren,
-                  )}
-                </MotionProvider>
+                {React.cloneElement(
+                  child,
+                  {
+                    ...props,
+                    ref: themeDivRef,
+                    className: cn(child.props.className, themeClassName),
+                    style: { ...themeStyles, ...child.props.style, ...propsStyle },
+                    ...themeDataAttributes,
+                  },
+                  composedChildren,
+                )}
               </AvatarProvider>
             </ThemeRadiusProvider>
           </ThemePortalContainerContext.Provider>
@@ -889,18 +886,16 @@ export const ThemeProvider = React.forwardRef<HTMLDivElement, ThemeProviderProps
         <ThemePortalContainerContext.Provider value={portalContainer}>
           <ThemeRadiusProvider value={radius}>
             <AvatarProvider variant={avatarVariant} radius={avatarRadius}>
-              <MotionProvider>
-                <div
-                  {...props}
-                  ref={themeDivRef}
-                  className={themeClassName}
-                  style={{ ...themeStyles, ...(props as { style?: React.CSSProperties }).style }}
-                  {...themeDataAttributes}
-                >
-                  {fontSourceCss ? <style data-theme-font-sources>{fontSourceCss}</style> : null}
-                  {children}
-                </div>
-              </MotionProvider>
+              <div
+                {...props}
+                ref={themeDivRef}
+                className={themeClassName}
+                style={{ ...themeStyles, ...(props as { style?: React.CSSProperties }).style }}
+                {...themeDataAttributes}
+              >
+                {fontSourceCss ? <style data-theme-font-sources>{fontSourceCss}</style> : null}
+                {children}
+              </div>
             </AvatarProvider>
           </ThemeRadiusProvider>
         </ThemePortalContainerContext.Provider>

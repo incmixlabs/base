@@ -2,8 +2,6 @@
 
 import { Popover as PopoverPrimitive } from '@base-ui/react/popover'
 import { X } from 'lucide-react'
-import { AnimatePresence } from 'motion/react'
-import * as m from 'motion/react-m'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { getHeightProps } from '@/theme/helpers/get-height-styles'
@@ -27,8 +25,6 @@ import {
   floatingSurfaceMaxWidthVariants,
   floatingSurfaceSizeVariants,
   popoverContentBase,
-  popoverPanelTransition,
-  popoverPanelVariants,
 } from './popover.class'
 import {
   type PopoverContentMaxWidth,
@@ -49,8 +45,6 @@ const PopoverVisualContext = React.createContext<PopoverVisualContextValue>({
   highContrast: false,
 })
 
-const PopoverOpenContext = React.createContext<boolean>(false)
-
 // ============================================================================
 // Root
 // ============================================================================
@@ -67,24 +61,10 @@ export interface PopoverRootProps {
 }
 
 const PopoverRoot: React.FC<PopoverRootProps> = ({ open: openProp, onOpenChange, defaultOpen, children }) => {
-  const isControlled = openProp !== undefined
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen ?? false)
-  const isOpen = isControlled ? openProp : uncontrolledOpen
-
-  const handleOpenChange = React.useCallback(
-    (next: boolean) => {
-      if (!isControlled) setUncontrolledOpen(next)
-      onOpenChange?.(next)
-    },
-    [isControlled, onOpenChange],
-  )
-
   return (
-    <PopoverOpenContext.Provider value={isOpen}>
-      <PopoverPrimitive.Root open={openProp} onOpenChange={handleOpenChange} defaultOpen={defaultOpen}>
-        {children}
-      </PopoverPrimitive.Root>
-    </PopoverOpenContext.Provider>
+    <PopoverPrimitive.Root open={openProp} onOpenChange={onOpenChange} defaultOpen={defaultOpen}>
+      {children}
+    </PopoverPrimitive.Root>
   )
 }
 
@@ -218,50 +198,35 @@ const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentProps>(
     )
 
     const portalContainer = useThemePortalContainer()
-    const isOpen = React.useContext(PopoverOpenContext)
 
     return (
-      <AnimatePresence>
-        {isOpen && (
-          <PopoverPrimitive.Portal keepMounted container={portalContainer}>
-            <PopoverPrimitive.Positioner side={side} align={align} sideOffset={sideOffset} alignOffset={alignOffset}>
-              <PopoverVisualContext.Provider value={contextValue}>
-                <PopoverPrimitive.Popup
-                  ref={ref}
-                  render={
-                    <m.div
-                      key="popover-popup"
-                      variants={popoverPanelVariants}
-                      initial="initial"
-                      animate="animate"
-                      exit="exit"
-                      transition={popoverPanelTransition}
-                    />
-                  }
-                  className={cn(
-                    'z-50 w-full border border-solid',
-                    'focus:outline-none',
-                    popoverContentBase,
-                    floatingSurfaceSizeVariants[safeSize],
-                    resolvedTokenMaxWidth && floatingSurfaceMaxWidthVariants[resolvedTokenMaxWidth],
-                    safeHighContrast
-                      ? floatingSurfaceHighContrastColorVariants[safeColor][safeVariant]
-                      : floatingSurfaceColorVariants[safeColor][safeVariant],
-                    safeHighContrast && floatingSurfaceHighContrastEffectByVariant[safeVariant],
-                    widthProps.className,
-                    heightProps.className,
-                    className,
-                  )}
-                  style={{ ...getRadiusStyles(radius), ...widthProps.style, ...heightProps.style }}
-                  {...props}
-                >
-                  {children}
-                </PopoverPrimitive.Popup>
-              </PopoverVisualContext.Provider>
-            </PopoverPrimitive.Positioner>
-          </PopoverPrimitive.Portal>
-        )}
-      </AnimatePresence>
+      <PopoverPrimitive.Portal container={portalContainer}>
+        <PopoverPrimitive.Positioner side={side} align={align} sideOffset={sideOffset} alignOffset={alignOffset}>
+          <PopoverVisualContext.Provider value={contextValue}>
+            <PopoverPrimitive.Popup
+              ref={ref}
+              className={cn(
+                'z-50 w-full border border-solid',
+                'focus:outline-none',
+                popoverContentBase,
+                floatingSurfaceSizeVariants[safeSize],
+                resolvedTokenMaxWidth && floatingSurfaceMaxWidthVariants[resolvedTokenMaxWidth],
+                safeHighContrast
+                  ? floatingSurfaceHighContrastColorVariants[safeColor][safeVariant]
+                  : floatingSurfaceColorVariants[safeColor][safeVariant],
+                safeHighContrast && floatingSurfaceHighContrastEffectByVariant[safeVariant],
+                widthProps.className,
+                heightProps.className,
+                className,
+              )}
+              style={{ ...getRadiusStyles(radius), ...widthProps.style, ...heightProps.style }}
+              {...props}
+            >
+              {children}
+            </PopoverPrimitive.Popup>
+          </PopoverVisualContext.Provider>
+        </PopoverPrimitive.Positioner>
+      </PopoverPrimitive.Portal>
     )
   },
 )

@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { motion, useReducedMotion } from 'motion/react'
 import { useState } from 'react'
 import { Button, Spinner } from '@/elements'
 import { semanticColorKeys } from '@/theme/props/color.prop'
@@ -221,57 +220,99 @@ export const ConditionalLoading: Story = {
 }
 
 function PulsingArrowFlowPreview() {
-  const reduceMotion = useReducedMotion()
-  const sharedTransition = {
-    duration: 1.4,
-    ease: 'easeInOut' as const,
-    repeat: Infinity,
-  }
-
   return (
     <div className="flex min-h-48 w-80 items-center justify-center rounded-[2rem] border border-border/70 bg-gradient-to-b from-stone-50 to-stone-200 p-8 text-stone-900">
+      <style>{`
+        @keyframes spinner-story-arrow-left {
+          0%, 100% {
+            opacity: 0.55;
+            transform: translateX(0) scale(0.96);
+          }
+          50% {
+            opacity: 0.95;
+            transform: translateX(-14px) scale(1.06);
+          }
+        }
+
+        @keyframes spinner-story-arrow-right {
+          0%, 100% {
+            opacity: 0.55;
+            transform: translateX(0) scale(0.96);
+          }
+          50% {
+            opacity: 0.95;
+            transform: translateX(14px) scale(1.06);
+          }
+        }
+
+        @keyframes spinner-story-pulse-dot {
+          0%, 100% {
+            opacity: 0.6;
+            transform: scale(0.92);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1.14);
+          }
+        }
+
+        @keyframes spinner-story-progress {
+          0% {
+            opacity: 0.35;
+            transform: translateX(-55%);
+          }
+          50% {
+            opacity: 0.9;
+          }
+          100% {
+            opacity: 0.35;
+            transform: translateX(155%);
+          }
+        }
+
+        .spinner-story-arrow-left {
+          animation: spinner-story-arrow-left 1.4s ease-in-out infinite;
+        }
+
+        .spinner-story-arrow-right {
+          animation: spinner-story-arrow-right 1.4s ease-in-out infinite;
+        }
+
+        .spinner-story-pulse-dot {
+          animation: spinner-story-pulse-dot 1.4s ease-in-out infinite;
+        }
+
+        .spinner-story-progress {
+          animation: spinner-story-progress 1.6s ease-in-out infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .spinner-story-arrow-left,
+          .spinner-story-arrow-right,
+          .spinner-story-pulse-dot,
+          .spinner-story-progress {
+            animation-name: spinner-story-reduced-pulse;
+            transform: none;
+          }
+
+          @keyframes spinner-story-reduced-pulse {
+            0%, 100% {
+              opacity: 0.7;
+            }
+            50% {
+              opacity: 0.95;
+            }
+          }
+        }
+      `}</style>
       <div className="w-[18rem] rounded-[1.75rem] bg-white/80 px-8 py-5 shadow-[0_12px_40px_rgba(0,0,0,0.08)]">
         <div className="flex items-center justify-center gap-4">
-          <motion.div
-            animate={
-              reduceMotion
-                ? { opacity: [0.7, 0.95, 0.7] }
-                : { x: [0, -14, 0], opacity: [0.55, 0.95, 0.55], scale: [0.96, 1.06, 0.96] }
-            }
-            transition={sharedTransition}
-            className="text-3xl font-semibold leading-none"
-          >
-            ←
-          </motion.div>
-          <motion.div
-            animate={
-              reduceMotion ? { opacity: [0.7, 0.95, 0.7] } : { opacity: [0.6, 1, 0.6], scale: [0.92, 1.14, 0.92] }
-            }
-            transition={sharedTransition}
-            className="h-3 w-3 rounded-full bg-current"
-          />
-          <motion.div
-            animate={
-              reduceMotion
-                ? { opacity: [0.7, 0.95, 0.7] }
-                : { x: [0, 14, 0], opacity: [0.55, 0.95, 0.55], scale: [0.96, 1.06, 0.96] }
-            }
-            transition={sharedTransition}
-            className="text-3xl font-semibold leading-none"
-          >
-            →
-          </motion.div>
+          <div className="spinner-story-arrow-left text-3xl font-semibold leading-none">←</div>
+          <div className="spinner-story-pulse-dot h-3 w-3 rounded-full bg-current" />
+          <div className="spinner-story-arrow-right text-3xl font-semibold leading-none">→</div>
         </div>
         <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-stone-300/70">
-          <motion.div
-            animate={reduceMotion ? { opacity: [0.7, 1, 0.7] } : { x: ['-55%', '155%'], opacity: [0.35, 0.9, 0.35] }}
-            transition={{
-              duration: 1.6,
-              ease: 'easeInOut',
-              repeat: Infinity,
-            }}
-            className="h-full w-[45%] rounded-full bg-current"
-          />
+          <div className="spinner-story-progress h-full w-[45%] rounded-full bg-current" />
         </div>
       </div>
     </div>

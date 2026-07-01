@@ -1,7 +1,5 @@
 'use client'
 
-import { AnimatePresence } from 'motion/react'
-import * as m from 'motion/react-m'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { normalizeEnumPropValue } from '@/theme/props/prop-def'
@@ -18,8 +16,7 @@ import {
   stepperItem,
   stepperNav,
   stepperPanel,
-  stepperPanelTransition,
-  stepperPanelVariants,
+  stepperPanelAnimated,
   stepperRoot,
   stepperSeparator,
   stepperSeparatorCompleted,
@@ -303,29 +300,13 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
           })}
         </div>
 
-        {activeStep && animated ? (
-          <AnimatePresence mode="wait">
-            <m.div
-              key={activeStep.id}
-              id={activePanelId}
-              role="tabpanel"
-              aria-labelledby={activeTabId}
-              className={cn(stepperPanel, panelClassName)}
-              variants={stepperPanelVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              transition={stepperPanelTransition}
-            >
-              {activePanelContent}
-            </m.div>
-          </AnimatePresence>
-        ) : activeStep ? (
+        {activeStep ? (
           <div
+            key={animated ? activeStep.id : undefined}
             id={activePanelId}
             role="tabpanel"
             aria-labelledby={activeTabId}
-            className={cn(stepperPanel, panelClassName)}
+            className={cn(stepperPanel, animated && stepperPanelAnimated, panelClassName)}
           >
             {activePanelContent}
           </div>

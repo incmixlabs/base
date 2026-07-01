@@ -2,8 +2,6 @@
 
 import { Accordion as AccordionPrimitive } from '@base-ui/react/accordion'
 import { ChevronDown } from 'lucide-react'
-import { AnimatePresence } from 'motion/react'
-import * as m from 'motion/react-m'
 import * as React from 'react'
 import { Flex } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
@@ -20,8 +18,6 @@ import {
   accordionHeaderBase,
   accordionItemBase,
   accordionItemBorderless,
-  accordionPanelTransition,
-  accordionPanelVariants,
   accordionRootBase,
   accordionRootBorderless,
   accordionTextSizeVariants,
@@ -298,42 +294,25 @@ const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>
     }
 
     return (
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <AccordionPrimitive.Panel
-            ref={ref}
-            keepMounted
-            hidden={false}
-            render={
-              <m.div
-                key="accordion-panel"
-                variants={accordionPanelVariants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                transition={accordionPanelTransition}
-                style={{ overflow: 'hidden' }}
-              />
-            }
-            className={
-              typeof className === 'function'
-                ? state => cn(accordionContentBase, accordionTextSizeVariants[accordion.size], className(state))
-                : cn(accordionContentBase, accordionTextSizeVariants[accordion.size], className)
-            }
-            {...props}
-          >
-            <div
-              className={cn(
-                accordionContentInner,
-                accordionContentSizeVariants[accordion.size],
-                !accordion.contentPadding && accordionContentPaddingless,
-              )}
-            >
-              {children}
-            </div>
-          </AccordionPrimitive.Panel>
-        )}
-      </AnimatePresence>
+      <AccordionPrimitive.Panel
+        ref={ref}
+        className={
+          typeof className === 'function'
+            ? state => cn(accordionContentBase, accordionTextSizeVariants[accordion.size], className(state))
+            : cn(accordionContentBase, accordionTextSizeVariants[accordion.size], className)
+        }
+        {...props}
+      >
+        <div
+          className={cn(
+            accordionContentInner,
+            accordionContentSizeVariants[accordion.size],
+            !accordion.contentPadding && accordionContentPaddingless,
+          )}
+        >
+          {children}
+        </div>
+      </AccordionPrimitive.Panel>
     )
   },
 )

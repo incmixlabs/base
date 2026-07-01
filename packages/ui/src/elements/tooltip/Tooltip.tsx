@@ -1,8 +1,6 @@
 'use client'
 
 import { Tooltip as TooltipPrimitive } from '@base-ui/react/tooltip'
-import { AnimatePresence } from 'motion/react'
-import * as m from 'motion/react-m'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { getWidthProps } from '@/theme/helpers/get-width-styles'
@@ -29,8 +27,6 @@ import {
   tooltipContentBase,
   tooltipContentBySize,
   tooltipContentMaxWidth,
-  tooltipPanelTransition,
-  tooltipPanelVariants,
   tooltipPositionerBase,
 } from './tooltip.class'
 import { tooltipContentPropDefs, tooltipProviderPropDefs } from './tooltip.props'
@@ -112,31 +108,15 @@ export interface TooltipRootProps {
   children: React.ReactNode
 }
 
-const TooltipOpenContext = React.createContext<boolean>(false)
-
 const TooltipRoot: React.FC<TooltipRootProps> = ({ open: openProp, onOpenChange, defaultOpen, children }) => {
   const [portalContainer, setPortalContainer] = React.useState<HTMLElement | undefined>(undefined)
 
-  const isControlled = openProp !== undefined
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen ?? false)
-  const isOpen = isControlled ? openProp : uncontrolledOpen
-
-  const handleOpenChange = React.useCallback(
-    (next: boolean) => {
-      if (!isControlled) setUncontrolledOpen(next)
-      onOpenChange?.(next)
-    },
-    [isControlled, onOpenChange],
-  )
-
   return (
-    <TooltipOpenContext.Provider value={isOpen}>
-      <TooltipPortalContainerContext.Provider value={{ portalContainer, setPortalContainer }}>
-        <TooltipPrimitive.Root open={openProp} onOpenChange={handleOpenChange} defaultOpen={defaultOpen}>
-          {children}
-        </TooltipPrimitive.Root>
-      </TooltipPortalContainerContext.Provider>
-    </TooltipOpenContext.Provider>
+    <TooltipPortalContainerContext.Provider value={{ portalContainer, setPortalContainer }}>
+      <TooltipPrimitive.Root open={openProp} onOpenChange={onOpenChange} defaultOpen={defaultOpen}>
+        {children}
+      </TooltipPrimitive.Root>
+    </TooltipPortalContainerContext.Provider>
   )
 }
 
@@ -283,58 +263,39 @@ const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentProps>(
       [safeVariant, safeColor, safeHighContrast],
     )
 
-    const isOpen = React.useContext(TooltipOpenContext)
-
     return (
-      <AnimatePresence>
-        {isOpen && (
-          <TooltipPrimitive.Portal
-            keepMounted
-            container={container ?? portalContext?.portalContainer ?? themePortalContainer}
-          >
-            <TooltipPrimitive.Positioner
-              className={tooltipPositionerBase}
-              side={side}
-              align={align}
-              sideOffset={sideOffset}
-              alignOffset={alignOffset}
+      <TooltipPrimitive.Portal container={container ?? portalContext?.portalContainer ?? themePortalContainer}>
+        <TooltipPrimitive.Positioner
+          className={tooltipPositionerBase}
+          side={side}
+          align={align}
+          sideOffset={sideOffset}
+          alignOffset={alignOffset}
+        >
+          <TooltipVisualContext.Provider value={contextValue}>
+            <TooltipPrimitive.Popup
+              ref={ref}
+              className={cn(
+                'z-50 w-full border border-solid',
+                'focus:outline-none',
+                tooltipContentBase,
+                tooltipContentBySize[safeSize],
+                resolvedTokenMaxWidth && tooltipContentMaxWidth[resolvedTokenMaxWidth],
+                safeHighContrast
+                  ? floatingSurfaceHighContrastColorVariants[safeColor][safeVariant]
+                  : floatingSurfaceColorVariants[safeColor][safeVariant],
+                safeHighContrast && floatingSurfaceHighContrastEffectByVariant[safeVariant],
+                widthProps.className,
+                className,
+              )}
+              style={{ ...getRadiusStyles(radius), ...widthProps.style }}
+              {...props}
             >
-              <TooltipVisualContext.Provider value={contextValue}>
-                <TooltipPrimitive.Popup
-                  ref={ref}
-                  render={
-                    <m.div
-                      key="tooltip-popup"
-                      variants={tooltipPanelVariants}
-                      initial="initial"
-                      animate="animate"
-                      exit="exit"
-                      transition={tooltipPanelTransition}
-                    />
-                  }
-                  className={cn(
-                    'z-50 w-full border border-solid',
-                    'focus:outline-none',
-                    tooltipContentBase,
-                    tooltipContentBySize[safeSize],
-                    resolvedTokenMaxWidth && tooltipContentMaxWidth[resolvedTokenMaxWidth],
-                    safeHighContrast
-                      ? floatingSurfaceHighContrastColorVariants[safeColor][safeVariant]
-                      : floatingSurfaceColorVariants[safeColor][safeVariant],
-                    safeHighContrast && floatingSurfaceHighContrastEffectByVariant[safeVariant],
-                    widthProps.className,
-                    className,
-                  )}
-                  style={{ ...getRadiusStyles(radius), ...widthProps.style }}
-                  {...props}
-                >
-                  {children}
-                </TooltipPrimitive.Popup>
-              </TooltipVisualContext.Provider>
-            </TooltipPrimitive.Positioner>
-          </TooltipPrimitive.Portal>
-        )}
-      </AnimatePresence>
+              {children}
+            </TooltipPrimitive.Popup>
+          </TooltipVisualContext.Provider>
+        </TooltipPrimitive.Positioner>
+      </TooltipPrimitive.Portal>
     )
   },
 )

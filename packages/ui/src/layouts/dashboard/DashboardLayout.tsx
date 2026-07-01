@@ -1,6 +1,5 @@
 'use client'
 
-import * as m from 'motion/react-m'
 import * as React from 'react'
 import { Card } from '@/elements'
 import { cn } from '@/lib/utils'
@@ -146,15 +145,6 @@ const DEFAULT_BREAKPOINTS: Required<DashboardBreakpointConfig> = {
 const DEFAULT_PACKING: DashboardLayoutPacking = 'none'
 
 type DashboardCollisionAxis = 'vertical' | 'horizontal'
-
-export const DASHBOARD_LAYOUT_TRANSITION = {
-  layout: {
-    type: 'spring',
-    stiffness: 380,
-    damping: 38,
-    mass: 0.75,
-  },
-} as const
 
 const BREAKPOINT_KEYS: Array<Exclude<DashboardLayoutBreakpoint, 'initial'>> = ['xs', 'sm', 'md', 'lg', 'xl']
 const DASHBOARD_LAYOUT_BREAKPOINTS_ASC: readonly DashboardLayoutBreakpoint[] = ['initial', ...BREAKPOINT_KEYS]
@@ -988,13 +978,12 @@ function DashboardItemFrame({
 
   return (
     <Card.Root asChild size="xs" variant={active ? 'soft' : 'surface'} color={active ? 'primary' : 'neutral'}>
-      <m.div
-        layout={animateLayout}
-        transition={DASHBOARD_LAYOUT_TRANSITION}
+      <div
         data-slot="dashboard-layout-item"
         data-dashboard-item-id={item.id}
         className={cn(
           'relative isolate min-w-0 overflow-hidden transition-opacity duration-150',
+          animateLayout && 'transition-[grid-column,grid-row,opacity,transform] duration-200 ease-out',
           resolvedItemClassName,
           className,
         )}
@@ -1008,7 +997,7 @@ function DashboardItemFrame({
         <div data-slot="dashboard-layout-item-content" className="h-full min-h-0 min-w-0">
           {renderItem ? renderItem(item, state) : <div className={dashboardItemFallback}>{label}</div>}
         </div>
-      </m.div>
+      </div>
     </Card.Root>
   )
 }

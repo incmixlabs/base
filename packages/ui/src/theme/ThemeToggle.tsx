@@ -1,7 +1,6 @@
 'use client'
 
 import { Moon, Sun } from 'lucide-react'
-import { AnimatePresence, m } from 'motion/react'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
 import { IconButton, type IconButtonProps } from '@/elements/button/IconButton'
@@ -42,26 +41,6 @@ function getTargetEffectiveMode(mode: ThemeMode, fallback: 'light' | 'dark'): 'l
   return fallback
 }
 
-const iconVariants = {
-  initial: (direction: IconAnimationDirection) => ({
-    opacity: 0,
-    rotate: direction === 'forward' ? -120 : 120,
-    scale: 0.78,
-  }),
-  animate: {
-    opacity: 1,
-    rotate: 0,
-    scale: 1,
-  },
-  exit: (direction: IconAnimationDirection) => ({
-    opacity: 0,
-    rotate: direction === 'forward' ? 120 : -120,
-    scale: 0.78,
-  }),
-}
-
-const iconTransition = { duration: 0.28, ease: 'easeInOut' as const }
-
 function ThemeIcon({ mode, direction }: { mode: 'light' | 'dark'; direction: IconAnimationDirection }) {
   const Icon = mode === 'dark' ? Moon : Sun
 
@@ -76,25 +55,19 @@ function ThemeIcon({ mode, direction }: { mode: 'light' | 'dark'; direction: Ico
         color: 'inherit',
       }}
     >
-      <AnimatePresence initial={false}>
-        <m.span
-          key={mode}
-          custom={direction}
-          variants={iconVariants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          transition={iconTransition}
-          style={{
-            display: 'inline-flex',
-            gridArea: '1 / 1',
-            color: 'inherit',
-            transformOrigin: '50% 50%',
-          }}
-        >
-          <Icon aria-hidden focusable={false} />
-        </m.span>
-      </AnimatePresence>
+      <span
+        key={mode}
+        data-theme-toggle-icon-glyph=""
+        data-theme-toggle-motion={direction}
+        style={{
+          display: 'inline-flex',
+          gridArea: '1 / 1',
+          color: 'inherit',
+          transformOrigin: '50% 50%',
+        }}
+      >
+        <Icon aria-hidden focusable={false} />
+      </span>
     </span>
   )
 }
@@ -207,7 +180,43 @@ export function ThemeToggle({
       >
         <ThemeIcon mode={displayedIconMode} direction={iconAnimationDirection} />
       </IconButton>
-      <style>{`:root[${THEME_TOGGLE_TRANSITION_ATTR}]::view-transition-old(root),:root[${THEME_TOGGLE_TRANSITION_ATTR}]::view-transition-new(root){animation:none;mix-blend-mode:normal;}`}</style>
+      <style>{`
+        :root[${THEME_TOGGLE_TRANSITION_ATTR}]::view-transition-old(root),
+        :root[${THEME_TOGGLE_TRANSITION_ATTR}]::view-transition-new(root) {
+          animation: none;
+          mix-blend-mode: normal;
+        }
+
+        [data-theme-toggle-icon-glyph] {
+          animation: theme-toggle-icon-forward 280ms ease-in-out both;
+        }
+
+        [data-theme-toggle-icon-glyph][data-theme-toggle-motion="backward"] {
+          animation-name: theme-toggle-icon-backward;
+        }
+
+        @keyframes theme-toggle-icon-forward {
+          from {
+            opacity: 0;
+            transform: rotate(-120deg) scale(0.78);
+          }
+          to {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+          }
+        }
+
+        @keyframes theme-toggle-icon-backward {
+          from {
+            opacity: 0;
+            transform: rotate(120deg) scale(0.78);
+          }
+          to {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+          }
+        }
+      `}</style>
     </>
   )
 }

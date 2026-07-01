@@ -2,8 +2,6 @@
 
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog'
 import { X } from 'lucide-react'
-import { AnimatePresence } from 'motion/react'
-import * as m from 'motion/react-m'
 import * as React from 'react'
 import { IconButton } from '@/elements/button/IconButton'
 import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
@@ -13,19 +11,14 @@ import type { Radius } from '@/theme/tokens'
 import { Text } from '@/typography'
 import {
   sheetBackdropBase,
-  sheetBackdropTransition,
-  sheetBackdropVariants,
   sheetPanelBase,
   sheetPanelBySide,
-  sheetPanelTransition,
-  sheetPanelVariants,
   sheetResizeHandle,
   sheetResizeHandleLeft,
   sheetResizeHandleRight,
 } from './sheet.class'
 import type { SheetSide } from './sheet.props'
 
-const SheetOpenContext = React.createContext<boolean>(false)
 const SHEET_RESIZE_MIN_WIDTH = 360
 const SHEET_RESIZE_MAX_WIDTH = 960
 const SHEET_RESIZE_KEYBOARD_STEP = 24
@@ -55,24 +48,10 @@ export interface SheetRootProps {
 }
 
 const SheetRoot: React.FC<SheetRootProps> = ({ open: openProp, onOpenChange, defaultOpen, children }) => {
-  const isControlled = openProp !== undefined
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen ?? false)
-  const isOpen = isControlled ? openProp : uncontrolledOpen
-
-  const handleOpenChange = React.useCallback(
-    (next: boolean) => {
-      if (!isControlled) setUncontrolledOpen(next)
-      onOpenChange?.(next)
-    },
-    [isControlled, onOpenChange],
-  )
-
   return (
-    <SheetOpenContext.Provider value={isOpen}>
-      <DialogPrimitive.Root open={openProp} onOpenChange={handleOpenChange} defaultOpen={defaultOpen}>
-        {children}
-      </DialogPrimitive.Root>
-    </SheetOpenContext.Provider>
+    <DialogPrimitive.Root open={openProp} onOpenChange={onOpenChange} defaultOpen={defaultOpen}>
+      {children}
+    </DialogPrimitive.Root>
   )
 }
 
@@ -146,8 +125,6 @@ const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
   ) => {
     'use no memo'
     const portalContainer = useThemePortalContainer()
-    const isOpen = React.useContext(SheetOpenContext)
-    const panelVariants = sheetPanelVariants[side]
     const radius = useThemeRadius(radiusProp)
     const popupRef = React.useRef<HTMLDivElement | null>(null)
     const cleanupResizeRef = React.useRef<(() => void) | null>(null)
@@ -312,72 +289,46 @@ const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
         : null
 
     return (
-      <AnimatePresence>
-        {isOpen && (
-          <DialogPrimitive.Portal keepMounted container={portalContainer}>
-            <DialogPrimitive.Backdrop
-              render={
-                <m.div
-                  key="sheet-backdrop"
-                  variants={sheetBackdropVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  transition={sheetBackdropTransition}
-                />
-              }
-              className={sheetBackdropBase}
+      <DialogPrimitive.Portal container={portalContainer}>
+        <DialogPrimitive.Backdrop className={sheetBackdropBase} />
+        <DialogPrimitive.Popup
+          ref={setPopupRef}
+          data-side={side}
+          style={
+            typeof style === 'function'
+              ? state => ({
+                  ...getRadiusStyles(radius),
+                  ...(style(state) ?? {}),
+                  ...resizeStyle,
+                })
+              : {
+                  ...getRadiusStyles(radius),
+                  ...style,
+                  ...resizeStyle,
+                }
+          }
+          className={cn(sheetPanelBase, sheetPanelBySide[side], className)}
+          {...props}
+        >
+          {resize && isHorizontal ? (
+            <div
+              role="separator"
+              aria-orientation="vertical"
+              aria-label="Resize sheet"
+              aria-valuemin={resizeMinWidth}
+              aria-valuemax={resizeMaxWidth}
+              aria-valuenow={Math.round(currentResizeWidth)}
+              tabIndex={0}
+              data-resizing={isResizing ? '' : undefined}
+              className={cn(sheetResizeHandle, side === 'right' ? sheetResizeHandleRight : sheetResizeHandleLeft)}
+              onMouseDown={handleResizeMouseDown}
+              onTouchStart={handleResizeTouchStart}
+              onKeyDown={handleResizeKeyDown}
             />
-            <DialogPrimitive.Popup
-              ref={setPopupRef}
-              data-side={side}
-              render={
-                <m.div
-                  key="sheet-popup"
-                  variants={panelVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  transition={sheetPanelTransition}
-                />
-              }
-              style={
-                typeof style === 'function'
-                  ? state => ({
-                      ...getRadiusStyles(radius),
-                      ...(style(state) ?? {}),
-                      ...resizeStyle,
-                    })
-                  : {
-                      ...getRadiusStyles(radius),
-                      ...style,
-                      ...resizeStyle,
-                    }
-              }
-              className={cn(sheetPanelBase, sheetPanelBySide[side], className)}
-              {...props}
-            >
-              {resize && isHorizontal ? (
-                <div
-                  role="separator"
-                  aria-orientation="vertical"
-                  aria-label="Resize sheet"
-                  aria-valuemin={resizeMinWidth}
-                  aria-valuemax={resizeMaxWidth}
-                  aria-valuenow={Math.round(currentResizeWidth)}
-                  tabIndex={0}
-                  data-resizing={isResizing ? '' : undefined}
-                  className={cn(sheetResizeHandle, side === 'right' ? sheetResizeHandleRight : sheetResizeHandleLeft)}
-                  onMouseDown={handleResizeMouseDown}
-                  onTouchStart={handleResizeTouchStart}
-                  onKeyDown={handleResizeKeyDown}
-                />
-              ) : null}
-              <div className="flex h-full flex-col">{children}</div>
-            </DialogPrimitive.Popup>
-          </DialogPrimitive.Portal>
-        )}
-      </AnimatePresence>
+          ) : null}
+          <div className="flex h-full flex-col">{children}</div>
+        </DialogPrimitive.Popup>
+      </DialogPrimitive.Portal>
     )
   },
 )

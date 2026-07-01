@@ -1,8 +1,6 @@
 'use client'
 
 import { ChevronRight, ChevronsUpDown } from 'lucide-react'
-import { AnimatePresence } from 'motion/react'
-import * as m from 'motion/react-m'
 import * as React from 'react'
 import { Badge } from '@/elements/badge/Badge'
 import { Image } from '@/elements/image/Image'
@@ -581,20 +579,12 @@ function GroupRenderer({
         )}
       </Sidebar.GroupLabel>
       {group.collapsible && !iconMode ? (
-        <AnimatePresence initial={false}>
-          {open ? (
-            <m.div
-              key="sidebar-wrapper-group-items"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1, pointerEvents: 'auto' as const }}
-              exit={{ height: 0, opacity: 0, pointerEvents: 'none' as const }}
-              transition={{ duration: 0.25 }}
-              style={{ overflow: 'hidden' }}
-            >
-              {items}
-            </m.div>
-          ) : null}
-        </AnimatePresence>
+        <div
+          data-open={open ? '' : undefined}
+          className="grid overflow-hidden opacity-0 transition-[grid-template-rows,opacity] duration-250 ease-in-out grid-rows-[0fr] data-[open]:grid-rows-[1fr] data-[open]:opacity-100"
+        >
+          <div className="min-h-0">{items}</div>
+        </div>
       ) : (
         items
       )}

@@ -1,4 +1,3 @@
-import type { Transition, Variants } from 'motion/react'
 import type { stepperPropDefs } from './stepper.props'
 
 export type StepperOrientation = (typeof stepperPropDefs.orientation.values)[number]
@@ -92,19 +91,13 @@ export const stepperSeparatorCompleted = 'bg-primary-solid'
 
 export const stepperPanel = 'min-h-40 rounded-2xl border border-solid border-neutral p-4'
 
+export const stepperPanelAnimated = 'animate-in fade-in-0 blur-in-4 duration-300 ease-in-out'
+
 export const stepperFooter = 'flex items-center justify-between gap-2'
 
 export const stepperFooterMeta = 'text-muted text-sm'
 
 export const stepperFooterActions = 'flex items-center gap-2'
-
-export const stepperPanelVariants: Variants = {
-  initial: { opacity: 0, filter: 'blur(4px)' },
-  animate: { opacity: 1, filter: 'blur(0px)' },
-  exit: { opacity: 0, filter: 'blur(4px)' },
-}
-
-export const stepperPanelTransition: Transition = { duration: 0.3, ease: 'easeInOut' }
 
 export const stepperClassNames = [
   stepperRoot,
@@ -126,6 +119,7 @@ export const stepperClassNames = [
   ...Object.values(stepperSeparatorOffset),
   stepperSeparatorCompleted,
   stepperPanel,
+  stepperPanelAnimated,
   stepperFooter,
   stepperFooterMeta,
   stepperFooterActions,
