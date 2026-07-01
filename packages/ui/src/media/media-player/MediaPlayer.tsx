@@ -1152,10 +1152,13 @@ function MediaPlayerPlay(props: React.ComponentProps<typeof Button>) {
         disabled={isDisabled}
         {...playButtonProps}
         variant="ghost"
-        className={cn("h-8 w-8 shrink-0 p-0 [&_svg:not([class*='fill-'])]:fill-current", className)}
+        className={cn(
+          "h-8 w-8 shrink-0 p-0 [&_svg]:h-4 [&_svg]:w-4 [&_svg:not([class*='fill-'])]:fill-current",
+          className,
+        )}
         onClick={onPlayToggle}
       >
-        {children ?? (mediaPaused ? <PlayIcon /> : <PauseIcon />)}
+        {children ?? (mediaPaused ? <PlayIcon className="fill-current" /> : <PauseIcon />)}
       </Button>
     </MediaPlayerTooltip>
   )
@@ -1201,7 +1204,7 @@ function MediaPlayerSeekBackward(props: MediaPlayerSeekBackwardProps) {
         disabled={isDisabled}
         {...seekBackwardProps}
         variant="ghost"
-        className={cn('h-8 w-8 shrink-0 p-0', className)}
+        className={cn('h-8 w-8 shrink-0 p-0 [&_svg]:h-4 [&_svg]:w-4', className)}
         onClick={onSeekBackward}
       >
         {children ?? <RewindIcon />}
@@ -1250,7 +1253,7 @@ function MediaPlayerSeekForward(props: MediaPlayerSeekForwardProps) {
         disabled={isDisabled}
         {...seekForwardProps}
         variant="ghost"
-        className={cn('h-8 w-8 shrink-0 p-0', className)}
+        className={cn('h-8 w-8 shrink-0 p-0 [&_svg]:h-4 [&_svg]:w-4', className)}
         onClick={onSeekForward}
       >
         {children ?? <FastForwardIcon />}
@@ -2081,7 +2084,7 @@ function MediaPlayerVolume(props: MediaPlayerVolumeProps) {
           data-slot="media-player-volume-trigger"
           data-state={mediaMuted ? 'on' : 'off'}
           variant="ghost"
-          className="h-8 w-8 shrink-0 p-0"
+          className="h-8 w-8 shrink-0 p-0 [&_svg]:h-4 [&_svg]:w-4"
           disabled={isDisabled}
           onClick={onMute}
         >
@@ -2337,7 +2340,7 @@ function MediaPlayerLoop(props: React.ComponentProps<typeof Button>) {
         disabled={isDisabled}
         {...loopProps}
         variant="ghost"
-        className={cn('h-8 w-8 shrink-0 p-0', className)}
+        className={cn('h-8 w-8 shrink-0 p-0 [&_svg]:h-4 [&_svg]:w-4', className)}
         onClick={onLoopToggle}
       >
         {children ?? (isLooping ? <RepeatIcon className="text-muted-foreground" /> : <RepeatIcon />)}
@@ -2383,7 +2386,7 @@ function MediaPlayerFullscreen(props: React.ComponentProps<typeof Button>) {
         disabled={isDisabled}
         {...fullscreenProps}
         variant="ghost"
-        className={cn('h-8 w-8 shrink-0 p-0', className)}
+        className={cn('h-8 w-8 shrink-0 p-0 [&_svg]:h-4 [&_svg]:w-4', className)}
         onClick={onFullscreen}
       >
         {children ?? (isFullscreen ? <Minimize2Icon /> : <Maximize2Icon />)}
@@ -2447,7 +2450,7 @@ function MediaPlayerPiP(props: MediaPlayerPiPProps) {
         disabled={isDisabled}
         {...pipButtonProps}
         variant="ghost"
-        className={cn('h-8 w-8 shrink-0 p-0', className)}
+        className={cn('h-8 w-8 shrink-0 p-0 [&_svg]:h-4 [&_svg]:w-4', className)}
         onClick={onPictureInPicture}
       >
         {typeof children === 'function'
@@ -2494,7 +2497,7 @@ function MediaPlayerCaptions(props: React.ComponentProps<typeof Button>) {
         disabled={isDisabled}
         {...captionsProps}
         variant="ghost"
-        className={cn('h-8 w-8 shrink-0 p-0', className)}
+        className={cn('h-8 w-8 shrink-0 p-0 [&_svg]:h-4 [&_svg]:w-4', className)}
         onClick={onCaptionsToggle}
       >
         {children ?? (isSubtitlesActive ? <SubtitlesIcon /> : <CaptionsOffIcon />)}
@@ -2543,7 +2546,7 @@ function MediaPlayerDownload(props: React.ComponentProps<typeof Button>) {
         disabled={isDisabled}
         {...downloadProps}
         variant="ghost"
-        className={cn('h-8 w-8 shrink-0 p-0', className)}
+        className={cn('h-8 w-8 shrink-0 p-0 [&_svg]:h-4 [&_svg]:w-4', className)}
         onClick={onDownload}
       >
         {children ?? <DownloadIcon />}
@@ -2665,7 +2668,7 @@ function MediaPlayerSettings(props: MediaPlayerSettingsProps) {
             disabled={isDisabled}
             {...settingsProps}
             variant="ghost"
-            className={cn('h-8 w-8 shrink-0 p-0 aria-expanded:bg-accent/50', className)}
+            className={cn('h-8 w-8 shrink-0 p-0 aria-expanded:bg-accent/50 [&_svg]:h-4 [&_svg]:w-4', className)}
           >
             <SettingsIcon />
           </Button>
