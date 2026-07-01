@@ -279,7 +279,6 @@
     "motion": "^12.38.0",
     "qrcode": "^1.5.4",
     "react-aria-components": "^1.15.1",
-    "react-day-picker": "^9.13.2",
     "react-dropzone": "^14.4.0",
     "react-resizable-panels": "^4.11.2",
     "react-textarea-autosize": "^8.5.9",
