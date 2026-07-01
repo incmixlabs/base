@@ -51,7 +51,6 @@ function createValidTheme() {
       progress: { size: { sm: { height: '0.4rem' } } },
       dialog: { size: { md: { maxWidth: '28rem' } } },
       slider: { size: { md: { thumbSize: '1.3rem' } } },
-      surface: { variant: { surface: { boxShadow: '0 0 0 1px red' } } },
       rating: { size: { md: { iconSize: '1.25rem' } } },
       appShell: {
         content: { paddingInline: '1rem', paddingInlineDesktop: '1.5rem' },

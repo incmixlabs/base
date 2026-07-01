@@ -12,8 +12,6 @@ function componentVar(component: string, slot: string, fallback: string): string
   return withFallback(`--af-${toKebabCase(component)}-${toKebabCase(slot)}`, fallback)
 }
 
-export type SurfaceVariantTokenSlot = 'boxShadow'
-export type SurfaceShapeTokenSlot = 'radius'
 export type PopoverSizeTokenSlot = 'padding' | 'fontSize' | 'lineHeight'
 export type PopoverMaxWidthTokenSlot = 'maxWidth'
 export type TooltipSizeTokenSlot = 'padding' | 'fontSize' | 'lineHeight'
@@ -72,14 +70,6 @@ export type AppShellContentTokenSlot = 'paddingInline' | 'paddingBlock' | 'paddi
 export type ContentBodyTokenSlot = 'background' | 'foreground' | 'borderColor'
 export type ScrollAreaSizeTokenSlot = 'thickness' | 'thumbInset'
 export type ScrollAreaShapeTokenSlot = 'radius'
-
-export function surfaceVariantVar(variant: string, slot: SurfaceVariantTokenSlot, fallback: string): string {
-  return withFallback(`--af-surface-variant-${toKebabCase(variant)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function surfaceShapeVar(shape: string, slot: SurfaceShapeTokenSlot, fallback: string): string {
-  return withFallback(`--af-surface-shape-${toKebabCase(shape)}-${toKebabCase(slot)}`, fallback)
-}
 
 export function fieldGroupSectionVar(slot: FieldGroupSectionTokenSlot, fallback: string): string {
   return withFallback(`--af-field-group-section-${toKebabCase(slot)}`, fallback)

@@ -27,21 +27,6 @@ export type ButtonComponentTokens = {
   }>
 }
 
-export type SurfaceComponentTokens = {
-  variant?: Record<
-    string,
-    Partial<{
-      boxShadow: string
-    }>
-  >
-  shape?: Record<
-    string,
-    Partial<{
-      radius: string
-    }>
-  >
-}
-
 export type AccordionComponentTokens = {
   size?: Record<
     string,
@@ -406,7 +391,6 @@ export type ThemeContract = {
     progress: ProgressComponentTokens
     dialog: DialogComponentTokens
     slider: SliderComponentTokens
-    surface: SurfaceComponentTokens
     rating: RatingComponentTokens
     appShell: AppShellComponentTokens
     scrollArea: ScrollAreaComponentTokens
@@ -416,7 +400,7 @@ export type ThemeContract = {
 export type ThemeContractValidation = { ok: true; value: ThemeContract } | { ok: false; errors: string[] }
 
 const lifecycleValues: ThemeLifecycle[] = ['draft', 'review', 'published']
-const migratedRetiredComponentKeys = ['stepper', 'timeline'] as const
+const migratedRetiredComponentKeys = ['stepper', 'timeline', 'surface'] as const
 
 function isObject(value: unknown): value is Record<string, unknown> {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) {
@@ -633,7 +617,6 @@ export function validateThemeContract(input: unknown): ThemeContractValidation {
     'progress',
     'dialog',
     'slider',
-    'surface',
     'rating',
     'appShell',
     'scrollArea',
