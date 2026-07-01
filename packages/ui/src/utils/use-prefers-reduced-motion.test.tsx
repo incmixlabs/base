@@ -70,10 +70,14 @@ describe('usePrefersReducedMotion', () => {
   it('reads the initial preference synchronously', () => {
     const media = mockReducedMotionPreference(true)
 
-    render(<ReducedMotionProbe />)
+    const { rerender } = render(<ReducedMotionProbe />)
 
     expect(screen.getByTestId('preference')).toHaveTextContent('reduce')
     expect(media.matchMedia).toHaveBeenCalledWith('(prefers-reduced-motion: reduce)')
+
+    rerender(<ReducedMotionProbe />)
+
+    expect(media.matchMedia).toHaveBeenCalledTimes(1)
   })
 
   it('updates when the media query preference changes', () => {

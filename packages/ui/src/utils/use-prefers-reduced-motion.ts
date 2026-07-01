@@ -4,14 +4,28 @@ import * as React from 'react'
 
 const PREFERS_REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
 
+let reducedMotionMediaQuery: MediaQueryList | null = null
+let reducedMotionMatchMedia: typeof window.matchMedia | null = null
+
 function canReadReducedMotionPreference() {
   return typeof window !== 'undefined' && typeof window.matchMedia === 'function'
 }
 
-function subscribeToReducedMotionPreference(callback: () => void) {
-  if (!canReadReducedMotionPreference()) return () => {}
+function getReducedMotionMediaQuery() {
+  if (!canReadReducedMotionPreference()) return null
 
-  const mediaQuery = window.matchMedia(PREFERS_REDUCED_MOTION_QUERY)
+  if (reducedMotionMatchMedia !== window.matchMedia) {
+    reducedMotionMediaQuery = null
+    reducedMotionMatchMedia = window.matchMedia
+  }
+
+  reducedMotionMediaQuery ??= window.matchMedia(PREFERS_REDUCED_MOTION_QUERY)
+  return reducedMotionMediaQuery
+}
+
+function subscribeToReducedMotionPreference(callback: () => void) {
+  const mediaQuery = getReducedMotionMediaQuery()
+  if (!mediaQuery) return () => {}
 
   if (typeof mediaQuery.addEventListener === 'function') {
     mediaQuery.addEventListener('change', callback)
@@ -27,7 +41,7 @@ function subscribeToReducedMotionPreference(callback: () => void) {
 }
 
 function getReducedMotionSnapshot() {
-  return canReadReducedMotionPreference() ? window.matchMedia(PREFERS_REDUCED_MOTION_QUERY).matches : false
+  return getReducedMotionMediaQuery()?.matches ?? false
 }
 
 function getReducedMotionServerSnapshot() {
