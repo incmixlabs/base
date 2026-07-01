@@ -15,9 +15,6 @@ export interface DateCalendarHeaderProps {
   radius: Radius
   navButtonVariant: 'soft' | 'outline' | 'ghost'
   navButtonBordered: boolean
-  accentColor: string
-  softColor: string
-  foregroundColor: string
   onPrevious: () => void
   onNext: () => void
   previousDisabled?: boolean
@@ -79,9 +76,6 @@ export function DateCalendarHeader({
   radius,
   navButtonVariant,
   navButtonBordered,
-  accentColor,
-  softColor,
-  foregroundColor,
   onPrevious,
   onNext,
   previousDisabled = false,
@@ -223,17 +217,14 @@ export function DateCalendarHeader({
   const showNextArrow = arrowPosition === 'both' || arrowPosition === 'right'
 
   return (
-    <div className={cn('flex h-(--cell-size) items-center gap-2', className)}>
-      <div className={cn('flex h-(--cell-size) w-(--cell-size) items-center justify-start', navClassName)}>
+    <div className={cn('grid grid-cols-[1fr_auto_1fr] items-center gap-2', className)}>
+      <div className={cn('flex items-center justify-start', navClassName)}>
         {showPreviousArrow ? (
           <DateCalendarNavButton
             color={color}
             radius={radius}
             variant={navButtonVariant}
             bordered={navButtonBordered}
-            accentColor={accentColor}
-            softColor={softColor}
-            foregroundColor={foregroundColor}
             className={navButtonClassName}
             aria-label={previousAriaLabel}
             onClick={onPrevious}
@@ -243,7 +234,7 @@ export function DateCalendarHeader({
           </DateCalendarNavButton>
         ) : null}
       </div>
-      <div className="min-w-0 flex-1 text-center">
+      <div className="min-w-0 text-center">
         {hasMonthYearPicker ? (
           <button
             ref={node => {
@@ -279,16 +270,13 @@ export function DateCalendarHeader({
           </span>
         )}
       </div>
-      <div className={cn('flex h-(--cell-size) w-(--cell-size) items-center justify-end', navClassName)}>
+      <div className={cn('flex items-center justify-end', navClassName)}>
         {showNextArrow ? (
           <DateCalendarNavButton
             color={color}
             radius={radius}
             variant={navButtonVariant}
             bordered={navButtonBordered}
-            accentColor={accentColor}
-            softColor={softColor}
-            foregroundColor={foregroundColor}
             className={navButtonClassName}
             aria-label={nextAriaLabel}
             onClick={onNext}
@@ -319,24 +307,24 @@ export function DateCalendarHeader({
               <div
                 ref={pickerWrapperRef}
                 tabIndex={-1}
-                className="absolute outline-none"
+                className="absolute w-72 outline-none"
                 style={{ top: portalPos.top, left: portalPos.left }}
               >
-                <WheelPickerWrapper>
-                  <div className="flex gap-2 rounded-md border bg-background p-2 shadow-lg">
-                    <WheelPicker
-                      options={monthOptions}
-                      value={selectedMonth}
-                      onValueChange={handleMonthChange}
-                      aria-label="Select month"
-                    />
-                    <WheelPicker
-                      options={yearOptions}
-                      value={selectedYear}
-                      onValueChange={handleYearChange}
-                      aria-label="Select year"
-                    />
-                  </div>
+                <WheelPickerWrapper className="shadow-lg">
+                  <WheelPicker
+                    options={monthOptions}
+                    value={selectedMonth}
+                    onValueChange={handleMonthChange}
+                    aria-label="Select month"
+                    classNames={{ highlightWrapper: '!font-semibold' }}
+                  />
+                  <WheelPicker
+                    options={yearOptions}
+                    value={selectedYear}
+                    onValueChange={handleYearChange}
+                    aria-label="Select year"
+                    classNames={{ highlightWrapper: '!font-semibold' }}
+                  />
                 </WheelPickerWrapper>
               </div>
             </div>,

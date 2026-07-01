@@ -45,12 +45,15 @@ import { getFloatingStyle, toBaseTextFieldVariant } from '../text-field-variant'
 import { DateCalendarPanel } from './DateCalendarPanel'
 import {
   datePickerCalendarButton,
+  datePickerCalendarButtonSizeStyles,
   datePickerCalendarIcon,
+  datePickerCalendarIconControlSizeStyles,
   datePickerCalendarPopover,
+  datePickerCalendarPopoverSizeStyles,
   datePickerTriggerGroupBase,
   datePickerTriggerGroupRadiusStyles,
   datePickerTriggerGroupSizeStyles,
-} from './DatePicker.css'
+} from './DatePicker.class'
 import { type DateSize, isDateSize } from './date.props'
 import { normalizeDay, toDayKey } from './date-calendar-core'
 import {
@@ -387,10 +390,11 @@ export function DatePicker({
         }}
         className={cn(
           datePickerCalendarButton,
+          datePickerCalendarButtonSizeStyles[size],
           'text-muted-foreground transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-50',
         )}
       >
-        <CalendarIcon className={datePickerCalendarIcon} />
+        <CalendarIcon className={cn(datePickerCalendarIcon, datePickerCalendarIconControlSizeStyles[size])} />
       </button>
     )
     const textInputProps = {
@@ -442,6 +446,7 @@ export function DatePicker({
               className={cn(
                 datePickerTriggerGroupSizeStyles[size],
                 datePickerCalendarPopover,
+                datePickerCalendarPopoverSizeStyles[size],
                 datePickerTriggerGroupRadiusStyles[radius],
                 'z-50 overflow-auto border border-border bg-popover text-popover-foreground shadow-md outline-none',
               )}
@@ -530,7 +535,7 @@ export function DatePicker({
           )}
         </DateInput>
         <AriaButton aria-label="Open calendar" className={cn(dateIconSlotClassName, dateGhostIconButtonClassName)}>
-          <CalendarIcon className={datePickerCalendarIcon} />
+          <CalendarIcon className={cn(datePickerCalendarIcon, datePickerCalendarIconControlSizeStyles[size])} />
         </AriaButton>
       </Group>
 
@@ -539,6 +544,7 @@ export function DatePicker({
         className={cn(
           datePickerTriggerGroupSizeStyles[size],
           datePickerCalendarPopover,
+          datePickerCalendarPopoverSizeStyles[size],
           datePickerTriggerGroupRadiusStyles[radius],
           'z-50 max-h-[85vh] overflow-auto border border-border bg-popover text-popover-foreground shadow-md outline-none',
           'data-[entering]:animate-in data-[exiting]:animate-out',

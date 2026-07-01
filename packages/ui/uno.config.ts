@@ -1,5 +1,6 @@
 import { baseUnoConfig } from '@incmix/config/uno.config'
 import { defineConfig } from 'unocss'
+import { accordionClassNames } from './src/elements/accordion/accordion.class'
 import {
   avatarGroupOverflowStackMarginBySize,
   avatarGroupSpreadBySize,
@@ -115,6 +116,12 @@ import { avatarPickerClassNames } from './src/form/avatar-picker.class'
 import { checkboxClassNames } from './src/form/checkbox.class'
 import { checkboxCardsClassNames } from './src/form/checkbox-cards.class'
 import { checkboxGroupClassNames } from './src/form/checkbox-group.class'
+import { appointmentPickerClassNames } from './src/form/date/AppointmentPicker.class'
+import { calendarWithPricingClassNames } from './src/form/date/CalendarWithPricing.class'
+import { datePickerClassNames } from './src/form/date/DatePicker.class'
+import { dateRangePickerClassNames } from './src/form/date/DateRangePicker.class'
+import { dateSurfaceSharedClassNames } from './src/form/date/date-surface.shared.class'
+import { miniCalendarClassNames } from './src/form/date/MiniCalendar.class'
 import { fieldGroupClassNames } from './src/form/FieldGroup.class'
 import { floatingToolbarClassNames } from './src/form/FloatingToolbar.class'
 import { formControlClassNames } from './src/form/form-control.class'
@@ -311,6 +318,8 @@ export default defineConfig({
   safelist: [
     ...(baseUnoConfig.safelist ?? []),
     ...splitClasses([
+      // Accordion styles
+      ...accordionClassNames,
       ...Object.values(avatarSizeBySize),
       ...Object.values(avatarPresenceBySize),
       ...Object.values(avatarPresenceBusyLineBySize),
@@ -458,6 +467,15 @@ export default defineConfig({
       ...splitClasses(textFieldClassNames),
       // App shell styles
       ...splitClasses(appShellClassNames),
+      // Date form styles
+      ...splitClasses([
+        ...dateSurfaceSharedClassNames,
+        ...datePickerClassNames,
+        ...dateRangePickerClassNames,
+        ...calendarWithPricingClassNames,
+        ...miniCalendarClassNames,
+        ...appointmentPickerClassNames,
+      ]),
       // Box styles
       boxRootBase,
       ...splitClasses(boxSurfaceColorClassNames),

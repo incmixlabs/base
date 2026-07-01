@@ -1,6 +1,8 @@
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
+import { dateCalendarNavButtonColorStyles } from './date-surface.shared.class'
+import { expectClassTokens } from './date-test-utils'
 import { MiniCalendar } from './MiniCalendar'
 
 describe('MiniCalendar', () => {
@@ -14,6 +16,42 @@ describe('MiniCalendar', () => {
     // CalendarHeader also has nav buttons with aria-label, so filter to day buttons
     const dayOnlyButtons = Array.from(dayButtons).filter(button => !button.getAttribute('aria-label')?.includes('week'))
     expect(dayOnlyButtons).toHaveLength(7)
+  })
+
+  it('keeps nav chevrons visible with date-specific icon sizing', () => {
+    const { container } = render(<MiniCalendar value={new Date(2026, 0, 15)} size="xs" color="primary" />)
+    const previousButton = container.querySelector<HTMLButtonElement>('button[aria-label="Previous week"]')
+    const nextButton = container.querySelector<HTMLButtonElement>('button[aria-label="Next week"]')
+    const previousIcon = previousButton?.querySelector('svg')
+    const header = previousButton?.parentElement?.parentElement
+
+    expect(previousButton).toBeTruthy()
+    expect(nextButton).toBeTruthy()
+    expectClassTokens(header?.className, ['grid', 'grid-cols-[1fr_auto_1fr]'])
+    expectClassTokens(previousButton?.className, [
+      '[&_svg]:stroke-current',
+      '[&_svg_path]:stroke-current',
+      'h-7',
+      'w-7',
+    ])
+    expect(previousButton).toHaveClass(...dateCalendarNavButtonColorStyles.primary.soft.split(/\s+/))
+    expect(nextButton).toHaveClass(...dateCalendarNavButtonColorStyles.primary.soft.split(/\s+/))
+    expect(previousButton?.className).not.toContain('[&_svg]:size-5')
+    expectClassTokens(previousIcon?.getAttribute('class') ?? undefined, ['h-3', 'w-3'])
+  })
+
+  it('renders month and year wheels as direct wrapper columns', async () => {
+    const user = userEvent.setup()
+    render(<MiniCalendar value={new Date(2026, 0, 15)} />)
+
+    await user.click(document.querySelector<HTMLButtonElement>('button[aria-haspopup="dialog"]') as HTMLButtonElement)
+
+    const wrapper = document.querySelector<HTMLElement>('[data-rwp-wrapper="true"]')
+    expect(wrapper).toBeTruthy()
+    expectClassTokens(wrapper?.parentElement?.className, ['absolute', 'w-72'])
+    expect(Array.from(wrapper?.children ?? []).filter(child => child.getAttribute('data-rwp') === 'true')).toHaveLength(
+      2,
+    )
   })
 
   it('calls onChange when selecting an enabled date', async () => {

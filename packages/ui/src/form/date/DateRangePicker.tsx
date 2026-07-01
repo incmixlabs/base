@@ -30,21 +30,31 @@ import { getFloatingStyle } from '../text-field-variant'
 import { DateCalendarPanel, type DayRenderState } from './DateCalendarPanel'
 import {
   rangeCalendarButton,
+  rangeCalendarButtonSizeStyles,
   rangeCalendarCell,
+  rangeCalendarCellSizeStyles,
   rangeCalendarDayInteractive,
   rangeCalendarDualHeader,
+  rangeCalendarDualHeaderSizeStyles,
   rangeCalendarIcon,
+  rangeCalendarIconSizeStyles,
   rangeCalendarMonthColumns,
+  rangeCalendarMonthColumnsSizeStyles,
   rangeCalendarMonthHeadingButton,
+  rangeCalendarMonthHeadingButtonSizeStyles,
   rangeCalendarPopover,
+  rangeCalendarPopoverSizeStyles,
   rangeCalendarSelectedColorStyles,
   rangeCalendarTypography,
+  rangeCalendarTypographySizeStyles,
   rangeDateInput,
+  rangeDateInputSizeStyles,
   rangeInputSurface,
+  rangeInputSurfaceSizeStyles,
   rangeTriggerGroupBase,
   rangeTriggerGroupRadiusStyles,
   rangeTriggerGroupSizeStyles,
-} from './DateRangePicker.css'
+} from './DateRangePicker.class'
 import { type DateSize, isDateSize } from './date.props'
 import { normalizeDay, toDayKey } from './date-calendar-core'
 import {
@@ -56,7 +66,12 @@ import {
   getDateSegmentClassName,
 } from './date-field-shell'
 import { type DateRangeValue, fromDateRangeValue, toDateRangeValue } from './date-range-value-boundary'
-import { dateCalendarNavButton, dateCalendarNavIcon } from './date-surface.shared.css'
+import {
+  dateCalendarNavButton,
+  dateCalendarNavButtonSizeStyles,
+  dateCalendarNavIcon,
+  dateCalendarNavIconSizeStyles,
+} from './date-surface.shared.class'
 import { toDateValue } from './date-value-boundary'
 import { MonthYearPicker } from './MonthYearPicker'
 import { useDateFormatters } from './useDateFormatters'
@@ -279,6 +294,7 @@ export function DateRangePicker({
         tabIndex={state.isFocusTarget ? 0 : -1}
         className={cn(
           rangeCalendarCell,
+          rangeCalendarCellSizeStyles[size],
           rangeCalendarDayInteractive,
           rangeCalendarSelectedColorStyles[color],
           'text-foreground',
@@ -302,6 +318,7 @@ export function DateRangePicker({
     'disabled:pointer-events-none disabled:opacity-50',
     iconButtonBase,
     dateCalendarNavButton,
+    dateCalendarNavButtonSizeStyles[size],
     iconButtonColorVariants[color][navButtonVariant],
   )
 
@@ -321,7 +338,7 @@ export function DateRangePicker({
   const dateInputClassName = cn(
     floatingStyle
       ? 'flex min-w-0 flex-1 items-center gap-0 text-[var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]'
-      : rangeDateInput,
+      : cn(rangeDateInput, rangeDateInputSizeStyles[size]),
     'text-foreground',
   )
 
@@ -365,7 +382,12 @@ export function DateRangePicker({
           getDateFieldSurfaceClassName({ color, radius, variant, floatingStyle, textFieldSize }),
         )}
       >
-        <div className={cn(floatingStyle ? dateRangeInputSurfaceClassName : rangeInputSurface)}>
+        <div
+          className={cn(
+            floatingStyle ? dateRangeInputSurfaceClassName : rangeInputSurface,
+            !floatingStyle && rangeInputSurfaceSizeStyles[size],
+          )}
+        >
           <DateInput slot="start" className={dateInputClassName}>
             {renderDateSegment}
           </DateInput>
@@ -380,10 +402,11 @@ export function DateRangePicker({
           aria-label="Open calendar"
           className={cn(
             floatingStyle ? [dateIconSlotClassName, dateGhostIconButtonClassName] : rangeCalendarButton,
+            !floatingStyle && rangeCalendarButtonSizeStyles[size],
             'text-muted-foreground transition-colors hover:text-foreground',
           )}
         >
-          <CalendarIcon className={rangeCalendarIcon} />
+          <CalendarIcon className={cn(rangeCalendarIcon, rangeCalendarIconSizeStyles[size])} />
         </AriaButton>
       </Group>
 
@@ -399,15 +422,16 @@ export function DateRangePicker({
           'data-[placement=bottom]:data-[entering]:slide-in-from-top-2',
           'data-[placement=top]:data-[entering]:slide-in-from-bottom-2',
           rangeCalendarPopover,
+          rangeCalendarPopoverSizeStyles[size],
           'z-50 max-h-[85vh] overflow-auto border border-border bg-popover text-popover-foreground shadow-md',
           rangeTriggerGroupRadiusStyles[radius],
         )}
       >
         <Dialog className="outline-none">
           {isDual ? (
-            <div className={cn('relative space-y-2', rangeCalendarTypography)}>
+            <div className={cn('relative space-y-2', rangeCalendarTypography, rangeCalendarTypographySizeStyles[size])}>
               {/* Dual-month custom header */}
-              <header className={rangeCalendarDualHeader}>
+              <header className={cn(rangeCalendarDualHeader, rangeCalendarDualHeaderSizeStyles[size])}>
                 <button
                   type="button"
                   aria-label="Previous month"
@@ -415,7 +439,7 @@ export function DateRangePicker({
                   onClick={handlePrevMonth}
                   disabled={effectiveIsDisabled}
                 >
-                  <ChevronLeft className={dateCalendarNavIcon} />
+                  <ChevronLeft className={cn(dateCalendarNavIcon, dateCalendarNavIconSizeStyles[size])} />
                 </button>
                 <button
                   ref={leftHeadingRef}
@@ -425,6 +449,7 @@ export function DateRangePicker({
                   aria-expanded={monthYearPickerPanel === 0}
                   className={cn(
                     rangeCalendarMonthHeadingButton,
+                    rangeCalendarMonthHeadingButtonSizeStyles[size],
                     'inline-flex max-w-full items-center justify-center truncate font-medium select-none',
                     'cursor-pointer transition-colors hover:text-foreground/60',
                     'appearance-none border-0 bg-transparent p-0 m-0 text-inherit font-inherit',
@@ -442,6 +467,7 @@ export function DateRangePicker({
                   aria-expanded={monthYearPickerPanel === 1}
                   className={cn(
                     rangeCalendarMonthHeadingButton,
+                    rangeCalendarMonthHeadingButtonSizeStyles[size],
                     'inline-flex max-w-full items-center justify-center truncate font-medium select-none',
                     'cursor-pointer transition-colors hover:text-foreground/60',
                     'appearance-none border-0 bg-transparent p-0 m-0 text-inherit font-inherit',
@@ -458,7 +484,7 @@ export function DateRangePicker({
                   onClick={handleNextMonth}
                   disabled={effectiveIsDisabled}
                 >
-                  <ChevronRight className={dateCalendarNavIcon} />
+                  <ChevronRight className={cn(dateCalendarNavIcon, dateCalendarNavIconSizeStyles[size])} />
                 </button>
               </header>
 
@@ -478,7 +504,7 @@ export function DateRangePicker({
               )}
 
               {/* Two calendar panels side by side */}
-              <div className={rangeCalendarMonthColumns}>
+              <div className={cn(rangeCalendarMonthColumns, rangeCalendarMonthColumnsSizeStyles[size])}>
                 <DateCalendarPanel
                   showHeader={false}
                   displayMonth={leftMonth}
@@ -527,7 +553,7 @@ export function DateRangePicker({
               size={size}
               color={color}
               radius={radius}
-              className={rangeCalendarTypography}
+              className={cn(rangeCalendarTypography, rangeCalendarTypographySizeStyles[size])}
               renderDay={renderDay}
             />
           )}

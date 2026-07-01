@@ -15,12 +15,12 @@ import {
   datePickerCalendarCellSizeStyles,
   datePickerCalendarDayInteractive,
   datePickerCalendarSelectedColorStyles,
-} from '@/form/date/DatePicker.css'
+} from '@/form/date/DatePicker.class'
 import {
   rangeCalendarCell,
   rangeCalendarDayInteractive,
   rangeCalendarSelectedColorStyles,
-} from '@/form/date/DateRangePicker.css'
+} from '@/form/date/DateRangePicker.class'
 import { normalizeDay } from '@/form/date/date-calendar-core'
 import { NumberInput } from '@/form/NumberInput'
 import { Select, SelectItem } from '@/form/Select'

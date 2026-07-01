@@ -1,7 +1,6 @@
 import { semanticColorKeys } from '@/theme/props/color.prop'
 import { radii } from '@/theme/props/radius.prop'
-import { dateSizeVar } from '@/theme/runtime/component-vars'
-import { controlSizeTokens, fontSizeRem, fontSizes, lineHeightRem, lineHeights } from '@/theme/token-maps'
+import { controlSizeTokens, fontSizeRem, lineHeightRem } from '@/theme/token-maps'
 import type { Size, TextFieldVariant } from '@/theme/tokens'
 
 export const dateSizeValues = ['xs', 'sm', 'md', 'lg', 'xl', '2x'] as const satisfies readonly Size[]
@@ -58,64 +57,32 @@ export const dateCalendarFontSourceSizeBySize: Record<DateSize, Size> = {
 const dateCalendarDayFallbackBySize = mapDateSizes(
   size => `calc(${fontSizeRem[dateCalendarFontSourceSizeBySize[size]]} * 2)`,
 )
-export const dateCalendarDaySizeBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'calendarDaySize', dateCalendarDayFallbackBySize[size]),
-)
-export const dateCalendarNavSizeBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'calendarNavSize', dateCalendarDayFallbackBySize[size]),
-)
-export const dateCalendarNavIconSizeBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'calendarNavIconSize', fontSizes[size]),
-)
-export const dateCalendarFontSizeBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'calendarFontSize', fontSizeRem[dateCalendarFontSourceSizeBySize[size]]),
-)
-export const dateCalendarLineHeightBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'calendarLineHeight', lineHeightRem[dateCalendarFontSourceSizeBySize[size]]),
-)
+export const dateCalendarDaySizeBySize = mapDateSizes(size => dateCalendarDayFallbackBySize[size])
+export const dateCalendarNavSizeBySize = dateCalendarDaySizeBySize
+export const dateCalendarNavIconSizeBySize = mapDateSizes(size => fontSizeRem[size])
+export const dateCalendarFontSizeBySize = mapDateSizes(size => fontSizeRem[dateCalendarFontSourceSizeBySize[size]])
+export const dateCalendarLineHeightBySize = mapDateSizes(size => lineHeightRem[dateCalendarFontSourceSizeBySize[size]])
 
-export const dateControlHeightBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'controlHeight', controlSizeTokens[size].height),
-)
-export const dateControlFontSizeBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'controlFontSize', controlSizeTokens[size].fontSize),
-)
-export const dateControlLineHeightBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'controlLineHeight', controlSizeTokens[size].lineHeight),
-)
-export const dateControlPaddingXBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'controlPaddingInline', controlSizeTokens[size].paddingX),
-)
-export const dateControlPaddingYBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'controlPaddingBlock', controlSizeTokens[size].paddingY),
-)
-export const dateControlGapBySize = mapDateSizes(size => dateSizeVar(size, 'controlGap', controlSizeTokens[size].gap))
-export const dateControlIconSizeBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'controlIconSize', controlSizeTokens[dateIconSourceSizeBySize[size]].iconSize),
+export const dateControlHeightBySize = mapDateSizes(size => controlSizeTokens[size].height)
+export const dateControlFontSizeBySize = mapDateSizes(size => controlSizeTokens[size].fontSize)
+export const dateControlLineHeightBySize = mapDateSizes(size => controlSizeTokens[size].lineHeight)
+export const dateControlPaddingXBySize = mapDateSizes(size => controlSizeTokens[size].paddingX)
+export const dateControlPaddingYBySize = mapDateSizes(size => controlSizeTokens[size].paddingY)
+export const dateControlGapBySize = mapDateSizes(size => controlSizeTokens[size].gap)
+export const dateControlIconSizeBySize = mapDateSizes(
+  size => controlSizeTokens[dateIconSourceSizeBySize[size]].iconSize,
 )
 
 export const dateCellSizeBySize = dateCalendarDaySizeBySize
-export const dateTitleFontSizeBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'miniCalendarTitleFontSize', fontSizes[size]),
-)
-export const dateTitleLineHeightBySize = mapDateSizes(size => lineHeights[size])
-export const dateSecondaryFontSizeBySize = mapDateSizes(size => fontSizes[dateIconSourceSizeBySize[size]])
-export const dateSecondaryLineHeightBySize = mapDateSizes(size => lineHeights[dateIconSourceSizeBySize[size]])
-export const dateHeaderGapBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'miniCalendarHeaderGap', controlSizeTokens[size].gap),
-)
-export const dateContainerPaddingBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'miniCalendarPadding', controlSizeTokens[size].paddingY),
-)
-export const dateCalendarGridGapBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'calendarGridGap', controlSizeTokens[size].gap),
-)
-export const dateCalendarPopoverPaddingBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'calendarPopoverPadding', controlSizeTokens[size].paddingY),
-)
-export const dateCalendarHeadingGapBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'calendarHeadingGap', controlSizeTokens[size].gap),
-)
+export const dateTitleFontSizeBySize = mapDateSizes(size => fontSizeRem[size])
+export const dateTitleLineHeightBySize = mapDateSizes(size => lineHeightRem[size])
+export const dateSecondaryFontSizeBySize = mapDateSizes(size => fontSizeRem[dateIconSourceSizeBySize[size]])
+export const dateSecondaryLineHeightBySize = mapDateSizes(size => lineHeightRem[dateIconSourceSizeBySize[size]])
+export const dateHeaderGapBySize = mapDateSizes(size => controlSizeTokens[size].gap)
+export const dateContainerPaddingBySize = mapDateSizes(size => controlSizeTokens[size].paddingY)
+export const dateCalendarGridGapBySize = mapDateSizes(size => controlSizeTokens[size].gap)
+export const dateCalendarPopoverPaddingBySize = mapDateSizes(size => controlSizeTokens[size].paddingY)
+export const dateCalendarHeadingGapBySize = mapDateSizes(size => controlSizeTokens[size].gap)
 const dateRangeFieldMinWidthFallbackBySize = {
   xs: '7rem',
   sm: '8rem',
@@ -124,12 +91,8 @@ const dateRangeFieldMinWidthFallbackBySize = {
   xl: '12rem',
   '2x': '13rem',
 } as const satisfies Record<DateSize, string>
-export const dateRangeFieldMinWidthBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'rangeFieldMinWidth', dateRangeFieldMinWidthFallbackBySize[size]),
-)
-export const dateMiniCalendarBodyGapBySize = mapDateSizes(size =>
-  dateSizeVar(size, 'miniCalendarBodyGap', controlSizeTokens[size].gap),
-)
+export const dateRangeFieldMinWidthBySize = dateRangeFieldMinWidthFallbackBySize
+export const dateMiniCalendarBodyGapBySize = mapDateSizes(size => controlSizeTokens[size].gap)
 
 export const isDateSize = (value: unknown): value is DateSize =>
   typeof value === 'string' && (dateSizeValues as readonly string[]).includes(value)

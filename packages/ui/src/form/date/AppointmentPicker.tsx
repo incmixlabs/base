@@ -8,18 +8,26 @@ import { cn } from '@/lib/utils'
 import type { Color, Radius } from '@/theme/tokens'
 import {
   appointmentPickerCheckIcon,
-  appointmentPickerColorStyles,
+  appointmentPickerCheckIconSizeStyles,
   appointmentPickerFooterPadding,
+  appointmentPickerFooterPaddingSizeStyles,
   appointmentPickerFooterText,
+  appointmentPickerFooterTextSizeStyles,
   appointmentPickerRoot,
   appointmentPickerRootDisabled,
   appointmentPickerSizeStyles,
   appointmentPickerSlotContainer,
+  appointmentPickerSlotContainerSizeStyles,
   appointmentPickerSlotGap,
+  appointmentPickerSlotGapSizeStyles,
   appointmentPickerSlotHeight,
+  appointmentPickerSlotHeightSizeStyles,
+  appointmentPickerSlotHoverColorStyles,
   appointmentPickerSlotWidth,
+  appointmentPickerSlotWidthSizeStyles,
   appointmentPickerTitle,
-} from './AppointmentPicker.css'
+  appointmentPickerTitleSizeStyles,
+} from './AppointmentPicker.class'
 import { DateCalendarPanel } from './DateCalendarPanel'
 import { type DateSize, isDateSize } from './date.props'
 import { mapDateSizeToButtonSize } from './date-size-maps'
@@ -219,7 +227,6 @@ export const AppointmentPicker = forwardRef<HTMLDivElement, AppointmentPickerPro
         className={cn(
           appointmentPickerRoot,
           appointmentPickerSizeStyles[size],
-          appointmentPickerColorStyles[color],
           'w-min rounded-lg overflow-hidden',
           disabled && appointmentPickerRootDisabled,
           className,
@@ -227,8 +234,16 @@ export const AppointmentPicker = forwardRef<HTMLDivElement, AppointmentPickerPro
       >
         {/* Title bar */}
         {title && (
-          <div className={cn('flex justify-center border-b', appointmentPickerFooterPadding)}>
-            <h3 className={cn(appointmentPickerTitle, 'font-semibold')}>{title}</h3>
+          <div
+            className={cn(
+              'flex justify-center border-b',
+              appointmentPickerFooterPadding,
+              appointmentPickerFooterPaddingSizeStyles[size],
+            )}
+          >
+            <h3 className={cn(appointmentPickerTitle, appointmentPickerTitleSizeStyles[size], 'font-semibold')}>
+              {title}
+            </h3>
           </div>
         )}
 
@@ -251,17 +266,25 @@ export const AppointmentPicker = forwardRef<HTMLDivElement, AppointmentPickerPro
 
           {/* Time slots */}
           <div
-            className={cn('shrink-0 border-l', !timeSlotWidth && appointmentPickerSlotWidth)}
+            className={cn(
+              'shrink-0 border-l',
+              !timeSlotWidth && appointmentPickerSlotWidth,
+              !timeSlotWidth && appointmentPickerSlotWidthSizeStyles[size],
+            )}
             style={timeSlotWidth ? { width: timeSlotWidth } : undefined}
           >
             <ScrollArea
               size="xs"
               thickness="thin"
               surfaceColor="neutral"
-              className={!timeSlotHeight ? appointmentPickerSlotHeight : undefined}
+              className={
+                !timeSlotHeight
+                  ? cn(appointmentPickerSlotHeight, appointmentPickerSlotHeightSizeStyles[size])
+                  : undefined
+              }
               style={timeSlotHeight ? { height: timeSlotHeight } : undefined}
             >
-              <div className={appointmentPickerSlotContainer}>
+              <div className={cn(appointmentPickerSlotContainer, appointmentPickerSlotContainerSizeStyles[size])}>
                 {availableSlots.map(slot => {
                   const isSelected = selectedTime === slot.time
                   const isSlotDisabled = slot.available === false
@@ -277,7 +300,8 @@ export const AppointmentPicker = forwardRef<HTMLDivElement, AppointmentPickerPro
                       className={cn(
                         'w-full shadow-none',
                         appointmentPickerSlotGap,
-                        !isSelected && 'hover:!bg-[var(--appt-slot-soft)] hover:!text-foreground',
+                        appointmentPickerSlotGapSizeStyles[size],
+                        !isSelected && appointmentPickerSlotHoverColorStyles[color],
                         isSlotDisabled && 'line-through opacity-50 cursor-not-allowed',
                         !selectedDate && 'opacity-50 cursor-not-allowed',
                       )}
@@ -294,16 +318,24 @@ export const AppointmentPicker = forwardRef<HTMLDivElement, AppointmentPickerPro
 
         {/* Footer */}
         {(showConfirmation || showConfirmButton) && (
-          <div className={cn('flex flex-col gap-4 border-t md:flex-row', appointmentPickerFooterPadding)}>
+          <div
+            className={cn(
+              'flex flex-col gap-4 border-t md:flex-row',
+              appointmentPickerFooterPadding,
+              appointmentPickerFooterPaddingSizeStyles[size],
+            )}
+          >
             {showConfirmation && (
               <div className="flex flex-1 items-center gap-2">
                 {isComplete && (
                   <>
                     <CircleCheckIcon
-                      className={appointmentPickerCheckIcon}
+                      className={cn(appointmentPickerCheckIcon, appointmentPickerCheckIconSizeStyles[size])}
                       style={{ color: 'var(--color-success-primary)', marginRight: '0.5rem' }}
                     />
-                    <span className={appointmentPickerFooterText}>{getConfirmationMessage()}</span>
+                    <span className={cn(appointmentPickerFooterText, appointmentPickerFooterTextSizeStyles[size])}>
+                      {getConfirmationMessage()}
+                    </span>
                   </>
                 )}
               </div>

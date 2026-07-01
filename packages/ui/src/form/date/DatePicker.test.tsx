@@ -4,7 +4,8 @@ import { I18nProvider } from 'react-aria-components'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { FieldGroup } from '../FieldGroup'
 import { DatePicker } from './DatePicker'
-import { datePickerTriggerGroupBase, datePickerTriggerGroupSizeStyles } from './DatePicker.css'
+import { datePickerTriggerGroupBase, datePickerTriggerGroupSizeStyles } from './DatePicker.class'
+import { hasClassTokens } from './date-test-utils'
 
 afterEach(() => {
   cleanup()
@@ -29,10 +30,10 @@ describe('DatePicker', () => {
     )
 
     const triggerGroup = Array.from(container.querySelectorAll<HTMLElement>('div')).find(element =>
-      element.classList.contains(datePickerTriggerGroupBase),
+      hasClassTokens(element, datePickerTriggerGroupBase),
     )
     expect(triggerGroup).toBeDefined()
-    expect(triggerGroup?.classList.contains(datePickerTriggerGroupSizeStyles.lg)).toBe(true)
+    expect(triggerGroup).toHaveClass(...datePickerTriggerGroupSizeStyles.lg.split(/\s+/))
   })
 
   it('keeps hidden input empty when uncontrolled', () => {
