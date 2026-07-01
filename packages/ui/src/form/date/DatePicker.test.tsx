@@ -5,14 +5,11 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { FieldGroup } from '../FieldGroup'
 import { DatePicker } from './DatePicker'
 import { datePickerTriggerGroupBase, datePickerTriggerGroupSizeStyles } from './DatePicker.class'
+import { hasClassTokens } from './date-test-utils'
 
 afterEach(() => {
   cleanup()
 })
-
-function hasClassTokens(element: HTMLElement, className: string) {
-  return className.split(/\s+/).every(token => element.classList.contains(token))
-}
 
 describe('DatePicker', () => {
   it('renders trigger and can be disabled', () => {

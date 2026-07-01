@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { FieldGroup } from '../FieldGroup'
 import { DateRangePicker } from './DateRangePicker'
 import { rangeTriggerGroupBase, rangeTriggerGroupSizeStyles } from './DateRangePicker.class'
+import { hasClassTokens } from './date-test-utils'
 
 const DUAL_MONTH_INTERACTION_TEST_TIMEOUT_MS = 15_000
 const DUAL_MONTH_HEADING_TOGGLE_TEST_TIMEOUT_MS = 15_000
@@ -14,10 +15,6 @@ const DUAL_MONTH_SLOW_INTERACTION_TEST_TIMEOUT_MS = 30_000
 afterEach(() => {
   cleanup()
 })
-
-function hasClassTokens(element: HTMLElement, className: string) {
-  return className.split(/\s+/).every(token => element.classList.contains(token))
-}
 
 describe('DateRangePicker', () => {
   it('does not render hidden inputs when name is not provided', () => {

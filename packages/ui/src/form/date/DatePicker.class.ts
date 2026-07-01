@@ -1,7 +1,13 @@
 import { semanticColorKeys, semanticColorVar } from '../../theme/props/color.prop'
 import type { Color } from '../../theme/tokens'
 import type { DateSize, DateVariant } from './date.props'
-import { dateElementRadiusStyles, dateRadiusClassStyles } from './date-surface.shared.class'
+import {
+  dateCalendarNavButton,
+  dateCalendarNavButtonSizeStyles,
+  dateCalendarNavIconSizeStyles,
+  dateElementRadiusStyles,
+  dateRadiusClassStyles,
+} from './date-surface.shared.class'
 
 const joinClass = (...parts: string[]) => parts.join('')
 const colorVar = (color: Color, token: Parameters<typeof semanticColorVar>[1]) => semanticColorVar(color, token)
@@ -54,26 +60,11 @@ export const datePickerCalendarIconControlSizeStyles = {
   '2x': 'h-6 w-6',
 } as const satisfies Record<DateSize, string>
 
-export const datePickerNavButton =
-  'inline-flex items-center justify-center rounded-[var(--element-border-radius,var(--radius-md))] p-0'
+export const datePickerNavButton = dateCalendarNavButton
 
-export const datePickerNavButtonSizeStyles = {
-  xs: 'h-7 w-7',
-  sm: 'h-8 w-8',
-  md: 'h-[2.25rem] w-[2.25rem]',
-  lg: 'h-10 w-10',
-  xl: 'h-12 w-12',
-  '2x': 'h-14 w-14',
-} as const satisfies Record<DateSize, string>
+export const datePickerNavButtonSizeStyles = dateCalendarNavButtonSizeStyles
 
-export const datePickerCalendarIconSizeStyles = {
-  xs: 'h-3 w-3',
-  sm: 'h-3.5 w-3.5',
-  md: 'h-4 w-4',
-  lg: 'h-[1.125rem] w-[1.125rem]',
-  xl: 'h-5 w-5',
-  '2x': 'h-6 w-6',
-} as const satisfies Record<DateSize, string>
+export const datePickerCalendarIconSizeStyles = dateCalendarNavIconSizeStyles
 
 export const datePickerCalendarCell = 'grid place-items-center'
 

@@ -217,7 +217,7 @@ export function DateCalendarHeader({
   const showNextArrow = arrowPosition === 'both' || arrowPosition === 'right'
 
   return (
-    <div className={cn('flex items-center gap-2', className)}>
+    <div className={cn('grid grid-cols-[1fr_auto_1fr] items-center gap-2', className)}>
       <div className={cn('flex items-center justify-start', navClassName)}>
         {showPreviousArrow ? (
           <DateCalendarNavButton
@@ -234,7 +234,7 @@ export function DateCalendarHeader({
           </DateCalendarNavButton>
         ) : null}
       </div>
-      <div className="min-w-0 flex-1 text-center">
+      <div className="min-w-0 text-center">
         {hasMonthYearPicker ? (
           <button
             ref={node => {

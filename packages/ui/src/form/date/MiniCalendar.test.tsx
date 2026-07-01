@@ -2,16 +2,10 @@ import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { dateCalendarNavButtonColorStyles } from './date-surface.shared.class'
+import { expectClassTokens } from './date-test-utils'
 import { MiniCalendar } from './MiniCalendar'
 
 describe('MiniCalendar', () => {
-  function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-    const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-    for (const token of tokens) {
-      expect(classTokens).toContain(token)
-    }
-  }
-
   it('renders month heading and weekday labels', () => {
     const value = new Date(2026, 0, 15)
     render(<MiniCalendar value={value} />)
@@ -29,9 +23,11 @@ describe('MiniCalendar', () => {
     const previousButton = container.querySelector<HTMLButtonElement>('button[aria-label="Previous week"]')
     const nextButton = container.querySelector<HTMLButtonElement>('button[aria-label="Next week"]')
     const previousIcon = previousButton?.querySelector('svg')
+    const header = previousButton?.parentElement?.parentElement
 
     expect(previousButton).toBeTruthy()
     expect(nextButton).toBeTruthy()
+    expectClassTokens(header?.className, ['grid', 'grid-cols-[1fr_auto_1fr]'])
     expectClassTokens(previousButton?.className, [
       '[&_svg]:stroke-current',
       '[&_svg_path]:stroke-current',

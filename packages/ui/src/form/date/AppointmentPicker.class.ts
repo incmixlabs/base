@@ -17,14 +17,7 @@ export const appointmentPickerSizeStyles = {
 
 export const appointmentPickerTitle = 'font-semibold'
 
-export const appointmentPickerTitleSizeStyles = {
-  xs: 'text-xs leading-4',
-  sm: 'text-sm leading-5',
-  md: 'text-base leading-6',
-  lg: 'text-lg leading-[1.625rem]',
-  xl: 'text-xl leading-7',
-  '2x': 'text-2xl leading-[1.875rem]',
-} as const satisfies Record<DateSize, string>
+export const appointmentPickerTitleSizeStyles = appointmentPickerSizeStyles
 
 export const appointmentPickerSlotHoverColorStyles: Record<Color, string> = Object.fromEntries(
   semanticColorKeys.map(color => [color, `hover:!bg-${color}-soft hover:!text-foreground`]),
