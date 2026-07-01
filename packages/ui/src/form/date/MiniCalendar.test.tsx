@@ -5,6 +5,13 @@ import { dateCalendarNavButtonColorStyles } from './date-surface.shared.class'
 import { MiniCalendar } from './MiniCalendar'
 
 describe('MiniCalendar', () => {
+  function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
+    const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
+    for (const token of tokens) {
+      expect(classTokens).toContain(token)
+    }
+  }
+
   it('renders month heading and weekday labels', () => {
     const value = new Date(2026, 0, 15)
     render(<MiniCalendar value={value} />)
@@ -17,22 +24,38 @@ describe('MiniCalendar', () => {
     expect(dayOnlyButtons).toHaveLength(7)
   })
 
-  it('renders visible week navigation arrows', () => {
-    render(<MiniCalendar value={new Date(2026, 0, 15)} color="slate" navButtonVariant="soft" />)
+  it('keeps nav chevrons visible with date-specific icon sizing', () => {
+    const { container } = render(<MiniCalendar value={new Date(2026, 0, 15)} size="xs" color="primary" />)
+    const previousButton = container.querySelector<HTMLButtonElement>('button[aria-label="Previous week"]')
+    const nextButton = container.querySelector<HTMLButtonElement>('button[aria-label="Next week"]')
+    const previousIcon = previousButton?.querySelector('svg')
 
-    const previousButton = document.querySelector<HTMLButtonElement>('button[aria-label="Previous week"]')
-    const nextButton = document.querySelector<HTMLButtonElement>('button[aria-label="Next week"]')
+    expect(previousButton).toBeTruthy()
+    expect(nextButton).toBeTruthy()
+    expectClassTokens(previousButton?.className, [
+      '[&_svg]:stroke-current',
+      '[&_svg_path]:stroke-current',
+      'h-7',
+      'w-7',
+    ])
+    expect(previousButton).toHaveClass(...dateCalendarNavButtonColorStyles.primary.soft.split(/\s+/))
+    expect(nextButton).toHaveClass(...dateCalendarNavButtonColorStyles.primary.soft.split(/\s+/))
+    expect(previousButton?.className).not.toContain('[&_svg]:size-5')
+    expectClassTokens(previousIcon?.getAttribute('class') ?? undefined, ['h-3', 'w-3'])
+  })
 
-    expect(previousButton).not.toBeNull()
-    expect(nextButton).not.toBeNull()
-    if (!previousButton || !nextButton) {
-      throw new Error('Expected week navigation buttons to exist')
-    }
+  it('renders month and year wheels as direct wrapper columns', async () => {
+    const user = userEvent.setup()
+    render(<MiniCalendar value={new Date(2026, 0, 15)} />)
 
-    expect(previousButton.querySelector('svg')).not.toBeNull()
-    expect(nextButton.querySelector('svg')).not.toBeNull()
-    expect(previousButton).toHaveClass(...dateCalendarNavButtonColorStyles.slate.soft.split(/\s+/))
-    expect(nextButton).toHaveClass(...dateCalendarNavButtonColorStyles.slate.soft.split(/\s+/))
+    await user.click(document.querySelector<HTMLButtonElement>('button[aria-haspopup="dialog"]') as HTMLButtonElement)
+
+    const wrapper = document.querySelector<HTMLElement>('[data-rwp-wrapper="true"]')
+    expect(wrapper).toBeTruthy()
+    expectClassTokens(wrapper?.parentElement?.className, ['absolute', 'w-72'])
+    expect(Array.from(wrapper?.children ?? []).filter(child => child.getAttribute('data-rwp') === 'true')).toHaveLength(
+      2,
+    )
   })
 
   it('calls onChange when selecting an enabled date', async () => {

@@ -32,7 +32,7 @@ export function DateCalendarNavButton({
       radius={radius}
       className={cn(
         'shrink-0 touch-manipulation [-webkit-tap-highlight-color:transparent]',
-        '[&_svg]:size-5 [&_svg]:stroke-[2.4]',
+        '[&_svg]:stroke-current [&_svg_path]:stroke-current',
         dateCalendarNavButtonColorStyles[color]?.[resolvedVariant],
         className,
       )}

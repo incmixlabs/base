@@ -307,24 +307,24 @@ export function DateCalendarHeader({
               <div
                 ref={pickerWrapperRef}
                 tabIndex={-1}
-                className="absolute outline-none"
+                className="absolute w-72 outline-none"
                 style={{ top: portalPos.top, left: portalPos.left }}
               >
-                <WheelPickerWrapper>
-                  <div className="flex gap-2 rounded-md border bg-background p-2 shadow-lg">
-                    <WheelPicker
-                      options={monthOptions}
-                      value={selectedMonth}
-                      onValueChange={handleMonthChange}
-                      aria-label="Select month"
-                    />
-                    <WheelPicker
-                      options={yearOptions}
-                      value={selectedYear}
-                      onValueChange={handleYearChange}
-                      aria-label="Select year"
-                    />
-                  </div>
+                <WheelPickerWrapper className="shadow-lg">
+                  <WheelPicker
+                    options={monthOptions}
+                    value={selectedMonth}
+                    onValueChange={handleMonthChange}
+                    aria-label="Select month"
+                    classNames={{ highlightWrapper: '!font-semibold' }}
+                  />
+                  <WheelPicker
+                    options={yearOptions}
+                    value={selectedYear}
+                    onValueChange={handleYearChange}
+                    aria-label="Select year"
+                    classNames={{ highlightWrapper: '!font-semibold' }}
+                  />
                 </WheelPickerWrapper>
               </div>
             </div>,
