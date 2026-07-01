@@ -45,11 +45,11 @@
   mix-blend-mode: normal;
 }
 
-[data-theme-toggle-icon-glyph] {
+[data-theme-toggle-icon-glyph][data-theme-toggle-icon-animated] {
   animation: af-theme-toggle-icon-forward 280ms ease-in-out both;
 }
 
-[data-theme-toggle-icon-glyph][data-theme-toggle-motion="backward"] {
+[data-theme-toggle-icon-glyph][data-theme-toggle-icon-animated][data-theme-toggle-motion="backward"] {
   animation-name: af-theme-toggle-icon-backward;
 }
 

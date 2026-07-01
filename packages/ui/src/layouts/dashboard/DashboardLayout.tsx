@@ -149,12 +149,8 @@ const DASHBOARD_LAYOUT_ANIMATION_EASING = 'cubic-bezier(0.2, 0, 0, 1)'
 const DASHBOARD_LAYOUT_ANIMATION_DELTA_THRESHOLD = 0.5
 
 export const DASHBOARD_LAYOUT_TRANSITION = {
-  layout: {
-    type: 'spring',
-    stiffness: 380,
-    damping: 38,
-    mass: 0.75,
-  },
+  duration: DASHBOARD_LAYOUT_ANIMATION_DURATION_MS,
+  easing: DASHBOARD_LAYOUT_ANIMATION_EASING,
 } as const
 
 type DashboardCollisionAxis = 'vertical' | 'horizontal'

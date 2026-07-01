@@ -101,9 +101,11 @@ describe('ThemeToggle', () => {
 
     const button = screen.getByRole('button', { name: 'Toggle theme' })
     const getIcon = () => button.querySelector('[data-theme-toggle-icon]')
+    const getIconGlyph = () => button.querySelector('[data-theme-toggle-icon-glyph]')
     const getIconMode = () => getIcon()?.getAttribute('data-theme-toggle-icon')
 
     expect(getIconMode()).toBe('light')
+    expect(getIconGlyph()).not.toHaveAttribute('data-theme-toggle-icon-animated')
 
     fireEvent.click(button)
 
@@ -135,6 +137,7 @@ describe('ThemeToggle', () => {
 
     expect(getIconMode()).toBe('dark')
     expect(getIcon()?.getAttribute('data-theme-toggle-motion')).toBe('forward')
+    expect(getIconGlyph()).toHaveAttribute('data-theme-toggle-icon-animated')
     expect(getIcon()?.getAttribute('style') ?? '').not.toContain('rotate(180deg)')
     expect(document.documentElement).not.toHaveAttribute('data-theme-toggle-transition')
   })
@@ -189,14 +192,17 @@ describe('ThemeToggle', () => {
 
     const button = screen.getByRole('button', { name: 'Toggle theme' })
     const getIconMode = () => button.querySelector('[data-theme-toggle-icon]')?.getAttribute('data-theme-toggle-icon')
+    const getIconGlyph = () => button.querySelector('[data-theme-toggle-icon-glyph]')
 
     expect(getIconMode()).toBe('light')
+    expect(getIconGlyph()).not.toHaveAttribute('data-theme-toggle-icon-animated')
 
     fireEvent.click(button)
 
     expect(startViewTransition).not.toHaveBeenCalled()
     expect(animate).not.toHaveBeenCalled()
     expect(getIconMode()).toBe('dark')
+    expect(getIconGlyph()).not.toHaveAttribute('data-theme-toggle-icon-animated')
     expect(document.documentElement).not.toHaveAttribute('data-theme-toggle-transition')
   })
 

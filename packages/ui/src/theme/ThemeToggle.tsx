@@ -49,7 +49,15 @@ function prefersReducedThemeMotion() {
   )
 }
 
-function ThemeIcon({ mode, direction }: { mode: 'light' | 'dark'; direction: IconAnimationDirection }) {
+function ThemeIcon({
+  mode,
+  direction,
+  animated,
+}: {
+  mode: 'light' | 'dark'
+  direction: IconAnimationDirection
+  animated: boolean
+}) {
   const Icon = mode === 'dark' ? Moon : Sun
 
   return (
@@ -62,6 +70,7 @@ function ThemeIcon({ mode, direction }: { mode: 'light' | 'dark'; direction: Ico
       <span
         key={mode}
         data-theme-toggle-icon-glyph=""
+        data-theme-toggle-icon-animated={animated ? '' : undefined}
         data-theme-toggle-motion={direction}
         className="inline-flex [grid-area:1/1] text-inherit [transform-origin:50%_50%]"
       >
@@ -95,6 +104,7 @@ export function ThemeToggle({
   const effectiveMode = getEffectiveMode(currentMode, theme.resolvedAppearance)
   const [displayedIconMode, setDisplayedIconMode] = React.useState<'light' | 'dark'>(effectiveMode)
   const [iconAnimationDirection, setIconAnimationDirection] = React.useState<IconAnimationDirection>('forward')
+  const [iconAnimationEnabled, setIconAnimationEnabled] = React.useState(false)
   const effectiveModeRef = React.useRef<'light' | 'dark'>(effectiveMode)
   const iconTransitionPendingRef = React.useRef(false)
 
@@ -125,15 +135,18 @@ export function ThemeToggle({
         theme.onAppearanceChange(next as Appearance)
       }
 
-      const completeIconSwap = (finalMode = effectiveModeRef.current) => {
+      const completeIconSwap = (finalMode = effectiveModeRef.current, animateIcon = true) => {
         iconTransitionPendingRef.current = false
         setIconAnimationDirection(finalMode === 'dark' ? 'forward' : 'backward')
+        setIconAnimationEnabled(animateIcon)
         setDisplayedIconMode(finalMode)
       }
 
-      if (typeof document.startViewTransition !== 'function' || prefersReducedThemeMotion()) {
+      const reducedMotion = prefersReducedThemeMotion()
+
+      if (typeof document.startViewTransition !== 'function' || reducedMotion) {
         applyTheme()
-        completeIconSwap(immediateIconMode)
+        completeIconSwap(immediateIconMode, !reducedMotion)
         return
       }
 
@@ -176,7 +189,7 @@ export function ThemeToggle({
       onClick={toggle}
       {...props}
     >
-      <ThemeIcon mode={displayedIconMode} direction={iconAnimationDirection} />
+      <ThemeIcon mode={displayedIconMode} direction={iconAnimationDirection} animated={iconAnimationEnabled} />
     </IconButton>
   )
 }
