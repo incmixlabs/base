@@ -268,6 +268,36 @@ const fontWeightUtilities = {
   bold: 'var(--font-weight-bold)',
 } as const
 
+const animationTiming =
+  'var(--tw-animation-duration,var(--un-duration,var(--tw-duration,.15s))) var(--tw-ease,var(--un-ease,ease)) var(--tw-animation-delay,0s) var(--tw-animation-iteration-count,1) var(--tw-animation-direction,normal) var(--tw-animation-fill-mode,both)'
+
+function percentageValue(value: string | undefined, fallback: string) {
+  if (!value) return fallback
+
+  const numericValue = Number(value)
+  if (!Number.isFinite(numericValue)) return
+
+  return `${numericValue / 100}`
+}
+
+function translateValue(value: string | undefined, direction: 1 | -1) {
+  if (!value || value === 'full') return `${direction * 100}%`
+
+  const numericValue = Number(value)
+  if (Number.isFinite(numericValue)) {
+    return `calc(var(--spacing) * ${direction * numericValue})`
+  }
+
+  const fraction = value.match(/^(\d+)\/(\d+)$/)
+  if (!fraction) return
+
+  const numerator = Number(fraction[1])
+  const denominator = Number(fraction[2])
+  if (!Number.isFinite(numerator) || !Number.isFinite(denominator) || denominator === 0) return
+
+  return `${direction * (numerator / denominator) * 100}%`
+}
+
 export const baseUnoConfig = {
   presets: [
     presetWind4({
@@ -346,6 +376,43 @@ export const baseUnoConfig = {
         if (utility === 'border') return { 'border-color': value }
 
         return { color: value }
+      },
+    ],
+    [
+      /^animate-(in|out)$/,
+      ([, direction]) => ({
+        animation: `${direction === 'in' ? 'enter' : 'exit'} ${animationTiming}`,
+      }),
+    ],
+    [
+      /^fade-(in|out)(?:-(\d+))?$/,
+      ([, direction, value]) => ({
+        [direction === 'in' ? '--tw-enter-opacity' : '--tw-exit-opacity']: percentageValue(value, '0'),
+      }),
+    ],
+    [
+      /^zoom-(in|out)(?:-(\d+))?$/,
+      ([, direction, value]) => ({
+        [direction === 'in' ? '--tw-enter-scale' : '--tw-exit-scale']: percentageValue(value, '0'),
+      }),
+    ],
+    [
+      /^blur-(in|out)(?:-(\d+))?$/,
+      ([, direction, value]) => ({
+        [direction === 'in' ? '--tw-enter-blur' : '--tw-exit-blur']: value ? `${value}px` : '20px',
+      }),
+    ],
+    [
+      /^slide-(in-from|out-to)-(top|bottom|left|right)(?:-(.+))?$/,
+      ([, direction, side, value]) => {
+        const axis = side === 'top' || side === 'bottom' ? 'y' : 'x'
+        const translateDirection = side === 'top' || side === 'left' ? -1 : 1
+        const resolvedValue = translateValue(value, translateDirection)
+        if (!resolvedValue) return
+
+        return {
+          [`--tw-${direction === 'in-from' ? 'enter' : 'exit'}-translate-${axis}`]: resolvedValue,
+        }
       },
     ],
     [

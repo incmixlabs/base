@@ -3,7 +3,6 @@
 import { mergeProps } from '@base-ui/react/merge-props'
 import { useRender } from '@base-ui/react/use-render'
 import { PanelLeftIcon } from 'lucide-react'
-import { AnimatePresence, m } from 'motion/react'
 import * as React from 'react'
 import { Badge } from '@/elements/badge/Badge'
 import { Button } from '@/elements/button/Button'
@@ -638,7 +637,7 @@ function SidebarMenuButton({
         ref: highlightRef as React.Ref<HTMLButtonElement>,
         type: 'button' as const,
         className: cn(
-          'appearance-none border-0 cursor-pointer ring-sidebar-ring rounded-md text-start transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pe-8 focus-visible:ring-2 peer/menu-button flex w-full items-center overflow-hidden outline-hidden group/menu-button disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&_svg]:shrink-0',
+          'appearance-none border-0 cursor-pointer ring-sidebar-ring rounded-md text-start transition-[width,height,padding] group-has-[[data-sidebar=menu-action]]/menu-item:pe-8 focus-visible:ring-2 peer/menu-button flex w-full items-center overflow-hidden outline-hidden group/menu-button disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&_svg]:shrink-0',
           iconMode ? 'grid place-items-center text-center [&>span:last-child]:hidden [&>svg]:m-0' : 'gap-2 p-2',
           hasHighlight ? sidebarMenuButtonToneHighlight : sidebarMenuButtonTone,
           hasActiveChild && sidebarMenuButtonHasActiveChild,
@@ -685,7 +684,7 @@ function SidebarMenuAction({ className, render, showOnHover = false, ...props }:
         className: cn(
           'appearance-none border-0 bg-transparent text-sidebar-foreground ring-sidebar-ring hover:bg-[var(--sidebar-hover)] hover:text-[var(--sidebar-hover-foreground)] peer-hover/menu-button:text-[var(--sidebar-hover-foreground)] absolute top-1.5 end-1 aspect-square w-5 rounded-md p-0 peer-data-[size=default]/menu-button:top-1.5 peer-data-[size=lg]/menu-button:top-2.5 peer-data-[size=sm]/menu-button:top-1 focus-visible:ring-2 [&>svg]:size-4 flex items-center justify-center outline-hidden transition-transform after:absolute after:-inset-2 md:after:hidden [&>svg]:shrink-0',
           showOnHover &&
-            'peer-data-active/menu-button:text-[var(--sidebar-hover-foreground)] group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 aria-expanded:opacity-100 md:opacity-0',
+            'peer-data-[active]/menu-button:text-[var(--sidebar-hover-foreground)] group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 aria-expanded:opacity-100 md:opacity-0',
           className,
         ),
         style: iconMode ? { display: 'none' } : undefined,
@@ -710,7 +709,7 @@ function SidebarMenuBadge({ className, style, ...props }: React.ComponentProps<'
       variant="surface"
       radius="md"
       className={cn(
-        'text-sidebar-foreground peer-hover/menu-button:text-[var(--sidebar-hover-foreground)] peer-data-active/menu-button:text-[var(--sidebar-hover-foreground)] pointer-events-none absolute end-1 h-5 min-w-5 rounded-md px-1 font-medium peer-data-[size=default]/menu-button:top-1.5 peer-data-[size=lg]/menu-button:top-2.5 peer-data-[size=sm]/menu-button:top-1 flex items-center justify-center tabular-nums select-none',
+        'text-sidebar-foreground peer-hover/menu-button:text-[var(--sidebar-hover-foreground)] peer-data-[active]/menu-button:text-[var(--sidebar-hover-foreground)] pointer-events-none absolute end-1 h-5 min-w-5 rounded-md px-1 font-medium peer-data-[size=default]/menu-button:top-1.5 peer-data-[size=lg]/menu-button:top-2.5 peer-data-[size=sm]/menu-button:top-1 flex items-center justify-center tabular-nums select-none',
         sidebarMenuBadgeText,
         className,
       )}
@@ -775,20 +774,12 @@ function SidebarMenuSub({ className, style, open, ...props }: SidebarMenuSubProp
   if (!animated) return list
 
   return (
-    <AnimatePresence>
-      {open && (
-        <m.div
-          key="sidebar-menu-sub"
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: 'auto', opacity: 1, pointerEvents: 'auto' as const }}
-          exit={{ height: 0, opacity: 0, pointerEvents: 'none' as const }}
-          transition={{ duration: 0.25 }}
-          style={{ overflow: 'hidden' }}
-        >
-          {list}
-        </m.div>
-      )}
-    </AnimatePresence>
+    <div
+      data-open={open ? '' : undefined}
+      className="grid overflow-hidden opacity-0 transition-[grid-template-rows,opacity] duration-250 ease-in-out grid-rows-[0fr] data-[open]:grid-rows-[1fr] data-[open]:opacity-100"
+    >
+      <div className="min-h-0">{list}</div>
+    </div>
   )
 }
 

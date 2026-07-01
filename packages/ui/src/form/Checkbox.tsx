@@ -1,7 +1,6 @@
 'use client'
 
 import { Checkbox as CheckboxPrimitive } from '@base-ui/react/checkbox'
-import * as m from 'motion/react-m'
 import * as React from 'react'
 import { Column, Row } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
@@ -81,10 +80,11 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
         name={name}
         value={value}
         nativeButton
-        render={<m.button type="button" whileTap={{ scale: 0.95 }} style={style} />}
+        render={<button type="button" style={style} />}
         className={cn(
           checkboxBase,
           checkboxBaseCls,
+          'transition-transform duration-100 ease-out active:scale-95',
           checkboxSizeVariants[resolvedSize],
           checkboxColorVariants[safeColor][safeVariant],
           safeHighContrast && 'af-high-contrast',

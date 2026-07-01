@@ -1,8 +1,6 @@
 'use client'
 
 import { AlertDialog as AlertDialogPrimitive } from '@base-ui/react/alert-dialog'
-import { AnimatePresence } from 'motion/react'
-import * as m from 'motion/react-m'
 import * as React from 'react'
 import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
 import { Row } from '@/layouts/flex/Flex'
@@ -27,16 +25,12 @@ import {
   alertDialogFooterBySize,
   dialogBackdropBase,
   dialogBackdropBaseCls,
-  dialogBackdropTransition,
-  dialogBackdropVariants,
   dialogContentByAlign,
   dialogContentBySize,
   dialogContentPaddingBySize,
   dialogDescriptionBySize,
   dialogPopupBase,
   dialogPopupBaseCls,
-  dialogPopupTransition,
-  dialogPopupVariants,
   dialogTitleBySize,
 } from './dialog.class'
 
@@ -45,28 +39,13 @@ export type { AlertDialogProps } from './alert-dialog.props'
 // Root
 // ============================================================================
 
-const AlertDialogOpenContext = React.createContext<boolean>(false)
 const AlertDialogSizeContext = React.createContext<AlertDialogContentSize>('md')
 
 const AlertDialogRoot: React.FC<AlertDialogRootProps> = ({ open: openProp, onOpenChange, defaultOpen, children }) => {
-  const isControlled = openProp !== undefined
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen ?? false)
-  const isOpen = isControlled ? openProp : uncontrolledOpen
-
-  const handleOpenChange = React.useCallback(
-    (next: boolean) => {
-      if (!isControlled) setUncontrolledOpen(next)
-      onOpenChange?.(next)
-    },
-    [isControlled, onOpenChange],
-  )
-
   return (
-    <AlertDialogOpenContext.Provider value={isOpen}>
-      <AlertDialogPrimitive.Root open={openProp} onOpenChange={handleOpenChange} defaultOpen={defaultOpen}>
-        {children}
-      </AlertDialogPrimitive.Root>
-    </AlertDialogOpenContext.Provider>
+    <AlertDialogPrimitive.Root open={openProp} onOpenChange={onOpenChange} defaultOpen={defaultOpen}>
+      {children}
+    </AlertDialogPrimitive.Root>
   )
 }
 
@@ -123,54 +102,26 @@ const AlertDialogContent = React.forwardRef<HTMLDivElement, AlertDialogContentPr
       ...(maxWidth ? { maxWidth } : {}),
     }
 
-    const isOpen = React.useContext(AlertDialogOpenContext)
-
     return (
       <AlertDialogSizeContext.Provider value={resolvedSize}>
-        <AnimatePresence>
-          {isOpen && (
-            <AlertDialogPrimitive.Portal keepMounted container={containerProp ?? themePortalContainer}>
-              <AlertDialogPrimitive.Backdrop
-                render={
-                  <m.div
-                    key="alert-dialog-backdrop"
-                    variants={dialogBackdropVariants}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                    transition={dialogBackdropTransition}
-                  />
-                }
-                className={cn(dialogBackdropBaseCls, dialogBackdropBase)}
-              />
-              <AlertDialogPrimitive.Popup
-                ref={ref}
-                render={
-                  <m.div
-                    key="alert-dialog-popup"
-                    variants={dialogPopupVariants}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                    transition={dialogPopupTransition}
-                  />
-                }
-                className={cn(
-                  dialogPopupBaseCls,
-                  dialogPopupBase,
-                  dialogContentPaddingBySize[resolvedSize],
-                  dialogContentBySize[resolvedSize],
-                  dialogContentByAlign[resolvedAlign],
-                  className,
-                )}
-                style={popupStyle}
-                {...props}
-              >
-                {children}
-              </AlertDialogPrimitive.Popup>
-            </AlertDialogPrimitive.Portal>
-          )}
-        </AnimatePresence>
+        <AlertDialogPrimitive.Portal container={containerProp ?? themePortalContainer}>
+          <AlertDialogPrimitive.Backdrop className={cn(dialogBackdropBaseCls, dialogBackdropBase)} />
+          <AlertDialogPrimitive.Popup
+            ref={ref}
+            className={cn(
+              dialogPopupBaseCls,
+              dialogPopupBase,
+              dialogContentPaddingBySize[resolvedSize],
+              dialogContentBySize[resolvedSize],
+              dialogContentByAlign[resolvedAlign],
+              className,
+            )}
+            style={popupStyle}
+            {...props}
+          >
+            {children}
+          </AlertDialogPrimitive.Popup>
+        </AlertDialogPrimitive.Portal>
       </AlertDialogSizeContext.Provider>
     )
   },

@@ -2,7 +2,6 @@
 @import "./theme/typography-tokens.css";
 @import "./theme/reset.css";
 @import "./theme/animations.css";
-@import "tw-animate-css";
 
 @unocss preflights;
 @unocss default;

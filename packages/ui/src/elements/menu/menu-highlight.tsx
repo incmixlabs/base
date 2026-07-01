@@ -1,6 +1,5 @@
 'use client'
 
-import * as m from 'motion/react-m'
 import * as React from 'react'
 
 interface HighlightRect {
@@ -78,28 +77,21 @@ export function MenuHighlight({ children, className, style }: MenuHighlightProps
   return (
     <div ref={containerRef} className={className} style={{ ...style, position: 'relative' }}>
       {rect && (
-        <m.div
+        <div
           aria-hidden
-          initial={false}
-          animate={{
+          style={{
+            position: 'absolute',
             opacity: visible ? 1 : 0,
             top: rect.top,
             left: rect.left,
             width: rect.width,
             height: rect.height,
-          }}
-          transition={{
-            type: 'spring',
-            stiffness: 500,
-            damping: 35,
-            opacity: { duration: 0.12 },
-          }}
-          style={{
-            position: 'absolute',
             borderRadius: 'inherit',
             backgroundColor: highlightBg || 'var(--menu-highlight-bg)',
             pointerEvents: 'none',
             zIndex: 0,
+            transition:
+              'top 180ms cubic-bezier(0.16, 1, 0.3, 1), left 180ms cubic-bezier(0.16, 1, 0.3, 1), width 180ms cubic-bezier(0.16, 1, 0.3, 1), height 180ms cubic-bezier(0.16, 1, 0.3, 1), opacity 120ms ease-in-out',
           }}
         />
       )}
