@@ -110,6 +110,7 @@ import { tabsClassNames } from './src/elements/tabs/tabs.class'
 import { timelineClassNames } from './src/elements/timeline/timeline.class'
 import { toggleClassNames } from './src/elements/toggle/toggle.class'
 import { tooltipContentBase, tooltipPositionerBase } from './src/elements/tooltip/tooltip.class'
+import { tourClassNames } from './src/elements/tour/tour.class'
 import { treeViewClassNames } from './src/elements/tree-view/tree-view.class'
 import { wheelPickerClassNames } from './src/elements/wheel-picker/wheel-picker.class'
 import { avatarPickerClassNames } from './src/form/avatar-picker.class'
@@ -438,6 +439,8 @@ export default defineConfig({
       ...splitClasses(timelineClassNames),
       // Toggle styles
       ...splitClasses(toggleClassNames),
+      // Tour styles
+      ...splitClasses(tourClassNames),
       // Tree view styles
       ...splitClasses(treeViewClassNames),
       // Wheel picker styles

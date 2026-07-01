@@ -25,6 +25,18 @@ import { cn } from '@/lib/utils'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import {
+  tourArrowSvgBase,
+  tourCloseBase,
+  tourDescriptionBase,
+  tourFooterBase,
+  tourHeaderBase,
+  tourSpotlightBase,
+  tourSpotlightRingBase,
+  tourStepBase,
+  tourStepCounterBase,
+  tourTitleBase,
+} from './tour.class'
+import {
   type TourAlign,
   type TourDirection,
   type TourSide,
@@ -1297,10 +1309,7 @@ function TourStep(props: TourStepProps) {
         onPointerDownCapture={onPointerDownCapture}
         onFocusCapture={onFocusCapture}
         onBlurCapture={onBlurCapture}
-        className={cn(
-          'fixed z-50 flex w-[min(32rem,calc(100vw-2rem))] flex-col gap-4 rounded-[var(--element-border-radius)] border bg-popover p-4 text-popover-foreground shadow-md outline-none',
-          className,
-        )}
+        className={cn(tourStepBase, className)}
         style={{
           ...style,
           ...floatingStyles,
@@ -1333,10 +1342,7 @@ function TourSpotlight(props: TourSpotlightProps) {
       data-slot="tour-spotlight"
       data-state={getDataState(open)}
       {...backdropProps}
-      className={cn(
-        'fixed inset-0 z-50 bg-black/80 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0',
-        className,
-      )}
+      className={cn(tourSpotlightBase, className)}
       style={{
         clipPath: maskPath,
         ...style,
@@ -1364,7 +1370,7 @@ function TourSpotlightRing(props: TourSpotlightRingProps) {
       data-slot="tour-spotlight-ring"
       data-state={getDataState(open)}
       {...ringProps}
-      className={cn('pointer-events-none fixed z-50 border-ring ring-[3px] ring-ring/50', className)}
+      className={cn(tourSpotlightRingBase, className)}
       style={{
         left: spotlightRect.x,
         top: spotlightRect.y,
@@ -1444,7 +1450,7 @@ function TourArrow(props: TourArrowProps) {
         width={width}
         height={height}
         {...arrowProps}
-        className={cn('block fill-popover stroke-border', className)}
+        className={cn(tourArrowSvgBase, className)}
       >
         {asChild ? children : <polygon points="0,0 30,0 15,10" />}
       </svg>
@@ -1462,7 +1468,7 @@ function TourHeader(props: DivProps) {
       data-slot="tour-header"
       dir={context.dir}
       {...headerProps}
-      className={cn('flex flex-col gap-1.5 text-center sm:text-left', className)}
+      className={cn(tourHeaderBase, className)}
     />
   )
 }
@@ -1473,12 +1479,7 @@ function TourTitle(props: DivProps) {
   const TitlePrimitive = asChild ? Slot : 'div'
 
   return (
-    <TitlePrimitive
-      data-slot="tour-title"
-      dir={context.dir}
-      {...titleProps}
-      className={cn('font-semibold text-lg leading-none tracking-tight', className)}
-    />
+    <TitlePrimitive data-slot="tour-title" dir={context.dir} {...titleProps} className={cn(tourTitleBase, className)} />
   )
 }
 
@@ -1492,7 +1493,7 @@ function TourDescription(props: DivProps) {
       data-slot="tour-description"
       dir={context.dir}
       {...descriptionProps}
-      className={cn('text-muted-foreground text-sm', className)}
+      className={cn(tourDescriptionBase, className)}
     />
   )
 }
@@ -1534,11 +1535,7 @@ function TourClose(props: TourCloseProps) {
       aria-label={context.closeLabel}
       {...defaultCloseButtonProps}
       {...closeButtonProps}
-      className={cn(
-        "absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-        defaultClassName,
-        className,
-      )}
+      className={cn(tourCloseBase, defaultClassName, className)}
       onClick={onClick}
     >
       {children ?? defaultChildren ?? <X className="size-4" />}
@@ -1739,7 +1736,7 @@ function TourStepCounter(props: TourStepCounterProps) {
     <StepCounterPrimitive
       data-slot="tour-step-counter"
       {...stepCounterProps}
-      className={cn('mr-auto shrink-0 whitespace-nowrap text-muted-foreground text-sm', className)}
+      className={cn(tourStepCounterBase, className)}
     >
       {children ?? format(value + 1, steps.length)}
     </StepCounterPrimitive>
@@ -1760,7 +1757,7 @@ function TourFooter(props: DivProps) {
       dir={context.dir}
       {...footerProps}
       ref={composedRef}
-      className={cn('flex w-full flex-wrap items-center gap-2', className)}
+      className={cn(tourFooterBase, className)}
     />
   )
 }
