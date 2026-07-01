@@ -197,6 +197,11 @@ import {
   sectionSizeResponsive,
 } from './src/layouts/section/section.class'
 import { sidebarClassNames } from './src/layouts/sidebar/Sidebar.class'
+import { gapResponsiveClasses } from './src/theme/helpers/gap-responsive'
+import { heightResponsiveClasses } from './src/theme/helpers/height-responsive'
+import { marginResponsiveClasses } from './src/theme/helpers/margin-responsive'
+import { paddingResponsiveClasses } from './src/theme/helpers/padding-responsive'
+import { widthResponsiveClasses } from './src/theme/helpers/width-responsive'
 import { containerBreakpoints } from './src/theme/tokens'
 import {
   codeBase,
@@ -479,6 +484,14 @@ export default defineConfig({
       // Box styles
       boxRootBase,
       ...splitClasses(boxSurfaceColorClassNames),
+      // Responsive custom property helpers
+      ...splitClasses([
+        ...Object.values(gapResponsiveClasses),
+        ...Object.values(heightResponsiveClasses),
+        ...Object.values(marginResponsiveClasses),
+        ...Object.values(paddingResponsiveClasses),
+        ...Object.values(widthResponsiveClasses),
+      ]),
       // Container styles
       containerBase,
       ...Object.values(containerBySize),

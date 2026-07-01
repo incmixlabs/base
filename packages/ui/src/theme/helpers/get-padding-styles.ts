@@ -3,7 +3,7 @@ import type * as React from 'react'
 import { cn } from '@/lib/utils'
 import type { PaddingProps } from '@/theme/props/padding.props'
 import { space } from '@/theme/token-maps'
-import { paddingResponsiveClasses, paddingResponsiveVars } from './padding-responsive.css'
+import { paddingResponsiveClasses, paddingResponsiveVars } from './padding-responsive'
 import { resolveSpacingValue } from './resolve-spacing-value'
 import { type ResponsiveBreakpoint, responsiveBreakpointsArray } from './responsive/breakpoints'
 import {

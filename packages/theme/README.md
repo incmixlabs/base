@@ -87,5 +87,5 @@ Unsupported categories remain browser-only:
 - layout engines such as grid/flex positioning
 - pseudo states
 - media queries
-- arbitrary Vanilla Extract classes
+- arbitrary framework-generated classes
 - CSS variable references that have not been resolved to concrete values

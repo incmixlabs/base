@@ -1,7 +1,7 @@
 import type * as React from 'react'
 import { cn } from '@/lib/utils'
 import type { HeightProps } from '@/theme/props/height.props'
-import { heightResponsiveClasses, heightResponsiveVars } from './height-responsive.css'
+import { heightResponsiveClasses, heightResponsiveVars } from './height-responsive'
 import { type ResponsiveBreakpoint, responsiveBreakpointsArray } from './responsive/breakpoints'
 
 const responsiveBreakpoints: readonly ResponsiveBreakpoint[] = responsiveBreakpointsArray

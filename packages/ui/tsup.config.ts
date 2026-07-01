@@ -1,6 +1,5 @@
 import { readdirSync } from 'node:fs'
 import { basename, extname, join, posix } from 'node:path'
-import { vanillaExtractPlugin } from '@vanilla-extract/esbuild-plugin'
 import { defineConfig } from 'tsup'
 
 const externalFontUrlsPlugin = {
@@ -85,7 +84,7 @@ const commonOptions = {
   treeshake: true,
   metafile: true,
   external: ['react', 'react-dom', '@incmix/ui/fonts/*'],
-  esbuildPlugins: [vanillaExtractPlugin(), externalFontUrlsPlugin],
+  esbuildPlugins: [externalFontUrlsPlugin],
   esbuildOptions(options) {
     options.banner = { js: "'use client';" }
     options.chunkNames = 'chunks/[name]-[hash]'

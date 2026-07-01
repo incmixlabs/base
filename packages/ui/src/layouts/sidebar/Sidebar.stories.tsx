@@ -43,7 +43,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Sidebar navigation layout with responsive collapse modes. Styling uses Tailwind for static structure, Surface for panel visual treatment, and vanilla-extract for prop-driven menu button classes.',
+          'Sidebar navigation layout with responsive collapse modes. Styling uses Tailwind for static structure, Surface for panel visual treatment, and prop-driven menu button classes.',
       },
     },
   },

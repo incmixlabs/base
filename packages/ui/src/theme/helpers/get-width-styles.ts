@@ -2,7 +2,7 @@ import type * as React from 'react'
 import { cn } from '@/lib/utils'
 import type { WidthProps } from '@/theme/props/width.props'
 import { type ResponsiveBreakpoint, responsiveBreakpointsArray } from './responsive/breakpoints'
-import { widthResponsiveClasses, widthResponsiveVars } from './width-responsive.css'
+import { widthResponsiveClasses, widthResponsiveVars } from './width-responsive'
 
 const responsiveBreakpoints: readonly ResponsiveBreakpoint[] = responsiveBreakpointsArray
 
