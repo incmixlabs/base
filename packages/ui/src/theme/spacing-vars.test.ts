@@ -29,6 +29,12 @@ describe('Theme token CSS ownership', () => {
     expect(designTokensCssSource).toContain('--un-translate-y: 0;')
   })
 
+  it('does not keep legacy root color aliases in the design token layer', () => {
+    for (const token of ['--background:', '--foreground:', '--border:']) {
+      expect(designTokensCssSource).not.toContain(token)
+    }
+  })
+
   it('does not re-declare design tokens or legacy aliases in globals', () => {
     for (const token of [
       '--background:',

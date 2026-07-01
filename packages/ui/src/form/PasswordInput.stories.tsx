@@ -149,7 +149,7 @@ export const WithError: Story = {
     <div className="w-80 space-y-2">
       <Label>With Error</Label>
       <PasswordInput error placeholder="Password" />
-      <p className="text-xs text-destructive">Password is required</p>
+      <p className="text-xs text-error">Password is required</p>
     </div>
   ),
 }
@@ -195,7 +195,7 @@ export const LoginForm: Story = {
           </div>
         </div>
 
-        <button type="button" className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-md font-medium">
+        <button type="button" className="w-full py-2 px-4 bg-primary text-primary-contrast rounded-md font-medium">
           Sign In
         </button>
       </div>
@@ -238,14 +238,14 @@ export const SignupForm: Story = {
               error={confirmPassword.length > 0 && !passwordsMatch}
             />
             {confirmPassword.length > 0 && !passwordsMatch && (
-              <p className="text-xs text-destructive">Passwords don't match</p>
+              <p className="text-xs text-error">Passwords don't match</p>
             )}
           </div>
         </div>
 
         <button
           type="button"
-          className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-md font-medium disabled:opacity-50"
+          className="w-full py-2 px-4 bg-primary text-primary-contrast rounded-md font-medium disabled:opacity-50"
           disabled={!passwordsMatch}
         >
           Create Account

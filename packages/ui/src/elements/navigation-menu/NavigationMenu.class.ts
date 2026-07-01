@@ -104,7 +104,7 @@ export const navigationMenuLinkBase = cls(
   'hover:[color:var(--af-navigation-menu-accent-text)]',
   'data-[active]:[background-color:var(--af-navigation-menu-accent-soft)]',
   'data-[active]:[color:var(--af-navigation-menu-accent-text)]',
-  '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--af-navigation-menu-accent-primary)]',
+  '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--af-navigation-menu-accent-solid)]',
 )
 
 export const navigationMenuLinkBySize = {
@@ -129,7 +129,7 @@ export const navigationMenuSimpleLinkBase = cls(
   'no-underline',
   'data-[active]:[background-color:var(--af-navigation-menu-accent-soft)]',
   'data-[active]:[color:var(--af-navigation-menu-accent-text)]',
-  '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--af-navigation-menu-accent-primary)]',
+  '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--af-navigation-menu-accent-solid)]',
 )
 
 export const navigationMenuBackdropBase =
@@ -139,7 +139,7 @@ export const navigationMenuColor = Object.fromEntries(
   semanticColorScale.map(color => [
     color,
     cls(
-      property('--af-navigation-menu-accent-primary', colorVar(color, 'primary')),
+      property('--af-navigation-menu-accent-solid', colorVar(color, 'solid')),
       property('--af-navigation-menu-accent-soft', colorVar(color, 'soft')),
       property('--af-navigation-menu-accent-soft-hover', colorVar(color, 'soft-hover')),
       property('--af-navigation-menu-accent-text', colorVar(color, 'text')),

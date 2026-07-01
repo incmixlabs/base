@@ -1007,7 +1007,7 @@ function MediaPlayerError(props: MediaPlayerErrorProps) {
     >
       {children ?? (
         <div className="flex max-w-md flex-col items-center gap-4 px-6 py-8 text-center">
-          <AlertTriangleIcon className="size-12 text-destructive" />
+          <AlertTriangleIcon className="size-12 text-error" />
           <div className="flex flex-col gap-px text-center">
             <h3 className="font-semibold text-xl tracking-tight">{errorLabel}</h3>
             <p className="text-balance text-muted text-sm leading-relaxed">{errorDescription}</p>
@@ -2818,7 +2818,7 @@ function MediaPlayerTooltip(props: MediaPlayerTooltipProps) {
       <Tooltip.Content
         container={context.portalContainer as HTMLElement | null}
         sideOffset={context.tooltipSideOffset}
-        className="flex items-center gap-2 border bg-accent px-2 py-1 font-medium text-accent-foreground [&>span]:hidden"
+        className="flex items-center gap-2 border bg-accent px-2 py-1 font-medium text-accent-contrast [&>span]:hidden"
       >
         <p>{tooltip}</p>
         {Array.isArray(shortcut) ? (
@@ -2826,7 +2826,7 @@ function MediaPlayerTooltip(props: MediaPlayerTooltipProps) {
             {shortcut.map(shortcutKey => (
               <kbd
                 key={shortcutKey}
-                className="select-none rounded border bg-secondary px-1.5 py-0.5 font-mono text-[11.2px] text-neutral shadow-xs"
+                className="select-none rounded border bg-secondary-soft px-1.5 py-0.5 font-mono text-[11.2px] text-secondary shadow-xs"
               >
                 <abbr title={shortcutKey} className="no-underline">
                   {shortcutKey}
@@ -2836,7 +2836,7 @@ function MediaPlayerTooltip(props: MediaPlayerTooltipProps) {
           </div>
         ) : (
           shortcut && (
-            <kbd className="select-none rounded border bg-secondary px-1.5 py-px font-mono text-[11.2px] text-neutral shadow-xs">
+            <kbd className="select-none rounded border bg-secondary-soft px-1.5 py-px font-mono text-[11.2px] text-secondary shadow-xs">
               <abbr title={shortcut} className="no-underline">
                 {shortcut}
               </abbr>

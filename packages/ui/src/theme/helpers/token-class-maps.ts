@@ -137,10 +137,10 @@ const semanticColorUtilityByPrefixAndToken = {
   bg: {
     background: 'neutral-background',
     'neutral-surface': 'neutral-surface',
-    'primary-primary': 'primary-solid',
+    'primary-solid': 'primary-solid',
     'secondary-soft': 'secondary-soft',
     'accent-soft': 'accent-soft',
-    'error-primary': 'error-solid',
+    'error-solid': 'error-solid',
   },
   text: {
     foreground: 'neutral',

@@ -13,6 +13,7 @@
   "exports": {
     "./react-compiler-health.js": "./react-compiler-health.js",
     "./react-compiler.js": "./react-compiler.js",
+    "./semantic-color-theme.cjs": "./semantic-color-theme.cjs",
     "./vite-tanstack-start.js": "./vite-tanstack-start.js",
     "./vite-aliases.js": "./vite-aliases.js",
     "./tailwind.config": "./tailwind.config.cjs",

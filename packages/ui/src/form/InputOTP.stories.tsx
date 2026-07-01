@@ -196,7 +196,7 @@ export const WithError: Story = {
       <div className="space-y-2">
         <Label>Verification code</Label>
         <InputOTP value={value} onChange={setValue} error />
-        <p className="text-sm text-destructive">Invalid code. Please try again.</p>
+        <p className="text-sm text-error">Invalid code. Please try again.</p>
       </div>
     )
   },
@@ -327,7 +327,7 @@ export const VerificationForm: Story = {
           />
         </div>
 
-        {status === 'error' && <p className="text-sm text-destructive text-center">Invalid code. Try 123456.</p>}
+        {status === 'error' && <p className="text-sm text-error text-center">Invalid code. Try 123456.</p>}
 
         {status === 'success' && (
           <div className="p-3 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-md text-sm text-center">

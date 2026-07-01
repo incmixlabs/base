@@ -1,3 +1,4 @@
+import { createRequire } from 'node:module'
 import {
   CHART_COLOR_KEYS,
   CHROMATIC_SURFACE_COLOR_NAMES,
@@ -7,6 +8,11 @@ import {
   SEMANTIC_COLOR_VAR_TOKENS,
 } from '@incmix/theme'
 import { defineConfig, presetWind4, transformerDirectives, transformerVariantGroup } from 'unocss'
+
+const require = createRequire(import.meta.url)
+const { semanticColorThemeColors } = require('./semantic-color-theme.cjs') as {
+  semanticColorThemeColors: (colors?: readonly string[]) => Record<string, Record<string, string>>
+}
 
 const responsivePrefixes = ['', 'xs:', 'sm:', 'md:', 'lg:', 'xl:'] as const
 const spacingTokens = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] as const
@@ -47,13 +53,13 @@ const radiusUtilities = [
   'rounded-full',
 ] as const
 const sizeTokens = ['xs', 'sm', 'md', 'lg', 'xl', '2x', '3x', '4x', '5x'] as const
-const semanticColorUtilities = ['primary', 'primary-foreground', 'accent', 'accent-foreground', 'secondary'] as const
+const semanticColorUtilities = SEMANTIC_COLOR_NAMES
 const stateColorUtilities = [
-  '[var(--color-neutral-primary)]',
-  '[var(--color-info-primary)]',
-  '[var(--color-success-primary)]',
-  '[var(--color-warning-primary)]',
-  '[var(--color-error-primary)]',
+  '[var(--color-neutral-solid)]',
+  '[var(--color-info-solid)]',
+  '[var(--color-success-solid)]',
+  '[var(--color-warning-solid)]',
+  '[var(--color-error-solid)]',
 ] as const
 const stateBorderColorUtilities = [
   '[var(--color-primary-border)]',
@@ -90,11 +96,11 @@ const rawHueColorRule = new RegExp(`^(bg|text|border)-(${HUE_NAMES.join('|')})-(
 
 function semanticSurfaceColorRoles(color: SemanticSurfaceColorName) {
   return {
-    solid: `var(--color-${color}-primary)`,
+    solid: `var(--color-${color}-solid)`,
     soft: `var(--color-${color}-soft)`,
     surface: `var(--color-${color}-surface)`,
     background: `var(--color-${color}-background)`,
-    highlight: `var(--color-${color}-primary-alpha)`,
+    highlight: `var(--color-${color}-solid-alpha)`,
     border: `var(--color-${color}-border)`,
     text: `var(--color-${color}-text)`,
     contrast: `var(--color-${color}-contrast)`,
@@ -111,7 +117,7 @@ function chartSurfaceColorRoles(color: ChartSurfaceColorName) {
     surface: `color-mix(in oklch, ${chartValue} 12%, var(--color-light-surface))`,
     background: `color-mix(in oklch, ${chartValue} 8%, var(--color-light-background))`,
     border: `color-mix(in oklch, ${chartValue} 28%, var(--color-light-border))`,
-    text: `color-mix(in oklch, ${chartValue} 34%, var(--color-dark-primary))`,
+    text: `color-mix(in oklch, ${chartValue} 34%, var(--color-dark-solid))`,
     contrast: `var(--chart-${chartIndex}-contrast)`,
   }
 }
@@ -430,22 +436,7 @@ export const baseUnoConfig = {
   ],
   theme: {
     colors: {
-      primary: {
-        DEFAULT: 'var(--color-primary-primary)',
-        foreground: 'var(--color-primary-contrast)',
-      },
-      secondary: {
-        DEFAULT: 'var(--color-secondary-soft)',
-        foreground: 'var(--color-secondary-text)',
-      },
-      accent: {
-        DEFAULT: 'var(--color-accent-soft)',
-        foreground: 'var(--color-accent-text)',
-      },
-      destructive: {
-        DEFAULT: 'var(--color-error-primary)',
-        foreground: 'var(--color-error-contrast)',
-      },
+      ...semanticColorThemeColors(SEMANTIC_COLOR_NAMES),
       chart: {
         1: 'var(--chart-1)',
         2: 'var(--chart-2)',

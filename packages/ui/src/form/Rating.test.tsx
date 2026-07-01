@@ -32,7 +32,7 @@ describe('Rating', () => {
       'inline-flex',
       'h-[var(--af-rating-size-lg-icon-size,1.25rem)]',
       'w-[var(--af-rating-size-lg-icon-size,1.25rem)]',
-      'focus-visible:[outline-color:var(--color-info-primary-alpha)]',
+      'focus-visible:[outline-color:var(--color-info-solid-alpha)]',
     ])
     expect(firstItem.className).not.toContain('Rating_ratingItemBase')
   })

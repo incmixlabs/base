@@ -356,7 +356,7 @@ export const FormExample: Story = {
 
         <button
           type="submit"
-          className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+          className="w-full px-4 py-2 bg-primary text-primary-contrast rounded-md hover:bg-primary/90 transition-colors"
         >
           Submit
         </button>

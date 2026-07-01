@@ -13,8 +13,8 @@ export const SEMANTIC_LANE_VAR_TOKENS = [
   'surface-hover',
   'soft',
   'soft-hover',
-  'primary',
-  'primary-alpha',
+  'solid',
+  'solid-alpha',
   'text',
   'contrast',
   'background',
@@ -68,8 +68,8 @@ const STATIC_SURFACE_LANES: Record<'light' | 'dark', Record<SemanticLaneToken, s
     'surface-hover': 'oklch(0.975 0 0)',
     soft: 'oklch(0.975 0 0)',
     'soft-hover': 'oklch(0.95 0 0)',
-    primary: 'oklch(1 0 0)',
-    'primary-alpha': 'color-mix(in oklch, white 16%, transparent)',
+    solid: 'oklch(1 0 0)',
+    'solid-alpha': 'color-mix(in oklch, white 16%, transparent)',
     text: 'oklch(0.22 0 0)',
     contrast: 'oklch(0.18 0 0)',
     background: 'oklch(1 0 0)',
@@ -82,8 +82,8 @@ const STATIC_SURFACE_LANES: Record<'light' | 'dark', Record<SemanticLaneToken, s
     'surface-hover': 'oklch(0.27 0 0)',
     soft: 'oklch(0.27 0 0)',
     'soft-hover': 'oklch(0.31 0 0)',
-    primary: 'oklch(0.17 0 0)',
-    'primary-alpha': 'color-mix(in oklch, black 24%, transparent)',
+    solid: 'oklch(0.17 0 0)',
+    'solid-alpha': 'color-mix(in oklch, black 24%, transparent)',
     text: 'oklch(0.95 0 0)',
     contrast: 'oklch(0.98 0 0)',
     background: 'oklch(0.14 0 0)',
@@ -180,12 +180,12 @@ export function buildSemanticLaneVars(
     result[`--color-${lane}-surface-hover`] = getHueToken(hue, variantSteps.surfaceHover)
     result[`--color-${lane}-soft`] = getHueToken(hue, variantSteps.soft)
     result[`--color-${lane}-soft-hover`] = getHueToken(hue, variantSteps.softHover)
-    result[`--color-${lane}-primary`] = getHueToken(hue, variantSteps.solid)
-    result[`--color-${lane}-primary-alpha`] =
+    result[`--color-${lane}-solid`] = getHueToken(hue, variantSteps.solid)
+    result[`--color-${lane}-solid-alpha`] =
       `color-mix(in oklch, ${getHueToken(hue, variantSteps.solid)} 12%, transparent)`
     result[`--color-${lane}-text`] = getHueToken(hue, variantSteps.text)
     result[`--color-${lane}-contrast`] = getHueToken(hue, 'contrast')
-    result[`--color-${lane}-background`] = 'var(--background)'
+    result[`--color-${lane}-background`] = 'var(--color-neutral-background)'
   }
 
   return result

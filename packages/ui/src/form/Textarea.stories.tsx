@@ -100,7 +100,7 @@ export const WithError: Story = {
   render: () => (
     <div className="w-80 space-y-2">
       <Textarea error placeholder="Enter description..." />
-      <p className="text-sm text-destructive">Description is required</p>
+      <p className="text-sm text-error">Description is required</p>
     </div>
   ),
 }
@@ -155,7 +155,7 @@ export const ContactForm: Story = {
         <Label htmlFor="message">Message</Label>
         <Textarea id="message" placeholder="How can we help you?" rows={5} resize="none" />
       </div>
-      <button className="w-full py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md">
+      <button className="w-full py-2 text-sm font-medium bg-primary text-primary-contrast rounded-md">
         Send Message
       </button>
     </div>
@@ -268,7 +268,7 @@ export const FloatingFeedbackForm: Story = {
       <h3 className="text-lg font-semibold">Send Feedback</h3>
       <Textarea variant="floating-outlined" label="Subject" rows={1} />
       <Textarea variant="floating-outlined" label="Your feedback" rows={5} />
-      <button className="w-full py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md">
+      <button className="w-full py-2 text-sm font-medium bg-primary text-primary-contrast rounded-md">
         Submit Feedback
       </button>
     </div>
@@ -355,7 +355,7 @@ export const AutoSizeChatInput: Story = {
       </div>
       <div className="flex gap-2 items-end">
         <Textarea autoSize minRows={1} maxRows={4} placeholder="Type a message..." className="flex-1" />
-        <button className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md shrink-0">
+        <button className="px-4 py-2 text-sm font-medium bg-primary text-primary-contrast rounded-md shrink-0">
           Send
         </button>
       </div>

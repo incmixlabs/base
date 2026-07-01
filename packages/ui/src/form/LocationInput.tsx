@@ -220,17 +220,17 @@ function SearchableSelect<T>({
               floatingStyle === 'filled' && [
                 'left-[var(--af-text-field-padding-x)] top-[0.875rem] z-10',
                 '-translate-y-4 scale-75',
-                'peer-data-[popup-open]:text-[color:var(--af-text-field-color-primary)]',
+                'peer-data-[popup-open]:text-[color:var(--af-text-field-color-solid)]',
               ],
               floatingStyle === 'outlined' && [
                 'left-[var(--af-text-field-padding-x)] top-[0.375rem] z-10',
                 '-translate-y-4 scale-75 bg-neutral-background px-1',
-                'peer-data-[popup-open]:text-[color:var(--af-text-field-color-primary)] peer-data-[popup-open]:bg-neutral-background peer-data-[popup-open]:px-1',
+                'peer-data-[popup-open]:text-[color:var(--af-text-field-color-solid)] peer-data-[popup-open]:bg-neutral-background peer-data-[popup-open]:px-1',
               ],
               floatingStyle === 'standard' && [
                 'left-0 top-[0.625rem] z-10',
                 '-translate-y-6 scale-75',
-                'peer-data-[popup-open]:text-[color:var(--af-text-field-color-primary)]',
+                'peer-data-[popup-open]:text-[color:var(--af-text-field-color-solid)]',
               ],
             )}
           >

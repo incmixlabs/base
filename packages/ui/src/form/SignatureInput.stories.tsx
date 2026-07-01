@@ -144,7 +144,7 @@ export const WithError: Story = {
     <div className="space-y-2">
       <Label>With Error</Label>
       <SignatureInput error />
-      <p className="text-xs text-destructive">Signature is required</p>
+      <p className="text-xs text-error">Signature is required</p>
     </div>
   ),
 }
@@ -184,7 +184,7 @@ export const ContractForm: Story = {
         <div className="space-y-2">
           <Label>Signature *</Label>
           <SignatureInput value={signature} onChange={setSignature} error={!signature && agreed} width={468} />
-          {!signature && agreed && <p className="text-xs text-destructive">Please sign above</p>}
+          {!signature && agreed && <p className="text-xs text-error">Please sign above</p>}
         </div>
 
         <div className="flex gap-3">
@@ -193,7 +193,7 @@ export const ContractForm: Story = {
           </button>
           <button
             type="button"
-            className="flex-1 py-2 px-4 bg-primary text-primary-foreground rounded-md font-medium disabled:opacity-50"
+            className="flex-1 py-2 px-4 bg-primary text-primary-contrast rounded-md font-medium disabled:opacity-50"
             disabled={!agreed || !signature}
           >
             Submit Agreement

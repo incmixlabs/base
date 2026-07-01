@@ -37,7 +37,7 @@ describe('chart theme semantics', () => {
     expect(getChartRoleTokenPath('chart1', 'track')).toBe('global.color.hue.orange.4')
     expect(getChartRoleTokenPath('chart1', 'fill')).toBe('global.color.hue.orange.9')
     expect(getSemanticChartRoleTokenPath('accent', 'track')).toBe('semantic.color.accent.surface')
-    expect(getSemanticChartRoleTokenPath('accent', 'fill')).toBe('semantic.color.accent.primary')
+    expect(getSemanticChartRoleTokenPath('accent', 'fill')).toBe('semantic.color.accent.solid')
     expect(() => getChartRoleTokenPath('tomato' as never, 'fill')).toThrow('Unsupported chart color: tomato')
   })
 

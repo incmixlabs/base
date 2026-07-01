@@ -32,7 +32,7 @@ describe('chart theme token output', () => {
   it('lets caller tokens and role overrides drive the same output shape', () => {
     const theme = createChartThemeTokenOutput({
       tokens: {
-        'semantic.color.primary.primary': '#1976d2',
+        'semantic.color.primary.solid': '#1976d2',
         'global.color.hue.orange.9': '#ff6600',
       },
       resolveRoleColor: ({ color, role, fallback }) =>

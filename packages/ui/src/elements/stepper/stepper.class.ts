@@ -49,10 +49,10 @@ export const stepperIndicatorSize = {
 
 export const stepperIndicatorVariant = {
   default:
-    'data-[state=active]:bg-primary-soft data-[state=active]:[border-color:var(--color-primary-primary)] data-[state=active]:text-primary data-[state=completed]:bg-primary-solid data-[state=completed]:[border-color:var(--color-primary-primary)] data-[state=completed]:text-primary-contrast',
+    'data-[state=active]:bg-primary-soft data-[state=active]:[border-color:var(--color-primary-solid)] data-[state=active]:text-primary data-[state=completed]:bg-primary-solid data-[state=completed]:[border-color:var(--color-primary-solid)] data-[state=completed]:text-primary-contrast',
   pill: 'border-transparent bg-neutral-soft data-[state=active]:bg-primary-soft data-[state=active]:text-primary data-[state=completed]:bg-primary-solid data-[state=completed]:text-primary-contrast',
   minimal:
-    'bg-transparent data-[state=active]:[border-color:var(--color-primary-primary)] data-[state=active]:text-primary data-[state=completed]:bg-primary-soft data-[state=completed]:[border-color:var(--color-primary-primary)] data-[state=completed]:text-primary',
+    'bg-transparent data-[state=active]:[border-color:var(--color-primary-solid)] data-[state=active]:text-primary data-[state=completed]:bg-primary-soft data-[state=completed]:[border-color:var(--color-primary-solid)] data-[state=completed]:text-primary',
 } as const satisfies Record<StepperVariant, string>
 
 export const stepperText = 'grid min-w-0 gap-0.5'

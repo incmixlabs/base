@@ -140,7 +140,7 @@ describe('DropdownMenu', () => {
       'text-base',
       'leading-6',
       'text-primary',
-      '[--af-menu-item-solid-bg:var(--color-primary-primary)]',
+      '[--af-menu-item-solid-bg:var(--color-primary-solid)]',
       'data-[highlighted]:[background-color:var(--af-menu-item-solid-bg)]',
       'data-[state=open]:[background-color:var(--af-menu-item-soft-hover)]',
     ])

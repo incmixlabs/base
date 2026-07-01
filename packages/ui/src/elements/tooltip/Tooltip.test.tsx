@@ -43,7 +43,7 @@ describe('Tooltip', () => {
       'bg-inverse-solid',
       'border-[var(--color-inverse-text)]',
       'text-inverse-contrast',
-      '[--af-floating-surface-arrow-fill:var(--color-inverse-primary)]',
+      '[--af-floating-surface-arrow-fill:var(--color-inverse-solid)]',
       '[--af-floating-surface-arrow-edge:var(--color-inverse-text)]',
     ])
     expect(popup?.className).not.toContain('[fill:')

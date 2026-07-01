@@ -331,7 +331,7 @@ export const AppointmentPicker = forwardRef<HTMLDivElement, AppointmentPickerPro
                   <>
                     <CircleCheckIcon
                       className={cn(appointmentPickerCheckIcon, appointmentPickerCheckIconSizeStyles[size])}
-                      style={{ color: 'var(--color-success-primary)', marginRight: '0.5rem' }}
+                      style={{ color: 'var(--color-success-solid)', marginRight: '0.5rem' }}
                     />
                     <span className={cn(appointmentPickerFooterText, appointmentPickerFooterTextSizeStyles[size])}>
                       {getConfirmationMessage()}

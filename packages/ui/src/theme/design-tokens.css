@@ -1,10 +1,7 @@
 /* Design Token CSS Variables */
 :root {
   /* Core theme bridge tokens consumed by shared utilities. */
-  --background: var(--color-neutral-background);
-  --foreground: var(--color-neutral-text);
-  --border: var(--color-neutral-border);
-  --ring: var(--color-primary-primary);
+  --ring: var(--color-primary-solid);
   --radius: 0.625rem;
   --spacing: 0.25rem;
   --spacing-0: 0;
@@ -69,11 +66,11 @@
   --color-primary-surface-hover: var(--teal-5);
   --color-primary-soft: var(--teal-6);
   --color-primary-soft-hover: var(--teal-7);
-  --color-primary-primary: var(--teal-9);
-  --color-primary-primary-alpha: color-mix(in oklch, var(--teal-9) 12%, transparent);
+  --color-primary-solid: var(--teal-9);
+  --color-primary-solid-alpha: color-mix(in oklch, var(--teal-9) 12%, transparent);
   --color-primary-text: var(--teal-11);
   --color-primary-contrast: var(--teal-contrast);
-  --color-primary-background: var(--background);
+  --color-primary-background: var(--color-neutral-background);
 
   /* Default (Gray) Colors */
   --color-slate-border: var(--gray-7);
@@ -83,11 +80,11 @@
   --color-slate-surface-hover: var(--gray-5);
   --color-slate-soft: var(--gray-6);
   --color-slate-soft-hover: var(--gray-7);
-  --color-slate-primary: var(--gray-9);
-  --color-slate-primary-alpha: color-mix(in oklch, var(--gray-9) 12%, transparent);
+  --color-slate-solid: var(--gray-9);
+  --color-slate-solid-alpha: color-mix(in oklch, var(--gray-9) 12%, transparent);
   --color-slate-text: var(--gray-11);
   --color-slate-contrast: var(--gray-contrast);
-  --color-slate-background: var(--background);
+  --color-slate-background: var(--color-neutral-background);
   /* Neutral (alias of Light surface lane) */
   --color-neutral-border: var(--color-light-border);
   --color-neutral-border-subtle: var(--color-light-border-subtle);
@@ -96,8 +93,8 @@
   --color-neutral-surface-hover: var(--color-light-surface-hover);
   --color-neutral-soft: var(--color-light-soft);
   --color-neutral-soft-hover: var(--color-light-soft-hover);
-  --color-neutral-primary: var(--color-light-primary);
-  --color-neutral-primary-alpha: var(--color-light-primary-alpha);
+  --color-neutral-solid: var(--color-light-solid);
+  --color-neutral-solid-alpha: var(--color-light-solid-alpha);
   --color-neutral-text: var(--color-light-text);
   --color-neutral-contrast: var(--color-light-contrast);
   --color-neutral-background: var(--color-light-background);
@@ -110,8 +107,8 @@
   --color-light-surface-hover: oklch(0.975 0 0);
   --color-light-soft: oklch(0.975 0 0);
   --color-light-soft-hover: oklch(0.95 0 0);
-  --color-light-primary: oklch(1 0 0);
-  --color-light-primary-alpha: color-mix(in oklch, white 16%, transparent);
+  --color-light-solid: oklch(1 0 0);
+  --color-light-solid-alpha: color-mix(in oklch, white 16%, transparent);
   --color-light-text: oklch(0.22 0 0);
   --color-light-contrast: oklch(0.18 0 0);
   --color-light-background: oklch(1 0 0);
@@ -124,8 +121,8 @@
   --color-dark-surface-hover: oklch(0.27 0 0);
   --color-dark-soft: oklch(0.27 0 0);
   --color-dark-soft-hover: oklch(0.31 0 0);
-  --color-dark-primary: oklch(0.17 0 0);
-  --color-dark-primary-alpha: color-mix(in oklch, black 24%, transparent);
+  --color-dark-solid: oklch(0.17 0 0);
+  --color-dark-solid-alpha: color-mix(in oklch, black 24%, transparent);
   --color-dark-text: oklch(0.95 0 0);
   --color-dark-contrast: oklch(0.98 0 0);
   --color-dark-background: oklch(0.14 0 0);
@@ -138,8 +135,8 @@
   --color-inverse-surface-hover: var(--color-dark-surface-hover);
   --color-inverse-soft: var(--color-dark-soft);
   --color-inverse-soft-hover: var(--color-dark-soft-hover);
-  --color-inverse-primary: var(--color-dark-primary);
-  --color-inverse-primary-alpha: var(--color-dark-primary-alpha);
+  --color-inverse-solid: var(--color-dark-solid);
+  --color-inverse-solid-alpha: var(--color-dark-solid-alpha);
   --color-inverse-text: var(--color-dark-text);
   --color-inverse-contrast: var(--color-dark-contrast);
   --color-inverse-background: var(--color-dark-background);
@@ -152,11 +149,11 @@
   --color-secondary-surface-hover: var(--blue-5);
   --color-secondary-soft: var(--blue-6);
   --color-secondary-soft-hover: var(--blue-7);
-  --color-secondary-primary: var(--blue-9);
-  --color-secondary-primary-alpha: color-mix(in oklch, var(--blue-9) 12%, transparent);
+  --color-secondary-solid: var(--blue-9);
+  --color-secondary-solid-alpha: color-mix(in oklch, var(--blue-9) 12%, transparent);
   --color-secondary-text: var(--blue-11);
   --color-secondary-contrast: var(--blue-contrast);
-  --color-secondary-background: var(--background);
+  --color-secondary-background: var(--color-neutral-background);
 
   /* Accent (Purple) Colors */
   --color-accent-border: var(--purple-7);
@@ -166,11 +163,11 @@
   --color-accent-surface-hover: var(--purple-5);
   --color-accent-soft: var(--purple-6);
   --color-accent-soft-hover: var(--purple-7);
-  --color-accent-primary: var(--purple-9);
-  --color-accent-primary-alpha: color-mix(in oklch, var(--purple-9) 12%, transparent);
+  --color-accent-solid: var(--purple-9);
+  --color-accent-solid-alpha: color-mix(in oklch, var(--purple-9) 12%, transparent);
   --color-accent-text: var(--purple-11);
   --color-accent-contrast: var(--purple-contrast);
-  --color-accent-background: var(--background);
+  --color-accent-background: var(--color-neutral-background);
 
   /* Info (Blue) Colors */
   --color-info-border: var(--blue-7);
@@ -180,11 +177,11 @@
   --color-info-surface-hover: var(--blue-5);
   --color-info-soft: var(--blue-6);
   --color-info-soft-hover: var(--blue-7);
-  --color-info-primary: var(--blue-9);
-  --color-info-primary-alpha: color-mix(in oklch, var(--blue-9) 12%, transparent);
+  --color-info-solid: var(--blue-9);
+  --color-info-solid-alpha: color-mix(in oklch, var(--blue-9) 12%, transparent);
   --color-info-text: var(--blue-11);
   --color-info-contrast: var(--blue-contrast);
-  --color-info-background: var(--background);
+  --color-info-background: var(--color-neutral-background);
 
   /* Success (Green) Colors */
   --color-success-border: var(--green-7);
@@ -194,11 +191,11 @@
   --color-success-surface-hover: var(--green-5);
   --color-success-soft: var(--green-6);
   --color-success-soft-hover: var(--green-7);
-  --color-success-primary: var(--green-9);
-  --color-success-primary-alpha: color-mix(in oklch, var(--green-9) 12%, transparent);
+  --color-success-solid: var(--green-9);
+  --color-success-solid-alpha: color-mix(in oklch, var(--green-9) 12%, transparent);
   --color-success-text: var(--green-11);
   --color-success-contrast: var(--green-contrast);
-  --color-success-background: var(--background);
+  --color-success-background: var(--color-neutral-background);
 
   /* Warning (Orange/Yellow) Colors */
   --color-warning-border: var(--amber-7);
@@ -208,11 +205,11 @@
   --color-warning-surface-hover: var(--amber-5);
   --color-warning-soft: var(--amber-6);
   --color-warning-soft-hover: var(--amber-7);
-  --color-warning-primary: var(--amber-9);
-  --color-warning-primary-alpha: color-mix(in oklch, var(--amber-9) 12%, transparent);
+  --color-warning-solid: var(--amber-9);
+  --color-warning-solid-alpha: color-mix(in oklch, var(--amber-9) 12%, transparent);
   --color-warning-text: var(--amber-11);
   --color-warning-contrast: var(--amber-contrast);
-  --color-warning-background: var(--background);
+  --color-warning-background: var(--color-neutral-background);
 
   /* Error (Red) Colors */
   --color-error-border: var(--red-7);
@@ -222,11 +219,11 @@
   --color-error-surface-hover: var(--red-5);
   --color-error-soft: var(--red-6);
   --color-error-soft-hover: var(--red-7);
-  --color-error-primary: var(--red-9);
-  --color-error-primary-alpha: color-mix(in oklch, var(--red-9) 12%, transparent);
+  --color-error-solid: var(--red-9);
+  --color-error-solid-alpha: color-mix(in oklch, var(--red-9) 12%, transparent);
   --color-error-text: var(--red-11);
   --color-error-contrast: var(--red-contrast);
-  --color-error-background: var(--background);
+  --color-error-background: var(--color-neutral-background);
 
   /* Panel glass highlight (light/dark adaptive) */
   --color-panel-highlight: color-mix(in oklch, white 65%, transparent);
@@ -243,11 +240,11 @@
     --color-primary-surface-hover: var(--teal-5);
     --color-primary-soft: var(--teal-6);
     --color-primary-soft-hover: var(--teal-7);
-    --color-primary-primary: var(--teal-9);
-    --color-primary-primary-alpha: color-mix(in oklch, var(--teal-9) 12%, transparent);
+    --color-primary-solid: var(--teal-9);
+    --color-primary-solid-alpha: color-mix(in oklch, var(--teal-9) 12%, transparent);
     --color-primary-text: var(--teal-11);
     --color-primary-contrast: var(--teal-contrast);
-    --color-primary-background: var(--background);
+    --color-primary-background: var(--color-neutral-background);
 
     /* Default (Gray) Colors — Dark */
     --color-slate-border: var(--gray-7);
@@ -257,11 +254,11 @@
     --color-slate-surface-hover: var(--gray-5);
     --color-slate-soft: var(--gray-6);
     --color-slate-soft-hover: var(--gray-7);
-    --color-slate-primary: var(--gray-9);
-    --color-slate-primary-alpha: color-mix(in oklch, var(--gray-9) 12%, transparent);
+    --color-slate-solid: var(--gray-9);
+    --color-slate-solid-alpha: color-mix(in oklch, var(--gray-9) 12%, transparent);
     --color-slate-text: var(--gray-11);
     --color-slate-contrast: var(--gray-contrast);
-    --color-slate-background: var(--background);
+    --color-slate-background: var(--color-neutral-background);
     /* Neutral (alias of theme surface lane) — Dark */
     --color-neutral-border: var(--color-dark-border);
     --color-neutral-border-subtle: var(--color-dark-border-subtle);
@@ -270,8 +267,8 @@
     --color-neutral-surface-hover: var(--color-dark-surface-hover);
     --color-neutral-soft: var(--color-dark-soft);
     --color-neutral-soft-hover: var(--color-dark-soft-hover);
-    --color-neutral-primary: var(--color-dark-primary);
-    --color-neutral-primary-alpha: var(--color-dark-primary-alpha);
+    --color-neutral-solid: var(--color-dark-solid);
+    --color-neutral-solid-alpha: var(--color-dark-solid-alpha);
     --color-neutral-text: var(--color-dark-text);
     --color-neutral-contrast: var(--color-dark-contrast);
     --color-neutral-background: var(--color-dark-background);
@@ -284,8 +281,8 @@
     --color-inverse-surface-hover: var(--color-light-surface-hover);
     --color-inverse-soft: var(--color-light-soft);
     --color-inverse-soft-hover: var(--color-light-soft-hover);
-    --color-inverse-primary: var(--color-light-primary);
-    --color-inverse-primary-alpha: var(--color-light-primary-alpha);
+    --color-inverse-solid: var(--color-light-solid);
+    --color-inverse-solid-alpha: var(--color-light-solid-alpha);
     --color-inverse-text: var(--color-light-text);
     --color-inverse-contrast: var(--color-light-contrast);
     --color-inverse-background: var(--color-light-background);
@@ -298,11 +295,11 @@
     --color-secondary-surface-hover: var(--blue-5);
     --color-secondary-soft: var(--blue-6);
     --color-secondary-soft-hover: var(--blue-7);
-    --color-secondary-primary: var(--blue-9);
-    --color-secondary-primary-alpha: color-mix(in oklch, var(--blue-9) 12%, transparent);
+    --color-secondary-solid: var(--blue-9);
+    --color-secondary-solid-alpha: color-mix(in oklch, var(--blue-9) 12%, transparent);
     --color-secondary-text: var(--blue-11);
     --color-secondary-contrast: var(--blue-contrast);
-    --color-secondary-background: var(--background);
+    --color-secondary-background: var(--color-neutral-background);
 
     /* Accent (Purple) Colors — Dark */
     --color-accent-border: var(--purple-7);
@@ -312,11 +309,11 @@
     --color-accent-surface-hover: var(--purple-5);
     --color-accent-soft: var(--purple-6);
     --color-accent-soft-hover: var(--purple-7);
-    --color-accent-primary: var(--purple-9);
-    --color-accent-primary-alpha: color-mix(in oklch, var(--purple-9) 12%, transparent);
+    --color-accent-solid: var(--purple-9);
+    --color-accent-solid-alpha: color-mix(in oklch, var(--purple-9) 12%, transparent);
     --color-accent-text: var(--purple-11);
     --color-accent-contrast: var(--purple-contrast);
-    --color-accent-background: var(--background);
+    --color-accent-background: var(--color-neutral-background);
 
     /* Info (Blue) Colors — Dark */
     --color-info-border: var(--blue-7);
@@ -326,11 +323,11 @@
     --color-info-surface-hover: var(--blue-5);
     --color-info-soft: var(--blue-6);
     --color-info-soft-hover: var(--blue-7);
-    --color-info-primary: var(--blue-9);
-    --color-info-primary-alpha: color-mix(in oklch, var(--blue-9) 12%, transparent);
+    --color-info-solid: var(--blue-9);
+    --color-info-solid-alpha: color-mix(in oklch, var(--blue-9) 12%, transparent);
     --color-info-text: var(--blue-11);
     --color-info-contrast: var(--blue-contrast);
-    --color-info-background: var(--background);
+    --color-info-background: var(--color-neutral-background);
 
     /* Success (Green) Colors — Dark */
     --color-success-border: var(--green-7);
@@ -340,11 +337,11 @@
     --color-success-surface-hover: var(--green-5);
     --color-success-soft: var(--green-6);
     --color-success-soft-hover: var(--green-7);
-    --color-success-primary: var(--green-9);
-    --color-success-primary-alpha: color-mix(in oklch, var(--green-9) 12%, transparent);
+    --color-success-solid: var(--green-9);
+    --color-success-solid-alpha: color-mix(in oklch, var(--green-9) 12%, transparent);
     --color-success-text: var(--green-11);
     --color-success-contrast: var(--green-contrast);
-    --color-success-background: var(--background);
+    --color-success-background: var(--color-neutral-background);
 
     /* Warning (Orange) Colors — Dark */
     --color-warning-border: var(--amber-7);
@@ -354,11 +351,11 @@
     --color-warning-surface-hover: var(--amber-5);
     --color-warning-soft: var(--amber-6);
     --color-warning-soft-hover: var(--amber-7);
-    --color-warning-primary: var(--amber-9);
-    --color-warning-primary-alpha: color-mix(in oklch, var(--amber-9) 12%, transparent);
+    --color-warning-solid: var(--amber-9);
+    --color-warning-solid-alpha: color-mix(in oklch, var(--amber-9) 12%, transparent);
     --color-warning-text: var(--amber-11);
     --color-warning-contrast: var(--amber-contrast);
-    --color-warning-background: var(--background);
+    --color-warning-background: var(--color-neutral-background);
 
     /* Error (Red) Colors — Dark */
     --color-error-border: var(--red-7);
@@ -368,11 +365,11 @@
     --color-error-surface-hover: var(--red-5);
     --color-error-soft: var(--red-6);
     --color-error-soft-hover: var(--red-7);
-    --color-error-primary: var(--red-9);
-    --color-error-primary-alpha: color-mix(in oklch, var(--red-9) 12%, transparent);
+    --color-error-solid: var(--red-9);
+    --color-error-solid-alpha: color-mix(in oklch, var(--red-9) 12%, transparent);
     --color-error-text: var(--red-11);
     --color-error-contrast: var(--red-contrast);
-    --color-error-background: var(--background);
+    --color-error-background: var(--color-neutral-background);
 
     --color-panel-highlight: color-mix(in oklch, white 8%, transparent);
   }
@@ -388,11 +385,11 @@
   --color-primary-surface-hover: var(--teal-5);
   --color-primary-soft: var(--teal-6);
   --color-primary-soft-hover: var(--teal-7);
-  --color-primary-primary: var(--teal-9);
-  --color-primary-primary-alpha: color-mix(in oklch, var(--teal-9) 12%, transparent);
+  --color-primary-solid: var(--teal-9);
+  --color-primary-solid-alpha: color-mix(in oklch, var(--teal-9) 12%, transparent);
   --color-primary-text: var(--teal-11);
   --color-primary-contrast: var(--teal-contrast);
-  --color-primary-background: var(--background);
+  --color-primary-background: var(--color-neutral-background);
 
   /* Default (Gray) Colors — Dark */
   --color-slate-border: var(--gray-7);
@@ -402,11 +399,11 @@
   --color-slate-surface-hover: var(--gray-5);
   --color-slate-soft: var(--gray-6);
   --color-slate-soft-hover: var(--gray-7);
-  --color-slate-primary: var(--gray-9);
-  --color-slate-primary-alpha: color-mix(in oklch, var(--gray-9) 12%, transparent);
+  --color-slate-solid: var(--gray-9);
+  --color-slate-solid-alpha: color-mix(in oklch, var(--gray-9) 12%, transparent);
   --color-slate-text: var(--gray-11);
   --color-slate-contrast: var(--gray-contrast);
-  --color-slate-background: var(--background);
+  --color-slate-background: var(--color-neutral-background);
   /* Neutral (alias of theme surface lane) — Dark */
   --color-neutral-border: var(--color-dark-border);
   --color-neutral-border-subtle: var(--color-dark-border-subtle);
@@ -415,8 +412,8 @@
   --color-neutral-surface-hover: var(--color-dark-surface-hover);
   --color-neutral-soft: var(--color-dark-soft);
   --color-neutral-soft-hover: var(--color-dark-soft-hover);
-  --color-neutral-primary: var(--color-dark-primary);
-  --color-neutral-primary-alpha: var(--color-dark-primary-alpha);
+  --color-neutral-solid: var(--color-dark-solid);
+  --color-neutral-solid-alpha: var(--color-dark-solid-alpha);
   --color-neutral-text: var(--color-dark-text);
   --color-neutral-contrast: var(--color-dark-contrast);
   --color-neutral-background: var(--color-dark-background);
@@ -429,8 +426,8 @@
   --color-inverse-surface-hover: var(--color-light-surface-hover);
   --color-inverse-soft: var(--color-light-soft);
   --color-inverse-soft-hover: var(--color-light-soft-hover);
-  --color-inverse-primary: var(--color-light-primary);
-  --color-inverse-primary-alpha: var(--color-light-primary-alpha);
+  --color-inverse-solid: var(--color-light-solid);
+  --color-inverse-solid-alpha: var(--color-light-solid-alpha);
   --color-inverse-text: var(--color-light-text);
   --color-inverse-contrast: var(--color-light-contrast);
   --color-inverse-background: var(--color-light-background);
@@ -443,11 +440,11 @@
   --color-secondary-surface-hover: var(--blue-5);
   --color-secondary-soft: var(--blue-6);
   --color-secondary-soft-hover: var(--blue-7);
-  --color-secondary-primary: var(--blue-9);
-  --color-secondary-primary-alpha: color-mix(in oklch, var(--blue-9) 12%, transparent);
+  --color-secondary-solid: var(--blue-9);
+  --color-secondary-solid-alpha: color-mix(in oklch, var(--blue-9) 12%, transparent);
   --color-secondary-text: var(--blue-11);
   --color-secondary-contrast: var(--blue-contrast);
-  --color-secondary-background: var(--background);
+  --color-secondary-background: var(--color-neutral-background);
 
   /* Accent (Purple) Colors — Dark */
   --color-accent-border: var(--purple-7);
@@ -457,11 +454,11 @@
   --color-accent-surface-hover: var(--purple-5);
   --color-accent-soft: var(--purple-6);
   --color-accent-soft-hover: var(--purple-7);
-  --color-accent-primary: var(--purple-9);
-  --color-accent-primary-alpha: color-mix(in oklch, var(--purple-9) 12%, transparent);
+  --color-accent-solid: var(--purple-9);
+  --color-accent-solid-alpha: color-mix(in oklch, var(--purple-9) 12%, transparent);
   --color-accent-text: var(--purple-11);
   --color-accent-contrast: var(--purple-contrast);
-  --color-accent-background: var(--background);
+  --color-accent-background: var(--color-neutral-background);
 
   /* Info (Blue) Colors — Dark */
   --color-info-border: var(--blue-7);
@@ -471,11 +468,11 @@
   --color-info-surface-hover: var(--blue-5);
   --color-info-soft: var(--blue-6);
   --color-info-soft-hover: var(--blue-7);
-  --color-info-primary: var(--blue-9);
-  --color-info-primary-alpha: color-mix(in oklch, var(--blue-9) 12%, transparent);
+  --color-info-solid: var(--blue-9);
+  --color-info-solid-alpha: color-mix(in oklch, var(--blue-9) 12%, transparent);
   --color-info-text: var(--blue-11);
   --color-info-contrast: var(--blue-contrast);
-  --color-info-background: var(--background);
+  --color-info-background: var(--color-neutral-background);
 
   /* Success (Green) Colors — Dark */
   --color-success-border: var(--green-7);
@@ -485,11 +482,11 @@
   --color-success-surface-hover: var(--green-5);
   --color-success-soft: var(--green-6);
   --color-success-soft-hover: var(--green-7);
-  --color-success-primary: var(--green-9);
-  --color-success-primary-alpha: color-mix(in oklch, var(--green-9) 12%, transparent);
+  --color-success-solid: var(--green-9);
+  --color-success-solid-alpha: color-mix(in oklch, var(--green-9) 12%, transparent);
   --color-success-text: var(--green-11);
   --color-success-contrast: var(--green-contrast);
-  --color-success-background: var(--background);
+  --color-success-background: var(--color-neutral-background);
 
   /* Warning (Orange) Colors — Dark */
   --color-warning-border: var(--amber-7);
@@ -499,11 +496,11 @@
   --color-warning-surface-hover: var(--amber-5);
   --color-warning-soft: var(--amber-6);
   --color-warning-soft-hover: var(--amber-7);
-  --color-warning-primary: var(--amber-9);
-  --color-warning-primary-alpha: color-mix(in oklch, var(--amber-9) 12%, transparent);
+  --color-warning-solid: var(--amber-9);
+  --color-warning-solid-alpha: color-mix(in oklch, var(--amber-9) 12%, transparent);
   --color-warning-text: var(--amber-11);
   --color-warning-contrast: var(--amber-contrast);
-  --color-warning-background: var(--background);
+  --color-warning-background: var(--color-neutral-background);
 
   /* Error (Red) Colors — Dark */
   --color-error-border: var(--red-7);
@@ -513,11 +510,11 @@
   --color-error-surface-hover: var(--red-5);
   --color-error-soft: var(--red-6);
   --color-error-soft-hover: var(--red-7);
-  --color-error-primary: var(--red-9);
-  --color-error-primary-alpha: color-mix(in oklch, var(--red-9) 12%, transparent);
+  --color-error-solid: var(--red-9);
+  --color-error-solid-alpha: color-mix(in oklch, var(--red-9) 12%, transparent);
   --color-error-text: var(--red-11);
   --color-error-contrast: var(--red-contrast);
-  --color-error-background: var(--background);
+  --color-error-background: var(--color-neutral-background);
 
   --color-panel-highlight: color-mix(in oklch, white 8%, transparent);
 }

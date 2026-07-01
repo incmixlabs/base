@@ -13,7 +13,7 @@ import type { AccentColor } from './tokens'
 const accentColorOptions = accentColors.map(value => ({
   value,
   label: capitalize(value),
-  swatchColor: `var(--${value}-9, var(--color-accent-primary))`,
+  swatchColor: `var(--${value}-9, var(--color-accent-solid))`,
 }))
 
 const accentColorValues: readonly string[] = accentColors

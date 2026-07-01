@@ -125,7 +125,7 @@ describe('Tabs', () => {
       '[padding-bottom:calc(0.5rem_-_2px)]',
       'text-xl',
       'leading-7',
-      '[color:var(--color-success-primary)]',
+      '[color:var(--color-success-solid)]',
     ])
   })
 

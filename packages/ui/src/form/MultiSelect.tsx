@@ -724,20 +724,20 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                     'left-[var(--af-text-field-padding-x)] top-4 z-10',
                     '-translate-y-4 scale-75',
                     'peer-data-[placeholder]:scale-100 peer-data-[placeholder]:translate-y-0',
-                    'peer-data-[popup-open]:-translate-y-4 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--af-text-field-color-primary)]',
+                    'peer-data-[popup-open]:-translate-y-4 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--af-text-field-color-solid)]',
                   ],
                   floatingStyle === 'outlined' && [
                     'left-[var(--af-text-field-padding-x)] top-2 z-10',
                     '-translate-y-4 scale-75 px-1',
                     formControlNeutralBackground,
                     'peer-data-[placeholder]:scale-100 peer-data-[placeholder]:translate-y-3',
-                    'peer-data-[popup-open]:-translate-y-4 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--af-text-field-color-primary)] peer-data-[popup-open]:px-1',
+                    'peer-data-[popup-open]:-translate-y-4 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--af-text-field-color-solid)] peer-data-[popup-open]:px-1',
                   ],
                   floatingStyle === 'standard' && [
                     'left-0 top-3 z-10',
                     '-translate-y-6 scale-75',
                     'peer-data-[placeholder]:scale-100 peer-data-[placeholder]:translate-y-0',
-                    'peer-data-[popup-open]:-translate-y-6 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--af-text-field-color-primary)]',
+                    'peer-data-[popup-open]:-translate-y-6 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--af-text-field-color-solid)]',
                   ],
                 )}
               >

@@ -119,7 +119,7 @@ function createToggleColorVariant(color: SemanticColorKey, variant: ToggleVarian
   const unpressedColor = baseFillColor ?? unfilledColor
   const unpressedBase = cls(
     colorClass(unpressedColor, baseFillColor ? (variant === 'solid' ? 'contrast' : 'text') : foregroundToken),
-    baseFillColor && backgroundClass(baseFillColor, variant === 'solid' ? 'primary' : 'soft'),
+    baseFillColor && backgroundClass(baseFillColor, variant === 'solid' ? 'solid' : 'soft'),
     !baseFillColor && 'bg-transparent',
     borderClass(unpressedColor, baseFillColor ? 'text' : 'border'),
   )
@@ -128,23 +128,23 @@ function createToggleColorVariant(color: SemanticColorKey, variant: ToggleVarian
       ? 'hover:brightness-[0.96] active:brightness-[0.92]'
       : cls(
           prefixClass('hover', backgroundClass(unpressedColor, variant === 'solid' ? 'soft' : 'soft-hover')),
-          prefixClass('active', backgroundClass(unpressedColor, variant === 'solid' ? 'soft-hover' : 'primary-alpha')),
+          prefixClass('active', backgroundClass(unpressedColor, variant === 'solid' ? 'soft-hover' : 'solid-alpha')),
         )
   const selectedBase = cls(
     colorClass(selectedColor, variant === 'solid' ? 'contrast' : 'text'),
-    backgroundClass(selectedColor, variant === 'solid' ? 'primary' : 'soft'),
+    backgroundClass(selectedColor, variant === 'solid' ? 'solid' : 'soft'),
     borderClass(selectedColor, 'text'),
   )
   const selectedHover =
     variant === 'solid'
       ? cls(
-          prefixClass('hover', backgroundClass(selectedColor, 'primary')),
-          prefixClass('active', backgroundClass(selectedColor, 'primary')),
+          prefixClass('hover', backgroundClass(selectedColor, 'solid')),
+          prefixClass('active', backgroundClass(selectedColor, 'solid')),
           'hover:brightness-[0.96] active:brightness-[0.92]',
         )
       : cls(
           prefixClass('hover', backgroundClass(selectedColor, 'soft-hover')),
-          prefixClass('active', backgroundClass(selectedColor, 'primary-alpha')),
+          prefixClass('active', backgroundClass(selectedColor, 'solid-alpha')),
         )
 
   return cls(unpressedBase, unpressedHover, pressedClass(selectedBase), pressedClass(selectedHover))

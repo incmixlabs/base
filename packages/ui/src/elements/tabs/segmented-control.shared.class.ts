@@ -173,11 +173,11 @@ export const segmentedSurfaceSelectedTextByColor = Object.fromEntries(
 ) as Record<Color, string>
 
 export const segmentedSurfaceSelectedHighContrastTextByColor = Object.fromEntries(
-  semanticColorKeys.map(color => [color, declaration('color', colorVar(color, 'primary'))]),
+  semanticColorKeys.map(color => [color, declaration('color', colorVar(color, 'solid'))]),
 ) as Record<Color, string>
 
 export const segmentedUnderlineSelectedByColor = Object.fromEntries(
-  semanticColorKeys.map(color => [color, cls('border-0', declaration('color', colorVar(color, 'primary')))]),
+  semanticColorKeys.map(color => [color, cls('border-0', declaration('color', colorVar(color, 'solid')))]),
 ) as Record<Color, string>
 
 export const segmentedControlClassNames = [

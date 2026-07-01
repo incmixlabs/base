@@ -45,7 +45,7 @@ export function resolveColorDerivationDeltas(root: HTMLElement, mode: 'light' | 
 
 export function resolvePrimaryAlpha(root: HTMLElement, mode: 'light' | 'dark', lane: string): number {
   const styles = getComputedStyle(root)
-  const laneOverride = readNumberVar(styles, `--theme-color-derivation-primary-alpha-${lane}-${mode}`, Number.NaN)
+  const laneOverride = readNumberVar(styles, `--theme-color-derivation-solid-alpha-${lane}-${mode}`, Number.NaN)
   if (Number.isFinite(laneOverride)) return laneOverride
-  return readNumberVar(styles, `--theme-color-derivation-primary-alpha-${mode}`, 0.28)
+  return readNumberVar(styles, `--theme-color-derivation-solid-alpha-${mode}`, 0.28)
 }

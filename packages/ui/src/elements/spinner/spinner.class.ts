@@ -12,7 +12,7 @@ export const spinnerSrOnly = 'sr-only'
 export const spinnerColorVariants = Object.fromEntries(
   semanticColorKeys.map(color => [
     color,
-    joinClass('text-[', colorVar(color, color === 'light' ? 'contrast' : 'primary'), ']'),
+    joinClass('text-[', colorVar(color, color === 'light' ? 'contrast' : 'solid'), ']'),
   ]),
 ) as Record<SemanticColorKey, string>
 

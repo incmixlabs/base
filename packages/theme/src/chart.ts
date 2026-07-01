@@ -32,7 +32,7 @@ export const CHART_ROLES = ['track', 'fillSoft', 'fill', 'fillStrong', 'muted', 
 export type ChartRole = (typeof CHART_ROLES)[number]
 
 export type ChartTokenAppearance = 'light' | 'dark'
-export type ChartSemanticToken = 'border' | 'surface' | 'soft' | 'primary' | 'text' | 'contrast'
+export type ChartSemanticToken = 'border' | 'surface' | 'soft' | 'solid' | 'text' | 'contrast'
 export type ChartHueTokenStep = '4' | '6' | '7' | '9' | '11' | 'contrast'
 
 export type ChartColorLane = {
@@ -53,7 +53,7 @@ export const CHART_COLOR_LANES = {
 export const CHART_ROLE_SEMANTIC_TOKENS = {
   track: 'surface',
   fillSoft: 'soft',
-  fill: 'primary',
+  fill: 'solid',
   fillStrong: 'text',
   muted: 'soft',
   text: 'text',

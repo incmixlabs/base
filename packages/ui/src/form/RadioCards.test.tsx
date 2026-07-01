@@ -40,15 +40,15 @@ describe('RadioCards', () => {
 
     expectClassTokens(radioCard.className, [
       'data-[checked]:bg-primary-soft',
-      'data-[checked]:[border-color:var(--color-primary-primary)]',
-      'data-[checked]:[box-shadow:0_0_0_2px_var(--color-primary-primary-alpha)]',
+      'data-[checked]:[border-color:var(--color-primary-solid)]',
+      'data-[checked]:[box-shadow:0_0_0_2px_var(--color-primary-solid-alpha)]',
       'data-[checked]:hover:bg-primary-soft-hover',
     ])
     expectClassTokens(indicatorShell?.className, [
       'border-primary',
       'bg-primary-surface',
       'group-data-[checked]:bg-primary-solid',
-      'group-data-[checked]:[border-color:var(--color-primary-primary)]',
+      'group-data-[checked]:[border-color:var(--color-primary-solid)]',
     ])
     const radioCardTokens = new Set(radioCard.className.split(/\s+/).filter(Boolean))
     expect(radioCardTokens).not.toContain('surface-color-primary')
@@ -125,7 +125,7 @@ describe('RadioCards', () => {
     expectClassTokens(content?.className, ['text-xs', 'leading-4'])
     expectClassTokens(indicatorShell?.className, ['box-border', '[height:0.75rem]', '[width:0.75rem]'])
     expectClassTokens(indicatorInner?.className, [
-      '[background-color:var(--color-light-primary)]',
+      '[background-color:var(--color-light-solid)]',
       '[height:0.375rem]',
       '[width:0.375rem]',
     ])

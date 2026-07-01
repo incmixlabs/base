@@ -149,7 +149,7 @@ export const WithError: Story = {
     <div className="w-80 space-y-2">
       <Label>With Error</Label>
       <PhoneInput error />
-      <p className="text-xs text-destructive">Please enter a valid phone number</p>
+      <p className="text-xs text-error">Please enter a valid phone number</p>
     </div>
   ),
 }
@@ -229,7 +229,7 @@ export const ContactForm: Story = {
 
         <button
           type="button"
-          className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-md font-medium"
+          className="w-full py-2 px-4 bg-primary text-primary-contrast rounded-md font-medium"
           onClick={() => alert(JSON.stringify({ name, email, phone }, null, 2))}
         >
           Submit

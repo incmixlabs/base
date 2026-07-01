@@ -20,6 +20,16 @@ describe('Checkbox', () => {
     expect(checkbox).toHaveClass(checkboxHighContrastByVariant.soft)
   })
 
+  it('uses semantic neutral background for solid unchecked state', () => {
+    render(<Checkbox color="success" variant="solid" data-testid="checkbox" />)
+
+    const checkbox = screen.getByTestId('checkbox')
+
+    expect(checkbox).toHaveClass(checkboxColorVariants.success.solid)
+    expect(checkbox.className).toContain('bg-[var(--color-neutral-background)]')
+    expect(checkbox.className).not.toContain('var(--background)')
+  })
+
   it('renders visible checked and indeterminate indicators from component state', () => {
     const { rerender } = render(<Checkbox checked data-testid="checkbox" onCheckedChange={() => undefined} />)
 

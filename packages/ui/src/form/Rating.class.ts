@@ -10,7 +10,7 @@ const ratingSizeVar = (size: string, slot: string, fallback: string) =>
 const ratingFocusClassName = (color: string) =>
   joinClass(
     'focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:[outline-color:',
-    colorVar(color, 'primary-alpha'),
+    colorVar(color, 'solid-alpha'),
     ']',
   )
 

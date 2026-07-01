@@ -12,7 +12,7 @@ const radioClassVariants = ['classic', 'surface', 'soft'] as const satisfies rea
 export const radioBaseCls =
   'peer inline-flex box-border items-center justify-center rounded-full border-2 border-solid transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50'
 
-export const radioIndicatorCls = 'box-border rounded-full [background-color:var(--color-light-primary)]'
+export const radioIndicatorCls = 'box-border rounded-full [background-color:var(--color-light-solid)]'
 
 const joinClass = (...parts: string[]) => parts.join('')
 const colorVar = (color: string, token: string) => joinClass('var(--color-', color, '-', token, ')')
@@ -20,7 +20,7 @@ const colorVar = (color: string, token: string) => joinClass('var(--color-', col
 const radioFocusClassName = (color: string) =>
   joinClass(
     'focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:[outline-color:',
-    colorVar(color, 'primary-alpha'),
+    colorVar(color, 'solid-alpha'),
     ']',
   )
 
@@ -28,7 +28,7 @@ const radioSharedStateClassName = (color: string) =>
   [
     radioFocusClassName(color),
     joinClass('hover:[border-color:', colorVar(color, 'text'), ']'),
-    joinClass('data-[checked]:[border-color:', colorVar(color, 'primary'), ']'),
+    joinClass('data-[checked]:[border-color:', colorVar(color, 'solid'), ']'),
     joinClass('data-[checked]:bg-', color, '-solid'),
     'data-[checked]:[background-image:none]',
   ].join(' ')
@@ -36,15 +36,15 @@ const radioSharedStateClassName = (color: string) =>
 const radioClassicGradientClassName = (color: string) =>
   joinClass(
     '[background-image:linear-gradient(to_bottom,color-mix(in_oklch,',
-    colorVar(color, 'primary'),
+    colorVar(color, 'solid'),
     '_88%,white),',
-    colorVar(color, 'primary'),
+    colorVar(color, 'solid'),
     ')]',
   )
 
 const createRadioColorVariantClasses = (color: Color): Record<RadioVariant, string> => ({
   classic: [
-    joinClass('[border-color:', colorVar(color, 'primary'), ']'),
+    joinClass('[border-color:', colorVar(color, 'solid'), ']'),
     radioClassicGradientClassName(color),
     joinClass('text-', color, '-contrast'),
     radioSharedStateClassName(color),
@@ -61,7 +61,7 @@ const createRadioColorVariantClasses = (color: Color): Record<RadioVariant, stri
     joinClass('text-', color),
     radioFocusClassName(color),
     joinClass('hover:[border-color:', colorVar(color, 'text'), ']'),
-    joinClass('data-[checked]:[border-color:', colorVar(color, 'primary'), ']'),
+    joinClass('data-[checked]:[border-color:', colorVar(color, 'solid'), ']'),
     joinClass('data-[checked]:bg-[', colorVar(color, 'soft-hover'), ']'),
     'data-[checked]:[background-image:none]',
   ].join(' '),

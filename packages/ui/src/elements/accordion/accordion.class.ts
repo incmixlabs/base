@@ -12,7 +12,7 @@ export const accordionItemBorderless = 'border-t-0'
 export const accordionHeaderBase = 'm-0 min-w-0 w-full'
 export const accordionTriggerPaddingless = 'p-0'
 export const accordionTriggerBase =
-  'group flex w-full cursor-pointer items-center justify-between border-0 bg-transparent text-left text-neutral transition-colors duration-[var(--af-motion-fast)] ease-[var(--af-ease-standard)] data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-solid focus-visible:outline-[var(--color-primary-primary)] [&:hover:not([data-disabled])]:bg-neutral-soft'
+  'group flex w-full cursor-pointer items-center justify-between border-0 bg-transparent text-left text-neutral transition-colors duration-[var(--af-motion-fast)] ease-[var(--af-ease-standard)] data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-solid focus-visible:outline-[var(--color-primary-solid)] [&:hover:not([data-disabled])]:bg-neutral-soft'
 
 export const accordionChevron =
   'shrink-0 transition-transform duration-[var(--af-motion-fast)] ease-[var(--af-ease-standard)]'

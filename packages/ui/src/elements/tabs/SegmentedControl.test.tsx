@@ -93,7 +93,7 @@ describe('SegmentedControl', () => {
     )
 
     const selected = screen.getByRole('radio', { name: 'A' })
-    expectClassTokens(selected.className, ['[color:var(--color-success-primary)]'])
+    expectClassTokens(selected.className, ['[color:var(--color-success-solid)]'])
   })
 
   it('enables hover classes by default and allows disabling them', () => {

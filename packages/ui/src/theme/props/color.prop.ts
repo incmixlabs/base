@@ -41,8 +41,8 @@ export type SemanticColorToken =
   | 'surface-hover'
   | 'soft'
   | 'soft-hover'
-  | 'primary'
-  | 'primary-alpha'
+  | 'solid'
+  | 'solid-alpha'
   | 'text'
   | 'contrast'
 
@@ -117,7 +117,7 @@ export function resolveInteractiveUnfilledColor(color: SemanticColorInput): Sema
 }
 
 export function resolveInteractiveForegroundToken(color: SemanticColorInput): SemanticColorToken {
-  return requireSemanticColor(color) === SemanticColor.inverse ? 'primary' : 'text'
+  return requireSemanticColor(color) === SemanticColor.inverse ? 'solid' : 'text'
 }
 
 export const SurfaceColorVariant = {
@@ -144,7 +144,7 @@ export interface SurfaceToneStyle {
 }
 
 const semanticSurfaceBackgroundTokenByVariant = {
-  [SurfaceColorVariant.solid]: 'primary',
+  [SurfaceColorVariant.solid]: 'solid',
   [SurfaceColorVariant.soft]: 'soft',
   [SurfaceColorVariant.surface]: 'surface',
 } as const satisfies Record<SurfaceColorVariant, SemanticColorToken>
@@ -155,7 +155,7 @@ const chartSurfaceBlendByVariant = {
 } as const satisfies Partial<Record<SurfaceColorVariant, number>>
 
 const readableChartTextColor = (color: ChartColorToken | ChartColorAlias) =>
-  `color-mix(in oklch, ${chartColorVar(color)} 34%, var(--color-dark-primary))`
+  `color-mix(in oklch, ${chartColorVar(color)} 34%, var(--color-dark-solid))`
 
 const surfaceColorSet = new Set<string>(SURFACE_COLOR_KEYS)
 
@@ -180,7 +180,7 @@ export function resolveSurfaceForegroundColor(
   const semanticColor = requireSemanticColor(color as SemanticColorInput)
   if (foreground === SurfaceForeground.contrast) return semanticColorVar(semanticColor, 'contrast')
   if (foreground === SurfaceForeground.inverse) return 'var(--color-inverse-text)'
-  if (foreground === SurfaceForeground.primary) return semanticColorVar(semanticColor, 'primary')
+  if (foreground === SurfaceForeground.primary) return semanticColorVar(semanticColor, 'solid')
   if (foreground === SurfaceForeground.text) return semanticColorVar(semanticColor, 'text')
 
   return variant === SurfaceColorVariant.solid

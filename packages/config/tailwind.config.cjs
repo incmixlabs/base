@@ -1,42 +1,12 @@
+const { semanticColorThemeColors } = require('./semantic-color-theme.cjs')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        background: 'var(--background)',
-        foreground: 'var(--foreground)',
-        card: {
-          DEFAULT: 'var(--color-neutral-surface)',
-          foreground: 'var(--color-neutral-text)',
-        },
-        popover: {
-          DEFAULT: 'var(--color-neutral-surface)',
-          foreground: 'var(--color-neutral-text)',
-        },
-        primary: {
-          DEFAULT: 'var(--color-primary-primary)',
-          foreground: 'var(--color-primary-contrast)',
-        },
-        secondary: {
-          DEFAULT: 'var(--color-secondary-soft)',
-          foreground: 'var(--color-secondary-text)',
-        },
-        muted: {
-          DEFAULT: 'var(--color-neutral-soft)',
-          foreground: 'color-mix(in oklch, var(--color-neutral-text) 68%, transparent)',
-        },
-        accent: {
-          DEFAULT: 'var(--color-accent-soft)',
-          foreground: 'var(--color-accent-text)',
-        },
-        destructive: {
-          DEFAULT: 'var(--color-error-primary)',
-          foreground: 'var(--color-error-contrast)',
-        },
-        border: 'var(--color-neutral-border)',
-        input: 'var(--color-neutral-border-subtle)',
-        ring: 'var(--color-primary-primary)',
+        ...semanticColorThemeColors(),
         chart: {
           1: 'var(--chart-1)',
           2: 'var(--chart-2)',

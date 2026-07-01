@@ -560,8 +560,8 @@ describe('MentionTextarea', () => {
 
     expect(overlay).not.toBeNull()
     expectClassTokens(overlay?.className, [
-      '[border-color:var(--color-success-primary)]',
-      'bg-[var(--color-success-primary-alpha)]',
+      '[border-color:var(--color-success-solid)]',
+      'bg-[var(--color-success-solid-alpha)]',
     ])
     expect(overlay?.className).not.toContain('border-primary')
     expect(overlay?.className).not.toContain('bg-primary')

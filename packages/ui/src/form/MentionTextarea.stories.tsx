@@ -345,7 +345,7 @@ export const ChatExample: Story = {
             />
             <button
               onClick={handleSend}
-              className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium shrink-0"
+              className="px-4 py-2 bg-primary text-primary-contrast rounded-md text-sm font-medium shrink-0"
             >
               Send
             </button>

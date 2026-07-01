@@ -231,7 +231,7 @@ export const WithError: Story = {
     <div className="w-80 space-y-2">
       <Label htmlFor="phone-error">Phone Number</Label>
       <InputMask id="phone-error" mask="phone" placeholder="(555) 555-5555" error leftIcon="phone" />
-      <p className="text-sm text-destructive">Please enter a valid phone number</p>
+      <p className="text-sm text-error">Please enter a valid phone number</p>
     </div>
   ),
 }

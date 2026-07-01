@@ -57,8 +57,8 @@ describe('Link', () => {
 
     const link = getByRole('link', { name: 'Primary docs' })
     expectClassTokens(link.className, [
-      '[&:hover:not(:disabled)]:text-[var(--color-primary-primary)]',
-      '[&:hover:not(:disabled)]:[text-decoration-color:var(--color-primary-primary)]',
+      '[&:hover:not(:disabled)]:text-[var(--color-primary-solid)]',
+      '[&:hover:not(:disabled)]:[text-decoration-color:var(--color-primary-solid)]',
     ])
   })
 })

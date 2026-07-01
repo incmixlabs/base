@@ -22,17 +22,17 @@ const colorVar = (color: string, token: string) => joinClass('var(--color-', col
 const focusRingClassName = (color: string) =>
   joinClass(
     'focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:[outline-color:',
-    colorVar(color, 'primary-alpha'),
+    colorVar(color, 'solid-alpha'),
     ']',
   )
 
 const checkedSolidStateClassName = (color: string) =>
   [
     joinClass('data-[checked]:bg-', color, '-solid'),
-    joinClass('data-[checked]:[border-color:', colorVar(color, 'primary'), ']'),
+    joinClass('data-[checked]:[border-color:', colorVar(color, 'solid'), ']'),
     joinClass('data-[checked]:text-', color, '-contrast'),
     joinClass('data-[indeterminate]:bg-', color, '-solid'),
-    joinClass('data-[indeterminate]:[border-color:', colorVar(color, 'primary'), ']'),
+    joinClass('data-[indeterminate]:[border-color:', colorVar(color, 'solid'), ']'),
     joinClass('data-[indeterminate]:text-', color, '-contrast'),
   ].join(' ')
 
@@ -46,9 +46,9 @@ const checkedSoftStateClassName = (color: string) =>
 
 const checkedOutlineStateClassName = (color: string) =>
   [
-    joinClass('data-[checked]:[border-color:', colorVar(color, 'primary'), ']'),
+    joinClass('data-[checked]:[border-color:', colorVar(color, 'solid'), ']'),
     joinClass('data-[checked]:text-', color),
-    joinClass('data-[indeterminate]:[border-color:', colorVar(color, 'primary'), ']'),
+    joinClass('data-[indeterminate]:[border-color:', colorVar(color, 'solid'), ']'),
     joinClass('data-[indeterminate]:text-', color),
   ].join(' ')
 
@@ -56,7 +56,7 @@ const createCheckboxColorVariantClasses = (color: Color): Record<CheckboxVariant
   solid: [
     'border border-solid',
     joinClass('border-', color),
-    'bg-[var(--background)]',
+    'bg-[var(--color-neutral-background)]',
     joinClass('text-', color, '-contrast'),
     focusRingClassName(color),
     joinClass('hover:[border-color:', colorVar(color, 'text'), ']'),

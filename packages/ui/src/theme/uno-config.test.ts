@@ -16,7 +16,7 @@ describe('base Uno config', () => {
     expect(unoConfigSource).not.toContain('muted: {')
     expect(unoConfigSource).not.toContain("border: 'var(--color-neutral-border)'")
     expect(unoConfigSource).not.toContain("input: 'var(--color-neutral-border-subtle)'")
-    expect(unoConfigSource).not.toContain("ring: 'var(--color-primary-primary)'")
+    expect(unoConfigSource).not.toContain("ring: 'var(--color-primary-solid)'")
   })
 
   it('generates semantic background role utilities', () => {

@@ -54,7 +54,7 @@ describe('theme concrete resolver', () => {
           primary: {
             surface: '#e3f2fd',
             soft: '#bbdefb',
-            primary: '#1976d2',
+            solid: '#1976d2',
             text: '#0d47a1',
             contrast: '#ffffff',
             border: '#90caf9',
@@ -65,7 +65,7 @@ describe('theme concrete resolver', () => {
     } as unknown as ThemeContract)
     const resolver = createConcreteThemeResolver(tokenMap)
 
-    expect(resolver('semantic.color.primary.primary')).toBe('#1976d2')
+    expect(resolver('semantic.color.primary.solid')).toBe('#1976d2')
     expect(resolveConcreteChartRoleColor({ color: 'primary', role: 'fill', resolver })).toBe('#1976d2')
     expect(resolveConcreteChartRoleColor({ color: 'chart1', role: 'fill', resolver })).toBe('#f97316')
   })

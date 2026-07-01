@@ -26,14 +26,14 @@ const switchSizeVar = (size: string, slot: string, fallback: string) =>
 const switchFocusClassName = (color: string) =>
   joinClass(
     'focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:[outline-color:',
-    colorVar(color, 'primary-alpha'),
+    colorVar(color, 'solid-alpha'),
     ']',
   )
 
 const switchCheckedClassName = (color: string) =>
   [
     joinClass('data-[checked]:bg-', color, '-solid'),
-    joinClass('data-[checked]:[border-color:', colorVar(color, 'primary'), ']'),
+    joinClass('data-[checked]:[border-color:', colorVar(color, 'solid'), ']'),
   ].join(' ')
 
 const createSwitchColorVariantClasses = (color: Color): Record<SwitchVariant, string> => ({
