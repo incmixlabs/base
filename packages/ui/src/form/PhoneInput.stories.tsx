@@ -72,7 +72,7 @@ export const Controlled: Story = {
           <Label>Phone Number</Label>
           <PhoneInput value={phone} onChange={setPhone} />
         </div>
-        <div className="p-3 bg-muted rounded-md text-sm space-y-1">
+        <div className="p-3 bg-neutral-soft rounded-md text-sm space-y-1">
           <p>
             <strong>Country:</strong> {phone.countryCode}
           </p>

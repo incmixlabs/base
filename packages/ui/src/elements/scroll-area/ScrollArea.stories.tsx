@@ -122,10 +122,10 @@ function HorizontalContent() {
         {Array.from({ length: 14 }, (_, i) => (
           <div
             key={i}
-            className="flex h-28 w-56 shrink-0 flex-col items-start justify-between rounded-xl border bg-muted/40 p-4 text-sm"
+            className="flex h-28 w-56 shrink-0 flex-col items-start justify-between rounded-xl border bg-neutral-soft p-4 text-sm"
           >
             <div className="font-medium">Panel {i + 1}</div>
-            <div className="text-muted-foreground">Wide cards force horizontal-only overflow.</div>
+            <div className="text-muted">Wide cards force horizontal-only overflow.</div>
           </div>
         ))}
       </div>
@@ -138,9 +138,9 @@ function BothAxisContent() {
     <div className="px-4 py-4">
       <div className="w-max space-y-4">
         {Array.from({ length: 18 }, (_, i) => (
-          <div key={i} className="flex w-[1120px] gap-4 rounded-xl border bg-muted/30 p-4">
+          <div key={i} className="flex w-[1120px] gap-4 rounded-xl border bg-neutral-soft p-4">
             <div className="w-40 shrink-0 text-sm font-medium">Row {i + 1}</div>
-            <div className="w-64 shrink-0 text-sm text-muted-foreground">
+            <div className="w-64 shrink-0 text-sm text-muted">
               Horizontal overflow should stay active while the vertical stack extends beyond the frame height.
             </div>
             <div className="w-[560px] shrink-0 text-sm">
@@ -224,7 +224,7 @@ export const Directions: Story = {
               <ScrollAreaContent>
                 <div className="flex gap-4" style={{ width: '640px' }}>
                   {Array.from({ length: 8 }, (_, i) => (
-                    <div key={i} className="h-24 w-24 shrink-0 rounded-md bg-muted" />
+                    <div key={i} className="h-24 w-24 shrink-0 rounded-md bg-neutral-soft" />
                   ))}
                 </div>
               </ScrollAreaContent>

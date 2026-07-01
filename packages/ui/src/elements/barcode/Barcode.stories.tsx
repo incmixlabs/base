@@ -45,7 +45,7 @@ export const ProductFormats: Story = {
     return (
       <div className="grid gap-4">
         {samples.map(sample => (
-          <div key={sample.format} className="rounded-md border bg-background p-4">
+          <div key={sample.format} className="rounded-md border bg-neutral-background p-4">
             <div className="mb-3 font-medium text-sm">{sample.format}</div>
             <Barcode {...args} format={sample.format} value={sample.value} />
           </div>

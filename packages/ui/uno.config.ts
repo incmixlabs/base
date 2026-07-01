@@ -76,9 +76,7 @@ import { filterClassNames } from './src/elements/filter/filter.class'
 import { menuSharedClassNames } from './src/elements/menu/menu.shared.class'
 import { navigationMenuClassNames } from './src/elements/navigation-menu/NavigationMenu.class'
 import {
-  floatingSurfaceArrowColorVariants,
   floatingSurfaceColorVariants,
-  floatingSurfaceHighContrastArrowColorVariants,
   floatingSurfaceHighContrastColorVariants,
   floatingSurfaceHighContrastEffectByVariant,
   floatingSurfaceMaxWidthVariants,
@@ -105,6 +103,18 @@ import {
 import { sheetClassNames } from './src/elements/sheet/sheet.class'
 import { spinnerClassNames } from './src/elements/spinner/spinner.class'
 import { stepperClassNames } from './src/elements/stepper/stepper.class'
+import {
+  floatingArrowBase,
+  floatingArrowSurface,
+  surfaceHighContrastByVariant,
+  surfaceShapeVariants,
+  surfaceSquare,
+  surfaceUnoColorVariants,
+  surfaceUnoFocusColorVariants,
+  surfaceUnoHighContrastColorVariants,
+  surfaceUnoHoverColorVariants,
+  surfaceUnoSelectedColorVariants,
+} from './src/elements/surface/surface.class'
 import { segmentedControlClassNames } from './src/elements/tabs/segmented-control.shared.class'
 import { tabsClassNames } from './src/elements/tabs/tabs.class'
 import { timelineClassNames } from './src/elements/timeline/timeline.class'
@@ -253,13 +263,24 @@ const classMapValues = <Value extends string>(map: Record<string, Record<string,
   Object.values(map).flatMap(variantMap => Object.values(variantMap))
 
 const floatingSurfaceSafelist = splitClasses([
+  floatingArrowBase,
+  floatingArrowSurface,
   ...Object.values(floatingSurfaceSizeVariants),
   ...Object.values(floatingSurfaceMaxWidthVariants),
   ...Object.values(floatingSurfaceHighContrastEffectByVariant),
   ...classMapValues(floatingSurfaceColorVariants),
   ...classMapValues(floatingSurfaceHighContrastColorVariants),
-  ...classMapValues(floatingSurfaceArrowColorVariants),
-  ...classMapValues(floatingSurfaceHighContrastArrowColorVariants),
+])
+
+const surfaceSafelist = splitClasses([
+  surfaceSquare,
+  ...Object.values(surfaceShapeVariants),
+  ...Object.values(surfaceHighContrastByVariant),
+  ...classMapValues(surfaceUnoColorVariants),
+  ...classMapValues(surfaceUnoHoverColorVariants),
+  ...Object.values(surfaceUnoSelectedColorVariants),
+  ...Object.values(surfaceUnoFocusColorVariants),
+  ...classMapValues(surfaceUnoHighContrastColorVariants),
 ])
 
 const typographySafelist = splitClasses([
@@ -413,6 +434,7 @@ export default defineConfig({
         ...Object.values(separatorColorVariants),
       ]),
       // Popover/Tooltip floating surface styles
+      ...surfaceSafelist,
       popoverContentBase,
       tooltipContentBase,
       tooltipPositionerBase,

@@ -121,7 +121,7 @@ export const RadiusFromProvider: Story = {
     <div className="flex flex-col gap-4">
       {avatarPropDefs.radius.values.map(radius => (
         <div key={radius} className="flex items-center gap-4">
-          <span className="text-sm w-12 text-muted-foreground">{radius}</span>
+          <span className="text-sm w-12 text-muted">{radius}</span>
           <AvatarProvider radius={radius}>
             <div className="flex gap-2">
               {['Alice', 'Bob', 'Charlie', 'Diana', 'Edward', 'Fiona'].map(name => (
@@ -155,7 +155,7 @@ export const UserCard: Story = {
       />
       <div>
         <p className="font-medium">John Doe</p>
-        <p className="text-sm text-muted-foreground">john@example.com</p>
+        <p className="text-sm text-muted">john@example.com</p>
       </div>
     </div>
   ),
@@ -230,7 +230,7 @@ export const CommentThread: Story = {
         <div className="flex-1">
           <div className="flex items-center gap-2">
             <span className="font-medium text-sm">John Doe</span>
-            <span className="text-xs text-muted-foreground">2 hours ago</span>
+            <span className="text-xs text-muted">2 hours ago</span>
           </div>
           <p className="text-sm mt-1">This looks great! I love the new design direction.</p>
         </div>
@@ -240,7 +240,7 @@ export const CommentThread: Story = {
         <div className="flex-1">
           <div className="flex items-center gap-2">
             <span className="font-medium text-sm">Jane Smith</span>
-            <span className="text-xs text-muted-foreground">1 hour ago</span>
+            <span className="text-xs text-muted">1 hour ago</span>
           </div>
           <p className="text-sm mt-1">Thanks! Let me know if you have any suggestions.</p>
         </div>

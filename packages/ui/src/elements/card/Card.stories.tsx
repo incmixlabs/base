@@ -274,15 +274,15 @@ export const EmbeddedResponsivePadding: Story = {
         {Object.entries(previewWidths).map(([viewport, width]) => (
           <Tabs.Content key={viewport} value={viewport}>
             <div className="space-y-3 pt-4">
-              <div className="text-sm font-medium text-foreground">Preview width: {width}px</div>
-              <div className="border rounded-xl bg-muted/30 p-4" style={{ width }}>
+              <div className="text-sm font-medium text-neutral">Preview width: {width}px</div>
+              <div className="border rounded-xl bg-neutral-soft p-4" style={{ width }}>
                 <Card.Root size={{ initial: 'xs', md: 'md', xl: 'xl' }} className="w-full">
                   <Card.Header>
                     <Card.Title>Embedded Card</Card.Title>
                     <Card.Description>Padding should respond to the preview pane width.</Card.Description>
                   </Card.Header>
                   <Card.Content>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-muted">
                       This card now uses container queries for responsive size variants instead of viewport media
                       queries.
                     </p>
@@ -376,7 +376,7 @@ export const VariantGhost: Story = {
     square: cardPropDefs.square.default,
   },
   render: args => (
-    <div className="p-6 bg-muted rounded-lg">
+    <div className="p-6 bg-neutral-soft rounded-lg">
       <Card.Root
         size={args.size}
         variant={args.variant}
@@ -419,7 +419,7 @@ export const UserProfile: Story = {
         </div>
       </Card.Header>
       <Card.Content>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted">
           Building great products with React and TypeScript. Passionate about clean code and user experience.
         </p>
       </Card.Content>
@@ -446,7 +446,7 @@ export const PricingCard: Story = {
       <Card.Content>
         <div className="mb-4">
           <span className="text-4xl font-bold">$29</span>
-          <span className="text-muted-foreground">/month</span>
+          <span className="text-muted">/month</span>
         </div>
         <ul className="space-y-2 text-sm">
           <li className="flex items-center gap-2">
@@ -485,25 +485,25 @@ export const NotificationCard: Story = {
         </div>
       </Card.Header>
       <Card.Content className="space-y-3">
-        <div className="flex items-start gap-3 p-2 rounded-md hover:bg-muted">
+        <div className="flex items-start gap-3 p-2 rounded-md hover:bg-neutral-soft">
           <Avatar size="sm" name="John Doe" />
           <div className="flex-1">
             <p className="text-sm font-medium">John commented on your post</p>
-            <p className="text-xs text-muted-foreground">2 minutes ago</p>
+            <p className="text-xs text-muted">2 minutes ago</p>
           </div>
         </div>
-        <div className="flex items-start gap-3 p-2 rounded-md hover:bg-muted">
+        <div className="flex items-start gap-3 p-2 rounded-md hover:bg-neutral-soft">
           <Avatar size="sm" name="Alice Smith" />
           <div className="flex-1">
             <p className="text-sm font-medium">Alice started following you</p>
-            <p className="text-xs text-muted-foreground">1 hour ago</p>
+            <p className="text-xs text-muted">1 hour ago</p>
           </div>
         </div>
-        <div className="flex items-start gap-3 p-2 rounded-md hover:bg-muted">
+        <div className="flex items-start gap-3 p-2 rounded-md hover:bg-neutral-soft">
           <Avatar size="sm" name="Mike King" />
           <div className="flex-1">
             <p className="text-sm font-medium">Mike liked your photo</p>
-            <p className="text-xs text-muted-foreground">3 hours ago</p>
+            <p className="text-xs text-muted">3 hours ago</p>
           </div>
         </div>
       </Card.Content>
@@ -529,7 +529,7 @@ export const SettingsCard: Story = {
       <Card.Content className="space-y-4">
         <div className="flex items-center justify-between py-2 border-b">
           <div className="flex items-center gap-3">
-            <User className="h-4 w-4 text-muted-foreground" />
+            <User className="h-4 w-4 text-muted" />
             <span className="text-sm">Profile</span>
           </div>
           <Button variant="ghost" size="sm">
@@ -538,7 +538,7 @@ export const SettingsCard: Story = {
         </div>
         <div className="flex items-center justify-between py-2 border-b">
           <div className="flex items-center gap-3">
-            <Bell className="h-4 w-4 text-muted-foreground" />
+            <Bell className="h-4 w-4 text-muted" />
             <span className="text-sm">Notifications</span>
           </div>
           <Button variant="ghost" size="sm">
@@ -547,7 +547,7 @@ export const SettingsCard: Story = {
         </div>
         <div className="flex items-center justify-between py-2">
           <div className="flex items-center gap-3">
-            <CreditCard className="h-4 w-4 text-muted-foreground" />
+            <CreditCard className="h-4 w-4 text-muted" />
             <span className="text-sm">Billing</span>
           </div>
           <Button variant="ghost" size="sm">
@@ -604,7 +604,7 @@ export const CardGrid: Story = {
             <Card.Title>Card {i}</Card.Title>
           </Card.Header>
           <Card.Content>
-            <p className="text-sm text-muted-foreground">Card content goes here.</p>
+            <p className="text-sm text-muted">Card content goes here.</p>
           </Card.Content>
         </Card.Root>
       ))}

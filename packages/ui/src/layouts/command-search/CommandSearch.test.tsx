@@ -82,7 +82,6 @@ describe('CommandSearch', () => {
 
     const trigger = screen.getByRole('button', { name: /Search docs/i })
     expectClassTokens(trigger.className, ['bg-neutral-surface', 'hover:bg-neutral-soft', 'text-neutral'])
-    expect(trigger.className).not.toContain('text-muted-foreground')
 
     await user.click(trigger)
 

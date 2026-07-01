@@ -14,12 +14,10 @@ import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
 import { IconButton } from '../button/IconButton'
 import { FloatingArrowSvg } from '../surface/FloatingArrowSvg'
-import { floatingArrowBase } from '../surface/surface.class'
+import { floatingArrowBase, floatingArrowSurface } from '../surface/surface.class'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
-  floatingSurfaceArrowColorVariants,
   floatingSurfaceColorVariants,
-  floatingSurfaceHighContrastArrowColorVariants,
   floatingSurfaceHighContrastColorVariants,
   floatingSurfaceHighContrastEffectByVariant,
   floatingSurfaceMaxWidthVariants,
@@ -274,36 +272,18 @@ PopoverClose.displayName = 'Popover.Close'
 export interface PopoverArrowProps {
   /** Additional class names */
   className?: string
-  /** Surface visual variant */
+  /** @deprecated Arrow now inherits variant from Popover.Content. */
   variant?: PopoverContentVariant
-  /** Surface color lane */
+  /** @deprecated Arrow now inherits color from Popover.Content. */
   color?: Color
-  /** High contrast treatment */
+  /** @deprecated Arrow now inherits high contrast from Popover.Content. */
   highContrast?: boolean
 }
 
 const PopoverArrow = React.forwardRef<HTMLDivElement, PopoverArrowProps>(
-  ({ className, variant, color, highContrast, ...props }, ref) => {
-    const visualContext = React.useContext(PopoverVisualContext)
-    const safeVariant = (normalizeEnumPropValue(popoverContentPropDefs.variant, variant ?? visualContext.variant) ??
-      popoverContentPropDefs.variant.default) as PopoverContentVariant
-    const safeColor = (normalizeEnumPropValue(popoverContentPropDefs.color, color ?? visualContext.color) ??
-      SemanticColor.neutral) as Color
-    const safeHighContrast =
-      normalizeBooleanPropValue(popoverContentPropDefs.highContrast, highContrast ?? visualContext.highContrast) ??
-      false
+  ({ className, variant: _variant, color: _color, highContrast: _highContrast, ...props }, ref) => {
     return (
-      <PopoverPrimitive.Arrow
-        ref={ref}
-        className={cn(
-          floatingArrowBase,
-          safeHighContrast
-            ? floatingSurfaceHighContrastArrowColorVariants[safeColor][safeVariant]
-            : floatingSurfaceArrowColorVariants[safeColor][safeVariant],
-          className,
-        )}
-        {...props}
-      >
+      <PopoverPrimitive.Arrow ref={ref} className={cn(floatingArrowBase, floatingArrowSurface, className)} {...props}>
         <FloatingArrowSvg />
       </PopoverPrimitive.Arrow>
     )

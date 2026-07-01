@@ -80,7 +80,7 @@ const SkeletonText = React.forwardRef<HTMLDivElement, SkeletonTextProps>(
           <div
             key={index}
             className={cn(
-              'h-4 animate-pulse rounded bg-muted',
+              'h-4 animate-pulse rounded bg-neutral-soft',
               // Make last line shorter for a more natural look
               index === lines - 1 && 'w-4/5',
             )}
@@ -121,7 +121,11 @@ const SkeletonAvatar = React.forwardRef<HTMLDivElement, SkeletonAvatarProps>(
     }
 
     return (
-      <div ref={ref} className={cn('animate-pulse rounded-full bg-muted', avatarSizes[size], className)} {...props} />
+      <div
+        ref={ref}
+        className={cn('animate-pulse rounded-full bg-neutral-soft', avatarSizes[size], className)}
+        {...props}
+      />
     )
   },
 )

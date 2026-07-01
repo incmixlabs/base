@@ -84,7 +84,7 @@ export const Controlled: Story = {
           <Label>Payment Card</Label>
           <CreditCardInput value={card} onChange={setCard} showName />
         </div>
-        <div className="p-3 bg-muted rounded-md text-sm space-y-1">
+        <div className="p-3 bg-neutral-soft rounded-md text-sm space-y-1">
           <p>
             <strong>Card Type:</strong> {card.cardType}
           </p>
@@ -261,7 +261,7 @@ export const CheckoutForm: Story = {
           <p className="text-sm text-muted">Complete your purchase</p>
         </div>
 
-        <div className="p-4 bg-muted rounded-md">
+        <div className="p-4 bg-neutral-soft rounded-md">
           <div className="flex justify-between">
             <span>Premium Plan</span>
             <span className="font-semibold">$29.99/mo</span>
@@ -344,7 +344,7 @@ export const ValidationExample: Story = {
         </div>
 
         {validationChecks.length > 0 && (
-          <div className="p-3 bg-muted rounded-md text-sm space-y-1">
+          <div className="p-3 bg-neutral-soft rounded-md text-sm space-y-1">
             {validationChecks.map((check, i) => (
               <p key={i} className={check.valid ? 'text-green-600' : 'text-muted'}>
                 {check.valid ? '\u2713' : '\u25CB'} {check.label}

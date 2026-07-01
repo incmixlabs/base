@@ -9,9 +9,7 @@ import type { WidthProps } from '@/theme/props/width.props'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
 import {
-  floatingSurfaceArrowColorVariants,
   floatingSurfaceColorVariants,
-  floatingSurfaceHighContrastArrowColorVariants,
   floatingSurfaceHighContrastColorVariants,
   floatingSurfaceHighContrastEffectByVariant,
 } from '../popover/popover.class'
@@ -21,7 +19,7 @@ import type {
   PopoverContentVariant as TooltipVariant,
 } from '../popover/popover.props'
 import { FloatingArrowSvg } from '../surface/FloatingArrowSvg'
-import { floatingArrowBase } from '../surface/surface.class'
+import { floatingArrowBase, floatingArrowSurface } from '../surface/surface.class'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
   tooltipContentBase,
@@ -309,33 +307,23 @@ TooltipContent.displayName = 'Tooltip.Content'
 export interface TooltipArrowProps {
   /** Additional class names */
   className?: string
-  /** Surface visual variant */
+  /** @deprecated Arrow now inherits variant from Tooltip.Content. */
   variant?: TooltipVariant
-  /** Surface color lane */
+  /** @deprecated Arrow now inherits color from Tooltip.Content. */
   color?: Color
-  /** High contrast treatment */
+  /** @deprecated Arrow now inherits high contrast from Tooltip.Content. */
   highContrast?: boolean
 }
 
-const TooltipArrow: React.FC<TooltipArrowProps> = ({ className, variant, color, highContrast, ...props }) => {
-  const visualContext = React.useContext(TooltipVisualContext)
-  const { variant: safeVariant, color: safeColor } = resolveTooltipVisual({
-    variant: variant ?? visualContext.variant,
-    color: color ?? visualContext.color,
-  })
-  const safeHighContrast =
-    normalizeBooleanPropValue(tooltipContentPropDefs.highContrast, highContrast ?? visualContext.highContrast) ?? false
+const TooltipArrow: React.FC<TooltipArrowProps> = ({
+  className,
+  variant: _variant,
+  color: _color,
+  highContrast: _highContrast,
+  ...props
+}) => {
   return (
-    <TooltipPrimitive.Arrow
-      className={cn(
-        floatingArrowBase,
-        safeHighContrast
-          ? floatingSurfaceHighContrastArrowColorVariants[safeColor][safeVariant]
-          : floatingSurfaceArrowColorVariants[safeColor][safeVariant],
-        className,
-      )}
-      {...props}
-    >
+    <TooltipPrimitive.Arrow className={cn(floatingArrowBase, floatingArrowSurface, className)} {...props}>
       <FloatingArrowSvg />
     </TooltipPrimitive.Arrow>
   )

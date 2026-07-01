@@ -109,7 +109,7 @@ const HoverCardTrigger = React.forwardRef<HTMLElement, HoverCardTriggerProps>(
           delay={HOVER_CARD_OPEN_DELAY_MS}
           closeDelay={HOVER_CARD_CLOSE_DELAY_MS}
           className={cn(
-            'outline-none focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-2',
+            'outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2',
             className,
           )}
           {...props}
@@ -125,7 +125,7 @@ const HoverCardTrigger = React.forwardRef<HTMLElement, HoverCardTriggerProps>(
         delay={HOVER_CARD_OPEN_DELAY_MS}
         closeDelay={HOVER_CARD_CLOSE_DELAY_MS}
         className={cn(
-          'outline-none focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-2',
+          'outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2',
           className,
         )}
         {...props}

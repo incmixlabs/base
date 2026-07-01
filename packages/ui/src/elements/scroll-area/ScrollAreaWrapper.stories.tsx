@@ -69,14 +69,14 @@ export const WrapperVsPrimitive: Story = {
           <div className={contentClassName ?? 'px-4 py-4 pr-2'}>
             <div className="space-y-3">
               {(data ?? []).map(item => (
-                <div key={item.id} className="rounded-lg border border-border/60 bg-background/60 p-3">
+                <div key={item.id} className="rounded-lg border border-neutral bg-neutral-background p-3">
                   <div className="flex items-start gap-3">
-                    <div className="shrink-0 text-muted-foreground">{item.leading}</div>
+                    <div className="shrink-0 text-muted">{item.leading}</div>
                     <div className="min-w-0 flex-1 space-y-1">
                       <div className="text-sm font-medium">{item.title}</div>
-                      <div className="text-xs text-muted-foreground">{item.description}</div>
+                      <div className="text-xs text-muted">{item.description}</div>
                     </div>
-                    <div className="shrink-0 text-xs text-muted-foreground">{item.trailing}</div>
+                    <div className="shrink-0 text-xs text-muted">{item.trailing}</div>
                   </div>
                   <div className="mt-3 text-sm">{item.content}</div>
                 </div>

@@ -190,7 +190,7 @@ function WithInset({ children, ...wrapperProps }: SidebarWrapperProps & { childr
           {children ?? (
             <>
               <h2 className="text-xl font-semibold">SidebarWrapper Demo</h2>
-              <p className="mt-2 text-sm text-muted-foreground">This sidebar is rendered entirely from data props.</p>
+              <p className="mt-2 text-sm text-muted">This sidebar is rendered entirely from data props.</p>
             </>
           )}
         </main>
@@ -311,7 +311,7 @@ function RemoteLoadingDemo(props: SidebarWrapperProps) {
         </header>
         <main className="p-6">
           <h2 className="text-xl font-semibold">Remote Loading Demo</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Sidebar loads from a mocked 2-second remote response.</p>
+          <p className="mt-2 text-sm text-muted">Sidebar loads from a mocked 2-second remote response.</p>
         </main>
       </Sidebar.Inset>
     </SidebarWrapper>
@@ -388,7 +388,7 @@ export const CustomRender: Story = {
   render: args => (
     <WithInset {...args}>
       <h2 className="text-xl font-semibold">Custom Render Demo</h2>
-      <p className="mt-2 text-sm text-muted-foreground">
+      <p className="mt-2 text-sm text-muted">
         The &quot;Home&quot; item uses a <code>renderItem</code> override with a custom badge. All other items use the
         default data-driven rendering.
       </p>
@@ -434,7 +434,7 @@ export const Overflow: Story = {
   render: args => (
     <WithInset {...args}>
       <h2 className="text-xl font-semibold">Overflow Test</h2>
-      <p className="mt-2 text-sm text-muted-foreground">
+      <p className="mt-2 text-sm text-muted">
         The middle group should scroll while top (Pinned) and bottom (Settings) stay sticky.
       </p>
     </WithInset>

@@ -354,7 +354,7 @@ export const SizeVariantMatrix: Story = {
     <Box display="flex" className="flex-col gap-4">
       {getPropDefValues(buttonPropDefs.size).map(size => (
         <Box key={size} display="flex" className="gap-4 items-center">
-          <span className="w-12 text-sm text-muted-foreground">{size}</span>
+          <span className="w-12 text-sm text-muted">{size}</span>
           {getPropDefValues(buttonPropDefs.variant).map(variant => (
             <Button key={variant} size={size} variant={variant}>
               {labelForValue(variant)}

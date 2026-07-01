@@ -109,7 +109,7 @@ export const Playground: Story = {
             <Avatar key={avatar.id} name={avatar.name} src={useImages ? avatar.src : undefined} />
           ))}
         </AvatarPie>
-        <span className="text-sm text-muted-foreground">Count {count}</span>
+        <span className="text-sm text-muted">Count {count}</span>
       </div>
     )
   },
@@ -192,7 +192,7 @@ export const OverflowCounts: Story = {
               <Avatar key={`${count}-${avatar.id}`} name={avatar.name} src={avatar.src} />
             ))}
           </AvatarPie>
-          <span className="text-xs text-muted-foreground">{count} avatars</span>
+          <span className="text-xs text-muted">{count} avatars</span>
         </div>
       ))}
     </div>

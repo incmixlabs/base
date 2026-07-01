@@ -638,7 +638,7 @@ export function getInteractiveElementBaseClasses({
   return [
     'inline-flex items-center justify-center whitespace-nowrap font-medium',
     transition === 'all' ? 'transition-all duration-150 ease-in-out' : 'transition-colors duration-150 ease-in-out',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
     ringOffset === '1' ? 'focus-visible:ring-offset-1' : 'focus-visible:ring-offset-2',
     'disabled:pointer-events-none disabled:opacity-50',
   ].join(' ')

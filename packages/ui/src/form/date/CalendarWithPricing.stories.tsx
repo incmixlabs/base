@@ -59,9 +59,7 @@ export const Default: Story = {
     return (
       <div className="w-[400px]">
         <CalendarWithPricing {...args} value={date} onChange={setDate} prices={prices} />
-        {date && (
-          <p className="text-sm text-muted-foreground mt-4 text-center">Selected: {date.toLocaleDateString()}</p>
-        )}
+        {date && <p className="text-sm text-muted mt-4 text-center">Selected: {date.toLocaleDateString()}</p>}
       </div>
     )
   },
@@ -91,7 +89,7 @@ export const FlightPricing: Story = {
       <div className="w-[400px]">
         <h3 className="text-lg font-semibold mb-4 text-center">Select departure date</h3>
         <CalendarWithPricing {...args} value={date} onChange={setDate} prices={prices} />
-        <p className="text-xs text-muted-foreground mt-2 text-center">Green prices indicate best deals</p>
+        <p className="text-xs text-muted mt-2 text-center">Green prices indicate best deals</p>
       </div>
     )
   },
@@ -117,7 +115,7 @@ export const HotelPricing: Story = {
       <div className="w-[400px]">
         <h3 className="text-lg font-semibold mb-4 text-center">Select check-in date</h3>
         <CalendarWithPricing {...args} value={date} onChange={setDate} prices={prices} currency="$" />
-        <p className="text-xs text-muted-foreground mt-2 text-center">Per night rates shown</p>
+        <p className="text-xs text-muted mt-2 text-center">Per night rates shown</p>
       </div>
     )
   },
@@ -141,7 +139,7 @@ export const WithUnavailableDates: Story = {
     return (
       <div className="w-[400px]">
         <CalendarWithPricing {...args} value={date} onChange={setDate} prices={prices} />
-        <p className="text-xs text-muted-foreground mt-2 text-center">Some dates are sold out</p>
+        <p className="text-xs text-muted mt-2 text-center">Some dates are sold out</p>
       </div>
     )
   },
@@ -174,7 +172,7 @@ export const CustomPriceFormat: Story = {
           prices={prices}
           formatPrice={price => `$${(price / 100).toFixed(2)}`}
         />
-        <p className="text-xs text-muted-foreground mt-2 text-center">Prices in dollars (formatted from cents)</p>
+        <p className="text-xs text-muted mt-2 text-center">Prices in dollars (formatted from cents)</p>
       </div>
     )
   },
@@ -200,7 +198,7 @@ export const WithMinMaxDate: Story = {
           minValue={minDate}
           maxValue={maxDate}
         />
-        <p className="text-xs text-muted-foreground mt-2 text-center">Only next 14 days are selectable</p>
+        <p className="text-xs text-muted mt-2 text-center">Only next 14 days are selectable</p>
       </div>
     )
   },
@@ -242,9 +240,7 @@ export const WithPreselectedDate: Story = {
     return (
       <div className="w-[400px]">
         <CalendarWithPricing {...args} value={date} onChange={setDate} prices={prices} />
-        {date && (
-          <p className="text-sm text-muted-foreground mt-4 text-center">Selected: {date.toLocaleDateString()}</p>
-        )}
+        {date && <p className="text-sm text-muted mt-4 text-center">Selected: {date.toLocaleDateString()}</p>}
       </div>
     )
   },

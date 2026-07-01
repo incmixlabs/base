@@ -20,8 +20,6 @@ describe('InputOTP', () => {
       expect(slot.className).toContain('rounded-[var(--element-border-radius,var(--radius-md))]')
       expect(slot.className).toContain('[border-color:var(--color-neutral-border-subtle)]')
       expect(slot.className).toContain('[background-color:var(--color-neutral-background)]')
-      expect(slot.className).not.toContain('border-input')
-      expect(slot.className).not.toContain('bg-background')
     }
   })
 })

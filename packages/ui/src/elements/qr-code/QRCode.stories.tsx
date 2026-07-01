@@ -54,7 +54,7 @@ export const WithOverlay: Story = {
     level: 'H',
   },
   render: args => (
-    <QRCode {...args} className="rounded-lg border bg-background p-4">
+    <QRCode {...args} className="rounded-lg border bg-neutral-background p-4">
       <QRCode.Skeleton />
       <QRCode.Canvas />
       <QRCode.Overlay className="h-10 w-10 border font-semibold text-xs">ID</QRCode.Overlay>

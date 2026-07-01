@@ -57,7 +57,7 @@ export const Default: Story = {
     <Theme className="min-h-screen p-8">
       <div className="max-w-4xl mx-auto space-y-8">
         <h1 className="text-3xl font-bold">Theme Demo</h1>
-        <p className="text-muted-foreground">The Theme component provides context for styling all child components.</p>
+        <p className="text-muted">The Theme component provides context for styling all child components.</p>
 
         <div className="flex gap-4 flex-wrap">
           <Button>Primary Button</Button>
@@ -201,19 +201,19 @@ const ThemeInfo: React.FC = () => {
       </Card.Header>
       <Card.Content>
         <dl className="grid grid-cols-2 gap-2 text-sm">
-          <dt className="text-muted-foreground">Appearance:</dt>
+          <dt className="text-muted">Appearance:</dt>
           <dd className="font-medium">{theme.appearance}</dd>
-          <dt className="text-muted-foreground">Accent Color:</dt>
+          <dt className="text-muted">Accent Color:</dt>
           <dd className="font-medium">{theme.accentColor}</dd>
-          <dt className="text-muted-foreground">Gray Color:</dt>
+          <dt className="text-muted">Gray Color:</dt>
           <dd className="font-medium">{theme.resolvedGrayColor}</dd>
-          <dt className="text-muted-foreground">Radius:</dt>
+          <dt className="text-muted">Radius:</dt>
           <dd className="font-medium">{theme.radius}</dd>
-          <dt className="text-muted-foreground">Scaling:</dt>
+          <dt className="text-muted">Scaling:</dt>
           <dd className="font-medium">{theme.scaling}</dd>
-          <dt className="text-muted-foreground">Panel Background:</dt>
+          <dt className="text-muted">Panel Background:</dt>
           <dd className="font-medium">{theme.panelBackground}</dd>
-          <dt className="text-muted-foreground">Responsive Profile:</dt>
+          <dt className="text-muted">Responsive Profile:</dt>
           <dd className="font-medium">{theme.typography.responsiveProfile}</dd>
         </dl>
       </Card.Content>
@@ -226,7 +226,7 @@ export const UsingContext: Story = {
     <Theme accentColor="violet" radius="lg" className="min-h-screen p-8">
       <div className="max-w-md mx-auto space-y-4">
         <h1 className="text-2xl font-bold">Theme Context</h1>
-        <p className="text-muted-foreground">Use the useThemeContext hook to access theme settings.</p>
+        <p className="text-muted">Use the useThemeContext hook to access theme settings.</p>
         <ThemeInfo />
       </div>
     </Theme>
@@ -303,7 +303,7 @@ export const TypographyProfiles: Story = {
 export const RhythmDebug: Story = {
   render: () => (
     <Box display="flex" className="flex-col gap-6 p-8">
-      <Text size="sm" className="max-w-3xl text-muted-foreground">
+      <Text size="sm" className="max-w-3xl text-muted">
         Debug story for profile-driven rhythm work. It prints computed `Section` padding, `Card` padding, and
         `FieldGroup.Row` gap so profile changes can be validated numerically instead of by eye.
       </Text>
@@ -381,7 +381,7 @@ function SectionDebugSample({ profile }: { profile: 'compact' | 'balanced' | 'ex
       <div className="space-y-8 p-6">
         <RhythmDebugHeader profile={profile} metricLabel="padding-top" metricValue={paddingTop} />
         <Section ref={sectionRef} size="4" className="rounded-xl border">
-          <div className="rounded-lg border border-dashed border-border p-3">
+          <div className="rounded-lg border border-dashed border-neutral p-3">
             <Text size="sm">Section spacing sample</Text>
           </div>
         </Section>

@@ -16,7 +16,7 @@ export const navigationMenuListVerticalCls = 'flex-col items-stretch'
 export const navigationMenuItemBaseCls = 'relative list-none'
 
 export const navigationMenuTriggerBaseCls =
-  'group inline-flex shrink-0 items-center justify-center whitespace-nowrap border border-transparent outline-none transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-2'
+  'group inline-flex shrink-0 items-center justify-center whitespace-nowrap border border-transparent outline-none transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2'
 
 const navigationMenuActionBase = cls(
   'cursor-pointer bg-transparent text-neutral tracking-normal',
@@ -76,11 +76,15 @@ export const navigationMenuPopupByVariant = {
   solid: cls(
     '[background-color:var(--color-neutral-background)]',
     '[border-color:var(--color-neutral-border)]',
+    '[--af-floating-surface-arrow-fill:var(--color-neutral-background)]',
+    '[--af-floating-surface-arrow-edge:var(--color-neutral-border)]',
     '[box-shadow:0_18px_48px_color-mix(in_oklch,black_16%,transparent),0_4px_16px_color-mix(in_oklch,black_10%,transparent)]',
   ),
   soft: cls(
     '[background-color:var(--color-neutral-surface)]',
     '[border-color:var(--color-neutral-border-subtle)]',
+    '[--af-floating-surface-arrow-fill:var(--color-neutral-surface)]',
+    '[--af-floating-surface-arrow-edge:var(--color-neutral-border-subtle)]',
     'backdrop-saturate-[140%] backdrop-blur-[10px]',
     '[box-shadow:inset_0_1px_0_var(--color-panel-highlight),0_18px_48px_color-mix(in_oklch,black_12%,transparent),0_4px_16px_color-mix(in_oklch,black_8%,transparent)]',
   ),
@@ -92,7 +96,7 @@ export const navigationMenuViewportBaseCls = 'box-border overflow-auto'
 export const navigationMenuViewportBase = 'w-max min-w-full max-w-[calc(100vw_-_2rem)] max-h-[var(--available-height)]'
 
 export const navigationMenuLinkBaseCls =
-  'group flex min-w-0 gap-3 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-2'
+  'group flex min-w-0 gap-3 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2'
 
 export const navigationMenuLinkBase = cls(
   'text-neutral no-underline tracking-normal',
@@ -127,11 +131,6 @@ export const navigationMenuSimpleLinkBase = cls(
   'data-[active]:[color:var(--af-navigation-menu-accent-text)]',
   '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--af-navigation-menu-accent-primary)]',
 )
-
-export const navigationMenuArrowByVariant = {
-  solid: '[fill:var(--color-neutral-background)] [color:var(--color-neutral-border)]',
-  soft: '[fill:var(--color-neutral-surface)] [color:var(--color-neutral-border-subtle)]',
-} as const satisfies Record<NavigationMenuVariant, string>
 
 export const navigationMenuBackdropBase =
   'fixed inset-0 [background-color:color-mix(in_oklch,black_8%,transparent)] backdrop-blur-[1px]'
@@ -180,7 +179,6 @@ export const navigationMenuClassNames = [
   navigationMenuLinkDescriptionBase,
   ...Object.values(navigationMenuLinkDescriptionBySize),
   navigationMenuSimpleLinkBase,
-  ...Object.values(navigationMenuArrowByVariant),
   navigationMenuBackdropBase,
   ...Object.values(navigationMenuColor),
 ]

@@ -151,7 +151,7 @@ function createToggleColorVariant(color: SemanticColorKey, variant: ToggleVarian
 }
 
 export const toggleBase =
-  'inline-flex shrink-0 appearance-none select-none items-center justify-center border border-solid p-0 m-0 box-border leading-none outline-none transition-[background-color,color,border-color,filter,box-shadow] duration-[var(--af-motion-fast)] ease-[var(--af-ease-standard)] enabled:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:shrink-0 [&:has(>svg:only-child)]:px-0'
+  'inline-flex shrink-0 appearance-none select-none items-center justify-center border border-solid p-0 m-0 box-border leading-none outline-none transition-[background-color,color,border-color,filter,box-shadow] duration-[var(--af-motion-fast)] ease-[var(--af-ease-standard)] enabled:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:shrink-0 [&:has(>svg:only-child)]:px-0'
 
 export const toggleSizeVariants = Object.fromEntries(
   toggleSizes.map(size => {

@@ -63,7 +63,7 @@ export const ResponsiveSources: Story = {
   },
   render: args => (
     <div className="max-w-3xl space-y-3">
-      <div className="text-sm text-muted-foreground">
+      <div className="text-sm text-muted">
         This story keeps `srcSet` and `sizes` visible in controls and composes the image inside `AspectRatio`.
       </div>
       <AspectRatio ratio="21/9" className="w-full overflow-hidden rounded-xl border">
@@ -81,7 +81,7 @@ export const FallbackSource: Story = {
   },
   render: args => (
     <div className="max-w-xl space-y-3">
-      <div className="text-sm text-muted-foreground">
+      <div className="text-sm text-muted">
         The primary image intentionally fails so `fallbackSrc` can be exercised in Storybook.
       </div>
       <AspectRatio ratio="4/3" className="w-full overflow-hidden rounded-xl border">
@@ -96,8 +96,8 @@ export const ObjectFitComparison: Story = {
     <div className="grid w-[720px] grid-cols-2 gap-4">
       {(['cover', 'contain', 'fill', 'none', 'scale-down'] as const).map(objectFit => (
         <div key={objectFit} className="space-y-2">
-          <div className="text-xs text-muted-foreground">objectFit="{objectFit}"</div>
-          <AspectRatio ratio="3/2" className="w-full overflow-hidden rounded-xl border bg-muted/40">
+          <div className="text-xs text-muted">objectFit="{objectFit}"</div>
+          <AspectRatio ratio="3/2" className="w-full overflow-hidden rounded-xl border bg-neutral-soft">
             <Image src={sampleSrc} alt={`${objectFit} sample`} objectFit={objectFit} className="h-full w-full" />
           </AspectRatio>
         </div>

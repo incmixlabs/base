@@ -61,18 +61,18 @@ function renderWidget(item: DashboardLayoutItem, index: number) {
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="truncate font-medium text-sm">{title}</div>
-          <div className="mt-1 text-muted-foreground text-xs">{componentName}</div>
+          <div className="mt-1 text-muted text-xs">{componentName}</div>
         </div>
-        <div className="rounded bg-muted px-2 py-1 font-medium text-xs">{value}%</div>
+        <div className="rounded bg-neutral-soft px-2 py-1 font-medium text-xs">{value}%</div>
       </div>
       <div className="mt-auto grid gap-2">
-        <div className="h-2 rounded bg-muted">
+        <div className="h-2 rounded bg-neutral-soft">
           <div className="h-full rounded bg-primary" style={{ width: `${Math.min(value, 100)}%` }} />
         </div>
         <div className="grid grid-cols-3 gap-2">
-          <span className="h-8 rounded bg-muted/70" />
-          <span className="h-8 rounded bg-muted/70" />
-          <span className="h-8 rounded bg-muted/70" />
+          <span className="h-8 rounded bg-neutral-soft" />
+          <span className="h-8 rounded bg-neutral-soft" />
+          <span className="h-8 rounded bg-neutral-soft" />
         </div>
       </div>
     </div>
@@ -125,7 +125,9 @@ export const ThemeGapPreference: Story = {
                 type="button"
                 aria-pressed={option.id === gapId}
                 className={`rounded border px-3 py-1.5 font-medium text-sm ${
-                  option.id === gapId ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-card'
+                  option.id === gapId
+                    ? 'border-primary bg-primary text-primary-foreground'
+                    : 'border-neutral bg-neutral-surface'
                 }`}
                 onClick={() => setGapId(option.id)}
               >
@@ -210,7 +212,9 @@ export const PackingComparison: Story = {
               type="button"
               aria-pressed={packing === option}
               className={`rounded border px-3 py-1.5 font-medium text-sm ${
-                packing === option ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-card'
+                packing === option
+                  ? 'border-primary bg-primary text-primary-foreground'
+                  : 'border-neutral bg-neutral-surface'
               }`}
               onClick={() => setPacking(option)}
             >

@@ -146,7 +146,7 @@ export const Sizes: Story = {
         <p className="text-sm font-medium">Stack Layout</p>
         {avatarGroupSizes.map(size => (
           <div key={size} className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground w-12">{size}</span>
+            <span className="text-sm text-muted w-12">{size}</span>
             <AvatarGroup size={size} layout="stack" max={4}>
               <Avatar src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" />
               <Avatar src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face" />
@@ -161,7 +161,7 @@ export const Sizes: Story = {
         <p className="text-sm font-medium">Spread Layout</p>
         {avatarGroupSizes.map(size => (
           <div key={size} className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground w-12">{size}</span>
+            <span className="text-sm text-muted w-12">{size}</span>
             <AvatarGroup size={size} layout="spread" max={4}>
               <Avatar src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" />
               <Avatar src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face" />

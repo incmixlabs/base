@@ -107,7 +107,18 @@ describe('NavigationMenu', () => {
     expectClassTokens(popup?.className, [
       '[background-color:var(--color-neutral-background)]',
       '[border-color:var(--color-neutral-border)]',
+      '[--af-floating-surface-arrow-fill:var(--color-neutral-background)]',
+      '[--af-floating-surface-arrow-edge:var(--color-neutral-border)]',
       '[box-shadow:0_18px_48px_color-mix(in_oklch,black_16%,transparent),0_4px_16px_color-mix(in_oklch,black_10%,transparent)]',
+    ])
+    expect(popup?.className).not.toContain('[fill:')
+
+    const arrow = popup?.querySelector('svg[viewBox="0 0 20 10"]')?.parentElement
+    expect(arrow).toBeTruthy()
+    expectClassTokens(arrow?.className, [
+      'flex',
+      '[fill:var(--af-floating-surface-arrow-fill,currentColor)]',
+      '[color:var(--af-floating-surface-arrow-edge,currentColor)]',
     ])
 
     const structuredLink = screen.getByRole('link', { name: /Platform/ })

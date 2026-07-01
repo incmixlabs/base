@@ -162,7 +162,7 @@ export const Sizes: Story = {
     <Box display="flex" className="flex-col gap-8">
       {calloutSizes.map(size => (
         <div key={size} className="space-y-1">
-          <span className="text-xs text-muted-foreground font-mono">{size}</span>
+          <span className="text-xs text-muted font-mono">{size}</span>
           <Callout.Root {...args} size={size} color={args.color ?? 'info'}>
             <Callout.Icon>
               <Info />
@@ -263,7 +263,7 @@ export const SplitSizes: Story = {
     <Box display="flex" className="flex-col gap-8">
       {calloutSizes.map(size => (
         <div key={size} className="space-y-1">
-          <span className="text-xs text-muted-foreground font-mono">{size}</span>
+          <span className="text-xs text-muted font-mono">{size}</span>
           <Callout.Root {...args} size={size} variant="split" color={args.color ?? 'error'}>
             <Callout.Icon>
               <IconForColor color={String(args.color ?? 'error')} />

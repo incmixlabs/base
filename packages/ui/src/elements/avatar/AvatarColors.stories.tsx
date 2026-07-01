@@ -43,7 +43,7 @@ export const HuePaletteSoft: Story = {
             style={{ backgroundColor: `var(--${hue}-6)`, color: `var(--${hue}-11)` }}
             title={`--${hue}-6 / --${hue}-11`}
           />
-          <span className="text-xs text-muted-foreground">{hue}</span>
+          <span className="text-xs text-muted">{hue}</span>
         </div>
       ))}
     </div>
@@ -63,7 +63,7 @@ export const HuePaletteSolid: Story = {
           >
             Aa
           </div>
-          <span className="text-xs text-muted-foreground">{hue}</span>
+          <span className="text-xs text-muted">{hue}</span>
         </div>
       ))}
     </div>
@@ -81,7 +81,7 @@ export const AutoColorFromName: Story = {
             <Avatar size="md" name={name} />
             <div className="flex flex-col">
               <span className="text-sm font-medium">{name}</span>
-              <span className="text-xs text-muted-foreground">{hue}</span>
+              <span className="text-xs text-muted">{hue}</span>
             </div>
           </div>
         )
@@ -138,7 +138,7 @@ export const ProviderWithRadius: Story = {
     <div className="flex flex-col gap-4">
       {avatarPropDefs.radius.values.map(radius => (
         <div key={radius} className="flex items-center gap-4">
-          <span className="text-sm w-12 text-muted-foreground">{radius}</span>
+          <span className="text-sm w-12 text-muted">{radius}</span>
           <AvatarProvider radius={radius}>
             <div className="flex gap-2">
               {sampleNames.slice(0, 6).map(name => (
@@ -157,14 +157,14 @@ export const DeterministicHueFromName: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       <div>
-        <p className="text-sm text-muted-foreground mb-2">Auto-colored (from name hash):</p>
+        <p className="text-sm text-muted mb-2">Auto-colored (from name hash):</p>
         <div className="flex gap-2">
           <Avatar size="md" name="Alice Walker" />
           <Avatar size="md" name="Bob Chen" />
         </div>
       </div>
       <div>
-        <p className="text-sm text-muted-foreground mb-2">Same name, same hue every time:</p>
+        <p className="text-sm text-muted mb-2">Same name, same hue every time:</p>
         <div className="flex gap-2">
           <Avatar size="md" name="Alice Walker" />
           <Avatar size="md" name="Alice Walker" />
@@ -180,7 +180,7 @@ export const AllShades: Story = {
     <div className="space-y-3">
       {HUE_NAMES.map(hue => (
         <div key={hue} className="flex items-center gap-3">
-          <span className="text-xs w-14 text-muted-foreground">{hue}</span>
+          <span className="text-xs w-14 text-muted">{hue}</span>
           <div className="flex gap-1">
             {(['3', '4', '9', '10', '11'] as const).map(shade => (
               <div

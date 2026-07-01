@@ -80,7 +80,7 @@ export const Controlled: Story = {
           <Label>Controlled Location</Label>
           <LocationInput value={location} onChange={setLocation} />
         </div>
-        <div className="p-3 bg-muted rounded-md text-sm">
+        <div className="p-3 bg-neutral-soft rounded-md text-sm">
           <p>
             <strong>Country:</strong> {location.country} ({location.countryCode})
           </p>
@@ -140,7 +140,7 @@ export const WithCallbacks: Story = {
             }}
           />
         </div>
-        <div className="p-3 bg-muted rounded-md text-xs font-mono space-y-1">
+        <div className="p-3 bg-neutral-soft rounded-md text-xs font-mono space-y-1">
           {logs.length === 0 ? (
             <p className="text-muted">Select a location to see logs</p>
           ) : (

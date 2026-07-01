@@ -248,7 +248,7 @@ export const WithCards: Story = {
                 <Card.Title>{item.title}</Card.Title>
               </Card.Header>
               <Card.Content>
-                <p className="text-sm text-muted-foreground">{item.desc}</p>
+                <p className="text-sm text-muted">{item.desc}</p>
               </Card.Content>
             </Card.Root>
           </Masonry.Item>

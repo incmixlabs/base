@@ -815,7 +815,7 @@ export const ThemeProvider = React.forwardRef<HTMLDivElement, ThemeProviderProps
     'af-themes',
     appearance === 'light' && 'light',
     appearance === 'dark' && 'dark',
-    hasBackgroundProp && 'bg-background text-foreground',
+    hasBackgroundProp && 'bg-neutral-background text-neutral',
     className,
   )
 

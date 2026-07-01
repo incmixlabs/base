@@ -51,11 +51,18 @@ describe('Popover', () => {
       'bg-neutral-surface',
       'border-neutral',
       'text-neutral',
+      '[--af-floating-surface-arrow-fill:var(--color-neutral-surface)]',
+      '[--af-floating-surface-arrow-edge:var(--color-neutral-border)]',
       '[box-shadow:var(--shadow-xs)]',
     ])
+    expect(popup?.className).not.toContain('[fill:')
 
-    const arrow = document.body.querySelector('.surface-floating-arrow')
+    const arrow = popup?.querySelector('svg[viewBox="0 0 20 10"]')?.parentElement
     expect(arrow).not.toBeNull()
-    expectClassTokens(arrow?.className, ['[fill:var(--color-neutral-surface)]', '[color:var(--color-neutral-border)]'])
+    expectClassTokens(arrow?.className, [
+      'flex',
+      '[fill:var(--af-floating-surface-arrow-fill,currentColor)]',
+      '[color:var(--af-floating-surface-arrow-edge,currentColor)]',
+    ])
   })
 })

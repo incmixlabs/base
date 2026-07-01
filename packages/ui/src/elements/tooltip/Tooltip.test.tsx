@@ -43,11 +43,18 @@ describe('Tooltip', () => {
       'bg-inverse-solid',
       'border-[var(--color-inverse-text)]',
       'text-inverse-contrast',
+      '[--af-floating-surface-arrow-fill:var(--color-inverse-primary)]',
+      '[--af-floating-surface-arrow-edge:var(--color-inverse-text)]',
     ])
+    expect(popup?.className).not.toContain('[fill:')
 
-    const arrow = document.body.querySelector('.surface-floating-arrow')
+    const arrow = popup?.querySelector('svg[viewBox="0 0 20 10"]')?.parentElement
     expect(arrow).not.toBeNull()
-    expectClassTokens(arrow?.className, ['[fill:var(--color-inverse-primary)]', '[color:var(--color-inverse-text)]'])
+    expectClassTokens(arrow?.className, [
+      'flex',
+      '[fill:var(--af-floating-surface-arrow-fill,currentColor)]',
+      '[color:var(--af-floating-surface-arrow-edge,currentColor)]',
+    ])
   })
 })
 

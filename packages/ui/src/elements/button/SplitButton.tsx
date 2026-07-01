@@ -248,7 +248,7 @@ function SplitButtonMenuItem({ item, isSelected, onSelect }: SplitButtonMenuItem
         {/* Label + description */}
         <Flex as="span" direction="column" minWidth="0" flexGrow="1">
           <span className="truncate font-semibold">{item.label}</span>
-          {item.description && <span className="truncate text-xs text-foreground/70">{item.description}</span>}
+          {item.description && <span className="truncate text-xs text-muted">{item.description}</span>}
         </Flex>
       </Flex>
     </DropdownMenu.Item>
@@ -294,7 +294,7 @@ function SplitButtonSubTrigger({ item, isSelected, onSelect }: SplitButtonSubTri
         {/* Label + description */}
         <Flex as="span" direction="column" className="min-w-0 flex-1">
           <span className="truncate font-semibold">{item.label}</span>
-          {item.description && <span className="truncate text-xs text-foreground/70">{item.description}</span>}
+          {item.description && <span className="truncate text-xs text-muted">{item.description}</span>}
         </Flex>
       </Flex>
     </DropdownMenu.SubTrigger>

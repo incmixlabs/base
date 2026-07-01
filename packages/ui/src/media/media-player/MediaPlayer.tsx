@@ -684,7 +684,7 @@ function MediaPlayerImpl(props: MediaPlayerRootProps) {
           onKeyDown={onKeyDown}
           onKeyUp={onKeyUp}
           className={cn(
-            'relative isolate flex flex-col overflow-hidden rounded-lg bg-light-soft text-dark outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:bg-dark-surface [&_video]:relative [&_video]:object-contain',
+            'relative isolate flex flex-col overflow-hidden rounded-lg bg-light-soft text-dark outline-none focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-primary/50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:bg-dark-surface [&_video]:relative [&_video]:object-contain',
             'in-[:fullscreen]:flex in-[:fullscreen]:h-full in-[:fullscreen]:max-h-screen in-[:fullscreen]:flex-col in-[:fullscreen]:justify-between data-[state=fullscreen]:[&_video]:size-full',
             "**:data-slider:relative [&_[data-slider]::before]:absolute [&_[data-slider]::before]:inset-x-0 [&_[data-slider]::before]:-top-4 [&_[data-slider]::before]:-bottom-2 [&_[data-slider]::before]:z-10 [&_[data-slider]::before]:h-8 [&_[data-slider]::before]:cursor-pointer [&_[data-slider]::before]:content-[''] [&_[data-slot='media-player-seek']:not([data-hovering])::before]:cursor-default",
             '[&_video::-webkit-media-text-track-display]:top-auto! [&_video::-webkit-media-text-track-display]:bottom-[4%]! [&_video::-webkit-media-text-track-display]:mb-0! [&_video::-webkit-media-text-track-display]:data-[state=fullscreen]:data-[controls-visible]:bottom-[9%]! [&_video::-webkit-media-text-track-display]:data-[state=fullscreen]:bottom-[7%]! [&_video::-webkit-media-text-track-display]:data-[controls-visible]:bottom-[13%]!',
@@ -1010,7 +1010,7 @@ function MediaPlayerError(props: MediaPlayerErrorProps) {
           <AlertTriangleIcon className="size-12 text-destructive" />
           <div className="flex flex-col gap-px text-center">
             <h3 className="font-semibold text-xl tracking-tight">{errorLabel}</h3>
-            <p className="text-balance text-muted-foreground text-sm leading-relaxed">{errorDescription}</p>
+            <p className="text-balance text-muted text-sm leading-relaxed">{errorDescription}</p>
           </div>
           <div className="flex items-center gap-2">
             <Button variant="soft" size="sm" onClick={onRetry} disabled={actionState.retryPending}>
@@ -1826,7 +1826,7 @@ function MediaPlayerSeek(props: MediaPlayerSeekProps) {
           </SliderBase.Track>
           <SliderBase.Thumb
             index={0}
-            className="relative z-10 block size-2.5 shrink-0 rounded-full bg-primary shadow-sm ring-ring/50 transition-[color,box-shadow] will-change-transform hover:ring-4 focus-visible:outline-hidden focus-visible:ring-4 disabled:pointer-events-none disabled:opacity-50"
+            className="relative z-10 block size-2.5 shrink-0 rounded-full bg-primary shadow-sm ring-primary/50 transition-[color,box-shadow] will-change-transform hover:ring-4 focus-visible:outline-hidden focus-visible:ring-4 disabled:pointer-events-none disabled:opacity-50"
           />
         </SliderBase.Control>
       </SliderBase.Root>
@@ -1955,7 +1955,7 @@ function MediaPlayerSeekTooltip(props: MediaPlayerSeekTooltipProps) {
       >
         <div
           className={cn(
-            'flex flex-col items-center gap-1.5 rounded-md border bg-popover text-popover-foreground shadow-sm',
+            'flex flex-col items-center gap-1.5 rounded-md border bg-neutral-surface text-neutral shadow-sm',
             thumbnail && 'min-h-10',
             !thumbnail && currentChapterCue && 'px-3 py-1.5',
           )}
@@ -2119,12 +2119,12 @@ function MediaPlayerVolume(props: MediaPlayerVolumeProps) {
         onValueCommitted={onVolumeCommit}
       >
         <SliderBase.Control className="flex w-full items-center">
-          <SliderBase.Track className="relative h-1 w-full grow overflow-hidden rounded-full bg-muted">
+          <SliderBase.Track className="relative h-1 w-full grow overflow-hidden rounded-full bg-neutral-soft">
             <SliderBase.Indicator className="absolute h-full bg-primary will-change-[width]" />
           </SliderBase.Track>
           <SliderBase.Thumb
             index={0}
-            className="block size-2.5 shrink-0 rounded-full bg-primary shadow-sm ring-ring/50 transition-[color,box-shadow] will-change-transform hover:ring-4 focus-visible:outline-hidden focus-visible:ring-4 disabled:pointer-events-none disabled:opacity-50"
+            className="block size-2.5 shrink-0 rounded-full bg-primary shadow-sm ring-primary/50 transition-[color,box-shadow] will-change-transform hover:ring-4 focus-visible:outline-hidden focus-visible:ring-4 disabled:pointer-events-none disabled:opacity-50"
           />
         </SliderBase.Control>
       </SliderBase.Root>
@@ -2343,7 +2343,7 @@ function MediaPlayerLoop(props: React.ComponentProps<typeof Button>) {
         className={cn('h-8 w-8 shrink-0 p-0 [&_svg]:h-4 [&_svg]:w-4', className)}
         onClick={onLoopToggle}
       >
-        {children ?? (isLooping ? <RepeatIcon className="text-muted-foreground" /> : <RepeatIcon />)}
+        {children ?? (isLooping ? <RepeatIcon className="text-muted" /> : <RepeatIcon />)}
       </Button>
     </MediaPlayerTooltip>
   )
@@ -2813,7 +2813,7 @@ function MediaPlayerTooltip(props: MediaPlayerTooltipProps) {
       {React.isValidElement(children) ? (
         <Tooltip.Trigger render={children} />
       ) : (
-        <Tooltip.Trigger className="focus-visible:ring-ring/50">{children}</Tooltip.Trigger>
+        <Tooltip.Trigger className="focus-visible:ring-primary/50">{children}</Tooltip.Trigger>
       )}
       <Tooltip.Content
         container={context.portalContainer as HTMLElement | null}
@@ -2826,7 +2826,7 @@ function MediaPlayerTooltip(props: MediaPlayerTooltipProps) {
             {shortcut.map(shortcutKey => (
               <kbd
                 key={shortcutKey}
-                className="select-none rounded border bg-secondary px-1.5 py-0.5 font-mono text-[11.2px] text-foreground shadow-xs"
+                className="select-none rounded border bg-secondary px-1.5 py-0.5 font-mono text-[11.2px] text-neutral shadow-xs"
               >
                 <abbr title={shortcutKey} className="no-underline">
                   {shortcutKey}
@@ -2836,7 +2836,7 @@ function MediaPlayerTooltip(props: MediaPlayerTooltipProps) {
           </div>
         ) : (
           shortcut && (
-            <kbd className="select-none rounded border bg-secondary px-1.5 py-px font-mono text-[11.2px] text-foreground shadow-xs">
+            <kbd className="select-none rounded border bg-secondary px-1.5 py-px font-mono text-[11.2px] text-neutral shadow-xs">
               <abbr title={shortcut} className="no-underline">
                 {shortcut}
               </abbr>

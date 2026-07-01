@@ -9,10 +9,9 @@ import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
 import { FloatingArrowSvg } from '../surface/FloatingArrowSvg'
-import { floatingArrowBase } from '../surface/surface.class'
+import { floatingArrowBase, floatingArrowSurface } from '../surface/surface.class'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
-  navigationMenuArrowByVariant,
   navigationMenuBackdropBase,
   navigationMenuColor,
   navigationMenuContentBase,
@@ -487,21 +486,20 @@ NavigationMenuViewport.displayName = 'NavigationMenu.Viewport'
 export interface NavigationMenuArrowProps extends Omit<PrimitiveArrowProps, 'className' | 'children'> {
   /** Additional class names. */
   className?: string
-  /** Floating panel variant. Defaults to the root variant. */
-  variant?: NavigationMenuVariant
   /** Arrow content. Defaults to the shared floating arrow SVG. */
   children?: React.ReactNode
+  /** @deprecated Arrow now inherits variant from NavigationMenu.Popup. */
+  variant?: NavigationMenuVariant
+  /** @deprecated Arrow now inherits high contrast from NavigationMenu.Popup. */
+  highContrast?: boolean
 }
 
 const NavigationMenuArrow = React.forwardRef<HTMLDivElement, NavigationMenuArrowProps>(
-  ({ className, variant, children, ...props }, ref) => {
-    const context = React.useContext(NavigationMenuContext)
-    const safeVariant = (normalizeEnumPropValue(navigationMenuPropDefs.Root.variant, variant ?? context.variant) ??
-      navigationMenuPropDefs.Root.variant.default) as NavigationMenuVariant
+  ({ className, children, variant: _variant, highContrast: _highContrast, ...props }, ref) => {
     return (
       <NavigationMenuPrimitive.Arrow
         ref={ref}
-        className={cn(floatingArrowBase, navigationMenuArrowByVariant[safeVariant], className)}
+        className={cn(floatingArrowBase, floatingArrowSurface, className)}
         {...props}
       >
         {children ?? <FloatingArrowSvg />}
@@ -559,7 +557,7 @@ const NavigationMenuPopup = React.forwardRef<HTMLElement, NavigationMenuPopupPro
       >
         {children ?? (
           <>
-            <NavigationMenuArrow variant={safeVariant} />
+            <NavigationMenuArrow />
             <NavigationMenuViewport />
           </>
         )}
