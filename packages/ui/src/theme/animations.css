@@ -30,6 +30,48 @@
   }
 }
 
+:root[data-theme-toggle-transition]::view-transition-old(root),
+:root[data-theme-toggle-transition]::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+[data-theme-toggle-icon-glyph] {
+  animation: af-theme-toggle-icon-forward 280ms ease-in-out both;
+}
+
+[data-theme-toggle-icon-glyph][data-theme-toggle-motion="backward"] {
+  animation-name: af-theme-toggle-icon-backward;
+}
+
+@keyframes af-theme-toggle-icon-forward {
+  from {
+    opacity: 0;
+    transform: rotate(-120deg) scale(0.78);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+@keyframes af-theme-toggle-icon-backward {
+  from {
+    opacity: 0;
+    transform: rotate(120deg) scale(0.78);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme-toggle-icon-glyph] {
+    animation: none;
+  }
+}
+
 @keyframes af-fade-in {
   from {
     opacity: 0;

@@ -49,22 +49,13 @@ function ThemeIcon({ mode, direction }: { mode: 'light' | 'dark'; direction: Ico
       aria-hidden="true"
       data-theme-toggle-icon={mode}
       data-theme-toggle-motion={direction}
-      style={{
-        display: 'inline-grid',
-        placeItems: 'center',
-        color: 'inherit',
-      }}
+      className="inline-grid place-items-center text-inherit"
     >
       <span
         key={mode}
         data-theme-toggle-icon-glyph=""
         data-theme-toggle-motion={direction}
-        style={{
-          display: 'inline-flex',
-          gridArea: '1 / 1',
-          color: 'inherit',
-          transformOrigin: '50% 50%',
-        }}
+        className="inline-flex [grid-area:1/1] text-inherit [transform-origin:50%_50%]"
       >
         <Icon aria-hidden focusable={false} />
       </span>
@@ -168,56 +159,17 @@ export function ThemeToggle({
   )
 
   return (
-    <>
-      <IconButton
-        variant={variant}
-        color={color}
-        size={size}
-        aria-label="Toggle theme"
-        className={cn(className)}
-        onClick={toggle}
-        {...props}
-      >
-        <ThemeIcon mode={displayedIconMode} direction={iconAnimationDirection} />
-      </IconButton>
-      <style>{`
-        :root[${THEME_TOGGLE_TRANSITION_ATTR}]::view-transition-old(root),
-        :root[${THEME_TOGGLE_TRANSITION_ATTR}]::view-transition-new(root) {
-          animation: none;
-          mix-blend-mode: normal;
-        }
-
-        [data-theme-toggle-icon-glyph] {
-          animation: theme-toggle-icon-forward 280ms ease-in-out both;
-        }
-
-        [data-theme-toggle-icon-glyph][data-theme-toggle-motion="backward"] {
-          animation-name: theme-toggle-icon-backward;
-        }
-
-        @keyframes theme-toggle-icon-forward {
-          from {
-            opacity: 0;
-            transform: rotate(-120deg) scale(0.78);
-          }
-          to {
-            opacity: 1;
-            transform: rotate(0deg) scale(1);
-          }
-        }
-
-        @keyframes theme-toggle-icon-backward {
-          from {
-            opacity: 0;
-            transform: rotate(120deg) scale(0.78);
-          }
-          to {
-            opacity: 1;
-            transform: rotate(0deg) scale(1);
-          }
-        }
-      `}</style>
-    </>
+    <IconButton
+      variant={variant}
+      color={color}
+      size={size}
+      aria-label="Toggle theme"
+      className={cn(className)}
+      onClick={toggle}
+      {...props}
+    >
+      <ThemeIcon mode={displayedIconMode} direction={iconAnimationDirection} />
+    </IconButton>
   )
 }
 

@@ -11,6 +11,7 @@ import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
   accordionChevron,
   accordionChevronSizeVariants,
+  accordionContentAnimated,
   accordionContentBase,
   accordionContentInner,
   accordionContentPaddingless,
@@ -298,8 +299,14 @@ const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>
         ref={ref}
         className={
           typeof className === 'function'
-            ? state => cn(accordionContentBase, accordionTextSizeVariants[accordion.size], className(state))
-            : cn(accordionContentBase, accordionTextSizeVariants[accordion.size], className)
+            ? state =>
+                cn(
+                  accordionContentBase,
+                  accordionContentAnimated,
+                  accordionTextSizeVariants[accordion.size],
+                  className(state),
+                )
+            : cn(accordionContentBase, accordionContentAnimated, accordionTextSizeVariants[accordion.size], className)
         }
         {...props}
       >

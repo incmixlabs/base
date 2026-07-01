@@ -1023,6 +1023,8 @@ function useDashboardLayoutAnimation(enabled: boolean) {
     const baseTransform = existingTransform === 'none' ? '' : existingTransform
     const existingTransformOrigin = element.style.transformOrigin
     const existingWillChange = element.style.willChange
+    let cleanupTimeout: number | null = null
+    let didCleanup = false
 
     element.style.transition = 'none'
     element.style.transformOrigin = 'top left'
@@ -1037,22 +1039,36 @@ function useDashboardLayoutAnimation(enabled: boolean) {
       element.style.transform = existingTransform
     })
 
-    const handleTransitionEnd = (event: TransitionEvent) => {
-      if (event.target !== element || event.propertyName !== 'transform') return
+    const cleanupAnimationStyles = () => {
+      if (didCleanup) return
+      didCleanup = true
+      if (cleanupTimeout !== null) {
+        window.clearTimeout(cleanupTimeout)
+        cleanupTimeout = null
+      }
+      element.removeEventListener('transitionend', handleTransitionComplete)
+      element.removeEventListener('transitioncancel', handleTransitionComplete)
       element.style.transition = existingTransition
+      element.style.transform = existingTransform
       element.style.transformOrigin = existingTransformOrigin
       element.style.willChange = existingWillChange
-      element.removeEventListener('transitionend', handleTransitionEnd)
     }
 
-    element.addEventListener('transitionend', handleTransitionEnd)
+    const handleTransitionComplete = (event: TransitionEvent) => {
+      if (event.target !== element || event.propertyName !== 'transform') return
+      cleanupAnimationStyles()
+    }
+
+    element.addEventListener('transitionend', handleTransitionComplete)
+    element.addEventListener('transitioncancel', handleTransitionComplete)
+    cleanupTimeout = window.setTimeout(cleanupAnimationStyles, DASHBOARD_LAYOUT_ANIMATION_DURATION_MS + 100)
 
     return () => {
       if (frameRef.current !== null) {
         window.cancelAnimationFrame(frameRef.current)
         frameRef.current = null
       }
-      element.removeEventListener('transitionend', handleTransitionEnd)
+      cleanupAnimationStyles()
       element.style.transition = existingTransition
       element.style.transform = existingTransform
       element.style.transformOrigin = existingTransformOrigin
