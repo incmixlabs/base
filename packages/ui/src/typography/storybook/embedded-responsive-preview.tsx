@@ -49,7 +49,7 @@ export const EmbeddedResponsiveShell = React.forwardRef<HTMLDivElement, { width:
         className={embeddedResponsiveShell}
         style={{
           width,
-          border: '1px solid var(--color-border)',
+          border: '1px solid var(--color-neutral-border)',
           borderRadius: '0.75rem',
           padding: '1rem',
         }}

@@ -47,6 +47,51 @@ describe('Surface', () => {
     expect(surface.className.split(' ')).not.toContain('surface-variant-surface')
   })
 
+  it('uses shared shadow token for the surface variant', () => {
+    render(
+      <Surface data-testid="surface" variant="surface">
+        Surface
+      </Surface>,
+    )
+
+    const surface = screen.getByTestId('surface')
+
+    expect(surface.className).toContain('[box-shadow:var(--shadow-xs)]')
+    expect(surface.className).not.toContain('--af-surface-variant-surface-box-shadow')
+  })
+
+  it('maps geometric shapes to shared radius utilities', () => {
+    const { rerender } = render(
+      <Surface data-testid="surface" shape="pill">
+        Surface
+      </Surface>,
+    )
+
+    const surface = screen.getByTestId('surface')
+
+    expect(surface.className.split(/\s+/)).toContain('rounded-full')
+    expect(surface.className).not.toContain('--af-surface-shape-pill-radius')
+
+    rerender(
+      <Surface data-testid="surface" shape="circle">
+        Surface
+      </Surface>,
+    )
+
+    expect(surface.className.split(/\s+/)).toContain('aspect-square')
+    expect(surface.className.split(/\s+/)).toContain('rounded-full')
+    expect(surface.className).not.toContain('--af-surface-shape-circle-radius')
+
+    rerender(
+      <Surface data-testid="surface" shape="ellipse">
+        Surface
+      </Surface>,
+    )
+
+    expect(surface.className.split(/\s+/)).toContain('rounded-full')
+    expect(surface.className).not.toContain('--af-surface-shape-ellipse-radius')
+  })
+
   it.each(['chart1', 'chart-1'] as const)('supports chart surface tone %s', color => {
     render(
       <Surface data-testid="surface" color={color} variant="soft">

@@ -51,7 +51,7 @@ export const avatarRadiusByRadius = {
 } as const
 
 // avatar-group classes
-export const avatarGroupStackItem = 'shadow-[0_0_0_2px_var(--color-background)] hover:z-20 focus-within:z-20'
+export const avatarGroupStackItem = 'shadow-[0_0_0_2px_var(--color-neutral-background)] hover:z-20 focus-within:z-20'
 
 export const avatarGroupStackBySize = {
   xs: 'flex -space-x-0',
@@ -94,7 +94,7 @@ export const avatarListItemBySize = {
 
 // avatar-pie classes
 export const avatarPieRoot =
-  'isolate bg-[var(--color-background)] shadow-[inset_0_0_0_1px_var(--color-neutral-border-subtle)]'
+  'isolate bg-[var(--color-neutral-background)] shadow-[inset_0_0_0_1px_var(--color-neutral-border-subtle)]'
 
 export const avatarPieSizeBySize = {
   xs: 'w-6 h-6',

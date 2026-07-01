@@ -2,17 +2,17 @@ import { type SemanticColorClassRecipe, semanticColorClassRecipes } from '../../
 import { SURFACE_COLOR_KEYS, type SurfaceColorKey } from '../../theme/tokens'
 import { type SurfaceShape, type SurfaceVariant, surfaceVariants } from './surface.props'
 
-export const surfaceVariantSurfaceShadow = '[box-shadow:var(--af-surface-variant-surface-box-shadow,var(--shadow-xs))]'
+export const surfaceVariantSurfaceShadow = '[box-shadow:var(--shadow-xs)]'
 
 export const surfaceSquare = 'aspect-square'
 
 export const surfaceShapeVariants = {
   rect: '',
   square: surfaceSquare,
-  ellipse: 'rounded-[var(--af-surface-shape-ellipse-radius,50%)]',
-  circle: `${surfaceSquare} rounded-[var(--af-surface-shape-circle-radius,9999px)]`,
+  ellipse: 'rounded-full',
+  circle: `${surfaceSquare} rounded-full`,
   hexagon: '[clip-path:polygon(25%_6.7%,75%_6.7%,100%_50%,75%_93.3%,25%_93.3%,0%_50%)]',
-  pill: 'rounded-[var(--af-surface-shape-pill-radius,9999px)]',
+  pill: 'rounded-full',
 } as const satisfies Record<SurfaceShape, string>
 
 const surfaceUnoColorByVariant = {
