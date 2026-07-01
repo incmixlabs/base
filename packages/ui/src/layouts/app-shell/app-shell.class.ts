@@ -1,3 +1,5 @@
+import { layoutInsetFocusOutline } from '../layout-focus.class'
+
 const appShellBodySlotColumns =
   '[&>[data-slot=app-shell-sidebar]]:[grid-column:1] [&>[data-slot=app-shell-sidebar]]:min-w-0'
 
@@ -14,8 +16,11 @@ export const appShellSecondaryLeft = ''
 
 export const appShellSecondaryRight = ''
 
-export const appShellSecondaryResizeHandle =
-  'absolute top-0 bottom-0 z-30 w-3 border-0 bg-transparent p-0 cursor-col-resize touch-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary after:content-[""] after:absolute after:top-1/2 after:left-1/2 after:h-12 after:w-1 after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full after:[background-color:var(--af-content-body-border-color,var(--color-neutral-border))] hover:after:bg-primary focus-visible:after:bg-primary data-[resizing]:after:bg-primary'
+export const appShellSecondaryResizeHandle = [
+  'absolute top-0 bottom-0 z-30 w-3 border-0 bg-transparent p-0 cursor-col-resize touch-none',
+  layoutInsetFocusOutline,
+  'after:content-[""] after:absolute after:top-1/2 after:left-1/2 after:h-12 after:w-1 after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full after:[background-color:var(--af-content-body-border-color,var(--color-neutral-border))] hover:after:bg-primary focus-visible:after:bg-primary data-[resizing]:after:bg-primary',
+].join(' ')
 
 export const appShellSecondaryResizeHandleLeft = 'right-0'
 
