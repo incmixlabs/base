@@ -284,7 +284,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
                     className={cn(
                       'flex items-center gap-2 px-3 py-2 text-sm cursor-pointer',
                       pickerOptionItemBase,
-                      selectedCountry?.isoCode === country.isoCode && 'bg-accent-soft text-accent',
+                      selectedCountry?.isoCode === country.isoCode && 'text-accent',
                     )}
                     role="option"
                     aria-selected={selectedCountry?.isoCode === country.isoCode}

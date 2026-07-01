@@ -19,10 +19,13 @@ import {
   textFieldSizeVariants,
 } from './text-field.class'
 import { type FloatingStyle, getFloatingStyle, isFloatingVariant, toBaseTextFieldVariant } from './text-field-variant'
+
 // TBD - need to use our Select Component instead of re-implementing select logic here. This is currently separate to avoid adding @base-ui/react as a dependency to the entire ui package, but we may want to move the Select component into ui at some point which would allow us to unify the select logic and styles.
 // ============================================================================
 // Helpers
 // ============================================================================
+
+const locationInputFocus = 'focus:outline-solid focus:outline-2 focus:outline-offset-2 focus:outline-primary'
 
 export interface LocationValue {
   country?: string
@@ -165,19 +168,19 @@ function SearchableSelect<T>({
                     'border border-neutral',
                     'bg-neutral-background',
                     'hover:bg-neutral-soft hover:text-neutral',
-                    'focus:outline-solid focus:outline-2 focus:outline-offset-2 focus:outline-primary',
+                    locationInputFocus,
                   ],
                   variant === 'soft' && [
                     'border-0',
                     'bg-neutral-soft text-neutral',
                     'hover:bg-neutral-soft-hover',
-                    'focus:outline-solid focus:outline-2 focus:outline-offset-2 focus:outline-primary',
+                    locationInputFocus,
                   ],
                   variant === 'ghost' && [
                     'border-0',
                     'bg-transparent',
                     'hover:bg-neutral-soft hover:text-neutral',
-                    'focus:outline-solid focus:outline-2 focus:outline-offset-2 focus:outline-primary',
+                    locationInputFocus,
                   ],
 
                   error && [
