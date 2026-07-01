@@ -5,7 +5,7 @@ const meta: Meta<typeof MediaPlayer.Root> = {
   title: 'Elements/MediaPlayer',
   component: MediaPlayer.Root,
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
     docs: {
       description: {
         component:
@@ -13,6 +13,18 @@ const meta: Meta<typeof MediaPlayer.Root> = {
       },
     },
   },
+  decorators: [
+    (Story, context) => (
+      <div
+        className={[
+          'box-border flex w-full justify-center bg-light-soft dark:bg-dark-soft',
+          context.viewMode === 'docs' ? 'p-4' : 'min-h-screen items-start p-8',
+        ].join(' ')}
+      >
+        <Story />
+      </div>
+    ),
+  ],
   tags: ['autodocs'],
 }
 
