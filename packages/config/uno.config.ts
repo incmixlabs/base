@@ -167,7 +167,7 @@ const negativeSpacingSafelist = responsiveClasses(
 
 const radiusSafelist = responsiveClasses(radiusUtilities)
 
-const sprinklesClasses = [
+const staticUtilityClasses = [
   'hidden',
   'block',
   'inline-block',
@@ -198,7 +198,7 @@ const sprinklesClasses = [
   ...['1', '2', '3', '4', '5', '6'].map(shadow => `shadow-[var(--shadow-${shadow})]`),
 ]
 
-const sprinklesSafelist = responsiveClasses(sprinklesClasses)
+const staticUtilitySafelist = responsiveClasses(staticUtilityClasses)
 
 const arbitraryThemeColorUtilities = colorUtilityPrefixes.flatMap(prefix => [
   ...HUE_NAMES.flatMap(hue => HUE_STEPS.map(step => `${prefix}-[var(--${hue}-${step})]`)),
@@ -544,7 +544,7 @@ export const baseUnoConfig = {
     ...spacingSafelist,
     ...negativeSpacingSafelist,
     ...radiusSafelist,
-    ...sprinklesSafelist,
+    ...staticUtilitySafelist,
     ...arbitraryThemeColorUtilities,
     ...surfaceColorUtilities,
     ...surfaceStateUtilities,

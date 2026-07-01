@@ -55,7 +55,7 @@ export const EmbeddedResponsivePreview: Story = {
             <Box
               style={{
                 width,
-                border: '1px solid var(--color-border)',
+                border: '1px solid var(--color-neutral-border)',
                 borderRadius: 'var(--radius-4)',
                 padding: '1rem',
               }}
