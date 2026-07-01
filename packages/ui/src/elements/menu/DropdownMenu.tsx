@@ -2,8 +2,6 @@
 
 import { Menu as MenuPrimitive } from '@base-ui/react/menu'
 import { Check, ChevronRight, Circle } from 'lucide-react'
-import { AnimatePresence } from 'motion/react'
-import * as m from 'motion/react-m'
 import * as React from 'react'
 import { Icon as UiIcon } from '@/elements/button/Icon'
 import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
@@ -35,8 +33,6 @@ import {
   menuLabelBase,
   menuLabelBaseCls,
   menuLabelBySize,
-  menuPanelTransition,
-  menuPanelVariants,
   menuPopupBaseCls,
   menuPopupOverflowVisibleCls,
   menuPositionerBase,
@@ -71,8 +67,6 @@ const DropdownMenuContext = React.createContext<DropdownMenuContextValue>({
   radius: 'md',
   animated: false,
 })
-
-const DropdownMenuOpenContext = React.createContext<boolean>(false)
 
 function getMenuItemVariantCls(context: DropdownMenuContextValue) {
   return context.animated ? menuItemByVariantHighlight[context.variant] : menuItemByVariant[context.variant]
@@ -127,24 +121,10 @@ export interface DropdownMenuRootProps {
 }
 
 const DropdownMenuRoot: React.FC<DropdownMenuRootProps> = ({ children, open: openProp, defaultOpen, onOpenChange }) => {
-  const isControlled = openProp !== undefined
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen ?? false)
-  const isOpen = isControlled ? openProp : uncontrolledOpen
-
-  const handleOpenChange = React.useCallback(
-    (next: boolean) => {
-      if (!isControlled) setUncontrolledOpen(next)
-      onOpenChange?.(next)
-    },
-    [isControlled, onOpenChange],
-  )
-
   return (
-    <DropdownMenuOpenContext.Provider value={isOpen}>
-      <MenuPrimitive.Root open={openProp} defaultOpen={defaultOpen} onOpenChange={handleOpenChange}>
-        {children}
-      </MenuPrimitive.Root>
-    </DropdownMenuOpenContext.Provider>
+    <MenuPrimitive.Root open={openProp} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
+      {children}
+    </MenuPrimitive.Root>
   )
 }
 
@@ -301,7 +281,6 @@ const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContent
     const radius = useThemeRadius(radiusProp)
     const themePortalContainer = useThemePortalContainer()
     const portalContainer = containerProp ?? themePortalContainer
-    const isOpen = React.useContext(DropdownMenuOpenContext)
 
     const viewport = (
       <div className={cn(menuViewportBaseCls, menuViewportBase, menuViewportBySize[size])}>{children}</div>
@@ -309,43 +288,24 @@ const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContent
 
     return (
       <DropdownMenuContext.Provider value={{ size, variant, color, radius, animated }}>
-        <AnimatePresence>
-          {isOpen && (
-            <MenuPrimitive.Portal keepMounted container={portalContainer}>
-              <MenuPrimitive.Positioner
-                className={menuPositionerBase}
-                side={side}
-                align={align}
-                sideOffset={sideOffset}
-              >
-                <MenuPrimitive.Popup
-                  ref={ref}
-                  render={
-                    <m.div
-                      key="dropdown-menu-popup"
-                      variants={menuPanelVariants}
-                      initial="initial"
-                      animate="animate"
-                      exit="exit"
-                      transition={menuPanelTransition}
-                    />
-                  }
-                  className={cn(menuPopupBaseCls, menuContentBase, menuContentByVariant[variant], className)}
-                  style={getRadiusStyles(radius)}
-                  {...props}
-                >
-                  {animated ? (
-                    <MenuHighlight className={cn(menuHighlightBgByVariant[variant], menuItemColor[color])}>
-                      {viewport}
-                    </MenuHighlight>
-                  ) : (
-                    viewport
-                  )}
-                </MenuPrimitive.Popup>
-              </MenuPrimitive.Positioner>
-            </MenuPrimitive.Portal>
-          )}
-        </AnimatePresence>
+        <MenuPrimitive.Portal container={portalContainer}>
+          <MenuPrimitive.Positioner className={menuPositionerBase} side={side} align={align} sideOffset={sideOffset}>
+            <MenuPrimitive.Popup
+              ref={ref}
+              className={cn(menuPopupBaseCls, menuContentBase, menuContentByVariant[variant], className)}
+              style={getRadiusStyles(radius)}
+              {...props}
+            >
+              {animated ? (
+                <MenuHighlight className={cn(menuHighlightBgByVariant[variant], menuItemColor[color])}>
+                  {viewport}
+                </MenuHighlight>
+              ) : (
+                viewport
+              )}
+            </MenuPrimitive.Popup>
+          </MenuPrimitive.Positioner>
+        </MenuPrimitive.Portal>
       </DropdownMenuContext.Provider>
     )
   },
@@ -671,8 +631,6 @@ DropdownMenuSeparator.displayName = 'DropdownMenu.Separator'
 // Sub (Submenu)
 // ============================================================================
 
-const DropdownMenuSubOpenContext = React.createContext<boolean>(false)
-
 export interface DropdownMenuSubProps {
   /** Whether the submenu is open */
   open?: boolean
@@ -683,24 +641,10 @@ export interface DropdownMenuSubProps {
 }
 
 const DropdownMenuSub: React.FC<DropdownMenuSubProps> = ({ open: openProp, onOpenChange, children }) => {
-  const isControlled = openProp !== undefined
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false)
-  const isOpen = isControlled ? openProp : uncontrolledOpen
-
-  const handleOpenChange = React.useCallback(
-    (open: boolean) => {
-      if (!isControlled) setUncontrolledOpen(open)
-      onOpenChange?.(open)
-    },
-    [isControlled, onOpenChange],
-  )
-
   return (
-    <DropdownMenuSubOpenContext.Provider value={isOpen}>
-      <MenuPrimitive.SubmenuRoot open={openProp} onOpenChange={handleOpenChange}>
-        {children}
-      </MenuPrimitive.SubmenuRoot>
-    </DropdownMenuSubOpenContext.Provider>
+    <MenuPrimitive.SubmenuRoot open={openProp} onOpenChange={onOpenChange}>
+      {children}
+    </MenuPrimitive.SubmenuRoot>
   )
 }
 
@@ -791,67 +735,50 @@ const DropdownMenuSubContent = React.forwardRef<HTMLDivElement, DropdownMenuSubC
   ) => {
     const context = React.useContext(DropdownMenuContext)
     const portalContainer = useThemePortalContainer()
-    const isSubOpen = React.useContext(DropdownMenuSubOpenContext)
 
     return (
-      <AnimatePresence>
-        {isSubOpen && (
-          <MenuPrimitive.Portal keepMounted container={portalContainer}>
-            <MenuPrimitive.Positioner className={menuPositionerBase} sideOffset={sideOffset} side={side} align="start">
-              <MenuPrimitive.Popup
-                ref={ref}
-                render={
-                  <m.div
-                    key="dropdown-submenu-popup"
-                    variants={menuPanelVariants}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                    transition={menuPanelTransition}
-                  />
-                }
+      <MenuPrimitive.Portal container={portalContainer}>
+        <MenuPrimitive.Positioner className={menuPositionerBase} sideOffset={sideOffset} side={side} align="start">
+          <MenuPrimitive.Popup
+            ref={ref}
+            className={cn(
+              menuPopupBaseCls,
+              overflowVisible && menuPopupOverflowVisibleCls,
+              menuContentBase,
+              menuContentByVariant[context.variant],
+              className,
+            )}
+            style={getRadiusStyles(context.radius)}
+            {...props}
+          >
+            {context.animated ? (
+              <MenuHighlight className={cn(menuHighlightBgByVariant[context.variant], menuItemColor[context.color])}>
+                <div
+                  className={cn(
+                    menuViewportBaseCls,
+                    menuViewportBase,
+                    menuViewportBySize[context.size],
+                    viewportClassName,
+                  )}
+                >
+                  {children}
+                </div>
+              </MenuHighlight>
+            ) : (
+              <div
                 className={cn(
-                  menuPopupBaseCls,
-                  overflowVisible && menuPopupOverflowVisibleCls,
-                  menuContentBase,
-                  menuContentByVariant[context.variant],
-                  className,
+                  menuViewportBaseCls,
+                  menuViewportBase,
+                  menuViewportBySize[context.size],
+                  viewportClassName,
                 )}
-                style={getRadiusStyles(context.radius)}
-                {...props}
               >
-                {context.animated ? (
-                  <MenuHighlight
-                    className={cn(menuHighlightBgByVariant[context.variant], menuItemColor[context.color])}
-                  >
-                    <div
-                      className={cn(
-                        menuViewportBaseCls,
-                        menuViewportBase,
-                        menuViewportBySize[context.size],
-                        viewportClassName,
-                      )}
-                    >
-                      {children}
-                    </div>
-                  </MenuHighlight>
-                ) : (
-                  <div
-                    className={cn(
-                      menuViewportBaseCls,
-                      menuViewportBase,
-                      menuViewportBySize[context.size],
-                      viewportClassName,
-                    )}
-                  >
-                    {children}
-                  </div>
-                )}
-              </MenuPrimitive.Popup>
-            </MenuPrimitive.Positioner>
-          </MenuPrimitive.Portal>
-        )}
-      </AnimatePresence>
+                {children}
+              </div>
+            )}
+          </MenuPrimitive.Popup>
+        </MenuPrimitive.Positioner>
+      </MenuPrimitive.Portal>
     )
   },
 )

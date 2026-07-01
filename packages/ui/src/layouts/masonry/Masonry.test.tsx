@@ -1,4 +1,5 @@
 import { cleanup, render, screen, waitFor } from '@testing-library/react'
+import { renderToStaticMarkup } from 'react-dom/server'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { Masonry } from './Masonry'
 
@@ -61,5 +62,46 @@ describe('Masonry', () => {
       expect(item?.style.visibility).toBe('visible')
       expect(item?.style.width).not.toBe('0px')
     })
+  })
+
+  it('renders an initial measurement batch when no fallback is provided', () => {
+    const markup = renderToStaticMarkup(
+      <Masonry.Root columnWidth={200} gap={12}>
+        <Masonry.Item>
+          <div>Alpha</div>
+        </Masonry.Item>
+      </Masonry.Root>,
+    )
+
+    expect(markup).toContain('Alpha')
+    expect(markup).toContain('visibility:hidden')
+  })
+
+  it('promotes the initial measurement batch to visible items without a scroll event', async () => {
+    const onScroll = vi.fn()
+    window.addEventListener('scroll', onScroll)
+
+    try {
+      render(
+        <Masonry.Root columnWidth={200} gap={12}>
+          <Masonry.Item>
+            <div>Alpha</div>
+          </Masonry.Item>
+          <Masonry.Item>
+            <div>Beta</div>
+          </Masonry.Item>
+        </Masonry.Root>,
+      )
+
+      await waitFor(() => {
+        const item = screen.getByText('Alpha').closest('[data-slot="masonry-item"]') as HTMLElement | null
+        expect(item).not.toBeNull()
+        expect(item?.style.visibility).toBe('visible')
+      })
+
+      expect(onScroll).not.toHaveBeenCalled()
+    } finally {
+      window.removeEventListener('scroll', onScroll)
+    }
   })
 })

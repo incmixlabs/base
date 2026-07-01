@@ -38,4 +38,14 @@ describe('Checkbox', () => {
 
     expect(screen.getByTestId('checkbox')).toHaveClass('box-border', 'rounded-[0.25rem]')
   })
+
+  it('guards press-scale feedback for reduced motion users', () => {
+    render(<Checkbox data-testid="checkbox" />)
+
+    expect(screen.getByTestId('checkbox')).toHaveClass(
+      'active:scale-95',
+      'motion-reduce:transition-none',
+      'motion-reduce:active:scale-100',
+    )
+  })
 })

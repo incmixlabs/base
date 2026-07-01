@@ -1,7 +1,6 @@
 'use client'
 
 import { Moon, Sun } from 'lucide-react'
-import { AnimatePresence, m } from 'motion/react'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
 import { IconButton, type IconButtonProps } from '@/elements/button/IconButton'
@@ -42,27 +41,23 @@ function getTargetEffectiveMode(mode: ThemeMode, fallback: 'light' | 'dark'): 'l
   return fallback
 }
 
-const iconVariants = {
-  initial: (direction: IconAnimationDirection) => ({
-    opacity: 0,
-    rotate: direction === 'forward' ? -120 : 120,
-    scale: 0.78,
-  }),
-  animate: {
-    opacity: 1,
-    rotate: 0,
-    scale: 1,
-  },
-  exit: (direction: IconAnimationDirection) => ({
-    opacity: 0,
-    rotate: direction === 'forward' ? 120 : -120,
-    scale: 0.78,
-  }),
+function prefersReducedThemeMotion() {
+  return (
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
 }
 
-const iconTransition = { duration: 0.28, ease: 'easeInOut' as const }
-
-function ThemeIcon({ mode, direction }: { mode: 'light' | 'dark'; direction: IconAnimationDirection }) {
+function ThemeIcon({
+  mode,
+  direction,
+  animated,
+}: {
+  mode: 'light' | 'dark'
+  direction: IconAnimationDirection
+  animated: boolean
+}) {
   const Icon = mode === 'dark' ? Moon : Sun
 
   return (
@@ -70,31 +65,17 @@ function ThemeIcon({ mode, direction }: { mode: 'light' | 'dark'; direction: Ico
       aria-hidden="true"
       data-theme-toggle-icon={mode}
       data-theme-toggle-motion={direction}
-      style={{
-        display: 'inline-grid',
-        placeItems: 'center',
-        color: 'inherit',
-      }}
+      className="inline-grid place-items-center text-inherit"
     >
-      <AnimatePresence initial={false}>
-        <m.span
-          key={mode}
-          custom={direction}
-          variants={iconVariants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          transition={iconTransition}
-          style={{
-            display: 'inline-flex',
-            gridArea: '1 / 1',
-            color: 'inherit',
-            transformOrigin: '50% 50%',
-          }}
-        >
-          <Icon aria-hidden focusable={false} />
-        </m.span>
-      </AnimatePresence>
+      <span
+        key={mode}
+        data-theme-toggle-icon-glyph=""
+        data-theme-toggle-icon-animated={animated ? '' : undefined}
+        data-theme-toggle-motion={direction}
+        className="inline-flex [grid-area:1/1] text-inherit [transform-origin:50%_50%]"
+      >
+        <Icon aria-hidden focusable={false} />
+      </span>
     </span>
   )
 }
@@ -123,6 +104,7 @@ export function ThemeToggle({
   const effectiveMode = getEffectiveMode(currentMode, theme.resolvedAppearance)
   const [displayedIconMode, setDisplayedIconMode] = React.useState<'light' | 'dark'>(effectiveMode)
   const [iconAnimationDirection, setIconAnimationDirection] = React.useState<IconAnimationDirection>('forward')
+  const [iconAnimationEnabled, setIconAnimationEnabled] = React.useState(false)
   const effectiveModeRef = React.useRef<'light' | 'dark'>(effectiveMode)
   const iconTransitionPendingRef = React.useRef(false)
 
@@ -153,15 +135,18 @@ export function ThemeToggle({
         theme.onAppearanceChange(next as Appearance)
       }
 
-      const completeIconSwap = (finalMode = effectiveModeRef.current) => {
+      const completeIconSwap = (finalMode = effectiveModeRef.current, animateIcon = true) => {
         iconTransitionPendingRef.current = false
         setIconAnimationDirection(finalMode === 'dark' ? 'forward' : 'backward')
+        setIconAnimationEnabled(animateIcon)
         setDisplayedIconMode(finalMode)
       }
 
-      if (typeof document.startViewTransition !== 'function') {
+      const reducedMotion = prefersReducedThemeMotion()
+
+      if (typeof document.startViewTransition !== 'function' || reducedMotion) {
         applyTheme()
-        completeIconSwap(immediateIconMode)
+        completeIconSwap(immediateIconMode, !reducedMotion)
         return
       }
 
@@ -195,20 +180,17 @@ export function ThemeToggle({
   )
 
   return (
-    <>
-      <IconButton
-        variant={variant}
-        color={color}
-        size={size}
-        aria-label="Toggle theme"
-        className={cn(className)}
-        onClick={toggle}
-        {...props}
-      >
-        <ThemeIcon mode={displayedIconMode} direction={iconAnimationDirection} />
-      </IconButton>
-      <style>{`:root[${THEME_TOGGLE_TRANSITION_ATTR}]::view-transition-old(root),:root[${THEME_TOGGLE_TRANSITION_ATTR}]::view-transition-new(root){animation:none;mix-blend-mode:normal;}`}</style>
-    </>
+    <IconButton
+      variant={variant}
+      color={color}
+      size={size}
+      aria-label="Toggle theme"
+      className={cn(className)}
+      onClick={toggle}
+      {...props}
+    >
+      <ThemeIcon mode={displayedIconMode} direction={iconAnimationDirection} animated={iconAnimationEnabled} />
+    </IconButton>
   )
 }
 

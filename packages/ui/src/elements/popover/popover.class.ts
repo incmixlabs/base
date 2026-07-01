@@ -1,5 +1,4 @@
 import { CHROMATIC_SURFACE_COLOR_NAMES } from '@incmix/theme'
-import type { Transition, Variants } from 'motion/react'
 import {
   createSemanticColorVariantClassMap,
   type SemanticColorClassRecipe,
@@ -92,16 +91,4 @@ export const floatingSurfaceHighContrastArrowColorVariants = createSemanticColor
 ) as Record<Color, Record<PopoverContentVariant, string>>
 
 export const popoverContentBase =
-  'relative box-border overflow-visible rounded-[var(--element-border-radius)] outline-none [min-width:var(--popover-trigger-width,var(--radix-popover-trigger-width))] [transform-origin:var(--transform-origin,var(--radix-popover-content-transform-origin))]'
-
-export const popoverPanelVariants: Variants = {
-  initial: { opacity: 0, scale: 0.5 },
-  animate: { opacity: 1, scale: 1 },
-  exit: { opacity: 0, scale: 0.5 },
-}
-
-export const popoverPanelTransition: Transition = {
-  type: 'spring',
-  stiffness: 300,
-  damping: 25,
-}
+  'relative box-border overflow-visible rounded-[var(--element-border-radius)] outline-none duration-200 ease-out data-[starting-style]:animate-in data-[starting-style]:fade-in-0 data-[starting-style]:zoom-in-50 data-[ending-style]:animate-out data-[ending-style]:fade-out-0 data-[ending-style]:zoom-out-50 [min-width:var(--popover-trigger-width,var(--radix-popover-trigger-width))] [transform-origin:var(--transform-origin,var(--radix-popover-content-transform-origin))]'

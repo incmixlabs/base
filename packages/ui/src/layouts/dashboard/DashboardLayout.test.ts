@@ -48,6 +48,8 @@ vi.mock('../masonry/Masonry', async () => {
 import {
   createDashboardItemsFromPreset,
   createDashboardItemsFromPresetForColumns,
+  DASHBOARD_LAYOUT_CSS_TRANSITION,
+  DASHBOARD_LAYOUT_TRANSITION,
   DashboardLayout,
   type DashboardLayoutItem,
   type DashboardResponsiveLayoutItems,
@@ -82,6 +84,21 @@ function getDashboardMasonryRoot(container: HTMLElement) {
 }
 
 describe('dashboard layout helpers', () => {
+  it('keeps the legacy transition export separate from the CSS transition contract', () => {
+    expect(DASHBOARD_LAYOUT_TRANSITION).toEqual({
+      layout: {
+        type: 'spring',
+        stiffness: 380,
+        damping: 38,
+        mass: 0.75,
+      },
+    })
+    expect(DASHBOARD_LAYOUT_CSS_TRANSITION).toEqual({
+      duration: 220,
+      easing: 'cubic-bezier(0.2, 0, 0, 1)',
+    })
+  })
+
   it('ships the starter presets from the dashboard references', () => {
     expect(dashboardLayoutPresets.map(preset => preset.id)).toEqual([
       'three-by-three',

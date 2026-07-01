@@ -1,8 +1,8 @@
 'use client'
 
-import * as m from 'motion/react-m'
 import * as React from 'react'
 import { Card } from '@/elements'
+import { useIsomorphicLayoutEffect } from '@/hooks/use-isomorphic-layout-effect'
 import { cn } from '@/lib/utils'
 import { DEFAULT_THEME_BREAKPOINTS } from '@/theme/theme-breakpoints'
 import { DEFAULT_THEME_DASHBOARD_COLUMNS, normalizeThemeDashboardGap } from '@/theme/theme-dashboard'
@@ -144,8 +144,14 @@ const DEFAULT_BREAKPOINTS: Required<DashboardBreakpointConfig> = {
 }
 
 const DEFAULT_PACKING: DashboardLayoutPacking = 'none'
+const DASHBOARD_LAYOUT_ANIMATION_DURATION_MS = 220
+const DASHBOARD_LAYOUT_ANIMATION_EASING = 'cubic-bezier(0.2, 0, 0, 1)'
+const DASHBOARD_LAYOUT_ANIMATION_DELTA_THRESHOLD = 0.5
 
-type DashboardCollisionAxis = 'vertical' | 'horizontal'
+export const DASHBOARD_LAYOUT_CSS_TRANSITION = {
+  duration: DASHBOARD_LAYOUT_ANIMATION_DURATION_MS,
+  easing: DASHBOARD_LAYOUT_ANIMATION_EASING,
+} as const
 
 export const DASHBOARD_LAYOUT_TRANSITION = {
   layout: {
@@ -155,6 +161,9 @@ export const DASHBOARD_LAYOUT_TRANSITION = {
     mass: 0.75,
   },
 } as const
+
+type DashboardCollisionAxis = 'vertical' | 'horizontal'
+type DashboardLayoutItemRect = Pick<DOMRectReadOnly, 'left' | 'top' | 'width' | 'height'>
 
 const BREAKPOINT_KEYS: Array<Exclude<DashboardLayoutBreakpoint, 'initial'>> = ['xs', 'sm', 'md', 'lg', 'xl']
 const DASHBOARD_LAYOUT_BREAKPOINTS_ASC: readonly DashboardLayoutBreakpoint[] = ['initial', ...BREAKPOINT_KEYS]
@@ -827,6 +836,21 @@ export const DashboardLayout = React.forwardRef<HTMLDivElement, DashboardLayoutP
                   item={item}
                   state={state}
                   animateLayout={animateLayout}
+                  layoutAnimationKey={[
+                    mode,
+                    activeBreakpoint,
+                    activeColumns,
+                    resolvedGap,
+                    rowHeight,
+                    width,
+                    masonryColumnWidth,
+                    masonryMaxColumnCount ?? 'auto',
+                    item.id,
+                    item.x,
+                    item.y,
+                    item.w,
+                    item.h,
+                  ].join(':')}
                   itemClassName={itemClassName}
                   itemStyle={itemStyle}
                   renderItem={renderItem}
@@ -860,6 +884,19 @@ export const DashboardLayout = React.forwardRef<HTMLDivElement, DashboardLayoutP
               item={item}
               state={state}
               animateLayout={animateLayout}
+              layoutAnimationKey={[
+                mode,
+                activeBreakpoint,
+                activeColumns,
+                resolvedGap,
+                rowHeight,
+                width,
+                item.id,
+                item.x,
+                item.y,
+                item.w,
+                item.h,
+              ].join(':')}
               itemClassName={itemClassName}
               itemStyle={itemStyle}
               renderItem={renderItem}
@@ -965,15 +1002,136 @@ interface DashboardItemFrameProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   item: DashboardLayoutItem
   state: DashboardLayoutRenderState
   animateLayout: boolean
+  layoutAnimationKey: string
   itemClassName?: DashboardLayoutProps['itemClassName']
   itemStyle?: DashboardLayoutProps['itemStyle']
   renderItem?: DashboardLayoutProps['renderItem']
+}
+
+function readDashboardItemRect(element: HTMLElement): DashboardLayoutItemRect {
+  const rect = element.getBoundingClientRect()
+  return {
+    left: rect.left,
+    top: rect.top,
+    width: rect.width,
+    height: rect.height,
+  }
+}
+
+function hasDashboardLayoutMotion(rect: DashboardLayoutItemRect, previousRect: DashboardLayoutItemRect) {
+  return (
+    Math.abs(previousRect.left - rect.left) > DASHBOARD_LAYOUT_ANIMATION_DELTA_THRESHOLD ||
+    Math.abs(previousRect.top - rect.top) > DASHBOARD_LAYOUT_ANIMATION_DELTA_THRESHOLD ||
+    Math.abs(previousRect.width - rect.width) > DASHBOARD_LAYOUT_ANIMATION_DELTA_THRESHOLD ||
+    Math.abs(previousRect.height - rect.height) > DASHBOARD_LAYOUT_ANIMATION_DELTA_THRESHOLD
+  )
+}
+
+function prefersReducedDashboardMotion() {
+  return (
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
+}
+
+function useDashboardLayoutAnimation(enabled: boolean, layoutAnimationKey: string) {
+  const elementRef = React.useRef<HTMLDivElement | null>(null)
+  const previousRectRef = React.useRef<DashboardLayoutItemRect | null>(null)
+  const frameRef = React.useRef<number | null>(null)
+
+  useIsomorphicLayoutEffect(() => {
+    const element = elementRef.current
+    if (!element) return undefined
+
+    if (frameRef.current !== null) {
+      window.cancelAnimationFrame(frameRef.current)
+      frameRef.current = null
+    }
+
+    if (!enabled || prefersReducedDashboardMotion()) {
+      previousRectRef.current = null
+      return undefined
+    }
+
+    const rect = readDashboardItemRect(element)
+    const previousRect = previousRectRef.current
+    previousRectRef.current = rect
+
+    if (!previousRect || !hasDashboardLayoutMotion(rect, previousRect)) {
+      return undefined
+    }
+
+    const deltaX = previousRect.left - rect.left
+    const deltaY = previousRect.top - rect.top
+    const scaleX = previousRect.width > 0 && rect.width > 0 ? previousRect.width / rect.width : 1
+    const scaleY = previousRect.height > 0 && rect.height > 0 ? previousRect.height / rect.height : 1
+    const existingTransition = element.style.transition
+    const existingTransform = element.style.transform
+    const baseTransform = existingTransform === 'none' ? '' : existingTransform
+    const existingTransformOrigin = element.style.transformOrigin
+    const existingWillChange = element.style.willChange
+    let cleanupTimeout: number | null = null
+    let didCleanup = false
+
+    element.style.transition = 'none'
+    element.style.transformOrigin = 'top left'
+    element.style.willChange = existingWillChange ? `${existingWillChange}, transform` : 'transform'
+    element.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale(${scaleX}, ${scaleY}) ${baseTransform}`
+
+    element.getBoundingClientRect()
+
+    frameRef.current = window.requestAnimationFrame(() => {
+      frameRef.current = null
+      element.style.transition = `transform ${DASHBOARD_LAYOUT_ANIMATION_DURATION_MS}ms ${DASHBOARD_LAYOUT_ANIMATION_EASING}, opacity 150ms ease`
+      element.style.transform = existingTransform
+    })
+
+    const cleanupAnimationStyles = () => {
+      if (didCleanup) return
+      didCleanup = true
+      if (cleanupTimeout !== null) {
+        window.clearTimeout(cleanupTimeout)
+        cleanupTimeout = null
+      }
+      element.removeEventListener('transitionend', handleTransitionComplete)
+      element.removeEventListener('transitioncancel', handleTransitionComplete)
+      element.style.transition = existingTransition
+      element.style.transform = existingTransform
+      element.style.transformOrigin = existingTransformOrigin
+      element.style.willChange = existingWillChange
+    }
+
+    const handleTransitionComplete = (event: TransitionEvent) => {
+      if (event.target !== element || event.propertyName !== 'transform') return
+      cleanupAnimationStyles()
+    }
+
+    element.addEventListener('transitionend', handleTransitionComplete)
+    element.addEventListener('transitioncancel', handleTransitionComplete)
+    cleanupTimeout = window.setTimeout(cleanupAnimationStyles, DASHBOARD_LAYOUT_ANIMATION_DURATION_MS + 100)
+
+    return () => {
+      if (frameRef.current !== null) {
+        window.cancelAnimationFrame(frameRef.current)
+        frameRef.current = null
+      }
+      cleanupAnimationStyles()
+      element.style.transition = existingTransition
+      element.style.transform = existingTransform
+      element.style.transformOrigin = existingTransformOrigin
+      element.style.willChange = existingWillChange
+    }
+  }, [enabled, layoutAnimationKey])
+
+  return elementRef
 }
 
 function DashboardItemFrame({
   item,
   state,
   animateLayout,
+  layoutAnimationKey,
   itemClassName,
   itemStyle,
   renderItem,
@@ -985,12 +1143,12 @@ function DashboardItemFrame({
   const resolvedItemStyle = typeof itemStyle === 'function' ? itemStyle(item, state) : itemStyle
 
   const active = state.selected || state.dragging
+  const layoutAnimationRef = useDashboardLayoutAnimation(animateLayout, layoutAnimationKey)
 
   return (
     <Card.Root asChild size="xs" variant={active ? 'soft' : 'surface'} color={active ? 'primary' : 'neutral'}>
-      <m.div
-        layout={animateLayout}
-        transition={DASHBOARD_LAYOUT_TRANSITION}
+      <div
+        ref={layoutAnimationRef}
         data-slot="dashboard-layout-item"
         data-dashboard-item-id={item.id}
         className={cn(
@@ -1008,7 +1166,7 @@ function DashboardItemFrame({
         <div data-slot="dashboard-layout-item-content" className="h-full min-h-0 min-w-0">
           {renderItem ? renderItem(item, state) : <div className={dashboardItemFallback}>{label}</div>}
         </div>
-      </m.div>
+      </div>
     </Card.Root>
   )
 }

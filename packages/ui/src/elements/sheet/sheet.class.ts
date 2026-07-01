@@ -1,56 +1,18 @@
-import type { Transition, Variants } from 'motion/react'
 import type { SheetSide } from './sheet.props'
 
-export const sheetBackdropVariants: Variants = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  exit: { opacity: 0 },
-}
-
-export const sheetBackdropTransition: Transition = {
-  duration: 0.2,
-  ease: 'easeInOut',
-}
-
-export const sheetPanelVariants: Record<SheetSide, Variants> = {
-  right: {
-    initial: { x: '100%' },
-    animate: { x: 0 },
-    exit: { x: '100%' },
-  },
-  left: {
-    initial: { x: '-100%' },
-    animate: { x: 0 },
-    exit: { x: '-100%' },
-  },
-  bottom: {
-    initial: { y: '100%' },
-    animate: { y: 0 },
-    exit: { y: '100%' },
-  },
-  top: {
-    initial: { y: '-100%' },
-    animate: { y: 0 },
-    exit: { y: '-100%' },
-  },
-}
-
-export const sheetPanelTransition: Transition = {
-  type: 'spring',
-  stiffness: 300,
-  damping: 30,
-}
-
-export const sheetBackdropBase = 'fixed inset-0 z-[100] bg-black/25'
+export const sheetBackdropBase =
+  'fixed inset-0 z-[100] bg-black/25 duration-200 ease-in-out data-[starting-style]:animate-in data-[starting-style]:fade-in-0 data-[ending-style]:animate-out data-[ending-style]:fade-out-0'
 
 export const sheetPanelBase =
-  'fixed z-[110] bg-neutral-surface shadow-[var(--shadow-2xl,0_25px_50px_-12px_rgba(0,0,0,0.25))] border-solid'
+  'fixed z-[110] bg-neutral-surface shadow-[var(--shadow-2xl,0_25px_50px_-12px_rgba(0,0,0,0.25))] border-solid duration-200 ease-out data-[starting-style]:animate-in data-[ending-style]:animate-out'
 
 export const sheetPanelBySide: Record<SheetSide, string> = {
-  right: 'right-0 top-0 h-full w-full max-w-[420px] border-l border-neutral',
-  left: 'left-0 top-0 h-full w-full max-w-[420px] border-r border-neutral',
-  top: 'left-0 top-0 h-[min(420px,100dvh)] w-full border-b border-neutral',
-  bottom: 'bottom-0 left-0 h-[min(420px,100dvh)] w-full border-t border-neutral',
+  right:
+    'right-0 top-0 h-full w-full max-w-[420px] border-l border-neutral data-[starting-style]:slide-in-from-right-full data-[ending-style]:slide-out-to-right-full',
+  left: 'left-0 top-0 h-full w-full max-w-[420px] border-r border-neutral data-[starting-style]:slide-in-from-left-full data-[ending-style]:slide-out-to-left-full',
+  top: 'left-0 top-0 h-[min(420px,100dvh)] w-full border-b border-neutral data-[starting-style]:slide-in-from-top-full data-[ending-style]:slide-out-to-top-full',
+  bottom:
+    'bottom-0 left-0 h-[min(420px,100dvh)] w-full border-t border-neutral data-[starting-style]:slide-in-from-bottom-full data-[ending-style]:slide-out-to-bottom-full',
 }
 
 export const sheetResizeHandle =

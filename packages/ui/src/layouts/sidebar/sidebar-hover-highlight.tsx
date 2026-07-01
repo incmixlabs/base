@@ -1,7 +1,7 @@
 'use client'
 
-import * as m from 'motion/react-m'
 import * as React from 'react'
+import { usePrefersReducedMotion } from '@/utils/use-prefers-reduced-motion'
 
 interface HighlightRect {
   top: number
@@ -36,6 +36,7 @@ export function SidebarHoverHighlight({ children, className, style }: SidebarHov
   const hoveredRef = React.useRef<HTMLElement | null>(null)
   const focusedRef = React.useRef<HTMLElement | null>(null)
   const leaveTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  const prefersReducedMotion = usePrefersReducedMotion()
 
   const clearLeaveTimeout = React.useCallback(() => {
     if (leaveTimeoutRef.current) {
@@ -141,28 +142,22 @@ export function SidebarHoverHighlight({ children, className, style }: SidebarHov
     <SidebarHoverHighlightContext.Provider value={contextValue}>
       <div ref={containerRef} className={className} style={{ position: 'relative', ...style }}>
         {rect && (
-          <m.div
+          <div
             aria-hidden
-            initial={false}
-            animate={{
+            style={{
+              position: 'absolute',
               opacity: visible ? 1 : 0,
               top: rect.top,
               left: rect.left,
               width: rect.width,
               height: rect.height,
-            }}
-            transition={{
-              type: 'spring',
-              stiffness: 500,
-              damping: 35,
-              opacity: { duration: 0.15 },
-            }}
-            style={{
-              position: 'absolute',
               borderRadius: 'var(--radius-md, 0.375rem)',
               backgroundColor: 'var(--sidebar-hover)',
               pointerEvents: 'none',
               zIndex: 0,
+              transition: prefersReducedMotion
+                ? 'none'
+                : 'top 180ms cubic-bezier(0.16, 1, 0.3, 1), left 180ms cubic-bezier(0.16, 1, 0.3, 1), width 180ms cubic-bezier(0.16, 1, 0.3, 1), height 180ms cubic-bezier(0.16, 1, 0.3, 1), opacity 150ms ease-in-out',
             }}
           />
         )}

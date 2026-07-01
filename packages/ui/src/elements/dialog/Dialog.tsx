@@ -2,8 +2,6 @@
 
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog'
 import { X } from 'lucide-react'
-import { AnimatePresence } from 'motion/react'
-import * as m from 'motion/react-m'
 import * as React from 'react'
 import { IconButton } from '@/elements/button/IconButton'
 import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
@@ -17,8 +15,6 @@ import { createComposedCloseRender, createComposedTriggerRender } from '@/utils/
 import {
   dialogBackdropBase,
   dialogBackdropBaseCls,
-  dialogBackdropTransition,
-  dialogBackdropVariants,
   dialogBodyBySize,
   dialogContentByAlign,
   dialogContentBySize,
@@ -27,8 +23,6 @@ import {
   dialogHeaderBySize,
   dialogPopupBase,
   dialogPopupBaseCls,
-  dialogPopupTransition,
-  dialogPopupVariants,
   dialogTitleBySize,
 } from './dialog.class'
 import {
@@ -53,31 +47,16 @@ export type { DialogProps } from './dialog.props'
 // ============================================================================
 
 const DialogSizeContext = React.createContext<DialogContentSize>('md')
-const DialogOpenContext = React.createContext<boolean>(false)
 
 // ============================================================================
 // Root
 // ============================================================================
 
 const DialogRoot: React.FC<DialogRootProps> = ({ open: openProp, onOpenChange, defaultOpen, children }) => {
-  const isControlled = openProp !== undefined
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen ?? false)
-  const isOpen = isControlled ? openProp : uncontrolledOpen
-
-  const handleOpenChange = React.useCallback(
-    (next: boolean) => {
-      if (!isControlled) setUncontrolledOpen(next)
-      onOpenChange?.(next)
-    },
-    [isControlled, onOpenChange],
-  )
-
   return (
-    <DialogOpenContext.Provider value={isOpen}>
-      <DialogPrimitive.Root open={openProp} onOpenChange={handleOpenChange} defaultOpen={defaultOpen}>
-        {children}
-      </DialogPrimitive.Root>
-    </DialogOpenContext.Provider>
+    <DialogPrimitive.Root open={openProp} onOpenChange={onOpenChange} defaultOpen={defaultOpen}>
+      {children}
+    </DialogPrimitive.Root>
   )
 }
 
@@ -148,55 +127,27 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
       ...style,
     }
 
-    const isOpen = React.useContext(DialogOpenContext)
-
     return (
       <DialogSizeContext.Provider value={resolvedSize}>
-        <AnimatePresence>
-          {isOpen && (
-            <DialogPrimitive.Portal keepMounted container={containerProp ?? themePortalContainer}>
-              <DialogPrimitive.Backdrop
-                render={
-                  <m.div
-                    key="dialog-backdrop"
-                    variants={dialogBackdropVariants}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                    transition={dialogBackdropTransition}
-                  />
-                }
-                className={cn(dialogBackdropBaseCls, dialogBackdropBase)}
-              />
-              <DialogPrimitive.Popup
-                ref={ref}
-                render={
-                  <m.div
-                    key="dialog-popup"
-                    variants={dialogPopupVariants}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                    transition={dialogPopupTransition}
-                  />
-                }
-                className={cn(
-                  dialogPopupBaseCls,
-                  dialogPopupBase,
-                  dialogContentBySize[resolvedSize],
-                  dialogContentByAlign[resolvedAlign],
-                  widthProps.className,
-                  heightProps.className,
-                  className,
-                )}
-                style={popupStyle}
-                {...props}
-              >
-                {children}
-              </DialogPrimitive.Popup>
-            </DialogPrimitive.Portal>
-          )}
-        </AnimatePresence>
+        <DialogPrimitive.Portal container={containerProp ?? themePortalContainer}>
+          <DialogPrimitive.Backdrop className={cn(dialogBackdropBaseCls, dialogBackdropBase)} />
+          <DialogPrimitive.Popup
+            ref={ref}
+            className={cn(
+              dialogPopupBaseCls,
+              dialogPopupBase,
+              dialogContentBySize[resolvedSize],
+              dialogContentByAlign[resolvedAlign],
+              widthProps.className,
+              heightProps.className,
+              className,
+            )}
+            style={popupStyle}
+            {...props}
+          >
+            {children}
+          </DialogPrimitive.Popup>
+        </DialogPrimitive.Portal>
       </DialogSizeContext.Provider>
     )
   },

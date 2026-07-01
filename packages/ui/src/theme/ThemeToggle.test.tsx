@@ -63,7 +63,7 @@ describe('ThemeToggle', () => {
         addEventListener: vi.fn(),
         addListener: vi.fn(),
         dispatchEvent: vi.fn(),
-        matches: appearance === 'dark',
+        matches: query === '(prefers-color-scheme: dark)' && appearance === 'dark',
         media: query,
         onchange: null,
         removeEventListener: vi.fn(),
@@ -101,9 +101,11 @@ describe('ThemeToggle', () => {
 
     const button = screen.getByRole('button', { name: 'Toggle theme' })
     const getIcon = () => button.querySelector('[data-theme-toggle-icon]')
+    const getIconGlyph = () => button.querySelector('[data-theme-toggle-icon-glyph]')
     const getIconMode = () => getIcon()?.getAttribute('data-theme-toggle-icon')
 
     expect(getIconMode()).toBe('light')
+    expect(getIconGlyph()).not.toHaveAttribute('data-theme-toggle-icon-animated')
 
     fireEvent.click(button)
 
@@ -135,6 +137,7 @@ describe('ThemeToggle', () => {
 
     expect(getIconMode()).toBe('dark')
     expect(getIcon()?.getAttribute('data-theme-toggle-motion')).toBe('forward')
+    expect(getIconGlyph()).toHaveAttribute('data-theme-toggle-icon-animated')
     expect(getIcon()?.getAttribute('style') ?? '').not.toContain('rotate(180deg)')
     expect(document.documentElement).not.toHaveAttribute('data-theme-toggle-transition')
   })
@@ -156,6 +159,51 @@ describe('ThemeToggle', () => {
     fireEvent.click(button)
 
     expect(getIconMode()).toBe('light')
+  })
+
+  it('skips the page transition animation when reduced motion is preferred', () => {
+    const matchMedia = vi.fn().mockImplementation((query: string) => ({
+      addEventListener: vi.fn(),
+      addListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+      matches: query === '(prefers-reduced-motion: reduce)',
+      media: query,
+      onchange: null,
+      removeEventListener: vi.fn(),
+      removeListener: vi.fn(),
+    }))
+    const startViewTransition = vi.fn()
+    const animate = vi.fn()
+
+    Object.defineProperty(window, 'matchMedia', {
+      configurable: true,
+      value: matchMedia,
+    })
+    Object.defineProperty(document, 'startViewTransition', {
+      configurable: true,
+      value: startViewTransition,
+    })
+    Object.defineProperty(document.documentElement, 'animate', {
+      configurable: true,
+      value: animate,
+    })
+
+    render(<ThemeToggleHarness />)
+
+    const button = screen.getByRole('button', { name: 'Toggle theme' })
+    const getIconMode = () => button.querySelector('[data-theme-toggle-icon]')?.getAttribute('data-theme-toggle-icon')
+    const getIconGlyph = () => button.querySelector('[data-theme-toggle-icon-glyph]')
+
+    expect(getIconMode()).toBe('light')
+    expect(getIconGlyph()).not.toHaveAttribute('data-theme-toggle-icon-animated')
+
+    fireEvent.click(button)
+
+    expect(startViewTransition).not.toHaveBeenCalled()
+    expect(animate).not.toHaveBeenCalled()
+    expect(getIconMode()).toBe('dark')
+    expect(getIconGlyph()).not.toHaveAttribute('data-theme-toggle-icon-animated')
+    expect(document.documentElement).not.toHaveAttribute('data-theme-toggle-transition')
   })
 
   it('uses the latest resolved icon when inherit resolves during a delayed transition', async () => {

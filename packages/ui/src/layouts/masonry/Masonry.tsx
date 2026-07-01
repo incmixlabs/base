@@ -1449,7 +1449,9 @@ function MasonryViewport(props: DivProps) {
     }
   })
 
-  if (layoutOutdated && mounted) {
+  const shouldRenderMeasurementBatch = layoutOutdated && (mounted || !context.fallback)
+
+  if (shouldRenderMeasurementBatch) {
     const estimatedBatchSize = Math.ceil(
       ((context.scrollTop + overscanPixels - shortestColumnSize) / context.itemHeight) * context.positioner.columnCount,
     )

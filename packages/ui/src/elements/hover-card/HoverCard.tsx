@@ -1,8 +1,6 @@
 'use client'
 
 import { Popover as PopoverPrimitive } from '@base-ui/react/popover'
-import { AnimatePresence } from 'motion/react'
-import * as m from 'motion/react-m'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { getHeightProps } from '@/theme/helpers/get-height-styles'
@@ -20,8 +18,6 @@ import {
   popoverContentBase,
   floatingSurfaceSizeVariants as popoverContentBySize,
   floatingSurfaceMaxWidthVariants as popoverContentMaxWidth,
-  popoverPanelTransition,
-  popoverPanelVariants,
 } from '../popover/popover.class'
 import { type PopoverContentVariant, popoverContentPropDefs } from '../popover/popover.props'
 import { getRadiusStyles, useThemeRadius } from '../utils'
@@ -49,32 +45,16 @@ const HoverCardPortalContainerContext = React.createContext<{
   setPortalContainer: React.Dispatch<React.SetStateAction<HTMLElement | undefined>>
 } | null>(null)
 
-const HoverCardOpenContext = React.createContext<boolean>(false)
-
 const HoverCardRoot: React.FC<HoverCardRootProps> = ({ open: openProp, onOpenChange, defaultOpen, children }) => {
   const [portalContainer, setPortalContainer] = React.useState<HTMLElement | undefined>(undefined)
   const contextValue = React.useMemo(() => ({ portalContainer, setPortalContainer }), [portalContainer])
 
-  const isControlled = openProp !== undefined
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen ?? false)
-  const isOpen = isControlled ? openProp : uncontrolledOpen
-
-  const handleOpenChange = React.useCallback(
-    (next: boolean) => {
-      if (!isControlled) setUncontrolledOpen(next)
-      onOpenChange?.(next)
-    },
-    [isControlled, onOpenChange],
-  )
-
   return (
-    <HoverCardOpenContext.Provider value={isOpen}>
-      <HoverCardPortalContainerContext.Provider value={contextValue}>
-        <PopoverPrimitive.Root open={openProp} onOpenChange={handleOpenChange} defaultOpen={defaultOpen}>
-          {children}
-        </PopoverPrimitive.Root>
-      </HoverCardPortalContainerContext.Provider>
-    </HoverCardOpenContext.Provider>
+    <HoverCardPortalContainerContext.Provider value={contextValue}>
+      <PopoverPrimitive.Root open={openProp} onOpenChange={onOpenChange} defaultOpen={defaultOpen}>
+        {children}
+      </PopoverPrimitive.Root>
+    </HoverCardPortalContainerContext.Provider>
   )
 }
 
@@ -240,53 +220,38 @@ const HoverCardContent = React.forwardRef<React.ElementRef<typeof PopoverPrimiti
     })
     const heightProps = getHeightProps({ height, minHeight, maxHeight })
     const container = portalContext?.portalContainer ?? themePortalContainer
-    const isOpen = React.useContext(HoverCardOpenContext)
 
     return (
-      <AnimatePresence>
-        {isOpen && (
-          <PopoverPrimitive.Portal keepMounted container={container}>
-            <PopoverPrimitive.Positioner side={side} align={align} sideOffset={sideOffset} alignOffset={alignOffset}>
-              <PopoverPrimitive.Popup
-                ref={ref}
-                render={
-                  <m.div
-                    key="hover-card-popup"
-                    variants={popoverPanelVariants}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                    transition={popoverPanelTransition}
-                  />
-                }
-                className={cn(
-                  'z-50 w-full border border-solid origin-[var(--transform-origin)]',
-                  'focus:outline-none',
-                  popoverContentBase,
-                  popoverContentBySize[size],
-                  resolvedTokenMaxWidth && popoverContentMaxWidth[resolvedTokenMaxWidth],
-                  safeHighContrast
-                    ? floatingSurfaceHighContrastColorVariants[safeColor][safeVariant]
-                    : floatingSurfaceColorVariants[safeColor][safeVariant],
-                  safeHighContrast && floatingSurfaceHighContrastEffectByVariant[safeVariant],
-                  widthProps.className,
-                  heightProps.className,
-                  className,
-                )}
-                style={{
-                  ...getRadiusStyles(radius),
-                  ...widthProps.style,
-                  ...heightProps.style,
-                  ...(styleProp as React.CSSProperties | undefined),
-                }}
-                {...props}
-              >
-                {children}
-              </PopoverPrimitive.Popup>
-            </PopoverPrimitive.Positioner>
-          </PopoverPrimitive.Portal>
-        )}
-      </AnimatePresence>
+      <PopoverPrimitive.Portal container={container}>
+        <PopoverPrimitive.Positioner side={side} align={align} sideOffset={sideOffset} alignOffset={alignOffset}>
+          <PopoverPrimitive.Popup
+            ref={ref}
+            className={cn(
+              'z-50 w-full border border-solid origin-[var(--transform-origin)]',
+              'focus:outline-none',
+              popoverContentBase,
+              popoverContentBySize[size],
+              resolvedTokenMaxWidth && popoverContentMaxWidth[resolvedTokenMaxWidth],
+              safeHighContrast
+                ? floatingSurfaceHighContrastColorVariants[safeColor][safeVariant]
+                : floatingSurfaceColorVariants[safeColor][safeVariant],
+              safeHighContrast && floatingSurfaceHighContrastEffectByVariant[safeVariant],
+              widthProps.className,
+              heightProps.className,
+              className,
+            )}
+            style={{
+              ...getRadiusStyles(radius),
+              ...widthProps.style,
+              ...heightProps.style,
+              ...(styleProp as React.CSSProperties | undefined),
+            }}
+            {...props}
+          >
+            {children}
+          </PopoverPrimitive.Popup>
+        </PopoverPrimitive.Positioner>
+      </PopoverPrimitive.Portal>
     )
   },
 )

@@ -1,4 +1,3 @@
-import type { Transition, Variants } from 'motion/react'
 import { type Color, semanticColorScale } from '../../theme/tokens'
 import type { MenuSize, MenuVariant } from './menu.props'
 
@@ -22,6 +21,7 @@ export const menuSubTriggerIconCls = 'ml-auto mr-0 opacity-80 shrink-0'
 export const menuContentBase = cls(
   'origin-[var(--transform-origin)]',
   'min-w-48 max-w-[22rem] max-h-[var(--available-height)]',
+  'duration-200 ease-out data-[starting-style]:animate-in data-[starting-style]:fade-in-0 data-[starting-style]:zoom-in-95 data-[ending-style]:animate-out data-[ending-style]:fade-out-0 data-[ending-style]:zoom-out-95',
   'rounded-[var(--element-border-radius)] border border-solid border-neutral text-neutral',
 )
 
@@ -186,14 +186,6 @@ export const menuItemColor = Object.fromEntries(
     ),
   ]),
 ) as Record<Color, string>
-
-export const menuPanelVariants: Variants = {
-  initial: { opacity: 0, scale: 0.95 },
-  animate: { opacity: 1, scale: 1 },
-  exit: { opacity: 0, scale: 0.95 },
-}
-
-export const menuPanelTransition: Transition = { type: 'spring', stiffness: 500, damping: 30 }
 
 export const menuSharedClassNames = [
   menuPopupBaseCls,

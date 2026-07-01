@@ -2,8 +2,6 @@
 
 import { ContextMenu as ContextMenuPrimitive } from '@base-ui/react/context-menu'
 import { Check, ChevronRight, Circle } from 'lucide-react'
-import { AnimatePresence } from 'motion/react'
-import * as m from 'motion/react-m'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
@@ -32,8 +30,6 @@ import {
   menuLabelBase,
   menuLabelBaseCls,
   menuLabelBySize,
-  menuPanelTransition,
-  menuPanelVariants,
   menuPopupBaseCls,
   menuPositionerBase,
   menuRadioIndicatorIconBySize,
@@ -66,8 +62,6 @@ const ContextMenuContext = React.createContext<ContextMenuContextValue>({
   animated: false,
 })
 
-const ContextMenuOpenContext = React.createContext<boolean>(false)
-
 function getMenuItemVariantCls(context: ContextMenuContextValue) {
   return context.animated ? menuItemByVariantHighlight[context.variant] : menuItemByVariant[context.variant]
 }
@@ -85,24 +79,10 @@ export interface ContextMenuRootProps {
 }
 
 const ContextMenuRoot: React.FC<ContextMenuRootProps> = ({ open: openProp, onOpenChange, children }) => {
-  const isControlled = openProp !== undefined
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false)
-  const isOpen = isControlled ? openProp : uncontrolledOpen
-
-  const handleOpenChange = React.useCallback(
-    (open: boolean) => {
-      if (!isControlled) setUncontrolledOpen(open)
-      onOpenChange?.(open)
-    },
-    [isControlled, onOpenChange],
-  )
-
   return (
-    <ContextMenuOpenContext.Provider value={isOpen}>
-      <ContextMenuPrimitive.Root open={openProp} onOpenChange={handleOpenChange}>
-        {children}
-      </ContextMenuPrimitive.Root>
-    </ContextMenuOpenContext.Provider>
+    <ContextMenuPrimitive.Root open={openProp} onOpenChange={onOpenChange}>
+      {children}
+    </ContextMenuPrimitive.Root>
   )
 }
 
@@ -154,7 +134,6 @@ const ContextMenuContent = React.forwardRef<HTMLDivElement, ContextMenuContentPr
     ref,
   ) => {
     const portalContainer = useThemePortalContainer()
-    const isOpen = React.useContext(ContextMenuOpenContext)
 
     const viewport = (
       <div className={cn(menuViewportBaseCls, menuViewportBase, menuViewportBySize[size])}>{children}</div>
@@ -162,37 +141,23 @@ const ContextMenuContent = React.forwardRef<HTMLDivElement, ContextMenuContentPr
 
     return (
       <ContextMenuContext.Provider value={{ size, variant, color, animated }}>
-        <AnimatePresence>
-          {isOpen && (
-            <ContextMenuPrimitive.Portal keepMounted container={portalContainer}>
-              <ContextMenuPrimitive.Positioner className={menuPositionerBase}>
-                <ContextMenuPrimitive.Popup
-                  ref={ref}
-                  render={
-                    <m.div
-                      key="context-menu-popup"
-                      variants={menuPanelVariants}
-                      initial="initial"
-                      animate="animate"
-                      exit="exit"
-                      transition={menuPanelTransition}
-                    />
-                  }
-                  className={cn(menuPopupBaseCls, menuContentBase, menuContentByVariant[variant], className)}
-                  {...props}
-                >
-                  {animated ? (
-                    <MenuHighlight className={cn(menuHighlightBgByVariant[variant], menuItemColor[color])}>
-                      {viewport}
-                    </MenuHighlight>
-                  ) : (
-                    viewport
-                  )}
-                </ContextMenuPrimitive.Popup>
-              </ContextMenuPrimitive.Positioner>
-            </ContextMenuPrimitive.Portal>
-          )}
-        </AnimatePresence>
+        <ContextMenuPrimitive.Portal container={portalContainer}>
+          <ContextMenuPrimitive.Positioner className={menuPositionerBase}>
+            <ContextMenuPrimitive.Popup
+              ref={ref}
+              className={cn(menuPopupBaseCls, menuContentBase, menuContentByVariant[variant], className)}
+              {...props}
+            >
+              {animated ? (
+                <MenuHighlight className={cn(menuHighlightBgByVariant[variant], menuItemColor[color])}>
+                  {viewport}
+                </MenuHighlight>
+              ) : (
+                viewport
+              )}
+            </ContextMenuPrimitive.Popup>
+          </ContextMenuPrimitive.Positioner>
+        </ContextMenuPrimitive.Portal>
       </ContextMenuContext.Provider>
     )
   },
