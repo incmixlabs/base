@@ -12,10 +12,10 @@ import {
   shift,
   useFloating,
 } from '@floating-ui/react-dom'
-import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Button, type ButtonProps } from '@/elements/button/Button'
+import { Icon } from '@/elements/button/Icon'
 import { useAsRef } from '@/hooks/use-as-ref'
 import { useIsomorphicLayoutEffect } from '@/hooks/use-isomorphic-layout-effect'
 import { useLazyRef } from '@/hooks/use-lazy-ref'
@@ -24,6 +24,13 @@ import { useComposedRefs } from '@/lib/compose-refs'
 import { cn } from '@/lib/utils'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
+import {
+  tourCloseBase,
+  tourControlButtonBase,
+  tourSpotlightBase,
+  tourSpotlightRingBase,
+  tourStepBase,
+} from './tour.class'
 import {
   type TourAlign,
   type TourDirection,
@@ -1297,10 +1304,7 @@ function TourStep(props: TourStepProps) {
         onPointerDownCapture={onPointerDownCapture}
         onFocusCapture={onFocusCapture}
         onBlurCapture={onBlurCapture}
-        className={cn(
-          'fixed z-50 flex w-[min(32rem,calc(100vw-2rem))] flex-col gap-4 rounded-[var(--element-border-radius)] border bg-popover p-4 text-popover-foreground shadow-md outline-none',
-          className,
-        )}
+        className={cn(tourStepBase, className)}
         style={{
           ...style,
           ...floatingStyles,
@@ -1333,10 +1337,7 @@ function TourSpotlight(props: TourSpotlightProps) {
       data-slot="tour-spotlight"
       data-state={getDataState(open)}
       {...backdropProps}
-      className={cn(
-        'fixed inset-0 z-50 bg-black/80 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0',
-        className,
-      )}
+      className={cn(tourSpotlightBase, className)}
       style={{
         clipPath: maskPath,
         ...style,
@@ -1364,7 +1365,7 @@ function TourSpotlightRing(props: TourSpotlightRingProps) {
       data-slot="tour-spotlight-ring"
       data-state={getDataState(open)}
       {...ringProps}
-      className={cn('pointer-events-none fixed z-50 border-ring ring-[3px] ring-ring/50', className)}
+      className={cn(tourSpotlightRingBase, className)}
       style={{
         left: spotlightRect.x,
         top: spotlightRect.y,
@@ -1534,14 +1535,10 @@ function TourClose(props: TourCloseProps) {
       aria-label={context.closeLabel}
       {...defaultCloseButtonProps}
       {...closeButtonProps}
-      className={cn(
-        "absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-        defaultClassName,
-        className,
-      )}
+      className={cn(tourCloseBase, defaultClassName, className)}
       onClick={onClick}
     >
-      {children ?? defaultChildren ?? <X className="size-4" />}
+      {children ?? defaultChildren ?? <Icon icon="close" size="md" color="neutral" />}
     </ClosePrimitive>
   )
 }
@@ -1577,7 +1574,7 @@ function TourPrev(props: ButtonProps) {
 
   const fallbackChildren = (
     <>
-      <ChevronLeft />
+      <Icon icon="chevron-left" size="xs" color="neutral" style={{ color: 'inherit' }} />
       {context.prevLabel}
     </>
   )
@@ -1596,7 +1593,7 @@ function TourPrev(props: ButtonProps) {
       variant="outline"
       {...defaultPrevButtonProps}
       {...prevButtonProps}
-      className={cn(defaultClassName, className)}
+      className={cn(tourControlButtonBase, defaultClassName, className)}
       onClick={onClick}
       disabled={disabled ?? defaultDisabled}
     >
@@ -1637,7 +1634,7 @@ function TourNext(props: ButtonProps) {
   const fallbackChildren = (
     <>
       {label}
-      {!isLastStep && <ChevronRight />}
+      {!isLastStep && <Icon icon="chevron-right" size="xs" color="neutral" style={{ color: 'inherit' }} />}
     </>
   )
   const buttonChildren = children ?? defaultChildren ?? fallbackChildren
@@ -1658,7 +1655,7 @@ function TourNext(props: ButtonProps) {
       size="xs"
       {...defaultNextButtonProps}
       {...nextButtonProps}
-      className={cn(defaultClassName, className)}
+      className={cn(tourControlButtonBase, defaultClassName, className)}
       onClick={onClick}
       disabled={disabled ?? defaultDisabled}
     >
@@ -1710,7 +1707,7 @@ function TourSkip(props: ButtonProps) {
       variant="outline"
       {...defaultSkipButtonProps}
       {...skipButtonProps}
-      className={cn(defaultClassName, className)}
+      className={cn(tourControlButtonBase, defaultClassName, className)}
       onClick={onClick}
       disabled={isRequiredStep || (disabled ?? defaultDisabled)}
     >
