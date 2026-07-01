@@ -148,6 +148,15 @@ const DASHBOARD_LAYOUT_ANIMATION_DURATION_MS = 220
 const DASHBOARD_LAYOUT_ANIMATION_EASING = 'cubic-bezier(0.2, 0, 0, 1)'
 const DASHBOARD_LAYOUT_ANIMATION_DELTA_THRESHOLD = 0.5
 
+export const DASHBOARD_LAYOUT_TRANSITION = {
+  layout: {
+    type: 'spring',
+    stiffness: 380,
+    damping: 38,
+    mass: 0.75,
+  },
+} as const
+
 type DashboardCollisionAxis = 'vertical' | 'horizontal'
 type DashboardLayoutItemRect = Pick<DOMRectReadOnly, 'left' | 'top' | 'width' | 'height'>
 
@@ -822,6 +831,21 @@ export const DashboardLayout = React.forwardRef<HTMLDivElement, DashboardLayoutP
                   item={item}
                   state={state}
                   animateLayout={animateLayout}
+                  layoutAnimationKey={[
+                    mode,
+                    activeBreakpoint,
+                    activeColumns,
+                    resolvedGap,
+                    rowHeight,
+                    width,
+                    masonryColumnWidth,
+                    masonryMaxColumnCount ?? 'auto',
+                    item.id,
+                    item.x,
+                    item.y,
+                    item.w,
+                    item.h,
+                  ].join(':')}
                   itemClassName={itemClassName}
                   itemStyle={itemStyle}
                   renderItem={renderItem}
@@ -855,6 +879,19 @@ export const DashboardLayout = React.forwardRef<HTMLDivElement, DashboardLayoutP
               item={item}
               state={state}
               animateLayout={animateLayout}
+              layoutAnimationKey={[
+                mode,
+                activeBreakpoint,
+                activeColumns,
+                resolvedGap,
+                rowHeight,
+                width,
+                item.id,
+                item.x,
+                item.y,
+                item.w,
+                item.h,
+              ].join(':')}
               itemClassName={itemClassName}
               itemStyle={itemStyle}
               renderItem={renderItem}
@@ -960,6 +997,7 @@ interface DashboardItemFrameProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   item: DashboardLayoutItem
   state: DashboardLayoutRenderState
   animateLayout: boolean
+  layoutAnimationKey: string
   itemClassName?: DashboardLayoutProps['itemClassName']
   itemStyle?: DashboardLayoutProps['itemStyle']
   renderItem?: DashboardLayoutProps['renderItem']
@@ -992,7 +1030,7 @@ function prefersReducedDashboardMotion() {
   )
 }
 
-function useDashboardLayoutAnimation(enabled: boolean) {
+function useDashboardLayoutAnimation(enabled: boolean, layoutAnimationKey: string) {
   const elementRef = React.useRef<HTMLDivElement | null>(null)
   const previousRectRef = React.useRef<DashboardLayoutItemRect | null>(null)
   const frameRef = React.useRef<number | null>(null)
@@ -1006,11 +1044,16 @@ function useDashboardLayoutAnimation(enabled: boolean) {
       frameRef.current = null
     }
 
+    if (!enabled || prefersReducedDashboardMotion()) {
+      previousRectRef.current = null
+      return undefined
+    }
+
     const rect = readDashboardItemRect(element)
     const previousRect = previousRectRef.current
     previousRectRef.current = rect
 
-    if (!enabled || !previousRect || prefersReducedDashboardMotion() || !hasDashboardLayoutMotion(rect, previousRect)) {
+    if (!previousRect || !hasDashboardLayoutMotion(rect, previousRect)) {
       return undefined
     }
 
@@ -1074,7 +1117,7 @@ function useDashboardLayoutAnimation(enabled: boolean) {
       element.style.transformOrigin = existingTransformOrigin
       element.style.willChange = existingWillChange
     }
-  })
+  }, [enabled, layoutAnimationKey])
 
   return elementRef
 }
@@ -1083,6 +1126,7 @@ function DashboardItemFrame({
   item,
   state,
   animateLayout,
+  layoutAnimationKey,
   itemClassName,
   itemStyle,
   renderItem,
@@ -1094,7 +1138,7 @@ function DashboardItemFrame({
   const resolvedItemStyle = typeof itemStyle === 'function' ? itemStyle(item, state) : itemStyle
 
   const active = state.selected || state.dragging
-  const layoutAnimationRef = useDashboardLayoutAnimation(animateLayout)
+  const layoutAnimationRef = useDashboardLayoutAnimation(animateLayout, layoutAnimationKey)
 
   return (
     <Card.Root asChild size="xs" variant={active ? 'soft' : 'surface'} color={active ? 'primary' : 'neutral'}>

@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { usePrefersReducedMotion } from '@/utils/use-prefers-reduced-motion'
 
 interface HighlightRect {
   top: number
@@ -20,6 +21,7 @@ export function MenuHighlight({ children, className, style }: MenuHighlightProps
   const [rect, setRect] = React.useState<HighlightRect | null>(null)
   const [visible, setVisible] = React.useState(false)
   const [highlightBg, setHighlightBg] = React.useState<string | null>(null)
+  const prefersReducedMotion = usePrefersReducedMotion()
 
   const computeRect = React.useCallback((element: HTMLElement): HighlightRect | null => {
     const container = containerRef.current
@@ -90,8 +92,9 @@ export function MenuHighlight({ children, className, style }: MenuHighlightProps
             backgroundColor: highlightBg || 'var(--menu-highlight-bg)',
             pointerEvents: 'none',
             zIndex: 0,
-            transition:
-              'top 180ms cubic-bezier(0.16, 1, 0.3, 1), left 180ms cubic-bezier(0.16, 1, 0.3, 1), width 180ms cubic-bezier(0.16, 1, 0.3, 1), height 180ms cubic-bezier(0.16, 1, 0.3, 1), opacity 120ms ease-in-out',
+            transition: prefersReducedMotion
+              ? 'none'
+              : 'top 180ms cubic-bezier(0.16, 1, 0.3, 1), left 180ms cubic-bezier(0.16, 1, 0.3, 1), width 180ms cubic-bezier(0.16, 1, 0.3, 1), height 180ms cubic-bezier(0.16, 1, 0.3, 1), opacity 120ms ease-in-out',
           }}
         />
       )}

@@ -91,7 +91,8 @@ export const stepperSeparatorCompleted = 'bg-primary-solid'
 
 export const stepperPanel = 'min-h-40 rounded-2xl border border-solid border-neutral p-4'
 
-export const stepperPanelAnimated = 'animate-in fade-in-0 blur-in-4 duration-300 ease-in-out'
+export const stepperPanelAnimated =
+  'animate-in fade-in-0 blur-in-4 duration-300 ease-in-out motion-reduce:animate-none motion-reduce:duration-0'
 
 export const stepperFooter = 'flex items-center justify-between gap-2'
 

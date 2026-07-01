@@ -581,7 +581,9 @@ function GroupRenderer({
       {group.collapsible && !iconMode ? (
         <div
           data-open={open ? '' : undefined}
-          className="grid overflow-hidden opacity-0 transition-[grid-template-rows,opacity] duration-250 ease-in-out grid-rows-[0fr] data-[open]:grid-rows-[1fr] data-[open]:opacity-100"
+          aria-hidden={!open}
+          inert={!open ? true : undefined}
+          className="grid overflow-hidden opacity-0 transition-[grid-template-rows,opacity] duration-250 ease-in-out motion-reduce:transition-none motion-reduce:duration-0 grid-rows-[0fr] data-[open]:grid-rows-[1fr] data-[open]:opacity-100"
         >
           <div className="min-h-0">{items}</div>
         </div>

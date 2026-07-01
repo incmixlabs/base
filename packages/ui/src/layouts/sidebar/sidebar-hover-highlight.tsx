@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { usePrefersReducedMotion } from '@/utils/use-prefers-reduced-motion'
 
 interface HighlightRect {
   top: number
@@ -35,6 +36,7 @@ export function SidebarHoverHighlight({ children, className, style }: SidebarHov
   const hoveredRef = React.useRef<HTMLElement | null>(null)
   const focusedRef = React.useRef<HTMLElement | null>(null)
   const leaveTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  const prefersReducedMotion = usePrefersReducedMotion()
 
   const clearLeaveTimeout = React.useCallback(() => {
     if (leaveTimeoutRef.current) {
@@ -153,8 +155,9 @@ export function SidebarHoverHighlight({ children, className, style }: SidebarHov
               backgroundColor: 'var(--sidebar-hover)',
               pointerEvents: 'none',
               zIndex: 0,
-              transition:
-                'top 180ms cubic-bezier(0.16, 1, 0.3, 1), left 180ms cubic-bezier(0.16, 1, 0.3, 1), width 180ms cubic-bezier(0.16, 1, 0.3, 1), height 180ms cubic-bezier(0.16, 1, 0.3, 1), opacity 150ms ease-in-out',
+              transition: prefersReducedMotion
+                ? 'none'
+                : 'top 180ms cubic-bezier(0.16, 1, 0.3, 1), left 180ms cubic-bezier(0.16, 1, 0.3, 1), width 180ms cubic-bezier(0.16, 1, 0.3, 1), height 180ms cubic-bezier(0.16, 1, 0.3, 1), opacity 150ms ease-in-out',
             }}
           />
         )}

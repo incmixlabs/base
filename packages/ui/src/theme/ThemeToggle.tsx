@@ -41,6 +41,14 @@ function getTargetEffectiveMode(mode: ThemeMode, fallback: 'light' | 'dark'): 'l
   return fallback
 }
 
+function prefersReducedThemeMotion() {
+  return (
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
+}
+
 function ThemeIcon({ mode, direction }: { mode: 'light' | 'dark'; direction: IconAnimationDirection }) {
   const Icon = mode === 'dark' ? Moon : Sun
 
@@ -123,7 +131,7 @@ export function ThemeToggle({
         setDisplayedIconMode(finalMode)
       }
 
-      if (typeof document.startViewTransition !== 'function') {
+      if (typeof document.startViewTransition !== 'function' || prefersReducedThemeMotion()) {
         applyTheme()
         completeIconSwap(immediateIconMode)
         return

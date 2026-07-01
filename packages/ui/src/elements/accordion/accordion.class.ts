@@ -20,7 +20,7 @@ export const accordionChevron =
 export const accordionContentBase =
   'overflow-hidden [color:color-mix(in_oklch,var(--color-neutral-text)_68%,transparent)]'
 export const accordionContentAnimated =
-  '[height:var(--accordion-panel-height)] opacity-100 transition-[height,opacity] duration-[350ms] ease-in-out data-[starting-style]:[height:0] data-[starting-style]:opacity-0 data-[ending-style]:[height:0] data-[ending-style]:opacity-0'
+  '[height:var(--accordion-panel-height)] opacity-100 transition-[height,opacity] duration-[350ms] ease-in-out motion-reduce:transition-none motion-reduce:duration-0 data-[starting-style]:[height:0] data-[starting-style]:opacity-0 data-[ending-style]:[height:0] data-[ending-style]:opacity-0'
 export const accordionContentInner = 'px-4'
 export const accordionContentPaddingless = 'p-0'
 

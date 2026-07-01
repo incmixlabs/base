@@ -7,6 +7,7 @@ export {
   createDashboardItemsFromPresetForColumns,
   createDashboardLayoutsFromPreset,
   createDashboardPresetFromItems,
+  DASHBOARD_LAYOUT_TRANSITION,
   type DashboardBreakpointConfig,
   type DashboardColumnConfig,
   DashboardLayout as Dashboard,

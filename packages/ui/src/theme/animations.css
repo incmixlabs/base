@@ -30,6 +30,15 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  :root [class~="animate-in"][class~="animate-in"],
+  :root [class~="animate-out"][class~="animate-out"],
+  :root [class*=":animate-in"][class*=":animate-in"],
+  :root [class*=":animate-out"][class*=":animate-out"] {
+    animation: none;
+  }
+}
+
 :root[data-theme-toggle-transition]::view-transition-old(root),
 :root[data-theme-toggle-transition]::view-transition-new(root) {
   animation: none;
