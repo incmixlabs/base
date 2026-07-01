@@ -1,4 +1,5 @@
 import { cleanup, render, screen, waitFor } from '@testing-library/react'
+import { renderToStaticMarkup } from 'react-dom/server'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { Masonry } from './Masonry'
 
@@ -61,5 +62,18 @@ describe('Masonry', () => {
       expect(item?.style.visibility).toBe('visible')
       expect(item?.style.width).not.toBe('0px')
     })
+  })
+
+  it('renders an initial measurement batch when no fallback is provided', () => {
+    const markup = renderToStaticMarkup(
+      <Masonry.Root columnWidth={200} gap={12}>
+        <Masonry.Item>
+          <div>Alpha</div>
+        </Masonry.Item>
+      </Masonry.Root>,
+    )
+
+    expect(markup).toContain('Alpha')
+    expect(markup).toContain('visibility:hidden')
   })
 })
