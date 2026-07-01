@@ -2,7 +2,6 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { reactCompilerBabelPlugins } from '@incmix/config/react-compiler.js'
 import type { StorybookConfig } from '@storybook/react-vite'
-import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin'
 import react from '@vitejs/plugin-react'
 import { visualizer } from 'rollup-plugin-visualizer'
 
@@ -54,7 +53,6 @@ const config: StorybookConfig = {
 
     config.plugins = [
       ...(config.plugins ?? []),
-      vanillaExtractPlugin(),
       react({
         babel: {
           plugins: reactCompilerBabelPlugins,
