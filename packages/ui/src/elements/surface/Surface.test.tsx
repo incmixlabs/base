@@ -6,6 +6,7 @@ import { radiusClassByToken } from '@/theme/helpers'
 import { designTokens } from '@/theme/tokens'
 import { Surface } from './Surface'
 import {
+  floatingArrowBase,
   surfaceUnoColorVariants,
   surfaceUnoFocusColorVariants,
   surfaceUnoHighContrastColorVariants,
@@ -18,6 +19,17 @@ afterEach(() => {
 })
 
 describe('Surface', () => {
+  it('supports physical and logical floating arrow sides', () => {
+    const classTokens = new Set(floatingArrowBase.split(/\s+/).filter(Boolean))
+
+    expect(classTokens).toContain('data-[side=right]:left-0')
+    expect(classTokens).toContain('data-[side=left]:right-0')
+    expect(classTokens).toContain('ltr:data-[side=inline-end]:left-0')
+    expect(classTokens).toContain('rtl:data-[side=inline-end]:right-0')
+    expect(classTokens).toContain('ltr:data-[side=inline-start]:right-0')
+    expect(classTokens).toContain('rtl:data-[side=inline-start]:left-0')
+  })
+
   it('supports semantic surface tones', () => {
     render(
       <Surface data-testid="surface" color="primary" variant="surface">

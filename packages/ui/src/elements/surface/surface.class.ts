@@ -93,7 +93,10 @@ export const surfaceUnoHighContrastColorVariants = Object.fromEntries(
 ) as Record<SurfaceColorKey, Record<SurfaceVariant, string>>
 
 export const floatingArrowBase =
-  'flex data-[side=bottom]:top-0 data-[side=bottom]:-translate-y-full data-[side=top]:bottom-0 data-[side=top]:translate-y-full data-[side=top]:rotate-180 data-[side=right]:left-0 data-[side=right]:-translate-x-full data-[side=right]:-rotate-90 data-[side=left]:right-0 data-[side=left]:translate-x-full data-[side=left]:rotate-90'
+  'flex data-[side=bottom]:top-0 data-[side=bottom]:-translate-y-full data-[side=top]:bottom-0 data-[side=top]:translate-y-full data-[side=top]:rotate-180 data-[side=right]:left-0 data-[side=right]:-translate-x-full data-[side=right]:-rotate-90 data-[side=left]:right-0 data-[side=left]:translate-x-full data-[side=left]:rotate-90 ltr:data-[side=inline-end]:left-0 ltr:data-[side=inline-end]:-translate-x-full ltr:data-[side=inline-end]:-rotate-90 rtl:data-[side=inline-end]:right-0 rtl:data-[side=inline-end]:translate-x-full rtl:data-[side=inline-end]:rotate-90 ltr:data-[side=inline-start]:right-0 ltr:data-[side=inline-start]:translate-x-full ltr:data-[side=inline-start]:rotate-90 rtl:data-[side=inline-start]:left-0 rtl:data-[side=inline-start]:-translate-x-full rtl:data-[side=inline-start]:-rotate-90'
+
+export const floatingArrowSurface =
+  '[fill:var(--af-floating-surface-arrow-fill,currentColor)] [color:var(--af-floating-surface-arrow-edge,currentColor)]'
 
 export const surfaceHighContrastByVariant = {
   classic: 'saturate-[1.1] brightness-[0.95]',

@@ -76,13 +76,15 @@ export const navigationMenuPopupByVariant = {
   solid: cls(
     '[background-color:var(--color-neutral-background)]',
     '[border-color:var(--color-neutral-border)]',
-    '[fill:var(--color-neutral-background)]',
+    '[--af-floating-surface-arrow-fill:var(--color-neutral-background)]',
+    '[--af-floating-surface-arrow-edge:var(--color-neutral-border)]',
     '[box-shadow:0_18px_48px_color-mix(in_oklch,black_16%,transparent),0_4px_16px_color-mix(in_oklch,black_10%,transparent)]',
   ),
   soft: cls(
     '[background-color:var(--color-neutral-surface)]',
     '[border-color:var(--color-neutral-border-subtle)]',
-    '[fill:var(--color-neutral-surface)]',
+    '[--af-floating-surface-arrow-fill:var(--color-neutral-surface)]',
+    '[--af-floating-surface-arrow-edge:var(--color-neutral-border-subtle)]',
     'backdrop-saturate-[140%] backdrop-blur-[10px]',
     '[box-shadow:inset_0_1px_0_var(--color-panel-highlight),0_18px_48px_color-mix(in_oklch,black_12%,transparent),0_4px_16px_color-mix(in_oklch,black_8%,transparent)]',
   ),

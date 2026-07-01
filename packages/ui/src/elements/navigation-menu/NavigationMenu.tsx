@@ -9,7 +9,7 @@ import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
 import { FloatingArrowSvg } from '../surface/FloatingArrowSvg'
-import { floatingArrowBase } from '../surface/surface.class'
+import { floatingArrowBase, floatingArrowSurface } from '../surface/surface.class'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
   navigationMenuBackdropBase,
@@ -488,12 +488,20 @@ export interface NavigationMenuArrowProps extends Omit<PrimitiveArrowProps, 'cla
   className?: string
   /** Arrow content. Defaults to the shared floating arrow SVG. */
   children?: React.ReactNode
+  /** @deprecated Arrow now inherits variant from NavigationMenu.Popup. */
+  variant?: NavigationMenuVariant
+  /** @deprecated Arrow now inherits high contrast from NavigationMenu.Popup. */
+  highContrast?: boolean
 }
 
 const NavigationMenuArrow = React.forwardRef<HTMLDivElement, NavigationMenuArrowProps>(
-  ({ className, children, ...props }, ref) => {
+  ({ className, children, variant: _variant, highContrast: _highContrast, ...props }, ref) => {
     return (
-      <NavigationMenuPrimitive.Arrow ref={ref} className={cn(floatingArrowBase, className)} {...props}>
+      <NavigationMenuPrimitive.Arrow
+        ref={ref}
+        className={cn(floatingArrowBase, floatingArrowSurface, className)}
+        {...props}
+      >
         {children ?? <FloatingArrowSvg />}
       </NavigationMenuPrimitive.Arrow>
     )

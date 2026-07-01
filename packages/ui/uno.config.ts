@@ -105,6 +105,7 @@ import { spinnerClassNames } from './src/elements/spinner/spinner.class'
 import { stepperClassNames } from './src/elements/stepper/stepper.class'
 import {
   floatingArrowBase,
+  floatingArrowSurface,
   surfaceHighContrastByVariant,
   surfaceShapeVariants,
   surfaceSquare,
@@ -263,6 +264,7 @@ const classMapValues = <Value extends string>(map: Record<string, Record<string,
 
 const floatingSurfaceSafelist = splitClasses([
   floatingArrowBase,
+  floatingArrowSurface,
   ...Object.values(floatingSurfaceSizeVariants),
   ...Object.values(floatingSurfaceMaxWidthVariants),
   ...Object.values(floatingSurfaceHighContrastEffectByVariant),

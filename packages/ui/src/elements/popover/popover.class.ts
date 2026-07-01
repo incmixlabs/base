@@ -73,28 +73,29 @@ function highContrastSoftFillValue(recipe: SemanticColorClassRecipe) {
   return colorToken(recipe, 'soft-hover')
 }
 
-function floatingSurfaceFill(background: string) {
-  return `[fill:${background}]`
+function floatingSurfaceArrowVars(fill: string, edge = fill) {
+  return `[--af-floating-surface-arrow-fill:${fill}] [--af-floating-surface-arrow-edge:${edge}]`
 }
 
 const floatingSurfaceColorByVariant = {
   solid: recipe =>
-    `${recipe.fill.solid} ${recipe.border.highContrast} ${recipe.text.contrast} ${floatingSurfaceFill(surfaceRoleValue(recipe, 'solid'))}`,
+    `${recipe.fill.solid} ${recipe.border.highContrast} ${recipe.text.contrast} ${floatingSurfaceArrowVars(surfaceRoleValue(recipe, 'solid'), highContrastSolidFillValue(recipe))}`,
   soft: recipe =>
-    `${recipe.fill.soft} ${recipe.border.transparent} ${recipe.text.default} ${floatingSurfaceFill(surfaceRoleValue(recipe, 'soft'))}`,
+    `${recipe.fill.soft} ${recipe.border.transparent} ${recipe.text.default} ${floatingSurfaceArrowVars(surfaceRoleValue(recipe, 'soft'), 'transparent')}`,
   surface: recipe =>
-    `${recipe.fill.container} ${recipe.border.default} ${recipe.text.default} [box-shadow:var(--shadow-xs)] ${floatingSurfaceFill(surfaceRoleValue(recipe, 'surface'))}`,
+    `${recipe.fill.container} ${recipe.border.default} ${recipe.text.default} [box-shadow:var(--shadow-xs)] ${floatingSurfaceArrowVars(surfaceRoleValue(recipe, 'surface'), surfaceRoleValue(recipe, 'border'))}`,
   outline: recipe =>
-    `${recipe.fill.transparent} ${recipe.border.default} ${recipe.text.default} ${floatingSurfaceFill('transparent')}`,
+    `${recipe.fill.transparent} ${recipe.border.default} ${recipe.text.default} ${floatingSurfaceArrowVars('transparent', surfaceRoleValue(recipe, 'border'))}`,
 } satisfies Record<PopoverContentVariant, (recipe: SemanticColorClassRecipe) => string>
 
 const floatingSurfaceHighContrastColorByVariant = {
-  solid: recipe => `${recipe.highContrast.solid} ${floatingSurfaceFill(highContrastSolidFillValue(recipe))}`,
+  solid: recipe => `${recipe.highContrast.solid} ${floatingSurfaceArrowVars(highContrastSolidFillValue(recipe))}`,
   soft: recipe =>
-    `${recipe.highContrast.soft} ${recipe.border.transparent} ${floatingSurfaceFill(highContrastSoftFillValue(recipe))}`,
+    `${recipe.highContrast.soft} ${recipe.border.transparent} ${floatingSurfaceArrowVars(highContrastSoftFillValue(recipe), 'transparent')}`,
   surface: recipe =>
-    `${recipe.fill.container} ${recipe.highContrast.container} [box-shadow:var(--shadow-xs)] ${floatingSurfaceFill(surfaceRoleValue(recipe, 'surface'))}`,
-  outline: recipe => `${recipe.fill.transparent} ${recipe.highContrast.outline} ${floatingSurfaceFill('transparent')}`,
+    `${recipe.fill.container} ${recipe.highContrast.container} [box-shadow:var(--shadow-xs)] ${floatingSurfaceArrowVars(surfaceRoleValue(recipe, 'surface'), highContrastSolidFillValue(recipe))}`,
+  outline: recipe =>
+    `${recipe.fill.transparent} ${recipe.highContrast.outline} ${floatingSurfaceArrowVars('transparent', surfaceRoleValue(recipe, 'border'))}`,
 } satisfies Record<PopoverContentVariant, (recipe: SemanticColorClassRecipe) => string>
 
 export const floatingSurfaceColorVariants = createSemanticColorVariantClassMap(
