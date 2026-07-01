@@ -91,7 +91,7 @@ const surfaceInteractionTokenByLayer = {
 
 const surfaceColorPattern = surfaceColorNames.join('|')
 const chromaticSurfaceColorPattern = CHROMATIC_SURFACE_COLOR_NAMES.join('|')
-const surfaceBackgroundRule = new RegExp(`^bg-(${surfaceColorPattern})-(solid|soft|surface)$`)
+const surfaceBackgroundRule = new RegExp(`^bg-(${surfaceColorPattern})-(solid|soft|surface|background)$`)
 const surfaceHighlightBackgroundRule = new RegExp(`^bg-(${chromaticSurfaceColorPattern})-highlight$`)
 const surfaceBorderRule = new RegExp(`^border-(${surfaceColorPattern})$`)
 const surfaceOutlineRule = new RegExp(`^outline-(${surfaceColorPattern})$`)
@@ -104,6 +104,7 @@ function semanticSurfaceColorRoles(color: SemanticSurfaceColorName) {
     solid: `var(--color-${color}-primary)`,
     soft: `var(--color-${color}-soft)`,
     surface: `var(--color-${color}-surface)`,
+    background: `var(--color-${color}-background)`,
     highlight: `var(--color-${color}-primary-alpha)`,
     border: `var(--color-${color}-border)`,
     text: `var(--color-${color}-text)`,
@@ -119,6 +120,7 @@ function chartSurfaceColorRoles(color: ChartSurfaceColorName) {
     solid: chartValue,
     soft: `color-mix(in oklch, ${chartValue} 28%, var(--color-light-surface))`,
     surface: `color-mix(in oklch, ${chartValue} 12%, var(--color-light-surface))`,
+    background: `color-mix(in oklch, ${chartValue} 8%, var(--color-light-background))`,
     border: `color-mix(in oklch, ${chartValue} 28%, var(--color-light-border))`,
     text: `color-mix(in oklch, ${chartValue} 34%, var(--color-dark-primary))`,
     contrast: `var(--chart-${chartIndex}-contrast)`,
@@ -221,6 +223,7 @@ const surfaceColorUtilities = surfaceColorNames.flatMap(color => [
   `bg-${color}-solid`,
   `bg-${color}-soft`,
   `bg-${color}-surface`,
+  `bg-${color}-background`,
   `text-${color}`,
   `text-${color}-contrast`,
   `border-${color}`,
@@ -285,7 +288,7 @@ export const baseUnoConfig = {
         if (!roles) return
 
         return {
-          'background-color': roles[role as 'solid' | 'soft' | 'surface'],
+          'background-color': roles[role as 'solid' | 'soft' | 'surface' | 'background'],
         }
       },
     ],
