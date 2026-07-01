@@ -2,30 +2,42 @@
 
 import * as React from 'react'
 
-export function usePrefersReducedMotion() {
-  const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false)
+const PREFERS_REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
 
-  React.useEffect(() => {
-    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return undefined
+function canReadReducedMotionPreference() {
+  return typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+}
 
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const syncPreference = () => setPrefersReducedMotion(mediaQuery.matches)
+function subscribeToReducedMotionPreference(callback: () => void) {
+  if (!canReadReducedMotionPreference()) return () => {}
 
-    syncPreference()
+  const mediaQuery = window.matchMedia(PREFERS_REDUCED_MOTION_QUERY)
 
-    if (typeof mediaQuery.addEventListener === 'function') {
-      mediaQuery.addEventListener('change', syncPreference)
-      return () => {
-        mediaQuery.removeEventListener('change', syncPreference)
-      }
-    }
-
-    mediaQuery.addListener(syncPreference)
-
+  if (typeof mediaQuery.addEventListener === 'function') {
+    mediaQuery.addEventListener('change', callback)
     return () => {
-      mediaQuery.removeListener(syncPreference)
+      mediaQuery.removeEventListener('change', callback)
     }
-  }, [])
+  }
 
-  return prefersReducedMotion
+  mediaQuery.addListener(callback)
+  return () => {
+    mediaQuery.removeListener(callback)
+  }
+}
+
+function getReducedMotionSnapshot() {
+  return canReadReducedMotionPreference() ? window.matchMedia(PREFERS_REDUCED_MOTION_QUERY).matches : false
+}
+
+function getReducedMotionServerSnapshot() {
+  return false
+}
+
+export function usePrefersReducedMotion() {
+  return React.useSyncExternalStore(
+    subscribeToReducedMotionPreference,
+    getReducedMotionSnapshot,
+    getReducedMotionServerSnapshot,
+  )
 }

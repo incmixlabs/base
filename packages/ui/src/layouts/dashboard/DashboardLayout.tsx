@@ -148,9 +148,18 @@ const DASHBOARD_LAYOUT_ANIMATION_DURATION_MS = 220
 const DASHBOARD_LAYOUT_ANIMATION_EASING = 'cubic-bezier(0.2, 0, 0, 1)'
 const DASHBOARD_LAYOUT_ANIMATION_DELTA_THRESHOLD = 0.5
 
-export const DASHBOARD_LAYOUT_TRANSITION = {
+export const DASHBOARD_LAYOUT_CSS_TRANSITION = {
   duration: DASHBOARD_LAYOUT_ANIMATION_DURATION_MS,
   easing: DASHBOARD_LAYOUT_ANIMATION_EASING,
+} as const
+
+export const DASHBOARD_LAYOUT_TRANSITION = {
+  layout: {
+    type: 'spring',
+    stiffness: 380,
+    damping: 38,
+    mass: 0.75,
+  },
 } as const
 
 type DashboardCollisionAxis = 'vertical' | 'horizontal'
@@ -1144,7 +1153,6 @@ function DashboardItemFrame({
         data-dashboard-item-id={item.id}
         className={cn(
           'relative isolate min-w-0 overflow-hidden transition-opacity duration-150',
-          animateLayout && 'will-change-transform',
           resolvedItemClassName,
           className,
         )}

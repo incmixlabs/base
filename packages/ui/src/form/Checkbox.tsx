@@ -84,7 +84,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
         className={cn(
           checkboxBase,
           checkboxBaseCls,
-          'transition-transform duration-100 ease-out active:scale-95',
+          'transition-transform duration-100 ease-out active:scale-95 motion-reduce:transition-none motion-reduce:active:scale-100',
           checkboxSizeVariants[resolvedSize],
           checkboxColorVariants[safeColor][safeVariant],
           safeHighContrast && 'af-high-contrast',
