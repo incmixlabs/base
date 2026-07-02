@@ -307,21 +307,9 @@ TooltipContent.displayName = 'Tooltip.Content'
 export interface TooltipArrowProps {
   /** Additional class names */
   className?: string
-  /** @deprecated Arrow now inherits variant from Tooltip.Content. */
-  variant?: TooltipVariant
-  /** @deprecated Arrow now inherits color from Tooltip.Content. */
-  color?: Color
-  /** @deprecated Arrow now inherits high contrast from Tooltip.Content. */
-  highContrast?: boolean
 }
 
-const TooltipArrow: React.FC<TooltipArrowProps> = ({
-  className,
-  variant: _variant,
-  color: _color,
-  highContrast: _highContrast,
-  ...props
-}) => {
+const TooltipArrow: React.FC<TooltipArrowProps> = ({ className, ...props }) => {
   return (
     <TooltipPrimitive.Arrow className={cn(floatingArrowBase, floatingArrowSurface, className)} {...props}>
       <FloatingArrowSvg />

@@ -272,23 +272,15 @@ PopoverClose.displayName = 'Popover.Close'
 export interface PopoverArrowProps {
   /** Additional class names */
   className?: string
-  /** @deprecated Arrow now inherits variant from Popover.Content. */
-  variant?: PopoverContentVariant
-  /** @deprecated Arrow now inherits color from Popover.Content. */
-  color?: Color
-  /** @deprecated Arrow now inherits high contrast from Popover.Content. */
-  highContrast?: boolean
 }
 
-const PopoverArrow = React.forwardRef<HTMLDivElement, PopoverArrowProps>(
-  ({ className, variant: _variant, color: _color, highContrast: _highContrast, ...props }, ref) => {
-    return (
-      <PopoverPrimitive.Arrow ref={ref} className={cn(floatingArrowBase, floatingArrowSurface, className)} {...props}>
-        <FloatingArrowSvg />
-      </PopoverPrimitive.Arrow>
-    )
-  },
-)
+const PopoverArrow = React.forwardRef<HTMLDivElement, PopoverArrowProps>(({ className, ...props }, ref) => {
+  return (
+    <PopoverPrimitive.Arrow ref={ref} className={cn(floatingArrowBase, floatingArrowSurface, className)} {...props}>
+      <FloatingArrowSvg />
+    </PopoverPrimitive.Arrow>
+  )
+})
 
 PopoverArrow.displayName = 'Popover.Arrow'
 

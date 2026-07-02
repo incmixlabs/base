@@ -108,7 +108,7 @@ describe('theme contract validation', () => {
     }
   })
 
-  it('aliases legacy component.dateNext to component.date', () => {
+  it('strips migrated retired dateNext component tokens', () => {
     const theme = createValidThemeContract()
     const dateTokens = { cell: { borderRadius: 'var(--radius-md)' } }
     ;(theme.component as Record<string, unknown>).dateNext = dateTokens
@@ -117,23 +117,8 @@ describe('theme contract validation', () => {
 
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.value.component.date).toEqual(dateTokens)
+      expect(result.value.component.date).toEqual({})
       expect((result.value.component as Record<string, unknown>).dateNext).toBeUndefined()
-    }
-  })
-
-  it('rejects contracts that provide both component.date and component.dateNext', () => {
-    const theme = createValidThemeContract()
-    ;(theme.component as Record<string, unknown>).date = { cell: { borderRadius: 'var(--radius-md)' } }
-    ;(theme.component as Record<string, unknown>).dateNext = { cell: { borderRadius: 'var(--radius-lg)' } }
-
-    const result = validateThemeContract(theme)
-
-    expect(result.ok).toBe(false)
-    if (!result.ok) {
-      expect(result.errors).toContain(
-        'Provide only one of component.date or component.dateNext (component.dateNext is deprecated)',
-      )
     }
   })
 })

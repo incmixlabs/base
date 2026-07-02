@@ -400,7 +400,7 @@ export type ThemeContract = {
 export type ThemeContractValidation = { ok: true; value: ThemeContract } | { ok: false; errors: string[] }
 
 const lifecycleValues: ThemeLifecycle[] = ['draft', 'review', 'published']
-const migratedRetiredComponentKeys = ['stepper', 'timeline', 'surface'] as const
+const migratedRetiredComponentKeys = ['stepper', 'timeline', 'surface', 'dateNext'] as const
 
 function isObject(value: unknown): value is Record<string, unknown> {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) {
@@ -425,12 +425,6 @@ export function migrateThemeContract(input: unknown): unknown {
       delete nextComponent[key]
       changed = true
     }
-  }
-
-  if (component.date === undefined && component.dateNext !== undefined) {
-    nextComponent.date = component.dateNext
-    delete nextComponent.dateNext
-    changed = true
   }
 
   if (!changed) return input
@@ -533,10 +527,6 @@ function isFontSourceMap(value: unknown): value is ThemeFontSourceMap {
 
 export function validateThemeContract(input: unknown): ThemeContractValidation {
   const errors: string[] = []
-  const inputComponent = isObject(input) ? input.component : undefined
-  if (isObject(inputComponent) && inputComponent.date !== undefined && inputComponent.dateNext !== undefined) {
-    errors.push('Provide only one of component.date or component.dateNext (component.dateNext is deprecated)')
-  }
   const migratedInput = migrateThemeContract(input)
 
   if (!isObject(migratedInput)) {
