@@ -22,6 +22,10 @@ describe('theme concrete resolver', () => {
     const resolver = createConcreteThemeResolver()
 
     expect(resolver('semantic.color.slate.soft')).toBe('#e5e7eb')
+    expect(resolver('semantic.color.primary.text')).toBe('oklch(0.552 0.101 179)')
+    expect(resolver('semantic.color.primary.contrast')).toBe('oklch(1 0 0)')
+    expect(resolver('semantic.color.primary.text')).not.toBe(resolver('semantic.color.neutral.solid'))
+    expect(resolver('semantic.color.primary.contrast')).not.toBe(resolver('semantic.color.neutral.contrast'))
     expect(resolver('global.color.hue.orange.9')).toBe('#f97316')
   })
 
