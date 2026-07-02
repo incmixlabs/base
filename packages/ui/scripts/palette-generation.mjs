@@ -2,19 +2,17 @@ import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { HUE_NAMES as THEME_HUE_NAMES } from '../../theme/src/hue-names.js'
 
 const require = createRequire(import.meta.url)
 const RADIX_DIR = dirname(require.resolve('@radix-ui/colors/package.json'))
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const UI_ROOT = resolve(__dirname, '..')
-const PACKAGES_ROOT = resolve(UI_ROOT, '..')
-const TOKEN_CONSTANTS_TS_PATH = resolve(PACKAGES_ROOT, 'theme/src/token-constants.ts')
-
-export const HUE_NAMES = readHuesFromTokenConstantsSource(TOKEN_CONSTANTS_TS_PATH)
 
 export const RUNTIME_PALETTE_STEPS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
 
 export const HUE_CSS_STEPS = ['3', '4', '5', '6', '7', '8', '9', '10', '11']
+
+export const HUE_NAMES = THEME_HUE_NAMES
 
 export const CONTRAST_BY_HUE = {
   orange: 'oklch(0.25 0 0)',
@@ -37,15 +35,6 @@ export const CONTRAST_BY_HUE = {
   amber: 'oklch(0.25 0 0)',
   brown: 'oklch(1 0 0)',
   gray: 'oklch(1 0 0)',
-}
-
-function readHuesFromTokenConstantsSource(filePath) {
-  const source = readFileSync(filePath, 'utf8')
-  const match = source.match(/export const HUE_NAMES = \[(.*?)\] as const/s)
-  if (!match?.[1]) {
-    throw new Error(`Unable to read HUE_NAMES from ${filePath}`)
-  }
-  return [...match[1].matchAll(/'([^']+)'/g)].map(entry => entry[1])
 }
 
 function round(value) {
@@ -111,7 +100,11 @@ export function buildPaletteVars(mode, steps = RUNTIME_PALETTE_STEPS) {
       }
       vars[`--${hue}-${step}`] = hexToOklch(hex)
     }
-    vars[`--${hue}-contrast`] = CONTRAST_BY_HUE[hue] ?? 'oklch(1 0 0)'
+    const contrast = CONTRAST_BY_HUE[hue]
+    if (!contrast) {
+      throw new Error(`Missing contrast color for hue "${hue}" in CONTRAST_BY_HUE`)
+    }
+    vars[`--${hue}-contrast`] = contrast
   }
 
   return vars
