@@ -120,7 +120,6 @@ function getAxisMetrics(
 export interface ScrollAreaProps extends React.HTMLAttributes<HTMLDivElement>, MarginProps, PaddingProps {
   type?: ScrollType
   scroll?: ScrollMode
-  scrollbars?: ScrollDirection
   size?: ScrollbarSize
   variant?: ScrollAreaVariant
   color?: Color
@@ -143,7 +142,6 @@ const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
     {
       type = scrollAreaPropDefs.type.default,
       scroll,
-      scrollbars,
       size = 'sm',
       variant = scrollAreaPropDefs.variant.default,
       color = SemanticColor.neutral,
@@ -182,9 +180,7 @@ const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
   ) => {
     const safeType = (normalizeEnumPropValue(scrollAreaPropDefs.type, type) ??
       scrollAreaPropDefs.type.default) as ScrollType
-    // Prefer the newer `scroll` prop and fall back to the legacy `scrollbars` alias.
     const safeScrollMode = (normalizeEnumPropValue(scrollAreaPropDefs.scroll, scroll) ??
-      normalizeEnumPropValue(scrollAreaPropDefs.scrollbars, scrollbars) ??
       scrollAreaPropDefs.scroll.default) as ScrollMode
     const safeScrollbars = (safeScrollMode === 'auto' ? 'both' : safeScrollMode) as ScrollDirection
     const safeSize = (normalizeEnumPropValue(scrollAreaPropDefs.size, size) ??

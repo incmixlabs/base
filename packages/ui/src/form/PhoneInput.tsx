@@ -50,12 +50,6 @@ export interface PhoneInputProps
   defaultCountry?: string
   /** Countries to show (if not provided, shows all) */
   countries?: string[]
-  /**
-   * Placeholder for the phone number input.
-   *
-   * @deprecated Use the standard `placeholder` prop instead.
-   */
-  phonePlaceholder?: string
 }
 
 // ============================================================================
@@ -76,10 +70,9 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       onChange,
       defaultCountry = 'US',
       countries: allowedCountries,
-      phonePlaceholder = 'Phone number',
       className,
       style,
-      placeholder,
+      placeholder = 'Phone number',
       'aria-label': ariaLabel,
       ...props
     },
@@ -195,7 +188,6 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       '--af-text-field-left-slot-width': '8.75rem',
       ...style,
     } as React.CSSProperties
-    const resolvedPlaceholder = placeholder ?? phonePlaceholder
     const hasAriaLabelledBy = Boolean(props['aria-labelledby']?.trim())
     const fallbackAriaLabel =
       ariaLabel ?? (!hasAriaLabelledBy && hasAssociatedLabel === false ? 'Phone number' : undefined)
@@ -208,7 +200,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
         value={phoneNumber}
         onChange={handlePhoneChange}
         disabled={effectiveDisabled}
-        placeholder={resolvedPlaceholder}
+        placeholder={placeholder}
         aria-label={fallbackAriaLabel}
         size={size}
         variant={toBaseTextFieldVariant(variant)}
