@@ -33,30 +33,20 @@ function createValidTheme() {
       },
     },
     component: {
-      button: { size: { sm: { paddingInline: '0.75rem' } } },
-      accordion: { size: { md: { triggerPaddingInline: '1.25rem' } } },
       fieldGroup: { section: { separatorMarginBlock: '1.5rem' } },
       pickerPopup: { size: { md: { viewportMaxHeight: '16rem' } } },
       fileUpload: { size: { md: { iconSize: '1.5rem' } } },
       mentionTextarea: { previewMinHeight: '96px' },
-      date: { size: { md: { calendarDaySize: '2.75rem' } } },
       textField: { size: { sm: { paddingInline: '0.75rem' } } },
       switch: { size: { sm: { rootWidth: '2.25rem' } }, group: { gap: '0.5rem', inlineGap: '1rem' } },
-      iconButton: { size: { sm: { iconSize: '1rem' } } },
-      badge: { size: { sm: { paddingInline: '0.75rem', deleteButtonMarginStart: '0.2rem' } } },
-      callout: { size: { lg: { padding: '1rem' } } },
-      card: { size: { md: { padding: '1rem' } } },
-      popover: { maxWidth: { md: { maxWidth: '30rem' } } },
-      tooltip: { size: { sm: { fontSize: '0.875rem' } }, maxWidth: { md: { maxWidth: '20rem' } } },
       progress: { size: { sm: { height: '0.4rem' } } },
-      dialog: { size: { md: { maxWidth: '28rem' } } },
       slider: { size: { md: { thumbSize: '1.3rem' } } },
       rating: { size: { md: { iconSize: '1.25rem' } } },
       appShell: {
         content: { paddingInline: '1rem', paddingInlineDesktop: '1.5rem' },
         layout: { bodyWithSecondaryRightGridTemplateColumns: 'auto minmax(0, 1fr) 20rem' },
       },
-      scrollArea: { size: { sm: { thickness: '0.375rem' } }, shape: { circle: { radius: '9999px' } } },
+      scrollArea: { size: { sm: { thickness: '0.375rem' } } },
     },
   }
 }
@@ -235,20 +225,11 @@ describe('theme-contract', () => {
 
   it('fills missing component branches with empty objects during validation', () => {
     const theme = createValidTheme()
-    delete (theme.component as Record<string, unknown>).accordion
-    delete (theme.component as Record<string, unknown>).badge
-    delete (theme.component as Record<string, unknown>).callout
-    delete (theme.component as Record<string, unknown>).card
     delete (theme.component as Record<string, unknown>).fileUpload
     delete (theme.component as Record<string, unknown>).fieldGroup
-    delete (theme.component as Record<string, unknown>).iconButton
     delete (theme.component as Record<string, unknown>).mentionTextarea
-    delete (theme.component as Record<string, unknown>).date
     delete (theme.component as Record<string, unknown>).pickerPopup
-    delete (theme.component as Record<string, unknown>).popover
-    delete (theme.component as Record<string, unknown>).tooltip
     delete (theme.component as Record<string, unknown>).progress
-    delete (theme.component as Record<string, unknown>).dialog
     delete (theme.component as Record<string, unknown>).slider
     delete (theme.component as Record<string, unknown>).switch
     delete (theme.component as Record<string, unknown>).appShell
@@ -259,20 +240,11 @@ describe('theme-contract', () => {
 
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.value.component.accordion).toEqual({})
-      expect(result.value.component.badge).toEqual({})
-      expect(result.value.component.callout).toEqual({})
-      expect(result.value.component.card).toEqual({})
       expect(result.value.component.fileUpload).toEqual({})
       expect(result.value.component.fieldGroup).toEqual({})
-      expect(result.value.component.iconButton).toEqual({})
       expect(result.value.component.mentionTextarea).toEqual({})
-      expect(result.value.component.date).toEqual({})
       expect(result.value.component.pickerPopup).toEqual({})
-      expect(result.value.component.popover).toEqual({})
-      expect(result.value.component.tooltip).toEqual({})
       expect(result.value.component.progress).toEqual({})
-      expect(result.value.component.dialog).toEqual({})
       expect(result.value.component.slider).toEqual({})
       expect(result.value.component.switch).toEqual({})
       expect(result.value.component.appShell).toEqual({})

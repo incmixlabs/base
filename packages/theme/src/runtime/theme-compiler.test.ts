@@ -29,30 +29,20 @@ function createTheme(): ThemeContract {
       },
     },
     component: {
-      button: { size: { sm: { paddingInline: '0.75rem' } } },
-      accordion: { size: { md: { triggerPaddingInline: '1.25rem' } } },
       fieldGroup: { row: { columnGap: '2rem' } },
       pickerPopup: { size: { md: { viewportMaxHeight: '16rem' } } },
       fileUpload: { size: { md: { iconSize: '1.5rem' } } },
       mentionTextarea: { previewMinHeight: '96px' },
-      date: { size: { md: { calendarDaySize: '2.75rem' } } },
       textField: { size: { sm: { paddingInline: '0.75rem' } } },
       switch: { size: { sm: { rootWidth: '2.25rem' } } },
-      iconButton: { size: { sm: { iconSize: '1rem' } } },
-      badge: { size: { sm: { paddingInline: '0.75rem', deleteButtonMarginStart: '0.2rem' } } },
-      callout: { size: { lg: { padding: '1rem' } } },
-      card: { size: { md: { padding: '1rem' } } },
-      popover: { maxWidth: { md: { maxWidth: '30rem' } } },
-      tooltip: { size: { sm: { fontSize: '0.875rem' } }, maxWidth: { md: { maxWidth: '20rem' } } },
       progress: { size: { sm: { height: '0.4rem' } } },
-      dialog: { size: { md: { maxWidth: '28rem' } } },
       slider: { size: { md: { thumbSize: '1.3rem' } } },
       rating: { size: { md: { iconSize: '1.25rem' } } },
       appShell: {
         content: { paddingInline: '1rem', paddingInlineDesktop: '1.5rem' },
         layout: { bodyWithSecondaryRightGridTemplateColumns: 'auto minmax(0, 1fr) 20rem' },
       },
-      scrollArea: { size: { sm: { thickness: '0.375rem' } }, shape: { circle: { radius: '9999px' } } },
+      scrollArea: { size: { sm: { thickness: '0.375rem' } } },
     },
   }
 }
@@ -63,14 +53,14 @@ describe('theme-compiler', () => {
     const brand = { global: { borderRadius: { sm: '6px' } } }
     const tenant = {
       global: { borderRadius: { sm: '8px' } },
-      component: { badge: { size: { sm: { paddingInline: '1rem' } } } },
+      component: { progress: { size: { sm: { height: '0.5rem' } } } },
     }
     const user = { global: { borderRadius: { sm: '10px' } } }
 
     const merged = mergeThemeContracts(base, brand, tenant, user)
 
     expect(merged.global.borderRadius.sm).toBe('10px')
-    expect((merged.component.badge as { size: { sm: { paddingInline: string } } }).size.sm.paddingInline).toBe('1rem')
+    expect(merged.component.progress.size?.sm?.height).toBe('0.5rem')
   })
 
   it('ignores prototype pollution keys while merging token overrides', () => {
@@ -103,5 +93,30 @@ describe('theme-compiler', () => {
     expect(() => compileThemeTokens(theme)).toThrow(
       'Token collision: "global.typography.font_sans" and "global.typography.fontSans" both compile to "--font-sans"',
     )
+  })
+
+  it('rejects retired component token branches before compiling css vars', () => {
+    const theme = createTheme()
+    ;(theme.component as Record<string, unknown>).button = { size: { sm: { paddingInline: '0.75rem' } } }
+    ;(theme.component as Record<string, unknown>).card = { size: { md: { padding: '1rem' } } }
+
+    expect(() => compileThemeTokens(theme)).toThrow(/component\.button is retired.*component\.card is retired/s)
+  })
+
+  it('strips legacy component token branches before compiling css vars', () => {
+    const theme = createTheme()
+    const component = theme.component as Record<string, unknown>
+    component.dateNext = { cell: { borderRadius: 'var(--radius-md)' } }
+    component.stepper = { size: { md: { indicatorSize: '1.75rem' } } }
+    component.timeline = { size: { md: { itemOffset: '2.25rem' } } }
+    component.surface = { variant: { surface: { boxShadow: '0 0 0 1px red' } } }
+
+    const compiled = compileThemeTokens(theme)
+
+    expect(compiled.tokenMap['component.dateNext.cell.borderRadius']).toBeUndefined()
+    expect(compiled.tokenMap['component.stepper.size.md.indicatorSize']).toBeUndefined()
+    expect(compiled.tokenMap['component.timeline.size.md.itemOffset']).toBeUndefined()
+    expect(compiled.tokenMap['component.surface.variant.surface.boxShadow']).toBeUndefined()
+    expect(component.dateNext).toEqual({ cell: { borderRadius: 'var(--radius-md)' } })
   })
 })

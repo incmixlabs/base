@@ -1,4 +1,4 @@
-import type { ThemeContract } from '../contract/theme-contract.js'
+import { migrateThemeContract, type ThemeContract, validateThemeComponentTokens } from '../contract/theme-contract.js'
 import { toKebabCase } from '../string.js'
 
 type Primitive = string | number | boolean | null | undefined
@@ -110,7 +110,7 @@ export function mergeThemeContracts(
  * - `global.typography.*` -> `--*` (e.g. `global.typography.fontSans` -> `--font-sans`)
  * - `global.color.hue.*` -> `--color-*` (e.g. `global.color.hue.teal.9` -> `--color-teal-9`)
  * - `semantic.color.*` -> `--color-*` (e.g. `semantic.color.primary.text` -> `--color-primary-text`)
- * - `component.*` -> `--af-*` (e.g. `component.button.solid.borderRadius` -> `--af-button-solid-border-radius`)
+ * - `component.*` -> `--af-*` (e.g. `component.progress.size.sm.height` -> `--af-progress-size-sm-height`)
  *
  * Reference: docs/issues/theme-token-taxonomy-v1.md (Issue #234) and W3C DTCG format.
  */
@@ -166,13 +166,19 @@ function collectStringLeaves(value: unknown, prefix: string, out: Record<string,
 }
 
 export function compileThemeTokens(theme: ThemeContract): CompiledThemeTokens {
+  const migratedTheme = migrateThemeContract(theme) as ThemeContract
   const tokenMap: Record<string, string> = {}
   const cssVars: Record<string, string> = {}
   const cssVarSourcePath: Record<string, string> = {}
+  const componentErrors = validateThemeComponentTokens(migratedTheme.component as unknown as Record<string, unknown>)
 
-  collectStringLeaves(theme.global, 'global', tokenMap)
-  collectStringLeaves(theme.semantic, 'semantic', tokenMap)
-  collectStringLeaves(theme.component, 'component', tokenMap)
+  if (componentErrors.length > 0) {
+    throw new Error(`Invalid component theme tokens: ${componentErrors.join('; ')}`)
+  }
+
+  collectStringLeaves(migratedTheme.global, 'global', tokenMap)
+  collectStringLeaves(migratedTheme.semantic, 'semantic', tokenMap)
+  collectStringLeaves(migratedTheme.component, 'component', tokenMap)
 
   for (const [path, value] of Object.entries(tokenMap)) {
     const varName = buildCssVarName(path)
