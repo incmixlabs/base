@@ -6,58 +6,49 @@ const gapValues = SPACING_SCALE_VALUES
 const gapPropDefs = {
   /**
    * Sets the CSS **gap** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * gap="4"
-   * gap="20px"
-   * gap={{ sm: '2', lg: '3em' }}
+   * gap={{ sm: '2', lg: '6' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/gap
    */
   gap: {
-    type: 'enum | string',
-    className: 'af-gap',
-    customProperties: ['--gap'],
+    type: 'enum',
     values: gapValues,
     responsive: true,
   },
   /**
    * Sets the CSS **column-gap** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * gapX="4"
-   * gapX="20px"
-   * gapX={{ sm: '2', lg: '3em' }}
+   * gapX={{ sm: '2', lg: '6' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/column-gap
    */
   gapX: {
-    type: 'enum | string',
-    className: 'af-cg',
-    customProperties: ['--column-gap'],
+    type: 'enum',
     values: gapValues,
     responsive: true,
   },
   /**
    * Sets the CSS **row-gap** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * gapY="4"
-   * gapY="20px"
-   * gapY={{ sm: '2', lg: '3em' }}
+   * gapY={{ sm: '2', lg: '6' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/row-gap
    */
   gapY: {
-    type: 'enum | string',
-    className: 'af-rg',
-    customProperties: ['--row-gap'],
+    type: 'enum',
     values: gapValues,
     responsive: true,
   },

@@ -746,7 +746,7 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
             ) : null}
           </div>
         ) : (
-          <Column gap="1.5" className={textFieldSizeVariants[size]}>
+          <Column className={cn('gap-[0.375rem]', textFieldSizeVariants[size])}>
             {label ? (
               <Label
                 id={labelId}

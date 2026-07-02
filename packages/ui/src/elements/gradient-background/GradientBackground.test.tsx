@@ -18,9 +18,8 @@ describe('GradientBackground', () => {
 
     const root = screen.getByTestId('gradient')
 
-    expect(root).toHaveClass('grid')
+    expect(root).toHaveClass('grid', 'gap-4')
     expect(root.getAttribute('style')).toContain('grid-template-columns:')
-    expect(root.getAttribute('style')).toContain('gap:')
   })
 
   it('keeps render target props separate from layout props', () => {
@@ -39,8 +38,7 @@ describe('GradientBackground', () => {
 
     const root = screen.getByTestId('gradient-card')
 
-    expect(root).toHaveClass('flex', 'flex-col', 'items-center')
-    expect(root.getAttribute('style')).toContain('gap:')
+    expect(root).toHaveClass('flex', 'flex-col', 'items-center', 'gap-2')
   })
 
   it('forwards layout composition to the inner container target', () => {
@@ -61,8 +59,7 @@ describe('GradientBackground', () => {
     const inner = screen.getByText('One').closest('div')
 
     expect(root).not.toHaveClass('grid')
-    expect(inner).toHaveClass('grid')
+    expect(inner).toHaveClass('grid', 'gap-3')
     expect(inner?.getAttribute('style')).toContain('grid-template-columns:')
-    expect(inner?.getAttribute('style')).toContain('gap:')
   })
 })

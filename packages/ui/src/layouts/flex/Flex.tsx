@@ -4,7 +4,6 @@ import * as React from 'react'
 import { cn } from '@/lib/utils'
 import {
   type AlignItems,
-  assignResponsiveSpacingStyles,
   type Display,
   type FlexDirection,
   type FlexWrap,
@@ -18,8 +17,8 @@ import {
   getSharedLayoutClasses,
   getSharedLayoutStyles,
   hasBorderWidthUtility,
-  normalizeResponsiveEnumOrStringPropValue,
   normalizeResponsiveEnumPropValue,
+  normalizeResponsiveSpacingPropValue,
   type Responsive,
   type SharedLayoutProps,
   Slot,
@@ -59,11 +58,11 @@ export interface FlexOwnProps extends SharedLayoutProps {
   /** Flex wrap behavior */
   wrap?: Responsive<FlexWrap>
   /** Gap between items */
-  gap?: Responsive<Spacing | string>
+  gap?: Responsive<Spacing>
   /** Horizontal gap between items */
-  gapX?: Responsive<Spacing | string>
+  gapX?: Responsive<Spacing>
   /** Vertical gap between items */
-  gapY?: Responsive<Spacing | string>
+  gapY?: Responsive<Spacing>
 }
 
 type FlexDivProps = FlexOwnProps & Omit<React.ComponentPropsWithoutRef<'div'>, keyof FlexOwnProps>
@@ -200,9 +199,9 @@ export const Flex = React.forwardRef<HTMLElement, FlexProps>(
     const resolvedWrap = normalizeResponsiveEnumPropValue(flexPropDefs.wrap, wrap)
     const resolvedAlign = normalizeResponsiveEnumPropValue(flexPropDefs.align, align)
     const resolvedJustify = normalizeResponsiveEnumPropValue(flexPropDefs.justify, justify)
-    const resolvedGap = normalizeResponsiveEnumOrStringPropValue(flexPropDefs.gap, gap)
-    const resolvedGapX = normalizeResponsiveEnumOrStringPropValue(flexPropDefs.gapX, gapX)
-    const resolvedGapY = normalizeResponsiveEnumOrStringPropValue(flexPropDefs.gapY, gapY)
+    const resolvedGap = normalizeResponsiveSpacingPropValue(flexPropDefs.gap, gap, 'gap', 'Flex')
+    const resolvedGapX = normalizeResponsiveSpacingPropValue(flexPropDefs.gapX, gapX, 'gapX', 'Flex')
+    const resolvedGapY = normalizeResponsiveSpacingPropValue(flexPropDefs.gapY, gapY, 'gapY', 'Flex')
 
     const classes = cn(
       flexBaseCls,
@@ -217,21 +216,15 @@ export const Flex = React.forwardRef<HTMLElement, FlexProps>(
       typeof resolvedAlign !== 'string' ? getAlignItemsClasses(resolvedAlign) : '',
       typeof resolvedJustify === 'string' ? flexByJustify[resolvedJustify] : '',
       typeof resolvedJustify !== 'string' ? getJustifyContentClasses(resolvedJustify) : '',
-      getResponsiveSpacingValueClasses(resolvedGap, 'gap', 'gap'),
-      getResponsiveSpacingValueClasses(resolvedGapX, 'gap-x', 'gapX'),
-      getResponsiveSpacingValueClasses(resolvedGapY, 'gap-y', 'gapY'),
+      getResponsiveSpacingValueClasses(resolvedGap, 'gap'),
+      getResponsiveSpacingValueClasses(resolvedGapX, 'gap-x'),
+      getResponsiveSpacingValueClasses(resolvedGapY, 'gap-y'),
       borderColor && !hasBorderWidthUtility(effectiveClassName) && 'border',
       getSharedLayoutClasses(sharedLayoutProps),
       className,
     )
 
-    const flexStyles: React.CSSProperties = {}
-    assignResponsiveSpacingStyles(() => flexStyles, resolvedGap, 'gap', 'gap')
-    assignResponsiveSpacingStyles(() => flexStyles, resolvedGapX, 'columnGap', 'gapX')
-    assignResponsiveSpacingStyles(() => flexStyles, resolvedGapY, 'rowGap', 'gapY')
-
     const styles: React.CSSProperties = {
-      ...flexStyles,
       ...getSharedLayoutStyles(sharedLayoutProps),
       ...style,
     }

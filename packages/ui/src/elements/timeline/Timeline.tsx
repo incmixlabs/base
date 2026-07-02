@@ -274,7 +274,7 @@ export type TimelineHeaderProps = React.ComponentProps<'div'>
 
 const TimelineHeader = React.forwardRef<HTMLDivElement, TimelineHeaderProps>(
   ({ className, children, ...props }, ref) => (
-    <Column ref={ref} gap="0.125rem" className={className} {...props}>
+    <Column ref={ref} className={cn('gap-[0.125rem]', className)} {...props}>
       {children}
     </Column>
   ),

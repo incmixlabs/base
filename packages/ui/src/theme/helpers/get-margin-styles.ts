@@ -3,59 +3,48 @@ import type * as React from 'react'
 import { cn } from '@/lib/utils'
 import type { MarginProps } from '@/theme/props/margin.props'
 import { space } from '@/theme/token-maps'
-import { marginResponsiveClasses, marginResponsiveVars } from './margin-responsive'
-import { resolveSpacingValue } from './resolve-spacing-value'
-import { type ResponsiveBreakpoint, responsiveBreakpointsArray } from './responsive/breakpoints'
 import {
   getResponsiveSpacingUtilityClasses,
   getSpacingUtilityClass,
   type SpacingUtilityPrefix,
+  spacingClassValueByToken,
 } from './token-class-maps'
 
-const responsiveBreakpoints: readonly ResponsiveBreakpoint[] = responsiveBreakpointsArray
-
+type MarginProperty = keyof MarginProps
+type MarginValue = MarginProps[MarginProperty]
+type MarginResponsiveValue = Extract<MarginValue, object>
+const marginProperties = ['m', 'mx', 'my', 'mt', 'mr', 'mb', 'ml'] as const satisfies readonly MarginProperty[]
 const marginSpacingValues: Record<string, string> = { '0': '0px' }
 for (const [key, cssVar] of Object.entries(space)) {
   const fallback = (SPACING_TO_PIXELS as Record<string, string>)[key]
   marginSpacingValues[key] = fallback ? cssVar.replace(')', `, ${fallback})`) : cssVar
 }
 
-type MarginProperty = keyof MarginProps
-type MarginValue = MarginProps[MarginProperty]
-type MarginResponsiveValue = Partial<Record<ResponsiveBreakpoint, string>>
-const responsiveMarginVars = marginResponsiveVars as Record<MarginProperty, Record<ResponsiveBreakpoint, string>>
-
 function isResponsiveObject(value: MarginValue): value is MarginResponsiveValue {
   return typeof value === 'object' && value !== null
 }
 
-function resolveMarginValue(value: string | undefined): string | undefined {
-  // TODO: If margin props ever need to support unresolved negative CSS vars
-  // like `-var(--space-custom)`, handle that here without broadening the
-  // shared spacing resolver contract used by layout utilities.
-  return resolveSpacingValue(value, marginSpacingValues, resolvedValue =>
-    resolvedValue === '0px' ? resolvedValue : `calc(${resolvedValue} * -1)`,
-  )
-}
-
-function resolveStaticMarginValue(value: MarginValue): string | undefined {
+function resolveStaticMarginTokenValue(value: MarginValue): string | undefined {
   if (value === undefined) return undefined
-  return resolveMarginValue((isResponsiveObject(value) ? value.initial : value) as string | undefined)
-}
+  const staticValue = isResponsiveObject(value) ? value.initial : value
+  if (typeof staticValue !== 'string') return undefined
 
-function assignStyleValue(style: React.CSSProperties, property: string, value: string) {
-  const customPropertyName = property.startsWith('var(') ? property.slice(4, -1) : property
-  ;(style as Record<string, string>)[customPropertyName] = value
+  const token = staticValue.trim()
+  const unsignedToken = token.startsWith('-') ? token.slice(1) : token
+  const resolvedValue = unsignedToken in spacingClassValueByToken ? marginSpacingValues[unsignedToken] : undefined
+  if (!resolvedValue || !token.startsWith('-') || resolvedValue === '0px') return resolvedValue
+
+  return `calc(${resolvedValue} * -1)`
 }
 
 export function getMarginStyles(props: MarginProps): React.CSSProperties {
-  const margin = resolveStaticMarginValue(props.m)
-  const marginX = resolveStaticMarginValue(props.mx)
-  const marginY = resolveStaticMarginValue(props.my)
-  const marginTop = resolveStaticMarginValue(props.mt)
-  const marginRight = resolveStaticMarginValue(props.mr)
-  const marginBottom = resolveStaticMarginValue(props.mb)
-  const marginLeft = resolveStaticMarginValue(props.ml)
+  const margin = resolveStaticMarginTokenValue(props.m)
+  const marginX = resolveStaticMarginTokenValue(props.mx)
+  const marginY = resolveStaticMarginTokenValue(props.my)
+  const marginTop = resolveStaticMarginTokenValue(props.mt)
+  const marginRight = resolveStaticMarginTokenValue(props.mr)
+  const marginBottom = resolveStaticMarginTokenValue(props.mb)
+  const marginLeft = resolveStaticMarginTokenValue(props.ml)
 
   return {
     ...(margin && { margin }),
@@ -68,21 +57,10 @@ export function getMarginStyles(props: MarginProps): React.CSSProperties {
   }
 }
 
-const staticMarginCssProperties: Record<MarginProperty, readonly (keyof React.CSSProperties)[]> = {
-  m: ['margin'],
-  mx: ['marginLeft', 'marginRight'],
-  my: ['marginTop', 'marginBottom'],
-  mt: ['marginTop'],
-  mr: ['marginRight'],
-  mb: ['marginBottom'],
-  ml: ['marginLeft'],
-}
-
 export function getMarginProps(props: MarginProps): { className?: string; style?: React.CSSProperties } {
   const classNames: string[] = []
-  const style: React.CSSProperties = {}
 
-  for (const property of Object.keys(marginResponsiveClasses) as MarginProperty[]) {
+  for (const property of marginProperties) {
     const value = props[property]
     if (value === undefined) continue
 
@@ -90,20 +68,6 @@ export function getMarginProps(props: MarginProps): { className?: string; style?
       const utilityClasses = getResponsiveSpacingUtilityClasses(property as SpacingUtilityPrefix, value)
       if (utilityClasses) {
         classNames.push(utilityClasses)
-        continue
-      }
-
-      classNames.push(marginResponsiveClasses[property])
-      let inheritedValue: string | undefined
-
-      for (const breakpoint of responsiveBreakpoints) {
-        const breakpointValue = value[breakpoint]
-        inheritedValue = resolveMarginValue(breakpointValue) ?? inheritedValue
-
-        const variableName = responsiveMarginVars[property]?.[breakpoint]
-        if (inheritedValue !== undefined && variableName !== undefined) {
-          assignStyleValue(style, variableName, inheritedValue)
-        }
       }
       continue
     }
@@ -111,19 +75,11 @@ export function getMarginProps(props: MarginProps): { className?: string; style?
     const utilityClass = getSpacingUtilityClass(property as SpacingUtilityPrefix, value as string | undefined)
     if (utilityClass) {
       classNames.push(utilityClass)
-      continue
-    }
-
-    const resolvedValue = resolveMarginValue(value as string | undefined)
-    if (resolvedValue !== undefined) {
-      for (const cssProp of staticMarginCssProperties[property]) {
-        ;(style as Record<string, string>)[cssProp] = resolvedValue
-      }
     }
   }
 
   return {
     className: classNames.length > 0 ? cn(classNames) : undefined,
-    style: Object.keys(style).length > 0 ? style : undefined,
+    style: undefined,
   }
 }

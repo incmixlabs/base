@@ -1,21 +1,16 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it } from 'vitest'
-import { gapResponsiveClasses, gapResponsiveVars } from '@/theme/helpers/gap-responsive'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { gridTemplateColumnsCustomResponsive, gridTemplateRowsCustomResponsive } from './Grid.classes'
 import { Grid } from './Grid'
 
 afterEach(() => {
   cleanup()
+  vi.restoreAllMocks()
 })
 
-function customPropertyName(value: string): string {
-  const match = /^var\((--[^)]+)\)$/.exec(value)
-  return match?.[1] ?? value
-}
-
 describe('Grid', () => {
-  it('normalizes token-like grid props using prop-def values', () => {
+  it('normalizes token-like grid props and maps token gaps to utilities', () => {
     render(
       <Grid data-testid="grid" columns={' 12 ' as any} gap={' 5 ' as any}>
         <span>One</span>
@@ -25,10 +20,13 @@ describe('Grid', () => {
     const grid = screen.getByTestId('grid')
 
     expect(grid.style.gridTemplateColumns).toBe('repeat(12, minmax(0, 1fr))')
-    expect(grid.style.gap).toBe('24px')
+    expect(grid).toHaveClass('gap-5')
+    expect(grid.style.gap).toBe('')
   })
 
-  it('preserves trimmed custom CSS grid and gap strings', () => {
+  it('preserves trimmed custom CSS grid strings and ignores arbitrary gap strings', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
     render(
       <Grid data-testid="grid" columns={' minmax(0, 1fr) auto ' as any} gap={' 2rem ' as any}>
         <span>One</span>
@@ -38,7 +36,9 @@ describe('Grid', () => {
     const grid = screen.getByTestId('grid')
 
     expect(grid.style.gridTemplateColumns).toBe('minmax(0, 1fr) auto')
-    expect(grid.style.gap).toBe('2rem')
+    expect(grid.className).not.toContain('2rem')
+    expect(grid.style.gap).toBe('')
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('[Grid] Ignored unsupported gap value(s): 2rem'))
   })
 
   it('preserves responsive custom grid template values', () => {
@@ -61,13 +61,15 @@ describe('Grid', () => {
     expect(grid.style.getPropertyValue('--grid-template-rows-sm')).toBe('auto 1fr')
   })
 
-  it('preserves responsive custom gap values', () => {
+  it('maps responsive token gaps and skips unsupported breakpoint values', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
     render(
       <Grid
         data-testid="grid"
-        gap={{ initial: '2', md: '20px' }}
-        gapX={{ sm: '1.5rem' }}
-        gapY={{ initial: '3', lg: '24px' }}
+        gap={{ initial: '2', md: '20px' as any }}
+        gapX={{ sm: '1.5rem' as any }}
+        gapY={{ initial: '3', lg: '24px' as any }}
       >
         <span>One</span>
       </Grid>,
@@ -75,13 +77,15 @@ describe('Grid', () => {
 
     const grid = screen.getByTestId('grid')
 
-    expect(grid.className).toContain(gapResponsiveClasses.gap)
-    expect(grid.className).toContain(gapResponsiveClasses.gapX)
-    expect(grid.className).toContain(gapResponsiveClasses.gapY)
-    expect(grid.style.getPropertyValue(customPropertyName(gapResponsiveVars.gap.initial))).toBe('8px')
-    expect(grid.style.getPropertyValue(customPropertyName(gapResponsiveVars.gap.md))).toBe('20px')
-    expect(grid.style.getPropertyValue(customPropertyName(gapResponsiveVars.gapX.sm))).toBe('1.5rem')
-    expect(grid.style.getPropertyValue(customPropertyName(gapResponsiveVars.gapY.initial))).toBe('12px')
-    expect(grid.style.getPropertyValue(customPropertyName(gapResponsiveVars.gapY.lg))).toBe('24px')
+    expect(grid).toHaveClass('gap-2', 'gap-y-3')
+    expect(grid.className).not.toContain('20px')
+    expect(grid.className).not.toContain('1.5rem')
+    expect(grid.className).not.toContain('24px')
+    expect(grid.style.gap).toBe('')
+    expect(grid.style.columnGap).toBe('')
+    expect(grid.style.rowGap).toBe('')
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('[Grid] Ignored unsupported gap value(s): md:20px'))
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('[Grid] Ignored unsupported gapX value(s): sm:1.5rem'))
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('[Grid] Ignored unsupported gapY value(s): lg:24px'))
   })
 })

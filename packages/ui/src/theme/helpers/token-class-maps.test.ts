@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   getResponsiveMappedUtilityClasses,
   getResponsiveSpacingUtilityClasses,
+  getSpacingUtilityClass,
   getThemeColorUtilityClass,
 } from './token-class-maps'
 import { getSemanticColorClassRecipe, semanticColorClassRecipes } from './semantic-color-recipe'
@@ -80,7 +81,14 @@ describe('theme token class maps', () => {
     ).toBe('hidden md:block xl:grid')
   })
 
-  it('returns undefined when responsive spacing contains a custom value', () => {
-    expect(getResponsiveSpacingUtilityClasses('p', { initial: '2', md: '1.5rem' })).toBeUndefined()
+  it('skips unsupported responsive spacing values', () => {
+    expect(getResponsiveSpacingUtilityClasses('p', { initial: '2', md: '1.5rem' })).toBe('p-2')
+  })
+
+  it('allows negative spacing only for margin and offsets', () => {
+    expect(getSpacingUtilityClass('mt', '-2')).toBe('-mt-2')
+    expect(getSpacingUtilityClass('top', '-2')).toBe('-top-2')
+    expect(getSpacingUtilityClass('gap', '-2')).toBeUndefined()
+    expect(getSpacingUtilityClass('pt', '-2')).toBeUndefined()
   })
 })

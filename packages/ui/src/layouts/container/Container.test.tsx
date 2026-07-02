@@ -99,9 +99,9 @@ describe('Container', () => {
     const outerContainer = screen.getByTestId('container')
 
     expectClassToken(innerContainer, 'grid')
+    expectClassToken(innerContainer, 'gap-3')
     expect(innerContainer?.className.split(/\s+/)).not.toContain('items-center')
     expect(innerContainer?.getAttribute('style')).toContain('grid-template-columns:')
-    expect(innerContainer?.getAttribute('style')).toContain('gap:')
     expect(outerContainer).not.toHaveAttribute('layout')
     expect(outerContainer).not.toHaveAttribute('layoutProps')
   })

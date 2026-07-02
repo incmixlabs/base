@@ -156,8 +156,7 @@ describe('Card', () => {
 
     const root = screen.getByTestId('card')
 
-    expect(root).toHaveClass('flex', 'flex-row', 'items-center', 'justify-between')
-    expect(root.getAttribute('style')).toContain('gap:')
+    expect(root).toHaveClass('flex', 'flex-row', 'items-center', 'justify-between', 'gap-2')
   })
 
   it('supports grid layout composition on Card.Root', () => {
@@ -170,9 +169,8 @@ describe('Card', () => {
 
     const root = screen.getByTestId('card')
 
-    expect(root).toHaveClass('grid')
+    expect(root).toHaveClass('grid', 'gap-4')
     expect(root.getAttribute('style')).toContain('grid-template-columns:')
-    expect(root.getAttribute('style')).toContain('gap:')
   })
 
   it('supports responsive custom grid templates on Card.Root layout composition', () => {
