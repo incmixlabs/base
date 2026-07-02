@@ -37,10 +37,8 @@ function createValidTheme() {
       pickerPopup: { size: { md: { viewportMaxHeight: '16rem' } } },
       fileUpload: { size: { md: { iconSize: '1.5rem' } } },
       mentionTextarea: { previewMinHeight: '96px' },
-      date: { size: { md: { calendarDaySize: '2.75rem' } } },
       textField: { size: { sm: { paddingInline: '0.75rem' } } },
       switch: { size: { sm: { rootWidth: '2.25rem' } }, group: { gap: '0.5rem', inlineGap: '1rem' } },
-      card: { size: { md: { padding: '1rem' } } },
       progress: { size: { sm: { height: '0.4rem' } } },
       slider: { size: { md: { thumbSize: '1.3rem' } } },
       rating: { size: { md: { iconSize: '1.25rem' } } },
@@ -48,7 +46,7 @@ function createValidTheme() {
         content: { paddingInline: '1rem', paddingInlineDesktop: '1.5rem' },
         layout: { bodyWithSecondaryRightGridTemplateColumns: 'auto minmax(0, 1fr) 20rem' },
       },
-      scrollArea: { size: { sm: { thickness: '0.375rem' } }, shape: { circle: { radius: '9999px' } } },
+      scrollArea: { size: { sm: { thickness: '0.375rem' } } },
     },
   }
 }
@@ -227,11 +225,9 @@ describe('theme-contract', () => {
 
   it('fills missing component branches with empty objects during validation', () => {
     const theme = createValidTheme()
-    delete (theme.component as Record<string, unknown>).card
     delete (theme.component as Record<string, unknown>).fileUpload
     delete (theme.component as Record<string, unknown>).fieldGroup
     delete (theme.component as Record<string, unknown>).mentionTextarea
-    delete (theme.component as Record<string, unknown>).date
     delete (theme.component as Record<string, unknown>).pickerPopup
     delete (theme.component as Record<string, unknown>).progress
     delete (theme.component as Record<string, unknown>).slider
@@ -244,11 +240,9 @@ describe('theme-contract', () => {
 
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.value.component.card).toEqual({})
       expect(result.value.component.fileUpload).toEqual({})
       expect(result.value.component.fieldGroup).toEqual({})
       expect(result.value.component.mentionTextarea).toEqual({})
-      expect(result.value.component.date).toEqual({})
       expect(result.value.component.pickerPopup).toEqual({})
       expect(result.value.component.progress).toEqual({})
       expect(result.value.component.slider).toEqual({})

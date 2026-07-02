@@ -9,15 +9,6 @@ export const THEME_CONTRACT_SCHEMA_VERSION = '1.0.0' as const
 
 export type ThemeLifecycle = 'draft' | 'review' | 'published'
 
-export type CardComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      padding: string
-    }>
-  >
-}
-
 export type ProgressComponentTokens = {
   size?: Record<
     string,
@@ -158,34 +149,6 @@ export type MentionTextareaComponentTokens = Partial<{
   previewFontSize: string
 }>
 
-export type DateComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      controlHeight: string
-      controlFontSize: string
-      controlLineHeight: string
-      controlPaddingInline: string
-      controlPaddingBlock: string
-      controlGap: string
-      controlIconSize: string
-      calendarDaySize: string
-      calendarNavSize: string
-      calendarNavIconSize: string
-      calendarFontSize: string
-      calendarLineHeight: string
-      calendarGridGap: string
-      calendarPopoverPadding: string
-      calendarHeadingGap: string
-      rangeFieldMinWidth: string
-      miniCalendarPadding: string
-      miniCalendarBodyGap: string
-      miniCalendarHeaderGap: string
-      miniCalendarTitleFontSize: string
-    }>
-  >
-}
-
 export type AppShellComponentTokens = {
   content?: Partial<{
     paddingInline: string
@@ -206,12 +169,6 @@ export type ScrollAreaComponentTokens = {
     Partial<{
       thickness: string
       thumbInset: string
-    }>
-  >
-  shape?: Record<
-    string,
-    Partial<{
-      radius: string
     }>
   >
 }
@@ -247,10 +204,8 @@ export type ThemeContract = {
     pickerPopup: PickerPopupComponentTokens
     fileUpload: FileUploadComponentTokens
     mentionTextarea: MentionTextareaComponentTokens
-    date: DateComponentTokens
     textField: TextFieldComponentTokens
     switch: SwitchComponentTokens
-    card: CardComponentTokens
     progress: ProgressComponentTokens
     slider: SliderComponentTokens
     rating: RatingComponentTokens
@@ -267,10 +222,8 @@ export const THEME_COMPONENT_TOKEN_KEYS = [
   'pickerPopup',
   'fileUpload',
   'mentionTextarea',
-  'date',
   'textField',
   'switch',
-  'card',
   'progress',
   'slider',
   'rating',
@@ -285,9 +238,11 @@ const rejectedRetiredComponentKeys = [
   'badge',
   'button',
   'callout',
+  'card',
   'checkbox',
   'checkboxGroup',
   'checkboxCards',
+  'date',
   'dialog',
   'iconButton',
   'popover',
@@ -370,35 +325,6 @@ const componentTokenSchema = {
       'previewFontSize',
     ],
   },
-  date: {
-    branches: {
-      size: {
-        kind: 'record',
-        slots: [
-          'controlHeight',
-          'controlFontSize',
-          'controlLineHeight',
-          'controlPaddingInline',
-          'controlPaddingBlock',
-          'controlGap',
-          'controlIconSize',
-          'calendarDaySize',
-          'calendarNavSize',
-          'calendarNavIconSize',
-          'calendarFontSize',
-          'calendarLineHeight',
-          'calendarGridGap',
-          'calendarPopoverPadding',
-          'calendarHeadingGap',
-          'rangeFieldMinWidth',
-          'miniCalendarPadding',
-          'miniCalendarBodyGap',
-          'miniCalendarHeaderGap',
-          'miniCalendarTitleFontSize',
-        ],
-      },
-    },
-  },
   textField: {
     branches: {
       size: {
@@ -426,14 +352,6 @@ const componentTokenSchema = {
       group: {
         kind: 'direct',
         slots: ['gap', 'inlineGap'],
-      },
-    },
-  },
-  card: {
-    branches: {
-      size: {
-        kind: 'record',
-        slots: ['padding'],
       },
     },
   },
@@ -494,10 +412,6 @@ const componentTokenSchema = {
       size: {
         kind: 'record',
         slots: ['thickness', 'thumbInset'],
-      },
-      shape: {
-        kind: 'record',
-        slots: ['radius'],
       },
     },
   },

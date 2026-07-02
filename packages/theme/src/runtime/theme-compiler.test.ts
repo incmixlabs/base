@@ -33,10 +33,8 @@ function createTheme(): ThemeContract {
       pickerPopup: { size: { md: { viewportMaxHeight: '16rem' } } },
       fileUpload: { size: { md: { iconSize: '1.5rem' } } },
       mentionTextarea: { previewMinHeight: '96px' },
-      date: { size: { md: { calendarDaySize: '2.75rem' } } },
       textField: { size: { sm: { paddingInline: '0.75rem' } } },
       switch: { size: { sm: { rootWidth: '2.25rem' } } },
-      card: { size: { md: { padding: '1rem' } } },
       progress: { size: { sm: { height: '0.4rem' } } },
       slider: { size: { md: { thumbSize: '1.3rem' } } },
       rating: { size: { md: { iconSize: '1.25rem' } } },
@@ -44,7 +42,7 @@ function createTheme(): ThemeContract {
         content: { paddingInline: '1rem', paddingInlineDesktop: '1.5rem' },
         layout: { bodyWithSecondaryRightGridTemplateColumns: 'auto minmax(0, 1fr) 20rem' },
       },
-      scrollArea: { size: { sm: { thickness: '0.375rem' } }, shape: { circle: { radius: '9999px' } } },
+      scrollArea: { size: { sm: { thickness: '0.375rem' } } },
     },
   }
 }
@@ -100,7 +98,8 @@ describe('theme-compiler', () => {
   it('rejects retired component token branches before compiling css vars', () => {
     const theme = createTheme()
     ;(theme.component as Record<string, unknown>).button = { size: { sm: { paddingInline: '0.75rem' } } }
+    ;(theme.component as Record<string, unknown>).card = { size: { md: { padding: '1rem' } } }
 
-    expect(() => compileThemeTokens(theme)).toThrow('component.button is retired')
+    expect(() => compileThemeTokens(theme)).toThrow(/component\.button is retired.*component\.card is retired/s)
   })
 })

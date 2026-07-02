@@ -272,8 +272,8 @@ Today, the retained runtime-consumed `component.*` branches are:
 - `component.switch`
 - `component.textField`
 
-Some retained branches can still be contract-only during cleanup. Those should be deleted or
-converted in follow-up PRs according to the audit report.
+Retained branches should be runtime-consumed or intentionally documented by the audit report.
+Contract-only branches should be retired rather than accepted silently.
 
 Historical `#419` rollout batches included:
 

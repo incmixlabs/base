@@ -24,27 +24,6 @@ export type FileUploadSizeTokenSlot =
   | 'iconSize'
   | 'titleFontSize'
   | 'descriptionFontSize'
-export type DateSizeTokenSlot =
-  | 'controlHeight'
-  | 'controlFontSize'
-  | 'controlLineHeight'
-  | 'controlPaddingInline'
-  | 'controlPaddingBlock'
-  | 'controlGap'
-  | 'controlIconSize'
-  | 'calendarDaySize'
-  | 'calendarNavSize'
-  | 'calendarNavIconSize'
-  | 'calendarFontSize'
-  | 'calendarLineHeight'
-  | 'calendarGridGap'
-  | 'calendarPopoverPadding'
-  | 'calendarHeadingGap'
-  | 'rangeFieldMinWidth'
-  | 'miniCalendarPadding'
-  | 'miniCalendarBodyGap'
-  | 'miniCalendarHeaderGap'
-  | 'miniCalendarTitleFontSize'
 export type TextFieldSizeTokenSlot =
   | 'height'
   | 'floatingHeight'
@@ -65,7 +44,6 @@ export type AppShellLayoutTokenSlot =
 export type AppShellContentTokenSlot = 'paddingInline' | 'paddingBlock' | 'paddingInlineDesktop' | 'paddingBlockDesktop'
 export type ContentBodyTokenSlot = 'background' | 'foreground' | 'borderColor'
 export type ScrollAreaSizeTokenSlot = 'thickness' | 'thumbInset'
-export type ScrollAreaShapeTokenSlot = 'radius'
 
 export function fieldGroupSectionVar(slot: FieldGroupSectionTokenSlot, fallback: string): string {
   return withFallback(`--af-field-group-section-${toKebabCase(slot)}`, fallback)
@@ -77,10 +55,6 @@ export function fieldGroupRowVar(slot: FieldGroupRowTokenSlot, fallback: string)
 
 export function fileUploadSizeVar(size: string, slot: FileUploadSizeTokenSlot, fallback: string): string {
   return withFallback(`--af-file-upload-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function dateSizeVar(size: string, slot: DateSizeTokenSlot, fallback: string): string {
-  return withFallback(`--af-date-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function sliderSizeVar(size: string, slot: SliderSizeTokenSlot, fallback: string): string {
@@ -121,8 +95,4 @@ export function contentBodyVar(slot: ContentBodyTokenSlot, fallback: string): st
 
 export function scrollAreaSizeVar(size: string, slot: ScrollAreaSizeTokenSlot, fallback: string): string {
   return withFallback(`--af-scroll-area-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function scrollAreaShapeVar(shape: string, slot: ScrollAreaShapeTokenSlot, fallback: string): string {
-  return withFallback(`--af-scroll-area-shape-${toKebabCase(shape)}-${toKebabCase(slot)}`, fallback)
 }
