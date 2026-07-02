@@ -1,4 +1,4 @@
-import { type ThemeContract, validateThemeComponentTokens } from '../contract/theme-contract.js'
+import { migrateThemeContract, type ThemeContract, validateThemeComponentTokens } from '../contract/theme-contract.js'
 import { toKebabCase } from '../string.js'
 
 type Primitive = string | number | boolean | null | undefined
@@ -166,18 +166,19 @@ function collectStringLeaves(value: unknown, prefix: string, out: Record<string,
 }
 
 export function compileThemeTokens(theme: ThemeContract): CompiledThemeTokens {
+  const migratedTheme = migrateThemeContract(theme) as ThemeContract
   const tokenMap: Record<string, string> = {}
   const cssVars: Record<string, string> = {}
   const cssVarSourcePath: Record<string, string> = {}
-  const componentErrors = validateThemeComponentTokens(theme.component as unknown as Record<string, unknown>)
+  const componentErrors = validateThemeComponentTokens(migratedTheme.component as unknown as Record<string, unknown>)
 
   if (componentErrors.length > 0) {
     throw new Error(`Invalid component theme tokens: ${componentErrors.join('; ')}`)
   }
 
-  collectStringLeaves(theme.global, 'global', tokenMap)
-  collectStringLeaves(theme.semantic, 'semantic', tokenMap)
-  collectStringLeaves(theme.component, 'component', tokenMap)
+  collectStringLeaves(migratedTheme.global, 'global', tokenMap)
+  collectStringLeaves(migratedTheme.semantic, 'semantic', tokenMap)
+  collectStringLeaves(migratedTheme.component, 'component', tokenMap)
 
   for (const [path, value] of Object.entries(tokenMap)) {
     const varName = buildCssVarName(path)

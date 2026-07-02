@@ -102,4 +102,21 @@ describe('theme-compiler', () => {
 
     expect(() => compileThemeTokens(theme)).toThrow(/component\.button is retired.*component\.card is retired/s)
   })
+
+  it('strips legacy component token branches before compiling css vars', () => {
+    const theme = createTheme()
+    const component = theme.component as Record<string, unknown>
+    component.dateNext = { cell: { borderRadius: 'var(--radius-md)' } }
+    component.stepper = { size: { md: { indicatorSize: '1.75rem' } } }
+    component.timeline = { size: { md: { itemOffset: '2.25rem' } } }
+    component.surface = { variant: { surface: { boxShadow: '0 0 0 1px red' } } }
+
+    const compiled = compileThemeTokens(theme)
+
+    expect(compiled.tokenMap['component.dateNext.cell.borderRadius']).toBeUndefined()
+    expect(compiled.tokenMap['component.stepper.size.md.indicatorSize']).toBeUndefined()
+    expect(compiled.tokenMap['component.timeline.size.md.itemOffset']).toBeUndefined()
+    expect(compiled.tokenMap['component.surface.variant.surface.boxShadow']).toBeUndefined()
+    expect(component.dateNext).toEqual({ cell: { borderRadius: 'var(--radius-md)' } })
+  })
 })
