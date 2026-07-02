@@ -109,7 +109,11 @@ describe('Box', () => {
       </Box>,
     )
 
-    expect(screen.getByTestId('box').className).toContain(getBoxSurfaceClassName('success', 'surface', 'primary'))
+    const box = screen.getByTestId('box')
+
+    expect(box.className).toContain(getBoxSurfaceClassName('success', 'surface', 'primary'))
+    expect(box.className).toContain('var(--color-success-solid)')
+    expect(box.className).not.toContain('var(--color-success-primary)')
   })
 
   it('does not emit tone styles for unsupported color keys', () => {

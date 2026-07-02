@@ -20,7 +20,7 @@ function boxPrimaryTextClassName(recipe: SemanticColorClassRecipe) {
   const chartColor = normalizeChartColor(recipe.colorName)
   if (chartColor) return `[color:var(--chart-${chartColor.slice('chart'.length)})]`
 
-  return `[color:var(--color-${recipe.colorName}-primary)]`
+  return `[color:var(--color-${recipe.colorName}-solid)]`
 }
 
 const boxTextByValue = {

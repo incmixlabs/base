@@ -266,6 +266,26 @@ describe('ThemeProvider', () => {
     expect(root?.style.getPropertyValue('--teal-9')).toBe(lightPaletteVars['--teal-9'])
   })
 
+  it('uses solid semantic tokens for solid content body surface vars', () => {
+    const { container } = render(
+      <ThemeProvider
+        contentBodyColor="success"
+        contentBodyVariant="solid"
+        sidebarColor="primary"
+        sidebarVariant="solid"
+      >
+        <ThemeProbe />
+      </ThemeProvider>,
+    )
+
+    const root = container.firstElementChild as HTMLDivElement | null
+
+    expect(root?.dataset.sidebarColor).toBe('primary')
+    expect(root?.dataset.sidebarVariant).toBe('solid')
+    expect(root?.style.getPropertyValue('--af-content-body-background')).toBe('var(--color-success-solid)')
+    expect(root?.style.getPropertyValue('--af-content-body-border-color')).toBe('var(--color-success-solid)')
+  })
+
   it('emits dark raw palette vars onto the theme root', () => {
     const { container } = render(
       <ThemeProvider appearance="dark">

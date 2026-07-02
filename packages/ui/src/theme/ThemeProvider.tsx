@@ -233,9 +233,9 @@ function getInitialResolvedAppearance(appearance: Appearance | undefined): 'ligh
 function getSurfaceVariantVars(prefix: string, color: Color, variant: SidebarVariant): Record<string, string> {
   if (variant === 'solid') {
     return {
-      [`--af-${prefix}-background`]: `var(--color-${color}-primary)`,
+      [`--af-${prefix}-background`]: `var(--color-${color}-solid)`,
       [`--af-${prefix}-foreground`]: `var(--color-${color}-contrast)`,
-      [`--af-${prefix}-border-color`]: `var(--color-${color}-primary)`,
+      [`--af-${prefix}-border-color`]: `var(--color-${color}-solid)`,
     }
   }
 
