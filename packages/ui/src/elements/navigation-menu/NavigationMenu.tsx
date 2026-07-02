@@ -488,14 +488,10 @@ export interface NavigationMenuArrowProps extends Omit<PrimitiveArrowProps, 'cla
   className?: string
   /** Arrow content. Defaults to the shared floating arrow SVG. */
   children?: React.ReactNode
-  /** @deprecated Arrow now inherits variant from NavigationMenu.Popup. */
-  variant?: NavigationMenuVariant
-  /** @deprecated Arrow now inherits high contrast from NavigationMenu.Popup. */
-  highContrast?: boolean
 }
 
 const NavigationMenuArrow = React.forwardRef<HTMLDivElement, NavigationMenuArrowProps>(
-  ({ className, children, variant: _variant, highContrast: _highContrast, ...props }, ref) => {
+  ({ className, children, ...props }, ref) => {
     return (
       <NavigationMenuPrimitive.Arrow
         ref={ref}
