@@ -4,8 +4,6 @@
  * consume it directly.
  */
 
-import { HUE_NAMES } from './hue-names.js'
-
 /** Default typography font stacks (mirrors defaultThemeConfig.typography). */
 export const TYPOGRAPHY_DEFAULTS = {
   fontSans:
@@ -147,7 +145,28 @@ export const BORDER_RADIUS_TO_PIXELS = {
   full: '9999px',
 } as const
 
-export { HUE_NAMES }
+export const HUE_NAMES = [
+  'orange',
+  'tomato',
+  'red',
+  'crimson',
+  'pink',
+  'plum',
+  'purple',
+  'violet',
+  'indigo',
+  'blue',
+  'sky',
+  'cyan',
+  'teal',
+  'green',
+  'lime',
+  'mint',
+  'yellow',
+  'amber',
+  'brown',
+  'gray',
+] as const
 
 export type HueName = (typeof HUE_NAMES)[number]
 

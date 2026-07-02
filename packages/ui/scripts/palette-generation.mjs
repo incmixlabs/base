@@ -1,18 +1,16 @@
 import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { HUE_NAMES as THEME_HUE_NAMES } from '../../theme/src/hue-names.js'
+import { HUE_NAMES } from '@incmix/theme'
+
+export { HUE_NAMES }
 
 const require = createRequire(import.meta.url)
 const RADIX_DIR = dirname(require.resolve('@radix-ui/colors/package.json'))
-const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export const RUNTIME_PALETTE_STEPS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
 
 export const HUE_CSS_STEPS = ['3', '4', '5', '6', '7', '8', '9', '10', '11']
-
-export const HUE_NAMES = THEME_HUE_NAMES
 
 export const CONTRAST_BY_HUE = {
   orange: 'oklch(0.25 0 0)',
