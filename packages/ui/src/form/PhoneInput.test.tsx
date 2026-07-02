@@ -59,12 +59,6 @@ describe('PhoneInput', () => {
     expect(screen.getByRole('textbox', { name: 'Phone number' })).toHaveAttribute('placeholder', '(555) 123-4567')
   })
 
-  it('keeps legacy phonePlaceholder as a fallback', () => {
-    render(<PhoneInput phonePlaceholder="(555) 987-6543" />)
-
-    expect(screen.getByRole('textbox', { name: 'Phone number' })).toHaveAttribute('placeholder', '(555) 987-6543')
-  })
-
   it('applies disabled and error state to the TextField input and country selector', () => {
     render(<PhoneInput disabled error />)
 

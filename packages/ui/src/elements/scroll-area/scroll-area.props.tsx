@@ -6,7 +6,7 @@ import { sizesNoneToMd, variantsSolidSoftSurfaceOutline } from '@/theme/props/sc
 
 const sizes = sizesNoneToMd
 const types = ['auto', 'always', 'hover'] as const
-const scrollbarsValues = ['vertical', 'horizontal', 'both', 'auto'] as const
+const scrollValues = ['vertical', 'horizontal', 'both', 'auto'] as const
 const variants = variantsSolidSoftSurfaceOutline
 const surfaceVariants = ['soft', 'solid', 'surface'] as const
 const trackShapes = ['line', 'circle'] as const
@@ -77,9 +77,7 @@ const scrollAreaPropDefs = {
     default: false,
   },
   ...radiusPropDef,
-  // `scroll` is the primary prop. `scrollbars` remains as a legacy alias for compatibility.
-  scroll: { type: 'enum', values: scrollbarsValues, default: 'vertical' },
-  scrollbars: { type: 'enum', values: scrollbarsValues, default: 'both' },
+  scroll: { type: 'enum', values: scrollValues, default: 'vertical' },
 } satisfies {
   size: PropDef<(typeof sizes)[number]>
   type: PropDef<(typeof types)[number]>
@@ -95,8 +93,7 @@ const scrollAreaPropDefs = {
   thickness: PropDef<(typeof thicknesses)[number]>
   trackerStyle: PropDef<(typeof trackerStyles)[number]>
   controls: PropDef<boolean>
-  scroll: PropDef<(typeof scrollbarsValues)[number]>
-  scrollbars: PropDef<(typeof scrollbarsValues)[number]>
+  scroll: PropDef<(typeof scrollValues)[number]>
 }
 
 export { scrollAreaPropDefs }
