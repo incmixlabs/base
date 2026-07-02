@@ -195,6 +195,10 @@
       "types": "./dist/theme/contract/theme-contract.d.ts",
       "import": "./dist/theme/contract.js"
     },
+    "./theme/token-class-helpers": {
+      "types": "./dist/theme/token-class-helpers.d.ts",
+      "import": "./dist/theme/token-class-helpers.js"
+    },
     "./typography": {
       "types": "./dist/typography/index.d.ts",
       "import": "./dist/typography.js"
