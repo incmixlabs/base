@@ -69,7 +69,7 @@ describe('theme contract validation', () => {
     }
   })
 
-  it('strips migrated retired stepper component tokens', () => {
+  it('strips legacy stepper component tokens', () => {
     const theme = createValidThemeContract()
     ;(theme.component as Record<string, unknown>).stepper = { size: { md: { indicatorSize: '1.75rem' } } }
 
@@ -81,7 +81,7 @@ describe('theme contract validation', () => {
     }
   })
 
-  it('strips migrated retired timeline component tokens', () => {
+  it('strips legacy timeline component tokens', () => {
     const theme = createValidThemeContract()
     ;(theme.component as Record<string, unknown>).timeline = { size: { md: { itemOffset: '2.25rem' } } }
 
@@ -93,7 +93,7 @@ describe('theme contract validation', () => {
     }
   })
 
-  it('strips migrated retired surface component tokens', () => {
+  it('strips legacy surface component tokens', () => {
     const theme = createValidThemeContract()
     ;(theme.component as Record<string, unknown>).surface = {
       variant: { surface: { boxShadow: '0 0 0 1px red' } },
@@ -108,7 +108,7 @@ describe('theme contract validation', () => {
     }
   })
 
-  it('strips migrated retired dateNext component tokens', () => {
+  it('strips legacy component.dateNext tokens', () => {
     const theme = createValidThemeContract()
     const dateTokens = { cell: { borderRadius: 'var(--radius-md)' } }
     ;(theme.component as Record<string, unknown>).dateNext = dateTokens
@@ -118,6 +118,21 @@ describe('theme contract validation', () => {
     expect(result.ok).toBe(true)
     if (result.ok) {
       expect(result.value.component.date).toEqual({})
+      expect((result.value.component as Record<string, unknown>).dateNext).toBeUndefined()
+    }
+  })
+
+  it('keeps component.date and strips legacy component.dateNext when both are provided', () => {
+    const theme = createValidThemeContract()
+    const dateTokens = { cell: { borderRadius: 'var(--radius-md)' } }
+    ;(theme.component as Record<string, unknown>).date = dateTokens
+    ;(theme.component as Record<string, unknown>).dateNext = { cell: { borderRadius: 'var(--radius-lg)' } }
+
+    const result = validateThemeContract(theme)
+
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value.component.date).toEqual(dateTokens)
       expect((result.value.component as Record<string, unknown>).dateNext).toBeUndefined()
     }
   })

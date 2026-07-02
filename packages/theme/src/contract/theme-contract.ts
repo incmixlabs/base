@@ -313,9 +313,6 @@ export type DateComponentTokens = {
   >
 }
 
-/** @deprecated Use DateComponentTokens. */
-export type DateNextComponentTokens = DateComponentTokens
-
 export type AppShellComponentTokens = {
   content?: Partial<{
     paddingInline: string
@@ -400,7 +397,16 @@ export type ThemeContract = {
 export type ThemeContractValidation = { ok: true; value: ThemeContract } | { ok: false; errors: string[] }
 
 const lifecycleValues: ThemeLifecycle[] = ['draft', 'review', 'published']
-const migratedRetiredComponentKeys = ['stepper', 'timeline', 'surface', 'dateNext'] as const
+const strippedLegacyComponentKeys = ['dateNext', 'stepper', 'timeline', 'surface'] as const
+const rejectedRetiredComponentKeys = [
+  'checkbox',
+  'checkboxGroup',
+  'checkboxCards',
+  'radio',
+  'radioCards',
+  'toggle',
+  'treeView',
+] as const
 
 function isObject(value: unknown): value is Record<string, unknown> {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) {
@@ -420,7 +426,7 @@ export function migrateThemeContract(input: unknown): unknown {
   const nextComponent = { ...component }
   let changed = false
 
-  for (const key of migratedRetiredComponentKeys) {
+  for (const key of strippedLegacyComponentKeys) {
     if (key in nextComponent) {
       delete nextComponent[key]
       changed = true
@@ -581,8 +587,7 @@ export function validateThemeContract(input: unknown): ThemeContractValidation {
 
   if (!isObject(semantic.color)) errors.push('semantic.color must be an object')
 
-  const retiredComponent = ['checkbox', 'checkboxGroup', 'checkboxCards', 'radio', 'radioCards', 'toggle', 'treeView']
-  for (const key of retiredComponent) {
+  for (const key of rejectedRetiredComponentKeys) {
     if (component[key] !== undefined) {
       errors.push(`component.${key} is retired; component sizing uses shared UI size maps`)
     }

@@ -8,7 +8,11 @@
     "access": "public"
   },
   "dependencies": {
-    "@incmix/theme": "workspace:*"
+    "@incmix/theme": "workspace:*",
+    "@unocss/preset-wind4": "catalog:",
+    "@unocss/transformer-directives": "catalog:",
+    "@unocss/transformer-variant-group": "catalog:",
+    "unocss": "catalog:"
   },
   "exports": {
     "./react-compiler-health.js": "./react-compiler-health.js",

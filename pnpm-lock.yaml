@@ -138,6 +138,18 @@ importers:
       '@incmix/theme':
         specifier: workspace:*
         version: link:../theme
+      '@unocss/preset-wind4':
+        specifier: 'catalog:'
+        version: 66.7.2
+      '@unocss/transformer-directives':
+        specifier: 'catalog:'
+        version: 66.7.2
+      '@unocss/transformer-variant-group':
+        specifier: 'catalog:'
+        version: 66.7.2
+      unocss:
+        specifier: 'catalog:'
+        version: 66.7.2(@unocss/postcss@66.7.2(postcss@8.5.10))(vite@7.3.2(@types/node@25.6.0)(jiti@2.6.1)(lightningcss@1.32.0)(tsx@4.21.0))
 
   packages/theme:
     devDependencies:
