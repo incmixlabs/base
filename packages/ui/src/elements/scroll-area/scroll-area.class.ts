@@ -82,7 +82,7 @@ function createScrollAreaTrackStyles(color: Color): Record<ScrollAreaVariant, st
   const fillColor = resolveInteractiveFillColor(color)
   const unfilledColor = resolveInteractiveUnfilledColor(color)
   return {
-    solid: `[--scroll-area-track-color:color-mix(in_oklch,var(--color-${fillColor}-primary)_18%,transparent)] [--scroll-area-thumb-shadow:inset_0_1px_0_color-mix(in_oklch,white_32%,transparent),0_0_0_1px_color-mix(in_oklch,var(--color-${fillColor}-text)_28%,transparent)]`,
+    solid: `[--scroll-area-track-color:color-mix(in_oklch,var(--color-${fillColor}-solid)_18%,transparent)] [--scroll-area-thumb-shadow:inset_0_1px_0_color-mix(in_oklch,white_32%,transparent),0_0_0_1px_color-mix(in_oklch,var(--color-${fillColor}-text)_28%,transparent)]`,
     soft: `[--scroll-area-track-color:var(--color-${fillColor}-soft)] [--scroll-area-thumb-shadow:none]`,
     surface: `[--scroll-area-track-color:var(--color-${fillColor}-surface)] [--scroll-area-thumb-shadow:0_0_0_1px_color-mix(in_oklch,var(--color-${fillColor}-border)_55%,transparent)]`,
     outline: `[--scroll-area-track-color:color-mix(in_oklch,var(--color-${unfilledColor}-border)_56%,transparent)] [--scroll-area-thumb-shadow:0_0_0_1px_color-mix(in_oklch,var(--color-${unfilledColor}-border)_65%,transparent)]`,
@@ -94,7 +94,7 @@ function createScrollAreaThumbStyles(color: Color): Record<ScrollAreaVariant, st
   const unfilledColor = resolveInteractiveUnfilledColor(color)
   const foregroundToken = resolveInteractiveForegroundToken(color)
   return {
-    solid: `[--scroll-area-thumb-color:var(--color-${fillColor}-primary)] [--scroll-area-thumb-hover-color:var(--color-${fillColor}-text)]`,
+    solid: `[--scroll-area-thumb-color:var(--color-${fillColor}-solid)] [--scroll-area-thumb-hover-color:var(--color-${fillColor}-text)]`,
     soft: `[--scroll-area-thumb-color:var(--color-${fillColor}-soft-hover)] [--scroll-area-thumb-hover-color:var(--color-${fillColor}-text)]`,
     surface: `[--scroll-area-thumb-color:var(--color-${fillColor}-border)] [--scroll-area-thumb-hover-color:var(--color-${fillColor}-text)]`,
     outline: `[--scroll-area-thumb-color:var(--color-${unfilledColor}-border)] [--scroll-area-thumb-hover-color:var(--color-${unfilledColor}-${foregroundToken})]`,
@@ -114,7 +114,7 @@ export const scrollAreaSurfaceColorVariants = Object.fromEntries(
     color,
     {
       soft: `[--scroll-area-surface-color:var(--color-${color}-soft)]`,
-      solid: `[--scroll-area-surface-color:var(--color-${color}-primary)]`,
+      solid: `[--scroll-area-surface-color:var(--color-${color}-solid)]`,
       surface: `[--scroll-area-surface-color:var(--color-${color}-surface)]`,
     },
   ]),
@@ -123,7 +123,7 @@ export const scrollAreaSurfaceColorVariants = Object.fromEntries(
 export const scrollAreaTrackerColorVariants = Object.fromEntries(
   semanticColorKeys.map(color => [
     color,
-    `[--scroll-area-thumb-color:var(--color-${color}-primary)] [--scroll-area-thumb-hover-color:var(--color-${color}-text)]`,
+    `[--scroll-area-thumb-color:var(--color-${color}-solid)] [--scroll-area-thumb-hover-color:var(--color-${color}-text)]`,
   ]),
 ) as Record<Color, string>
 

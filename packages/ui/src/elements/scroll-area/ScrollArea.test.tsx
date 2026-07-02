@@ -67,6 +67,8 @@ describe('ScrollArea', () => {
     const root = screen.getByTestId('scroll-area')
     expect(root.className).toContain(scrollAreaThumbColorVariants.primary.solid)
     expect(root.className).toContain(scrollAreaTrackColorVariants.primary.solid)
+    expect(root.className).toContain('var(--color-primary-solid)')
+    expect(root.className).not.toContain('var(--color-primary-primary)')
   })
 
   it('uses the primary scroll prop default when no direction props are provided', () => {
