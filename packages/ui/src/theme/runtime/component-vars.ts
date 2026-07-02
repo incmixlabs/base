@@ -12,10 +12,6 @@ function componentVar(component: string, slot: string, fallback: string): string
   return withFallback(`--af-${toKebabCase(component)}-${toKebabCase(slot)}`, fallback)
 }
 
-export type PopoverSizeTokenSlot = 'padding' | 'fontSize' | 'lineHeight'
-export type PopoverMaxWidthTokenSlot = 'maxWidth'
-export type TooltipSizeTokenSlot = 'padding' | 'fontSize' | 'lineHeight'
-export type TooltipMaxWidthTokenSlot = 'maxWidth'
 export type SliderSizeTokenSlot = 'trackHeight' | 'thumbSize'
 export type SliderVariantTokenSlot = 'boxShadow'
 export type FieldGroupSectionTokenSlot = 'separatorMarginBlock' | 'headerMarginBottom' | 'descriptionMarginTop'
@@ -85,22 +81,6 @@ export function fileUploadSizeVar(size: string, slot: FileUploadSizeTokenSlot, f
 
 export function dateSizeVar(size: string, slot: DateSizeTokenSlot, fallback: string): string {
   return withFallback(`--af-date-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function popoverSizeVar(size: string, slot: PopoverSizeTokenSlot, fallback: string): string {
-  return withFallback(`--af-popover-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function popoverMaxWidthVar(size: string, slot: PopoverMaxWidthTokenSlot, fallback: string): string {
-  return withFallback(`--af-popover-max-width-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function tooltipSizeVar(size: string, slot: TooltipSizeTokenSlot, fallback: string): string {
-  return withFallback(`--af-tooltip-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
-
-export function tooltipMaxWidthVar(size: string, slot: TooltipMaxWidthTokenSlot, fallback: string): string {
-  return withFallback(`--af-tooltip-max-width-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }
 
 export function sliderSizeVar(size: string, slot: SliderSizeTokenSlot, fallback: string): string {

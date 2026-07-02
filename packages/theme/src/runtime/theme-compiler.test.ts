@@ -29,8 +29,6 @@ function createTheme(): ThemeContract {
       },
     },
     component: {
-      button: { size: { sm: { paddingInline: '0.75rem' } } },
-      accordion: { size: { md: { triggerPaddingInline: '1.25rem' } } },
       fieldGroup: { row: { columnGap: '2rem' } },
       pickerPopup: { size: { md: { viewportMaxHeight: '16rem' } } },
       fileUpload: { size: { md: { iconSize: '1.5rem' } } },
@@ -38,14 +36,8 @@ function createTheme(): ThemeContract {
       date: { size: { md: { calendarDaySize: '2.75rem' } } },
       textField: { size: { sm: { paddingInline: '0.75rem' } } },
       switch: { size: { sm: { rootWidth: '2.25rem' } } },
-      iconButton: { size: { sm: { iconSize: '1rem' } } },
-      badge: { size: { sm: { paddingInline: '0.75rem', deleteButtonMarginStart: '0.2rem' } } },
-      callout: { size: { lg: { padding: '1rem' } } },
       card: { size: { md: { padding: '1rem' } } },
-      popover: { maxWidth: { md: { maxWidth: '30rem' } } },
-      tooltip: { size: { sm: { fontSize: '0.875rem' } }, maxWidth: { md: { maxWidth: '20rem' } } },
       progress: { size: { sm: { height: '0.4rem' } } },
-      dialog: { size: { md: { maxWidth: '28rem' } } },
       slider: { size: { md: { thumbSize: '1.3rem' } } },
       rating: { size: { md: { iconSize: '1.25rem' } } },
       appShell: {
@@ -63,14 +55,14 @@ describe('theme-compiler', () => {
     const brand = { global: { borderRadius: { sm: '6px' } } }
     const tenant = {
       global: { borderRadius: { sm: '8px' } },
-      component: { badge: { size: { sm: { paddingInline: '1rem' } } } },
+      component: { progress: { size: { sm: { height: '0.5rem' } } } },
     }
     const user = { global: { borderRadius: { sm: '10px' } } }
 
     const merged = mergeThemeContracts(base, brand, tenant, user)
 
     expect(merged.global.borderRadius.sm).toBe('10px')
-    expect((merged.component.badge as { size: { sm: { paddingInline: string } } }).size.sm.paddingInline).toBe('1rem')
+    expect(merged.component.progress.size?.sm?.height).toBe('0.5rem')
   })
 
   it('ignores prototype pollution keys while merging token overrides', () => {
@@ -103,5 +95,12 @@ describe('theme-compiler', () => {
     expect(() => compileThemeTokens(theme)).toThrow(
       'Token collision: "global.typography.font_sans" and "global.typography.fontSans" both compile to "--font-sans"',
     )
+  })
+
+  it('rejects retired component token branches before compiling css vars', () => {
+    const theme = createTheme()
+    ;(theme.component as Record<string, unknown>).button = { size: { sm: { paddingInline: '0.75rem' } } }
+
+    expect(() => compileThemeTokens(theme)).toThrow('component.button is retired')
   })
 })

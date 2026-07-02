@@ -255,64 +255,27 @@ So the current recommendation is:
 
 The runtime-token migration under `#419` is already partially implemented on `main`.
 
-Today, the following `component.*` branches are real runtime token consumers:
+The generated audit in `docs/af-vars-audit.md` is the source of truth for current `component.*`
+runtime token consumers.
 
-- `component.button`
-  - `Button`
-- `component.surface`
-  - `Surface`
-- `component.accordion`
-  - `Accordion`
-- `component.badge`
-  - `Badge`
-- `component.callout`
-  - `Callout`
-- `component.card`
-  - `Card`
-- `component.popover`
-  - `Popover`
-- `component.tooltip`
-  - `Tooltip`
-- `component.progress`
-  - `Progress`
-- `component.slider`
-  - form `Slider`
-- `component.scrollArea`
-  - `ScrollArea`
-- `component.textField`
-  - `TextField`
-- `component.checkbox`
-  - `Checkbox`
-- `component.radio`
-  - `RadioGroup` / radio control sizing
-- `component.switch`
-  - `Switch`
-- `component.iconButton`
-  - `IconButton`
+Today, the retained runtime-consumed `component.*` branches are:
+
 - `component.appShell`
-  - `AppShell.Content`
-- `component.toggle`
-  - `Toggle`
-  - `ToggleGroup`
 - `component.fieldGroup`
-  - `FieldGroup`
-- `component.checkboxCards`
-  - `CheckboxCards`
-- `component.radioCards`
-  - `RadioCards`
-- `component.pickerPopup`
-  - `PickerPopup`
 - `component.fileUpload`
-  - `FileUpload`
 - `component.mentionTextarea`
-  - `MentionTextarea`
-- `component.dateNext`
-  - `DatePickerNext`
-  - `DateRangePickerNext`
-  - `MiniCalendarNext`
-  - shared date-next calendar panel/popover sizing and spacing
+- `component.pickerPopup`
+- `component.progress`
+- `component.rating`
+- `component.scrollArea`
+- `component.slider`
+- `component.switch`
+- `component.textField`
 
-This list reflects the merged `#419` rollout batches so far:
+Some retained branches can still be contract-only during cleanup. Those should be deleted or
+converted in follow-up PRs according to the audit report.
+
+Historical `#419` rollout batches included:
 
 - `#420` Button and Surface
 - `#422` Accordion, Badge, Callout, Card, Popover, Progress, Slider
@@ -323,7 +286,7 @@ This list reflects the merged `#419` rollout batches so far:
 - `#496` shared semantic token remap for Tailwind, sprinkles, and globals
 - `#497` Sidebar, Filter, and Table contract cleanup
 
-Additional migrated coverage on `main` now includes:
+Historical additional migrated coverage included:
 
 - `component.sidebar`
   - `Sidebar`

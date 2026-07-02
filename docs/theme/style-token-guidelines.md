@@ -13,7 +13,6 @@ Create a theme style token when all of these are true:
 
 Good examples:
 
-- Dialog size-specific `maxWidth`.
 - AppShell structural grid templates.
 - Sidebar or panel width values when they are part of shell layout policy.
 - ScrollArea rail/thumb dimensions.
@@ -38,7 +37,6 @@ Examples:
 
 ```ts
 component.appShell.layout.bodyGridTemplateColumns
-component.dialog.size.md.maxWidth
 component.scrollArea.size.sm.thickness
 ```
 

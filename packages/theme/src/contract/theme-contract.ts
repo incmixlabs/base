@@ -9,112 +9,11 @@ export const THEME_CONTRACT_SCHEMA_VERSION = '1.0.0' as const
 
 export type ThemeLifecycle = 'draft' | 'review' | 'published'
 
-export type ButtonComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      height: string
-      paddingInline: string
-      paddingBlock: string
-      fontSize: string
-      lineHeight: string
-      gap: string
-      iconSize: string
-    }>
-  >
-  motion?: Partial<{
-    transition: string
-  }>
-}
-
-export type AccordionComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      triggerPaddingInline: string
-      triggerPaddingBlock: string
-      contentPaddingInline: string
-      contentPaddingBlock: string
-      fontSize: string
-      lineHeight: string
-      gap: string
-      iconSize: string
-      triggerTransition: string
-    }>
-  >
-}
-
-export type BadgeComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      fontSize: string
-      lineHeight: string
-      paddingInline: string
-      paddingBlock: string
-      gap: string
-      deleteButtonSize: string
-      deleteButtonMarginStart: string
-      avatarMarginStart: string
-      avatarSize: string
-    }>
-  >
-}
-
-export type CalloutComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      padding: string
-      rowGap: string
-      columnGap: string
-      iconHeight: string
-      iconSize: string
-      fontSize: string
-      lineHeight: string
-    }>
-  >
-}
-
 export type CardComponentTokens = {
   size?: Record<
     string,
     Partial<{
       padding: string
-    }>
-  >
-}
-
-export type PopoverComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      padding: string
-      fontSize: string
-      lineHeight: string
-    }>
-  >
-  maxWidth?: Record<
-    string,
-    Partial<{
-      maxWidth: string
-    }>
-  >
-}
-
-export type TooltipComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      padding: string
-      fontSize: string
-      lineHeight: string
-    }>
-  >
-  maxWidth?: Record<
-    string,
-    Partial<{
-      maxWidth: string
     }>
   >
 }
@@ -137,21 +36,6 @@ export type ProgressComponentTokens = {
     indeterminateDuration: string
     indeterminateWidth: string
   }>
-}
-
-export type DialogComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      maxWidth: string
-      titleFontSize: string
-      titleLineHeight: string
-      descriptionFontSize: string
-      descriptionLineHeight: string
-      padding: string
-      footerGap: string
-    }>
-  >
 }
 
 export type SliderComponentTokens = {
@@ -215,17 +99,6 @@ export type FieldGroupComponentTokens = {
     columnGap: string
     descriptionMarginTop: string
   }>
-}
-
-export type IconButtonComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      height: string
-      fontSize: string
-      iconSize: string
-    }>
-  >
 }
 
 export type RatingComponentTokens = {
@@ -370,8 +243,6 @@ export type ThemeContract = {
     color: Record<string, Record<string, string>>
   }
   component: {
-    button: ButtonComponentTokens
-    accordion: AccordionComponentTokens
     fieldGroup: FieldGroupComponentTokens
     pickerPopup: PickerPopupComponentTokens
     fileUpload: FileUploadComponentTokens
@@ -379,14 +250,8 @@ export type ThemeContract = {
     date: DateComponentTokens
     textField: TextFieldComponentTokens
     switch: SwitchComponentTokens
-    iconButton: IconButtonComponentTokens
-    badge: BadgeComponentTokens
-    callout: CalloutComponentTokens
     card: CardComponentTokens
-    popover: PopoverComponentTokens
-    tooltip: TooltipComponentTokens
     progress: ProgressComponentTokens
-    dialog: DialogComponentTokens
     slider: SliderComponentTokens
     rating: RatingComponentTokens
     appShell: AppShellComponentTokens
@@ -397,16 +262,249 @@ export type ThemeContract = {
 export type ThemeContractValidation = { ok: true; value: ThemeContract } | { ok: false; errors: string[] }
 
 const lifecycleValues: ThemeLifecycle[] = ['draft', 'review', 'published']
+export const THEME_COMPONENT_TOKEN_KEYS = [
+  'fieldGroup',
+  'pickerPopup',
+  'fileUpload',
+  'mentionTextarea',
+  'date',
+  'textField',
+  'switch',
+  'card',
+  'progress',
+  'slider',
+  'rating',
+  'appShell',
+  'scrollArea',
+] as const
+export type ThemeComponentTokenKey = (typeof THEME_COMPONENT_TOKEN_KEYS)[number]
+
 const strippedLegacyComponentKeys = ['dateNext', 'stepper', 'timeline', 'surface'] as const
 const rejectedRetiredComponentKeys = [
+  'accordion',
+  'badge',
+  'button',
+  'callout',
   'checkbox',
   'checkboxGroup',
   'checkboxCards',
+  'dialog',
+  'iconButton',
+  'popover',
   'radio',
   'radioCards',
+  'tooltip',
   'toggle',
   'treeView',
 ] as const
+
+type ComponentTokenBranchSchema =
+  | { kind: 'direct'; slots: readonly string[] }
+  | { kind: 'record'; slots: readonly string[] }
+
+type ComponentTokenSchema = {
+  slots?: readonly string[]
+  branches?: Record<string, ComponentTokenBranchSchema>
+}
+
+const componentTokenSchema = {
+  fieldGroup: {
+    branches: {
+      section: {
+        kind: 'direct',
+        slots: ['separatorMarginBlock', 'headerMarginBottom', 'descriptionMarginTop'],
+      },
+      row: {
+        kind: 'direct',
+        slots: ['rootGap', 'columnGap', 'descriptionMarginTop'],
+      },
+    },
+  },
+  pickerPopup: {
+    branches: {
+      size: {
+        kind: 'record',
+        slots: [
+          'viewportMaxHeight',
+          'popupPadding',
+          'statusPaddingX',
+          'statusPaddingY',
+          'searchHeight',
+          'fontSize',
+          'lineHeight',
+          'rowPaddingX',
+          'rowPaddingY',
+          'rowTrailingPadding',
+          'iconSize',
+        ],
+      },
+    },
+  },
+  fileUpload: {
+    branches: {
+      size: {
+        kind: 'record',
+        slots: [
+          'defaultPadding',
+          'minimalPadding',
+          'cardPadding',
+          'iconShellPadding',
+          'iconSize',
+          'titleFontSize',
+          'descriptionFontSize',
+        ],
+      },
+    },
+  },
+  mentionTextarea: {
+    slots: [
+      'suggestionMinWidth',
+      'suggestionMaxWidth',
+      'suggestionFontSize',
+      'suggestionEmptyPaddingInline',
+      'suggestionEmptyPaddingBlock',
+      'dragOverlayFontSize',
+      'previewMinHeight',
+      'previewPaddingInline',
+      'previewPaddingBlock',
+      'previewFontSize',
+    ],
+  },
+  date: {
+    branches: {
+      size: {
+        kind: 'record',
+        slots: [
+          'controlHeight',
+          'controlFontSize',
+          'controlLineHeight',
+          'controlPaddingInline',
+          'controlPaddingBlock',
+          'controlGap',
+          'controlIconSize',
+          'calendarDaySize',
+          'calendarNavSize',
+          'calendarNavIconSize',
+          'calendarFontSize',
+          'calendarLineHeight',
+          'calendarGridGap',
+          'calendarPopoverPadding',
+          'calendarHeadingGap',
+          'rangeFieldMinWidth',
+          'miniCalendarPadding',
+          'miniCalendarBodyGap',
+          'miniCalendarHeaderGap',
+          'miniCalendarTitleFontSize',
+        ],
+      },
+    },
+  },
+  textField: {
+    branches: {
+      size: {
+        kind: 'record',
+        slots: [
+          'height',
+          'floatingHeight',
+          'fontSize',
+          'lineHeight',
+          'paddingInline',
+          'paddingBlock',
+          'iconSize',
+          'gap',
+          'floatingOutlinedPlaceholderTranslate',
+        ],
+      },
+    },
+  },
+  switch: {
+    branches: {
+      size: {
+        kind: 'record',
+        slots: ['rootHeight', 'rootWidth', 'thumbSize', 'thumbTranslate', 'gap'],
+      },
+      group: {
+        kind: 'direct',
+        slots: ['gap', 'inlineGap'],
+      },
+    },
+  },
+  card: {
+    branches: {
+      size: {
+        kind: 'record',
+        slots: ['padding'],
+      },
+    },
+  },
+  progress: {
+    branches: {
+      size: {
+        kind: 'record',
+        slots: ['height'],
+      },
+      variant: {
+        kind: 'record',
+        slots: ['boxShadow'],
+      },
+      motion: {
+        kind: 'direct',
+        slots: ['indicatorTransition', 'indeterminateDuration', 'indeterminateWidth'],
+      },
+    },
+  },
+  slider: {
+    branches: {
+      size: {
+        kind: 'record',
+        slots: ['trackHeight', 'thumbSize'],
+      },
+      variant: {
+        kind: 'record',
+        slots: ['boxShadow'],
+      },
+    },
+  },
+  rating: {
+    branches: {
+      size: {
+        kind: 'record',
+        slots: ['iconSize', 'gap'],
+      },
+    },
+  },
+  appShell: {
+    branches: {
+      content: {
+        kind: 'direct',
+        slots: ['paddingInline', 'paddingBlock', 'paddingInlineDesktop', 'paddingBlockDesktop'],
+      },
+      layout: {
+        kind: 'direct',
+        slots: [
+          'bodyGridTemplateColumns',
+          'bodyWithSecondaryGridTemplateColumns',
+          'bodyWithSecondaryRightGridTemplateColumns',
+        ],
+      },
+    },
+  },
+  scrollArea: {
+    branches: {
+      size: {
+        kind: 'record',
+        slots: ['thickness', 'thumbInset'],
+      },
+      shape: {
+        kind: 'record',
+        slots: ['radius'],
+      },
+    },
+  },
+} satisfies Record<ThemeComponentTokenKey, ComponentTokenSchema>
+
+const themeComponentTokenKeySet = new Set<string>(THEME_COMPONENT_TOKEN_KEYS)
+const retiredComponentTokenKeySet = new Set<string>(rejectedRetiredComponentKeys)
 
 function isObject(value: unknown): value is Record<string, unknown> {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) {
@@ -461,23 +559,120 @@ function isNestedStringRecord(value: unknown): value is Record<string, Record<st
   return Object.values(value).every(entry => isStringRecord(entry))
 }
 
-function validateComponentTokenBranch(value: unknown, path: string, errors: string[], allowEmptyObject = true): void {
-  if (isNonEmptyString(value)) return
-
+function validateComponentSlotObject(
+  value: unknown,
+  path: string,
+  slots: readonly string[],
+  errors: string[],
+  allowEmptyObject = true,
+): void {
   if (!isObject(value)) {
-    errors.push(`${path} must be a non-empty string token value or an object containing token values`)
+    errors.push(`${path} must be an object containing supported token slots`)
     return
   }
 
   const entries = Object.entries(value)
   if (!allowEmptyObject && entries.length === 0) {
-    errors.push(`${path} must contain at least one non-empty string token value`)
+    errors.push(`${path} must contain at least one supported token slot`)
     return
   }
 
-  for (const [key, entry] of entries) {
-    validateComponentTokenBranch(entry, `${path}.${key}`, errors, false)
+  const slotSet = new Set(slots)
+  for (const [slot, entry] of entries) {
+    const slotPath = `${path}.${slot}`
+    if (!slotSet.has(slot)) {
+      errors.push(`${slotPath} is not a supported component token slot`)
+      continue
+    }
+
+    if (!isNonEmptyString(entry)) {
+      errors.push(`${slotPath} must be a non-empty string token value`)
+    }
   }
+}
+
+function validateComponentRecordBranch(
+  value: unknown,
+  path: string,
+  slots: readonly string[],
+  errors: string[],
+  allowEmptyObject = true,
+): void {
+  if (!isObject(value)) {
+    errors.push(`${path} must be an object containing token records`)
+    return
+  }
+
+  const entries = Object.entries(value)
+  if (!allowEmptyObject && entries.length === 0) {
+    errors.push(`${path} must contain at least one token record`)
+    return
+  }
+
+  for (const [recordKey, entry] of entries) {
+    validateComponentSlotObject(entry, `${path}.${recordKey}`, slots, errors)
+  }
+}
+
+function validateComponentTokenObject(
+  value: unknown,
+  path: string,
+  schema: ComponentTokenSchema,
+  errors: string[],
+): void {
+  if (!isObject(value)) {
+    errors.push(`${path} must be an object`)
+    return
+  }
+
+  const slotSet = new Set(schema.slots ?? [])
+  const branchEntries = Object.entries(schema.branches ?? {})
+  const branchMap = new Map(branchEntries)
+  const supportedKeys = new Set([...slotSet, ...branchMap.keys()])
+
+  for (const [key, entry] of Object.entries(value)) {
+    const keyPath = `${path}.${key}`
+    if (!supportedKeys.has(key)) {
+      errors.push(`${keyPath} is not a supported component token slot`)
+      continue
+    }
+
+    if (slotSet.has(key)) {
+      if (!isNonEmptyString(entry)) {
+        errors.push(`${keyPath} must be a non-empty string token value`)
+      }
+      continue
+    }
+
+    const branch = branchMap.get(key)
+    if (!branch) continue
+    if (branch.kind === 'direct') {
+      validateComponentSlotObject(entry, keyPath, branch.slots, errors)
+      continue
+    }
+
+    validateComponentRecordBranch(entry, keyPath, branch.slots, errors)
+  }
+}
+
+export function validateThemeComponentTokens(component: Record<string, unknown>): string[] {
+  const errors: string[] = []
+
+  for (const [key, value] of Object.entries(component)) {
+    if (retiredComponentTokenKeySet.has(key)) {
+      errors.push(`component.${key} is retired; component styling uses Uno/TW class maps`)
+      continue
+    }
+
+    if (!themeComponentTokenKeySet.has(key)) {
+      errors.push(`component.${key} is not supported by the current theme contract`)
+      continue
+    }
+
+    validateComponentTokenObject(value, `component.${key}`, componentTokenSchema[key as ThemeComponentTokenKey], errors)
+  }
+
+  return errors
 }
 
 function isFontSource(value: unknown): value is ThemeFontSource {
@@ -587,44 +782,12 @@ export function validateThemeContract(input: unknown): ThemeContractValidation {
 
   if (!isObject(semantic.color)) errors.push('semantic.color must be an object')
 
-  for (const key of rejectedRetiredComponentKeys) {
-    if (component[key] !== undefined) {
-      errors.push(`component.${key} is retired; component sizing uses shared UI size maps`)
-    }
-  }
-
-  const requiredComponent = [
-    'button',
-    'accordion',
-    'fieldGroup',
-    'pickerPopup',
-    'fileUpload',
-    'mentionTextarea',
-    'date',
-    'textField',
-    'switch',
-    'iconButton',
-    'badge',
-    'callout',
-    'card',
-    'popover',
-    'tooltip',
-    'progress',
-    'dialog',
-    'slider',
-    'rating',
-    'appShell',
-    'scrollArea',
-  ]
-  for (const key of requiredComponent) {
-    const value = component[key]
-    if (value === undefined) {
+  for (const key of THEME_COMPONENT_TOKEN_KEYS) {
+    if (component[key] === undefined) {
       component[key] = {}
-      continue
     }
-    if (!isObject(value)) errors.push(`component.${key} must be an object`)
-    else validateComponentTokenBranch(value, `component.${key}`, errors)
   }
+  errors.push(...validateThemeComponentTokens(component))
 
   if (errors.length > 0) {
     return { ok: false, errors }

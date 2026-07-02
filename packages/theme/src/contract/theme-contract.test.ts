@@ -29,7 +29,7 @@ function createValidThemeContract() {
       },
     },
     component: {
-      button: { size: { sm: { paddingInline: '0.75rem' } } },
+      progress: { size: { sm: { height: '0.375rem' } } },
     },
   }
 }
@@ -43,18 +43,20 @@ describe('theme contract validation', () => {
 
   it('rejects non-string component token leaves', () => {
     const theme = createValidThemeContract()
-    theme.component.button.size.sm.paddingInline = 12 as never
+    theme.component.progress.size.sm.height = 12 as never
 
     const result = validateThemeContract(theme)
 
     expect(result.ok).toBe(false)
     if (!result.ok) {
-      expect(result.errors.join(' ')).toContain('component.button.size.sm.paddingInline')
+      expect(result.errors.join(' ')).toContain('component.progress.size.sm.height')
     }
   })
 
   it('rejects retired component token branches', () => {
     const theme = createValidThemeContract()
+    ;(theme.component as Record<string, unknown>).button = { size: { sm: { paddingInline: '0.75rem' } } }
+    ;(theme.component as Record<string, unknown>).accordion = { size: { md: { triggerPaddingInline: '1.25rem' } } }
     ;(theme.component as Record<string, unknown>).checkboxGroup = { gap: '0.5rem' }
     ;(theme.component as Record<string, unknown>).toggle = { size: { md: { iconSize: '1rem' } } }
     ;(theme.component as Record<string, unknown>).treeView = { size: { md: { itemPaddingInline: '0.875rem' } } }
@@ -63,9 +65,25 @@ describe('theme contract validation', () => {
 
     expect(result.ok).toBe(false)
     if (!result.ok) {
+      expect(result.errors.join(' ')).toContain('component.button is retired')
+      expect(result.errors.join(' ')).toContain('component.accordion is retired')
       expect(result.errors.join(' ')).toContain('component.checkboxGroup is retired')
       expect(result.errors.join(' ')).toContain('component.toggle is retired')
       expect(result.errors.join(' ')).toContain('component.treeView is retired')
+    }
+  })
+
+  it('rejects unknown component token branches and unsupported slots', () => {
+    const theme = createValidThemeContract()
+    ;(theme.component as Record<string, unknown>).unknown = { size: { md: { gap: '1rem' } } }
+    ;(theme.component.progress.size.sm as Record<string, unknown>).paddingInline = '1rem'
+
+    const result = validateThemeContract(theme)
+
+    expect(result.ok).toBe(false)
+    if (!result.ok) {
+      expect(result.errors.join(' ')).toContain('component.unknown is not supported')
+      expect(result.errors.join(' ')).toContain('component.progress.size.sm.paddingInline')
     }
   })
 
@@ -124,7 +142,7 @@ describe('theme contract validation', () => {
 
   it('keeps component.date and strips legacy component.dateNext when both are provided', () => {
     const theme = createValidThemeContract()
-    const dateTokens = { cell: { borderRadius: 'var(--radius-md)' } }
+    const dateTokens = { size: { md: { calendarDaySize: '2.75rem' } } }
     ;(theme.component as Record<string, unknown>).date = dateTokens
     ;(theme.component as Record<string, unknown>).dateNext = { cell: { borderRadius: 'var(--radius-lg)' } }
 
