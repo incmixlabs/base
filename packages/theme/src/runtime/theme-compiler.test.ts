@@ -30,7 +30,6 @@ function createTheme(): ThemeContract {
     },
     component: {
       pickerPopup: { size: { md: { viewportMaxHeight: '16rem' } } },
-      fileUpload: { size: { md: { iconSize: '1.5rem' } } },
       mentionTextarea: { previewMinHeight: '96px' },
       textField: { size: { sm: { paddingInline: '0.75rem' } } },
       switch: { size: { sm: { rootWidth: '2.25rem' } } },
@@ -99,9 +98,10 @@ describe('theme-compiler', () => {
     ;(theme.component as Record<string, unknown>).button = { size: { sm: { paddingInline: '0.75rem' } } }
     ;(theme.component as Record<string, unknown>).card = { size: { md: { padding: '1rem' } } }
     ;(theme.component as Record<string, unknown>).fieldGroup = { row: { columnGap: '2rem' } }
+    ;(theme.component as Record<string, unknown>).fileUpload = { size: { md: { iconSize: '1.5rem' } } }
 
     expect(() => compileThemeTokens(theme)).toThrow(
-      /component\.button is retired.*component\.card is retired.*component\.fieldGroup is retired/s,
+      /component\.button is retired.*component\.card is retired.*component\.fieldGroup is retired.*component\.fileUpload is retired/s,
     )
   })
 

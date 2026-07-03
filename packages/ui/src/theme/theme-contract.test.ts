@@ -34,7 +34,6 @@ function createValidTheme() {
     },
     component: {
       pickerPopup: { size: { md: { viewportMaxHeight: '16rem' } } },
-      fileUpload: { size: { md: { iconSize: '1.5rem' } } },
       mentionTextarea: { previewMinHeight: '96px' },
       textField: { size: { sm: { paddingInline: '0.75rem' } } },
       switch: { size: { sm: { rootWidth: '2.25rem' } }, group: { gap: '0.5rem', inlineGap: '1rem' } },
@@ -224,7 +223,6 @@ describe('theme-contract', () => {
 
   it('fills missing component branches with empty objects during validation', () => {
     const theme = createValidTheme()
-    delete (theme.component as Record<string, unknown>).fileUpload
     delete (theme.component as Record<string, unknown>).mentionTextarea
     delete (theme.component as Record<string, unknown>).pickerPopup
     delete (theme.component as Record<string, unknown>).progress
@@ -238,7 +236,6 @@ describe('theme-contract', () => {
 
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.value.component.fileUpload).toEqual({})
       expect(result.value.component.mentionTextarea).toEqual({})
       expect(result.value.component.pickerPopup).toEqual({})
       expect(result.value.component.progress).toEqual({})
@@ -266,6 +263,18 @@ describe('theme-contract', () => {
     expect(result.ok).toBe(false)
     if (!result.ok) {
       expect(result.errors.join(' ')).toContain('component.fieldGroup is retired')
+    }
+  })
+
+  it('rejects retired FileUpload component token overrides', () => {
+    const theme = createValidTheme()
+    ;(theme.component as Record<string, unknown>).fileUpload = { size: { md: { iconSize: '1.5rem' } } }
+
+    const result = validateThemeContract(theme)
+
+    expect(result.ok).toBe(false)
+    if (!result.ok) {
+      expect(result.errors.join(' ')).toContain('component.fileUpload is retired')
     }
   })
 })

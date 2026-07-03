@@ -108,21 +108,6 @@ export type PickerPopupComponentTokens = {
   >
 }
 
-export type FileUploadComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      defaultPadding: string
-      minimalPadding: string
-      cardPadding: string
-      iconShellPadding: string
-      iconSize: string
-      titleFontSize: string
-      descriptionFontSize: string
-    }>
-  >
-}
-
 export type MentionTextareaComponentTokens = Partial<{
   suggestionMinWidth: string
   suggestionMaxWidth: string
@@ -188,7 +173,6 @@ export type ThemeContract = {
   }
   component: {
     pickerPopup: PickerPopupComponentTokens
-    fileUpload: FileUploadComponentTokens
     mentionTextarea: MentionTextareaComponentTokens
     textField: TextFieldComponentTokens
     switch: SwitchComponentTokens
@@ -205,7 +189,6 @@ export type ThemeContractValidation = { ok: true; value: ThemeContract } | { ok:
 const lifecycleValues: ThemeLifecycle[] = ['draft', 'review', 'published']
 export const THEME_COMPONENT_TOKEN_KEYS = [
   'pickerPopup',
-  'fileUpload',
   'mentionTextarea',
   'textField',
   'switch',
@@ -230,6 +213,7 @@ const rejectedRetiredComponentKeys = [
   'date',
   'dialog',
   'fieldGroup',
+  'fileUpload',
   'iconButton',
   'popover',
   'radio',
@@ -265,22 +249,6 @@ const componentTokenSchema = {
           'rowPaddingY',
           'rowTrailingPadding',
           'iconSize',
-        ],
-      },
-    },
-  },
-  fileUpload: {
-    branches: {
-      size: {
-        kind: 'record',
-        slots: [
-          'defaultPadding',
-          'minimalPadding',
-          'cardPadding',
-          'iconShellPadding',
-          'iconSize',
-          'titleFontSize',
-          'descriptionFontSize',
         ],
       },
     },
