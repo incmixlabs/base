@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   getResponsiveMappedUtilityClasses,
   getResponsiveSpacingUtilityClasses,
+  getResponsiveUtilityClassNames,
   getSpacingUtilityClass,
   getThemeColorUtilityClass,
 } from './token-class-maps'
@@ -79,6 +80,17 @@ describe('theme token class maps', () => {
         },
       ),
     ).toBe('hidden md:block xl:grid')
+  })
+
+  it('builds exact responsive utility class safelists and removes duplicates', () => {
+    expect(getResponsiveUtilityClassNames(['w-3', 'w-3'])).toEqual([
+      'w-3',
+      'xs:w-3',
+      'sm:w-3',
+      'md:w-3',
+      'lg:w-3',
+      'xl:w-3',
+    ])
   })
 
   it('skips unsupported responsive spacing values', () => {
