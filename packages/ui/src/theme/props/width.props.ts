@@ -3,9 +3,11 @@ import type { GetPropDefTypes, PropDef } from './prop-def'
 const widthPropDefs = {
   /**
    * Sets the CSS **width** property.
-   * Supports CSS strings and responsive objects.
+   * Supports common width tokens, CSS strings, and responsive objects.
    *
    * @example
+   * width="full"
+   * width="4"
    * width="100px"
    * width={{ md: '100vw', xl: '1400px' }}
    *
@@ -14,15 +16,14 @@ const widthPropDefs = {
    */
   width: {
     type: 'string',
-    className: 'af-w',
-    customProperties: ['--width'],
     responsive: true,
   },
   /**
    * Sets the CSS **min-width** property.
-   * Supports CSS strings and responsive objects.
+   * Supports common width tokens, CSS strings, and responsive objects.
    *
    * @example
+   * minWidth="0"
    * minWidth="100px"
    * minWidth={{ md: '100vw', xl: '1400px' }}
    *
@@ -31,15 +32,14 @@ const widthPropDefs = {
    */
   minWidth: {
     type: 'string',
-    className: 'af-min-w',
-    customProperties: ['--min-width'],
     responsive: true,
   },
   /**
    * Sets the CSS **max-width** property.
-   * Supports CSS strings and responsive objects.
+   * Supports common width tokens, CSS strings, and responsive objects.
    *
    * @example
+   * maxWidth="md"
    * maxWidth="100px"
    * maxWidth={{ md: '100vw', xl: '1400px' }}
    *
@@ -48,8 +48,6 @@ const widthPropDefs = {
    */
   maxWidth: {
     type: 'string',
-    className: 'af-max-w',
-    customProperties: ['--max-width'],
     responsive: true,
   },
 } satisfies {

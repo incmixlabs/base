@@ -30,7 +30,6 @@ const sectionPropDefs = {
    */
   size: {
     type: 'enum',
-    className: 'af-size',
     values: sectionSizes,
     default: '3',
     responsive: true,
@@ -45,7 +44,6 @@ const sectionPropDefs = {
    */
   display: {
     type: 'enum',
-    className: 'af-display',
     values: sectionDisplayValues,
     responsive: true,
   },

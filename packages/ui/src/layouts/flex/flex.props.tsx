@@ -33,7 +33,6 @@ const flexPropDefs = {
    */
   display: {
     type: 'enum',
-    className: 'af-display',
     values: displayValues,
     responsive: true,
   },
@@ -50,7 +49,6 @@ const flexPropDefs = {
    */
   direction: {
     type: 'enum',
-    className: 'af-fd',
     values: directionValues,
     responsive: true,
   },
@@ -67,7 +65,6 @@ const flexPropDefs = {
    */
   align: {
     type: 'enum',
-    className: 'af-ai',
     values: alignValues,
     responsive: true,
   },
@@ -84,9 +81,7 @@ const flexPropDefs = {
    */
   justify: {
     type: 'enum',
-    className: 'af-jc',
     values: justifyValues,
-    parseValue: parseJustifyValue,
     responsive: true,
   },
   /**
@@ -102,7 +97,6 @@ const flexPropDefs = {
    */
   wrap: {
     type: 'enum',
-    className: 'af-fw',
     values: wrapValues,
     responsive: true,
   },
@@ -114,10 +108,6 @@ const flexPropDefs = {
   align: PropDef<(typeof alignValues)[number]>
   justify: PropDef<(typeof justifyValues)[number]>
   wrap: PropDef<(typeof wrapValues)[number]>
-}
-
-function parseJustifyValue(value: string) {
-  return value === 'between' ? 'space-between' : value
 }
 
 // Use all of the imported prop defs to ensure that JSDoc works

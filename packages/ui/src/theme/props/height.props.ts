@@ -3,9 +3,11 @@ import type { GetPropDefTypes, PropDef } from './prop-def'
 const heightPropDefs = {
   /**
    * Sets the CSS **height** property.
-   * Supports CSS strings and responsive objects.
+   * Supports common height tokens, CSS strings, and responsive objects.
    *
    * @example
+   * height="full"
+   * height="4"
    * height="100px"
    * height={{ md: '100vh', xl: '600px' }}
    *
@@ -14,15 +16,15 @@ const heightPropDefs = {
    */
   height: {
     type: 'string',
-    className: 'af-h',
-    customProperties: ['--height'],
     responsive: true,
   },
   /**
    * Sets the CSS **min-height** property.
-   * Supports CSS strings and responsive objects.
+   * Supports common height tokens, CSS strings, and responsive objects.
    *
    * @example
+   * minHeight="0"
+   * minHeight="100svh"
    * minHeight="100px"
    * minHeight={{ md: '100vh', xl: '600px' }}
    *
@@ -31,15 +33,14 @@ const heightPropDefs = {
    */
   minHeight: {
     type: 'string',
-    className: 'af-min-h',
-    customProperties: ['--min-height'],
     responsive: true,
   },
   /**
    * Sets the CSS **max-height** property.
-   * Supports CSS strings and responsive objects.
+   * Supports common height tokens, CSS strings, and responsive objects.
    *
    * @example
+   * maxHeight="screen"
    * maxHeight="100px"
    * maxHeight={{ md: '100vh', xl: '600px' }}
    *
@@ -48,8 +49,6 @@ const heightPropDefs = {
    */
   maxHeight: {
     type: 'string',
-    className: 'af-max-h',
-    customProperties: ['--max-height'],
     responsive: true,
   },
 } satisfies {
