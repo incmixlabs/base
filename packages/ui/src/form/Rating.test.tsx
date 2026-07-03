@@ -15,7 +15,7 @@ function expectClassTokens(className: string | undefined, tokens: readonly strin
 }
 
 describe('Rating', () => {
-  it('uses semantic color and token-backed sizing classes', () => {
+  it('uses semantic color and static sizing utilities', () => {
     render(
       <Rating color="info" defaultValue={1} size="lg">
         <RatingItem />
@@ -27,11 +27,11 @@ describe('Rating', () => {
     const [firstItem] = screen.getAllByRole('radio')
 
     expectClassTokens(rating.className, ['flex', 'outline-none', 'text-info'])
-    expectClassTokens(rating.className, ['gap-[var(--af-rating-size-lg-gap,0.625rem)]'])
+    expectClassTokens(rating.className, ['gap-2.5'])
     expectClassTokens(firstItem.className, [
       'inline-flex',
-      'h-[var(--af-rating-size-lg-icon-size,1.25rem)]',
-      'w-[var(--af-rating-size-lg-icon-size,1.25rem)]',
+      'h-5',
+      'w-5',
       'focus-visible:[outline-color:var(--color-info-solid-alpha)]',
     ])
     expect(firstItem.className).not.toContain('Rating_ratingItemBase')

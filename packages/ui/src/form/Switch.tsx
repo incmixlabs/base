@@ -15,15 +15,16 @@ import {
   switchColorVariants,
   switchHighContrastByVariant,
   switchRootBase,
-  switchRootSize,
+  switchRootForcedColorAdjust,
+  switchRootSizeVariants,
   switchSegmentedControlBase,
   switchSegmentedLabelBase,
   switchSegmentedLabelColorVariants,
   switchSegmentedRootBase,
   switchSegmentedSizeClasses,
   switchSegmentedThumbBase,
-  switchSizeVariants,
   switchThumbBase,
+  switchThumbSizeVariants,
 } from './switch.class'
 import type { SwitchProps, SwitchSegmentedProps, SwitchSize, SwitchWithLabelProps } from './switch.props'
 import { switchPropDefs } from './switch.props'
@@ -66,9 +67,9 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         onCheckedChange={onCheckedChange}
         disabled={effectiveDisabled}
         className={cn(
-          switchSizeVariants[size],
           switchRootBase,
-          switchRootSize,
+          switchRootForcedColorAdjust,
+          switchRootSizeVariants[size],
           radiusClassByToken[safeRadius],
           switchColorVariants[safeColor][safeVariant],
           safeHighContrast && 'af-high-contrast',
@@ -77,7 +78,7 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         )}
         {...props}
       >
-        <SwitchPrimitive.Thumb className={switchThumbBase} />
+        <SwitchPrimitive.Thumb className={cn(switchThumbBase, switchThumbSizeVariants[size])} />
       </SwitchPrimitive.Root>
     )
   },

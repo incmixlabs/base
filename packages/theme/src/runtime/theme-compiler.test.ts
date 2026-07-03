@@ -32,10 +32,7 @@ function createTheme(): ThemeContract {
       pickerPopup: { size: { md: { viewportMaxHeight: '16rem' } } },
       mentionTextarea: { previewMinHeight: '96px' },
       textField: { size: { sm: { paddingInline: '0.75rem' } } },
-      switch: { size: { sm: { rootWidth: '2.25rem' } } },
       progress: { size: { sm: { height: '0.4rem' } } },
-      slider: { size: { md: { thumbSize: '1.3rem' } } },
-      rating: { size: { md: { iconSize: '1.25rem' } } },
       appShell: {
         content: { paddingInline: '1rem', paddingInlineDesktop: '1.5rem' },
         layout: { bodyWithSecondaryRightGridTemplateColumns: 'auto minmax(0, 1fr) 20rem' },
@@ -99,9 +96,12 @@ describe('theme-compiler', () => {
     ;(theme.component as Record<string, unknown>).card = { size: { md: { padding: '1rem' } } }
     ;(theme.component as Record<string, unknown>).fieldGroup = { row: { columnGap: '2rem' } }
     ;(theme.component as Record<string, unknown>).fileUpload = { size: { md: { iconSize: '1.5rem' } } }
+    ;(theme.component as Record<string, unknown>).rating = { size: { md: { iconSize: '1.25rem' } } }
+    ;(theme.component as Record<string, unknown>).slider = { size: { md: { thumbSize: '1.3rem' } } }
+    ;(theme.component as Record<string, unknown>).switch = { size: { sm: { rootWidth: '2.25rem' } } }
 
     expect(() => compileThemeTokens(theme)).toThrow(
-      /component\.button is retired.*component\.card is retired.*component\.fieldGroup is retired.*component\.fileUpload is retired/s,
+      /component\.button is retired.*component\.card is retired.*component\.fieldGroup is retired.*component\.fileUpload is retired.*component\.rating is retired.*component\.slider is retired.*component\.switch is retired/s,
     )
   })
 

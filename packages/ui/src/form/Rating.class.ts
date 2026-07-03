@@ -1,11 +1,8 @@
 import { type SemanticColorKey, semanticColorKeys } from '../theme/props/color.prop'
-import { controlSizeTokens } from '../theme/token-maps'
-import { type RatingSize, ratingSizes } from './rating.props'
+import type { RatingSize } from './rating.props'
 
 const joinClass = (...parts: string[]) => parts.join('')
 const colorVar = (color: string, token: string) => joinClass('var(--color-', color, '-', token, ')')
-const ratingSizeVar = (size: string, slot: string, fallback: string) =>
-  joinClass('var(--af-rating-size-', size, '-', slot, ',', fallback, ')')
 
 const ratingFocusClassName = (color: string) =>
   joinClass(
@@ -27,20 +24,23 @@ export const ratingItemFocusColorVariants = Object.fromEntries(
   semanticColorKeys.map(color => [color, ratingFocusClassName(color)]),
 ) as Record<SemanticColorKey, string>
 
-export const ratingItemSizeVariants = Object.fromEntries(
-  ratingSizes.map(size => {
-    const token = controlSizeTokens[size]
-    const iconSize = ratingSizeVar(size, 'icon-size', token.iconSize)
-    return [size, joinClass('h-[', iconSize, '] w-[', iconSize, ']')]
-  }),
-) as Record<RatingSize, string>
+export const ratingItemSizeVariants = {
+  xs: 'h-3 w-3',
+  sm: 'h-3.5 w-3.5',
+  md: 'h-4 w-4',
+  lg: 'h-5 w-5',
+  xl: 'h-6 w-6',
+  '2x': 'h-7 w-7',
+} as const satisfies Record<RatingSize, string>
 
-export const ratingGapVariants = Object.fromEntries(
-  ratingSizes.map(size => {
-    const token = controlSizeTokens[size]
-    return [size, joinClass('gap-[', ratingSizeVar(size, 'gap', token.gap), ']')]
-  }),
-) as Record<RatingSize, string>
+export const ratingGapVariants = {
+  xs: 'gap-1',
+  sm: 'gap-1.5',
+  md: 'gap-2',
+  lg: 'gap-2.5',
+  xl: 'gap-[0.6875rem]',
+  '2x': 'gap-3.5',
+} as const satisfies Record<RatingSize, string>
 
 export const ratingClassNames = [
   ratingBase,

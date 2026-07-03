@@ -15,7 +15,7 @@ function expectClassTokens(className: string | undefined, tokens: readonly strin
 }
 
 describe('Slider', () => {
-  it('uses semantic color, radius, and token-backed sizing classes', () => {
+  it('uses semantic color, radius, and static sizing utilities', () => {
     const { container } = render(<Slider color="info" defaultValue={[40]} radius="lg" size="md" variant="solid" />)
 
     const root = container.querySelector('[data-slot="slider"]')
@@ -23,17 +23,12 @@ describe('Slider', () => {
     const indicator = container.querySelector('[data-slot="slider-indicator"]')
     const thumb = container.querySelector('[data-slot="slider-thumb"]')
 
-    expectClassTokens(root?.className, [
-      'relative',
-      'flex',
-      '[--af-slider-track-height:var(--af-slider-size-md-track-height,0.5rem)]',
-      '[--af-slider-thumb-size:var(--af-slider-size-md-thumb-size,1.25rem)]',
-    ])
+    expectClassTokens(root?.className, ['relative', 'flex', 'w-full'])
     expectClassTokens(track?.className, [
       'relative',
       'overflow-hidden',
       'rounded-lg',
-      'h-[var(--af-slider-track-height)]',
+      'h-2',
       'border-0',
       'bg-[var(--color-info-solid-alpha)]',
     ])
@@ -42,11 +37,22 @@ describe('Slider', () => {
       'block',
       'border-2',
       'bg-light-surface',
-      'h-[var(--af-slider-thumb-size)]',
-      'w-[var(--af-slider-thumb-size)]',
+      'h-5',
+      'w-5',
       '[border-color:var(--color-info-solid)]',
       'focus-visible:[outline-color:var(--color-info-solid-alpha)]',
     ])
-    expect(root?.className).not.toContain('Slider_sliderSizeVariants')
+  })
+
+  it('applies static width sizing for vertical orientation', () => {
+    const { container } = render(
+      <Slider color="info" defaultValue={[40]} orientation="vertical" size="md" variant="solid" />,
+    )
+
+    const root = container.querySelector('[data-slot="slider"]')
+    const track = container.querySelector('[data-slot="slider-track"]')
+
+    expectClassTokens(root?.className, ['relative', 'flex', 'h-full', 'flex-col'])
+    expectClassTokens(track?.className, ['relative', 'overflow-hidden', 'h-full', 'w-2'])
   })
 })

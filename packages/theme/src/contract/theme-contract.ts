@@ -29,22 +29,6 @@ export type ProgressComponentTokens = {
   }>
 }
 
-export type SliderComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      trackHeight: string
-      thumbSize: string
-    }>
-  >
-  variant?: Record<
-    string,
-    Partial<{
-      boxShadow: string
-    }>
-  >
-}
-
 export type TextFieldComponentTokens = {
   size?: Record<
     string,
@@ -58,33 +42,6 @@ export type TextFieldComponentTokens = {
       iconSize: string
       gap: string
       floatingOutlinedPlaceholderTranslate: string
-    }>
-  >
-}
-
-export type SwitchComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      rootHeight: string
-      rootWidth: string
-      thumbSize: string
-      thumbTranslate: string
-      gap: string
-    }>
-  >
-  group?: Partial<{
-    gap: string
-    inlineGap: string
-  }>
-}
-
-export type RatingComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      iconSize: string
-      gap: string
     }>
   >
 }
@@ -175,10 +132,7 @@ export type ThemeContract = {
     pickerPopup: PickerPopupComponentTokens
     mentionTextarea: MentionTextareaComponentTokens
     textField: TextFieldComponentTokens
-    switch: SwitchComponentTokens
     progress: ProgressComponentTokens
-    slider: SliderComponentTokens
-    rating: RatingComponentTokens
     appShell: AppShellComponentTokens
     scrollArea: ScrollAreaComponentTokens
   }
@@ -191,10 +145,7 @@ export const THEME_COMPONENT_TOKEN_KEYS = [
   'pickerPopup',
   'mentionTextarea',
   'textField',
-  'switch',
   'progress',
-  'slider',
-  'rating',
   'appShell',
   'scrollArea',
 ] as const
@@ -218,6 +169,9 @@ const rejectedRetiredComponentKeys = [
   'popover',
   'radio',
   'radioCards',
+  'rating',
+  'slider',
+  'switch',
   'tooltip',
   'toggle',
   'treeView',
@@ -285,18 +239,6 @@ const componentTokenSchema = {
       },
     },
   },
-  switch: {
-    branches: {
-      size: {
-        kind: 'record',
-        slots: ['rootHeight', 'rootWidth', 'thumbSize', 'thumbTranslate', 'gap'],
-      },
-      group: {
-        kind: 'direct',
-        slots: ['gap', 'inlineGap'],
-      },
-    },
-  },
   progress: {
     branches: {
       size: {
@@ -310,26 +252,6 @@ const componentTokenSchema = {
       motion: {
         kind: 'direct',
         slots: ['indicatorTransition', 'indeterminateDuration', 'indeterminateWidth'],
-      },
-    },
-  },
-  slider: {
-    branches: {
-      size: {
-        kind: 'record',
-        slots: ['trackHeight', 'thumbSize'],
-      },
-      variant: {
-        kind: 'record',
-        slots: ['boxShadow'],
-      },
-    },
-  },
-  rating: {
-    branches: {
-      size: {
-        kind: 'record',
-        slots: ['iconSize', 'gap'],
       },
     },
   },
