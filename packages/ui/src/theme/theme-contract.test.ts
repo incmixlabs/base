@@ -33,7 +33,6 @@ function createValidTheme() {
       },
     },
     component: {
-      fieldGroup: { section: { separatorMarginBlock: '1.5rem' } },
       pickerPopup: { size: { md: { viewportMaxHeight: '16rem' } } },
       fileUpload: { size: { md: { iconSize: '1.5rem' } } },
       mentionTextarea: { previewMinHeight: '96px' },
@@ -226,7 +225,6 @@ describe('theme-contract', () => {
   it('fills missing component branches with empty objects during validation', () => {
     const theme = createValidTheme()
     delete (theme.component as Record<string, unknown>).fileUpload
-    delete (theme.component as Record<string, unknown>).fieldGroup
     delete (theme.component as Record<string, unknown>).mentionTextarea
     delete (theme.component as Record<string, unknown>).pickerPopup
     delete (theme.component as Record<string, unknown>).progress
@@ -241,7 +239,6 @@ describe('theme-contract', () => {
     expect(result.ok).toBe(true)
     if (result.ok) {
       expect(result.value.component.fileUpload).toEqual({})
-      expect(result.value.component.fieldGroup).toEqual({})
       expect(result.value.component.mentionTextarea).toEqual({})
       expect(result.value.component.pickerPopup).toEqual({})
       expect(result.value.component.progress).toEqual({})
@@ -258,5 +255,17 @@ describe('theme-contract', () => {
 
     expect(parseThemeContract(theme).metadata.themeId).toBe('theme-default')
     expect(() => parseThemeContract({})).toThrow('Invalid theme contract')
+  })
+
+  it('rejects retired FieldGroup component token overrides', () => {
+    const theme = createValidTheme()
+    ;(theme.component as Record<string, unknown>).fieldGroup = { row: { rootGap: '1rem' } }
+
+    const result = validateThemeContract(theme)
+
+    expect(result.ok).toBe(false)
+    if (!result.ok) {
+      expect(result.errors.join(' ')).toContain('component.fieldGroup is retired')
+    }
   })
 })

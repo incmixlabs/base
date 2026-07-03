@@ -79,19 +79,6 @@ export type SwitchComponentTokens = {
   }>
 }
 
-export type FieldGroupComponentTokens = {
-  section?: Partial<{
-    separatorMarginBlock: string
-    headerMarginBottom: string
-    descriptionMarginTop: string
-  }>
-  row?: Partial<{
-    rootGap: string
-    columnGap: string
-    descriptionMarginTop: string
-  }>
-}
-
 export type RatingComponentTokens = {
   size?: Record<
     string,
@@ -200,7 +187,6 @@ export type ThemeContract = {
     color: Record<string, Record<string, string>>
   }
   component: {
-    fieldGroup: FieldGroupComponentTokens
     pickerPopup: PickerPopupComponentTokens
     fileUpload: FileUploadComponentTokens
     mentionTextarea: MentionTextareaComponentTokens
@@ -218,7 +204,6 @@ export type ThemeContractValidation = { ok: true; value: ThemeContract } | { ok:
 
 const lifecycleValues: ThemeLifecycle[] = ['draft', 'review', 'published']
 export const THEME_COMPONENT_TOKEN_KEYS = [
-  'fieldGroup',
   'pickerPopup',
   'fileUpload',
   'mentionTextarea',
@@ -244,6 +229,7 @@ const rejectedRetiredComponentKeys = [
   'checkboxCards',
   'date',
   'dialog',
+  'fieldGroup',
   'iconButton',
   'popover',
   'radio',
@@ -263,18 +249,6 @@ type ComponentTokenSchema = {
 }
 
 const componentTokenSchema = {
-  fieldGroup: {
-    branches: {
-      section: {
-        kind: 'direct',
-        slots: ['separatorMarginBlock', 'headerMarginBottom', 'descriptionMarginTop'],
-      },
-      row: {
-        kind: 'direct',
-        slots: ['rootGap', 'columnGap', 'descriptionMarginTop'],
-      },
-    },
-  },
   pickerPopup: {
     branches: {
       size: {

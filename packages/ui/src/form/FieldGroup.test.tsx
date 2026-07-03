@@ -28,14 +28,10 @@ describe('FieldGroup', () => {
       'grid',
       'grid-cols-[minmax(0,1fr)]',
       'items-start',
-      'gap-y-[var(--theme-rhythm-field-group-row-gap,var(--af-field-group-row-root-gap,1rem))]',
+      'gap-y-[var(--theme-rhythm-field-group-row-gap,1rem)]',
       'cq-md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]',
-      'cq-md:gap-x-[var(--theme-rhythm-field-group-column-gap,var(--af-field-group-row-column-gap,2rem))]',
+      'cq-md:gap-x-[var(--theme-rhythm-field-group-column-gap,2rem)]',
     ])
-    expectClassTokens(screen.getByText('Work address').className, [
-      'mt-[var(--af-field-group-row-description-margin-top,0.25rem)]',
-      'text-sm',
-      'text-muted',
-    ])
+    expectClassTokens(screen.getByText('Work address').className, ['mt-1', 'text-sm', 'text-muted'])
   })
 })

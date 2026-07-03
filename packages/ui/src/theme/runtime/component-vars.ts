@@ -14,8 +14,6 @@ function componentVar(component: string, slot: string, fallback: string): string
 
 export type SliderSizeTokenSlot = 'trackHeight' | 'thumbSize'
 export type SliderVariantTokenSlot = 'boxShadow'
-export type FieldGroupSectionTokenSlot = 'separatorMarginBlock' | 'headerMarginBottom' | 'descriptionMarginTop'
-export type FieldGroupRowTokenSlot = 'rootGap' | 'columnGap' | 'descriptionMarginTop'
 export type FileUploadSizeTokenSlot =
   | 'defaultPadding'
   | 'minimalPadding'
@@ -44,14 +42,6 @@ export type AppShellLayoutTokenSlot =
 export type AppShellContentTokenSlot = 'paddingInline' | 'paddingBlock' | 'paddingInlineDesktop' | 'paddingBlockDesktop'
 export type ContentBodyTokenSlot = 'background' | 'foreground' | 'borderColor'
 export type ScrollAreaSizeTokenSlot = 'thickness' | 'thumbInset'
-
-export function fieldGroupSectionVar(slot: FieldGroupSectionTokenSlot, fallback: string): string {
-  return withFallback(`--af-field-group-section-${toKebabCase(slot)}`, fallback)
-}
-
-export function fieldGroupRowVar(slot: FieldGroupRowTokenSlot, fallback: string): string {
-  return withFallback(`--af-field-group-row-${toKebabCase(slot)}`, fallback)
-}
 
 export function fileUploadSizeVar(size: string, slot: FileUploadSizeTokenSlot, fallback: string): string {
   return withFallback(`--af-file-upload-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)

@@ -3,18 +3,18 @@ import type { FieldGroupGap } from './field-group.props'
 export const fieldGroupSideLabelsBase = '[container-type:inline-size]'
 
 export const fieldGroupRowBase =
-  'grid grid-cols-[minmax(0,1fr)] items-start gap-y-[var(--theme-rhythm-field-group-row-gap,var(--af-field-group-row-root-gap,1rem))]'
+  'grid grid-cols-[minmax(0,1fr)] items-start gap-y-[var(--theme-rhythm-field-group-row-gap,1rem)]'
 
 export const fieldGroupRowResponsive =
-  'cq-md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] cq-md:gap-x-[var(--theme-rhythm-field-group-column-gap,var(--af-field-group-row-column-gap,2rem))]'
+  'cq-md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] cq-md:gap-x-[var(--theme-rhythm-field-group-column-gap,2rem)]'
 
-export const fieldGroupSectionSeparator = 'my-[var(--af-field-group-section-separator-margin-block,1.5rem)]'
+export const fieldGroupSectionSeparator = 'my-6'
 
-export const fieldGroupSectionHeader = 'mb-[var(--af-field-group-section-header-margin-bottom,1rem)]'
+export const fieldGroupSectionHeader = 'mb-4'
 
-export const fieldGroupSectionDescription = 'mt-[var(--af-field-group-section-description-margin-top,0.25rem)]'
+export const fieldGroupSectionDescription = 'mt-1'
 
-export const fieldGroupRowDescription = 'mt-[var(--af-field-group-row-description-margin-top,0.25rem)]'
+export const fieldGroupRowDescription = 'mt-1'
 
 export const fieldGroupLabelText = 'text-sm font-medium text-neutral'
 

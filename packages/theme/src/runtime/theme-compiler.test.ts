@@ -29,7 +29,6 @@ function createTheme(): ThemeContract {
       },
     },
     component: {
-      fieldGroup: { row: { columnGap: '2rem' } },
       pickerPopup: { size: { md: { viewportMaxHeight: '16rem' } } },
       fileUpload: { size: { md: { iconSize: '1.5rem' } } },
       mentionTextarea: { previewMinHeight: '96px' },
@@ -99,8 +98,11 @@ describe('theme-compiler', () => {
     const theme = createTheme()
     ;(theme.component as Record<string, unknown>).button = { size: { sm: { paddingInline: '0.75rem' } } }
     ;(theme.component as Record<string, unknown>).card = { size: { md: { padding: '1rem' } } }
+    ;(theme.component as Record<string, unknown>).fieldGroup = { row: { columnGap: '2rem' } }
 
-    expect(() => compileThemeTokens(theme)).toThrow(/component\.button is retired.*component\.card is retired/s)
+    expect(() => compileThemeTokens(theme)).toThrow(
+      /component\.button is retired.*component\.card is retired.*component\.fieldGroup is retired/s,
+    )
   })
 
   it('strips legacy component token branches before compiling css vars', () => {
