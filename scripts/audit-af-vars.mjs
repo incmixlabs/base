@@ -35,7 +35,6 @@ const replaceContractComponents = new Set([
   'scrollArea',
   'slider',
   'switch',
-  'textField',
 ])
 
 function toPosix(relativePath) {

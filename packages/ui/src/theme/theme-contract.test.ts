@@ -33,7 +33,6 @@ function createValidTheme() {
       },
     },
     component: {
-      textField: { size: { sm: { paddingInline: '0.75rem' } } },
       appShell: {
         content: { paddingInline: '1rem', paddingInlineDesktop: '1.5rem' },
         layout: { bodyWithSecondaryRightGridTemplateColumns: 'auto minmax(0, 1fr) 20rem' },
@@ -216,14 +215,12 @@ describe('theme-contract', () => {
 
   it('fills missing component branches with empty objects during validation', () => {
     const theme = createValidTheme()
-    delete (theme.component as Record<string, unknown>).textField
     delete (theme.component as Record<string, unknown>).appShell
 
     const result = validateThemeContract(theme)
 
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.value.component.textField).toEqual({})
       expect(result.value.component.appShell).toEqual({})
     }
   })
@@ -271,6 +268,7 @@ describe('theme-contract', () => {
     ;(theme.component as Record<string, unknown>).pickerPopup = { size: { md: { viewportMaxHeight: '16rem' } } }
     ;(theme.component as Record<string, unknown>).progress = { size: { sm: { height: '0.4rem' } } }
     ;(theme.component as Record<string, unknown>).scrollArea = { size: { sm: { thickness: '0.375rem' } } }
+    ;(theme.component as Record<string, unknown>).textField = { size: { sm: { paddingInline: '0.75rem' } } }
 
     const result = validateThemeContract(theme)
 
@@ -283,6 +281,7 @@ describe('theme-contract', () => {
       expect(result.errors.join(' ')).toContain('component.pickerPopup is retired')
       expect(result.errors.join(' ')).toContain('component.progress is retired')
       expect(result.errors.join(' ')).toContain('component.scrollArea is retired')
+      expect(result.errors.join(' ')).toContain('component.textField is retired')
     }
   })
 })
