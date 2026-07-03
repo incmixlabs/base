@@ -62,7 +62,6 @@ const containerPropDefs = {
    */
   size: {
     type: 'enum',
-    className: 'af-size',
     values: containerSizes,
     default: '4',
     responsive: true,
@@ -77,9 +76,7 @@ const containerPropDefs = {
    */
   display: {
     type: 'enum',
-    className: 'af-display',
     values: containerDisplayValues,
-    parseValue: parseDisplayValue,
     responsive: true,
   },
   /**
@@ -91,9 +88,7 @@ const containerPropDefs = {
    */
   align: {
     type: 'enum',
-    className: 'af-ai',
     values: containerAlignValues,
-    parseValue: parseAlignValue,
     responsive: true,
   },
   layout: layoutCompositionPropDefs.layout,
@@ -107,14 +102,6 @@ const containerPropDefs = {
   align: PropDef<(typeof containerAlignValues)[number]>
   layout: typeof layoutCompositionPropDefs.layout
   layoutProps: PropDef<Omit<LayoutCompositionProps, 'layout'>>
-}
-
-function parseDisplayValue(value: string) {
-  return value === 'initial' ? 'flex' : value
-}
-
-function parseAlignValue(value: string) {
-  return value === 'left' ? 'start' : value === 'right' ? 'end' : value
 }
 
 export { containerPropDefs }

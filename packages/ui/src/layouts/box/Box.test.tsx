@@ -13,11 +13,6 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
-function customPropertyName(value: string): string {
-  const match = /^var\((--[^)]+)\)$/.exec(value)
-  return match?.[1] ?? value
-}
-
 describe('Box', () => {
   it('defaults radius to the ThemeProvider radius', () => {
     render(
@@ -29,7 +24,7 @@ describe('Box', () => {
     expect(screen.getByTestId('box').style.borderRadius).toBe(designTokens.radius.lg)
   })
 
-  it('uses shared responsive spacing helpers for layout padding and margin', () => {
+  it('uses shared responsive helpers for layout spacing and sizing', () => {
     render(
       <Box
         data-testid="box"
@@ -45,10 +40,15 @@ describe('Box', () => {
     const box = screen.getByTestId('box')
 
     expect(box).toHaveClass('p-2', 'md:p-4', 'mx-1', 'lg:mx-3')
-    expect(box.className).toContain(widthResponsiveClasses.width)
-    expect(box.className).toContain(heightResponsiveClasses.height)
-    expect(box.getAttribute('style')).toContain(customPropertyName(widthResponsiveVars.width.initial))
-    expect(box.getAttribute('style')).toContain(customPropertyName(heightResponsiveVars.height.initial))
+    expect(box).toHaveClass(
+      'w-full',
+      widthResponsiveClasses.width.lg,
+      heightResponsiveClasses.height.initial,
+      heightResponsiveClasses.height.md,
+    )
+    expect(box.style.getPropertyValue(widthResponsiveVars.width.lg)).toBe('50%')
+    expect(box.style.getPropertyValue(heightResponsiveVars.height.initial)).toBe('10rem')
+    expect(box.style.getPropertyValue(heightResponsiveVars.height.md)).toBe('20rem')
   })
 
   it('supports padding and margin aliases without forwarding them to the DOM', () => {
@@ -105,8 +105,18 @@ describe('Box', () => {
 
     const box = screen.getByTestId('box')
 
-    expect(box.className).toContain(widthResponsiveClasses.width)
-    expect(box.style.getPropertyValue(customPropertyName(widthResponsiveVars.width.initial))).toBe('100%')
+    expect(box).toHaveClass('w-full')
+    expect(box.style.width).toBe('')
+  })
+
+  it('maps token-like width and height values to Uno utilities', () => {
+    render(
+      <Box data-testid="box" width="3" height="4" minWidth="0" minHeight="0">
+        Content
+      </Box>,
+    )
+
+    expect(screen.getByTestId('box')).toHaveClass('w-3', 'h-4', 'min-w-0', 'min-h-0')
   })
 
   it.each(['chart1', 'chart-1'] as const)('resolves chart color key %s', color => {

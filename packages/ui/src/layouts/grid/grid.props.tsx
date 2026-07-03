@@ -37,7 +37,6 @@ const gridPropDefs = {
    */
   display: {
     type: 'enum',
-    className: 'af-display',
     values: displayValues,
     responsive: true,
   },
@@ -53,8 +52,6 @@ const gridPropDefs = {
    */
   areas: {
     type: 'string',
-    className: 'af-gta',
-    customProperties: ['--grid-template-areas'],
     responsive: true,
   },
   /**
@@ -73,10 +70,7 @@ const gridPropDefs = {
    */
   columns: {
     type: 'enum | string',
-    className: 'af-gtc',
-    customProperties: ['--grid-template-columns'],
     values: columnsValues,
-    parseValue: parseGridValue,
     responsive: true,
   },
   /**
@@ -95,10 +89,7 @@ const gridPropDefs = {
    */
   rows: {
     type: 'enum | string',
-    className: 'af-gtr',
-    customProperties: ['--grid-template-rows'],
     values: rowsValues,
-    parseValue: parseGridValue,
     responsive: true,
   },
   /**
@@ -114,7 +105,6 @@ const gridPropDefs = {
    */
   flow: {
     type: 'enum',
-    className: 'af-gaf',
     values: flowValues,
     responsive: true,
   },
@@ -131,7 +121,6 @@ const gridPropDefs = {
    */
   align: {
     type: 'enum',
-    className: 'af-ai',
     values: alignValues,
     responsive: true,
   },
@@ -148,9 +137,7 @@ const gridPropDefs = {
    */
   justify: {
     type: 'enum',
-    className: 'af-jc',
     values: justifyValues,
-    parseValue: parseJustifyValue,
     responsive: true,
   },
   /**
@@ -166,9 +153,7 @@ const gridPropDefs = {
    */
   alignContent: {
     type: 'enum',
-    className: 'af-ac',
     values: alignContentValues,
-    parseValue: parseAlignContentValue,
     responsive: true,
   },
   /**
@@ -184,7 +169,6 @@ const gridPropDefs = {
    */
   justifyItems: {
     type: 'enum',
-    className: 'af-ji',
     values: justifyItemsValues,
     responsive: true,
   },
@@ -200,31 +184,6 @@ const gridPropDefs = {
   justify: PropDef<(typeof justifyValues)[number]>
   alignContent: PropDef<(typeof alignContentValues)[number]>
   justifyItems: PropDef<(typeof justifyItemsValues)[number]>
-}
-
-function parseGridValue(value: string): string {
-  if ((gridPropDefs.columns.values as readonly string[]).includes(value)) {
-    return value
-  }
-
-  return value?.match(/^\d+$/) ? `repeat(${value}, minmax(0, 1fr))` : value
-}
-
-function parseJustifyValue(value: string) {
-  return value === 'between' ? 'space-between' : value
-}
-
-function parseAlignContentValue(value: string) {
-  switch (value) {
-    case 'between':
-      return 'space-between'
-    case 'around':
-      return 'space-around'
-    case 'evenly':
-      return 'space-evenly'
-    default:
-      return value
-  }
 }
 
 // Use all of the imported prop defs to ensure that JSDoc works

@@ -48,11 +48,6 @@ afterEach(() => {
   cleanup()
 })
 
-function customPropertyName(value: string): string {
-  const match = /^var\((--[^)]+)\)$/.exec(value)
-  return match?.[1] ?? value
-}
-
 describe('Dialog', () => {
   it('renders the semantic surface and size utility classes', async () => {
     const { unmount } = render(
@@ -116,8 +111,9 @@ describe('Dialog', () => {
 
     const dialog = screen.getByRole('dialog')
 
-    expect(dialog.className).toContain(heightResponsiveClasses.maxHeight)
-    expect(dialog.getAttribute('style')).toContain(customPropertyName(heightResponsiveVars.maxHeight.initial))
+    expect(dialog).toHaveClass(heightResponsiveClasses.maxHeight.initial, heightResponsiveClasses.maxHeight.md)
+    expect(dialog.style.getPropertyValue(heightResponsiveVars.maxHeight.initial)).toBe('20rem')
+    expect(dialog.style.getPropertyValue(heightResponsiveVars.maxHeight.md)).toBe('30rem')
 
     unmount()
     await Promise.resolve()

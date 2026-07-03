@@ -72,102 +72,91 @@ const layoutPropDefs = {
    */
   position: {
     type: 'enum',
-    className: 'af-position',
     values: positionValues,
     responsive: true,
   },
   /**
    * Sets the CSS **inset** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * inset="4"
-   * inset="100px"
-   * inset={{ sm: '0', lg: '50%' }}
+   * inset="-2"
+   * inset={{ sm: '0', lg: '4' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/inset
    */
   inset: {
-    type: 'enum | string',
-    className: 'af-inset',
-    customProperties: ['--inset'],
+    type: 'enum',
     values: positionEdgeValues,
     responsive: true,
   },
   /**
    * Sets the CSS **top** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * top="4"
-   * top="100px"
-   * top={{ sm: '0', lg: '50%' }}
+   * top="-2"
+   * top={{ sm: '0', lg: '4' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/top
    */
   top: {
-    type: 'enum | string',
-    className: 'af-top',
-    customProperties: ['--top'],
+    type: 'enum',
     values: positionEdgeValues,
     responsive: true,
   },
   /**
    * Sets the CSS **right** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * right="4"
-   * right="100px"
-   * right={{ sm: '0', lg: '50%' }}
+   * right="-2"
+   * right={{ sm: '0', lg: '4' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/right
    */
   right: {
-    type: 'enum | string',
-    className: 'af-right',
-    customProperties: ['--right'],
+    type: 'enum',
     values: positionEdgeValues,
     responsive: true,
   },
   /**
    * Sets the CSS **bottom** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * bottom="4"
-   * bottom="100px"
-   * bottom={{ sm: '0', lg: '50%' }}
+   * bottom="-2"
+   * bottom={{ sm: '0', lg: '4' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/bottom
    */
   bottom: {
-    type: 'enum | string',
-    className: 'af-bottom',
-    customProperties: ['--bottom'],
+    type: 'enum',
     values: positionEdgeValues,
     responsive: true,
   },
   /**
    * Sets the CSS **left** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * left="4"
-   * left="100px"
-   * left={{ sm: '0', lg: '50%' }}
+   * left="-2"
+   * left={{ sm: '0', lg: '4' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/left
    */
   left: {
-    type: 'enum | string',
-    className: 'af-left',
-    customProperties: ['--left'],
+    type: 'enum',
     values: positionEdgeValues,
     responsive: true,
   },
@@ -184,7 +173,6 @@ const layoutPropDefs = {
    */
   overflow: {
     type: 'enum',
-    className: 'af-overflow',
     values: overflowValues,
     responsive: true,
   },
@@ -201,7 +189,6 @@ const layoutPropDefs = {
    */
   overflowX: {
     type: 'enum',
-    className: 'af-ox',
     values: overflowValues,
     responsive: true,
   },
@@ -218,31 +205,26 @@ const layoutPropDefs = {
    */
   overflowY: {
     type: 'enum',
-    className: 'af-oy',
     values: overflowValues,
     responsive: true,
   },
   /**
    * Sets the CSS **flex-basis** property.
-   * Supports CSS strings and responsive objects.
+   * Supports CSS strings.
    *
    * @example
    * flexBasis="0"
    * flexBasis="100%"
-   * flexBasis={{ sm: '200px', lg: 'auto' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/flex-basis
    */
   flexBasis: {
     type: 'string',
-    className: 'af-fb',
-    customProperties: ['--flex-basis'],
-    responsive: true,
   },
   /**
    * Sets the CSS **flex-shrink** property.
-   * Supports CSS strings and responsive objects.
+   * Supports the corresponding token values and responsive objects.
    *
    * @example
    * flexShrink="0"
@@ -253,15 +235,13 @@ const layoutPropDefs = {
    * https://developer.mozilla.org/en-US/docs/Web/CSS/flex-shrink
    */
   flexShrink: {
-    type: 'enum | string',
-    className: 'af-fs',
-    customProperties: ['--flex-shrink'],
+    type: 'enum',
     values: flexShrinkValues,
     responsive: true,
   },
   /**
    * Sets the CSS **flex-grow** property.
-   * Supports CSS strings and responsive objects.
+   * Supports the corresponding token values and responsive objects.
    *
    * @example
    * flexGrow="0"
@@ -272,15 +252,13 @@ const layoutPropDefs = {
    * https://developer.mozilla.org/en-US/docs/Web/CSS/flex-grow
    */
   flexGrow: {
-    type: 'enum | string',
-    className: 'af-fg',
-    customProperties: ['--flex-grow'],
+    type: 'enum',
     values: flexGrowValues,
     responsive: true,
   },
   /**
    * Sets the CSS **grid-area** property.
-   * Supports CSS strings and responsive objects.
+   * Supports CSS strings.
    *
    * @example
    * gridArea="header"
@@ -290,117 +268,90 @@ const layoutPropDefs = {
    */
   gridArea: {
     type: 'string',
-    className: 'af-ga',
-    customProperties: ['--grid-area'],
-    responsive: true,
   },
   /**
    * Sets the CSS **grid-column** property.
-   * Supports CSS strings and responsive objects.
+   * Supports CSS strings.
    *
    * @example
    * gridColumn="1"
    * gridColumn="1 / -1"
-   * gridColumn={{ sm: '1 / 3', lg: 'span 3' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/grid-column
    */
   gridColumn: {
     type: 'string',
-    className: 'af-gc',
-    customProperties: ['--grid-column'],
-    responsive: true,
   },
   /**
    * Sets the CSS **grid-column-start** property.
-   * Supports CSS strings and responsive objects.
+   * Supports CSS strings.
    *
    * @example
    * gridColumnStart="1"
    * gridColumnStart="auto"
-   * gridColumnStart={{ sm: '2', lg: 'span 3' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/grid-column-start
    */
   gridColumnStart: {
     type: 'string',
-    className: 'af-gcs',
-    customProperties: ['--grid-column-start'],
-    responsive: true,
   },
   /**
    * Sets the CSS **grid-column-end** property.
-   * Supports CSS strings and responsive objects.
+   * Supports CSS strings.
    *
    * @example
    * gridColumnEnd="1"
    * gridColumnEnd="auto"
-   * gridColumnEnd={{ sm: '2', lg: 'span 3' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/grid-column-end
    */
   gridColumnEnd: {
     type: 'string',
-    className: 'af-gce',
-    customProperties: ['--grid-column-end'],
-    responsive: true,
   },
   /**
    * Sets the CSS **grid-row** property.
-   * Supports CSS strings and responsive objects.
+   * Supports CSS strings.
    *
    * @example
    * gridRow="1"
    * gridRow="auto"
-   * gridRow={{ sm: '2', lg: 'span 3' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/grid-row
    */
   gridRow: {
     type: 'string',
-    className: 'af-gr',
-    customProperties: ['--grid-row'],
-    responsive: true,
   },
   /**
    * Sets the CSS **grid-row-start** property.
-   * Supports CSS strings and responsive objects.
+   * Supports CSS strings.
    *
    * @example
    * gridRowStart="1"
    * gridRowStart="auto"
-   * gridRowStart={{ sm: '2', lg: 'span 3' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/grid-row-start
    */
   gridRowStart: {
     type: 'string',
-    className: 'af-grs',
-    customProperties: ['--grid-row-start'],
-    responsive: true,
   },
   /**
    * Sets the CSS **grid-row-end** property.
-   * Supports CSS strings and responsive objects.
+   * Supports CSS strings.
    *
    * @example
    * gridRowEnd="1"
    * gridRowEnd="auto"
-   * gridRowEnd={{ sm: '2', lg: 'span 3' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/grid-row-end
    */
   gridRowEnd: {
     type: 'string',
-    className: 'af-gre',
-    customProperties: ['--grid-row-end'],
-    responsive: true,
   },
   /**
    * Sets the CSS **align-self** property.
@@ -415,7 +366,6 @@ const layoutPropDefs = {
    */
   alignSelf: {
     type: 'enum',
-    className: 'af-as',
     values: alignSelfValues,
     responsive: true,
   },
@@ -432,7 +382,6 @@ const layoutPropDefs = {
    */
   justifySelf: {
     type: 'enum',
-    className: 'af-js',
     values: justifySelfValues,
     responsive: true,
   },

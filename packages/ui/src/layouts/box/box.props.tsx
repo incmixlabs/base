@@ -70,7 +70,6 @@ const boxPropDefs = {
    */
   display: {
     type: 'enum',
-    className: 'af-display',
     values: displayValues,
     responsive: true,
   },

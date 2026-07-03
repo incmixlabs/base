@@ -25,7 +25,6 @@ const layoutCompositionPropDefs = {
    */
   direction: {
     type: 'enum',
-    className: 'af-fd',
     values: layoutTokens.flexDirection,
     responsive: true,
   },
@@ -38,7 +37,6 @@ const layoutCompositionPropDefs = {
    */
   align: {
     type: 'enum',
-    className: 'af-ai',
     values: layoutTokens.alignItems,
     responsive: true,
   },
@@ -51,7 +49,6 @@ const layoutCompositionPropDefs = {
    */
   justify: {
     type: 'enum',
-    className: 'af-jc',
     values: layoutTokens.justifyContent,
     responsive: true,
   },
@@ -63,7 +60,6 @@ const layoutCompositionPropDefs = {
    */
   wrap: {
     type: 'enum',
-    className: 'af-fw',
     values: layoutTokens.flexWrap,
     responsive: true,
   },
@@ -76,8 +72,6 @@ const layoutCompositionPropDefs = {
    */
   areas: {
     type: 'string',
-    className: 'af-gta',
-    customProperties: ['--grid-template-areas'],
     responsive: true,
   },
   /**
@@ -89,8 +83,6 @@ const layoutCompositionPropDefs = {
    */
   columns: {
     type: 'enum | string',
-    className: 'af-gtc',
-    customProperties: ['--grid-template-columns'],
     values: layoutCompositionColumnValues,
     responsive: true,
   },
@@ -103,8 +95,6 @@ const layoutCompositionPropDefs = {
    */
   rows: {
     type: 'enum | string',
-    className: 'af-gtr',
-    customProperties: ['--grid-template-rows'],
     values: layoutCompositionRowValues,
     responsive: true,
   },
@@ -117,7 +107,6 @@ const layoutCompositionPropDefs = {
    */
   flow: {
     type: 'enum',
-    className: 'af-gaf',
     values: layoutCompositionFlowValues,
     responsive: true,
   },
@@ -129,7 +118,6 @@ const layoutCompositionPropDefs = {
    */
   alignContent: {
     type: 'enum',
-    className: 'af-ac',
     values: layoutTokens.alignContent,
     responsive: true,
   },
@@ -141,7 +129,6 @@ const layoutCompositionPropDefs = {
    */
   justifyItems: {
     type: 'enum',
-    className: 'af-ji',
     values: layoutTokens.justifyItems,
     responsive: true,
   },
