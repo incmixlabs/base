@@ -71,10 +71,28 @@ function addLocation(locations, file, line) {
   locations.set(file, new Set([line]))
 }
 
-function isDeclaration(file, line, start, name) {
+function isMultilineHelperDeclaration(lines, lineIndex, start, name) {
+  const line = lines[lineIndex]
+  const before = line.slice(0, start).trim()
+  const after = line.slice(start + name.length).trim()
+  if (!/^['"`]$/.test(before) || !/^['"`]\s*(?:,|\))/.test(after)) return false
+
+  for (let index = lineIndex - 1; index >= 0 && lineIndex - index <= 5; index -= 1) {
+    const previous = lines[index].trim()
+    if (!previous || previous.startsWith('//')) continue
+
+    return /(?:cssDeclaration|property|setProperty)\(\s*$/.test(previous)
+  }
+
+  return false
+}
+
+function isDeclaration(file, lines, lineIndex, start, name) {
+  const line = lines[lineIndex]
   const before = line.slice(0, start)
   const linePrefix = before.slice(Math.max(0, before.length - 80))
   if (/(?:cssDeclaration|property|setProperty)\(\s*['"`][^'"`]*$/.test(linePrefix)) return true
+  if (isMultilineHelperDeclaration(lines, lineIndex, start, name)) return true
 
   if (file.scope === 'test') return false
 
@@ -115,7 +133,7 @@ function collectExactVars(files) {
         }
 
         const lineNumber = lineIndex + 1
-        if (isDeclaration(file, line, start, name)) {
+        if (isDeclaration(file, lines, lineIndex, start, name)) {
           addLocation(entry.definedAt, file.relativePath, lineNumber)
         } else if (isVarReference(line, start)) {
           addLocation(entry.referencedAt, file.relativePath, lineNumber)
