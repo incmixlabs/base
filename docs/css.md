@@ -261,7 +261,6 @@ runtime token consumers.
 Today, the retained runtime-consumed `component.*` branches are:
 
 - `component.appShell`
-- `component.fieldGroup`
 - `component.fileUpload`
 - `component.mentionTextarea`
 - `component.pickerPopup`
