@@ -7,6 +7,9 @@ import { designTokens } from '@/theme/tokens'
 import { Surface } from './Surface'
 import {
   floatingArrowBase,
+  floatingSurfaceColorVariants,
+  floatingSurfaceElevation,
+  floatingSurfaceSoftElevation,
   surfaceUnoColorVariants,
   surfaceUnoFocusColorVariants,
   surfaceUnoHighContrastColorVariants,
@@ -58,6 +61,19 @@ describe('Surface', () => {
 
     expect(surface.className).toContain('[box-shadow:var(--shadow-xs)]')
     expect(surface.className).not.toContain('--af-surface-variant-surface-box-shadow')
+  })
+
+  it('exposes shared floating surface elevation variants', () => {
+    expect(floatingSurfaceColorVariants.neutral.surface).toContain('bg-neutral-surface')
+    expect(floatingSurfaceColorVariants.neutral.surface).toContain('border-neutral')
+    expect(floatingSurfaceColorVariants.neutral.surface).toContain('text-neutral')
+    expect(floatingSurfaceColorVariants.neutral.surface).toContain(floatingSurfaceElevation)
+    expect(floatingSurfaceColorVariants.neutral.surface).not.toContain(surfaceUnoColorVariants.neutral.surface)
+
+    expect(floatingSurfaceColorVariants.neutral.soft).toContain('bg-neutral-soft')
+    expect(floatingSurfaceColorVariants.neutral.soft).toContain('border-transparent')
+    expect(floatingSurfaceColorVariants.neutral.soft).toContain('text-neutral')
+    expect(floatingSurfaceColorVariants.neutral.soft).toContain(floatingSurfaceSoftElevation)
   })
 
   it('maps geometric shapes to shared radius utilities', () => {

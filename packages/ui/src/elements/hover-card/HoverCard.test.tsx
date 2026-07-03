@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+import { floatingSurfaceElevation } from '../surface/surface.class'
 import { HoverCard } from './HoverCard'
 
 function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
@@ -37,7 +38,7 @@ describe('HoverCard', () => {
       'bg-neutral-surface',
       'border-neutral',
       'text-neutral',
-      '[box-shadow:var(--shadow-xs)]',
+      floatingSurfaceElevation,
     ])
     expect(popup?.className).not.toContain('surface-color-')
     expect(popup?.className).not.toContain('surface-variant-')

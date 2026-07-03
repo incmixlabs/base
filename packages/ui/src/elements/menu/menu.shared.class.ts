@@ -1,6 +1,6 @@
 import { semanticColorClassRecipes } from '../../theme/helpers/semantic-color-recipe'
 import { type Color, semanticColorScale } from '../../theme/tokens'
-import { surfaceUnoColorVariants } from '../surface/surface.class'
+import { floatingSurfaceColorVariants } from '../surface/surface.class'
 import type { MenuSize, MenuVariant } from './menu.props'
 
 const cls = (...tokens: string[]) => tokens.join(' ')
@@ -32,8 +32,8 @@ export const menuContentBase = cls(
 )
 
 export const menuContentByVariant = {
-  solid: cls(surfaceUnoColorVariants.neutral.surface, 'backdrop-filter-none'),
-  soft: cls(surfaceUnoColorVariants.neutral.soft, 'backdrop-saturate-[140%] backdrop-blur-[10px]'),
+  solid: cls(floatingSurfaceColorVariants.neutral.surface, 'backdrop-filter-none'),
+  soft: cls(floatingSurfaceColorVariants.neutral.soft, 'backdrop-saturate-[140%] backdrop-blur-[10px]'),
 } as const satisfies Record<MenuVariant, string>
 
 export const menuViewportBySize = {

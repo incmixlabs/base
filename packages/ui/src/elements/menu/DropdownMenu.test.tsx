@@ -2,6 +2,7 @@ import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it } from 'vitest'
 import { Button } from '@/elements/button/Button'
+import { floatingSurfaceElevation } from '@/elements/surface/surface.class'
 import { Theme } from '@/theme/ThemeProvider'
 import { designTokens } from '@/theme/tokens'
 import { DropdownMenu } from './DropdownMenu'
@@ -127,7 +128,7 @@ describe('DropdownMenu', () => {
       'bg-neutral-surface',
       'text-neutral',
       'rounded-[var(--element-border-radius)]',
-      '[box-shadow:var(--shadow-xs)]',
+      floatingSurfaceElevation,
     ])
     expect(popup.className).not.toContain('--af-menu')
     expect(popup.className).not.toContain('af-PopperContent')

@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+import { floatingSurfaceElevation } from '../surface/surface.class'
 import { Popover } from './Popover'
 import { popoverContentPropDefs } from './popover.props'
 
@@ -53,7 +54,7 @@ describe('Popover', () => {
       'text-neutral',
       '[--af-floating-surface-arrow-fill:var(--color-neutral-surface)]',
       '[--af-floating-surface-arrow-edge:var(--color-neutral-border)]',
-      '[box-shadow:var(--shadow-xs)]',
+      floatingSurfaceElevation,
     ])
     expect(popup?.className).not.toContain('[fill:')
 
