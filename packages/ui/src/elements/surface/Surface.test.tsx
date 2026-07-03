@@ -9,6 +9,8 @@ import {
   floatingArrowBase,
   floatingSurfaceColorVariants,
   floatingSurfaceElevation,
+  floatingSurfaceMaxWidthVariants,
+  floatingSurfaceSizeVariants,
   floatingSurfaceSoftElevation,
   surfaceUnoColorVariants,
   surfaceUnoFocusColorVariants,
@@ -74,6 +76,13 @@ describe('Surface', () => {
     expect(floatingSurfaceColorVariants.neutral.soft).toContain('border-transparent')
     expect(floatingSurfaceColorVariants.neutral.soft).toContain('text-neutral')
     expect(floatingSurfaceColorVariants.neutral.soft).toContain(floatingSurfaceSoftElevation)
+  })
+
+  it('exposes shared floating surface size and width variants', () => {
+    expect(floatingSurfaceSizeVariants.sm).toContain('px-2.5')
+    expect(floatingSurfaceSizeVariants.md).toContain('text-base')
+    expect(floatingSurfaceMaxWidthVariants.md).toBe('max-w-[28rem]')
+    expect(floatingSurfaceMaxWidthVariants.none).toBe('max-w-none')
   })
 
   it('maps geometric shapes to shared radius utilities', () => {

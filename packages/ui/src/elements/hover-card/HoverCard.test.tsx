@@ -1,7 +1,11 @@
-import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { cleanup, render, screen } from '@testing-library/react'
+import { afterEach, describe, expect, it } from 'vitest'
 import { floatingSurfaceElevation } from '../surface/surface.class'
 import { HoverCard } from './HoverCard'
+
+afterEach(() => {
+  cleanup()
+})
 
 function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
   const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
@@ -42,5 +46,18 @@ describe('HoverCard', () => {
     ])
     expect(popup?.className).not.toContain('surface-color-')
     expect(popup?.className).not.toContain('surface-variant-')
+  })
+
+  it('normalizes invalid runtime size values before applying size classes', () => {
+    render(
+      <HoverCard.Root defaultOpen>
+        <HoverCard.Trigger>Open</HoverCard.Trigger>
+        <HoverCard.Content size={'huge' as any}>Hover card body</HoverCard.Content>
+      </HoverCard.Root>,
+    )
+
+    const popup = screen.getByText('Hover card body').closest('[class]')
+    expect(popup).not.toBeNull()
+    expectClassTokens(popup?.className, ['px-3', 'py-1', 'text-base', 'leading-6'])
   })
 })
