@@ -261,7 +261,6 @@ runtime token consumers.
 Today, the retained runtime-consumed `component.*` branches are:
 
 - `component.appShell`
-- `component.mentionTextarea`
 - `component.textField`
 
 Retained branches should be runtime-consumed or intentionally documented by the audit report.

@@ -29,7 +29,6 @@ function createTheme(): ThemeContract {
       },
     },
     component: {
-      mentionTextarea: { previewMinHeight: '96px' },
       textField: { size: { sm: { paddingInline: '0.75rem' } } },
       appShell: {
         content: { paddingInline: '1rem', paddingInlineDesktop: '1.5rem' },
@@ -96,12 +95,13 @@ describe('theme-compiler', () => {
     ;(theme.component as Record<string, unknown>).rating = { size: { md: { iconSize: '1.25rem' } } }
     ;(theme.component as Record<string, unknown>).slider = { size: { md: { thumbSize: '1.3rem' } } }
     ;(theme.component as Record<string, unknown>).switch = { size: { sm: { rootWidth: '2.25rem' } } }
+    ;(theme.component as Record<string, unknown>).mentionTextarea = { previewMinHeight: '96px' }
     ;(theme.component as Record<string, unknown>).pickerPopup = { size: { md: { viewportMaxHeight: '16rem' } } }
     ;(theme.component as Record<string, unknown>).progress = { size: { sm: { height: '0.4rem' } } }
     ;(theme.component as Record<string, unknown>).scrollArea = { size: { sm: { thickness: '0.375rem' } } }
 
     expect(() => compileThemeTokens(theme)).toThrow(
-      /component\.button is retired.*component\.card is retired.*component\.fieldGroup is retired.*component\.fileUpload is retired.*component\.rating is retired.*component\.slider is retired.*component\.switch is retired.*component\.pickerPopup is retired.*component\.progress is retired.*component\.scrollArea is retired/s,
+      /component\.button is retired.*component\.card is retired.*component\.fieldGroup is retired.*component\.fileUpload is retired.*component\.rating is retired.*component\.slider is retired.*component\.switch is retired.*component\.mentionTextarea is retired.*component\.pickerPopup is retired.*component\.progress is retired.*component\.scrollArea is retired/s,
     )
   })
 
