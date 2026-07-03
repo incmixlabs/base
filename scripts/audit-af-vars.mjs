@@ -29,7 +29,6 @@ const replaceContractComponents = new Set([
   'date',
   'fieldGroup',
   'fileUpload',
-  'mentionTextarea',
   'pickerPopup',
   'progress',
   'rating',

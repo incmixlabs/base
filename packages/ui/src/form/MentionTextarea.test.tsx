@@ -60,6 +60,43 @@ describe('MentionTextarea', () => {
     TEST_TIMEOUT_MS,
   )
 
+  it('uses static sizing classes for suggestions and preview surfaces', async () => {
+    const user = userEvent.setup()
+    cleanup()
+
+    function TestHarness() {
+      const [value, setValue] = React.useState('')
+
+      return (
+        <MentionTextarea
+          mentions={[
+            {
+              id: 'grace',
+              label: 'Grace Hopper',
+              value: 'user:grace',
+            },
+          ]}
+          value={value}
+          onValueChange={setValue}
+        />
+      )
+    }
+
+    const { container } = render(<TestHarness />)
+
+    await user.click(screen.getByRole('tab', { name: 'Preview' }))
+    const previewSurface = screen.getByText('Nothing to preview').closest('div')
+    expectClassTokens(previewSurface?.className, ['min-h-20', 'px-3', 'py-2', 'text-sm'])
+
+    await user.click(screen.getByRole('tab', { name: 'Write' }))
+    await user.type(screen.getByRole('textbox'), '@z')
+
+    const listbox = await screen.findByRole('listbox')
+    expectClassTokens(listbox.className, ['min-w-[200px]', 'max-w-[300px]', 'text-sm'])
+    expectClassTokens(screen.getByText('No matches found').className, ['px-3', 'py-2', 'text-sm'])
+    expect(container.innerHTML).not.toContain(['--af', 'mention'].join('-'))
+  })
+
   it('shows visible mention labels while preserving stable stored tokens during editing', () => {
     cleanup()
 

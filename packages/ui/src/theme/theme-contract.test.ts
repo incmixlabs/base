@@ -33,7 +33,6 @@ function createValidTheme() {
       },
     },
     component: {
-      mentionTextarea: { previewMinHeight: '96px' },
       textField: { size: { sm: { paddingInline: '0.75rem' } } },
       appShell: {
         content: { paddingInline: '1rem', paddingInlineDesktop: '1.5rem' },
@@ -217,7 +216,6 @@ describe('theme-contract', () => {
 
   it('fills missing component branches with empty objects during validation', () => {
     const theme = createValidTheme()
-    delete (theme.component as Record<string, unknown>).mentionTextarea
     delete (theme.component as Record<string, unknown>).textField
     delete (theme.component as Record<string, unknown>).appShell
 
@@ -225,7 +223,6 @@ describe('theme-contract', () => {
 
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.value.component.mentionTextarea).toEqual({})
       expect(result.value.component.textField).toEqual({})
       expect(result.value.component.appShell).toEqual({})
     }
@@ -270,6 +267,7 @@ describe('theme-contract', () => {
       size: { sm: { rootWidth: '2.25rem' } },
       group: { gap: '0.5rem', inlineGap: '1rem' },
     }
+    ;(theme.component as Record<string, unknown>).mentionTextarea = { previewMinHeight: '96px' }
     ;(theme.component as Record<string, unknown>).pickerPopup = { size: { md: { viewportMaxHeight: '16rem' } } }
     ;(theme.component as Record<string, unknown>).progress = { size: { sm: { height: '0.4rem' } } }
     ;(theme.component as Record<string, unknown>).scrollArea = { size: { sm: { thickness: '0.375rem' } } }
@@ -281,6 +279,7 @@ describe('theme-contract', () => {
       expect(result.errors.join(' ')).toContain('component.rating is retired')
       expect(result.errors.join(' ')).toContain('component.slider is retired')
       expect(result.errors.join(' ')).toContain('component.switch is retired')
+      expect(result.errors.join(' ')).toContain('component.mentionTextarea is retired')
       expect(result.errors.join(' ')).toContain('component.pickerPopup is retired')
       expect(result.errors.join(' ')).toContain('component.progress is retired')
       expect(result.errors.join(' ')).toContain('component.scrollArea is retired')

@@ -26,19 +26,6 @@ export type TextFieldComponentTokens = {
   >
 }
 
-export type MentionTextareaComponentTokens = Partial<{
-  suggestionMinWidth: string
-  suggestionMaxWidth: string
-  suggestionFontSize: string
-  suggestionEmptyPaddingInline: string
-  suggestionEmptyPaddingBlock: string
-  dragOverlayFontSize: string
-  previewMinHeight: string
-  previewPaddingInline: string
-  previewPaddingBlock: string
-  previewFontSize: string
-}>
-
 export type AppShellComponentTokens = {
   content?: Partial<{
     paddingInline: string
@@ -80,7 +67,6 @@ export type ThemeContract = {
     color: Record<string, Record<string, string>>
   }
   component: {
-    mentionTextarea: MentionTextareaComponentTokens
     textField: TextFieldComponentTokens
     appShell: AppShellComponentTokens
   }
@@ -89,7 +75,7 @@ export type ThemeContract = {
 export type ThemeContractValidation = { ok: true; value: ThemeContract } | { ok: false; errors: string[] }
 
 const lifecycleValues: ThemeLifecycle[] = ['draft', 'review', 'published']
-export const THEME_COMPONENT_TOKEN_KEYS = ['mentionTextarea', 'textField', 'appShell'] as const
+export const THEME_COMPONENT_TOKEN_KEYS = ['textField', 'appShell'] as const
 export type ThemeComponentTokenKey = (typeof THEME_COMPONENT_TOKEN_KEYS)[number]
 
 const strippedLegacyComponentKeys = ['dateNext', 'stepper', 'timeline', 'surface'] as const
@@ -107,6 +93,7 @@ const rejectedRetiredComponentKeys = [
   'fieldGroup',
   'fileUpload',
   'iconButton',
+  'mentionTextarea',
   'pickerPopup',
   'popover',
   'progress',
@@ -131,20 +118,6 @@ type ComponentTokenSchema = {
 }
 
 const componentTokenSchema = {
-  mentionTextarea: {
-    slots: [
-      'suggestionMinWidth',
-      'suggestionMaxWidth',
-      'suggestionFontSize',
-      'suggestionEmptyPaddingInline',
-      'suggestionEmptyPaddingBlock',
-      'dragOverlayFontSize',
-      'previewMinHeight',
-      'previewPaddingInline',
-      'previewPaddingBlock',
-      'previewFontSize',
-    ],
-  },
   textField: {
     branches: {
       size: {
