@@ -22,9 +22,9 @@ export const scrollAreaRoot =
 
 export const scrollAreaBySize = {
   none: '',
-  xs: '[--scroll-area-thickness:var(--af-scroll-area-size-xs-thickness,0.25rem)] [--scroll-area-thumb-inset:var(--af-scroll-area-size-xs-thumb-inset,0px)] [--scroll-area-control-size:0.95rem]',
-  sm: '[--scroll-area-thickness:var(--af-scroll-area-size-sm-thickness,0.5rem)] [--scroll-area-thumb-inset:var(--af-scroll-area-size-sm-thumb-inset,0px)] [--scroll-area-control-size:1rem]',
-  md: '[--scroll-area-thickness:var(--af-scroll-area-size-md-thickness,0.75rem)] [--scroll-area-thumb-inset:var(--af-scroll-area-size-md-thumb-inset,1px)] [--scroll-area-control-size:1.125rem]',
+  xs: '[--scroll-area-thickness:0.25rem] [--scroll-area-thumb-inset:0px] [--scroll-area-control-size:0.95rem]',
+  sm: '[--scroll-area-thickness:0.5rem] [--scroll-area-thumb-inset:0px] [--scroll-area-control-size:1rem]',
+  md: '[--scroll-area-thickness:0.75rem] [--scroll-area-thumb-inset:1px] [--scroll-area-control-size:1.125rem]',
 } as const
 
 export const scrollAreaByDirection = {

@@ -2,6 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { Progress } from './Progress'
+import { progressIndeterminateDurationDefault } from './progress.class'
 
 afterEach(() => {
   cleanup()
@@ -17,7 +18,7 @@ describe('Progress', () => {
     expect(indicator).not.toBeNull()
     expect(progress).toHaveClass('relative')
     expect(progress).toHaveClass('w-full')
-    expect(progress).toHaveClass('h-[var(--af-progress-size-sm-height,0.375rem)]')
+    expect(progress).toHaveClass('h-1.5')
     expect(progress).toHaveClass('bg-neutral-soft')
     expect(progress).toHaveClass('border-0')
     expect(progress).toHaveClass('[border-color:var(--color-neutral-text)]')
@@ -44,20 +45,20 @@ describe('Progress', () => {
     expect(progress.innerHTML).not.toContain('animate-progress-indeterminate')
   })
 
-  it('uses token-backed heights for xs sizing', () => {
+  it('uses static height utilities for xs sizing', () => {
     render(<Progress size="xs" value={90} data-testid="progress" />)
 
-    expect(screen.getByTestId('progress')).toHaveClass('h-[var(--af-progress-size-xs-height,0.25rem)]')
+    expect(screen.getByTestId('progress')).toHaveClass('h-1')
   })
 
-  it('uses progress motion tokens when duration is not provided', () => {
+  it('uses default indeterminate timing when duration is not provided', () => {
     render(<Progress data-testid="progress" />)
 
     const indicator = screen.getByTestId('progress').firstElementChild
 
-    expect(indicator).toHaveClass('w-[var(--af-progress-motion-indeterminate-width,40%)]')
+    expect(indicator).toHaveClass('w-2/5')
     expect(indicator).toHaveStyle({
-      '--progress-indeterminate-duration': 'var(--af-progress-motion-indeterminate-duration, 1s)',
+      '--progress-indeterminate-duration': progressIndeterminateDurationDefault,
     })
   })
 })

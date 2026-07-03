@@ -31,12 +31,10 @@ function createTheme(): ThemeContract {
     component: {
       mentionTextarea: { previewMinHeight: '96px' },
       textField: { size: { sm: { paddingInline: '0.75rem' } } },
-      progress: { size: { sm: { height: '0.4rem' } } },
       appShell: {
         content: { paddingInline: '1rem', paddingInlineDesktop: '1.5rem' },
         layout: { bodyWithSecondaryRightGridTemplateColumns: 'auto minmax(0, 1fr) 20rem' },
       },
-      scrollArea: { size: { sm: { thickness: '0.375rem' } } },
     },
   }
 }
@@ -47,14 +45,14 @@ describe('theme-compiler', () => {
     const brand = { global: { borderRadius: { sm: '6px' } } }
     const tenant = {
       global: { borderRadius: { sm: '8px' } },
-      component: { progress: { size: { sm: { height: '0.5rem' } } } },
+      component: { appShell: { content: { paddingInline: '2rem' } } },
     }
     const user = { global: { borderRadius: { sm: '10px' } } }
 
     const merged = mergeThemeContracts(base, brand, tenant, user)
 
     expect(merged.global.borderRadius.sm).toBe('10px')
-    expect(merged.component.progress.size?.sm?.height).toBe('0.5rem')
+    expect(merged.component.appShell.content?.paddingInline).toBe('2rem')
   })
 
   it('ignores prototype pollution keys while merging token overrides', () => {
@@ -99,9 +97,11 @@ describe('theme-compiler', () => {
     ;(theme.component as Record<string, unknown>).slider = { size: { md: { thumbSize: '1.3rem' } } }
     ;(theme.component as Record<string, unknown>).switch = { size: { sm: { rootWidth: '2.25rem' } } }
     ;(theme.component as Record<string, unknown>).pickerPopup = { size: { md: { viewportMaxHeight: '16rem' } } }
+    ;(theme.component as Record<string, unknown>).progress = { size: { sm: { height: '0.4rem' } } }
+    ;(theme.component as Record<string, unknown>).scrollArea = { size: { sm: { thickness: '0.375rem' } } }
 
     expect(() => compileThemeTokens(theme)).toThrow(
-      /component\.button is retired.*component\.card is retired.*component\.fieldGroup is retired.*component\.fileUpload is retired.*component\.rating is retired.*component\.slider is retired.*component\.switch is retired.*component\.pickerPopup is retired/s,
+      /component\.button is retired.*component\.card is retired.*component\.fieldGroup is retired.*component\.fileUpload is retired.*component\.rating is retired.*component\.slider is retired.*component\.switch is retired.*component\.pickerPopup is retired.*component\.progress is retired.*component\.scrollArea is retired/s,
     )
   })
 

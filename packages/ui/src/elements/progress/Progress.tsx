@@ -9,6 +9,7 @@ import type { MarginProps } from '@/theme/props/margin.props'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { Radius } from '@/theme/tokens'
 import {
+  progressIndeterminateDurationDefault,
   progressIndicatorBase,
   progressIndicatorColorStyles,
   progressIndicatorHighContrast,
@@ -126,8 +127,7 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
           style={
             isIndeterminate
               ? {
-                  ['--progress-indeterminate-duration' as string]:
-                    duration ?? 'var(--af-progress-motion-indeterminate-duration, 1s)',
+                  ['--progress-indeterminate-duration' as string]: duration ?? progressIndeterminateDurationDefault,
                 }
               : {
                   width: `${(boundedValue / boundedMax) * 100}%`,
