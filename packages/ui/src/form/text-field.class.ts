@@ -2,7 +2,6 @@ import { themeSizeTokens } from '@incmix/theme'
 import { surfaceUnoColorVariants } from '../elements/surface/surface.class'
 import type { SurfaceVariant } from '../elements/surface/surface.props'
 import { semanticColorKeys, semanticColorVar } from '../theme/props/color.prop'
-import { textFieldSizeVar } from '../theme/runtime/component-vars'
 import type { Color } from '../theme/tokens'
 import { formControlNeutralBackground } from './form-control.class'
 import { type ExtendedFormSize, extendedFormSizes } from './form-size'
@@ -209,17 +208,14 @@ export const textFieldSizeVariants: Record<TextFieldSize, string> = Object.fromE
     return [
       size,
       [
-        cssDeclaration('--af-text-field-height', textFieldSizeVar(size, 'height', token.height)),
-        cssDeclaration(
-          '--af-text-field-floating-height',
-          textFieldSizeVar(size, 'floatingHeight', floatingHeightFallback),
-        ),
-        cssDeclaration('--af-text-field-font-size', textFieldSizeVar(size, 'fontSize', token.fontSize)),
-        cssDeclaration('--af-text-field-line-height', textFieldSizeVar(size, 'lineHeight', token.lineHeight)),
-        cssDeclaration('--af-text-field-padding-x', textFieldSizeVar(size, 'paddingInline', token.paddingX)),
-        cssDeclaration('--af-text-field-padding-y', textFieldSizeVar(size, 'paddingBlock', token.paddingY)),
-        cssDeclaration('--af-text-field-icon-size', textFieldSizeVar(size, 'iconSize', token.iconSize)),
-        cssDeclaration('--af-text-field-gap', textFieldSizeVar(size, 'gap', token.gap)),
+        cssDeclaration('--af-text-field-height', token.height),
+        cssDeclaration('--af-text-field-floating-height', floatingHeightFallback),
+        cssDeclaration('--af-text-field-font-size', token.fontSize),
+        cssDeclaration('--af-text-field-line-height', token.lineHeight),
+        cssDeclaration('--af-text-field-padding-x', token.paddingX),
+        cssDeclaration('--af-text-field-padding-y', token.paddingY),
+        cssDeclaration('--af-text-field-icon-size', token.iconSize),
+        cssDeclaration('--af-text-field-gap', token.gap),
         cssDeclaration('--af-text-field-icon-inset', 'calc(var(--af-text-field-padding-x) + var(--af-text-field-gap))'),
         cssDeclaration(
           '--af-text-field-icon-text-offset',

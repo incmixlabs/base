@@ -110,7 +110,7 @@ export function mergeThemeContracts(
  * - `global.typography.*` -> `--*` (e.g. `global.typography.fontSans` -> `--font-sans`)
  * - `global.color.hue.*` -> `--color-*` (e.g. `global.color.hue.teal.9` -> `--color-teal-9`)
  * - `semantic.color.*` -> `--color-*` (e.g. `semantic.color.primary.text` -> `--color-primary-text`)
- * - `component.*` -> `--af-*` (e.g. `component.textField.size.sm.height` -> `--af-text-field-size-sm-height`)
+ * - `component.*` -> `--af-*` (e.g. `component.appShell.content.paddingInline` -> `--af-app-shell-content-padding-inline`)
  *
  * Reference: docs/issues/theme-token-taxonomy-v1.md (Issue #234) and W3C DTCG format.
  */

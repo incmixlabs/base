@@ -28,9 +28,7 @@ function createValidThemeContract() {
         default: { text: 'oklch(0.2 0 0)', background: 'oklch(1 0 0)' },
       },
     },
-    component: {
-      textField: { size: { sm: { paddingInline: '0.75rem' } } },
-    },
+    component: {},
   }
 }
 
@@ -43,13 +41,13 @@ describe('theme contract validation', () => {
 
   it('rejects non-string component token leaves', () => {
     const theme = createValidThemeContract()
-    theme.component.textField.size.sm.paddingInline = 12 as never
+    ;(theme.component as Record<string, unknown>).appShell = { content: { paddingInline: 12 } }
 
     const result = validateThemeContract(theme)
 
     expect(result.ok).toBe(false)
     if (!result.ok) {
-      expect(result.errors.join(' ')).toContain('component.textField.size.sm.paddingInline')
+      expect(result.errors.join(' ')).toContain('component.appShell.content.paddingInline')
     }
   })
 
@@ -64,6 +62,7 @@ describe('theme contract validation', () => {
     ;(theme.component as Record<string, unknown>).pickerPopup = { size: { md: { viewportMaxHeight: '16rem' } } }
     ;(theme.component as Record<string, unknown>).progress = { size: { sm: { height: '0.4rem' } } }
     ;(theme.component as Record<string, unknown>).scrollArea = { size: { sm: { thickness: '0.375rem' } } }
+    ;(theme.component as Record<string, unknown>).textField = { size: { sm: { paddingInline: '0.75rem' } } }
     ;(theme.component as Record<string, unknown>).toggle = { size: { md: { iconSize: '1rem' } } }
     ;(theme.component as Record<string, unknown>).treeView = { size: { md: { itemPaddingInline: '0.875rem' } } }
 
@@ -80,6 +79,7 @@ describe('theme contract validation', () => {
       expect(result.errors.join(' ')).toContain('component.pickerPopup is retired')
       expect(result.errors.join(' ')).toContain('component.progress is retired')
       expect(result.errors.join(' ')).toContain('component.scrollArea is retired')
+      expect(result.errors.join(' ')).toContain('component.textField is retired')
       expect(result.errors.join(' ')).toContain('component.toggle is retired')
       expect(result.errors.join(' ')).toContain('component.treeView is retired')
     }
@@ -88,14 +88,14 @@ describe('theme contract validation', () => {
   it('rejects unknown component token branches and unsupported slots', () => {
     const theme = createValidThemeContract()
     ;(theme.component as Record<string, unknown>).unknown = { size: { md: { gap: '1rem' } } }
-    ;(theme.component.textField.size.sm as Record<string, unknown>).previewMinHeight = '96px'
+    ;(theme.component as Record<string, unknown>).appShell = { content: { previewMinHeight: '96px' } }
 
     const result = validateThemeContract(theme)
 
     expect(result.ok).toBe(false)
     if (!result.ok) {
       expect(result.errors.join(' ')).toContain('component.unknown is not supported')
-      expect(result.errors.join(' ')).toContain('component.textField.size.sm.previewMinHeight')
+      expect(result.errors.join(' ')).toContain('component.appShell.content.previewMinHeight')
     }
   })
 
