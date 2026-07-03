@@ -2,6 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { Progress } from './Progress'
+import { progressIndeterminateDurationDefault } from './progress.class'
 
 afterEach(() => {
   cleanup()
@@ -57,7 +58,7 @@ describe('Progress', () => {
 
     expect(indicator).toHaveClass('w-2/5')
     expect(indicator).toHaveStyle({
-      '--progress-indeterminate-duration': '1s',
+      '--progress-indeterminate-duration': progressIndeterminateDurationDefault,
     })
   })
 })

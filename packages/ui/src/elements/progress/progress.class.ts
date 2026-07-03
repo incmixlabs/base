@@ -38,6 +38,8 @@ export const progressTrackHighContrast = '[border-color:var(--color-neutral-text
 
 export const progressIndicatorHighContrast = 'saturate-[1.15] contrast-[1.05]'
 
+export const progressIndeterminateDurationDefault = '1s'
+
 export const progressIndicatorIndeterminate =
   'w-2/5 animate-[progress-indeterminate_var(--progress-indeterminate-duration,1s)_var(--af-ease-standard)_infinite]'
 
