@@ -14,14 +14,6 @@ function componentVar(component: string, slot: string, fallback: string): string
 
 export type SliderSizeTokenSlot = 'trackHeight' | 'thumbSize'
 export type SliderVariantTokenSlot = 'boxShadow'
-export type FileUploadSizeTokenSlot =
-  | 'defaultPadding'
-  | 'minimalPadding'
-  | 'cardPadding'
-  | 'iconShellPadding'
-  | 'iconSize'
-  | 'titleFontSize'
-  | 'descriptionFontSize'
 export type TextFieldSizeTokenSlot =
   | 'height'
   | 'floatingHeight'
@@ -42,10 +34,6 @@ export type AppShellLayoutTokenSlot =
 export type AppShellContentTokenSlot = 'paddingInline' | 'paddingBlock' | 'paddingInlineDesktop' | 'paddingBlockDesktop'
 export type ContentBodyTokenSlot = 'background' | 'foreground' | 'borderColor'
 export type ScrollAreaSizeTokenSlot = 'thickness' | 'thumbInset'
-
-export function fileUploadSizeVar(size: string, slot: FileUploadSizeTokenSlot, fallback: string): string {
-  return withFallback(`--af-file-upload-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
 
 export function sliderSizeVar(size: string, slot: SliderSizeTokenSlot, fallback: string): string {
   return withFallback(`--af-slider-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)

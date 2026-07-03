@@ -24,13 +24,13 @@ import { getRadiusStyles, useThemeRadius } from '@/elements/utils'
 import { Flex } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
-import { fileUploadSizeVar } from '@/theme/runtime/component-vars'
 import { Text } from '@/typography/text/Text'
 import { useFieldGroup } from './FieldGroupContext'
 import type {
   FileUploadConfirmationConfig,
   FileUploadFileListDisplay,
   FileUploadProps,
+  FileUploadVariant,
   UploadedFile,
 } from './file-upload.props'
 import {
@@ -46,7 +46,7 @@ import {
   formControlPrimaryHoverBorder,
   formControlPrimarySurface,
 } from './form-control.class'
-import { resolveFormSize } from './form-size'
+import { type FormSize, resolveFormSize } from './form-size'
 
 export {
   type FileUploadFileListDisplay,
@@ -133,6 +133,55 @@ function buildRemoveConfirmationDefaults(file: UploadedFile): Required<FileUploa
     title: file.status === 'uploading' ? 'Cancel this upload?' : 'Remove file?',
   }
 }
+
+const fileUploadDropzonePaddingByVariant = {
+  default: {
+    xs: 'p-4',
+    sm: 'p-5',
+    md: 'p-8',
+    lg: 'p-10',
+  },
+  minimal: {
+    xs: 'p-3',
+    sm: 'p-3.5',
+    md: 'p-4',
+    lg: 'p-5',
+  },
+  card: {
+    xs: 'p-4',
+    sm: 'p-5',
+    md: 'p-6',
+    lg: 'p-8',
+  },
+} as const satisfies Record<FileUploadVariant, Record<FormSize, string>>
+
+const fileUploadIconShellPadding = {
+  xs: 'p-2',
+  sm: 'p-2.5',
+  md: 'p-3',
+  lg: 'p-3.5',
+} as const satisfies Record<FormSize, string>
+
+const fileUploadIconSize = {
+  xs: 'h-4 w-4',
+  sm: 'h-5 w-5',
+  md: 'h-6 w-6',
+  lg: 'h-7 w-7',
+} as const satisfies Record<FormSize, string>
+
+const fileUploadTitleSize = {
+  xs: 'text-xs',
+  sm: 'text-sm',
+  md: 'text-sm',
+  lg: 'text-base',
+} as const satisfies Record<FormSize, string>
+
+const fileUploadDescriptionSize = {
+  xs: 'text-[11px]',
+  sm: 'text-xs',
+  md: 'text-xs',
+  lg: 'text-sm',
+} as const satisfies Record<FormSize, string>
 
 // ============================================================================
 // File Item Component
@@ -539,57 +588,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
     const describedBy =
       [ariaDescribedBy, hasDescription ? descriptionId : undefined].filter(Boolean).join(' ') || undefined
 
-    const containerPaddingByVariant = {
-      default: { xs: '1rem', sm: '1.25rem', md: '2rem', lg: '2.5rem' },
-      minimal: { xs: '0.75rem', sm: '0.875rem', md: '1rem', lg: '1.25rem' },
-      card: { xs: '1rem', sm: '1.25rem', md: '1.5rem', lg: '2rem' },
-    } as const
-
-    const iconShellSize = {
-      xs: '0.5rem',
-      sm: '0.625rem',
-      md: '0.75rem',
-      lg: '0.875rem',
-    } as const
-
-    const iconSize = {
-      xs: '1rem',
-      sm: '1.25rem',
-      md: '1.5rem',
-      lg: '1.75rem',
-    } as const
-
-    const titleSize = {
-      xs: '0.75rem',
-      sm: '0.875rem',
-      md: '0.875rem',
-      lg: '1rem',
-    } as const
-
-    const descriptionSize = {
-      xs: '11px',
-      sm: '0.75rem',
-      md: '0.75rem',
-      lg: '0.875rem',
-    } as const
-
-    const containerPaddingVars = {
-      default: fileUploadSizeVar(size, 'defaultPadding', containerPaddingByVariant.default[size]),
-      minimal: fileUploadSizeVar(size, 'minimalPadding', containerPaddingByVariant.minimal[size]),
-      card: fileUploadSizeVar(size, 'cardPadding', containerPaddingByVariant.card[size]),
-    } as const
-
-    const iconShellPaddingVar = fileUploadSizeVar(size, 'iconShellPadding', iconShellSize[size])
-    const iconSizeVar = fileUploadSizeVar(size, 'iconSize', iconSize[size])
-    const titleFontSizeVar = fileUploadSizeVar(size, 'titleFontSize', titleSize[size])
-    const descriptionFontSizeVar = fileUploadSizeVar(size, 'descriptionFontSize', descriptionSize[size])
-
     const dropzoneStyles = {
-      '--file-upload-container-padding': containerPaddingVars[variant],
-      '--file-upload-icon-shell-padding': iconShellPaddingVar,
-      '--file-upload-icon-size': iconSizeVar,
-      '--file-upload-title-font-size': titleFontSizeVar,
-      '--file-upload-description-font-size': descriptionFontSizeVar,
       ...radiusStyles,
       ...style,
     } as React.CSSProperties
@@ -632,7 +631,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
             // Variant styles
             variant === 'default' && [
               formControlDashedSurface,
-              'p-[var(--file-upload-container-padding)]',
+              fileUploadDropzonePaddingByVariant.default[size],
               !error && `${formControlPrimaryHoverBorder} ${formControlNeutralHoverBackground}`,
               isDragActive && formControlPrimarySurface,
               isDragReject && formControlErrorSurface,
@@ -642,7 +641,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
 
             variant === 'minimal' && [
               formControlBorderedSurface,
-              'p-[var(--file-upload-container-padding)]',
+              fileUploadDropzonePaddingByVariant.minimal[size],
               !error && !isPickerDisabled && formControlNeutralHoverBackground,
               isDragActive && formControlPrimarySurface,
               isDragReject && formControlErrorSurface,
@@ -654,7 +653,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
               formControlBorderedSurface,
               formControlNeutralBackground,
               'shadow-sm',
-              'p-[var(--file-upload-container-padding)]',
+              fileUploadDropzonePaddingByVariant.card[size],
               !error && !isPickerDisabled && `hover:shadow-md ${formControlPrimaryHoverBorder}`,
               isDragActive && `${formControlPrimaryBorderColor} shadow-md`,
               isDragReject && formControlErrorSurface,
@@ -677,7 +676,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
               bg={isDragActive ? 'primary-soft' : 'neutral-surface'}
               radius="full"
               className={cn(
-                'p-[var(--file-upload-icon-shell-padding)]',
+                fileUploadIconShellPadding[size],
                 'transition-colors',
                 !isPickerDisabled && 'hover:bg-[var(--color-neutral-surface-hover)]',
               )}
@@ -685,13 +684,13 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
             >
               {icon ?? (
                 <Text asChild color={isDragActive ? 'primary' : 'neutral'} variant={isDragActive ? 'soft' : 'muted'}>
-                  <Upload className="h-[var(--file-upload-icon-size)] w-[var(--file-upload-icon-size)]" />
+                  <Upload className={fileUploadIconSize[size]} />
                 </Text>
               )}
             </Flex>
 
             <Flex direction="column">
-              <Text id={titleId} as="p" weight="medium" className="text-[length:var(--file-upload-title-font-size)]">
+              <Text id={titleId} as="p" weight="medium" className={fileUploadTitleSize[size]}>
                 {placeholder || defaultPlaceholder}
               </Text>
               {hasDescription ? (
@@ -701,7 +700,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
                   color="neutral"
                   variant="muted"
                   mt="1"
-                  className="text-[length:var(--file-upload-description-font-size)]"
+                  className={fileUploadDescriptionSize[size]}
                 >
                   {resolvedDescription}
                 </Text>

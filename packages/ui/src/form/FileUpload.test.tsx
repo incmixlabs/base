@@ -64,9 +64,11 @@ describe('FileUpload', () => {
       </FieldGroupProvider>,
     )
 
-    expect(screen.getByText(/drag & drop/i)).toHaveClass('text-[length:var(--file-upload-title-font-size)]')
+    expect(screen.getByText(/drag & drop/i)).toHaveClass('text-xs')
     const dropzone = container.querySelector('[data-slot="file-upload-dropzone"]') as HTMLElement | null
-    expect(dropzone?.style.getPropertyValue('--file-upload-title-font-size')).toBeTruthy()
+    expect(dropzone).toHaveClass('p-4')
+    expect(dropzone?.getAttribute('style')).not.toContain('--file-upload')
+    expect(container.querySelector('[data-slot="file-upload-dropzone"] svg')).toHaveClass('h-4', 'w-4')
   })
 
   it('hides helper text when description is intentionally empty', () => {
