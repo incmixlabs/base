@@ -9,6 +9,7 @@
     "build": "pnpm -r --if-present build",
     "build:analyze": "pnpm --filter @incmix/ui build:analyze && pnpm --filter @incmix/ui build:analyze:lib",
     "audit:af-vars": "node scripts/audit-af-vars.mjs",
+    "audit:css-vars": "node scripts/audit-css-vars.mjs",
     "check:react-compiler": "node scripts/check-react-compiler-health.mjs",
     "dev": "pnpm dev:storybook",
     "dev:storybook": "pnpm --filter @incmix/ui dev",
