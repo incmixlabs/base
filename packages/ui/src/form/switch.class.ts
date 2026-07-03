@@ -8,20 +8,8 @@ export type SwitchGroupOrientation = 'horizontal' | 'vertical'
 
 const switchClassVariants = ['classic', 'surface', 'soft'] as const satisfies readonly SwitchVariant[]
 
-const switchSizeTokens: Record<
-  SwitchSize,
-  { rootHeight: string; rootWidth: string; thumbSize: string; thumbTranslate: string; gap: string }
-> = {
-  xs: { rootHeight: '1rem', rootWidth: '1.75rem', thumbSize: '0.75rem', thumbTranslate: '0.75rem', gap: '0.25rem' },
-  sm: { rootHeight: '1.25rem', rootWidth: '2.25rem', thumbSize: '1rem', thumbTranslate: '1rem', gap: '0.375rem' },
-  md: { rootHeight: '1.5rem', rootWidth: '2.75rem', thumbSize: '1.25rem', thumbTranslate: '1.25rem', gap: '0.5rem' },
-  lg: { rootHeight: '1.75rem', rootWidth: '3.5rem', thumbSize: '1.5rem', thumbTranslate: '1.75rem', gap: '0.625rem' },
-}
-
 const joinClass = (...parts: string[]) => parts.join('')
 const colorVar = (color: string, token: string) => joinClass('var(--color-', color, '-', token, ')')
-const switchSizeVar = (size: string, slot: string, fallback: string) =>
-  joinClass('var(--af-switch-size-', size, '-', slot, ',', fallback, ')')
 
 const switchFocusClassName = (color: string) =>
   joinClass(
@@ -60,10 +48,10 @@ const createSegmentedLabelColorClasses = (color: Color) => ({
 export const switchRootBase =
   'peer inline-flex shrink-0 cursor-pointer items-center border-2 border-solid transition-colors duration-150 ease-in-out disabled:cursor-not-allowed disabled:opacity-50'
 
-export const switchRootSize = 'h-[var(--sw-root-height)] w-[var(--sw-root-width)] [forced-color-adjust:none]'
+export const switchRootForcedColorAdjust = '[forced-color-adjust:none]'
 
 export const switchThumbBase =
-  'pointer-events-none block rounded-full bg-light-surface shadow-lg ring-0 transition-transform h-[var(--sw-thumb-size)] w-[var(--sw-thumb-size)] translate-x-0 data-[checked]:translate-x-[var(--sw-thumb-translate)] data-[checked]:rtl:-translate-x-[var(--sw-thumb-translate)]'
+  'pointer-events-none block rounded-full bg-light-surface shadow-lg ring-0 transition-transform translate-x-0'
 
 export const switchSegmentedRootBase = 'relative inline-grid grid-cols-[1fr_1fr] items-center font-medium'
 
@@ -90,25 +78,30 @@ export const switchHighContrastByVariant: Record<SwitchVariant, string> = {
   soft: 'saturate-[1.2]',
 }
 
-export const switchSizeVariants = Object.fromEntries(
-  switchClassSizes.map(size => {
-    const token = switchSizeTokens[size]
-    return [
-      size,
-      [
-        joinClass('[--sw-root-height:', switchSizeVar(size, 'root-height', token.rootHeight), ']'),
-        joinClass('[--sw-root-width:', switchSizeVar(size, 'root-width', token.rootWidth), ']'),
-        joinClass('[--sw-thumb-size:', switchSizeVar(size, 'thumb-size', token.thumbSize), ']'),
-        joinClass('[--sw-thumb-translate:', switchSizeVar(size, 'thumb-translate', token.thumbTranslate), ']'),
-        joinClass('[--sw-gap:', switchSizeVar(size, 'gap', token.gap), ']'),
-      ].join(' '),
-    ]
-  }),
-) as Record<SwitchSize, string>
+export const switchRootSizeVariants = {
+  xs: 'h-4 w-7',
+  sm: 'h-5 w-9',
+  md: 'h-6 w-11',
+  lg: 'h-7 w-14',
+} as const satisfies Record<SwitchSize, string>
+
+export const switchThumbSizeVariants = {
+  xs: 'h-3 w-3 data-[checked]:translate-x-3 data-[checked]:rtl:-translate-x-3',
+  sm: 'h-4 w-4 data-[checked]:translate-x-4 data-[checked]:rtl:-translate-x-4',
+  md: 'h-5 w-5 data-[checked]:translate-x-5 data-[checked]:rtl:-translate-x-5',
+  lg: 'h-6 w-6 data-[checked]:translate-x-7 data-[checked]:rtl:-translate-x-7',
+} as const satisfies Record<SwitchSize, string>
+
+export const switchItemGapVariants = {
+  xs: 'gap-1',
+  sm: 'gap-1.5',
+  md: 'gap-2',
+  lg: 'gap-2.5',
+} as const satisfies Record<SwitchSize, string>
 
 export const switchGroupRootOrientation = {
-  vertical: 'flex-col gap-[var(--af-switch-group-gap,0.5rem)]',
-  horizontal: 'flex-row gap-[var(--af-switch-group-inline-gap,1rem)]',
+  vertical: 'flex-col gap-2',
+  horizontal: 'flex-row gap-4',
 } as const satisfies Record<SwitchGroupOrientation, string>
 
 export const switchSegmentedSizeClasses: Record<SwitchSize, string> = {
@@ -120,7 +113,7 @@ export const switchSegmentedSizeClasses: Record<SwitchSize, string> = {
 
 export const switchClassNames = [
   switchRootBase,
-  switchRootSize,
+  switchRootForcedColorAdjust,
   switchThumbBase,
   switchSegmentedRootBase,
   switchSegmentedControlBase,
@@ -129,7 +122,9 @@ export const switchClassNames = [
   ...switchClassVariants.flatMap(variant => semanticColorKeys.map(color => switchColorVariants[color][variant])),
   ...semanticColorKeys.flatMap(color => Object.values(switchSegmentedLabelColorVariants[color])),
   ...Object.values(switchHighContrastByVariant),
-  ...Object.values(switchSizeVariants),
+  ...Object.values(switchRootSizeVariants),
+  ...Object.values(switchThumbSizeVariants),
+  ...Object.values(switchItemGapVariants),
   ...Object.values(switchGroupRootOrientation),
   ...Object.values(switchSegmentedSizeClasses),
 ]

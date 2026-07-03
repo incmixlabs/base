@@ -15,16 +15,14 @@ function expectClassTokens(className: string | undefined, tokens: readonly strin
 }
 
 describe('Switch', () => {
-  it('uses token-backed size utilities and semantic checked colors', () => {
+  it('uses static size utilities and semantic checked colors', () => {
     render(<Switch color="success" variant="soft" highContrast size="sm" data-testid="switch" />)
 
     const switchControl = screen.getByTestId('switch')
 
     expectClassTokens(switchControl.className, [
-      '[--sw-root-height:var(--af-switch-size-sm-root-height,1.25rem)]',
-      '[--sw-root-width:var(--af-switch-size-sm-root-width,2.25rem)]',
-      '[--sw-thumb-size:var(--af-switch-size-sm-thumb-size,1rem)]',
-      '[--sw-thumb-translate:var(--af-switch-size-sm-thumb-translate,1rem)]',
+      'h-5',
+      'w-9',
       'bg-neutral-soft',
       'data-[checked]:bg-success-solid',
       'data-[checked]:[border-color:var(--color-success-solid)]',
@@ -35,12 +33,7 @@ describe('Switch', () => {
     ])
 
     const thumb = switchControl.querySelector('[data-slot="thumb"],span')
-    expectClassTokens(thumb?.className, [
-      'bg-light-surface',
-      'h-[var(--sw-thumb-size)]',
-      'w-[var(--sw-thumb-size)]',
-      'data-[checked]:translate-x-[var(--sw-thumb-translate)]',
-    ])
+    expectClassTokens(thumb?.className, ['bg-light-surface', 'h-4', 'w-4', 'data-[checked]:translate-x-4'])
   })
 
   it('uses semantic label classes for segmented switches', () => {

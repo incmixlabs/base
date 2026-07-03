@@ -32,10 +32,12 @@ import { Label } from './Label'
 import {
   switchColorVariants,
   switchGroupRootOrientation,
+  switchItemGapVariants,
   switchRootBase,
-  switchRootSize,
-  switchSizeVariants,
+  switchRootForcedColorAdjust,
+  switchRootSizeVariants,
   switchThumbBase,
+  switchThumbSizeVariants,
 } from './switch.class'
 import type { SwitchVariant } from './switch.props'
 import { switchPropDefs } from './switch.props'
@@ -159,7 +161,7 @@ const SwitchGroupItem = React.forwardRef<HTMLSpanElement, SwitchGroupItemProps>(
     const displayLabel = label || children
 
     return (
-      <div className={cn('flex items-start gap-[var(--sw-gap)]', switchSizeVariants[context.size], className)}>
+      <div className={cn('flex items-start', switchItemGapVariants[context.size], className)}>
         <SwitchPrimitive.Root
           ref={ref}
           id={id}
@@ -169,13 +171,14 @@ const SwitchGroupItem = React.forwardRef<HTMLSpanElement, SwitchGroupItemProps>(
           disabled={isDisabled}
           className={cn(
             switchRootBase,
-            switchRootSize,
+            switchRootForcedColorAdjust,
+            switchRootSizeVariants[context.size],
             radiusClassByToken[context.radius],
             switchColorVariants[context.color][context.variant],
           )}
           {...props}
         >
-          <SwitchPrimitive.Thumb className={switchThumbBase} />
+          <SwitchPrimitive.Thumb className={cn(switchThumbBase, switchThumbSizeVariants[context.size])} />
         </SwitchPrimitive.Root>
 
         {displayLabel && (

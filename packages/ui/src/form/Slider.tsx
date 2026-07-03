@@ -18,14 +18,16 @@ import {
   sliderIndicatorHighContrast,
   sliderRadiusVariants,
   sliderRootBase,
-  sliderSizeVariants,
   sliderSoftIndicatorColorStyles,
   sliderSolidTrackColorStyles,
   sliderThumbBase,
   sliderThumbColorStyles,
+  sliderThumbSizeVariants,
   sliderTrackBase,
+  sliderTrackHeightVariants,
   sliderTrackHighContrast,
   sliderTrackVariantStyles,
+  sliderTrackWidthVariants,
 } from './Slider.class'
 
 export type SliderSize = FormSize
@@ -119,7 +121,6 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
         style={{ ...marginProps.style, ...style }}
         className={cn(
           sliderRootBase,
-          sliderSizeVariants[size],
           orientation === 'horizontal' && 'w-full',
           orientation === 'vertical' && 'h-full flex-col',
           effectiveDisabled && 'opacity-50 cursor-not-allowed',
@@ -140,9 +141,8 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
             className={cn(
               sliderTrackBase,
               sliderRadiusVariants[safeRadius],
-              'h-[var(--af-slider-track-height)]',
-              orientation === 'horizontal' && 'w-full',
-              orientation === 'vertical' && 'h-full',
+              orientation === 'horizontal' && ['w-full', sliderTrackHeightVariants[size]],
+              orientation === 'vertical' && ['h-full', sliderTrackWidthVariants[size]],
               sliderTrackVariantStyles[safeVariant],
               safeVariant === 'solid' && sliderSolidTrackColorStyles[safeColor],
               safeHighContrast && sliderTrackHighContrast,
@@ -170,7 +170,7 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
               className={cn(
                 sliderThumbBase,
                 sliderRadiusVariants[safeRadius],
-                'h-[var(--af-slider-thumb-size)] w-[var(--af-slider-thumb-size)]',
+                sliderThumbSizeVariants[size],
                 sliderThumbColorStyles[safeColor],
               )}
             />
