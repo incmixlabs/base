@@ -85,6 +85,7 @@ export const switchRootSizeVariants = {
   lg: 'h-7 w-14',
 } as const satisfies Record<SwitchSize, string>
 
+// Translate distance = root width - thumb width - 2 * border width for each size.
 export const switchThumbSizeVariants = {
   xs: 'h-3 w-3 data-[checked]:translate-x-3 data-[checked]:rtl:-translate-x-3',
   sm: 'h-4 w-4 data-[checked]:translate-x-4 data-[checked]:rtl:-translate-x-4',

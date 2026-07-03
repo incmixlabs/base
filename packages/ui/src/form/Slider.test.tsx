@@ -43,4 +43,16 @@ describe('Slider', () => {
       'focus-visible:[outline-color:var(--color-info-solid-alpha)]',
     ])
   })
+
+  it('applies static width sizing for vertical orientation', () => {
+    const { container } = render(
+      <Slider color="info" defaultValue={[40]} orientation="vertical" size="md" variant="solid" />,
+    )
+
+    const root = container.querySelector('[data-slot="slider"]')
+    const track = container.querySelector('[data-slot="slider-track"]')
+
+    expectClassTokens(root?.className, ['relative', 'flex', 'h-full', 'flex-col'])
+    expectClassTokens(track?.className, ['relative', 'overflow-hidden', 'h-full', 'w-2'])
+  })
 })
