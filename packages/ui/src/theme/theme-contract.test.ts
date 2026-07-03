@@ -33,7 +33,6 @@ function createValidTheme() {
       },
     },
     component: {
-      pickerPopup: { size: { md: { viewportMaxHeight: '16rem' } } },
       mentionTextarea: { previewMinHeight: '96px' },
       textField: { size: { sm: { paddingInline: '0.75rem' } } },
       progress: { size: { sm: { height: '0.4rem' } } },
@@ -221,7 +220,6 @@ describe('theme-contract', () => {
   it('fills missing component branches with empty objects during validation', () => {
     const theme = createValidTheme()
     delete (theme.component as Record<string, unknown>).mentionTextarea
-    delete (theme.component as Record<string, unknown>).pickerPopup
     delete (theme.component as Record<string, unknown>).progress
     delete (theme.component as Record<string, unknown>).appShell
     delete (theme.component as Record<string, unknown>).scrollArea
@@ -231,7 +229,6 @@ describe('theme-contract', () => {
     expect(result.ok).toBe(true)
     if (result.ok) {
       expect(result.value.component.mentionTextarea).toEqual({})
-      expect(result.value.component.pickerPopup).toEqual({})
       expect(result.value.component.progress).toEqual({})
       expect(result.value.component.appShell).toEqual({})
       expect(result.value.component.scrollArea).toEqual({})
@@ -269,7 +266,7 @@ describe('theme-contract', () => {
     }
   })
 
-  it('rejects retired Rating, Slider, and Switch component token overrides', () => {
+  it('rejects retired Rating, Slider, Switch, and PickerPopup component token overrides', () => {
     const theme = createValidTheme()
     ;(theme.component as Record<string, unknown>).rating = { size: { md: { iconSize: '1.25rem' } } }
     ;(theme.component as Record<string, unknown>).slider = { size: { md: { thumbSize: '1.3rem' } } }
@@ -277,6 +274,7 @@ describe('theme-contract', () => {
       size: { sm: { rootWidth: '2.25rem' } },
       group: { gap: '0.5rem', inlineGap: '1rem' },
     }
+    ;(theme.component as Record<string, unknown>).pickerPopup = { size: { md: { viewportMaxHeight: '16rem' } } }
 
     const result = validateThemeContract(theme)
 
@@ -285,6 +283,7 @@ describe('theme-contract', () => {
       expect(result.errors.join(' ')).toContain('component.rating is retired')
       expect(result.errors.join(' ')).toContain('component.slider is retired')
       expect(result.errors.join(' ')).toContain('component.switch is retired')
+      expect(result.errors.join(' ')).toContain('component.pickerPopup is retired')
     }
   })
 })

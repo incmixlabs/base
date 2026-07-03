@@ -46,25 +46,6 @@ export type TextFieldComponentTokens = {
   >
 }
 
-export type PickerPopupComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      viewportMaxHeight: string
-      popupPadding: string
-      statusPaddingX: string
-      statusPaddingY: string
-      searchHeight: string
-      fontSize: string
-      lineHeight: string
-      rowPaddingX: string
-      rowPaddingY: string
-      rowTrailingPadding: string
-      iconSize: string
-    }>
-  >
-}
-
 export type MentionTextareaComponentTokens = Partial<{
   suggestionMinWidth: string
   suggestionMaxWidth: string
@@ -129,7 +110,6 @@ export type ThemeContract = {
     color: Record<string, Record<string, string>>
   }
   component: {
-    pickerPopup: PickerPopupComponentTokens
     mentionTextarea: MentionTextareaComponentTokens
     textField: TextFieldComponentTokens
     progress: ProgressComponentTokens
@@ -142,7 +122,6 @@ export type ThemeContractValidation = { ok: true; value: ThemeContract } | { ok:
 
 const lifecycleValues: ThemeLifecycle[] = ['draft', 'review', 'published']
 export const THEME_COMPONENT_TOKEN_KEYS = [
-  'pickerPopup',
   'mentionTextarea',
   'textField',
   'progress',
@@ -166,6 +145,7 @@ const rejectedRetiredComponentKeys = [
   'fieldGroup',
   'fileUpload',
   'iconButton',
+  'pickerPopup',
   'popover',
   'radio',
   'radioCards',
@@ -187,26 +167,6 @@ type ComponentTokenSchema = {
 }
 
 const componentTokenSchema = {
-  pickerPopup: {
-    branches: {
-      size: {
-        kind: 'record',
-        slots: [
-          'viewportMaxHeight',
-          'popupPadding',
-          'statusPaddingX',
-          'statusPaddingY',
-          'searchHeight',
-          'fontSize',
-          'lineHeight',
-          'rowPaddingX',
-          'rowPaddingY',
-          'rowTrailingPadding',
-          'iconSize',
-        ],
-      },
-    },
-  },
   mentionTextarea: {
     slots: [
       'suggestionMinWidth',
