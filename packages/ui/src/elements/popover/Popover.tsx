@@ -14,16 +14,17 @@ import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
 import { IconButton } from '../button/IconButton'
 import { FloatingArrowSvg } from '../surface/FloatingArrowSvg'
-import { floatingArrowBase, floatingArrowSurface } from '../surface/surface.class'
-import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
+  floatingArrowBase,
+  floatingArrowSurface,
   floatingSurfaceColorVariants,
   floatingSurfaceHighContrastColorVariants,
   floatingSurfaceHighContrastEffectByVariant,
   floatingSurfaceMaxWidthVariants,
   floatingSurfaceSizeVariants,
-  popoverContentBase,
-} from './popover.class'
+} from '../surface/surface.class'
+import { getRadiusStyles, useThemeRadius } from '../utils'
+import { popoverContentBase } from './popover.class'
 import {
   type PopoverContentMaxWidth,
   type PopoverContentSize,

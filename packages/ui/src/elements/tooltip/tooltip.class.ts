@@ -1,4 +1,4 @@
-import { floatingSurfaceMaxWidthVariants, floatingSurfaceSizeVariants } from '../popover/popover.class'
+import { floatingSurfaceMaxWidthVariants, floatingSurfaceSizeVariants } from '../surface/surface.class'
 
 export {
   floatingSurfaceMaxWidthVariants as tooltipContentMaxWidth,

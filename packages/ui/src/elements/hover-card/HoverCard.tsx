@@ -11,15 +11,15 @@ import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props
 import type { WidthProps } from '@/theme/props/width.props'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
+import { popoverContentBase } from '../popover/popover.class'
+import { type PopoverContentVariant, popoverContentPropDefs } from '../popover/popover.props'
 import {
   floatingSurfaceColorVariants,
   floatingSurfaceHighContrastColorVariants,
   floatingSurfaceHighContrastEffectByVariant,
-  popoverContentBase,
   floatingSurfaceSizeVariants as popoverContentBySize,
   floatingSurfaceMaxWidthVariants as popoverContentMaxWidth,
-} from '../popover/popover.class'
-import { type PopoverContentVariant, popoverContentPropDefs } from '../popover/popover.props'
+} from '../surface/surface.class'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 
 // ============================================================================
@@ -208,6 +208,10 @@ const HoverCardContent = React.forwardRef<React.ElementRef<typeof PopoverPrimiti
     const safeColor = (normalizeEnumPropValue(popoverContentPropDefs.color, color) ?? SemanticColor.neutral) as Color
     const safeRadius = normalizeEnumPropValue(popoverContentPropDefs.radius, radiusProp) as Radius | undefined
     const safeHighContrast = normalizeBooleanPropValue(popoverContentPropDefs.highContrast, highContrast) ?? false
+    const safeSize = normalizeEnumPropValue(
+      { ...popoverContentPropDefs.size, default: 'md' },
+      size,
+    ) as HoverCardContentSize
     const radius = useThemeRadius(safeRadius)
     const tokenMaxWidth =
       typeof maxWidth === 'string' ? normalizeEnumPropValue(popoverContentPropDefs.maxWidthToken, maxWidth) : undefined
@@ -230,7 +234,7 @@ const HoverCardContent = React.forwardRef<React.ElementRef<typeof PopoverPrimiti
               'z-50 w-full border border-solid origin-[var(--transform-origin)]',
               'focus:outline-none',
               popoverContentBase,
-              popoverContentBySize[size],
+              popoverContentBySize[safeSize],
               resolvedTokenMaxWidth && popoverContentMaxWidth[resolvedTokenMaxWidth],
               safeHighContrast
                 ? floatingSurfaceHighContrastColorVariants[safeColor][safeVariant]

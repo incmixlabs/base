@@ -14,6 +14,25 @@ export const floatingSurfaceElevation =
 export const floatingSurfaceSoftElevation =
   '[box-shadow:inset_0_1px_0_var(--color-panel-highlight),0_10px_30px_color-mix(in_oklch,black_10%,transparent),0_2px_10px_color-mix(in_oklch,black_6%,transparent)]'
 
+type FloatingSurfaceSize = 'xs' | 'sm' | 'md' | 'lg'
+type FloatingSurfaceMaxWidth = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'none'
+
+export const floatingSurfaceSizeVariants: Record<FloatingSurfaceSize, string> = {
+  xs: 'px-2 py-1 text-xs leading-4',
+  sm: 'px-2.5 py-1 text-sm leading-5',
+  md: 'px-3 py-1 text-base leading-6',
+  lg: 'px-3.5 py-[0.4375rem] text-lg leading-[1.625rem]',
+}
+
+export const floatingSurfaceMaxWidthVariants: Record<FloatingSurfaceMaxWidth, string> = {
+  xs: 'max-w-[20rem]',
+  sm: 'max-w-[24rem]',
+  md: 'max-w-[28rem]',
+  lg: 'max-w-[32rem]',
+  xl: 'max-w-[36rem]',
+  none: 'max-w-none',
+}
+
 export const surfaceSquare = 'aspect-square'
 
 export const surfaceShapeVariants = {

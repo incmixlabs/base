@@ -75,14 +75,7 @@ import {
 import { filterClassNames } from './src/elements/filter/filter.class'
 import { menuSharedClassNames } from './src/elements/menu/menu.shared.class'
 import { navigationMenuClassNames } from './src/elements/navigation-menu/NavigationMenu.class'
-import {
-  floatingSurfaceColorVariants,
-  floatingSurfaceHighContrastColorVariants,
-  floatingSurfaceHighContrastEffectByVariant,
-  floatingSurfaceMaxWidthVariants,
-  floatingSurfaceSizeVariants,
-  popoverContentBase,
-} from './src/elements/popover/popover.class'
+import { popoverContentBase } from './src/elements/popover/popover.class'
 import { progressClassNames } from './src/elements/progress/progress.class'
 import { scrollAreaClassNames } from './src/elements/scroll-area/scroll-area.class'
 import {
@@ -106,6 +99,11 @@ import { stepperClassNames } from './src/elements/stepper/stepper.class'
 import {
   floatingArrowBase,
   floatingArrowSurface,
+  floatingSurfaceColorVariants,
+  floatingSurfaceHighContrastColorVariants,
+  floatingSurfaceHighContrastEffectByVariant,
+  floatingSurfaceMaxWidthVariants,
+  floatingSurfaceSizeVariants,
   surfaceHighContrastByVariant,
   surfaceShapeVariants,
   surfaceSquare,

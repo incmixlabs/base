@@ -8,18 +8,19 @@ import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props
 import type { WidthProps } from '@/theme/props/width.props'
 import { useThemePortalContainer } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
-import {
-  floatingSurfaceColorVariants,
-  floatingSurfaceHighContrastColorVariants,
-  floatingSurfaceHighContrastEffectByVariant,
-} from '../popover/popover.class'
 import type {
   PopoverContentMaxWidth as TooltipMaxWidth,
   PopoverContentSize as TooltipSize,
   PopoverContentVariant as TooltipVariant,
 } from '../popover/popover.props'
 import { FloatingArrowSvg } from '../surface/FloatingArrowSvg'
-import { floatingArrowBase, floatingArrowSurface } from '../surface/surface.class'
+import {
+  floatingArrowBase,
+  floatingArrowSurface,
+  floatingSurfaceColorVariants,
+  floatingSurfaceHighContrastColorVariants,
+  floatingSurfaceHighContrastEffectByVariant,
+} from '../surface/surface.class'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
   tooltipContentBase,
