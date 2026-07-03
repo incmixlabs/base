@@ -215,7 +215,7 @@ For composed form wrappers, contract coverage does not require a brand-new token
 Examples:
 
 - `Textarea` and `Select` can legitimately resolve through the `textField` contract
-- `MultiSelect` can legitimately resolve through `textField`, `pickerPopup`, `badge`, and `button`
+- `MultiSelect` can legitimately resolve through the `textField` contract plus shared picker popup, badge, and button class maps
 - but standalone group surfaces such as `CheckboxGroup`, `RadioGroup`, and `SwitchGroup` should keep group-specific layout spacing in the runtime contract rather than hardcoded utility gaps
 
 ## Current Documentation Boundary
@@ -262,7 +262,6 @@ Today, the retained runtime-consumed `component.*` branches are:
 
 - `component.appShell`
 - `component.mentionTextarea`
-- `component.pickerPopup`
 - `component.progress`
 - `component.scrollArea`
 - `component.textField`

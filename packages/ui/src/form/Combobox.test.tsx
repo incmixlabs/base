@@ -50,11 +50,7 @@ describe('Combobox', () => {
       'text-neutral',
       '[box-shadow:var(--shadow-2)]',
     ])
-    expectClassTokens(listbox.className, [
-      'overflow-y-auto',
-      'max-h-[var(--af-picker-popup-size-md-viewport-max-height,13.5rem)]',
-      'p-[var(--af-picker-popup-size-md-popup-padding,0.25rem)]',
-    ])
+    expectClassTokens(listbox.className, ['overflow-y-auto', 'max-h-[13.5rem]', 'p-1'])
     expectClassTokens(reactOption.className, [
       'appearance-none',
       'border-0',

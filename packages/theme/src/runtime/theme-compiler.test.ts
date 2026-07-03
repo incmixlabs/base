@@ -29,7 +29,6 @@ function createTheme(): ThemeContract {
       },
     },
     component: {
-      pickerPopup: { size: { md: { viewportMaxHeight: '16rem' } } },
       mentionTextarea: { previewMinHeight: '96px' },
       textField: { size: { sm: { paddingInline: '0.75rem' } } },
       progress: { size: { sm: { height: '0.4rem' } } },
@@ -99,9 +98,10 @@ describe('theme-compiler', () => {
     ;(theme.component as Record<string, unknown>).rating = { size: { md: { iconSize: '1.25rem' } } }
     ;(theme.component as Record<string, unknown>).slider = { size: { md: { thumbSize: '1.3rem' } } }
     ;(theme.component as Record<string, unknown>).switch = { size: { sm: { rootWidth: '2.25rem' } } }
+    ;(theme.component as Record<string, unknown>).pickerPopup = { size: { md: { viewportMaxHeight: '16rem' } } }
 
     expect(() => compileThemeTokens(theme)).toThrow(
-      /component\.button is retired.*component\.card is retired.*component\.fieldGroup is retired.*component\.fileUpload is retired.*component\.rating is retired.*component\.slider is retired.*component\.switch is retired/s,
+      /component\.button is retired.*component\.card is retired.*component\.fieldGroup is retired.*component\.fileUpload is retired.*component\.rating is retired.*component\.slider is retired.*component\.switch is retired.*component\.pickerPopup is retired/s,
     )
   })
 
