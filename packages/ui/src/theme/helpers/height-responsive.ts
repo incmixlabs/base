@@ -1,3 +1,5 @@
+import { getResponsiveUtilityClassNames } from './token-class-maps'
+
 export const heightResponsiveVars = {
   height: {
     initial: '--height-initial',
@@ -117,3 +119,5 @@ export const heightUtilityClassByProperty = {
 export const heightUtilityClassNames = Object.values(heightUtilityClassByProperty).flatMap(propertyMap =>
   Object.values(propertyMap),
 )
+
+export const heightResponsiveUtilityClassNames = getResponsiveUtilityClassNames(heightUtilityClassNames)

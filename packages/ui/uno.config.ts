@@ -210,9 +210,9 @@ import {
   sectionSizeResponsive,
 } from './src/layouts/section/section.class'
 import { sidebarClassNames } from './src/layouts/sidebar/Sidebar.class'
-import { heightResponsiveClasses, heightUtilityClassNames } from './src/theme/helpers/height-responsive'
+import { heightResponsiveClasses, heightResponsiveUtilityClassNames } from './src/theme/helpers/height-responsive'
 import { spacingUtilityClassNames } from './src/theme/helpers/token-class-maps'
-import { widthResponsiveClasses, widthUtilityClassNames } from './src/theme/helpers/width-responsive'
+import { widthResponsiveClasses, widthResponsiveUtilityClassNames } from './src/theme/helpers/width-responsive'
 import { containerBreakpoints } from './src/theme/tokens'
 import {
   codeBase,
@@ -512,10 +512,10 @@ export default defineConfig({
       // Dynamic helper outputs
       ...splitClasses([
         ...classMapValues(heightResponsiveClasses),
-        ...heightUtilityClassNames,
+        ...heightResponsiveUtilityClassNames,
         ...spacingUtilityClassNames,
         ...classMapValues(widthResponsiveClasses),
-        ...widthUtilityClassNames,
+        ...widthResponsiveUtilityClassNames,
       ]),
       // Container styles
       containerBase,
