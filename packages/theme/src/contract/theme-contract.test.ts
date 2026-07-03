@@ -29,7 +29,7 @@ function createValidThemeContract() {
       },
     },
     component: {
-      progress: { size: { sm: { height: '0.375rem' } } },
+      mentionTextarea: { previewMinHeight: '96px' },
     },
   }
 }
@@ -43,13 +43,13 @@ describe('theme contract validation', () => {
 
   it('rejects non-string component token leaves', () => {
     const theme = createValidThemeContract()
-    theme.component.progress.size.sm.height = 12 as never
+    theme.component.mentionTextarea.previewMinHeight = 12 as never
 
     const result = validateThemeContract(theme)
 
     expect(result.ok).toBe(false)
     if (!result.ok) {
-      expect(result.errors.join(' ')).toContain('component.progress.size.sm.height')
+      expect(result.errors.join(' ')).toContain('component.mentionTextarea.previewMinHeight')
     }
   })
 
@@ -60,6 +60,9 @@ describe('theme contract validation', () => {
     ;(theme.component as Record<string, unknown>).card = { size: { md: { padding: '1rem' } } }
     ;(theme.component as Record<string, unknown>).checkboxGroup = { gap: '0.5rem' }
     ;(theme.component as Record<string, unknown>).date = { size: { md: { calendarDaySize: '2.75rem' } } }
+    ;(theme.component as Record<string, unknown>).pickerPopup = { size: { md: { viewportMaxHeight: '16rem' } } }
+    ;(theme.component as Record<string, unknown>).progress = { size: { sm: { height: '0.4rem' } } }
+    ;(theme.component as Record<string, unknown>).scrollArea = { size: { sm: { thickness: '0.375rem' } } }
     ;(theme.component as Record<string, unknown>).toggle = { size: { md: { iconSize: '1rem' } } }
     ;(theme.component as Record<string, unknown>).treeView = { size: { md: { itemPaddingInline: '0.875rem' } } }
 
@@ -72,6 +75,9 @@ describe('theme contract validation', () => {
       expect(result.errors.join(' ')).toContain('component.card is retired')
       expect(result.errors.join(' ')).toContain('component.checkboxGroup is retired')
       expect(result.errors.join(' ')).toContain('component.date is retired')
+      expect(result.errors.join(' ')).toContain('component.pickerPopup is retired')
+      expect(result.errors.join(' ')).toContain('component.progress is retired')
+      expect(result.errors.join(' ')).toContain('component.scrollArea is retired')
       expect(result.errors.join(' ')).toContain('component.toggle is retired')
       expect(result.errors.join(' ')).toContain('component.treeView is retired')
     }
@@ -80,16 +86,14 @@ describe('theme contract validation', () => {
   it('rejects unknown component token branches and unsupported slots', () => {
     const theme = createValidThemeContract()
     ;(theme.component as Record<string, unknown>).unknown = { size: { md: { gap: '1rem' } } }
-    ;(theme.component.progress.size.sm as Record<string, unknown>).paddingInline = '1rem'
-    ;(theme.component as Record<string, unknown>).scrollArea = { shape: { circle: { radius: '9999px' } } }
+    ;(theme.component.mentionTextarea as Record<string, unknown>).paddingInline = '1rem'
 
     const result = validateThemeContract(theme)
 
     expect(result.ok).toBe(false)
     if (!result.ok) {
       expect(result.errors.join(' ')).toContain('component.unknown is not supported')
-      expect(result.errors.join(' ')).toContain('component.progress.size.sm.paddingInline')
-      expect(result.errors.join(' ')).toContain('component.scrollArea.shape')
+      expect(result.errors.join(' ')).toContain('component.mentionTextarea.paddingInline')
     }
   })
 

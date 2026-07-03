@@ -126,8 +126,7 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
           style={
             isIndeterminate
               ? {
-                  ['--progress-indeterminate-duration' as string]:
-                    duration ?? 'var(--af-progress-motion-indeterminate-duration, 1s)',
+                  ['--progress-indeterminate-duration' as string]: duration ?? '1s',
                 }
               : {
                   width: `${(boundedValue / boundedMax) * 100}%`,

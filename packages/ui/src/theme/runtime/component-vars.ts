@@ -20,7 +20,6 @@ export type AppShellLayoutTokenSlot =
   | 'bodyWithSecondaryRightGridTemplateColumns'
 export type AppShellContentTokenSlot = 'paddingInline' | 'paddingBlock' | 'paddingInlineDesktop' | 'paddingBlockDesktop'
 export type ContentBodyTokenSlot = 'background' | 'foreground' | 'borderColor'
-export type ScrollAreaSizeTokenSlot = 'thickness' | 'thumbInset'
 
 export function textFieldSizeVar(size: string, slot: TextFieldSizeTokenSlot, fallback: string): string {
   return withFallback(`--af-text-field-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
@@ -36,8 +35,4 @@ export function appShellContentVar(slot: AppShellContentTokenSlot, fallback: str
 
 export function contentBodyVar(slot: ContentBodyTokenSlot, fallback: string): string {
   return withFallback(`--af-content-body-${toKebabCase(slot)}`, fallback)
-}
-
-export function scrollAreaSizeVar(size: string, slot: ScrollAreaSizeTokenSlot, fallback: string): string {
-  return withFallback(`--af-scroll-area-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
 }

@@ -9,26 +9,6 @@ export const THEME_CONTRACT_SCHEMA_VERSION = '1.0.0' as const
 
 export type ThemeLifecycle = 'draft' | 'review' | 'published'
 
-export type ProgressComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      height: string
-    }>
-  >
-  variant?: Record<
-    string,
-    Partial<{
-      boxShadow: string
-    }>
-  >
-  motion?: Partial<{
-    indicatorTransition: string
-    indeterminateDuration: string
-    indeterminateWidth: string
-  }>
-}
-
 export type TextFieldComponentTokens = {
   size?: Record<
     string,
@@ -73,16 +53,6 @@ export type AppShellComponentTokens = {
   }>
 }
 
-export type ScrollAreaComponentTokens = {
-  size?: Record<
-    string,
-    Partial<{
-      thickness: string
-      thumbInset: string
-    }>
-  >
-}
-
 export type ThemeContract = {
   metadata: {
     schemaVersion: typeof THEME_CONTRACT_SCHEMA_VERSION
@@ -112,22 +82,14 @@ export type ThemeContract = {
   component: {
     mentionTextarea: MentionTextareaComponentTokens
     textField: TextFieldComponentTokens
-    progress: ProgressComponentTokens
     appShell: AppShellComponentTokens
-    scrollArea: ScrollAreaComponentTokens
   }
 }
 
 export type ThemeContractValidation = { ok: true; value: ThemeContract } | { ok: false; errors: string[] }
 
 const lifecycleValues: ThemeLifecycle[] = ['draft', 'review', 'published']
-export const THEME_COMPONENT_TOKEN_KEYS = [
-  'mentionTextarea',
-  'textField',
-  'progress',
-  'appShell',
-  'scrollArea',
-] as const
+export const THEME_COMPONENT_TOKEN_KEYS = ['mentionTextarea', 'textField', 'appShell'] as const
 export type ThemeComponentTokenKey = (typeof THEME_COMPONENT_TOKEN_KEYS)[number]
 
 const strippedLegacyComponentKeys = ['dateNext', 'stepper', 'timeline', 'surface'] as const
@@ -147,9 +109,11 @@ const rejectedRetiredComponentKeys = [
   'iconButton',
   'pickerPopup',
   'popover',
+  'progress',
   'radio',
   'radioCards',
   'rating',
+  'scrollArea',
   'slider',
   'switch',
   'tooltip',
@@ -199,22 +163,6 @@ const componentTokenSchema = {
       },
     },
   },
-  progress: {
-    branches: {
-      size: {
-        kind: 'record',
-        slots: ['height'],
-      },
-      variant: {
-        kind: 'record',
-        slots: ['boxShadow'],
-      },
-      motion: {
-        kind: 'direct',
-        slots: ['indicatorTransition', 'indeterminateDuration', 'indeterminateWidth'],
-      },
-    },
-  },
   appShell: {
     branches: {
       content: {
@@ -228,14 +176,6 @@ const componentTokenSchema = {
           'bodyWithSecondaryGridTemplateColumns',
           'bodyWithSecondaryRightGridTemplateColumns',
         ],
-      },
-    },
-  },
-  scrollArea: {
-    branches: {
-      size: {
-        kind: 'record',
-        slots: ['thickness', 'thumbInset'],
       },
     },
   },

@@ -35,12 +35,10 @@ function createValidTheme() {
     component: {
       mentionTextarea: { previewMinHeight: '96px' },
       textField: { size: { sm: { paddingInline: '0.75rem' } } },
-      progress: { size: { sm: { height: '0.4rem' } } },
       appShell: {
         content: { paddingInline: '1rem', paddingInlineDesktop: '1.5rem' },
         layout: { bodyWithSecondaryRightGridTemplateColumns: 'auto minmax(0, 1fr) 20rem' },
       },
-      scrollArea: { size: { sm: { thickness: '0.375rem' } } },
     },
   }
 }
@@ -220,18 +218,16 @@ describe('theme-contract', () => {
   it('fills missing component branches with empty objects during validation', () => {
     const theme = createValidTheme()
     delete (theme.component as Record<string, unknown>).mentionTextarea
-    delete (theme.component as Record<string, unknown>).progress
+    delete (theme.component as Record<string, unknown>).textField
     delete (theme.component as Record<string, unknown>).appShell
-    delete (theme.component as Record<string, unknown>).scrollArea
 
     const result = validateThemeContract(theme)
 
     expect(result.ok).toBe(true)
     if (result.ok) {
       expect(result.value.component.mentionTextarea).toEqual({})
-      expect(result.value.component.progress).toEqual({})
+      expect(result.value.component.textField).toEqual({})
       expect(result.value.component.appShell).toEqual({})
-      expect(result.value.component.scrollArea).toEqual({})
     }
   })
 
@@ -266,7 +262,7 @@ describe('theme-contract', () => {
     }
   })
 
-  it('rejects retired Rating, Slider, Switch, and PickerPopup component token overrides', () => {
+  it('rejects retired Rating, Slider, Switch, PickerPopup, Progress, and ScrollArea component token overrides', () => {
     const theme = createValidTheme()
     ;(theme.component as Record<string, unknown>).rating = { size: { md: { iconSize: '1.25rem' } } }
     ;(theme.component as Record<string, unknown>).slider = { size: { md: { thumbSize: '1.3rem' } } }
@@ -275,6 +271,8 @@ describe('theme-contract', () => {
       group: { gap: '0.5rem', inlineGap: '1rem' },
     }
     ;(theme.component as Record<string, unknown>).pickerPopup = { size: { md: { viewportMaxHeight: '16rem' } } }
+    ;(theme.component as Record<string, unknown>).progress = { size: { sm: { height: '0.4rem' } } }
+    ;(theme.component as Record<string, unknown>).scrollArea = { size: { sm: { thickness: '0.375rem' } } }
 
     const result = validateThemeContract(theme)
 
@@ -284,6 +282,8 @@ describe('theme-contract', () => {
       expect(result.errors.join(' ')).toContain('component.slider is retired')
       expect(result.errors.join(' ')).toContain('component.switch is retired')
       expect(result.errors.join(' ')).toContain('component.pickerPopup is retired')
+      expect(result.errors.join(' ')).toContain('component.progress is retired')
+      expect(result.errors.join(' ')).toContain('component.scrollArea is retired')
     }
   })
 })
