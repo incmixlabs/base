@@ -1,11 +1,17 @@
+import { semanticColorClassRecipes } from '../../theme/helpers/semantic-color-recipe'
 import { type Color, semanticColorScale } from '../../theme/tokens'
+import { surfaceUnoColorVariants } from '../surface/surface.class'
 import type { MenuSize, MenuVariant } from './menu.props'
 
 const cls = (...tokens: string[]) => tokens.join(' ')
-const property = (name: string, value: string) => ['[', name, ':', value, ']'].join('')
-const colorVar = (color: Color, token: string) => ['var(--color-', color, '-', token, ')'].join('')
-const colorClass = (prefix: string, color: Color, suffix?: string) =>
-  suffix ? [prefix, color, suffix].join('-') : [prefix, color].join('-')
+const prefixClasses = (prefix: string, className: string) =>
+  className
+    .split(' ')
+    .filter(Boolean)
+    .map(token => `${prefix}:${token}`)
+    .join(' ')
+const createMenuColorClassMap = (getClassName: (color: Color) => string) =>
+  Object.fromEntries(semanticColorScale.map(color => [color, getClassName(color)])) as Record<Color, string>
 
 export const menuPopupBaseCls = 'flex flex-col overflow-hidden box-border outline-none'
 export const menuPopupOverflowVisibleCls = 'overflow-visible'
@@ -22,16 +28,12 @@ export const menuContentBase = cls(
   'origin-[var(--transform-origin)]',
   'min-w-48 max-w-[22rem] max-h-[var(--available-height)]',
   'duration-200 ease-out data-[starting-style]:animate-in data-[starting-style]:fade-in-0 data-[starting-style]:zoom-in-95 data-[ending-style]:animate-out data-[ending-style]:fade-out-0 data-[ending-style]:zoom-out-95',
-  'rounded-[var(--element-border-radius)] border border-solid border-neutral text-neutral',
+  'rounded-[var(--element-border-radius)] border border-solid',
 )
 
 export const menuContentByVariant = {
-  solid:
-    'bg-neutral-surface backdrop-filter-none [box-shadow:0_10px_30px_color-mix(in_oklch,black_14%,transparent),0_2px_10px_color-mix(in_oklch,black_8%,transparent)]',
-  soft: cls(
-    'bg-neutral-soft backdrop-saturate-[140%] backdrop-blur-[10px]',
-    '[box-shadow:inset_0_1px_0_var(--color-panel-highlight),0_10px_30px_color-mix(in_oklch,black_10%,transparent),0_2px_10px_color-mix(in_oklch,black_6%,transparent)]',
-  ),
+  solid: cls(surfaceUnoColorVariants.neutral.surface, 'backdrop-filter-none'),
+  soft: cls(surfaceUnoColorVariants.neutral.soft, 'backdrop-saturate-[140%] backdrop-blur-[10px]'),
 } as const satisfies Record<MenuVariant, string>
 
 export const menuViewportBySize = {
@@ -55,7 +57,7 @@ export const menuItemTextStrikethrough = 'line-through'
 export const menuItemMotion =
   'transition-[background-color,color] duration-[var(--af-motion-fast)] ease-[var(--af-ease-standard)]'
 
-export const menuSubTriggerIcon = '[color:var(--af-menu-subtrigger-icon-color)]'
+export const menuSubTriggerIcon = 'text-current'
 
 export const menuItemBySize = {
   sm: 'h-[1.75rem] px-2.5 scroll-my-1 text-sm leading-5 tracking-normal rounded-[var(--element-border-radius)]',
@@ -93,41 +95,51 @@ export const menuRadioIndicatorIconBySize = {
 } as const satisfies Record<MenuSize, string>
 
 export const menuItemByVariant = {
-  solid: cls(
-    property('--af-menu-subtrigger-icon-color', 'var(--af-menu-item-solid-color)'),
-    'data-[highlighted]:[background-color:var(--af-menu-item-solid-bg)]',
-    'data-[highlighted]:[color:var(--af-menu-item-solid-color)]',
-    'data-[state=open]:[background-color:var(--af-menu-item-soft-hover)]',
-    'data-[state=open]:[color:var(--af-menu-item-solid-color)]',
-  ),
-  soft: cls(
-    'data-[highlighted]:[background-color:var(--af-menu-item-soft-hover)]',
-    'data-[state=open]:[background-color:var(--af-menu-item-soft-bg)]',
-    'data-[state=open]:text-neutral',
-  ),
-} as const satisfies Record<MenuVariant, string>
+  solid: createMenuColorClassMap(color => {
+    const recipe = semanticColorClassRecipes[color]
+    return cls(
+      prefixClasses('data-[highlighted]', recipe.fill.solid),
+      prefixClasses('data-[highlighted]', recipe.text.contrast),
+      prefixClasses('data-[state=open]', recipe.interactionFill.soft),
+      prefixClasses('data-[state=open]', recipe.text.contrast),
+    )
+  }),
+  soft: createMenuColorClassMap(color => {
+    const recipe = semanticColorClassRecipes[color]
+    return cls(
+      prefixClasses('data-[highlighted]', recipe.interactionFill.soft),
+      prefixClasses('data-[state=open]', recipe.fill.soft),
+      'data-[state=open]:text-neutral',
+    )
+  }),
+} as const satisfies Record<MenuVariant, Record<Color, string>>
 
 export const menuItemByVariantHighlight = {
-  solid: cls(
-    property('--af-menu-subtrigger-icon-color', 'var(--af-menu-item-solid-color)'),
-    'relative z-[1]',
-    'data-[highlighted]:bg-transparent',
-    'data-[highlighted]:[color:var(--af-menu-item-solid-color)]',
-    'data-[state=open]:[background-color:var(--af-menu-item-soft-hover)]',
-    'data-[state=open]:[color:var(--af-menu-item-solid-color)]',
-  ),
-  soft: cls(
-    'relative z-[1]',
-    'data-[highlighted]:bg-transparent',
-    'data-[state=open]:[background-color:var(--af-menu-item-soft-bg)]',
-    'data-[state=open]:text-neutral',
-  ),
-} as const satisfies Record<MenuVariant, string>
+  solid: createMenuColorClassMap(color => {
+    const recipe = semanticColorClassRecipes[color]
+    return cls(
+      'relative z-[1]',
+      'data-[highlighted]:bg-transparent',
+      prefixClasses('data-[highlighted]', recipe.text.contrast),
+      prefixClasses('data-[state=open]', recipe.interactionFill.soft),
+      prefixClasses('data-[state=open]', recipe.text.contrast),
+    )
+  }),
+  soft: createMenuColorClassMap(color => {
+    const recipe = semanticColorClassRecipes[color]
+    return cls(
+      'relative z-[1]',
+      'data-[highlighted]:bg-transparent',
+      prefixClasses('data-[state=open]', recipe.fill.soft),
+      'data-[state=open]:text-neutral',
+    )
+  }),
+} as const satisfies Record<MenuVariant, Record<Color, string>>
 
-export const menuHighlightBgByVariant = {
-  solid: property('--menu-highlight-bg', 'var(--af-menu-item-solid-bg)'),
-  soft: property('--menu-highlight-bg', 'var(--af-menu-item-soft-hover)'),
-} as const satisfies Record<MenuVariant, string>
+export const menuHighlightColorByVariant = {
+  solid: createMenuColorClassMap(color => semanticColorClassRecipes[color].fill.solid),
+  soft: createMenuColorClassMap(color => semanticColorClassRecipes[color].interactionFill.soft),
+} as const satisfies Record<MenuVariant, Record<Color, string>>
 
 export const menuItemWithIndicatorBySize = {
   sm: 'pl-4',
@@ -174,17 +186,7 @@ export const menuSeparatorBySize = {
 } as const satisfies Record<MenuSize, string>
 
 export const menuItemColor = Object.fromEntries(
-  semanticColorScale.map(color => [
-    color,
-    cls(
-      colorClass('text', color),
-      property('--af-menu-item-solid-bg', colorVar(color, 'solid')),
-      property('--af-menu-item-solid-color', colorVar(color, 'contrast')),
-      property('--af-menu-item-soft-bg', colorVar(color, 'soft')),
-      property('--af-menu-item-soft-hover', colorVar(color, 'soft-hover')),
-      property('--af-menu-subtrigger-icon-color', 'currentColor'),
-    ),
-  ]),
+  semanticColorScale.map(color => [color, semanticColorClassRecipes[color].text.default]),
 ) as Record<Color, string>
 
 export const menuSharedClassNames = [
@@ -212,9 +214,9 @@ export const menuSharedClassNames = [
   ...Object.values(menuSubTriggerIconBySize),
   ...Object.values(menuCheckIndicatorIconBySize),
   ...Object.values(menuRadioIndicatorIconBySize),
-  ...Object.values(menuItemByVariant),
-  ...Object.values(menuItemByVariantHighlight),
-  ...Object.values(menuHighlightBgByVariant),
+  ...Object.values(menuItemByVariant).flatMap(colorMap => Object.values(colorMap)),
+  ...Object.values(menuItemByVariantHighlight).flatMap(colorMap => Object.values(colorMap)),
+  ...Object.values(menuHighlightColorByVariant).flatMap(colorMap => Object.values(colorMap)),
   ...Object.values(menuItemWithIndicatorBySize),
   ...Object.values(menuItemIndicatorBySize),
   menuShortcutBase,

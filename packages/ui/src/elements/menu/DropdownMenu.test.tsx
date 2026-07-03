@@ -125,9 +125,11 @@ describe('DropdownMenu', () => {
     expectClassTokens(popup.className, [
       'border-neutral',
       'bg-neutral-surface',
+      'text-neutral',
       'rounded-[var(--element-border-radius)]',
-      '[box-shadow:0_10px_30px_color-mix(in_oklch,black_14%,transparent),0_2px_10px_color-mix(in_oklch,black_8%,transparent)]',
+      '[box-shadow:var(--shadow-xs)]',
     ])
+    expect(popup.className).not.toContain('--af-menu')
     expect(popup.className).not.toContain('af-PopperContent')
     expect(popup.className).not.toContain('menu_shared')
 
@@ -140,10 +142,13 @@ describe('DropdownMenu', () => {
       'text-base',
       'leading-6',
       'text-primary',
-      '[--af-menu-item-solid-bg:var(--color-primary-solid)]',
-      'data-[highlighted]:[background-color:var(--af-menu-item-solid-bg)]',
-      'data-[state=open]:[background-color:var(--af-menu-item-soft-hover)]',
+      'data-[highlighted]:bg-primary-solid',
+      'data-[highlighted]:text-primary-contrast',
+      'data-[state=open]:bg-primary-highlight',
+      'data-[state=open]:text-primary-contrast',
     ])
+    expect(item).toHaveAttribute('data-menu-color', 'primary')
+    expect(item.className).not.toContain('--af-menu')
 
     const subTrigger = screen.getByRole('menuitem', { name: 'Share' })
     expectClassTokens(subTrigger.querySelector('svg')?.className.baseVal, ['h-[0.875rem]', 'w-[0.875rem]'])

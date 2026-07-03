@@ -13,7 +13,6 @@ import {
   menuCheckIndicatorIconBySize,
   menuContentBase,
   menuContentByVariant,
-  menuHighlightBgByVariant,
   menuIndicatorBaseCls,
   menuItemBase,
   menuItemBaseCls,
@@ -62,8 +61,10 @@ const ContextMenuContext = React.createContext<ContextMenuContextValue>({
   animated: false,
 })
 
-function getMenuItemVariantCls(context: ContextMenuContextValue) {
-  return context.animated ? menuItemByVariantHighlight[context.variant] : menuItemByVariant[context.variant]
+function getMenuItemVariantCls(context: ContextMenuContextValue, color: Color) {
+  return context.animated
+    ? menuItemByVariantHighlight[context.variant][color]
+    : menuItemByVariant[context.variant][color]
 }
 
 // ============================================================================
@@ -149,7 +150,7 @@ const ContextMenuContent = React.forwardRef<HTMLDivElement, ContextMenuContentPr
               {...props}
             >
               {animated ? (
-                <MenuHighlight className={cn(menuHighlightBgByVariant[variant], menuItemColor[color])}>
+                <MenuHighlight variant={variant} color={color}>
                   {viewport}
                 </MenuHighlight>
               ) : (
@@ -195,7 +196,7 @@ const ContextMenuItem = React.forwardRef<HTMLDivElement, ContextMenuItemProps>(
     const context = React.useContext(ContextMenuContext)
     const itemColor = color || context.color
     const ariaLabel = getShortcutAccessibleLabel(children, shortcut)
-    const variantCls = getMenuItemVariantCls(context)
+    const variantCls = getMenuItemVariantCls(context, itemColor)
 
     return (
       <ContextMenuPrimitive.Item
@@ -212,6 +213,7 @@ const ContextMenuItem = React.forwardRef<HTMLDivElement, ContextMenuItemProps>(
           variantCls,
           className,
         )}
+        data-menu-color={itemColor}
         {...props}
       >
         <span
@@ -271,7 +273,7 @@ const ContextMenuCheckboxItem = React.forwardRef<HTMLDivElement, ContextMenuChec
     const context = React.useContext(ContextMenuContext)
     const itemColor = color || context.color
     const ariaLabel = getShortcutAccessibleLabel(children, shortcut)
-    const variantCls = getMenuItemVariantCls(context)
+    const variantCls = getMenuItemVariantCls(context, itemColor)
 
     return (
       <ContextMenuPrimitive.CheckboxItem
@@ -290,6 +292,7 @@ const ContextMenuCheckboxItem = React.forwardRef<HTMLDivElement, ContextMenuChec
           variantCls,
           className,
         )}
+        data-menu-color={itemColor}
         {...props}
       >
         <span className={cn(menuIndicatorBaseCls, menuItemIndicatorBySize[context.size])}>
@@ -371,7 +374,7 @@ const ContextMenuRadioItem = React.forwardRef<HTMLDivElement, ContextMenuRadioIt
   ({ value, color, disabled, className, children, bold, italic, strikethrough, ...props }, ref) => {
     const context = React.useContext(ContextMenuContext)
     const itemColor = color || context.color
-    const variantCls = getMenuItemVariantCls(context)
+    const variantCls = getMenuItemVariantCls(context, itemColor)
 
     return (
       <ContextMenuPrimitive.RadioItem
@@ -388,6 +391,7 @@ const ContextMenuRadioItem = React.forwardRef<HTMLDivElement, ContextMenuRadioIt
           variantCls,
           className,
         )}
+        data-menu-color={itemColor}
         {...props}
       >
         <span className={cn(menuIndicatorBaseCls, menuItemIndicatorBySize[context.size])}>
@@ -527,7 +531,7 @@ const ContextMenuSubTrigger = React.forwardRef<HTMLDivElement, ContextMenuSubTri
   ({ color, disabled, className, children, bold, italic, strikethrough, ...props }, ref) => {
     const context = React.useContext(ContextMenuContext)
     const itemColor = color || context.color
-    const variantCls = getMenuItemVariantCls(context)
+    const variantCls = getMenuItemVariantCls(context, itemColor)
 
     return (
       <ContextMenuPrimitive.SubmenuTrigger
@@ -542,6 +546,7 @@ const ContextMenuSubTrigger = React.forwardRef<HTMLDivElement, ContextMenuSubTri
           variantCls,
           className,
         )}
+        data-menu-color={itemColor}
         {...props}
       >
         <span
@@ -596,7 +601,7 @@ const ContextMenuSubContent = React.forwardRef<HTMLDivElement, ContextMenuSubCon
             {...props}
           >
             {context.animated ? (
-              <MenuHighlight className={cn(menuHighlightBgByVariant[context.variant], menuItemColor[context.color])}>
+              <MenuHighlight variant={context.variant} color={context.color}>
                 <div className={cn(menuViewportBaseCls, menuViewportBase, menuViewportBySize[context.size])}>
                   {children}
                 </div>
