@@ -57,7 +57,7 @@ export type SpacingUtilityPrefix =
 
 export type ResponsiveUtilityBreakpoint = 'initial' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
-const responsiveUtilityPrefixByBreakpoint = {
+export const responsiveUtilityPrefixByBreakpoint = {
   initial: '',
   xs: 'xs:',
   sm: 'sm:',
@@ -69,6 +69,16 @@ const responsiveUtilityPrefixByBreakpoint = {
 export type ResponsiveUtilityValue<T extends string> = T | Partial<Record<ResponsiveUtilityBreakpoint, T>>
 
 export type UtilityClassFormatter = (classValue: string) => string
+
+export function getResponsiveUtilityClassNames(classNames: readonly string[]): string[] {
+  return Array.from(
+    new Set(
+      classNames.flatMap(className =>
+        Object.values(responsiveUtilityPrefixByBreakpoint).map(breakpointPrefix => `${breakpointPrefix}${className}`),
+      ),
+    ),
+  )
+}
 
 export function getMappedUtilityClass<T extends string>(
   value: T | undefined,

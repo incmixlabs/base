@@ -1,3 +1,5 @@
+import { getResponsiveUtilityClassNames } from './token-class-maps'
+
 export const widthResponsiveVars = {
   width: {
     initial: '--width-initial',
@@ -120,3 +122,5 @@ export const widthUtilityClassByProperty = {
 export const widthUtilityClassNames = Object.values(widthUtilityClassByProperty).flatMap(propertyMap =>
   Object.values(propertyMap),
 )
+
+export const widthResponsiveUtilityClassNames = getResponsiveUtilityClassNames(widthUtilityClassNames)
