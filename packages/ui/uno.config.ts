@@ -40,7 +40,6 @@ import {
   cardTitleBase,
 } from './src/elements/card/card.class'
 import {
-  dataListItemBase,
   dataListItemByAlign,
   dataListItemByOrientation,
   dataListItemGapBySize,
@@ -55,6 +54,7 @@ import {
   dataListRootByTrim,
   dataListRootContainer,
   dataListRootSizeResponsive,
+  dataListRootTrimResponsive,
   dataListValueBase,
 } from './src/elements/data-list/data-list.class'
 import {
@@ -402,8 +402,8 @@ export default defineConfig({
       ...Object.values(dataListRootBySize),
       ...classMapValues(dataListRootSizeResponsive),
       ...Object.values(dataListRootByOrientation),
-      ...Object.values(dataListRootByTrim),
-      dataListItemBase,
+      ...classMapValues(dataListRootByTrim),
+      ...Object.values(dataListRootTrimResponsive).flatMap(trimMap => classMapValues(trimMap)),
       ...Object.values(dataListItemByOrientation),
       ...Object.values(dataListItemGapBySize),
       ...classMapValues(dataListItemGapResponsive),

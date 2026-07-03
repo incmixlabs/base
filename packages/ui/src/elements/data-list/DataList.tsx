@@ -6,7 +6,6 @@ import { cn } from '@/lib/utils'
 import { getTextSizeClasses } from '@/typography/get-text-size-classes'
 import { getResponsiveVariantClasses, typographyBreakpointKeys } from '@/typography/responsive'
 import {
-  dataListItemBase,
   dataListItemByAlign,
   dataListItemByOrientation,
   dataListItemGapBySize,
@@ -21,6 +20,7 @@ import {
   dataListRootByTrim,
   dataListRootContainer,
   dataListRootSizeResponsive,
+  dataListRootTrimResponsive,
   dataListValueBase,
 } from './data-list.class'
 import type { DataListAlign, DataListOrientation, DataListSize, DataListTrim } from './data-list.props'
@@ -66,6 +66,16 @@ function getDataListLabelMinWidthClasses(size: Responsive<DataListSize> | undefi
   )
 }
 
+function getDataListTrimClasses(size: Responsive<DataListSize> | undefined, trim: DataListTrim): string {
+  return getResponsiveVariantClasses(
+    size,
+    dataListRootByTrim[trim],
+    dataListRootTrimResponsive[trim],
+    'sm',
+    typographyBreakpointKeys,
+  )
+}
+
 // ============================================================================
 // Root
 // ============================================================================
@@ -82,6 +92,7 @@ interface DataListRootProps extends React.HTMLAttributes<HTMLDListElement> {
 const DataListRoot = React.forwardRef<HTMLDListElement, DataListRootProps>(
   ({ size = 'sm', orientation = 'horizontal', trim = 'normal', className, children, style, ...props }, ref) => {
     const sizeClasses = getDataListSizeClasses(size)
+    const trimClasses = getDataListTrimClasses(size, trim)
     const textSizeClasses = getTextSizeClasses(size, 'sm')
 
     return (
@@ -93,7 +104,7 @@ const DataListRoot = React.forwardRef<HTMLDListElement, DataListRootProps>(
             className={cn(
               dataListRootBase,
               dataListRootByOrientation[orientation],
-              dataListRootByTrim[trim],
+              trimClasses,
               sizeClasses,
               textSizeClasses,
             )}
@@ -137,7 +148,6 @@ const DataListItem = React.forwardRef<HTMLDivElement, DataListItemProps>(
         ref={ref}
         data-slot="data-list-item"
         className={cn(
-          dataListItemBase,
           dataListItemByOrientation[orientation],
           itemGapClasses,
           itemAlign ? dataListItemByAlign[itemAlign] : null,

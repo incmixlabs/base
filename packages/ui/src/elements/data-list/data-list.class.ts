@@ -4,7 +4,9 @@ export type DataListTrim = 'normal' | 'start' | 'end' | 'both'
 export type DataListAlign = 'baseline' | 'start' | 'center' | 'end' | 'stretch' | 'between'
 
 const dataListSizeValues = ['xs', 'sm', 'md', 'lg'] as const
+const dataListTrimValues = ['normal', 'start', 'end', 'both'] as const
 const dataListResponsiveBreakpoints = ['xs', 'sm', 'md', 'lg', 'xl'] as const
+type DataListResponsiveBreakpoint = (typeof dataListResponsiveBreakpoints)[number]
 
 const dataListLineHeightRemBySize = {
   xs: '1rem',
@@ -13,11 +15,11 @@ const dataListLineHeightRemBySize = {
   lg: '1.625rem',
 } as const satisfies Record<DataListSize, string>
 
-function dataListLineHeightClass(size: DataListSize) {
-  return `[--af-datalist-line-height:calc(${dataListLineHeightRemBySize[size]}*var(--theme-typography-text-leading,1))]`
-}
+type DataListResponsiveSizeMap<TMap extends Record<DataListSize, string>> = Record<DataListResponsiveBreakpoint, TMap>
 
-function dataListResponsiveSizeMap<const TMap extends Record<DataListSize, string>>(map: TMap) {
+function dataListResponsiveSizeMap<const TMap extends Record<DataListSize, string>>(
+  map: TMap,
+): DataListResponsiveSizeMap<TMap> {
   return Object.fromEntries(
     dataListResponsiveBreakpoints.map(breakpoint => [
       breakpoint,
@@ -26,12 +28,21 @@ function dataListResponsiveSizeMap<const TMap extends Record<DataListSize, strin
           size,
           map[size]
             .split(/\s+/)
+            .filter(Boolean)
             .map(token => `cq-${breakpoint}:${token}`)
             .join(' '),
         ]),
       ),
     ]),
-  ) as Record<(typeof dataListResponsiveBreakpoints)[number], TMap>
+  ) as DataListResponsiveSizeMap<TMap>
+}
+
+function dataListTrimStartClass(size: DataListSize) {
+  return `[&>[data-slot='data-list-item']:first-child]:mt-[calc(var(--default-leading-trim-start)-${dataListLineHeightRemBySize[size]}*var(--theme-typography-text-leading,1)/2)]`
+}
+
+function dataListTrimEndClass(size: DataListSize) {
+  return `[&>[data-slot='data-list-item']:last-child]:mb-[calc(var(--default-leading-trim-end)-${dataListLineHeightRemBySize[size]}*var(--theme-typography-text-leading,1)/2)]`
 }
 
 export const dataListRootContainer = '[container-type:inline-size]'
@@ -39,10 +50,10 @@ export const dataListRootBase =
   'w-full [overflow-wrap:anywhere] [font-family:var(--default-font-family)] font-normal [font-style:var(--default-font-style)] text-start'
 
 export const dataListRootBySize = {
-  xs: `gap-2 ${dataListLineHeightClass('xs')}`,
-  sm: `gap-3 ${dataListLineHeightClass('sm')}`,
-  md: `gap-4 ${dataListLineHeightClass('md')}`,
-  lg: `gap-5 ${dataListLineHeightClass('lg')}`,
+  xs: 'gap-2',
+  sm: 'gap-3',
+  md: 'gap-4',
+  lg: 'gap-5',
 } as const
 
 export const dataListRootSizeResponsive = dataListResponsiveSizeMap(dataListRootBySize)
@@ -53,15 +64,17 @@ export const dataListRootByOrientation = {
 } as const
 
 export const dataListRootByTrim = {
-  normal: '[--af-datalist-leading-trim-start:initial] [--af-datalist-leading-trim-end:initial]',
-  start:
-    '[--af-datalist-leading-trim-start:calc(var(--default-leading-trim-start)-var(--af-datalist-line-height)/2)] [--af-datalist-leading-trim-end:initial]',
-  end: '[--af-datalist-leading-trim-start:initial] [--af-datalist-leading-trim-end:calc(var(--default-leading-trim-end)-var(--af-datalist-line-height)/2)]',
-  both: '[--af-datalist-leading-trim-start:calc(var(--default-leading-trim-start)-var(--af-datalist-line-height)/2)] [--af-datalist-leading-trim-end:calc(var(--default-leading-trim-end)-var(--af-datalist-line-height)/2)]',
-} as const
+  normal: Object.fromEntries(dataListSizeValues.map(size => [size, ''])),
+  start: Object.fromEntries(dataListSizeValues.map(size => [size, dataListTrimStartClass(size)])),
+  end: Object.fromEntries(dataListSizeValues.map(size => [size, dataListTrimEndClass(size)])),
+  both: Object.fromEntries(
+    dataListSizeValues.map(size => [size, `${dataListTrimStartClass(size)} ${dataListTrimEndClass(size)}`]),
+  ),
+} as Record<DataListTrim, Record<DataListSize, string>>
 
-export const dataListItemBase =
-  "[&:first-child]:mt-[var(--af-datalist-leading-trim-start)] [&:last-child]:mb-[var(--af-datalist-leading-trim-end)] [&:first-child>[data-slot='data-list-value']]:mt-[var(--af-datalist-first-value-trim-start)] [&:last-child>[data-slot='data-list-value']]:mb-[var(--af-datalist-last-value-trim-end)]"
+export const dataListRootTrimResponsive = Object.fromEntries(
+  dataListTrimValues.map(trim => [trim, dataListResponsiveSizeMap(dataListRootByTrim[trim])]),
+) as Record<DataListTrim, DataListResponsiveSizeMap<Record<DataListSize, string>>>
 
 export const dataListItemByOrientation = {
   horizontal: 'grid [grid-template-columns:inherit] col-span-2',
@@ -79,14 +92,12 @@ export const dataListItemGapResponsive = dataListResponsiveSizeMap(dataListItemG
 
 export const dataListItemByAlign = {
   baseline:
-    'items-baseline [--af-datalist-value-trim-start:-0.25em] [--af-datalist-value-trim-end:-0.25em] [--af-datalist-first-value-trim-start:0px] [--af-datalist-last-value-trim-end:0px]',
+    "items-baseline [&>[data-slot='data-list-value']]:mt-[-0.25em] [&>[data-slot='data-list-value']]:mb-[-0.25em] [&:first-child>[data-slot='data-list-value']]:mt-0 [&:last-child>[data-slot='data-list-value']]:mb-0",
   start:
-    'items-start [--af-datalist-value-trim-start:0px] [--af-datalist-value-trim-end:-0.25em] [--af-datalist-first-value-trim-start:0px] [--af-datalist-last-value-trim-end:0px]',
-  center:
-    'items-center [--af-datalist-value-trim-start:-0.25em] [--af-datalist-value-trim-end:-0.25em] [--af-datalist-first-value-trim-start:-0.25em] [--af-datalist-last-value-trim-end:-0.25em]',
-  end: 'items-end [--af-datalist-value-trim-start:-0.25em] [--af-datalist-value-trim-end:0px] [--af-datalist-first-value-trim-start:0px] [--af-datalist-last-value-trim-end:0px]',
-  stretch:
-    'items-stretch [--af-datalist-value-trim-start:0px] [--af-datalist-value-trim-end:0px] [--af-datalist-first-value-trim-start:0px] [--af-datalist-last-value-trim-end:0px]',
+    "items-start [&>[data-slot='data-list-value']]:mt-0 [&>[data-slot='data-list-value']]:mb-[-0.25em] [&:first-child>[data-slot='data-list-value']]:mt-0 [&:last-child>[data-slot='data-list-value']]:mb-0",
+  center: "items-center [&>[data-slot='data-list-value']]:mt-[-0.25em] [&>[data-slot='data-list-value']]:mb-[-0.25em]",
+  end: "items-end [&>[data-slot='data-list-value']]:mt-[-0.25em] [&>[data-slot='data-list-value']]:mb-0 [&:first-child>[data-slot='data-list-value']]:mt-0 [&:last-child>[data-slot='data-list-value']]:mb-0",
+  stretch: "items-stretch [&>[data-slot='data-list-value']]:mt-0 [&>[data-slot='data-list-value']]:mb-0",
 } as const
 
 export const dataListLabelBase =
@@ -105,5 +116,4 @@ export const dataListLabelMinWidthBySize = {
 
 export const dataListLabelMinWidthResponsive = dataListResponsiveSizeMap(dataListLabelMinWidthBySize)
 
-export const dataListValueBase =
-  "flex min-w-0 mx-0 mt-[var(--af-datalist-value-trim-start)] mb-[var(--af-datalist-value-trim-end)] before:content-['\\200D']"
+export const dataListValueBase = "flex min-w-0 mx-0 before:content-['\\200D']"
