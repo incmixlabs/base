@@ -88,7 +88,7 @@ export const ColumnVariants: Story = {
 
 export const NormalizedRuntimeValues: Story = {
   render: () => (
-    <Grid columns={' 12 ' as any} gap={' 2rem ' as any} className="w-[520px]">
+    <Grid columns={' 12 ' as any} gap={' 6 ' as any} className="w-[520px]">
       {Array.from({ length: 12 }, (_, index) => (
         <DemoBox key={index}>{index + 1}</DemoBox>
       ))}

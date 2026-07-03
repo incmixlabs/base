@@ -29,11 +29,10 @@ const boxPropDefs = {
   /**
    * Alias for `p`.
    * Sets the CSS **padding** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * padding="4"
-   * padding="100px"
    * padding={{ sm: '6', lg: '9' }}
    *
    * @link
@@ -45,11 +44,11 @@ const boxPropDefs = {
   /**
    * Alias for `m`.
    * Sets the CSS **margin** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * margin="4"
-   * margin="100px"
+   * margin="-2"
    * margin={{ sm: '6', lg: '9' }}
    *
    * @link

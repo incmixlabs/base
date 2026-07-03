@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it } from 'vitest'
-import { gapResponsiveClasses, gapResponsiveVars } from '@/theme/helpers/gap-responsive'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { heightResponsiveClasses, heightResponsiveVars } from '@/theme/helpers/height-responsive'
 import { widthResponsiveClasses, widthResponsiveVars } from '@/theme/helpers/width-responsive'
 import { Theme } from '@/theme/ThemeProvider'
@@ -11,6 +10,7 @@ import { getBoxSurfaceClassName } from './box.class'
 
 afterEach(() => {
   cleanup()
+  vi.restoreAllMocks()
 })
 
 function customPropertyName(value: string): string {
@@ -63,6 +63,37 @@ describe('Box', () => {
     expect(box).toHaveClass('p-2', 'md:p-4', 'm-1', 'lg:m-3')
     expect(box).not.toHaveAttribute('padding')
     expect(box).not.toHaveAttribute('margin')
+  })
+
+  it('keeps spacing props token-only', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+    render(
+      <Box
+        data-testid="box"
+        layout="row"
+        p={'13px' as any}
+        pt={'1' as any}
+        m={'2rem' as any}
+        mt={'-2' as any}
+        gap={'-2' as any}
+      >
+        Content
+      </Box>,
+    )
+
+    const box = screen.getByTestId('box')
+
+    expect(box).toHaveClass('pt-1', '-mt-2')
+    expect(box.className).not.toContain('13px')
+    expect(box.className).not.toContain('2rem')
+    expect(box).not.toHaveClass('-gap-2')
+    expect(box.style.padding).toBe('')
+    expect(box.style.margin).toBe('')
+    expect(box.style.gap).toBe('')
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining('[LayoutComposition] Ignored unsupported gap value(s): -2'),
+    )
   })
 
   it('maps width full alias to 100%', () => {
@@ -140,13 +171,15 @@ describe('Box', () => {
     const box = screen.getByTestId('box')
 
     expect(box).toHaveClass('flex', 'flex-row', 'items-center', 'justify-between', 'gap-2')
-    expect(box.style.gap).not.toBe('')
+    expect(box.style.gap).toBe('')
     expect(box).not.toHaveAttribute('layout')
     expect(box).not.toHaveAttribute('align')
     expect(box).not.toHaveAttribute('justify')
   })
 
   it('normalizes prop-def-backed layout composition values', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
     render(
       <Box
         data-testid="box"
@@ -164,21 +197,27 @@ describe('Box', () => {
 
     expect(box).toHaveClass('grid', 'items-center')
     expect(box.style.gridTemplateColumns).toBe('repeat(12, minmax(0, 1fr))')
-    expect(box.style.gap).toBe('2rem')
+    expect(box.className).not.toContain('2rem')
+    expect(box.style.gap).toBe('')
     expect(box).not.toHaveAttribute('layout')
     expect(box).not.toHaveAttribute('align')
     expect(box).not.toHaveAttribute('columns')
     expect(box).not.toHaveAttribute('gap')
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining('[LayoutComposition] Ignored unsupported gap value(s): 2rem'),
+    )
   })
 
-  it('supports responsive custom layout gap values', () => {
+  it('maps responsive token layout gaps and skips unsupported breakpoint values', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
     render(
       <Box
         data-testid="box"
         layout="row"
-        gap={{ initial: '16px', md: '24px' }}
-        gapX={{ initial: '1', lg: '2rem' }}
-        gapY={{ sm: '12px', xl: '4' }}
+        gap={{ initial: '16px' as any, md: '24px' as any }}
+        gapX={{ initial: '1', lg: '2rem' as any }}
+        gapY={{ sm: '12px' as any, xl: '4' }}
       >
         <span>One</span>
         <span>Two</span>
@@ -187,14 +226,21 @@ describe('Box', () => {
 
     const box = screen.getByTestId('box')
 
-    expect(box.className).toContain(gapResponsiveClasses.gap)
-    expect(box.className).toContain(gapResponsiveClasses.gapX)
-    expect(box.className).toContain(gapResponsiveClasses.gapY)
-    expect(box.style.getPropertyValue(customPropertyName(gapResponsiveVars.gap.initial))).toBe('16px')
-    expect(box.style.getPropertyValue(customPropertyName(gapResponsiveVars.gap.md))).toBe('24px')
-    expect(box.style.getPropertyValue(customPropertyName(gapResponsiveVars.gapX.initial))).toBe('4px')
-    expect(box.style.getPropertyValue(customPropertyName(gapResponsiveVars.gapX.lg))).toBe('2rem')
-    expect(box.style.getPropertyValue(customPropertyName(gapResponsiveVars.gapY.sm))).toBe('12px')
-    expect(box.style.getPropertyValue(customPropertyName(gapResponsiveVars.gapY.xl))).toBe('16px')
+    expect(box).toHaveClass('gap-x-1', 'xl:gap-y-4')
+    expect(box.className).not.toContain('16px')
+    expect(box.className).not.toContain('24px')
+    expect(box.className).not.toContain('2rem')
+    expect(box.style.gap).toBe('')
+    expect(box.style.columnGap).toBe('')
+    expect(box.style.rowGap).toBe('')
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining('[LayoutComposition] Ignored unsupported gap value(s): initial:16px, md:24px'),
+    )
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining('[LayoutComposition] Ignored unsupported gapX value(s): lg:2rem'),
+    )
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining('[LayoutComposition] Ignored unsupported gapY value(s): sm:12px'),
+    )
   })
 })

@@ -2,8 +2,6 @@
 
 import * as React from 'react'
 import { cn } from '@/lib/utils'
-import { resolveSpacingValue } from '@/theme/helpers'
-import { gapResponsiveClasses, gapResponsiveVars } from '@/theme/helpers/gap-responsive'
 import {
   type AlignContent,
   type AlignItems,
@@ -21,21 +19,20 @@ import {
   getJustifyContentClasses,
   getJustifyItemsClasses,
   getMergedSlotClassName,
+  getResponsiveSpacingValueClasses,
   getSharedLayoutClasses,
   getSharedLayoutStyles,
-  getSpacingClasses,
   hasBorderWidthUtility,
   isGridColumnsValue,
   isGridRowsValue,
-  isSpacingValue,
   type JustifyItems,
   normalizeResponsiveEnumOrStringPropValue,
   normalizeResponsiveEnumPropValue,
+  normalizeResponsiveSpacingPropValue,
   type Responsive,
   type SharedLayoutProps,
   Slot,
   type Spacing,
-  spacingToPixels,
 } from '../layout-utils'
 import {
   gridBase,
@@ -66,8 +63,6 @@ type ResponsiveBreakpointKey = (typeof responsiveBreakpointKeys)[number]
 type GridTemplateCustomProperty = '--grid-template-columns' | '--grid-template-rows'
 type GridStyles = React.CSSProperties &
   Partial<Record<`${GridTemplateCustomProperty}-${ResponsiveBreakpointKey}`, string>>
-type GapProperty = 'gap' | 'gapX' | 'gapY'
-type GapCssProperty = 'gap' | 'columnGap' | 'rowGap'
 
 function isResponsiveValue<T>(value: Responsive<T> | undefined): value is Partial<Record<ResponsiveValueKey, T>> {
   return !!value && typeof value === 'object'
@@ -117,11 +112,6 @@ function getGridTemplateStyleValue<T extends string>(
   return isValidTokenValue(value) ? tokenValueResolver(value) : value
 }
 
-function assignStyleValue(style: React.CSSProperties, property: string, value: string) {
-  const customPropertyName = property.startsWith('var(') ? property.slice(4, -1) : property
-  ;(style as Record<string, string>)[customPropertyName] = value
-}
-
 function assignResponsiveGridTemplateStyles<T extends string>(
   styles: GridStyles,
   prop: Responsive<T | string> | undefined,
@@ -149,48 +139,6 @@ function assignResponsiveGridTemplateStyles<T extends string>(
   }
 }
 
-function hasCustomResponsiveSpacingValue(prop: Responsive<Spacing | string> | undefined): boolean {
-  if (!isResponsiveValue(prop)) return false
-
-  return responsiveValueKeys.some(key => {
-    const value = prop[key]
-    return !!value && !isSpacingValue(value)
-  })
-}
-
-function getResponsiveSpacingClasses(
-  prop: Responsive<Spacing | string> | undefined,
-  prefix: 'gap' | 'gap-x' | 'gap-y',
-  gapProperty: GapProperty,
-): string {
-  if (hasCustomResponsiveSpacingValue(prop)) return gapResponsiveClasses[gapProperty]
-  if (typeof prop !== 'string') return getSpacingClasses(filterResponsiveTokenValues(prop, isSpacingValue), prefix)
-  return ''
-}
-
-function assignResponsiveSpacingStyles(
-  styles: React.CSSProperties,
-  prop: Responsive<Spacing | string> | undefined,
-  cssProperty: GapCssProperty,
-  gapProperty: GapProperty,
-) {
-  if (typeof prop === 'string') {
-    styles[cssProperty] = resolveSpacingValue(prop, spacingToPixels)
-    return
-  }
-
-  if (!isResponsiveValue(prop) || !hasCustomResponsiveSpacingValue(prop)) return
-
-  let inheritedValue: string | undefined
-  for (const breakpoint of responsiveValueKeys) {
-    const value = prop[breakpoint]
-    inheritedValue = value !== undefined ? resolveSpacingValue(value, spacingToPixels) : inheritedValue
-
-    const variableName = gapResponsiveVars[gapProperty][breakpoint]
-    if (inheritedValue !== undefined) assignStyleValue(styles, variableName, inheritedValue)
-  }
-}
-
 export interface GridOwnProps extends SharedLayoutProps {
   /** Render as a different element */
   as?: 'div' | 'span'
@@ -215,11 +163,11 @@ export interface GridOwnProps extends SharedLayoutProps {
   /** Justify items along the inline axis */
   justifyItems?: Responsive<JustifyItems>
   /** Gap between items */
-  gap?: Responsive<Spacing | string>
+  gap?: Responsive<Spacing>
   /** Horizontal gap between items */
-  gapX?: Responsive<Spacing | string>
+  gapX?: Responsive<Spacing>
   /** Vertical gap between items */
-  gapY?: Responsive<Spacing | string>
+  gapY?: Responsive<Spacing>
 }
 
 type GridDivProps = GridOwnProps & Omit<React.ComponentPropsWithoutRef<'div'>, keyof GridOwnProps>
@@ -361,9 +309,9 @@ export const Grid = React.forwardRef<HTMLElement, GridProps>(
     const resolvedAlignContent = normalizeResponsiveEnumPropValue(gridPropDefs.alignContent, alignContent)
     const resolvedJustify = normalizeResponsiveEnumPropValue(gridPropDefs.justify, justify)
     const resolvedJustifyItems = normalizeResponsiveEnumPropValue(gridPropDefs.justifyItems, justifyItems)
-    const resolvedGap = normalizeResponsiveEnumOrStringPropValue(gridPropDefs.gap, gap)
-    const resolvedGapX = normalizeResponsiveEnumOrStringPropValue(gridPropDefs.gapX, gapX)
-    const resolvedGapY = normalizeResponsiveEnumOrStringPropValue(gridPropDefs.gapY, gapY)
+    const resolvedGap = normalizeResponsiveSpacingPropValue(gridPropDefs.gap, gap, 'gap', 'Grid')
+    const resolvedGapX = normalizeResponsiveSpacingPropValue(gridPropDefs.gapX, gapX, 'gapX', 'Grid')
+    const resolvedGapY = normalizeResponsiveSpacingPropValue(gridPropDefs.gapY, gapY, 'gapY', 'Grid')
 
     const mappedColumns = filterResponsiveTokenValues(resolvedColumns, isGridColumnsValue)
     const mappedRows = filterResponsiveTokenValues(resolvedRows, isGridRowsValue)
@@ -399,9 +347,9 @@ export const Grid = React.forwardRef<HTMLElement, GridProps>(
       typeof resolvedJustifyItems !== 'string'
         ? getJustifyItemsClasses(resolvedJustifyItems as Responsive<JustifyItems>)
         : '',
-      getResponsiveSpacingClasses(resolvedGap, 'gap', 'gap'),
-      getResponsiveSpacingClasses(resolvedGapX, 'gap-x', 'gapX'),
-      getResponsiveSpacingClasses(resolvedGapY, 'gap-y', 'gapY'),
+      getResponsiveSpacingValueClasses(resolvedGap, 'gap'),
+      getResponsiveSpacingValueClasses(resolvedGapX, 'gap-x'),
+      getResponsiveSpacingValueClasses(resolvedGapY, 'gap-y'),
       resolvedColumns ? columnClasses : gridColumns['1'],
       columnCustomClasses,
       resolvedRows ? rowClasses : '',
@@ -431,10 +379,6 @@ export const Grid = React.forwardRef<HTMLElement, GridProps>(
       isGridRowsValue,
       getGridRowTemplate,
     )
-    assignResponsiveSpacingStyles(gridStyles, resolvedGap, 'gap', 'gap')
-    assignResponsiveSpacingStyles(gridStyles, resolvedGapX, 'columnGap', 'gapX')
-    assignResponsiveSpacingStyles(gridStyles, resolvedGapY, 'rowGap', 'gapY')
-
     const styles: React.CSSProperties = {
       ...gridStyles,
       ...getSharedLayoutStyles(sharedLayoutProps),

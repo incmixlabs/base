@@ -5,28 +5,26 @@ const paddingValues = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] as cons
 const paddingPropDefs = {
   /**
    * Sets the CSS **padding** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * p="4"
-   * p="100px"
    * p={{ sm: '6', lg: '9' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/padding
    */
   p: {
-    type: 'enum | string',
+    type: 'enum',
     values: paddingValues,
     responsive: true,
   },
   /**
    * Sets the CSS **padding-left** and **padding-right** properties.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * px="4"
-   * px="100px"
    * px={{ sm: '6', lg: '9' }}
    *
    * @link
@@ -34,17 +32,16 @@ const paddingPropDefs = {
    * https://developer.mozilla.org/en-US/docs/Web/CSS/padding-right
    */
   px: {
-    type: 'enum | string',
+    type: 'enum',
     values: paddingValues,
     responsive: true,
   },
   /**
    * Sets the CSS **padding-top** and **padding-bottom** properties.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * py="4"
-   * py="100px"
    * py={{ sm: '6', lg: '9' }}
    *
    * @link
@@ -52,75 +49,71 @@ const paddingPropDefs = {
    * https://developer.mozilla.org/en-US/docs/Web/CSS/padding-bottom
    */
   py: {
-    type: 'enum | string',
+    type: 'enum',
     values: paddingValues,
     responsive: true,
   },
   /**
    * Sets the CSS **padding-top** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * pt="4"
-   * pt="100px"
    * pt={{ sm: '6', lg: '9' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/padding-top
    */
   pt: {
-    type: 'enum | string',
+    type: 'enum',
     values: paddingValues,
     responsive: true,
   },
   /**
    * Sets the CSS **padding-right** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * pr="4"
-   * pr="100px"
    * pr={{ sm: '6', lg: '9' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/padding-right
    */
   pr: {
-    type: 'enum | string',
+    type: 'enum',
     values: paddingValues,
     responsive: true,
   },
   /**
    * Sets the CSS **padding-bottom** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * pb="4"
-   * pb="100px"
    * pb={{ sm: '6', lg: '9' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/padding-bottom
    */
   pb: {
-    type: 'enum | string',
+    type: 'enum',
     values: paddingValues,
     responsive: true,
   },
   /**
    * Sets the CSS **padding-left** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * pl="4"
-   * pl="100px"
    * pl={{ sm: '6', lg: '9' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/padding-left
    */
   pl: {
-    type: 'enum | string',
+    type: 'enum',
     values: paddingValues,
     responsive: true,
   },

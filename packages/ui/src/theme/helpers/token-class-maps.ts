@@ -8,7 +8,7 @@ import {
   type Spacing,
   semanticColorScale,
   type ThemeColorToken,
-} from '@/theme/tokens'
+} from '../tokens'
 
 export const spacingClassValueByToken = {
   '0': '0',
@@ -100,6 +100,35 @@ export function getResponsiveMappedUtilityClasses<T extends string>(
 }
 
 const spacingTokenSet = new Set<string>(Object.keys(spacingClassValueByToken))
+const spacingUtilityPrefixSupportsNegative = {
+  p: false,
+  px: false,
+  py: false,
+  pt: false,
+  pr: false,
+  pb: false,
+  pl: false,
+  m: true,
+  mx: true,
+  my: true,
+  mt: true,
+  mr: true,
+  mb: true,
+  ml: true,
+  gap: false,
+  'gap-x': false,
+  'gap-y': false,
+  inset: true,
+  top: true,
+  right: true,
+  bottom: true,
+  left: true,
+} satisfies Record<SpacingUtilityPrefix, boolean>
+
+const spacingUtilityPrefixes = Object.keys(spacingUtilityPrefixSupportsNegative) as SpacingUtilityPrefix[]
+const negativeSpacingUtilityPrefixes = new Set<SpacingUtilityPrefix>(
+  spacingUtilityPrefixes.filter(prefix => spacingUtilityPrefixSupportsNegative[prefix]),
+)
 
 export function getSpacingUtilityClass(prefix: SpacingUtilityPrefix, value: string | undefined): string | undefined {
   const trimmedValue = value?.trim()
@@ -107,6 +136,7 @@ export function getSpacingUtilityClass(prefix: SpacingUtilityPrefix, value: stri
 
   const negative = trimmedValue.startsWith('-')
   const token = negative ? trimmedValue.slice(1) : trimmedValue
+  if (negative && !negativeSpacingUtilityPrefixes.has(prefix)) return undefined
   if (!spacingTokenSet.has(token)) return undefined
 
   const classValue = spacingClassValueByToken[token as Spacing]
@@ -125,13 +155,29 @@ export function getResponsiveSpacingUtilityClasses(
     if (breakpointValue === undefined) continue
 
     const utilityClass = getSpacingUtilityClass(prefix, breakpointValue)
-    if (!utilityClass) return undefined
+    if (!utilityClass) continue
 
     classes.push(`${responsiveUtilityPrefixByBreakpoint[breakpoint]}${utilityClass}`)
   }
 
   return classes.length > 0 ? classes.join(' ') : undefined
 }
+
+export const spacingUtilityClassNames = spacingUtilityPrefixes.flatMap(prefix => {
+  const spacingTokens = Object.keys(spacingClassValueByToken)
+  const signedTokens = negativeSpacingUtilityPrefixes.has(prefix)
+    ? [...spacingTokens, ...spacingTokens.filter(token => token !== '0').map(token => `-${token}`)]
+    : spacingTokens
+
+  return signedTokens.flatMap(token => {
+    const utilityClass = getSpacingUtilityClass(prefix, token)
+    if (!utilityClass) return []
+
+    return Object.values(responsiveUtilityPrefixByBreakpoint).map(
+      breakpointPrefix => `${breakpointPrefix}${utilityClass}`,
+    )
+  })
+})
 
 const semanticColorUtilityByPrefixAndToken = {
   bg: {

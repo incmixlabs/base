@@ -1,21 +1,16 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it } from 'vitest'
-import { gapResponsiveClasses, gapResponsiveVars } from '@/theme/helpers/gap-responsive'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { flexByDirection } from './Flex.classes'
 import { Flex } from './Flex'
 
 afterEach(() => {
   cleanup()
+  vi.restoreAllMocks()
 })
 
-function customPropertyName(value: string): string {
-  const match = /^var\((--[^)]+)\)$/.exec(value)
-  return match?.[1] ?? value
-}
-
 describe('Flex', () => {
-  it('normalizes enum props case-insensitively and resolves token gaps', () => {
+  it('normalizes enum props case-insensitively and maps token gaps to utilities', () => {
     render(
       <Flex data-testid="flex" direction={' COLUMN ' as any} gap={' 4 ' as any}>
         <span>One</span>
@@ -25,26 +20,35 @@ describe('Flex', () => {
     const flex = screen.getByTestId('flex')
 
     expect(flex.className).toContain(flexByDirection.column)
-    expect(flex.style.gap).toBe('16px')
+    expect(flex).toHaveClass('gap-4')
+    expect(flex.style.gap).toBe('')
   })
 
-  it('preserves custom gap strings', () => {
+  it('ignores unsupported arbitrary gap strings', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
     render(
       <Flex data-testid="flex" gap={' 2rem ' as any}>
         <span>One</span>
       </Flex>,
     )
 
-    expect(screen.getByTestId('flex').style.gap).toBe('2rem')
+    const flex = screen.getByTestId('flex')
+
+    expect(flex.className).not.toContain('2rem')
+    expect(flex.style.gap).toBe('')
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('[Flex] Ignored unsupported gap value(s): 2rem'))
   })
 
-  it('preserves responsive custom gap values', () => {
+  it('maps responsive token gaps and skips unsupported breakpoint values', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
     render(
       <Flex
         data-testid="flex"
-        gap={{ initial: '2rem', md: '4' }}
-        gapX={{ initial: '1', lg: '24px' }}
-        gapY={{ sm: '12px', xl: '5' }}
+        gap={{ initial: '2rem' as any, md: '4' }}
+        gapX={{ initial: '1', lg: '24px' as any }}
+        gapY={{ sm: '3', xl: '5' }}
       >
         <span>One</span>
       </Flex>,
@@ -52,14 +56,11 @@ describe('Flex', () => {
 
     const flex = screen.getByTestId('flex')
 
-    expect(flex.className).toContain(gapResponsiveClasses.gap)
-    expect(flex.className).toContain(gapResponsiveClasses.gapX)
-    expect(flex.className).toContain(gapResponsiveClasses.gapY)
-    expect(flex.style.getPropertyValue(customPropertyName(gapResponsiveVars.gap.initial))).toBe('2rem')
-    expect(flex.style.getPropertyValue(customPropertyName(gapResponsiveVars.gap.md))).toBe('16px')
-    expect(flex.style.getPropertyValue(customPropertyName(gapResponsiveVars.gapX.initial))).toBe('4px')
-    expect(flex.style.getPropertyValue(customPropertyName(gapResponsiveVars.gapX.lg))).toBe('24px')
-    expect(flex.style.getPropertyValue(customPropertyName(gapResponsiveVars.gapY.sm))).toBe('12px')
-    expect(flex.style.getPropertyValue(customPropertyName(gapResponsiveVars.gapY.xl))).toBe('24px')
+    expect(flex).toHaveClass('md:gap-4', 'gap-x-1', 'sm:gap-y-3', 'xl:gap-y-5')
+    expect(flex.className).not.toContain('2rem')
+    expect(flex.className).not.toContain('24px')
+    expect(flex.getAttribute('style')).toBeNull()
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('[Flex] Ignored unsupported gap value(s): initial:2rem'))
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('[Flex] Ignored unsupported gapX value(s): lg:24px'))
   })
 })

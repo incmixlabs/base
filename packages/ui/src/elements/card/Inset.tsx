@@ -3,7 +3,6 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
-import { getPaddingProps } from '@/theme/helpers/get-padding-styles'
 import type { MarginProps } from '@/theme/props/margin.props'
 
 // Side configurations
@@ -12,10 +11,31 @@ type Clip = 'border-box' | 'padding-box'
 
 // Padding configurations
 type Padding = 'current' | '0'
+type InsetPaddingProps = Partial<Record<'p' | 'px' | 'py' | 'pt' | 'pr' | 'pb' | 'pl', Padding>>
 
 function resolveInsetPaddingValue(value: Padding | undefined): string | undefined {
   if (value == null) return undefined
   return value === 'current' ? 'var(--inset-padding, 0px)' : '0px'
+}
+
+function getInsetPaddingStyles({ p, px, py, pt, pr, pb, pl }: InsetPaddingProps): React.CSSProperties {
+  const padding = resolveInsetPaddingValue(p)
+  const paddingX = resolveInsetPaddingValue(px)
+  const paddingY = resolveInsetPaddingValue(py)
+  const paddingTop = resolveInsetPaddingValue(pt)
+  const paddingRight = resolveInsetPaddingValue(pr)
+  const paddingBottom = resolveInsetPaddingValue(pb)
+  const paddingLeft = resolveInsetPaddingValue(pl)
+
+  return {
+    ...(padding && { padding }),
+    ...(paddingX && { paddingLeft: paddingX, paddingRight: paddingX }),
+    ...(paddingY && { paddingTop: paddingY, paddingBottom: paddingY }),
+    ...(paddingTop && { paddingTop }),
+    ...(paddingRight && { paddingRight }),
+    ...(paddingBottom && { paddingBottom }),
+    ...(paddingLeft && { paddingLeft }),
+  }
 }
 
 function getBleedStyles(side: Side, insetBleed: string, insetRadius: string): React.CSSProperties {
@@ -129,15 +149,7 @@ const Inset = React.forwardRef<HTMLDivElement, InsetProps>(
     ref,
   ) => {
     const marginProps = getMarginProps({ m, mx, my, mt, mr, mb, ml })
-    const paddingProps = getPaddingProps({
-      p: resolveInsetPaddingValue(p),
-      px: resolveInsetPaddingValue(px),
-      py: resolveInsetPaddingValue(py),
-      pt: resolveInsetPaddingValue(pt),
-      pr: resolveInsetPaddingValue(pr),
-      pb: resolveInsetPaddingValue(pb),
-      pl: resolveInsetPaddingValue(pl),
-    })
+    const paddingStyles = getInsetPaddingStyles({ p, px, py, pt, pr, pb, pl })
 
     const insetBleed =
       clip === 'padding-box'
@@ -153,11 +165,11 @@ const Inset = React.forwardRef<HTMLDivElement, InsetProps>(
     return (
       <div
         ref={ref}
-        className={cn('box-border overflow-hidden', paddingProps.className, marginProps.className, className)}
+        className={cn('box-border overflow-hidden', marginProps.className, className)}
         style={
           {
             ...marginProps.style,
-            ...paddingProps.style,
+            ...paddingStyles,
             ...bleedStyles,
             ...style,
           } as React.CSSProperties

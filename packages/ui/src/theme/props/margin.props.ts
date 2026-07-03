@@ -26,28 +26,28 @@ const marginValues = [
 const marginPropDefs = {
   /**
    * Sets the CSS **margin** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * m="4"
-   * m="100px"
+   * m="-2"
    * m={{ sm: '6', lg: '9' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/margin
    */
   m: {
-    type: 'enum | string',
+    type: 'enum',
     values: marginValues,
     responsive: true,
   },
   /**
    * Sets the CSS **margin-left** and **margin-right** properties.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * mx="4"
-   * mx="100px"
+   * mx="-2"
    * mx={{ sm: '6', lg: '9' }}
    *
    * @link
@@ -55,17 +55,17 @@ const marginPropDefs = {
    * https://developer.mozilla.org/en-US/docs/Web/CSS/margin-right
    */
   mx: {
-    type: 'enum | string',
+    type: 'enum',
     values: marginValues,
     responsive: true,
   },
   /**
    * Sets the CSS **margin-top** and **margin-bottom** properties.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * my="4"
-   * my="100px"
+   * my="-2"
    * my={{ sm: '6', lg: '9' }}
    *
    * @link
@@ -73,75 +73,75 @@ const marginPropDefs = {
    * https://developer.mozilla.org/en-US/docs/Web/CSS/margin-bottom
    */
   my: {
-    type: 'enum | string',
+    type: 'enum',
     values: marginValues,
     responsive: true,
   },
   /**
    * Sets the CSS **margin-top** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * mt="4"
-   * mt="100px"
+   * mt="-2"
    * mt={{ sm: '6', lg: '9' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/margin-top
    */
   mt: {
-    type: 'enum | string',
+    type: 'enum',
     values: marginValues,
     responsive: true,
   },
   /**
    * Sets the CSS **margin-right** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * mr="4"
-   * mr="100px"
+   * mr="-2"
    * mr={{ sm: '6', lg: '9' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/margin-right
    */
   mr: {
-    type: 'enum | string',
+    type: 'enum',
     values: marginValues,
     responsive: true,
   },
   /**
    * Sets the CSS **margin-bottom** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * mb="4"
-   * mb="100px"
+   * mb="-2"
    * mb={{ sm: '6', lg: '9' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/margin-bottom
    */
   mb: {
-    type: 'enum | string',
+    type: 'enum',
     values: marginValues,
     responsive: true,
   },
   /**
    * Sets the CSS **margin-left** property.
-   * Supports space scale values, CSS strings, and responsive objects.
+   * Supports space scale tokens and responsive token objects.
    *
    * @example
    * ml="4"
-   * ml="100px"
+   * ml="-2"
    * ml={{ sm: '6', lg: '9' }}
    *
    * @link
    * https://developer.mozilla.org/en-US/docs/Web/CSS/margin-left
    */
   ml: {
-    type: 'enum | string',
+    type: 'enum',
     values: marginValues,
     responsive: true,
   },
