@@ -4,8 +4,8 @@ import {
   type SemanticColorClassRecipe,
   semanticColorClassRecipes,
 } from '../../theme/helpers/semantic-color-recipe'
-import { normalizeChartColor } from '../../theme/props/color.prop'
-import { type Color, SURFACE_COLOR_KEYS, type SurfaceColorKey } from '../../theme/tokens'
+import { normalizeChartColor, type SemanticColorKey } from '../../theme/props/color.prop'
+import { SURFACE_COLOR_KEYS, type SurfaceColorKey } from '../../theme/tokens'
 import { type SurfaceShape, type SurfaceVariant, surfaceVariants } from './surface.props'
 
 export const surfaceVariantSurfaceShadow = '[box-shadow:var(--shadow-xs)]'
@@ -181,12 +181,12 @@ const floatingSurfaceHighContrastColorByVariant = {
 export const floatingSurfaceColorVariants = createSemanticColorVariantClassMap(
   ['solid', 'soft', 'surface', 'outline'] as const,
   (recipe, variant) => floatingSurfaceColorByVariant[variant](recipe),
-) as Record<Color, Record<FloatingSurfaceVariant, string>>
+) as Record<SemanticColorKey, Record<FloatingSurfaceVariant, string>>
 
 export const floatingSurfaceHighContrastColorVariants = createSemanticColorVariantClassMap(
   ['solid', 'soft', 'surface', 'outline'] as const,
   (recipe, variant) => floatingSurfaceHighContrastColorByVariant[variant](recipe),
-) as Record<Color, Record<FloatingSurfaceVariant, string>>
+) as Record<SemanticColorKey, Record<FloatingSurfaceVariant, string>>
 
 export const floatingArrowBase =
   'flex data-[side=bottom]:top-0 data-[side=bottom]:-translate-y-full data-[side=top]:bottom-0 data-[side=top]:translate-y-full data-[side=top]:rotate-180 data-[side=right]:left-0 data-[side=right]:-translate-x-full data-[side=right]:-rotate-90 data-[side=left]:right-0 data-[side=left]:translate-x-full data-[side=left]:rotate-90 ltr:data-[side=inline-end]:left-0 ltr:data-[side=inline-end]:-translate-x-full ltr:data-[side=inline-end]:-rotate-90 rtl:data-[side=inline-end]:right-0 rtl:data-[side=inline-end]:translate-x-full rtl:data-[side=inline-end]:rotate-90 ltr:data-[side=inline-start]:right-0 ltr:data-[side=inline-start]:translate-x-full ltr:data-[side=inline-start]:rotate-90 rtl:data-[side=inline-start]:left-0 rtl:data-[side=inline-start]:-translate-x-full rtl:data-[side=inline-start]:-rotate-90'
