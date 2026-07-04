@@ -1,11 +1,11 @@
+import { formControlRadius } from './form-control.class'
 import type { FormSize } from './form-size'
 
 export type RadioCheckboxCardSize = FormSize
 
 export const radioCheckboxCardSizes = ['xs', 'sm', 'md', 'lg'] as const satisfies readonly FormSize[]
 
-export const radioCheckboxCardShellBase =
-  'absolute inset-0 rounded-[var(--element-border-radius)] [border-width:1px] border-solid transition-all duration-150 -z-0'
+export const radioCheckboxCardShellBase = `absolute inset-0 ${formControlRadius} [border-width:1px] border-solid transition-all duration-150 -z-0`
 
 export const radioCheckboxCardTextSizeVariants = {
   xs: 'text-xs',
