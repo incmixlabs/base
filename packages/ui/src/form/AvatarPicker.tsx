@@ -27,6 +27,7 @@ import {
 import { avatarPickerPropDefs } from './avatar-picker.props'
 import { useFieldGroup } from './FieldGroupContext'
 import { formColorVars } from './form-color'
+import { formControlRadius } from './form-control.class'
 import { type FormSize, resolveFormSize } from './form-size'
 import { MultiSelect, type MultiSelectOption } from './MultiSelect'
 import {
@@ -475,7 +476,8 @@ const AvatarPickerMultiTrigger = React.forwardRef<HTMLDivElement, AvatarPickerMu
               textFieldInputBaseCls,
               'inline-flex w-full items-center justify-between gap-2 box-border border',
               textFieldMinControlSizeVariants[size],
-              'text-left rounded-[var(--element-border-radius)]',
+              'text-left',
+              formControlRadius,
               textFieldSurfaceColorVariants[highlightColor][surfaceVariant],
               disabled && 'cursor-not-allowed opacity-50',
             ),
@@ -991,7 +993,8 @@ const AvatarPickerSingle = React.forwardRef<HTMLDivElement, AvatarPickerSinglePr
               textFieldInputBaseCls,
               'inline-flex w-full items-center justify-between gap-2 box-border border',
               textFieldMinControlSizeVariants[size],
-              'text-left rounded-[var(--element-border-radius)]',
+              'text-left',
+              formControlRadius,
               textFieldSurfaceColorVariants[highlightColor][surfaceVariant],
               disabled && 'cursor-not-allowed opacity-50',
             ),
