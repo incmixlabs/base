@@ -35,6 +35,7 @@ const replaceContractComponents = new Set([
   'scrollArea',
   'slider',
   'switch',
+  'textField',
 ])
 
 function toPosix(relativePath) {
@@ -86,36 +87,14 @@ function addMapSet(map, key, value) {
   map.set(key, new Set([value]))
 }
 
-function isMultilineHelperDeclaration(lines, lineIndex, index, name) {
-  const line = lines[lineIndex]
-  const before = line.slice(0, index).trim()
-  const after = line.slice(index + name.length).trim()
-  if (!/^['"`]$/.test(before) || !/^['"`]\s*(?:,|\))/.test(after)) return false
-
-  for (let previousIndex = lineIndex - 1; previousIndex >= 0 && lineIndex - previousIndex <= 5; previousIndex -= 1) {
-    const previous = lines[previousIndex].trim()
-    if (!previous || previous.startsWith('//')) continue
-
-    return /(?:cssDeclaration|property|setProperty)\(\s*$/.test(previous)
-  }
-
-  return false
-}
-
-function lineRole(lines, lineIndex, index, name) {
-  const line = lines[lineIndex]
+function lineRole(line, index, name) {
   const before = line.slice(Math.max(0, index - 40), index)
   const after = line.slice(index + name.length, index + name.length + 40)
   const roles = new Set()
 
   if (before.includes('var(')) roles.add('consume')
   if (after.trimStart().startsWith(':')) roles.add('declare')
-  if (
-    line.includes('setProperty') ||
-    line.includes('cssDeclaration') ||
-    line.includes('property(') ||
-    isMultilineHelperDeclaration(lines, lineIndex, index, name)
-  )
+  if (line.includes('setProperty') || line.includes('cssDeclaration') || line.includes('property('))
     roles.add('declare')
   if (line.includes('expect(')) roles.add('assert')
   if (roles.size === 0) roles.add('reference')
@@ -157,8 +136,7 @@ function collectExactVars(files) {
         }
 
         entry.scopes.add(file.scope)
-        const roles = lineRole(lines, lineIndex, match.index ?? 0, name)
-        for (const role of roles) {
+        for (const role of lineRole(line, match.index ?? 0, name)) {
           entry.roles.add(role)
         }
         addMapSet(entry.files, file.relativePath, lineIndex + 1)
@@ -166,7 +144,7 @@ function collectExactVars(files) {
           file: file.relativePath,
           line: lineIndex + 1,
           scope: file.scope,
-          roles,
+          roles: lineRole(line, match.index ?? 0, name),
           text: line.trim(),
         })
         vars.set(name, entry)
