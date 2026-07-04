@@ -2,13 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { FieldGroup } from './FieldGroup'
-
-function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-  for (const token of tokens) {
-    expect(classTokens).toContain(token)
-  }
-}
+import { expectClassTokens } from './test-utils'
 
 describe('FieldGroup', () => {
   it('places the side-label container query on the group root and applies responsive row classes to descendants', () => {

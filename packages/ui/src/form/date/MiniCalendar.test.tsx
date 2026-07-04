@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
+import { expectClassTokens } from '../test-utils'
 import { dateCalendarNavButtonColorStyles } from './date-surface.shared.class'
-import { expectClassTokens } from './date-test-utils'
 import { MiniCalendar } from './MiniCalendar'
 
 describe('MiniCalendar', () => {

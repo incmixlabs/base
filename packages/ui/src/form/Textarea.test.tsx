@@ -2,11 +2,14 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { Textarea } from './Textarea'
+import { splitClassNames } from './test-utils'
 import {
   floatingInputStyleVariants,
   floatingLabelStyleVariants,
+  textFieldEnhancementVariants,
   textFieldFloatingColorVariants,
   textFieldFloatingLabelColorVariants,
+  textFieldSurfaceColorVariants,
 } from './text-field.class'
 
 afterEach(() => {
@@ -60,5 +63,15 @@ describe('Textarea floating variants', () => {
     expect(textarea).toHaveAttribute('aria-invalid', 'true')
     expect(textarea).toHaveClass(textFieldFloatingColorVariants.error.outlined)
     expect(label).toHaveClass(textFieldFloatingLabelColorVariants.error)
+  })
+
+  it('maps regular semantic colors through the shared surface lanes', () => {
+    render(<Textarea data-testid="textarea" variant="soft" color="success" />)
+
+    const textarea = screen.getByTestId('textarea')
+
+    expect(textarea).toHaveClass(...splitClassNames(textFieldSurfaceColorVariants.success.soft))
+    expect(textarea).toHaveClass(...splitClassNames(textFieldEnhancementVariants.success.soft))
+    expect(textarea.className).not.toContain('form-color')
   })
 })

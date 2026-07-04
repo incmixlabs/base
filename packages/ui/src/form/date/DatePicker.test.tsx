@@ -3,9 +3,9 @@ import userEvent from '@testing-library/user-event'
 import { I18nProvider } from 'react-aria-components'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { FieldGroup } from '../FieldGroup'
+import { hasClassTokens } from '../test-utils'
 import { DatePicker } from './DatePicker'
 import { datePickerTriggerGroupBase, datePickerTriggerGroupSizeStyles } from './DatePicker.class'
-import { hasClassTokens } from './date-test-utils'
 
 afterEach(() => {
   cleanup()

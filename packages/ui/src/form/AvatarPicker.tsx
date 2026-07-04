@@ -26,7 +26,6 @@ import {
 } from './avatar-picker.class'
 import { avatarPickerPropDefs } from './avatar-picker.props'
 import { useFieldGroup } from './FieldGroupContext'
-import { formColorVars } from './form-color'
 import { formControlRadius } from './form-control.class'
 import { type FormSize, resolveFormSize } from './form-size'
 import { MultiSelect, type MultiSelectOption } from './MultiSelect'
@@ -49,7 +48,7 @@ import {
   textFieldSurfaceColorVariants,
 } from './text-field.class'
 import { resolveSurfaceVariant } from './text-field-variant'
-import { highlightColorStyles } from './textFieldStyles'
+import { highlightColorStyles, solidTextColorStyles } from './textFieldStyles'
 
 /**
  * Represents an item that can be selected in the AvatarPicker
@@ -215,11 +214,7 @@ export const AvatarPicker = React.forwardRef<HTMLDivElement, AvatarPickerProps>(
       if (inline) {
         // Inline multi-select: popup wrapper + MultiSelect (footer handled by MultiSelect via onApply)
         return (
-          <div
-            ref={ref}
-            className={cn(pickerPopupBase, avatarPickerInlineCls, className)}
-            style={formColorVars[effectiveHighlightColor] as React.CSSProperties}
-          >
+          <div ref={ref} className={cn(pickerPopupBase, avatarPickerInlineCls, className)}>
             <MultiSelect
               inline
               options={options}
@@ -446,7 +441,7 @@ const AvatarPickerMultiTrigger = React.forwardRef<HTMLDivElement, AvatarPickerMu
     }, [isOpen])
 
     return (
-      <div className={cn(avatarPickerRootCls, className)} style={formColorVars[highlightColor] as React.CSSProperties}>
+      <div className={cn(avatarPickerRootCls, className)}>
         <div
           ref={triggerRef}
           id={id}
@@ -887,7 +882,9 @@ const AvatarPickerSingle = React.forwardRef<HTMLDivElement, AvatarPickerSinglePr
             </Text>
           ) : null}
         </Flex>
-        {isSelected && <Check className={cn('shrink-0 text-[color:var(--fc-solid)]', pickerIndicatorBySize[size])} />}
+        {isSelected && (
+          <Check className={cn('shrink-0', solidTextColorStyles[highlightColor], pickerIndicatorBySize[size])} />
+        )}
       </Flex>
     )
 
@@ -965,11 +962,11 @@ const AvatarPickerSingle = React.forwardRef<HTMLDivElement, AvatarPickerSinglePr
     )
 
     if (inline) {
-      return <div style={formColorVars[highlightColor] as React.CSSProperties}>{dropdownContent}</div>
+      return dropdownContent
     }
 
     return (
-      <div className={cn(avatarPickerRootCls, className)} style={formColorVars[highlightColor] as React.CSSProperties}>
+      <div className={cn(avatarPickerRootCls, className)}>
         <div
           ref={triggerRef}
           id={id}

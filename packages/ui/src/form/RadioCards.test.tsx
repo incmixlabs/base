@@ -3,17 +3,11 @@ import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { RadioCards } from './RadioCards'
+import { expectClassTokens } from './test-utils'
 
 afterEach(() => {
   cleanup()
 })
-
-function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-  for (const token of tokens) {
-    expect(classTokens).toContain(token)
-  }
-}
 
 describe('RadioCards', () => {
   it('reflects the controlled value in the checked radio state', () => {

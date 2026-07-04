@@ -101,10 +101,10 @@ Most arbitrary background utilities are CSS-var based and likely acceptable:
 
 - `bg-[var(--color-surface)]`
 - `bg-[var(--color-surface-subtle)]`
-- `bg-[color:var(--fc-soft-bg)]`
-- `bg-[color:var(--fc-soft-bg-hover)]`
-- `bg-[var(--fc-primary)]`
-- `bg-[var(--fc-soft-bg-hover)]`
+- `bg-primary-soft`
+- `bg-secondary-soft`
+- `bg-accent-soft`
+- `bg-neutral-soft`
 - `bg-[var(--color-neutral-soft)]`
 - `bg-[var(--rdp-accent-background-color)]`
 - `hover:bg-[var(--sidebar-hover)]`
@@ -124,7 +124,7 @@ Excluding stories and tests, the largest concentrations are:
 
 | File | Count | Notes |
 | --- | ---: | --- |
-| `packages/ui/src/form/textFieldStyles.ts` | 27 | Mostly semantic or form-color vars. Seems intentional. |
+| `packages/ui/src/form/textFieldStyles.ts` | 27 | Semantic form-control lane classes. Seems intentional. |
 | `packages/ui/src/media/media-player/MediaPlayer.tsx` | 21 | Mostly semantic after cleanup; fixed black/white overlay treatment should remain intentional. |
 | `apps/docs/src/lib/layout-docs-entries.tsx` | 14 | Docs examples now use layout color props instead of Tailwind palette backgrounds. |
 | `apps/docs/src/components/declarative/JsxAuthoringWorkbench.tsx` | 10 | Mostly semantic after cleanup; code-pane surfaces now use inverse vars. |

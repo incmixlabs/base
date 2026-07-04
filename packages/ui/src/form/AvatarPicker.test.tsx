@@ -2,6 +2,8 @@ import { cleanup, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { AvatarPicker } from './AvatarPicker'
+import { expectClassTokens, splitClassNames } from './test-utils'
+import { highlightColorStyles, solidTextColorStyles } from './textFieldStyles'
 
 afterEach(() => {
   cleanup()
@@ -143,5 +145,31 @@ describe('AvatarPicker', () => {
     await user.click(getPickerTrigger())
     await user.click(screen.getByRole('button', { name: 'Save' }))
     expect(onApply).toHaveBeenCalledTimes(1)
+  })
+
+  it('uses semantic lane classes for highlighted options and selected indicators', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <AvatarPicker
+        value="john"
+        highlightColor="success"
+        items={[
+          { id: 'john', name: 'John Doe' },
+          { id: 'jane', name: 'Jane Smith' },
+        ]}
+      />,
+    )
+
+    await user.click(screen.getByRole('button', { name: /John Doe/i }))
+
+    const selectedOption = await screen.findByRole('option', { name: /John Doe/i })
+    const selectedIndicator = selectedOption.querySelector('svg')
+
+    expectClassTokens(selectedOption.className, splitClassNames(highlightColorStyles.success))
+    expect(selectedIndicator).not.toBeNull()
+    expectClassTokens(selectedIndicator?.getAttribute('class') ?? undefined, [solidTextColorStyles.success])
+    expect(selectedOption.className).not.toContain('form-color')
+    expect(selectedIndicator?.getAttribute('class')).not.toContain('form-color')
   })
 })

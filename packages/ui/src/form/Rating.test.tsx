@@ -2,17 +2,11 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { Rating, RatingItem } from './Rating'
+import { expectClassTokens } from './test-utils'
 
 afterEach(() => {
   cleanup()
 })
-
-function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-  for (const token of tokens) {
-    expect(classTokens).toContain(token)
-  }
-}
 
 describe('Rating', () => {
   it('uses semantic color and static sizing utilities', () => {

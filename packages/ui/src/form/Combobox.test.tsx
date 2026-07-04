@@ -3,17 +3,12 @@ import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it } from 'vitest'
 import { Combobox } from './Combobox'
+import { expectClassTokens, splitClassNames } from './test-utils'
+import { textFieldEnhancementVariants, textFieldSurfaceColorVariants } from './text-field.class'
 
 afterEach(() => {
   cleanup()
 })
-
-function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-  for (const token of tokens) {
-    expect(classTokens).toContain(token)
-  }
-}
 
 describe('Combobox', () => {
   const frameworkOptions = [
@@ -61,6 +56,24 @@ describe('Combobox', () => {
     ])
     expectClassTokens(vueOption.className, ['appearance-none', 'border-0', 'bg-transparent'])
     expect(reactOption).toHaveAttribute('tabindex', '-1')
+  })
+
+  it('maps the input through TextField shared surface lanes', () => {
+    render(
+      <Combobox
+        ariaLabelledby="framework-label"
+        options={frameworkOptions}
+        placeholder="Search frameworks..."
+        variant="soft"
+        color="success"
+      />,
+    )
+
+    const input = screen.getByRole('combobox')
+
+    expect(input).toHaveClass(...splitClassNames(textFieldSurfaceColorVariants.success.soft))
+    expect(input).toHaveClass(...splitClassNames(textFieldEnhancementVariants.success.soft))
+    expect(input.className).not.toContain('form-color')
   })
 
   it('opens the full option list from a selected value and marks the selection', async () => {

@@ -2,11 +2,14 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { Select, SelectItem } from './Select'
+import { splitClassNames } from './test-utils'
 import {
   floatingInputStyleVariants,
   floatingLabelStyleVariants,
+  textFieldEnhancementVariants,
   textFieldFloatingColorVariants,
   textFieldFloatingLabelColorVariants,
+  textFieldSurfaceColorVariants,
 } from './text-field.class'
 
 afterEach(() => {
@@ -92,5 +95,19 @@ describe('Select floating variants', () => {
     expect(trigger).toHaveAttribute('aria-invalid', 'true')
     expect(trigger).toHaveClass(textFieldFloatingColorVariants.error.outlined)
     expect(label).toHaveClass(textFieldFloatingLabelColorVariants.error)
+  })
+
+  it('maps regular trigger colors through the shared surface lanes', () => {
+    render(
+      <Select data-testid="select" variant="soft" color="success">
+        <SelectItem value="sales">Sales</SelectItem>
+      </Select>,
+    )
+
+    const trigger = screen.getByTestId('select')
+
+    expect(trigger).toHaveClass(...splitClassNames(textFieldSurfaceColorVariants.success.soft))
+    expect(trigger).toHaveClass(...splitClassNames(textFieldEnhancementVariants.success.soft))
+    expect(trigger.className).not.toContain('form-color')
   })
 })

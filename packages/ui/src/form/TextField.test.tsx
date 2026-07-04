@@ -10,11 +10,14 @@ import {
   floatingLabelSizeVariants,
   floatingLabelStyleVariants,
   floatingLabelWithLeftIconSizeVariants,
+  textFieldEnhancementVariants,
   textFieldFloatingColorVariants,
   textFieldFloatingLabelColorVariants,
   textFieldIconContainerCls,
+  textFieldSurfaceColorVariants,
 } from './text-field.class'
 import { formControlNeutralBackground } from './form-control.class'
+import { splitClassNames } from './test-utils'
 import { TextField } from './TextField'
 
 afterEach(() => {
@@ -58,6 +61,22 @@ describe('TextField', () => {
 
     expect(input).toHaveClass(floatingInputStyleVariants.outlined)
     expect(input).toHaveClass(textFieldFloatingColorVariants.success.outlined)
+  })
+
+  it('maps regular semantic colors through the shared surface lanes', () => {
+    render(<TextField aria-label="Status" variant="soft" color="success" />)
+
+    const input = screen.getByRole('textbox', { name: 'Status' })
+
+    expect(input).toHaveClass(...splitClassNames(textFieldSurfaceColorVariants.success.soft))
+    expect(input).toHaveClass(...splitClassNames(textFieldEnhancementVariants.success.soft))
+    expect(textFieldSurfaceColorVariants.success.soft).toContain(
+      '[background-color:var(--color-success-surface-subtle)]',
+    )
+    expect(textFieldSurfaceColorVariants.success.soft).toContain('[border-color:var(--color-success-border-subtle)]')
+    expect(textFieldSurfaceColorVariants.success.soft).not.toContain('bg-success-soft')
+    expect(textFieldEnhancementVariants.success.soft).not.toContain('background-color')
+    expect(input.className).not.toContain('form-color')
   })
 
   it('centers floating input icon slots in the input surface', () => {

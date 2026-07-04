@@ -1,18 +1,12 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render } from '@testing-library/react'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, it } from 'vitest'
 import { Slider } from './Slider'
+import { expectClassTokens } from './test-utils'
 
 afterEach(() => {
   cleanup()
 })
-
-function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-  for (const token of tokens) {
-    expect(classTokens).toContain(token)
-  }
-}
 
 describe('Slider', () => {
   it('uses semantic color, radius, and static sizing utilities', () => {
