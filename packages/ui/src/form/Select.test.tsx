@@ -6,7 +6,7 @@ import {
   floatingInputStyleVariants,
   floatingLabelStyleVariants,
   textFieldFloatingColorVariants,
-  textFieldFloatingWrapperColorVariants,
+  textFieldFloatingLabelColorVariants,
 } from './text-field.class'
 
 afterEach(() => {
@@ -73,10 +73,10 @@ describe('Select floating variants', () => {
     )
 
     const trigger = screen.getByTestId('select')
+    const label = getLabel(document.body)
 
     expect(trigger).toHaveClass(textFieldFloatingColorVariants.success.outlined)
-    expect(trigger.parentElement).not.toBeNull()
-    expect(trigger.parentElement!).toHaveClass(textFieldFloatingWrapperColorVariants.success)
+    expect(label).toHaveClass(textFieldFloatingLabelColorVariants.success)
   })
 
   it('uses error color classes and invalid state when error is set', () => {
@@ -87,10 +87,10 @@ describe('Select floating variants', () => {
     )
 
     const trigger = screen.getByTestId('select')
+    const label = getLabel(document.body)
 
     expect(trigger).toHaveAttribute('aria-invalid', 'true')
     expect(trigger).toHaveClass(textFieldFloatingColorVariants.error.outlined)
-    expect(trigger.parentElement).not.toBeNull()
-    expect(trigger.parentElement!).toHaveClass(textFieldFloatingWrapperColorVariants.error)
+    expect(label).toHaveClass(textFieldFloatingLabelColorVariants.error)
   })
 })

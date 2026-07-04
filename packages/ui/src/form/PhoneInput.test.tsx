@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { PhoneInput } from './PhoneInput'
-import { textFieldColorVariants, textFieldSizeVariants } from './text-field.class'
+import { textFieldColorVariants, textFieldControlSizeVariants } from './text-field.class'
 
 afterEach(() => {
   cleanup()
@@ -49,7 +49,7 @@ describe('PhoneInput', () => {
     render(<PhoneInput size="lg" variant="soft" />)
 
     const input = screen.getByRole('textbox', { name: 'Phone number' })
-    expect(input.closest('div')).toHaveClass(textFieldSizeVariants.lg)
+    expect(input).toHaveClass(textFieldControlSizeVariants.lg)
     expect(input).toHaveClass(textFieldColorVariants.slate.soft)
   })
 

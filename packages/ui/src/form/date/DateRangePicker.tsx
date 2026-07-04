@@ -26,6 +26,7 @@ import { useThemeRadius } from '@/elements/utils'
 import { useFieldGroup } from '@/form/FieldGroupContext'
 import { cn } from '@/lib/utils'
 import type { Color, Radius, TextFieldVariant } from '@/theme/tokens'
+import { textFieldTypographySizeVariants } from '../text-field.class'
 import { getFloatingStyle } from '../text-field-variant'
 import { DateCalendarPanel, type DayRenderState } from './DateCalendarPanel'
 import {
@@ -61,8 +62,8 @@ import {
   DateFieldWrapper,
   dateGhostIconButtonClassName,
   dateIconSlotClassName,
-  dateRangeInputSurfaceClassName,
   getDateFieldSurfaceClassName,
+  getDateRangeInputSurfaceClassName,
   getDateSegmentClassName,
 } from './date-field-shell'
 import { type DateRangeValue, fromDateRangeValue, toDateRangeValue } from './date-range-value-boundary'
@@ -350,7 +351,7 @@ export function DateRangePicker({
     selectedRange?.to && !Number.isNaN(selectedRange.to.getTime()) ? formatDate(selectedRange.to, dateFormat) : ''
   const dateInputClassName = cn(
     floatingStyle
-      ? 'flex min-w-0 flex-1 items-center gap-0 text-[var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]'
+      ? ['flex min-w-0 flex-1 items-center gap-0', textFieldTypographySizeVariants[textFieldSize]]
       : cn(rangeDateInput, rangeDateInputSizeStyles[size]),
     dateSurfaceText,
   )
@@ -403,7 +404,7 @@ export function DateRangePicker({
       >
         <div
           className={cn(
-            floatingStyle ? dateRangeInputSurfaceClassName : rangeInputSurface,
+            floatingStyle ? getDateRangeInputSurfaceClassName(textFieldSize) : rangeInputSurface,
             !floatingStyle && rangeInputSurfaceSizeStyles[size],
           )}
         >

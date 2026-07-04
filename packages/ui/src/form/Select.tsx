@@ -17,11 +17,14 @@ import type { SelectItemProps, SelectProps } from './select.props'
 import {
   floatingInputBaseCls,
   floatingInputStyleVariants,
+  floatingLabelSizeVariants,
   floatingLabelStyleVariants,
+  textFieldControlSizeVariants,
   textFieldEnhancementVariants,
+  textFieldFloatingBaseSizeVariants,
   textFieldFloatingColorVariants,
-  textFieldFloatingWrapperColorVariants,
-  textFieldSizeVariants,
+  textFieldFloatingInputSizeVariants,
+  textFieldFloatingLabelColorVariants,
   textFieldSurfaceColorVariants,
 } from './text-field.class'
 import { getFloatingStyle, isFloatingVariant, resolveSurfaceVariant } from './text-field-variant'
@@ -118,14 +121,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
           onValueChange={handleValueChange}
           disabled={effectiveDisabled}
         >
-          <div
-            className={cn(
-              'relative w-full',
-              textFieldSizeVariants[size],
-              textFieldFloatingWrapperColorVariants[effectiveColor],
-            )}
-            style={combinedStyles}
-          >
+          <div className={cn('relative w-full')} style={combinedStyles}>
             <SelectPrimitive.Trigger
               id={effectiveId}
               ref={ref}
@@ -133,12 +129,13 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
               className={clsx(
                 cn(
                   'peer inline-flex items-center justify-between w-full outline-none transition-all duration-150 ease-in-out',
-                  '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
                   floatingInputBaseCls,
+                  textFieldFloatingBaseSizeVariants[size],
                   className,
                 ),
                 // Keep prop-map classes outside tailwind-merge so arbitrary selectors remain intact.
                 floatingStyle && floatingInputStyleVariants[floatingStyle],
+                floatingStyle && textFieldFloatingInputSizeVariants[size]?.[floatingStyle],
                 floatingStyle && textFieldFloatingColorVariants[effectiveColor]?.[floatingStyle],
               )}
               {...props}
@@ -156,6 +153,8 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                   'absolute duration-300 origin-[0]',
                   'pointer-events-none select-none',
                   floatingStyle && floatingLabelStyleVariants[floatingStyle],
+                  floatingStyle && floatingLabelSizeVariants[size]?.[floatingStyle],
+                  textFieldFloatingLabelColorVariants[effectiveColor],
                 )}
               >
                 {effectiveLabel}
@@ -180,7 +179,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
         onValueChange={handleValueChange}
         disabled={effectiveDisabled}
       >
-        <div className={cn('grid gap-1.5', textFieldSizeVariants[size])} style={combinedStyles}>
+        <div className="grid gap-1.5" style={combinedStyles}>
           {label ? (
             <Label htmlFor={effectiveId} color={error ? SemanticColor.error : undefined} disabled={effectiveDisabled}>
               {label}
@@ -194,9 +193,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
               cn(
                 'inline-flex items-center justify-between w-full outline-none transition-all duration-150 ease-in-out',
                 'border',
-                'h-[var(--af-text-field-height)]',
-                'px-[var(--af-text-field-padding-x)] py-[var(--af-text-field-padding-y)]',
-                '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
+                textFieldControlSizeVariants[size],
                 'rounded-[var(--element-border-radius)]',
                 textFieldSurfaceColorVariants[effectiveColor]?.[surfaceVariant],
                 effectiveDisabled && 'opacity-50 cursor-not-allowed',

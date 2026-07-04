@@ -6,7 +6,7 @@ import {
   floatingInputStyleVariants,
   floatingLabelStyleVariants,
   textFieldFloatingColorVariants,
-  textFieldFloatingWrapperColorVariants,
+  textFieldFloatingLabelColorVariants,
 } from './text-field.class'
 
 afterEach(() => {
@@ -38,21 +38,27 @@ describe('Textarea floating variants', () => {
   })
 
   it('applies semantic floating color classes', () => {
-    render(<Textarea data-testid="textarea" variant="floating-outlined" label="Notes" color="success" />)
+    const { container } = render(
+      <Textarea data-testid="textarea" variant="floating-outlined" label="Notes" color="success" />,
+    )
 
     const textarea = screen.getByTestId('textarea')
+    const label = getLabel(container)
 
     expect(textarea).toHaveClass(textFieldFloatingColorVariants.success.outlined)
-    expect(textarea.parentElement).toHaveClass(textFieldFloatingWrapperColorVariants.success)
+    expect(label).toHaveClass(textFieldFloatingLabelColorVariants.success)
   })
 
   it('uses error color classes and invalid state when error is set', () => {
-    render(<Textarea data-testid="textarea" variant="floating-outlined" label="Notes" color="success" error />)
+    const { container } = render(
+      <Textarea data-testid="textarea" variant="floating-outlined" label="Notes" color="success" error />,
+    )
 
     const textarea = screen.getByTestId('textarea')
+    const label = getLabel(container)
 
     expect(textarea).toHaveAttribute('aria-invalid', 'true')
     expect(textarea).toHaveClass(textFieldFloatingColorVariants.error.outlined)
-    expect(textarea.parentElement).toHaveClass(textFieldFloatingWrapperColorVariants.error)
+    expect(label).toHaveClass(textFieldFloatingLabelColorVariants.error)
   })
 })

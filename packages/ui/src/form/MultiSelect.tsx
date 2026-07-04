@@ -14,7 +14,7 @@ import { SemanticColor } from '@/theme/props/color.prop'
 import type { Color, Radius, Size, TextFieldVariant } from '@/theme/tokens'
 import { Text } from '@/typography'
 import { useFieldGroup } from './FieldGroupContext'
-import { formControlBorderFrame, formControlNeutralBackground } from './form-control.class'
+import { formControlBorderFrame } from './form-control.class'
 import type { ExtendedFormSize } from './form-size'
 import { Label } from './Label'
 import {
@@ -37,12 +37,16 @@ import { SearchInput } from './SearchInput'
 import {
   floatingInputBaseCls,
   floatingInputStyleVariants,
+  floatingLabelSizeVariants,
+  floatingLabelStyleVariants,
   textFieldEnhancementVariants,
+  textFieldFloatingBaseSizeVariants,
   textFieldFloatingColorVariants,
-  textFieldFloatingWrapperColorVariants,
+  textFieldFloatingInputSizeVariants,
+  textFieldFloatingLabelColorVariants,
   textFieldInputBaseCls,
+  textFieldMinControlSizeVariants,
   textFieldRootCls,
-  textFieldSizeVariants,
   textFieldSurfaceColorVariants,
 } from './text-field.class'
 import { getFloatingStyle, isFloatingVariant, resolveSurfaceVariant } from './text-field-variant'
@@ -413,7 +417,7 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
     // ── Inline mode: render dropdown content directly ──
     if (inline) {
       return (
-        <div ref={ref} className={cn(popup && pickerPopupBase, textFieldSizeVariants[size], className)}>
+        <div ref={ref} className={cn(popup && pickerPopupBase, className)}>
           {searchable ? <div className={pickerSearchRowBase}>{searchField}</div> : null}
 
           {isMaxReached ? (
@@ -601,7 +605,6 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                       aria-label="Additional selected items"
                       className={cn(
                         'absolute right-0 top-[calc(100%+0.375rem)] z-50 w-max max-w-64 rounded-xl border border-neutral bg-neutral-surface p-1.5 text-neutral shadow-lg',
-                        textFieldSizeVariants[size],
                       )}
                       onClick={event => event.stopPropagation()}
                       onMouseLeave={() => setOverflowOpen(false)}
@@ -689,15 +692,9 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
     const floatingLabel = label || (isFloatingVariant(variant) ? placeholder : undefined)
 
     return (
-      <div ref={ref} className={cn(textFieldRootCls, textFieldSizeVariants[size], className)} style={combinedStyles}>
+      <div ref={ref} className={cn(textFieldRootCls, className)} style={combinedStyles}>
         {isFloatingVariant(variant) ? (
-          <div
-            className={cn(
-              'relative w-full',
-              textFieldSizeVariants[size],
-              textFieldFloatingWrapperColorVariants[effectiveColor],
-            )}
-          >
+          <div className="relative w-full">
             <div
               {...triggerProps}
               aria-describedby={ariaDescribedby}
@@ -706,9 +703,10 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
               data-popup-open={open ? '' : undefined}
               className={`${cn(
                 'peer inline-flex w-full items-center justify-between outline-none transition-all duration-150 ease-in-out',
-                '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
                 floatingInputBaseCls,
+                textFieldFloatingBaseSizeVariants[size],
                 floatingStyle && floatingInputStyleVariants[floatingStyle],
+                floatingStyle && textFieldFloatingInputSizeVariants[size]?.[floatingStyle],
                 disabled && 'opacity-50 cursor-not-allowed',
               )} ${floatingStyle ? textFieldFloatingColorVariants[effectiveColor]?.[floatingStyle] : ''}`}
             >
@@ -719,26 +717,10 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                 id={labelId}
                 onPointerDown={() => triggerRef.current?.focus()}
                 className={cn(
-                  'absolute [font-size:var(--af-text-field-font-size)] text-[color:var(--af-text-field-color-text)] duration-300 origin-[0] select-none cursor-text',
-                  floatingStyle === 'filled' && [
-                    'left-[var(--af-text-field-padding-x)] top-4 z-10',
-                    '-translate-y-4 scale-75',
-                    'peer-data-[placeholder]:scale-100 peer-data-[placeholder]:translate-y-0',
-                    'peer-data-[popup-open]:-translate-y-4 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--af-text-field-color-solid)]',
-                  ],
-                  floatingStyle === 'outlined' && [
-                    'left-[var(--af-text-field-padding-x)] top-2 z-10',
-                    '-translate-y-4 scale-75 px-1',
-                    formControlNeutralBackground,
-                    'peer-data-[placeholder]:scale-100 peer-data-[placeholder]:translate-y-3',
-                    'peer-data-[popup-open]:-translate-y-4 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--af-text-field-color-solid)] peer-data-[popup-open]:px-1',
-                  ],
-                  floatingStyle === 'standard' && [
-                    'left-0 top-3 z-10',
-                    '-translate-y-6 scale-75',
-                    'peer-data-[placeholder]:scale-100 peer-data-[placeholder]:translate-y-0',
-                    'peer-data-[popup-open]:-translate-y-6 peer-data-[popup-open]:scale-75 peer-data-[popup-open]:text-[color:var(--af-text-field-color-solid)]',
-                  ],
+                  'absolute duration-300 origin-[0] select-none cursor-text',
+                  floatingStyle && floatingLabelStyleVariants[floatingStyle],
+                  floatingStyle && floatingLabelSizeVariants[size]?.[floatingStyle],
+                  textFieldFloatingLabelColorVariants[effectiveColor],
                 )}
               >
                 {floatingLabel}
@@ -746,7 +728,7 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
             ) : null}
           </div>
         ) : (
-          <Column className={cn('gap-[0.375rem]', textFieldSizeVariants[size])}>
+          <Column className="gap-[0.375rem]">
             {label ? (
               <Label
                 id={labelId}
@@ -765,8 +747,8 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                 cn(
                   textFieldInputBaseCls,
                   'inline-flex w-full box-border items-center justify-between gap-2',
-                  'min-h-[var(--af-text-field-height)] px-[var(--af-text-field-padding-x)] py-[var(--af-text-field-padding-y)] text-left',
-                  '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
+                  textFieldMinControlSizeVariants[size],
+                  'text-left',
                   formControlBorderFrame,
                   textFieldSurfaceColorVariants[effectiveColor][surfaceVariant],
                   disabled && 'opacity-50 cursor-not-allowed',

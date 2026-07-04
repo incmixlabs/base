@@ -4,11 +4,16 @@ import { Label } from '@/form/Label'
 import {
   floatingInputBaseCls,
   floatingInputStyleVariants,
+  floatingLabelSizeVariants,
   type TextFieldSize,
+  textFieldDateRangeSurfaceSizeVariants,
+  textFieldDateSegmentSizeVariants,
   textFieldEnhancementVariants,
+  textFieldFloatingBaseSizeVariants,
   textFieldFloatingColorVariants,
-  textFieldFloatingWrapperColorVariants,
-  textFieldSizeVariants,
+  textFieldFloatingInputSizeVariants,
+  textFieldFloatingLabelColorVariants,
+  textFieldHeightSizeVariants,
   textFieldSurfaceColorVariants,
 } from '@/form/text-field.class'
 import type { FloatingStyle } from '@/form/text-field-variant'
@@ -19,11 +24,14 @@ import { datePickerTriggerGroupRadiusStyles } from './DatePicker.class'
 import { dateSurfaceFocusOutline, dateSurfaceIconText, dateSurfaceText } from './date-surface.shared.class'
 
 export const dateSegmentInputClassName = cn(
-  'flex h-full min-w-0 flex-1 items-center gap-0 bg-transparent px-[var(--af-text-field-padding-x)]',
-  'pr-[calc(var(--af-text-field-padding-x)*2+var(--af-text-field-icon-size))]',
+  'flex h-full min-w-0 flex-1 items-center gap-0 bg-transparent',
   dateSurfaceText,
-  'outline-none text-[var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
+  'outline-none',
 )
+
+export function getDateSegmentInputClassName(textFieldSize: TextFieldSize) {
+  return cn(dateSegmentInputClassName, textFieldDateSegmentSizeVariants[textFieldSize])
+}
 
 export const dateSegmentClassName = cn(
   'rounded-sm px-0.5 outline-none transition-colors',
@@ -59,9 +67,12 @@ export const dateIconSlotClassName = cn(
 )
 
 export const dateRangeInputSurfaceClassName = cn(
-  'flex min-w-0 flex-1 items-center gap-[var(--element-gap)] bg-transparent px-[var(--af-text-field-padding-x)]',
-  'pr-[calc(var(--af-text-field-padding-x)*2+var(--af-text-field-icon-size))]',
+  'flex min-w-0 flex-1 items-center gap-[var(--element-gap)] bg-transparent',
 )
+
+export function getDateRangeInputSurfaceClassName(textFieldSize: TextFieldSize) {
+  return cn(dateRangeInputSurfaceClassName, textFieldDateRangeSurfaceSizeVariants[textFieldSize])
+}
 
 export const dateGhostIconButtonClassName = cn(
   'border-0 bg-transparent shadow-none',
@@ -87,27 +98,43 @@ export function getDateFieldSurfaceClassName({
     cn(
       'relative box-border flex w-full min-w-0 items-center overflow-hidden transition-all duration-150 ease-in-out',
       dateSurfaceText,
-      textFieldSizeVariants[textFieldSize],
       datePickerTriggerGroupRadiusStyles[radius],
       floatingStyle
-        ? ['peer bg-neutral-background', floatingInputBaseCls]
-        : ['h-[var(--af-text-field-height)] border', textFieldSurfaceColorVariants[color]?.[surfaceVariant]],
+        ? ['peer bg-neutral-background', floatingInputBaseCls, textFieldFloatingBaseSizeVariants[textFieldSize]]
+        : [
+            textFieldHeightSizeVariants[textFieldSize],
+            'border',
+            textFieldSurfaceColorVariants[color]?.[surfaceVariant],
+          ],
     ),
     floatingStyle && floatingInputStyleVariants[floatingStyle],
+    floatingStyle && textFieldFloatingInputSizeVariants[textFieldSize]?.[floatingStyle],
     floatingStyle && textFieldFloatingColorVariants[color]?.[floatingStyle],
     !floatingStyle && textFieldEnhancementVariants[color]?.[surfaceVariant],
   )
 }
 
-export function getDateFloatingLabelClassName(floatingStyle: FloatingStyle | null, isFloatingActive: boolean) {
+export function getDateFloatingLabelClassName({
+  color,
+  floatingStyle,
+  isFloatingActive,
+  textFieldSize,
+}: {
+  color: Color
+  floatingStyle: FloatingStyle | null
+  isFloatingActive: boolean
+  textFieldSize: TextFieldSize
+}) {
   return cn(
-    'pointer-events-none absolute origin-[0] select-none [font-size:var(--af-text-field-font-size)] text-[color:var(--af-text-field-color-text)] duration-300',
+    'pointer-events-none absolute origin-[0] select-none duration-300',
+    floatingStyle && floatingLabelSizeVariants[textFieldSize]?.[floatingStyle],
+    textFieldFloatingLabelColorVariants[color],
     floatingStyle === 'filled' && [
-      'left-[var(--af-text-field-padding-x)] top-[0.875rem] z-10',
+      'top-[0.875rem] z-10',
       isFloatingActive ? '-translate-y-4 scale-75' : 'translate-y-0 scale-100',
     ],
     floatingStyle === 'outlined' && [
-      'left-[var(--af-text-field-padding-x)] top-[0.375rem] z-10',
+      'top-[0.375rem] z-10',
       isFloatingActive
         ? '-translate-y-4 scale-75 bg-neutral-background px-1'
         : 'translate-y-3 scale-100 bg-transparent px-0',
@@ -152,12 +179,7 @@ export function DateFieldWrapper({
           if (nextTarget instanceof Node && event.currentTarget.contains(nextTarget)) return
           setHasFocusWithin(false)
         }}
-        className={cn(
-          'relative w-full',
-          textFieldSizeVariants[textFieldSize],
-          textFieldFloatingWrapperColorVariants[color],
-          className,
-        )}
+        className={cn('relative w-full', className)}
       >
         <div className="w-full min-w-0">{children}</div>
         {label ? (
@@ -165,7 +187,12 @@ export function DateFieldWrapper({
             id={labelId}
             size={textFieldSize}
             disabled={disabled}
-            className={getDateFloatingLabelClassName(floatingStyle, isFloatingActive)}
+            className={getDateFloatingLabelClassName({
+              color,
+              floatingStyle,
+              isFloatingActive,
+              textFieldSize,
+            })}
           >
             {label}
           </Label>

@@ -6,7 +6,7 @@ import { CheckIcon, ChevronDown, Search } from 'lucide-react'
 import * as React from 'react'
 import { getRadiusStyles, getSizeStyles, useThemeRadius } from '@/elements/utils'
 import { cn } from '@/lib/utils'
-import type { BaseTextFieldVariant, Color, Radius, Size, TextFieldVariant } from '@/theme/tokens'
+import type { BaseTextFieldVariant, Color, Radius, TextFieldVariant } from '@/theme/tokens'
 import { useFieldGroup } from './FieldGroupContext'
 import type { ExtendedFormSize } from './form-size'
 import { Label } from './Label'
@@ -14,9 +14,12 @@ import { pickerOptionItemBase, pickerPopupBase } from './picker-popup.class'
 import {
   floatingInputBaseCls,
   floatingInputStyleVariants,
+  floatingLabelSizeVariants,
+  floatingLabelStyleVariants,
+  textFieldFloatingBaseSizeVariants,
   textFieldFloatingColorVariants,
-  textFieldFloatingWrapperColorVariants,
-  textFieldSizeVariants,
+  textFieldFloatingInputSizeVariants,
+  textFieldFloatingLabelColorVariants,
 } from './text-field.class'
 import { type FloatingStyle, getFloatingStyle, isFloatingVariant, toBaseTextFieldVariant } from './text-field-variant'
 
@@ -38,7 +41,7 @@ export interface LocationInputProps {
   /** Label text */
   label?: React.ReactNode
   /** The size of the selects */
-  size?: Size
+  size?: ExtendedFormSize
   /** The visual variant */
   variant?: TextFieldVariant
   /** The accent color */
@@ -84,7 +87,7 @@ interface SearchableSelectProps<T> {
   placeholder?: string
   disabled?: boolean
   error?: boolean
-  size?: Size
+  size?: ExtendedFormSize
   variant?: BaseTextFieldVariant
   radius?: Radius
   combinedStyles: React.CSSProperties
@@ -106,6 +109,7 @@ function SearchableSelect<T>({
   placeholder = 'Select...',
   disabled,
   error,
+  size = 'md',
   variant,
   combinedStyles,
   triggerId,
@@ -113,7 +117,7 @@ function SearchableSelect<T>({
   ariaLabel,
   floating = false,
   floatingStyle,
-}: Omit<SearchableSelectProps<T>, 'radius' | 'size'>) {
+}: Omit<SearchableSelectProps<T>, 'radius'>) {
   const [search, setSearch] = React.useState('')
   const [open, setOpen] = React.useState(false)
 
@@ -152,9 +156,11 @@ function SearchableSelect<T>({
             'inline-flex items-center justify-between w-full outline-none transition-all duration-150 ease-in-out',
             floating
               ? [
-                  'peer [font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
+                  'peer',
                   floatingInputBaseCls,
+                  textFieldFloatingBaseSizeVariants[size],
                   floatingStyle && floatingInputStyleVariants[floatingStyle],
+                  floatingStyle && textFieldFloatingInputSizeVariants[size]?.[floatingStyle],
                   floatingStyle && textFieldFloatingColorVariants[error ? 'error' : 'slate']?.[floatingStyle],
                 ]
               : [
@@ -214,24 +220,18 @@ function SearchableSelect<T>({
           <label
             htmlFor={triggerId}
             className={cn(
-              'absolute [font-size:var(--af-text-field-font-size)] text-[color:var(--af-text-field-color-text)]',
-              'duration-300 origin-[0]',
+              'absolute duration-300 origin-[0]',
               'pointer-events-none select-none',
-              floatingStyle === 'filled' && [
-                'left-[var(--af-text-field-padding-x)] top-[0.875rem] z-10',
-                '-translate-y-4 scale-75',
-                'peer-data-[popup-open]:text-[color:var(--af-text-field-color-solid)]',
-              ],
+              floatingStyle && floatingLabelStyleVariants[floatingStyle],
+              floatingStyle && floatingLabelSizeVariants[size]?.[floatingStyle],
+              textFieldFloatingLabelColorVariants[error ? 'error' : 'slate'],
+              floatingStyle === 'filled' && ['top-[0.875rem] z-10', '-translate-y-4 scale-75'],
               floatingStyle === 'outlined' && [
-                'left-[var(--af-text-field-padding-x)] top-[0.375rem] z-10',
+                'top-[0.375rem] z-10',
                 '-translate-y-4 scale-75 bg-neutral-background px-1',
-                'peer-data-[popup-open]:text-[color:var(--af-text-field-color-solid)] peer-data-[popup-open]:bg-neutral-background peer-data-[popup-open]:px-1',
+                'peer-data-[popup-open]:bg-neutral-background peer-data-[popup-open]:px-1',
               ],
-              floatingStyle === 'standard' && [
-                'left-0 top-[0.625rem] z-10',
-                '-translate-y-6 scale-75',
-                'peer-data-[popup-open]:text-[color:var(--af-text-field-color-solid)]',
-              ],
+              floatingStyle === 'standard' && ['left-0 top-[0.625rem] z-10', '-translate-y-6 scale-75'],
             )}
           >
             {label}
@@ -476,6 +476,7 @@ export const LocationInput = React.forwardRef<HTMLDivElement, LocationInputProps
             placeholder={countryPlaceholder}
             disabled={disabled}
             error={error}
+            size={size}
             variant={variant ? toBaseTextFieldVariant(variant) : undefined}
             combinedStyles={combinedStyles}
             triggerId={countryId}
@@ -499,6 +500,7 @@ export const LocationInput = React.forwardRef<HTMLDivElement, LocationInputProps
               placeholder={statePlaceholder}
               disabled={disabled}
               error={error}
+              size={size}
               variant={variant ? toBaseTextFieldVariant(variant) : undefined}
               combinedStyles={combinedStyles}
               triggerId={stateId}
@@ -514,15 +516,7 @@ export const LocationInput = React.forwardRef<HTMLDivElement, LocationInputProps
 
     if (floating) {
       return (
-        <div
-          ref={ref}
-          className={cn(
-            textFieldSizeVariants[size],
-            textFieldFloatingWrapperColorVariants[error ? 'error' : 'slate'],
-            className,
-          )}
-          style={radiusStyles}
-        >
+        <div ref={ref} className={className} style={radiusStyles}>
           {controls}
         </div>
       )

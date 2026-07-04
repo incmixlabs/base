@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { CreditCardInput } from './CreditCardInput'
-import { textFieldColorVariants, textFieldSizeVariants } from './text-field.class'
+import { textFieldColorVariants, textFieldControlSizeVariants } from './text-field.class'
 
 afterEach(() => {
   cleanup()
@@ -40,7 +40,7 @@ describe('CreditCardInput', () => {
     render(<CreditCardInput size="lg" variant="soft" />)
 
     const input = screen.getByRole('textbox', { name: 'Card number' })
-    expect(input.closest('div')).toHaveClass(textFieldSizeVariants.lg)
+    expect(input).toHaveClass(textFieldControlSizeVariants.lg)
     expect(input).toHaveClass(textFieldColorVariants.slate.soft)
   })
 

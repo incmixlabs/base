@@ -15,23 +15,25 @@ import { Label } from './Label'
 import {
   floatingInputBaseCls,
   floatingInputStyleVariants,
-  floatingInputWithLeftIconCls,
-  floatingInputWithRightIconCls,
+  floatingInputWithLeftIconSizeVariants,
+  floatingInputWithRightIconSizeVariants,
   floatingLabelFocusedPlaceholderVariants,
+  floatingLabelSizeVariants,
   floatingLabelStyleVariants,
-  floatingLabelWithLeftIconCls,
+  textFieldControlSizeVariants,
   textFieldEnhancementVariants,
+  textFieldFloatingBaseSizeVariants,
   textFieldFloatingColorVariants,
-  textFieldFloatingWrapperColorVariants,
-  textFieldIconCls,
+  textFieldFloatingInputSizeVariants,
+  textFieldFloatingLabelColorVariants,
   textFieldIconContainerCls,
+  textFieldIconSizeVariants,
   textFieldInputBaseCls,
-  textFieldInputWithLeftElementCls,
-  textFieldInputWithRightElementCls,
-  textFieldLeftIconContainerCls,
-  textFieldRightIconContainerCls,
+  textFieldInputWithLeftElementSizeVariants,
+  textFieldInputWithRightElementSizeVariants,
+  textFieldLeftIconContainerSizeVariants,
+  textFieldRightIconContainerSizeVariants,
   textFieldRootCls,
-  textFieldSizeVariants,
   textFieldSurfaceColorVariants,
 } from './text-field.class'
 import type { TextFieldProps } from './text-field.props'
@@ -113,25 +115,9 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
 
     // If floating variant, render the floating version
     if (isFloatingVariant(variant)) {
-      const floatingIconStyle = {
-        top: '50%',
-      } as React.CSSProperties
-      const leftSlotStyle = {
-        ...floatingIconStyle,
-        left: 'calc(var(--af-text-field-padding-x) + var(--af-text-field-gap))',
-      } as React.CSSProperties
-      const rightSlotStyle = {
-        ...floatingIconStyle,
-        right: 'calc(var(--af-text-field-padding-x) + var(--af-text-field-gap))',
-      } as React.CSSProperties
-
       return (
         <div
-          className={clsx(
-            cn(textFieldRootCls, marginProps.className, className),
-            textFieldSizeVariants[size],
-            textFieldFloatingWrapperColorVariants[effectiveColor],
-          )}
+          className={cn(textFieldRootCls, marginProps.className, className)}
           style={{ ...marginProps.style, ...radiusStyles, ...style }}
         >
           {leftIcon && (
@@ -140,11 +126,10 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
                 textFieldIconSlotBase,
                 textFieldIconContainerCls,
                 'pointer-events-none',
-                textFieldLeftIconContainerCls,
-                textFieldIconCls,
+                textFieldLeftIconContainerSizeVariants[size],
+                textFieldIconSizeVariants[size],
                 'text-muted',
               )}
-              style={leftSlotStyle}
             >
               <Icon aria-hidden color={effectiveColor} icon={leftIcon} size={iconSize} />
             </div>
@@ -152,8 +137,11 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
 
           {leftElement && (
             <div
-              className={clsx(textFieldIconSlotBase, textFieldIconContainerCls, textFieldLeftIconContainerCls)}
-              style={leftSlotStyle}
+              className={clsx(
+                textFieldIconSlotBase,
+                textFieldIconContainerCls,
+                textFieldLeftIconContainerSizeVariants[size],
+              )}
             >
               {leftElement}
             </div>
@@ -173,10 +161,12 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             className={clsx(
               cn(textFieldInputBaseCls, 'peer', floatingInputBaseCls),
               // Keep prop-map classes outside tailwind-merge so arbitrary selectors remain intact.
+              textFieldFloatingBaseSizeVariants[size],
               floatingStyle && textFieldFloatingColorVariants[effectiveColor]?.[floatingStyle],
               floatingStyle && floatingInputStyleVariants[floatingStyle],
-              (leftIcon || leftElement) && floatingInputWithLeftIconCls,
-              (rightIcon || rightElement) && floatingInputWithRightIconCls,
+              floatingStyle && textFieldFloatingInputSizeVariants[size]?.[floatingStyle],
+              (leftIcon || leftElement) && floatingInputWithLeftIconSizeVariants[size],
+              (rightIcon || rightElement) && floatingInputWithRightIconSizeVariants[size],
             )}
             {...inputProps}
             onBlur={handleBlur}
@@ -195,11 +185,12 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
                 ),
                 // Keep prop-map classes outside tailwind-merge so peer selector variants remain intact.
                 floatingStyle && floatingLabelStyleVariants[floatingStyle],
+                floatingStyle && floatingLabelSizeVariants[size]?.[floatingStyle],
+                textFieldFloatingLabelColorVariants[effectiveColor],
                 floatingStyle &&
                   floatingFocused &&
                   !floatingHasValue &&
                   floatingLabelFocusedPlaceholderVariants[floatingStyle],
-                (leftIcon || leftElement) && floatingLabelWithLeftIconCls,
               )}
             >
               {effectiveLabel}
@@ -212,11 +203,10 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
                 textFieldIconSlotBase,
                 textFieldIconContainerCls,
                 'pointer-events-none',
-                textFieldRightIconContainerCls,
-                textFieldIconCls,
+                textFieldRightIconContainerSizeVariants[size],
+                textFieldIconSizeVariants[size],
                 'text-muted',
               )}
-              style={rightSlotStyle}
             >
               <Icon aria-hidden color={effectiveColor} icon={rightIcon} size={iconSize} />
             </div>
@@ -224,8 +214,11 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
 
           {rightElement && (
             <div
-              className={clsx(textFieldIconSlotBase, textFieldIconContainerCls, textFieldRightIconContainerCls)}
-              style={rightSlotStyle}
+              className={clsx(
+                textFieldIconSlotBase,
+                textFieldIconContainerCls,
+                textFieldRightIconContainerSizeVariants[size],
+              )}
             >
               {rightElement}
             </div>
@@ -238,15 +231,15 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     const surfaceVariant = resolveSurfaceVariant(variant)
 
     const control = (
-      <div className={clsx(cn(textFieldRootCls), textFieldSizeVariants[size])} style={regularStyles}>
+      <div className={cn(textFieldRootCls)} style={regularStyles}>
         {leftIcon && (
           <div
             className={clsx(
               textFieldIconSlotBase,
               textFieldIconContainerCls,
               'pointer-events-none',
-              textFieldLeftIconContainerCls,
-              textFieldIconCls,
+              textFieldLeftIconContainerSizeVariants[size],
+              textFieldIconSizeVariants[size],
               'text-muted',
             )}
           >
@@ -255,7 +248,13 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
         )}
 
         {leftElement && (
-          <div className={clsx(textFieldIconSlotBase, textFieldIconContainerCls, textFieldLeftIconContainerCls)}>
+          <div
+            className={clsx(
+              textFieldIconSlotBase,
+              textFieldIconContainerCls,
+              textFieldLeftIconContainerSizeVariants[size],
+            )}
+          >
             {leftElement}
           </div>
         )}
@@ -269,17 +268,16 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           className={clsx(
             cn(
               textFieldInputBaseCls,
-              'box-border h-[var(--af-text-field-height)]',
-              'px-[var(--af-text-field-padding-x)] py-[var(--af-text-field-padding-y)]',
-              '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
+              'box-border',
+              textFieldControlSizeVariants[size],
               formControlBorderFrame,
               textFieldSurfaceColorVariants[effectiveColor]?.[surfaceVariant],
 
               effectiveDisabled && 'opacity-50 cursor-not-allowed',
             ),
             // Keep prop-map classes outside tailwind-merge so semantic text utilities are not merged away.
-            (leftIcon || leftElement) && textFieldInputWithLeftElementCls,
-            (rightIcon || rightElement) && textFieldInputWithRightElementCls,
+            (leftIcon || leftElement) && textFieldInputWithLeftElementSizeVariants[size],
+            (rightIcon || rightElement) && textFieldInputWithRightElementSizeVariants[size],
             textFieldEnhancementVariants[effectiveColor]?.[surfaceVariant],
           )}
           placeholder={placeholder}
@@ -297,8 +295,8 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
               textFieldIconSlotBase,
               textFieldIconContainerCls,
               'pointer-events-none',
-              textFieldRightIconContainerCls,
-              textFieldIconCls,
+              textFieldRightIconContainerSizeVariants[size],
+              textFieldIconSizeVariants[size],
               'text-muted',
             )}
           >
@@ -307,7 +305,13 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
         )}
 
         {rightElement && (
-          <div className={clsx(textFieldIconSlotBase, textFieldIconContainerCls, textFieldRightIconContainerCls)}>
+          <div
+            className={clsx(
+              textFieldIconSlotBase,
+              textFieldIconContainerCls,
+              textFieldRightIconContainerSizeVariants[size],
+            )}
+          >
             {rightElement}
           </div>
         )}

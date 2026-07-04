@@ -13,16 +13,20 @@ import type { ExtendedFormSize } from './form-size'
 import { Label } from './Label'
 import type { TextareaProps } from './text-area.props'
 import {
+  floatingInputBaseCls,
   floatingInputStyleVariants,
   floatingLabelFocusedPlaceholderVariants,
+  floatingLabelSizeVariants,
   floatingLabelStyleVariants,
   textFieldEnhancementVariants,
   textFieldFloatingColorVariants,
-  textFieldFloatingWrapperColorVariants,
+  textFieldFloatingInputSizeVariants,
+  textFieldFloatingLabelColorVariants,
   textFieldInputBaseCls,
   textFieldRootCls,
-  textFieldSizeVariants,
   textFieldSurfaceColorVariants,
+  textFieldTextareaMinHeightVariants,
+  textFieldTextareaSizeVariants,
 } from './text-field.class'
 import { getFloatingStyle, isFloatingVariant, resolveSurfaceVariant } from './text-field-variant'
 import { useFloatingFieldState } from './use-floating-field-state'
@@ -115,15 +119,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     // If floating variant, render the floating version
     if (isFloatingVariant(variant)) {
       return (
-        <div
-          className={cn(
-            textFieldRootCls,
-            textFieldSizeVariants[size],
-            textFieldFloatingWrapperColorVariants[effectiveColor],
-            marginProps.className,
-          )}
-          style={{ ...marginProps.style, ...radiusStyles }}
-        >
+        <div className={cn(textFieldRootCls, marginProps.className)} style={{ ...marginProps.style, ...radiusStyles }}>
           <TextareaElement
             ref={ref}
             id={textareaId}
@@ -140,7 +136,9 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               cn(
                 textFieldInputBaseCls,
                 'peer',
-                'box-border h-auto min-h-[calc(var(--af-text-field-height)*2)]',
+                floatingInputBaseCls,
+                'h-auto',
+                textFieldTextareaMinHeightVariants[size],
                 'disabled:opacity-50 disabled:cursor-not-allowed',
                 resizeClass,
                 className,
@@ -148,6 +146,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               // Keep prop-map classes outside tailwind-merge so arbitrary selectors remain intact.
               floatingStyle && textFieldFloatingColorVariants[effectiveColor]?.[floatingStyle],
               floatingStyle && floatingInputStyleVariants[floatingStyle],
+              floatingStyle && textFieldFloatingInputSizeVariants[size]?.[floatingStyle],
             )}
             {...autoSizeProps}
             {...textareaProps}
@@ -163,6 +162,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
                 cn('absolute duration-300 origin-[0]', 'pointer-events-none select-none'),
                 // Floating label positioning by style
                 floatingStyle && floatingLabelStyleVariants[floatingStyle],
+                floatingStyle && floatingLabelSizeVariants[size]?.[floatingStyle],
+                textFieldFloatingLabelColorVariants[effectiveColor],
                 floatingStyle &&
                   floatingFocused &&
                   !floatingHasValue &&
@@ -183,9 +184,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       cn(
         textFieldInputBaseCls,
         'box-border',
-        'min-h-[calc(var(--af-text-field-height)*2)]',
-        'px-[var(--af-text-field-padding-x)] py-[var(--af-text-field-padding-y)]',
-        '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)]',
+        textFieldTextareaSizeVariants[size],
         'rounded-[var(--element-border-radius)]',
         'border',
         resizeClass,
@@ -194,7 +193,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       ),
       textFieldEnhancementVariants[effectiveColor]?.[surfaceVariant],
     )
-    const regularClassName = clsx(cn(textFieldRootCls, textFieldSizeVariants[size]), regularClasses)
+    const regularClassName = clsx(cn(textFieldRootCls), regularClasses)
 
     const control = autoSize ? (
       <TextareaAutosize
