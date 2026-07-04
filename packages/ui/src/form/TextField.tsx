@@ -17,6 +17,7 @@ import {
   floatingInputStyleVariants,
   floatingInputWithLeftIconCls,
   floatingInputWithRightIconCls,
+  floatingLabelFocusedPlaceholderVariants,
   floatingLabelStyleVariants,
   floatingLabelWithLeftIconCls,
   textFieldEnhancementVariants,
@@ -202,6 +203,10 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
                 ),
                 // Keep prop-map classes outside tailwind-merge so peer selector variants remain intact.
                 floatingStyle && floatingLabelStyleVariants[floatingStyle],
+                floatingStyle &&
+                  floatingFocused &&
+                  !floatingHasValue &&
+                  floatingLabelFocusedPlaceholderVariants[floatingStyle],
                 (leftIcon || leftElement) && floatingLabelWithLeftIconCls,
               )}
             >
