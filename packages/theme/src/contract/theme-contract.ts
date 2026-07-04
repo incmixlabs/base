@@ -9,6 +9,23 @@ export const THEME_CONTRACT_SCHEMA_VERSION = '1.0.0' as const
 
 export type ThemeLifecycle = 'draft' | 'review' | 'published'
 
+export type TextFieldComponentTokens = {
+  size?: Record<
+    string,
+    Partial<{
+      height: string
+      floatingHeight: string
+      fontSize: string
+      lineHeight: string
+      paddingInline: string
+      paddingBlock: string
+      iconSize: string
+      gap: string
+      floatingOutlinedPlaceholderTranslate: string
+    }>
+  >
+}
+
 export type AppShellComponentTokens = {
   content?: Partial<{
     paddingInline: string
@@ -50,6 +67,7 @@ export type ThemeContract = {
     color: Record<string, Record<string, string>>
   }
   component: {
+    textField: TextFieldComponentTokens
     appShell: AppShellComponentTokens
   }
 }
@@ -57,7 +75,7 @@ export type ThemeContract = {
 export type ThemeContractValidation = { ok: true; value: ThemeContract } | { ok: false; errors: string[] }
 
 const lifecycleValues: ThemeLifecycle[] = ['draft', 'review', 'published']
-export const THEME_COMPONENT_TOKEN_KEYS = ['appShell'] as const
+export const THEME_COMPONENT_TOKEN_KEYS = ['textField', 'appShell'] as const
 export type ThemeComponentTokenKey = (typeof THEME_COMPONENT_TOKEN_KEYS)[number]
 
 const strippedLegacyComponentKeys = ['dateNext', 'stepper', 'timeline', 'surface'] as const
@@ -88,7 +106,6 @@ const rejectedRetiredComponentKeys = [
   'tooltip',
   'toggle',
   'treeView',
-  'textField',
 ] as const
 
 type ComponentTokenBranchSchema =
@@ -101,6 +118,24 @@ type ComponentTokenSchema = {
 }
 
 const componentTokenSchema = {
+  textField: {
+    branches: {
+      size: {
+        kind: 'record',
+        slots: [
+          'height',
+          'floatingHeight',
+          'fontSize',
+          'lineHeight',
+          'paddingInline',
+          'paddingBlock',
+          'iconSize',
+          'gap',
+          'floatingOutlinedPlaceholderTranslate',
+        ],
+      },
+    },
+  },
   appShell: {
     branches: {
       content: {
