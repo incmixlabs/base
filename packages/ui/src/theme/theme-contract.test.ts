@@ -33,7 +33,6 @@ function createValidTheme() {
       },
     },
     component: {
-      textField: { size: { sm: { paddingInline: '0.75rem' } } },
       appShell: {
         content: { paddingInline: '1rem', paddingInlineDesktop: '1.5rem' },
         layout: { bodyWithSecondaryRightGridTemplateColumns: 'auto minmax(0, 1fr) 20rem' },
@@ -216,15 +215,25 @@ describe('theme-contract', () => {
 
   it('fills missing component branches with empty objects during validation', () => {
     const theme = createValidTheme()
-    delete (theme.component as Record<string, unknown>).textField
     delete (theme.component as Record<string, unknown>).appShell
 
     const result = validateThemeContract(theme)
 
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.value.component.textField).toEqual({})
       expect(result.value.component.appShell).toEqual({})
+    }
+  })
+
+  it('rejects retired TextField component token overrides', () => {
+    const theme = createValidTheme()
+    ;(theme.component as Record<string, unknown>).textField = { size: { sm: { paddingInline: '0.75rem' } } }
+
+    const result = validateThemeContract(theme)
+
+    expect(result.ok).toBe(false)
+    if (!result.ok) {
+      expect(result.errors.join(' ')).toContain('component.textField is retired')
     }
   })
 

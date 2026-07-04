@@ -71,17 +71,16 @@ function addLocation(locations, file, line) {
   locations.set(file, new Set([line]))
 }
 
-function isDeclaration(file, line, start, name) {
-  const before = line.slice(0, start)
-  const linePrefix = before.slice(Math.max(0, before.length - 80))
-  if (/(?:cssDeclaration|property|setProperty)\(\s*['"`][^'"`]*$/.test(linePrefix)) return true
+function sourceWindow(lines, lineIndex, radius = 3) {
+  const start = Math.max(0, lineIndex - radius)
+  const end = Math.min(lines.length, lineIndex + radius + 1)
+  return lines.slice(start, end).join('\n')
+}
 
-  if (file.scope === 'test') return false
-
-  const after = line.slice(start + name.length)
-  if (/^\s*['"`\]]?\s*:/.test(after)) return true
-
-  return false
+function windowOffset(lines, lineIndex, index, radius = 3) {
+  const start = Math.max(0, lineIndex - radius)
+  const previous = lines.slice(start, lineIndex).join('\n')
+  return previous.length + (previous.length > 0 ? 1 : 0) + index
 }
 
 function isVarReference(line, start) {
@@ -91,6 +90,24 @@ function isVarReference(line, start) {
 
   const between = before.slice(lastVarCall + 'var('.length)
   return !between.includes(')')
+}
+
+function isDeclaration(file, lines, lineIndex, start, name) {
+  const line = lines[lineIndex]
+  const source = sourceWindow(lines, lineIndex)
+  const sourceIndex = windowOffset(lines, lineIndex, start)
+
+  if (isVarReference(source, sourceIndex)) return false
+
+  const before = source.slice(Math.max(0, sourceIndex - 120), sourceIndex)
+  if (/(?:cssDeclaration|property|setProperty)\(\s*['"`][\s\S]*$/.test(before)) return true
+
+  if (file.scope === 'test') return false
+
+  const after = line.slice(start + name.length)
+  if (/^\s*['"`\]]?\s*:/.test(after)) return true
+
+  return false
 }
 
 function collectExactVars(files) {
@@ -115,7 +132,7 @@ function collectExactVars(files) {
         }
 
         const lineNumber = lineIndex + 1
-        if (isDeclaration(file, line, start, name)) {
+        if (isDeclaration(file, lines, lineIndex, start, name)) {
           addLocation(entry.definedAt, file.relativePath, lineNumber)
         } else if (isVarReference(line, start)) {
           addLocation(entry.referencedAt, file.relativePath, lineNumber)

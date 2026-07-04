@@ -4,26 +4,12 @@ function withFallback(cssVar: string, fallback: string): string {
   return `var(${cssVar}, ${fallback})`
 }
 
-export type TextFieldSizeTokenSlot =
-  | 'height'
-  | 'floatingHeight'
-  | 'fontSize'
-  | 'lineHeight'
-  | 'paddingInline'
-  | 'paddingBlock'
-  | 'iconSize'
-  | 'gap'
-  | 'floatingOutlinedPlaceholderTranslate'
 export type AppShellLayoutTokenSlot =
   | 'bodyGridTemplateColumns'
   | 'bodyWithSecondaryGridTemplateColumns'
   | 'bodyWithSecondaryRightGridTemplateColumns'
 export type AppShellContentTokenSlot = 'paddingInline' | 'paddingBlock' | 'paddingInlineDesktop' | 'paddingBlockDesktop'
 export type ContentBodyTokenSlot = 'background' | 'foreground' | 'borderColor'
-
-export function textFieldSizeVar(size: string, slot: TextFieldSizeTokenSlot, fallback: string): string {
-  return withFallback(`--af-text-field-size-${toKebabCase(size)}-${toKebabCase(slot)}`, fallback)
-}
 
 export function appShellLayoutVar(slot: AppShellLayoutTokenSlot, fallback: string): string {
   return withFallback(`--af-app-shell-layout-${toKebabCase(slot)}`, fallback)

@@ -35,7 +35,6 @@ const replaceContractComponents = new Set([
   'scrollArea',
   'slider',
   'switch',
-  'textField',
 ])
 
 function toPosix(relativePath) {
@@ -87,15 +86,44 @@ function addMapSet(map, key, value) {
   map.set(key, new Set([value]))
 }
 
-function lineRole(line, index, name) {
-  const before = line.slice(Math.max(0, index - 40), index)
-  const after = line.slice(index + name.length, index + name.length + 40)
+function sourceWindow(lines, lineIndex, radius = 3) {
+  const start = Math.max(0, lineIndex - radius)
+  const end = Math.min(lines.length, lineIndex + radius + 1)
+  return lines.slice(start, end).join('\n')
+}
+
+function windowOffset(lines, lineIndex, index, radius = 3) {
+  const start = Math.max(0, lineIndex - radius)
+  const previous = lines.slice(start, lineIndex).join('\n')
+  return previous.length + (previous.length > 0 ? 1 : 0) + index
+}
+
+function isVarReference(source, index) {
+  const before = source.slice(0, index)
+  const lastVarCall = before.lastIndexOf('var(')
+  if (lastVarCall === -1) return false
+
+  const between = before.slice(lastVarCall + 'var('.length)
+  return !between.includes(')')
+}
+
+function lineRole(lines, lineIndex, index, name) {
+  const line = lines[lineIndex]
+  const source = sourceWindow(lines, lineIndex)
+  const sourceIndex = windowOffset(lines, lineIndex, index)
+  const before = source.slice(Math.max(0, sourceIndex - 120), sourceIndex)
+  const after = source.slice(sourceIndex + name.length, sourceIndex + name.length + 80)
   const roles = new Set()
 
-  if (before.includes('var(')) roles.add('consume')
+  if (isVarReference(source, sourceIndex)) roles.add('consume')
   if (after.trimStart().startsWith(':')) roles.add('declare')
-  if (line.includes('setProperty') || line.includes('cssDeclaration') || line.includes('property('))
+  if (
+    roles.size === 0 &&
+    /(?:setProperty|cssDeclaration|property)\(\s*['"`][\s\S]*$/.test(before) &&
+    !isVarReference(source, sourceIndex)
+  ) {
     roles.add('declare')
+  }
   if (line.includes('expect(')) roles.add('assert')
   if (roles.size === 0) roles.add('reference')
 
@@ -136,7 +164,8 @@ function collectExactVars(files) {
         }
 
         entry.scopes.add(file.scope)
-        for (const role of lineRole(line, match.index ?? 0, name)) {
+        const roles = lineRole(lines, lineIndex, match.index ?? 0, name)
+        for (const role of roles) {
           entry.roles.add(role)
         }
         addMapSet(entry.files, file.relativePath, lineIndex + 1)
@@ -144,7 +173,7 @@ function collectExactVars(files) {
           file: file.relativePath,
           line: lineIndex + 1,
           scope: file.scope,
-          roles: lineRole(line, match.index ?? 0, name),
+          roles,
           text: line.trim(),
         })
         vars.set(name, entry)

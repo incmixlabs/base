@@ -75,9 +75,7 @@ Token keys per lane:
 
 Only these component namespaces are in scope:
 
-1. `component.button.*`
-2. `component.textField.*`
-3. `component.badge.*`
+1. `component.appShell.*`
 
 ### Component token fallback order
 
@@ -97,7 +95,7 @@ Conflict policy: **Repo-first**.
 
 ## Out-of-scope in v1
 
-1. Additional component namespaces beyond button/textField/badge.
+1. Additional component namespaces beyond the currently retained runtime component namespaces.
 2. Automatic Figma-to-runtime overwrite without review.
 3. Tenant-specific custom execution logic in token payload.
 

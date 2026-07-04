@@ -33,9 +33,7 @@ PR #287 added a DTCG-like token export foundation, but Phase 0 governance decisi
 - lanes in v1: `default`, `primary`, `secondary`, `accent`, `neutral`, `info`, `success`, `warning`, `error`, `inverse`, `light`, `dark`
 
 3. Component token namespaces (v1)
-- `component.button.*`
-- `component.textField.*`
-- `component.badge.*`
+- `component.appShell.*`
 
 No other component namespaces are in v1 unless explicitly approved by follow-up ADR.
 
