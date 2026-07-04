@@ -210,7 +210,7 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
   ({ value, disabled, className, children, onClick, onKeyDown, style, ...props }, ref) => {
     const context = React.useContext(CheckboxCardsContext)
     const id = React.useId()
-    const checkboxRef = React.useRef<HTMLButtonElement>(null)
+    const checkboxRef = React.useRef<HTMLElement>(null)
     const resolvedSize = resolveFormSize(context.size)
     const surfaceVariant = context.variant === 'surface' ? 'surface' : 'outline'
     const radius = useThemeRadius(context.radius)
@@ -218,13 +218,8 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
     const handleClick = React.useCallback(
       (event: React.MouseEvent<HTMLLabelElement>) => {
         onClick?.(event)
-        if (event.defaultPrevented || isDisabled) return
-
-        const target = event.target as HTMLElement | null
-        if (target?.closest('[data-checkbox-card-control]')) return
-
-        event.preventDefault()
-        checkboxRef.current?.click()
+        if (event.defaultPrevented) return
+        if (isDisabled) event.preventDefault()
       },
       [isDisabled, onClick],
     )

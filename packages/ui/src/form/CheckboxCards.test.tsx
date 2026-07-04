@@ -40,6 +40,25 @@ describe('CheckboxCards', () => {
     expect(screen.getByTestId('selected')).toHaveTextContent('widgets,blocks')
   })
 
+  it('toggles the third card in an uncontrolled group', async () => {
+    const user = userEvent.setup()
+    render(
+      <CheckboxCards.Root defaultValue={['1']} columns="3" color="inverse">
+        <CheckboxCards.Item value="1">Selected</CheckboxCards.Item>
+        <CheckboxCards.Item value="2">Unselected</CheckboxCards.Item>
+        <CheckboxCards.Item value="3">Unchecked</CheckboxCards.Item>
+      </CheckboxCards.Root>,
+    )
+
+    const checkboxes = screen.getAllByRole('checkbox')
+
+    expect(checkboxes[2]).toHaveAttribute('aria-checked', 'false')
+
+    await user.click(screen.getByText('Unchecked'))
+
+    expect(checkboxes[2]).toHaveAttribute('aria-checked', 'true')
+  })
+
   it('can visually hide the checkbox control while keeping card selection working', async () => {
     const user = userEvent.setup()
     render(<ControlledCheckboxCards showCheckbox={false} />)
