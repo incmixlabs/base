@@ -14,6 +14,7 @@ import { Label } from './Label'
 import type { TextareaProps } from './text-area.props'
 import {
   floatingInputStyleVariants,
+  floatingLabelFocusedPlaceholderVariants,
   floatingLabelStyleVariants,
   textFieldEnhancementVariants,
   textFieldFloatingColorVariants,
@@ -82,8 +83,16 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     // For floating variants, use placeholder as label if no label provided
     // Strip placeholder from props for floating variants to prevent text collision with label
-    const { placeholder, ...textareaProps } = props
+    const { placeholder, defaultValue, onBlur, onChange, onFocus, value, ...textareaProps } = props
     const effectiveLabel = label || (isFloatingVariant(variant) ? placeholder : undefined)
+    const [floatingFocused, setFloatingFocused] = React.useState(false)
+    const [floatingHasValue, setFloatingHasValue] = React.useState(() => hasTextareaValue(value ?? defaultValue))
+
+    React.useEffect(() => {
+      if (value !== undefined) {
+        setFloatingHasValue(hasTextareaValue(value))
+      }
+    }, [value])
 
     // Resize classes - disable resize when autoSize is enabled
     const effectiveResize = autoSize ? 'none' : resize
@@ -118,9 +127,13 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             ref={ref}
             id={textareaId}
             placeholder=" "
+            value={value}
+            defaultValue={value === undefined ? defaultValue : undefined}
             disabled={effectiveDisabled}
             readOnly={effectiveReadOnly}
             aria-invalid={error || undefined}
+            data-filled={floatingHasValue ? '' : undefined}
+            data-focused={floatingFocused ? '' : undefined}
             style={style as React.CSSProperties & { height?: number }}
             className={clsx(
               cn(
@@ -137,17 +150,31 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             )}
             {...autoSizeProps}
             {...textareaProps}
+            onBlur={event => {
+              setFloatingFocused(false)
+              onBlur?.(event)
+            }}
+            onChange={event => {
+              setFloatingHasValue(hasTextareaValue(event.currentTarget.value))
+              onChange?.(event)
+            }}
+            onFocus={event => {
+              setFloatingFocused(true)
+              onFocus?.(event)
+            }}
           />
 
           {effectiveLabel && (
             <label
               htmlFor={textareaId}
-              className={cn(
-                'absolute duration-300 origin-[0]',
-                'pointer-events-none select-none',
-
+              className={clsx(
+                cn('absolute duration-300 origin-[0]', 'pointer-events-none select-none'),
                 // Floating label positioning by style
                 floatingStyle && floatingLabelStyleVariants[floatingStyle],
+                floatingStyle &&
+                  floatingFocused &&
+                  !floatingHasValue &&
+                  floatingLabelFocusedPlaceholderVariants[floatingStyle],
               )}
             >
               {effectiveLabel}
@@ -187,8 +214,13 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         disabled={effectiveDisabled}
         readOnly={effectiveReadOnly}
         placeholder={placeholder}
+        value={value}
+        defaultValue={value === undefined ? defaultValue : undefined}
         minRows={minRows}
         maxRows={maxRows}
+        onBlur={onBlur}
+        onChange={onChange}
+        onFocus={onFocus}
         {...textareaProps}
       />
     ) : (
@@ -201,6 +233,11 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         disabled={effectiveDisabled}
         readOnly={effectiveReadOnly}
         placeholder={placeholder}
+        value={value}
+        defaultValue={value === undefined ? defaultValue : undefined}
+        onBlur={onBlur}
+        onChange={onChange}
+        onFocus={onFocus}
         {...textareaProps}
       />
     )
@@ -225,3 +262,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 )
 
 Textarea.displayName = 'Textarea'
+
+function hasTextareaValue(value: React.TextareaHTMLAttributes<HTMLTextAreaElement>['value'] | undefined): boolean {
+  return value != null && String(value).length > 0
+}
