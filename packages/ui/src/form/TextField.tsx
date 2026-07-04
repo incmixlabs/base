@@ -15,22 +15,30 @@ import { Label } from './Label'
 import {
   floatingInputBaseCls,
   floatingInputStyleVariants,
+  floatingInputWithLeftElementSizeVariants,
   floatingInputWithLeftIconSizeVariants,
+  floatingInputWithRightElementSizeVariants,
   floatingInputWithRightIconSizeVariants,
   floatingLabelFocusedPlaceholderVariants,
   floatingLabelSizeVariants,
   floatingLabelStyleVariants,
-  textFieldControlSizeVariants,
+  floatingLabelWithLeftElementSizeVariants,
+  floatingLabelWithLeftIconSizeVariants,
+  textFieldControlContentSizeVariants,
   textFieldEnhancementVariants,
   textFieldFloatingBaseSizeVariants,
   textFieldFloatingColorVariants,
-  textFieldFloatingInputSizeVariants,
+  textFieldFloatingInputContentSizeVariants,
   textFieldFloatingLabelColorVariants,
   textFieldIconContainerCls,
   textFieldIconSizeVariants,
   textFieldInputBaseCls,
+  textFieldInputLeftPaddingSizeVariants,
+  textFieldInputRightPaddingSizeVariants,
   textFieldInputWithLeftElementSizeVariants,
+  textFieldInputWithLeftIconSizeVariants,
   textFieldInputWithRightElementSizeVariants,
+  textFieldInputWithRightIconSizeVariants,
   textFieldLeftIconContainerSizeVariants,
   textFieldRightIconContainerSizeVariants,
   textFieldRootCls,
@@ -115,6 +123,14 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
 
     // If floating variant, render the floating version
     if (isFloatingVariant(variant)) {
+      const floatingLabelSizeClass =
+        floatingStyle &&
+        (leftIcon
+          ? floatingLabelWithLeftIconSizeVariants[size]?.[floatingStyle]
+          : leftElement
+            ? floatingLabelWithLeftElementSizeVariants[size]?.[floatingStyle]
+            : floatingLabelSizeVariants[size]?.[floatingStyle])
+
       return (
         <div
           className={cn(textFieldRootCls, marginProps.className, className)}
@@ -164,9 +180,17 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
               textFieldFloatingBaseSizeVariants[size],
               floatingStyle && textFieldFloatingColorVariants[effectiveColor]?.[floatingStyle],
               floatingStyle && floatingInputStyleVariants[floatingStyle],
-              floatingStyle && textFieldFloatingInputSizeVariants[size]?.[floatingStyle],
-              (leftIcon || leftElement) && floatingInputWithLeftIconSizeVariants[size],
-              (rightIcon || rightElement) && floatingInputWithRightIconSizeVariants[size],
+              floatingStyle && textFieldFloatingInputContentSizeVariants[size],
+              leftIcon
+                ? floatingInputWithLeftIconSizeVariants[size]
+                : leftElement
+                  ? floatingInputWithLeftElementSizeVariants[size]
+                  : textFieldInputLeftPaddingSizeVariants[size],
+              rightIcon
+                ? floatingInputWithRightIconSizeVariants[size]
+                : rightElement
+                  ? floatingInputWithRightElementSizeVariants[size]
+                  : textFieldInputRightPaddingSizeVariants[size],
             )}
             {...inputProps}
             onBlur={handleBlur}
@@ -185,7 +209,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
                 ),
                 // Keep prop-map classes outside tailwind-merge so peer selector variants remain intact.
                 floatingStyle && floatingLabelStyleVariants[floatingStyle],
-                floatingStyle && floatingLabelSizeVariants[size]?.[floatingStyle],
+                floatingLabelSizeClass,
                 textFieldFloatingLabelColorVariants[effectiveColor],
                 floatingStyle &&
                   floatingFocused &&
@@ -269,15 +293,23 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             cn(
               textFieldInputBaseCls,
               'box-border',
-              textFieldControlSizeVariants[size],
+              textFieldControlContentSizeVariants[size],
               formControlBorderFrame,
               textFieldSurfaceColorVariants[effectiveColor]?.[surfaceVariant],
 
               effectiveDisabled && 'opacity-50 cursor-not-allowed',
             ),
             // Keep prop-map classes outside tailwind-merge so semantic text utilities are not merged away.
-            (leftIcon || leftElement) && textFieldInputWithLeftElementSizeVariants[size],
-            (rightIcon || rightElement) && textFieldInputWithRightElementSizeVariants[size],
+            leftIcon
+              ? textFieldInputWithLeftIconSizeVariants[size]
+              : leftElement
+                ? textFieldInputWithLeftElementSizeVariants[size]
+                : textFieldInputLeftPaddingSizeVariants[size],
+            rightIcon
+              ? textFieldInputWithRightIconSizeVariants[size]
+              : rightElement
+                ? textFieldInputWithRightElementSizeVariants[size]
+                : textFieldInputRightPaddingSizeVariants[size],
             textFieldEnhancementVariants[effectiveColor]?.[surfaceVariant],
           )}
           placeholder={placeholder}

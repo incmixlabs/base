@@ -70,21 +70,53 @@ function textFieldPaddingClassName(size: TextFieldSize) {
   return `${arbitraryValueClass('px', token.paddingX)} ${arbitraryValueClass('py', token.paddingY)}`
 }
 
+function textFieldBlockPaddingClassName(size: TextFieldSize) {
+  const { token } = textFieldSizeTokenClasses(size)
+  return arbitraryValueClass('py', token.paddingY)
+}
+
 export type TextFieldSize = ExtendedFormSize
 
 export const textFieldTypographySizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
   extendedFormSizes.map(size => [size, textFieldTypographyClassName(size)]),
 ) as Record<TextFieldSize, string>
 
-export const textFieldControlSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+export const textFieldInputLeftPaddingSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { token } = textFieldSizeTokenClasses(size)
+    return [size, cssDeclaration('padding-left', token.paddingX)]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldInputRightPaddingSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { token } = textFieldSizeTokenClasses(size)
+    return [size, cssDeclaration('padding-right', token.paddingX)]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldControlContentSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
   extendedFormSizes.map(size => {
     const { token } = textFieldSizeTokenClasses(size)
     return [
       size,
       [
         arbitraryValueClass('h', token.height),
-        textFieldPaddingClassName(size),
+        textFieldBlockPaddingClassName(size),
         textFieldTypographySizeVariants[size],
+      ].join(' '),
+    ]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldControlSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    return [
+      size,
+      [
+        textFieldControlContentSizeVariants[size],
+        textFieldInputLeftPaddingSizeVariants[size],
+        textFieldInputRightPaddingSizeVariants[size],
       ].join(' '),
     ]
   }),
@@ -139,20 +171,29 @@ export const textFieldFloatingBaseSizeVariants: Record<TextFieldSize, string> = 
   }),
 ) as Record<TextFieldSize, string>
 
+export const textFieldFloatingInputContentSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { token } = textFieldSizeTokenClasses(size)
+    return [
+      size,
+      [
+        textFieldTypographySizeVariants[size],
+        arbitraryValueClass('pt', token.lineHeight),
+        arbitraryValueClass('pb', token.paddingY),
+      ].join(' '),
+    ]
+  }),
+) as Record<TextFieldSize, string>
+
 export const textFieldFloatingInputSizeVariants: Record<
   TextFieldSize,
   Record<FloatingStyle, string>
 > = Object.fromEntries(
   extendedFormSizes.map(size => {
-    const { token } = textFieldSizeTokenClasses(size)
-    const inputPaddingLeft = `var(--af-text-field-left-slot-width,${token.paddingX})`
-    const inputPaddingRight = `var(--af-text-field-right-slot-width,${token.paddingX})`
     const sizeBase = [
-      textFieldTypographySizeVariants[size],
-      cssDeclaration('padding-left', inputPaddingLeft),
-      cssDeclaration('padding-right', inputPaddingRight),
-      arbitraryValueClass('pt', token.lineHeight),
-      arbitraryValueClass('pb', token.paddingY),
+      textFieldFloatingInputContentSizeVariants[size],
+      textFieldInputLeftPaddingSizeVariants[size],
+      textFieldInputRightPaddingSizeVariants[size],
     ].join(' ')
 
     return [
@@ -165,6 +206,20 @@ export const textFieldFloatingInputSizeVariants: Record<
     ]
   }),
 ) as Record<TextFieldSize, Record<FloatingStyle, string>>
+
+export const textFieldInputWithLeftIconSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconTextOffset } = textFieldSizeTokenClasses(size)
+    return [size, cssDeclaration('padding-left', iconTextOffset)]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldInputWithRightIconSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconTextOffset } = textFieldSizeTokenClasses(size)
+    return [size, cssDeclaration('padding-right', iconTextOffset)]
+  }),
+) as Record<TextFieldSize, string>
 
 export const textFieldLeftIconContainerSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
   extendedFormSizes.map(size => {
@@ -203,14 +258,28 @@ export const textFieldInputWithRightElementSizeVariants: Record<TextFieldSize, s
 export const floatingInputWithLeftIconSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
   extendedFormSizes.map(size => {
     const { iconTextOffset } = textFieldSizeTokenClasses(size)
-    return [size, cssDeclaration('--af-text-field-left-slot-width', iconTextOffset)]
+    return [size, cssDeclaration('padding-left', iconTextOffset)]
   }),
 ) as Record<TextFieldSize, string>
 
 export const floatingInputWithRightIconSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
   extendedFormSizes.map(size => {
     const { iconTextOffset } = textFieldSizeTokenClasses(size)
-    return [size, cssDeclaration('--af-text-field-right-slot-width', iconTextOffset)]
+    return [size, cssDeclaration('padding-right', iconTextOffset)]
+  }),
+) as Record<TextFieldSize, string>
+
+export const floatingInputWithLeftElementSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconTextOffset } = textFieldSizeTokenClasses(size)
+    return [size, cssDeclaration('padding-left', `var(--af-text-field-left-slot-width,${iconTextOffset})`)]
+  }),
+) as Record<TextFieldSize, string>
+
+export const floatingInputWithRightElementSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconTextOffset } = textFieldSizeTokenClasses(size)
+    return [size, cssDeclaration('padding-right', `var(--af-text-field-right-slot-width,${iconTextOffset})`)]
   }),
 ) as Record<TextFieldSize, string>
 
@@ -396,7 +465,55 @@ export const floatingLabelFocusedPlaceholderVariants: Record<FloatingStyle, stri
 export const floatingLabelSizeVariants: Record<TextFieldSize, Record<FloatingStyle, string>> = Object.fromEntries(
   extendedFormSizes.map(size => {
     const { token } = textFieldSizeTokenClasses(size)
-    const labelLeft = `var(--af-text-field-left-slot-width,${token.paddingX})`
+    const labelMaxWidth = `calc(100% - (${token.paddingX} * 2))`
+    const labelBase = [
+      textFieldTypographySizeVariants[size],
+      cssDeclaration('left', token.paddingX),
+      cssDeclaration('max-width', labelMaxWidth),
+    ].join(' ')
+
+    return [
+      size,
+      {
+        filled: labelBase,
+        outlined: labelBase,
+        standard: `${textFieldTypographySizeVariants[size]} left-0 ${cssDeclaration('max-width', '100%')}`,
+      },
+    ]
+  }),
+) as Record<TextFieldSize, Record<FloatingStyle, string>>
+
+export const floatingLabelWithLeftIconSizeVariants: Record<
+  TextFieldSize,
+  Record<FloatingStyle, string>
+> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconTextOffset, token } = textFieldSizeTokenClasses(size)
+    const labelMaxWidth = `calc(100% - (${iconTextOffset} + ${token.paddingX}))`
+    const labelBase = [
+      textFieldTypographySizeVariants[size],
+      cssDeclaration('left', iconTextOffset),
+      cssDeclaration('max-width', labelMaxWidth),
+    ].join(' ')
+
+    return [
+      size,
+      {
+        filled: labelBase,
+        outlined: labelBase,
+        standard: `${textFieldTypographySizeVariants[size]} left-0 ${cssDeclaration('max-width', '100%')}`,
+      },
+    ]
+  }),
+) as Record<TextFieldSize, Record<FloatingStyle, string>>
+
+export const floatingLabelWithLeftElementSizeVariants: Record<
+  TextFieldSize,
+  Record<FloatingStyle, string>
+> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconTextOffset, token } = textFieldSizeTokenClasses(size)
+    const labelLeft = `var(--af-text-field-left-slot-width,${iconTextOffset})`
     const labelMaxWidth = `calc(100% - (${labelLeft} + ${token.paddingX}))`
     const labelBase = [
       textFieldTypographySizeVariants[size],
@@ -430,23 +547,33 @@ export const textFieldClassNames = [
   floatingInputBaseCls,
   ...Object.values(floatingInputStyleVariants),
   ...Object.values(textFieldTypographySizeVariants),
+  ...Object.values(textFieldInputLeftPaddingSizeVariants),
+  ...Object.values(textFieldInputRightPaddingSizeVariants),
+  ...Object.values(textFieldControlContentSizeVariants),
   ...Object.values(textFieldControlSizeVariants),
   ...Object.values(textFieldHeightSizeVariants),
   ...Object.values(textFieldMinControlSizeVariants),
   ...Object.values(textFieldTextareaSizeVariants),
   ...Object.values(textFieldTextareaMinHeightVariants),
   ...Object.values(textFieldFloatingBaseSizeVariants),
+  ...Object.values(textFieldFloatingInputContentSizeVariants),
   ...nestedClassMapValues(textFieldFloatingInputSizeVariants),
+  ...Object.values(textFieldInputWithLeftIconSizeVariants),
+  ...Object.values(textFieldInputWithRightIconSizeVariants),
   ...Object.values(textFieldLeftIconContainerSizeVariants),
   ...Object.values(textFieldRightIconContainerSizeVariants),
   ...Object.values(textFieldInputWithLeftElementSizeVariants),
   ...Object.values(textFieldInputWithRightElementSizeVariants),
   ...Object.values(floatingInputWithLeftIconSizeVariants),
   ...Object.values(floatingInputWithRightIconSizeVariants),
+  ...Object.values(floatingInputWithLeftElementSizeVariants),
+  ...Object.values(floatingInputWithRightElementSizeVariants),
   ...Object.values(textFieldIconSizeVariants),
   ...Object.values(textFieldDateSegmentSizeVariants),
   ...Object.values(textFieldDateRangeSurfaceSizeVariants),
   ...Object.values(floatingLabelStyleVariants),
   ...nestedClassMapValues(floatingLabelSizeVariants),
+  ...nestedClassMapValues(floatingLabelWithLeftIconSizeVariants),
+  ...nestedClassMapValues(floatingLabelWithLeftElementSizeVariants),
   ...Object.values(floatingLabelFocusedPlaceholderVariants),
 ]

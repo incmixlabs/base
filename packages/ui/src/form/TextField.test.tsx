@@ -5,9 +5,11 @@ import { Theme } from '@/theme/ThemeProvider'
 import { designTokens } from '@/theme/tokens'
 import {
   floatingInputStyleVariants,
+  floatingInputWithLeftElementSizeVariants,
   floatingInputWithLeftIconSizeVariants,
   floatingLabelSizeVariants,
   floatingLabelStyleVariants,
+  floatingLabelWithLeftIconSizeVariants,
   textFieldFloatingColorVariants,
   textFieldFloatingLabelColorVariants,
   textFieldIconContainerCls,
@@ -78,7 +80,7 @@ describe('TextField', () => {
     expect(icons[1]?.closest('div')).toHaveClass(textFieldIconContainerCls)
   })
 
-  it('uses the shared slot-width hook for floating icon input and label offsets', () => {
+  it('uses direct token offsets for floating icon input and label offsets', () => {
     const { container } = render(
       <TextField aria-label="Email" variant="floating-outlined" label="Email" leftIcon="mail" />,
     )
@@ -87,11 +89,15 @@ describe('TextField', () => {
     const label = container.querySelector('label')
 
     expect(input).toHaveClass(floatingInputWithLeftIconSizeVariants.md)
+    expect(input).not.toHaveClass(floatingInputWithLeftElementSizeVariants.md)
     expect(label).toHaveClass(floatingLabelStyleVariants.outlined)
-    expect(label).toHaveClass(floatingLabelSizeVariants.md.outlined)
+    expect(label).not.toHaveClass(floatingLabelSizeVariants.md.outlined)
+    expect(label).toHaveClass(floatingLabelWithLeftIconSizeVariants.md.outlined)
     expect(label).toHaveClass(textFieldFloatingLabelColorVariants.slate)
-    expect(floatingInputWithLeftIconSizeVariants.md).toContain('--af-text-field-left-slot-width')
-    expect(floatingLabelSizeVariants.md.outlined).toContain('var(--af-text-field-left-slot-width')
+    expect(floatingInputWithLeftIconSizeVariants.md).not.toContain('--af-text-field-left-slot-width')
+    expect(floatingLabelSizeVariants.md.outlined).not.toContain('--af-text-field-left-slot-width')
+    expect(floatingLabelWithLeftIconSizeVariants.md.outlined).not.toContain('--af-text-field-left-slot-width')
+    expect(floatingInputWithLeftElementSizeVariants.md).toContain('--af-text-field-left-slot-width')
     expect(floatingLabelStyleVariants.outlined).toContain(formControlNeutralBackground)
     expect(floatingLabelStyleVariants.outlined).not.toContain('var(--background)')
   })
