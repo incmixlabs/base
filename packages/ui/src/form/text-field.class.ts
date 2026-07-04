@@ -2,7 +2,6 @@ import { themeSizeTokens } from '@incmix/theme'
 import { surfaceUnoColorVariants } from '../elements/surface/surface.class'
 import type { SurfaceVariant } from '../elements/surface/surface.props'
 import { semanticColorKeys, semanticColorVar } from '../theme/props/color.prop'
-import { textFieldSizeVar } from '../theme/runtime/component-vars'
 import type { Color } from '../theme/tokens'
 import { formControlNeutralBackground } from './form-control.class'
 import { type ExtendedFormSize, extendedFormSizes } from './form-size'
@@ -183,17 +182,23 @@ const floatingLabelBase =
   'overflow-hidden absolute text-ellipsis origin-[0] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] whitespace-nowrap z-10'
 
 const floatingLabelFilled =
-  '[font-size:var(--af-text-field-font-size)] [color:var(--af-text-field-color-text)] [left:var(--af-text-field-label-left,var(--af-text-field-padding-x))] leading-[var(--af-text-field-line-height)] [max-width:var(--af-text-field-label-max-width,calc(100%_-_(var(--af-text-field-padding-x)_*_2)))] top-4 transition-[color,transform] translate-y-[-1.25rem] scale-[0.9] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:translate-y-[-1.25rem] peer-focus:scale-[0.9] peer-focus:[color:var(--af-text-field-color-solid)] peer-data-[filled]:translate-y-[-1.25rem] peer-data-[filled]:scale-[0.9] peer-data-[focused]:translate-y-[-1.25rem] peer-data-[focused]:scale-[0.9] peer-data-[focused]:[color:var(--af-text-field-color-solid)] peer-data-[placeholder]:translate-y-0 peer-data-[placeholder]:scale-100 peer-data-[popup-open]:translate-y-[-1.25rem] peer-data-[popup-open]:scale-[0.9] peer-data-[popup-open]:[color:var(--af-text-field-color-solid)]'
+  '[font-size:var(--af-text-field-font-size)] [color:var(--af-text-field-color-text)] [left:var(--af-text-field-label-left,var(--af-text-field-padding-x))] leading-[var(--af-text-field-line-height)] [max-width:var(--af-text-field-label-max-width,calc(100%_-_(var(--af-text-field-padding-x)_*_2)))] top-4 transition-[color,transform] translate-y-[-1.25rem] scale-[0.9] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:[color:var(--af-text-field-color-solid)] peer-data-[filled]:translate-y-[-1.25rem] peer-data-[filled]:scale-[0.9] peer-data-[focused]:[color:var(--af-text-field-color-solid)] peer-data-[placeholder]:translate-y-0 peer-data-[placeholder]:scale-100 peer-data-[popup-open]:translate-y-[-1.25rem] peer-data-[popup-open]:scale-[0.9] peer-data-[popup-open]:[color:var(--af-text-field-color-solid)]'
 
-const floatingLabelOutlined = `[font-size:var(--af-text-field-font-size)] [color:var(--af-text-field-color-text)] [left:var(--af-text-field-label-left,var(--af-text-field-padding-x))] leading-[var(--af-text-field-line-height)] [max-width:var(--af-text-field-label-max-width,calc(100%_-_(var(--af-text-field-padding-x)_*_2)))] top-2 transition-[background-color,color,padding,top,transform] translate-y-[-1.25rem] scale-[0.9] ${formControlNeutralBackground} px-1 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:translate-y-[-1.25rem] peer-focus:scale-[0.9] peer-focus:[color:var(--af-text-field-color-solid)] peer-focus:px-1 peer-data-[filled]:top-2 peer-data-[filled]:translate-y-[-1.25rem] peer-data-[filled]:scale-[0.9] peer-data-[focused]:top-2 peer-data-[focused]:translate-y-[-1.25rem] peer-data-[focused]:scale-[0.9] peer-data-[focused]:[color:var(--af-text-field-color-solid)] peer-data-[focused]:px-1 peer-data-[placeholder]:top-1/2 peer-data-[placeholder]:-translate-y-1/2 peer-data-[placeholder]:scale-100 peer-data-[popup-open]:top-2 peer-data-[popup-open]:translate-y-[-1.25rem] peer-data-[popup-open]:scale-[0.9] peer-data-[popup-open]:[color:var(--af-text-field-color-solid)] peer-data-[popup-open]:${formControlNeutralBackground} peer-data-[popup-open]:px-1`
+const floatingLabelOutlined = `[font-size:var(--af-text-field-font-size)] [color:var(--af-text-field-color-text)] [left:var(--af-text-field-label-left,var(--af-text-field-padding-x))] leading-[var(--af-text-field-line-height)] [max-width:var(--af-text-field-label-max-width,calc(100%_-_(var(--af-text-field-padding-x)_*_2)))] top-2 transition-[background-color,color,padding,top,transform] translate-y-[-1.25rem] scale-[0.9] ${formControlNeutralBackground} px-1 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:[color:var(--af-text-field-color-solid)] peer-data-[filled]:top-2 peer-data-[filled]:translate-y-[-1.25rem] peer-data-[filled]:scale-[0.9] peer-data-[focused]:[color:var(--af-text-field-color-solid)] peer-data-[focused]:px-1 peer-data-[placeholder]:top-1/2 peer-data-[placeholder]:-translate-y-1/2 peer-data-[placeholder]:scale-100 peer-data-[popup-open]:top-2 peer-data-[popup-open]:translate-y-[-1.25rem] peer-data-[popup-open]:scale-[0.9] peer-data-[popup-open]:[color:var(--af-text-field-color-solid)] peer-data-[popup-open]:${formControlNeutralBackground} peer-data-[popup-open]:px-1`
 
 const floatingLabelStandard =
-  '[font-size:var(--af-text-field-font-size)] [color:var(--af-text-field-color-text)] [left:var(--af-text-field-label-left,0px)] leading-[var(--af-text-field-line-height)] [max-width:var(--af-text-field-label-max-width,100%)] top-3 transition-[color,transform] translate-y-[-1.75rem] scale-[0.9] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:translate-y-[-1.75rem] peer-focus:scale-[0.9] peer-focus:[color:var(--af-text-field-color-solid)] peer-data-[filled]:translate-y-[-1.75rem] peer-data-[filled]:scale-[0.9] peer-data-[focused]:translate-y-[-1.75rem] peer-data-[focused]:scale-[0.9] peer-data-[focused]:[color:var(--af-text-field-color-solid)] peer-data-[placeholder]:translate-y-0 peer-data-[placeholder]:scale-100 peer-data-[popup-open]:translate-y-[-1.75rem] peer-data-[popup-open]:scale-[0.9] peer-data-[popup-open]:[color:var(--af-text-field-color-solid)]'
+  '[font-size:var(--af-text-field-font-size)] [color:var(--af-text-field-color-text)] [left:var(--af-text-field-label-left,0px)] leading-[var(--af-text-field-line-height)] [max-width:var(--af-text-field-label-max-width,100%)] top-3 transition-[color,transform] translate-y-[-1.75rem] scale-[0.9] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:[color:var(--af-text-field-color-solid)] peer-data-[filled]:translate-y-[-1.75rem] peer-data-[filled]:scale-[0.9] peer-data-[focused]:[color:var(--af-text-field-color-solid)] peer-data-[placeholder]:translate-y-0 peer-data-[placeholder]:scale-100 peer-data-[popup-open]:translate-y-[-1.75rem] peer-data-[popup-open]:scale-[0.9] peer-data-[popup-open]:[color:var(--af-text-field-color-solid)]'
 
 export const floatingLabelStyleVariants: Record<FloatingStyle, string> = {
   filled: `${floatingLabelBase} ${floatingLabelFilled}`,
   outlined: `${floatingLabelBase} ${floatingLabelOutlined}`,
   standard: `${floatingLabelBase} ${floatingLabelStandard}`,
+}
+
+export const floatingLabelFocusedPlaceholderVariants: Record<FloatingStyle, string> = {
+  filled: '!translate-y-[-1.25rem] !scale-[0.9]',
+  outlined: '!top-2 !translate-y-[-1.25rem] !scale-[0.9] !px-1',
+  standard: '!translate-y-[-1.75rem] !scale-[0.9]',
 }
 
 export const floatingLabelWithLeftIconCls =
@@ -209,17 +214,14 @@ export const textFieldSizeVariants: Record<TextFieldSize, string> = Object.fromE
     return [
       size,
       [
-        cssDeclaration('--af-text-field-height', textFieldSizeVar(size, 'height', token.height)),
-        cssDeclaration(
-          '--af-text-field-floating-height',
-          textFieldSizeVar(size, 'floatingHeight', floatingHeightFallback),
-        ),
-        cssDeclaration('--af-text-field-font-size', textFieldSizeVar(size, 'fontSize', token.fontSize)),
-        cssDeclaration('--af-text-field-line-height', textFieldSizeVar(size, 'lineHeight', token.lineHeight)),
-        cssDeclaration('--af-text-field-padding-x', textFieldSizeVar(size, 'paddingInline', token.paddingX)),
-        cssDeclaration('--af-text-field-padding-y', textFieldSizeVar(size, 'paddingBlock', token.paddingY)),
-        cssDeclaration('--af-text-field-icon-size', textFieldSizeVar(size, 'iconSize', token.iconSize)),
-        cssDeclaration('--af-text-field-gap', textFieldSizeVar(size, 'gap', token.gap)),
+        cssDeclaration('--af-text-field-height', token.height),
+        cssDeclaration('--af-text-field-floating-height', floatingHeightFallback),
+        cssDeclaration('--af-text-field-font-size', token.fontSize),
+        cssDeclaration('--af-text-field-line-height', token.lineHeight),
+        cssDeclaration('--af-text-field-padding-x', token.paddingX),
+        cssDeclaration('--af-text-field-padding-y', token.paddingY),
+        cssDeclaration('--af-text-field-icon-size', token.iconSize),
+        cssDeclaration('--af-text-field-gap', token.gap),
         cssDeclaration('--af-text-field-icon-inset', 'calc(var(--af-text-field-padding-x) + var(--af-text-field-gap))'),
         cssDeclaration(
           '--af-text-field-icon-text-offset',
@@ -254,6 +256,7 @@ export const textFieldClassNames = [
   floatingInputWithLeftIconCls,
   floatingInputWithRightIconCls,
   ...Object.values(floatingLabelStyleVariants),
+  ...Object.values(floatingLabelFocusedPlaceholderVariants),
   floatingLabelWithLeftIconCls,
   ...Object.values(textFieldSizeVariants),
   textFieldIconCls,
