@@ -21,8 +21,10 @@ import type { Color, Radius, Size } from '@/theme/tokens'
 import { checkboxColorVariants, checkboxHighContrastByVariant } from './checkbox.class'
 import {
   type CheckboxCardSize,
+  checkboxCardContentColorVariants,
   checkboxCardControlRadiusVariants,
   checkboxCardControlSizeVariants,
+  checkboxCardHighContrastContentColorVariants,
   checkboxCardIconSizeVariants,
   checkboxCardSelectionColorVariants,
   checkboxCardSizeVariants,
@@ -209,7 +211,7 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
   ({ value, disabled, className, children, onClick, onKeyDown, style, ...props }, ref) => {
     const context = React.useContext(CheckboxCardsContext)
     const id = React.useId()
-    const checkboxRef = React.useRef<HTMLButtonElement>(null)
+    const checkboxRef = React.useRef<HTMLElement>(null)
     const resolvedSize = resolveFormSize(context.size)
     const surfaceVariant = context.variant === 'surface' ? 'surface' : 'outline'
     const radius = useThemeRadius(context.radius)
@@ -217,13 +219,8 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
     const handleClick = React.useCallback(
       (event: React.MouseEvent<HTMLLabelElement>) => {
         onClick?.(event)
-        if (event.defaultPrevented || isDisabled) return
-
-        const target = event.target as HTMLElement | null
-        if (target?.closest('[data-checkbox-card-control]')) return
-
-        event.preventDefault()
-        checkboxRef.current?.click()
+        if (event.defaultPrevented) return
+        if (isDisabled) event.preventDefault()
       },
       [isDisabled, onClick],
     )
@@ -305,7 +302,16 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
           aria-hidden="true"
         />
 
-        <div className="relative z-10 flex flex-1 flex-col">{children}</div>
+        <div
+          className={cn(
+            'relative z-10 flex flex-1 flex-col',
+            context.highContrast
+              ? checkboxCardHighContrastContentColorVariants[context.color]
+              : checkboxCardContentColorVariants[context.color],
+          )}
+        >
+          {children}
+        </div>
       </label>
     )
   },

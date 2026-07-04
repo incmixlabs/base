@@ -1,3 +1,4 @@
+import { semanticColorClassRecipes } from '../theme/helpers/semantic-color-recipe'
 import { semanticColorKeys } from '../theme/props/color.prop'
 import type { Color } from '../theme/tokens'
 import type { FormSize } from './form-size'
@@ -49,6 +50,14 @@ export const checkboxCardSelectionColorVariants = Object.fromEntries(
   ]),
 ) as Record<Color, string>
 
+export const checkboxCardContentColorVariants = Object.fromEntries(
+  semanticColorKeys.map(color => [color, semanticColorClassRecipes[color].text.default]),
+) as Record<Color, string>
+
+export const checkboxCardHighContrastContentColorVariants = Object.fromEntries(
+  semanticColorKeys.map(color => [color, semanticColorClassRecipes[color].text.contrast]),
+) as Record<Color, string>
+
 export const checkboxCardsClassNames = [
   radioCheckboxCardShellBase,
   checkboxControlBoxBase,
@@ -57,4 +66,6 @@ export const checkboxCardsClassNames = [
   ...Object.values(checkboxCardIconSizeVariants),
   ...Object.values(checkboxCardControlRadiusVariants),
   ...Object.values(checkboxCardSelectionColorVariants),
+  ...Object.values(checkboxCardContentColorVariants),
+  ...Object.values(checkboxCardHighContrastContentColorVariants),
 ]
