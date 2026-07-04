@@ -178,4 +178,16 @@ describe('CheckboxCards', () => {
 
     expectClassTokens(content.className, ['text-inverse'])
   })
+
+  it('uses the semantic contrast text lane for high-contrast card content', () => {
+    render(
+      <CheckboxCards.Root color="inverse" highContrast defaultValue={['widgets']}>
+        <CheckboxCards.Item value="widgets">Widgets</CheckboxCards.Item>
+      </CheckboxCards.Root>,
+    )
+
+    const content = screen.getByText('Widgets')
+
+    expectClassTokens(content.className, ['text-inverse-contrast'])
+  })
 })

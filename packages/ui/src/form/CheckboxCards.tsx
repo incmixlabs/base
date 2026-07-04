@@ -24,6 +24,7 @@ import {
   checkboxCardContentColorVariants,
   checkboxCardControlRadiusVariants,
   checkboxCardControlSizeVariants,
+  checkboxCardHighContrastContentColorVariants,
   checkboxCardIconSizeVariants,
   checkboxCardSelectionColorVariants,
   checkboxCardSizeVariants,
@@ -301,7 +302,14 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
           aria-hidden="true"
         />
 
-        <div className={cn('relative z-10 flex flex-1 flex-col', checkboxCardContentColorVariants[context.color])}>
+        <div
+          className={cn(
+            'relative z-10 flex flex-1 flex-col',
+            context.highContrast
+              ? checkboxCardHighContrastContentColorVariants[context.color]
+              : checkboxCardContentColorVariants[context.color],
+          )}
+        >
           {children}
         </div>
       </label>
