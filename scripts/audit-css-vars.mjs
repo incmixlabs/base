@@ -11,6 +11,81 @@ const sourceRoots = ['packages/ui/src', 'packages/ui/uno.config.ts', 'packages/t
 const outputPath = path.join(repoRoot, 'docs/css-vars.md')
 const sourceExtensions = new Set(['.css', '.js', '.mjs', '.cjs', '.ts', '.tsx'])
 const cssVarPattern = /--[A-Za-z_][A-Za-z0-9_-]*/g
+const ownershipBuckets = {
+  af: 'AF-owned',
+  publicTheme: 'Public theme surface',
+  external: 'External/tooling',
+  suspicious: 'Suspicious unowned',
+}
+const externalPrefixes = [
+  { prefix: '--tw-', reason: 'Tailwind animation/runtime variable' },
+  { prefix: '--un-', reason: 'UnoCSS runtime variable' },
+  { prefix: '--radix-', reason: 'Radix UI runtime variable' },
+]
+const publicThemePrefixes = [
+  { prefix: '--breakpoint-', reason: 'breakpoint token' },
+  { prefix: '--chart-', reason: 'chart color token' },
+  { prefix: '--code-', reason: 'typography code token' },
+  { prefix: '--color-', reason: 'semantic color token' },
+  { prefix: '--container-', reason: 'container size token' },
+  { prefix: '--default-', reason: 'typography default token' },
+  { prefix: '--em-', reason: 'typography emphasis token' },
+  { prefix: '--font-size-', reason: 'font size token' },
+  { prefix: '--font-weight-', reason: 'font weight token' },
+  { prefix: '--heading-', reason: 'typography heading token' },
+  { prefix: '--kbd-', reason: 'typography kbd token' },
+  { prefix: '--letter-spacing-', reason: 'letter spacing token' },
+  { prefix: '--line-height-', reason: 'line height token' },
+  { prefix: '--quote-', reason: 'typography quote token' },
+  { prefix: '--radius-', reason: 'radius token' },
+  { prefix: '--shadow-', reason: 'shadow token' },
+  { prefix: '--spacing-', reason: 'spacing token' },
+  { prefix: '--strong-', reason: 'typography strong token' },
+  { prefix: '--tab-', reason: 'typography tab token' },
+  { prefix: '--theme-', reason: 'theme runtime bridge token' },
+]
+const publicThemeExact = new Map([
+  ['--font-geist', 'font family token'],
+  ['--font-geist-mono', 'font family token'],
+  ['--font-mono', 'font family token'],
+  ['--font-sans', 'font family token'],
+  ['--font-serif', 'font family token'],
+  ['--letter-spacing', 'letter spacing token'],
+  ['--radius', 'radius base token'],
+  ['--ring', 'focus ring token'],
+  ['--scaling', 'theme scaling token'],
+  ['--spacing', 'spacing base token'],
+])
+const hueNames = [
+  'amber',
+  'blue',
+  'brown',
+  'crimson',
+  'cyan',
+  'gold',
+  'grass',
+  'gray',
+  'green',
+  'indigo',
+  'iris',
+  'jade',
+  'lime',
+  'mint',
+  'orange',
+  'pink',
+  'plum',
+  'purple',
+  'red',
+  'ruby',
+  'sand',
+  'sky',
+  'slate',
+  'teal',
+  'tomato',
+  'violet',
+  'yellow',
+]
+const huePrefixes = hueNames.map(hue => `--${hue}-`)
 
 function toPosix(relativePath) {
   return relativePath.split(path.sep).join('/')
@@ -178,34 +253,116 @@ function markdownTable(headers, rows) {
   ].join('\n')
 }
 
+function ownershipForName(name) {
+  if (name.startsWith('--af-')) {
+    return { bucket: ownershipBuckets.af, reason: '`--af-` namespace' }
+  }
+
+  const externalPrefix = externalPrefixes.find(({ prefix }) => name.startsWith(prefix))
+  if (externalPrefix) {
+    return { bucket: ownershipBuckets.external, reason: externalPrefix.reason }
+  }
+
+  const exactReason = publicThemeExact.get(name)
+  if (exactReason) {
+    return { bucket: ownershipBuckets.publicTheme, reason: exactReason }
+  }
+
+  const publicThemePrefix = publicThemePrefixes.find(({ prefix }) => name.startsWith(prefix))
+  if (publicThemePrefix) {
+    return { bucket: ownershipBuckets.publicTheme, reason: publicThemePrefix.reason }
+  }
+
+  const huePrefix = huePrefixes.find(prefix => name.startsWith(prefix))
+  if (huePrefix) {
+    return { bucket: ownershipBuckets.publicTheme, reason: `${huePrefix.slice(2, -1)} hue scale token` }
+  }
+
+  return { bucket: ownershipBuckets.suspicious, reason: 'no recognized AF-owned, public theme, or external namespace' }
+}
+
+function hasProductionOrToolingDefinition(entry) {
+  return [...entry.definedAt.keys()].some(file => !['test', 'storybook'].includes(fileScope(file)))
+}
+
+function hasProductionOrToolingLocation(locations) {
+  return [...locations.keys()].some(file => !['test', 'storybook'].includes(fileScope(file)))
+}
+
+function countByOwnership(entries, getName) {
+  const counts = new Map(Object.values(ownershipBuckets).map(bucket => [bucket, 0]))
+
+  for (const entry of entries) {
+    const name = getName(entry)
+    const { bucket } = ownershipForName(name)
+    counts.set(bucket, (counts.get(bucket) ?? 0) + 1)
+  }
+
+  return counts
+}
+
+function ownershipSummaryRows(exactDefinedEntries, dynamicEntries) {
+  const exactCounts = countByOwnership(exactDefinedEntries, entry => entry.name)
+  const dynamicCounts = countByOwnership(dynamicEntries, ([pattern]) => pattern)
+
+  return Object.values(ownershipBuckets).map(bucket => [
+    bucket,
+    exactCounts.get(bucket) ?? 0,
+    dynamicCounts.get(bucket) ?? 0,
+  ])
+}
+
+function exactOwnershipRows(entries) {
+  return entries.map(entry => {
+    const ownership = ownershipForName(entry.name)
+    return [
+      `\`${entry.name}\``,
+      ownership.bucket,
+      ownership.reason,
+      formatLocationMap(entry.definedAt),
+      formatLocationMap(entry.referencedAt),
+    ]
+  })
+}
+
+function dynamicOwnershipRows(entries) {
+  return entries.map(([pattern, locations]) => {
+    const ownership = ownershipForName(pattern)
+    return [`\`${pattern}\``, ownership.bucket, ownership.reason, formatLocationMap(locations)]
+  })
+}
+
 function buildReport({ vars, dynamicPatterns, files }) {
   const exactEntries = [...vars.values()]
     .filter(entry => entry.definedAt.size > 0 || entry.referencedAt.size > 0)
     .sort((left, right) => left.name.localeCompare(right.name))
-  const exactDefinitionsWithoutAfPrefix = exactEntries.filter(
-    entry =>
-      !entry.name.startsWith('--af-') &&
-      [...entry.definedAt.keys()].some(file => !['test', 'storybook'].includes(fileScope(file))),
+  const exactProductionOrToolingDefinitions = exactEntries.filter(hasProductionOrToolingDefinition)
+  const suspiciousExactDefinitions = exactProductionOrToolingDefinitions.filter(
+    entry => ownershipForName(entry.name).bucket === ownershipBuckets.suspicious,
+  )
+  const publicThemeDefinitions = exactProductionOrToolingDefinitions.filter(
+    entry => ownershipForName(entry.name).bucket === ownershipBuckets.publicTheme,
+  )
+  const externalDefinitions = exactProductionOrToolingDefinitions.filter(
+    entry => ownershipForName(entry.name).bucket === ownershipBuckets.external,
   )
 
-  const exactRows = exactEntries.map(entry => [
-    `\`${entry.name}\``,
-    formatLocationMap(entry.definedAt),
-    formatLocationMap(entry.referencedAt),
-  ])
+  const exactRows = exactOwnershipRows(exactEntries)
 
   const dynamicEntries = [...dynamicPatterns.entries()].sort(([left], [right]) => left.localeCompare(right))
-  const dynamicRows = dynamicEntries.map(([pattern, locations]) => [`\`${pattern}\``, formatLocationMap(locations)])
-  const dynamicPatternsWithoutAfPrefix = dynamicEntries.filter(([pattern]) => !pattern.startsWith('--af-'))
-  const missingPrefixRows = exactDefinitionsWithoutAfPrefix.map(entry => [
-    `\`${entry.name}\``,
-    formatLocationMap(entry.definedAt),
-    formatLocationMap(entry.referencedAt),
-  ])
-  const dynamicMissingPrefixRows = dynamicPatternsWithoutAfPrefix.map(([pattern, locations]) => [
-    `\`${pattern}\``,
-    formatLocationMap(locations),
-  ])
+  const dynamicProductionOrToolingEntries = dynamicEntries.filter(([, locations]) =>
+    hasProductionOrToolingLocation(locations),
+  )
+  const dynamicRows = dynamicOwnershipRows(dynamicEntries)
+  const suspiciousDynamicEntries = dynamicProductionOrToolingEntries.filter(
+    ([pattern]) => ownershipForName(pattern).bucket === ownershipBuckets.suspicious,
+  )
+  const publicThemeDynamicEntries = dynamicProductionOrToolingEntries.filter(
+    ([pattern]) => ownershipForName(pattern).bucket === ownershipBuckets.publicTheme,
+  )
+  const externalDynamicEntries = dynamicProductionOrToolingEntries.filter(
+    ([pattern]) => ownershipForName(pattern).bucket === ownershipBuckets.external,
+  )
 
   return `# CSS Variable Audit
 
@@ -218,31 +375,55 @@ Generated by \`pnpm audit:css-vars\`.
 - Files scanned: ${files.length}
 - Exact CSS variables listed: ${exactEntries.length}
 - Dynamic CSS variable patterns listed: ${dynamicRows.length}
-- Exact production/tooling defined variables missing \`--af-\` prefix: ${exactDefinitionsWithoutAfPrefix.length}
-- Dynamic variable patterns missing \`--af-\` prefix: ${dynamicPatternsWithoutAfPrefix.length}
+- Dynamic production/tooling patterns listed: ${dynamicProductionOrToolingEntries.length}
+- Suspicious unowned exact production/tooling definitions: ${suspiciousExactDefinitions.length}
+- Suspicious unowned dynamic production/tooling patterns: ${suspiciousDynamicEntries.length}
 
 ## Notes
 
 - A variable is listed as defined when it appears as a custom property declaration, style object key, \`property(...)\`, \`cssDeclaration(...)\`, or \`setProperty(...)\`.
 - A variable is listed as referenced when it appears inside \`var(--...)\`.
 - Template-built variable names cannot always be expanded safely, so those are listed separately under dynamic patterns.
-- Prefix checks apply to variables this scanner sees as defined in production/tooling repository source. Non-\`--af-\` definitions are listed below for cleanup review.
+- Ownership buckets separate AF-owned variables, known first-party public theme variables, external/tooling variables, and suspicious unowned names.
+- Public theme surface means the variable belongs to the current product/theme API and should be migrated or kept intentionally. It is not an automatic exemption from future \`--af-\` prefix work.
+- Suspicious exact definitions are variables this scanner sees as defined in production/tooling repository source without a recognized AF-owned, public theme, or external namespace.
+- Suspicious dynamic patterns apply the same ownership check to production/tooling source locations. Test-only patterns remain visible in the full dynamic table.
 
-## Defined Variables Missing \`--af-\` Prefix
+## Ownership Summary
 
-${missingPrefixRows.length > 0 ? markdownTable(['Variable', 'Defined at', 'Referenced at'], missingPrefixRows) : '_No exact defined variables missing the `--af-` prefix._'}
+${markdownTable(['Ownership', 'Exact production/tooling definitions', 'Dynamic production/tooling patterns'], ownershipSummaryRows(exactProductionOrToolingDefinitions, dynamicProductionOrToolingEntries))}
 
-## Dynamic Patterns Missing \`--af-\` Prefix
+## Suspicious Unowned Defined Variables
 
-${dynamicMissingPrefixRows.length > 0 ? markdownTable(['Pattern', 'Locations'], dynamicMissingPrefixRows) : '_No dynamic patterns missing the `--af-` prefix._'}
+${suspiciousExactDefinitions.length > 0 ? markdownTable(['Variable', 'Ownership', 'Reason', 'Defined at', 'Referenced at'], exactOwnershipRows(suspiciousExactDefinitions)) : '_No suspicious unowned defined variables found._'}
+
+## Suspicious Unowned Dynamic Patterns
+
+${suspiciousDynamicEntries.length > 0 ? markdownTable(['Pattern', 'Ownership', 'Reason', 'Locations'], dynamicOwnershipRows(suspiciousDynamicEntries)) : '_No suspicious unowned dynamic patterns found._'}
+
+## Public Theme Defined Variables
+
+${publicThemeDefinitions.length > 0 ? markdownTable(['Variable', 'Ownership', 'Reason', 'Defined at', 'Referenced at'], exactOwnershipRows(publicThemeDefinitions)) : '_No public theme defined variables found._'}
+
+## Public Theme Dynamic Patterns
+
+${publicThemeDynamicEntries.length > 0 ? markdownTable(['Pattern', 'Ownership', 'Reason', 'Locations'], dynamicOwnershipRows(publicThemeDynamicEntries)) : '_No public theme dynamic patterns found._'}
+
+## External/Tooling Defined Variables
+
+${externalDefinitions.length > 0 ? markdownTable(['Variable', 'Ownership', 'Reason', 'Defined at', 'Referenced at'], exactOwnershipRows(externalDefinitions)) : '_No external/tooling defined variables found._'}
+
+## External/Tooling Dynamic Patterns
+
+${externalDynamicEntries.length > 0 ? markdownTable(['Pattern', 'Ownership', 'Reason', 'Locations'], dynamicOwnershipRows(externalDynamicEntries)) : '_No external/tooling dynamic patterns found._'}
 
 ## Exact CSS Variables
 
-${markdownTable(['Variable', 'Defined at', 'Referenced at'], exactRows)}
+${markdownTable(['Variable', 'Ownership', 'Reason', 'Defined at', 'Referenced at'], exactRows)}
 
 ## Dynamic CSS Variable Patterns
 
-${dynamicRows.length > 0 ? markdownTable(['Pattern', 'Locations'], dynamicRows) : '_No dynamic patterns found._'}
+${dynamicRows.length > 0 ? markdownTable(['Pattern', 'Ownership', 'Reason', 'Locations'], dynamicRows) : '_No dynamic patterns found._'}
 `
 }
 
