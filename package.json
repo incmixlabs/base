@@ -23,6 +23,7 @@
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "husky": "catalog:",
+    "playwright": "^1.61.1",
     "typescript": "catalog:"
   },
   "pnpm": {

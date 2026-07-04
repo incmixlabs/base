@@ -5,15 +5,9 @@ import * as React from 'react'
 import { describe, expect, it } from 'vitest'
 import { MentionTextarea } from './MentionTextarea'
 import { collectMentionReferences } from './mention-markdown'
+import { expectClassTokens } from './test-utils'
 
 const TEST_TIMEOUT_MS = 20_000
-
-function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-  for (const token of tokens) {
-    expect(classTokens).toContain(token)
-  }
-}
 
 describe('MentionTextarea', () => {
   it(

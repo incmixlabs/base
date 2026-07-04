@@ -4,9 +4,8 @@ import type { Color } from '../theme/tokens'
 /**
  * Shared text-field styling utilities.
  *
- * Color-dependent classes use static var() references to --fc-* CSS custom
- * properties. Components must set these via `style={formColorVars[color]}`
- * (from form-color.ts) on a parent element.
+ * Color-dependent classes map directly to semantic color lanes. Keep these as
+ * literal class strings so the Tailwind/Uno scanner can extract every lane.
  */
 
 // ============================================================================
@@ -52,7 +51,6 @@ export const containerVariantStyles: Record<string, string> = {
 
 // ============================================================================
 // Color Styles
-// All classes reference --fc-* vars set by formColorVars inline styles.
 // ============================================================================
 
 const semanticColors = [
@@ -66,39 +64,109 @@ const semanticColors = [
   'error',
 ] as const satisfies readonly Color[]
 
-function colorRecord(defaultCls: string, semanticCls: string): Record<Color, string> {
+type SemanticFormColor = (typeof semanticColors)[number]
+
+function colorRecord(defaultCls: string, semanticCls: Record<SemanticFormColor, string>): Record<Color, string> {
   return {
     slate: defaultCls,
     inverse: defaultCls,
     light: defaultCls,
     dark: defaultCls,
-    ...Object.fromEntries(semanticColors.map(c => [c, semanticCls])),
-  } as Record<Color, string>
+    ...semanticCls,
+  } satisfies Record<Color, string>
 }
 
+const semanticColorFocusStyles = {
+  primary:
+    '[border-color:var(--color-primary-solid)] focus:[border-color:var(--color-primary-solid)] focus:[outline-color:var(--color-primary-solid-alpha)]',
+  secondary:
+    '[border-color:var(--color-secondary-solid)] focus:[border-color:var(--color-secondary-solid)] focus:[outline-color:var(--color-secondary-solid-alpha)]',
+  accent:
+    '[border-color:var(--color-accent-solid)] focus:[border-color:var(--color-accent-solid)] focus:[outline-color:var(--color-accent-solid-alpha)]',
+  neutral:
+    '[border-color:var(--color-neutral-solid)] focus:[border-color:var(--color-neutral-solid)] focus:[outline-color:var(--color-neutral-solid-alpha)]',
+  info: '[border-color:var(--color-info-solid)] focus:[border-color:var(--color-info-solid)] focus:[outline-color:var(--color-info-solid-alpha)]',
+  success:
+    '[border-color:var(--color-success-solid)] focus:[border-color:var(--color-success-solid)] focus:[outline-color:var(--color-success-solid-alpha)]',
+  warning:
+    '[border-color:var(--color-warning-solid)] focus:[border-color:var(--color-warning-solid)] focus:[outline-color:var(--color-warning-solid-alpha)]',
+  error:
+    '[border-color:var(--color-error-solid)] focus:[border-color:var(--color-error-solid)] focus:[outline-color:var(--color-error-solid-alpha)]',
+} as const satisfies Record<SemanticFormColor, string>
+
+const semanticContainerColorFocusStyles = {
+  primary:
+    '[border-color:var(--color-primary-solid)] focus-within:[border-color:var(--color-primary-solid)] focus-within:[outline-color:var(--color-primary-solid-alpha)]',
+  secondary:
+    '[border-color:var(--color-secondary-solid)] focus-within:[border-color:var(--color-secondary-solid)] focus-within:[outline-color:var(--color-secondary-solid-alpha)]',
+  accent:
+    '[border-color:var(--color-accent-solid)] focus-within:[border-color:var(--color-accent-solid)] focus-within:[outline-color:var(--color-accent-solid-alpha)]',
+  neutral:
+    '[border-color:var(--color-neutral-solid)] focus-within:[border-color:var(--color-neutral-solid)] focus-within:[outline-color:var(--color-neutral-solid-alpha)]',
+  info: '[border-color:var(--color-info-solid)] focus-within:[border-color:var(--color-info-solid)] focus-within:[outline-color:var(--color-info-solid-alpha)]',
+  success:
+    '[border-color:var(--color-success-solid)] focus-within:[border-color:var(--color-success-solid)] focus-within:[outline-color:var(--color-success-solid-alpha)]',
+  warning:
+    '[border-color:var(--color-warning-solid)] focus-within:[border-color:var(--color-warning-solid)] focus-within:[outline-color:var(--color-warning-solid-alpha)]',
+  error:
+    '[border-color:var(--color-error-solid)] focus-within:[border-color:var(--color-error-solid)] focus-within:[outline-color:var(--color-error-solid-alpha)]',
+} as const satisfies Record<SemanticFormColor, string>
+
+const semanticSolidColorStyles = {
+  primary:
+    'bg-primary-soft text-primary focus:bg-primary-soft-hover focus-within:bg-primary-soft-hover focus:[outline-color:var(--color-primary-solid-alpha)] focus-within:[outline-color:var(--color-primary-solid-alpha)]',
+  secondary:
+    'bg-secondary-soft text-secondary focus:bg-secondary-soft-hover focus-within:bg-secondary-soft-hover focus:[outline-color:var(--color-secondary-solid-alpha)] focus-within:[outline-color:var(--color-secondary-solid-alpha)]',
+  accent:
+    'bg-accent-soft text-accent focus:bg-accent-soft-hover focus-within:bg-accent-soft-hover focus:[outline-color:var(--color-accent-solid-alpha)] focus-within:[outline-color:var(--color-accent-solid-alpha)]',
+  neutral:
+    'bg-neutral-soft text-neutral focus:bg-neutral-soft-hover focus-within:bg-neutral-soft-hover focus:[outline-color:var(--color-neutral-solid-alpha)] focus-within:[outline-color:var(--color-neutral-solid-alpha)]',
+  info: 'bg-info-soft text-info focus:bg-info-soft-hover focus-within:bg-info-soft-hover focus:[outline-color:var(--color-info-solid-alpha)] focus-within:[outline-color:var(--color-info-solid-alpha)]',
+  success:
+    'bg-success-soft text-success focus:bg-success-soft-hover focus-within:bg-success-soft-hover focus:[outline-color:var(--color-success-solid-alpha)] focus-within:[outline-color:var(--color-success-solid-alpha)]',
+  warning:
+    'bg-warning-soft text-warning focus:bg-warning-soft-hover focus-within:bg-warning-soft-hover focus:[outline-color:var(--color-warning-solid-alpha)] focus-within:[outline-color:var(--color-warning-solid-alpha)]',
+  error:
+    'bg-error-soft text-error focus:bg-error-soft-hover focus-within:bg-error-soft-hover focus:[outline-color:var(--color-error-solid-alpha)] focus-within:[outline-color:var(--color-error-solid-alpha)]',
+} as const satisfies Record<SemanticFormColor, string>
+
+const semanticHighlightColorStyles = {
+  primary: 'bg-primary-soft text-primary',
+  secondary: 'bg-secondary-soft text-secondary',
+  accent: 'bg-accent-soft text-accent',
+  neutral: 'bg-neutral-soft text-neutral',
+  info: 'bg-info-soft text-info',
+  success: 'bg-success-soft text-success',
+  warning: 'bg-warning-soft text-warning',
+  error: 'bg-error-soft text-error',
+} as const satisfies Record<SemanticFormColor, string>
+
+export const solidTextColorStyles = {
+  slate: 'text-[color:var(--color-slate-solid)]',
+  primary: 'text-[color:var(--color-primary-solid)]',
+  secondary: 'text-[color:var(--color-secondary-solid)]',
+  accent: 'text-[color:var(--color-accent-solid)]',
+  neutral: 'text-[color:var(--color-neutral-solid)]',
+  info: 'text-[color:var(--color-info-solid)]',
+  success: 'text-[color:var(--color-success-solid)]',
+  warning: 'text-[color:var(--color-warning-solid)]',
+  error: 'text-[color:var(--color-error-solid)]',
+  inverse: 'text-[color:var(--color-inverse-solid)]',
+  light: 'text-[color:var(--color-light-solid)]',
+  dark: 'text-[color:var(--color-dark-solid)]',
+} as const satisfies Record<Color, string>
+
 /** Color styles for single inputs (focus pseudo-class). */
-export const colorStyles = colorRecord(
-  '',
-  '[border-color:var(--fc-solid)] focus:[border-color:var(--fc-solid)] focus:[outline-color:var(--fc-solid-alpha)]',
-)
+export const colorStyles = colorRecord('', semanticColorFocusStyles)
 
 /** Color styles for compound inputs (focus-within pseudo-class). */
-export const containerColorStyles = colorRecord(
-  '',
-  '[border-color:var(--fc-solid)] focus-within:[border-color:var(--fc-solid)] focus-within:[outline-color:var(--fc-solid-alpha)]',
-)
+export const containerColorStyles = colorRecord('', semanticContainerColorFocusStyles)
 
 /** Solid variant color styles (background colors). */
-export const solidColorStyles = colorRecord(
-  '',
-  'bg-[color:var(--fc-soft-bg)] text-[color:var(--fc-text)] focus:bg-[color:var(--fc-soft-bg-hover)] focus-within:bg-[color:var(--fc-soft-bg-hover)] focus:[outline-color:var(--fc-solid-alpha)] focus-within:[outline-color:var(--fc-solid-alpha)]',
-)
+export const solidColorStyles = colorRecord('', semanticSolidColorStyles)
 
 /** Highlight color styles for dropdowns/listboxes. */
-export const highlightColorStyles = colorRecord(
-  'bg-accent-soft text-accent',
-  'bg-[color:var(--fc-soft-bg)] text-[color:var(--fc-text)]',
-)
+export const highlightColorStyles = colorRecord('bg-accent-soft text-accent', semanticHighlightColorStyles)
 
 export const textFieldStylesClassNames = [
   ...Object.values(variantStyles),
@@ -107,6 +175,7 @@ export const textFieldStylesClassNames = [
   ...Object.values(containerColorStyles),
   ...Object.values(solidColorStyles),
   ...Object.values(highlightColorStyles),
+  ...Object.values(solidTextColorStyles),
 ]
 
 // ============================================================================

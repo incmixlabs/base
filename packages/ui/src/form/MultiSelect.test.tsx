@@ -2,6 +2,8 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { MultiSelect } from './MultiSelect'
+import { splitClassNames } from './test-utils'
+import { textFieldEnhancementVariants, textFieldSurfaceColorVariants } from './text-field.class'
 
 const options = [
   { value: 'react', label: 'React' },
@@ -32,5 +34,15 @@ describe('MultiSelect', () => {
 
     expect(trigger.className).toContain('border-error')
     expect(trigger.className).toContain('text-error')
+  })
+
+  it('maps trigger colors through the shared surface lanes', () => {
+    render(<MultiSelect options={options} placeholder="Select skills..." variant="soft" color="success" />)
+
+    const trigger = screen.getByRole('button', { name: 'Select skills...' })
+
+    expect(trigger).toHaveClass(...splitClassNames(textFieldSurfaceColorVariants.success.soft))
+    expect(trigger).toHaveClass(...splitClassNames(textFieldEnhancementVariants.success.soft))
+    expect(trigger.className).not.toContain('form-color')
   })
 })

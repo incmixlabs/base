@@ -333,10 +333,11 @@ function textFieldPlaceholderClasses(color: Color) {
   return `placeholder:[color:${colorVar(color, 'text')}] placeholder:opacity-50`
 }
 
-function textFieldSoftEnhancementClasses(color: Color) {
+function textFieldSoftSurfaceClasses(color: Color) {
   return [
     cssDeclaration('background-color', colorVar(color, 'surface-subtle')),
     cssDeclaration('border-color', colorVar(color, 'border-subtle')),
+    `text-${color}`,
   ].join(' ')
 }
 
@@ -358,7 +359,6 @@ function createTextFieldEnhancements(color: Color): Record<TextFieldVariant, str
     textFieldVariantKeys.map(variant => [
       variant,
       [
-        variant === 'soft' ? textFieldSoftEnhancementClasses(color) : '',
         textFieldPlaceholderClasses(color),
         textFieldFocusClasses(color),
         variant === 'outline' ? textFieldOutlineInteractionClasses() : '',
@@ -377,7 +377,12 @@ const textFieldEnhancementVariants = Object.fromEntries(
 export const textFieldSurfaceColorVariants: Record<Color, Record<TextFieldVariant, string>> = Object.fromEntries(
   semanticColorKeys.map(color => [
     color,
-    Object.fromEntries(textFieldVariantKeys.map(variant => [variant, surfaceUnoColorVariants[color][variant]])),
+    Object.fromEntries(
+      textFieldVariantKeys.map(variant => [
+        variant,
+        variant === 'soft' ? textFieldSoftSurfaceClasses(color) : surfaceUnoColorVariants[color][variant],
+      ]),
+    ),
   ]),
 ) as Record<Color, Record<TextFieldVariant, string>>
 

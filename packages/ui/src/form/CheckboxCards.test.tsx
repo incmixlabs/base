@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import * as React from 'react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { CheckboxCards } from './CheckboxCards'
+import { expectClassTokens } from './test-utils'
 
 afterEach(cleanup)
 
@@ -19,13 +20,6 @@ function ControlledCheckboxCards({ showCheckbox = true }: { showCheckbox?: boole
       <output data-testid="selected">{values.join(',')}</output>
     </>
   )
-}
-
-function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-  for (const token of tokens) {
-    expect(classTokens).toContain(token)
-  }
 }
 
 describe('CheckboxCards', () => {

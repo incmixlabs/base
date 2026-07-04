@@ -4,9 +4,9 @@ import * as React from 'react'
 import { I18nProvider } from 'react-aria-components'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { FieldGroup } from '../FieldGroup'
+import { hasClassTokens } from '../test-utils'
 import { DateRangePicker } from './DateRangePicker'
 import { rangeTriggerGroupBase, rangeTriggerGroupSizeStyles } from './DateRangePicker.class'
-import { hasClassTokens } from './date-test-utils'
 
 const DUAL_MONTH_INTERACTION_TEST_TIMEOUT_MS = 15_000
 const DUAL_MONTH_HEADING_TOGGLE_TEST_TIMEOUT_MS = 15_000
