@@ -97,6 +97,8 @@ describe('TextField', () => {
     expect(floatingInputWithLeftIconSizeVariants.md).not.toContain('--af-text-field-left-slot-width')
     expect(floatingLabelSizeVariants.md.outlined).not.toContain('--af-text-field-left-slot-width')
     expect(floatingLabelWithLeftIconSizeVariants.md.outlined).not.toContain('--af-text-field-left-slot-width')
+    expect(floatingLabelWithLeftIconSizeVariants.md.standard).not.toContain('left-0')
+    expect(floatingLabelWithLeftIconSizeVariants.md.standard).toContain('[left:')
     expect(floatingInputWithLeftElementSizeVariants.md).toContain('--af-text-field-left-slot-width')
     expect(floatingLabelStyleVariants.outlined).toContain(formControlNeutralBackground)
     expect(floatingLabelStyleVariants.outlined).not.toContain('var(--background)')

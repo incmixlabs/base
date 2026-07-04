@@ -82,6 +82,7 @@ export const WithFloatingLabel: Story = {
   args: {
     label: 'Email address',
     variant: 'floating-outlined',
+    defaultValue: 'john@example.com',
   },
 }
 

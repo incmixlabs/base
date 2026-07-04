@@ -443,7 +443,7 @@ const floatingLabelBase =
   'overflow-hidden absolute text-ellipsis origin-[0] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] whitespace-nowrap z-10'
 
 const floatingLabelFilled =
-  'top-4 transition-[color,transform] translate-y-[-1.25rem] scale-[0.9] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-data-[filled]:translate-y-[-1.25rem] peer-data-[filled]:scale-[0.9] peer-data-[placeholder]:translate-y-0 peer-data-[placeholder]:scale-100 peer-data-[popup-open]:translate-y-[-1.25rem] peer-data-[popup-open]:scale-[0.9]'
+  'top-4 transition-[color,top,transform] translate-y-[-1.25rem] scale-[0.9] peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-data-[filled]:top-4 peer-data-[filled]:translate-y-[-1.25rem] peer-data-[filled]:scale-[0.9] peer-data-[placeholder]:top-1/2 peer-data-[placeholder]:-translate-y-1/2 peer-data-[placeholder]:scale-100 peer-data-[popup-open]:top-4 peer-data-[popup-open]:translate-y-[-1.25rem] peer-data-[popup-open]:scale-[0.9]'
 
 const floatingLabelOutlined = `top-2 transition-[background-color,color,padding,top,transform] translate-y-[-1.25rem] scale-[0.9] ${formControlNeutralBackground} px-1 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-data-[filled]:top-2 peer-data-[filled]:translate-y-[-1.25rem] peer-data-[filled]:scale-[0.9] peer-data-[focused]:px-1 peer-data-[placeholder]:top-1/2 peer-data-[placeholder]:-translate-y-1/2 peer-data-[placeholder]:scale-100 peer-data-[popup-open]:top-2 peer-data-[popup-open]:translate-y-[-1.25rem] peer-data-[popup-open]:scale-[0.9] peer-data-[popup-open]:${formControlNeutralBackground} peer-data-[popup-open]:px-1`
 
@@ -477,7 +477,7 @@ export const floatingLabelSizeVariants: Record<TextFieldSize, Record<FloatingSty
       {
         filled: labelBase,
         outlined: labelBase,
-        standard: `${textFieldTypographySizeVariants[size]} left-0 ${cssDeclaration('max-width', '100%')}`,
+        standard: labelBase,
       },
     ]
   }),
@@ -501,7 +501,7 @@ export const floatingLabelWithLeftIconSizeVariants: Record<
       {
         filled: labelBase,
         outlined: labelBase,
-        standard: `${textFieldTypographySizeVariants[size]} left-0 ${cssDeclaration('max-width', '100%')}`,
+        standard: labelBase,
       },
     ]
   }),
