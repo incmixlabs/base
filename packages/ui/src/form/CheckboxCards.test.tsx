@@ -147,4 +147,16 @@ describe('CheckboxCards', () => {
     expect(shellTokens).not.toContain('surface-color-neutral')
     expect(shellTokens).not.toContain('surface-variant-surface')
   })
+
+  it('applies semantic text color to the visible card content', () => {
+    render(
+      <CheckboxCards.Root color="inverse" defaultValue={['widgets']}>
+        <CheckboxCards.Item value="widgets">Widgets</CheckboxCards.Item>
+      </CheckboxCards.Root>,
+    )
+
+    const content = screen.getByText('Widgets')
+
+    expectClassTokens(content.className, ['text-inverse'])
+  })
 })

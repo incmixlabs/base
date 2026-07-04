@@ -21,6 +21,7 @@ import type { Color, Radius, Size } from '@/theme/tokens'
 import { checkboxColorVariants, checkboxHighContrastByVariant } from './checkbox.class'
 import {
   type CheckboxCardSize,
+  checkboxCardContentColorVariants,
   checkboxCardControlRadiusVariants,
   checkboxCardControlSizeVariants,
   checkboxCardIconSizeVariants,
@@ -305,7 +306,9 @@ const CheckboxCardsItem = React.forwardRef<HTMLLabelElement, CheckboxCardsItemPr
           aria-hidden="true"
         />
 
-        <div className="relative z-10 flex flex-1 flex-col">{children}</div>
+        <div className={cn('relative z-10 flex flex-1 flex-col', checkboxCardContentColorVariants[context.color])}>
+          {children}
+        </div>
       </label>
     )
   },
