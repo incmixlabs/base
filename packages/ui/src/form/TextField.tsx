@@ -36,6 +36,7 @@ import {
 } from './text-field.class'
 import type { TextFieldProps } from './text-field.props'
 import { getFloatingStyle, isFloatingVariant, resolveSurfaceVariant } from './text-field-variant'
+import { useFloatingFieldState } from './use-floating-field-state'
 
 export type { TextFieldVariant } from '@/theme/tokens'
 export type { TextFieldProps } from './text-field.props'
@@ -101,14 +102,14 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     // Strip placeholder from props for floating variants to prevent text collision with label
     const { placeholder, defaultValue, onBlur, onChange, onFocus, value, ...inputProps } = props
     const effectiveLabel = label || (isFloatingVariant(variant) ? placeholder : undefined)
-    const [floatingFocused, setFloatingFocused] = React.useState(false)
-    const [floatingHasValue, setFloatingHasValue] = React.useState(() => hasInputValue(value ?? defaultValue))
-
-    React.useEffect(() => {
-      if (value !== undefined) {
-        setFloatingHasValue(hasInputValue(value))
-      }
-    }, [value])
+    const { floatingFocused, floatingHasValue, handleBlur, handleChange, handleFocus } =
+      useFloatingFieldState<HTMLInputElement>({
+        defaultValue,
+        onBlur,
+        onChange,
+        onFocus,
+        value,
+      })
 
     // If floating variant, render the floating version
     if (isFloatingVariant(variant)) {
@@ -178,18 +179,9 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
               (rightIcon || rightElement) && floatingInputWithRightIconCls,
             )}
             {...inputProps}
-            onBlur={event => {
-              setFloatingFocused(false)
-              onBlur?.(event)
-            }}
-            onChange={event => {
-              setFloatingHasValue(hasInputValue(event.currentTarget.value))
-              onChange?.(event)
-            }}
-            onFocus={event => {
-              setFloatingFocused(true)
-              onFocus?.(event)
-            }}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            onFocus={handleFocus}
           />
 
           {effectiveLabel && (
@@ -342,11 +334,6 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
 )
 
 TextField.displayName = 'TextField'
-
-function hasInputValue(value: React.InputHTMLAttributes<HTMLInputElement>['value'] | undefined): boolean {
-  if (Array.isArray(value)) return value.length > 0
-  return value != null && String(value).length > 0
-}
 
 function textFieldIconSize(size: ExtendedFormSize): TextFieldIconSize {
   return size === '2x' ? 'xl' : size
