@@ -25,14 +25,10 @@ export function useFloatingFieldState<TElement extends FloatingFieldElement>({
   onChange,
   onFocus,
 }: FloatingFieldStateOptions<TElement>) {
+  const isControlled = value !== undefined
   const [floatingFocused, setFloatingFocused] = React.useState(false)
-  const [floatingHasValue, setFloatingHasValue] = React.useState(() => hasFieldValue(value ?? defaultValue))
-
-  React.useEffect(() => {
-    if (value !== undefined) {
-      setFloatingHasValue(hasFieldValue(value))
-    }
-  }, [value])
+  const [uncontrolledHasValue, setUncontrolledHasValue] = React.useState(() => hasFieldValue(defaultValue))
+  const floatingHasValue = isControlled ? hasFieldValue(value) : uncontrolledHasValue
 
   const handleBlur = React.useCallback<React.FocusEventHandler<TElement>>(
     event => {
@@ -44,10 +40,12 @@ export function useFloatingFieldState<TElement extends FloatingFieldElement>({
 
   const handleChange = React.useCallback<React.ChangeEventHandler<TElement>>(
     event => {
-      setFloatingHasValue(hasFieldValue(event.currentTarget.value))
+      if (!isControlled) {
+        setUncontrolledHasValue(hasFieldValue(event.currentTarget.value))
+      }
       onChange?.(event)
     },
-    [onChange],
+    [isControlled, onChange],
   )
 
   const handleFocus = React.useCallback<React.FocusEventHandler<TElement>>(
