@@ -2,6 +2,7 @@
 import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { isVarReference, sourceWindow, windowOffset } from './lib/source-window.mjs'
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url))
 const repoRoot = path.resolve(scriptDir, '..')
@@ -71,27 +72,6 @@ function addLocation(locations, file, line) {
   locations.set(file, new Set([line]))
 }
 
-function sourceWindow(lines, lineIndex, radius = 3) {
-  const start = Math.max(0, lineIndex - radius)
-  const end = Math.min(lines.length, lineIndex + radius + 1)
-  return lines.slice(start, end).join('\n')
-}
-
-function windowOffset(lines, lineIndex, index, radius = 3) {
-  const start = Math.max(0, lineIndex - radius)
-  const previous = lines.slice(start, lineIndex).join('\n')
-  return previous.length + (previous.length > 0 ? 1 : 0) + index
-}
-
-function isVarReference(line, start) {
-  const before = line.slice(0, start)
-  const lastVarCall = before.lastIndexOf('var(')
-  if (lastVarCall === -1) return false
-
-  const between = before.slice(lastVarCall + 'var('.length)
-  return !between.includes(')')
-}
-
 function isDeclaration(file, lines, lineIndex, start, name) {
   const line = lines[lineIndex]
   const source = sourceWindow(lines, lineIndex)
@@ -132,9 +112,12 @@ function collectExactVars(files) {
         }
 
         const lineNumber = lineIndex + 1
+        const source = sourceWindow(lines, lineIndex)
+        const sourceIndex = windowOffset(lines, lineIndex, start)
+
         if (isDeclaration(file, lines, lineIndex, start, name)) {
           addLocation(entry.definedAt, file.relativePath, lineNumber)
-        } else if (isVarReference(line, start)) {
+        } else if (isVarReference(source, sourceIndex)) {
           addLocation(entry.referencedAt, file.relativePath, lineNumber)
         } else {
           addLocation(entry.mentionedAt, file.relativePath, lineNumber)
