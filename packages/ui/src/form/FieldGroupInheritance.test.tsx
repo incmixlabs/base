@@ -11,7 +11,12 @@ import { SignatureInput } from './SignatureInput'
 import { Switch } from './Switch'
 import { Textarea } from './Textarea'
 import { TextField } from './TextField'
-import { textFieldColorVariants, textFieldSizeVariants } from './text-field.class'
+import {
+  textFieldColorVariants,
+  textFieldControlContentSizeVariants,
+  textFieldInputLeftPaddingSizeVariants,
+  textFieldInputRightPaddingSizeVariants,
+} from './text-field.class'
 import { withFieldGroup } from './withFieldGroup'
 
 afterEach(() => {
@@ -49,7 +54,9 @@ describe('FieldGroup inheritance', () => {
     render(<TextField aria-label="Name" />)
 
     const input = screen.getByRole('textbox', { name: 'Name' })
-    expect(input.closest('div')).toHaveClass(textFieldSizeVariants.md)
+    expect(input).toHaveClass(textFieldControlContentSizeVariants.md)
+    expect(input).toHaveClass(textFieldInputLeftPaddingSizeVariants.md)
+    expect(input).toHaveClass(textFieldInputRightPaddingSizeVariants.md)
     expect(input.closest('div')).toHaveStyle({ '--element-border-radius': designTokens.radius.md })
     expect(input).toHaveClass(textFieldColorVariants.slate.outline)
   })
@@ -62,7 +69,9 @@ describe('FieldGroup inheritance', () => {
     )
 
     const input = screen.getByRole('textbox', { name: 'Name' })
-    expect(input.closest('div')).toHaveClass(textFieldSizeVariants.lg)
+    expect(input).toHaveClass(textFieldControlContentSizeVariants.lg)
+    expect(input).toHaveClass(textFieldInputLeftPaddingSizeVariants.lg)
+    expect(input).toHaveClass(textFieldInputRightPaddingSizeVariants.lg)
     expect(input.closest('div')).toHaveStyle({ '--element-border-radius': '0.5rem' })
     expect(input).toHaveClass(textFieldColorVariants.slate.soft)
     expect(input).toBeDisabled()

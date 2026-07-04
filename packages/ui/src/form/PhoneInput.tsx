@@ -13,6 +13,7 @@ import { Text } from '@/typography'
 import { useFieldGroup } from './FieldGroupContext'
 import { pickerOptionItemBase, pickerPopupBase } from './picker-popup.class'
 import { TextField } from './TextField'
+import { type TextFieldSize, textFieldHeightSizeVariants } from './text-field.class'
 import { toBaseTextFieldVariant } from './text-field-variant'
 
 // ============================================================================
@@ -79,7 +80,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
     ref,
   ) => {
     const fieldGroup = useFieldGroup()
-    const size = sizeProp ?? fieldGroup.size
+    const size = resolvePhoneTextFieldSize(sizeProp ?? fieldGroup.size)
     const variant = variantProp ?? fieldGroup.variant
     const effectiveDisabled = disabled || fieldGroup.disabled
 
@@ -211,9 +212,8 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
         style={textFieldStyle}
         leftElement={
           <Flex
-            height="var(--af-text-field-height)"
             align="center"
-            className={cn('relative w-full', effectiveDisabled && 'opacity-50')}
+            className={cn('relative w-full', textFieldHeightSizeVariants[size], effectiveDisabled && 'opacity-50')}
           >
             <Button
               ref={triggerRef}
@@ -297,3 +297,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
 )
 
 PhoneInput.displayName = 'PhoneInput'
+
+function resolvePhoneTextFieldSize(size: Size | undefined): TextFieldSize {
+  return size && size in textFieldHeightSizeVariants ? (size as TextFieldSize) : 'md'
+}

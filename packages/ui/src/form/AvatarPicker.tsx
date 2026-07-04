@@ -44,7 +44,7 @@ import { SearchInput } from './SearchInput'
 import {
   textFieldEnhancementVariants,
   textFieldInputBaseCls,
-  textFieldSizeVariants,
+  textFieldMinControlSizeVariants,
   textFieldSurfaceColorVariants,
 } from './text-field.class'
 import { resolveSurfaceVariant } from './text-field-variant'
@@ -216,7 +216,7 @@ export const AvatarPicker = React.forwardRef<HTMLDivElement, AvatarPickerProps>(
         return (
           <div
             ref={ref}
-            className={cn(pickerPopupBase, avatarPickerInlineCls, textFieldSizeVariants[size], className)}
+            className={cn(pickerPopupBase, avatarPickerInlineCls, className)}
             style={formColorVars[effectiveHighlightColor] as React.CSSProperties}
           >
             <MultiSelect
@@ -445,10 +445,7 @@ const AvatarPickerMultiTrigger = React.forwardRef<HTMLDivElement, AvatarPickerMu
     }, [isOpen])
 
     return (
-      <div
-        className={cn(avatarPickerRootCls, textFieldSizeVariants[size], className)}
-        style={formColorVars[highlightColor] as React.CSSProperties}
-      >
+      <div className={cn(avatarPickerRootCls, className)} style={formColorVars[highlightColor] as React.CSSProperties}>
         <div
           ref={triggerRef}
           id={id}
@@ -477,8 +474,8 @@ const AvatarPickerMultiTrigger = React.forwardRef<HTMLDivElement, AvatarPickerMu
             cn(
               textFieldInputBaseCls,
               'inline-flex w-full items-center justify-between gap-2 box-border border',
-              'min-h-[var(--af-text-field-height)] px-[var(--af-text-field-padding-x)] py-[var(--af-text-field-padding-y)] text-left',
-              '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)] rounded-[var(--element-border-radius)]',
+              textFieldMinControlSizeVariants[size],
+              'text-left rounded-[var(--element-border-radius)]',
               textFieldSurfaceColorVariants[highlightColor][surfaceVariant],
               disabled && 'cursor-not-allowed opacity-50',
             ),
@@ -966,18 +963,11 @@ const AvatarPickerSingle = React.forwardRef<HTMLDivElement, AvatarPickerSinglePr
     )
 
     if (inline) {
-      return (
-        <div className={cn(textFieldSizeVariants[size])} style={formColorVars[highlightColor] as React.CSSProperties}>
-          {dropdownContent}
-        </div>
-      )
+      return <div style={formColorVars[highlightColor] as React.CSSProperties}>{dropdownContent}</div>
     }
 
     return (
-      <div
-        className={cn(avatarPickerRootCls, textFieldSizeVariants[size], className)}
-        style={formColorVars[highlightColor] as React.CSSProperties}
-      >
+      <div className={cn(avatarPickerRootCls, className)} style={formColorVars[highlightColor] as React.CSSProperties}>
         <div
           ref={triggerRef}
           id={id}
@@ -1000,8 +990,8 @@ const AvatarPickerSingle = React.forwardRef<HTMLDivElement, AvatarPickerSinglePr
             cn(
               textFieldInputBaseCls,
               'inline-flex w-full items-center justify-between gap-2 box-border border',
-              'min-h-[var(--af-text-field-height)] px-[var(--af-text-field-padding-x)] py-[var(--af-text-field-padding-y)] text-left',
-              '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)] rounded-[var(--element-border-radius)]',
+              textFieldMinControlSizeVariants[size],
+              'text-left rounded-[var(--element-border-radius)]',
               textFieldSurfaceColorVariants[highlightColor][surfaceVariant],
               disabled && 'cursor-not-allowed opacity-50',
             ),

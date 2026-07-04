@@ -5,10 +5,13 @@ import { Theme } from '@/theme/ThemeProvider'
 import { designTokens } from '@/theme/tokens'
 import {
   floatingInputStyleVariants,
-  floatingInputWithLeftIconCls,
+  floatingInputWithLeftElementSizeVariants,
+  floatingInputWithLeftIconSizeVariants,
+  floatingLabelSizeVariants,
   floatingLabelStyleVariants,
-  floatingLabelWithLeftIconCls,
+  floatingLabelWithLeftIconSizeVariants,
   textFieldFloatingColorVariants,
+  textFieldFloatingLabelColorVariants,
   textFieldIconContainerCls,
 } from './text-field.class'
 import { formControlNeutralBackground } from './form-control.class'
@@ -64,7 +67,6 @@ describe('TextField', () => {
 
     const iconSlot = container.querySelector('svg')?.closest('div')
 
-    expect(iconSlot).toHaveStyle({ top: '50%' })
     expect(iconSlot).toHaveClass(textFieldIconContainerCls)
   })
 
@@ -78,7 +80,7 @@ describe('TextField', () => {
     expect(icons[1]?.closest('div')).toHaveClass(textFieldIconContainerCls)
   })
 
-  it('uses variable hooks for floating icon input and label offsets', () => {
+  it('uses direct token offsets for floating icon input and label offsets', () => {
     const { container } = render(
       <TextField aria-label="Email" variant="floating-outlined" label="Email" leftIcon="mail" />,
     )
@@ -86,11 +88,18 @@ describe('TextField', () => {
     const input = screen.getByRole('textbox', { name: 'Email' })
     const label = container.querySelector('label')
 
-    expect(input).toHaveClass(floatingInputWithLeftIconCls)
-    expect(label).toHaveClass(floatingLabelWithLeftIconCls)
+    expect(input).toHaveClass(floatingInputWithLeftIconSizeVariants.md)
+    expect(input).not.toHaveClass(floatingInputWithLeftElementSizeVariants.md)
     expect(label).toHaveClass(floatingLabelStyleVariants.outlined)
-    expect(floatingInputStyleVariants.outlined).toContain('[padding-left:var(--af-text-field-input-padding-left')
-    expect(floatingLabelStyleVariants.outlined).toContain('[left:var(--af-text-field-label-left')
+    expect(label).not.toHaveClass(floatingLabelSizeVariants.md.outlined)
+    expect(label).toHaveClass(floatingLabelWithLeftIconSizeVariants.md.outlined)
+    expect(label).toHaveClass(textFieldFloatingLabelColorVariants.slate)
+    expect(floatingInputWithLeftIconSizeVariants.md).not.toContain('--af-text-field-left-slot-width')
+    expect(floatingLabelSizeVariants.md.outlined).not.toContain('--af-text-field-left-slot-width')
+    expect(floatingLabelWithLeftIconSizeVariants.md.outlined).not.toContain('--af-text-field-left-slot-width')
+    expect(floatingLabelWithLeftIconSizeVariants.md.standard).not.toContain('left-0')
+    expect(floatingLabelWithLeftIconSizeVariants.md.standard).toContain('[left:')
+    expect(floatingInputWithLeftElementSizeVariants.md).toContain('--af-text-field-left-slot-width')
     expect(floatingLabelStyleVariants.outlined).toContain(formControlNeutralBackground)
     expect(floatingLabelStyleVariants.outlined).not.toContain('var(--background)')
   })

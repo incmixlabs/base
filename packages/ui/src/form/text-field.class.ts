@@ -12,18 +12,6 @@ export const textFieldInputBaseCls = 'w-full outline-none transition-all duratio
 
 export const textFieldIconContainerCls = 'absolute top-1/2 -translate-y-1/2 z-10'
 
-export const textFieldLeftIconContainerCls =
-  'left-[var(--af-text-field-icon-inset)] h-[var(--af-text-field-icon-size)] w-[var(--af-text-field-icon-size)]'
-
-export const textFieldRightIconContainerCls =
-  'right-[var(--af-text-field-icon-inset)] h-[var(--af-text-field-icon-size)] w-[var(--af-text-field-icon-size)]'
-
-export const textFieldInputWithLeftElementCls =
-  '[padding-left:var(--af-text-field-left-slot-width,var(--af-text-field-icon-text-offset))]'
-
-export const textFieldInputWithRightElementCls =
-  '[padding-right:var(--af-text-field-right-slot-width,var(--af-text-field-icon-text-offset))]'
-
 const textFieldVariantKeys = [
   'classic',
   'solid',
@@ -40,6 +28,10 @@ function classValue(value: string) {
   return value.replace(/\s+/g, '_')
 }
 
+function arbitraryValueClass(prefix: string, value: string) {
+  return `${prefix}-[${classValue(value)}]`
+}
+
 function cssDeclaration(property: string, value: string) {
   return `[${property}:${classValue(value)}]`
 }
@@ -51,6 +43,283 @@ function variantCssDeclaration(variant: string, property: string, value: string)
 function colorVar(color: Color, token: Parameters<typeof semanticColorVar>[1]) {
   return semanticColorVar(color, token)
 }
+
+function textFieldSizeTokenClasses(size: TextFieldSize) {
+  const token = themeSizeTokens[size]
+  const iconInset = `calc(${token.paddingX} + ${token.gap})`
+  const iconTextOffset = `calc(${token.paddingX} + ${token.gap} + ${token.iconSize} + ${token.gap})`
+  const floatingHeight = `calc(${token.height} + ${token.paddingY} * 1.65)`
+  const dateIconPaddingRight = `calc(${token.paddingX} * 2 + ${token.iconSize})`
+
+  return {
+    dateIconPaddingRight,
+    floatingHeight,
+    iconInset,
+    iconTextOffset,
+    token,
+  }
+}
+
+function textFieldTypographyClassName(size: TextFieldSize) {
+  const { token } = textFieldSizeTokenClasses(size)
+  return `${cssDeclaration('font-size', token.fontSize)} ${arbitraryValueClass('leading', token.lineHeight)}`
+}
+
+function textFieldPaddingClassName(size: TextFieldSize) {
+  const { token } = textFieldSizeTokenClasses(size)
+  return `${arbitraryValueClass('px', token.paddingX)} ${arbitraryValueClass('py', token.paddingY)}`
+}
+
+function textFieldBlockPaddingClassName(size: TextFieldSize) {
+  const { token } = textFieldSizeTokenClasses(size)
+  return arbitraryValueClass('py', token.paddingY)
+}
+
+export type TextFieldSize = ExtendedFormSize
+
+export const textFieldTypographySizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => [size, textFieldTypographyClassName(size)]),
+) as Record<TextFieldSize, string>
+
+export const textFieldInputLeftPaddingSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { token } = textFieldSizeTokenClasses(size)
+    return [size, cssDeclaration('padding-left', token.paddingX)]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldInputRightPaddingSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { token } = textFieldSizeTokenClasses(size)
+    return [size, cssDeclaration('padding-right', token.paddingX)]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldControlContentSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { token } = textFieldSizeTokenClasses(size)
+    return [
+      size,
+      [
+        arbitraryValueClass('h', token.height),
+        textFieldBlockPaddingClassName(size),
+        textFieldTypographySizeVariants[size],
+      ].join(' '),
+    ]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldControlSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    return [
+      size,
+      [
+        textFieldControlContentSizeVariants[size],
+        textFieldInputLeftPaddingSizeVariants[size],
+        textFieldInputRightPaddingSizeVariants[size],
+      ].join(' '),
+    ]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldHeightSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { token } = textFieldSizeTokenClasses(size)
+    return [size, arbitraryValueClass('h', token.height)]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldMinControlSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { token } = textFieldSizeTokenClasses(size)
+    return [
+      size,
+      [
+        arbitraryValueClass('min-h', token.height),
+        textFieldPaddingClassName(size),
+        textFieldTypographySizeVariants[size],
+      ].join(' '),
+    ]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldTextareaSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { token } = textFieldSizeTokenClasses(size)
+    return [
+      size,
+      [
+        arbitraryValueClass('min-h', `calc(${token.height} * 2)`),
+        textFieldPaddingClassName(size),
+        textFieldTypographySizeVariants[size],
+      ].join(' '),
+    ]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldTextareaMinHeightVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { token } = textFieldSizeTokenClasses(size)
+    return [size, arbitraryValueClass('min-h', `calc(${token.height} * 2)`)]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldFloatingBaseSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { floatingHeight } = textFieldSizeTokenClasses(size)
+    return [size, arbitraryValueClass('h', floatingHeight)]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldFloatingInputContentSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { token } = textFieldSizeTokenClasses(size)
+    return [
+      size,
+      [
+        textFieldTypographySizeVariants[size],
+        arbitraryValueClass('pt', token.lineHeight),
+        arbitraryValueClass('pb', token.paddingY),
+      ].join(' '),
+    ]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldFloatingInputSizeVariants: Record<
+  TextFieldSize,
+  Record<FloatingStyle, string>
+> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const sizeBase = [
+      textFieldFloatingInputContentSizeVariants[size],
+      textFieldInputLeftPaddingSizeVariants[size],
+      textFieldInputRightPaddingSizeVariants[size],
+    ].join(' ')
+
+    return [
+      size,
+      {
+        filled: sizeBase,
+        outlined: sizeBase,
+        standard: sizeBase,
+      },
+    ]
+  }),
+) as Record<TextFieldSize, Record<FloatingStyle, string>>
+
+export const textFieldInputWithLeftIconSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconTextOffset } = textFieldSizeTokenClasses(size)
+    return [size, cssDeclaration('padding-left', iconTextOffset)]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldInputWithRightIconSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconTextOffset } = textFieldSizeTokenClasses(size)
+    return [size, cssDeclaration('padding-right', iconTextOffset)]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldLeftIconContainerSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconInset, token } = textFieldSizeTokenClasses(size)
+    return [
+      size,
+      `${cssDeclaration('left', iconInset)} ${arbitraryValueClass('h', token.iconSize)} ${arbitraryValueClass('w', token.iconSize)}`,
+    ]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldRightIconContainerSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconInset, token } = textFieldSizeTokenClasses(size)
+    return [
+      size,
+      `${cssDeclaration('right', iconInset)} ${arbitraryValueClass('h', token.iconSize)} ${arbitraryValueClass('w', token.iconSize)}`,
+    ]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldInputWithLeftElementSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconTextOffset } = textFieldSizeTokenClasses(size)
+    return [size, cssDeclaration('padding-left', `var(--af-text-field-left-slot-width,${iconTextOffset})`)]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldInputWithRightElementSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconTextOffset } = textFieldSizeTokenClasses(size)
+    return [size, cssDeclaration('padding-right', `var(--af-text-field-right-slot-width,${iconTextOffset})`)]
+  }),
+) as Record<TextFieldSize, string>
+
+export const floatingInputWithLeftIconSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconTextOffset } = textFieldSizeTokenClasses(size)
+    return [size, cssDeclaration('padding-left', iconTextOffset)]
+  }),
+) as Record<TextFieldSize, string>
+
+export const floatingInputWithRightIconSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconTextOffset } = textFieldSizeTokenClasses(size)
+    return [size, cssDeclaration('padding-right', iconTextOffset)]
+  }),
+) as Record<TextFieldSize, string>
+
+export const floatingInputWithLeftElementSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconTextOffset } = textFieldSizeTokenClasses(size)
+    return [size, cssDeclaration('padding-left', `var(--af-text-field-left-slot-width,${iconTextOffset})`)]
+  }),
+) as Record<TextFieldSize, string>
+
+export const floatingInputWithRightElementSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconTextOffset } = textFieldSizeTokenClasses(size)
+    return [size, cssDeclaration('padding-right', `var(--af-text-field-right-slot-width,${iconTextOffset})`)]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldIconSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { token } = textFieldSizeTokenClasses(size)
+    return [
+      size,
+      [
+        arbitraryValueClass('[&_svg]:h', token.iconSize),
+        arbitraryValueClass('[&_svg]:w', token.iconSize),
+        '[&_svg]:shrink-0',
+      ].join(' '),
+    ]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldDateSegmentSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { dateIconPaddingRight, token } = textFieldSizeTokenClasses(size)
+    return [
+      size,
+      [
+        arbitraryValueClass('px', token.paddingX),
+        cssDeclaration('padding-right', dateIconPaddingRight),
+        textFieldTypographySizeVariants[size],
+      ].join(' '),
+    ]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldDateRangeSurfaceSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { dateIconPaddingRight, token } = textFieldSizeTokenClasses(size)
+    return [
+      size,
+      `${arbitraryValueClass('px', token.paddingX)} ${cssDeclaration('padding-right', dateIconPaddingRight)}`,
+    ]
+  }),
+) as Record<TextFieldSize, string>
 
 function textFieldFocusClasses(color: Color) {
   return [
@@ -126,12 +395,14 @@ export const textFieldColorVariants: Record<Color, Record<TextFieldVariant, stri
   ]),
 ) as Record<Color, Record<TextFieldVariant, string>>
 
-export const textFieldFloatingWrapperColorVariants: Record<Color, string> = Object.fromEntries(
+export const textFieldFloatingLabelColorVariants: Record<Color, string> = Object.fromEntries(
   semanticColorKeys.map(color => [
     color,
     [
-      cssDeclaration('--af-text-field-color-text', colorVar(color, 'text')),
-      cssDeclaration('--af-text-field-color-solid', colorVar(color, 'solid')),
+      cssDeclaration('color', colorVar(color, 'text')),
+      variantCssDeclaration('peer-focus', 'color', colorVar(color, 'solid')),
+      variantCssDeclaration('peer-data-[focused]', 'color', colorVar(color, 'solid')),
+      variantCssDeclaration('peer-data-[popup-open]', 'color', colorVar(color, 'solid')),
     ].join(' '),
   ]),
 ) as Record<Color, string>
@@ -160,34 +431,24 @@ export const textFieldFloatingColorVariants: Record<Color, Record<FloatingStyle,
   semanticColorKeys.map(color => [color, createFloatingColorClasses(color)]),
 ) as Record<Color, Record<FloatingStyle, string>>
 
-export const floatingInputBaseCls =
-  'box-border h-[var(--af-text-field-floating-height)] disabled:cursor-not-allowed disabled:opacity-50'
+export const floatingInputBaseCls = 'box-border disabled:cursor-not-allowed disabled:opacity-50'
 
 export const floatingInputStyleVariants: Record<FloatingStyle, string> = {
-  filled:
-    '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)] border-solid border-x-0 border-t-0 border-b-2 rounded-t-[var(--element-border-radius)] rounded-b-none [padding-left:var(--af-text-field-input-padding-left,var(--af-text-field-padding-x))] [padding-right:var(--af-text-field-input-padding-right,var(--af-text-field-padding-x))] pt-[var(--af-text-field-line-height)] pb-[var(--af-text-field-padding-y)]',
-  outlined:
-    '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)] border border-solid rounded-[var(--element-border-radius)] [padding-left:var(--af-text-field-input-padding-left,var(--af-text-field-padding-x))] [padding-right:var(--af-text-field-input-padding-right,var(--af-text-field-padding-x))] pt-[var(--af-text-field-line-height)] pb-[var(--af-text-field-padding-y)]',
-  standard:
-    '[font-size:var(--af-text-field-font-size)] leading-[var(--af-text-field-line-height)] border-solid border-x-0 border-t-0 border-b-2 rounded-none [padding-left:var(--af-text-field-input-padding-left,0px)] [padding-right:var(--af-text-field-input-padding-right,0px)] pt-[var(--af-text-field-line-height)] pb-[var(--af-text-field-padding-y)]',
+  filled: 'border-solid border-x-0 border-t-0 border-b-2 rounded-t-[var(--element-border-radius)] rounded-b-none',
+  outlined: 'border border-solid rounded-[var(--element-border-radius)]',
+  standard: 'border-solid border-x-0 border-t-0 border-b-2 rounded-none',
 }
-
-export const floatingInputWithLeftIconCls =
-  '[--af-text-field-input-padding-left:var(--af-text-field-left-slot-width,var(--af-text-field-icon-text-offset))]'
-
-export const floatingInputWithRightIconCls =
-  '[--af-text-field-input-padding-right:var(--af-text-field-right-slot-width,var(--af-text-field-icon-text-offset))]'
 
 const floatingLabelBase =
   'overflow-hidden absolute text-ellipsis origin-[0] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] whitespace-nowrap z-10'
 
 const floatingLabelFilled =
-  '[font-size:var(--af-text-field-font-size)] [color:var(--af-text-field-color-text)] [left:var(--af-text-field-label-left,var(--af-text-field-padding-x))] leading-[var(--af-text-field-line-height)] [max-width:var(--af-text-field-label-max-width,calc(100%_-_(var(--af-text-field-padding-x)_*_2)))] top-4 transition-[color,transform] translate-y-[-1.25rem] scale-[0.9] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:[color:var(--af-text-field-color-solid)] peer-data-[filled]:translate-y-[-1.25rem] peer-data-[filled]:scale-[0.9] peer-data-[focused]:[color:var(--af-text-field-color-solid)] peer-data-[placeholder]:translate-y-0 peer-data-[placeholder]:scale-100 peer-data-[popup-open]:translate-y-[-1.25rem] peer-data-[popup-open]:scale-[0.9] peer-data-[popup-open]:[color:var(--af-text-field-color-solid)]'
+  'top-4 transition-[color,top,transform] translate-y-[-1.25rem] scale-[0.9] peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-data-[filled]:top-4 peer-data-[filled]:translate-y-[-1.25rem] peer-data-[filled]:scale-[0.9] peer-data-[placeholder]:top-1/2 peer-data-[placeholder]:-translate-y-1/2 peer-data-[placeholder]:scale-100 peer-data-[popup-open]:top-4 peer-data-[popup-open]:translate-y-[-1.25rem] peer-data-[popup-open]:scale-[0.9]'
 
-const floatingLabelOutlined = `[font-size:var(--af-text-field-font-size)] [color:var(--af-text-field-color-text)] [left:var(--af-text-field-label-left,var(--af-text-field-padding-x))] leading-[var(--af-text-field-line-height)] [max-width:var(--af-text-field-label-max-width,calc(100%_-_(var(--af-text-field-padding-x)_*_2)))] top-2 transition-[background-color,color,padding,top,transform] translate-y-[-1.25rem] scale-[0.9] ${formControlNeutralBackground} px-1 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:[color:var(--af-text-field-color-solid)] peer-data-[filled]:top-2 peer-data-[filled]:translate-y-[-1.25rem] peer-data-[filled]:scale-[0.9] peer-data-[focused]:[color:var(--af-text-field-color-solid)] peer-data-[focused]:px-1 peer-data-[placeholder]:top-1/2 peer-data-[placeholder]:-translate-y-1/2 peer-data-[placeholder]:scale-100 peer-data-[popup-open]:top-2 peer-data-[popup-open]:translate-y-[-1.25rem] peer-data-[popup-open]:scale-[0.9] peer-data-[popup-open]:[color:var(--af-text-field-color-solid)] peer-data-[popup-open]:${formControlNeutralBackground} peer-data-[popup-open]:px-1`
+const floatingLabelOutlined = `top-2 transition-[background-color,color,padding,top,transform] translate-y-[-1.25rem] scale-[0.9] ${formControlNeutralBackground} px-1 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-data-[filled]:top-2 peer-data-[filled]:translate-y-[-1.25rem] peer-data-[filled]:scale-[0.9] peer-data-[focused]:px-1 peer-data-[placeholder]:top-1/2 peer-data-[placeholder]:-translate-y-1/2 peer-data-[placeholder]:scale-100 peer-data-[popup-open]:top-2 peer-data-[popup-open]:translate-y-[-1.25rem] peer-data-[popup-open]:scale-[0.9] peer-data-[popup-open]:${formControlNeutralBackground} peer-data-[popup-open]:px-1`
 
 const floatingLabelStandard =
-  '[font-size:var(--af-text-field-font-size)] [color:var(--af-text-field-color-text)] [left:var(--af-text-field-label-left,0px)] leading-[var(--af-text-field-line-height)] [max-width:var(--af-text-field-label-max-width,100%)] top-3 transition-[color,transform] translate-y-[-1.75rem] scale-[0.9] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:[color:var(--af-text-field-color-solid)] peer-data-[filled]:translate-y-[-1.75rem] peer-data-[filled]:scale-[0.9] peer-data-[focused]:[color:var(--af-text-field-color-solid)] peer-data-[placeholder]:translate-y-0 peer-data-[placeholder]:scale-100 peer-data-[popup-open]:translate-y-[-1.75rem] peer-data-[popup-open]:scale-[0.9] peer-data-[popup-open]:[color:var(--af-text-field-color-solid)]'
+  'top-3 transition-[color,transform] translate-y-[-1.75rem] scale-[0.9] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-data-[filled]:translate-y-[-1.75rem] peer-data-[filled]:scale-[0.9] peer-data-[placeholder]:translate-y-0 peer-data-[placeholder]:scale-100 peer-data-[popup-open]:translate-y-[-1.75rem] peer-data-[popup-open]:scale-[0.9]'
 
 export const floatingLabelStyleVariants: Record<FloatingStyle, string> = {
   filled: `${floatingLabelBase} ${floatingLabelFilled}`,
@@ -201,39 +462,75 @@ export const floatingLabelFocusedPlaceholderVariants: Record<FloatingStyle, stri
   standard: '!translate-y-[-1.75rem] !scale-[0.9]',
 }
 
-export const floatingLabelWithLeftIconCls =
-  '[--af-text-field-label-left:var(--af-text-field-left-slot-width,var(--af-text-field-icon-text-offset))] [--af-text-field-label-max-width:calc(100%_-_(var(--af-text-field-left-slot-width,var(--af-text-field-icon-text-offset))_+_var(--af-text-field-padding-x)))]'
-
-export type TextFieldSize = ExtendedFormSize
-
-export const textFieldSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+export const floatingLabelSizeVariants: Record<TextFieldSize, Record<FloatingStyle, string>> = Object.fromEntries(
   extendedFormSizes.map(size => {
-    const token = themeSizeTokens[size]
-    const floatingHeightFallback = `calc(${token.height} + ${token.paddingY} * 1.65)`
+    const { token } = textFieldSizeTokenClasses(size)
+    const labelMaxWidth = `calc(100% - (${token.paddingX} * 2))`
+    const labelBase = [
+      textFieldTypographySizeVariants[size],
+      cssDeclaration('left', token.paddingX),
+      cssDeclaration('max-width', labelMaxWidth),
+    ].join(' ')
 
     return [
       size,
-      [
-        cssDeclaration('--af-text-field-height', token.height),
-        cssDeclaration('--af-text-field-floating-height', floatingHeightFallback),
-        cssDeclaration('--af-text-field-font-size', token.fontSize),
-        cssDeclaration('--af-text-field-line-height', token.lineHeight),
-        cssDeclaration('--af-text-field-padding-x', token.paddingX),
-        cssDeclaration('--af-text-field-padding-y', token.paddingY),
-        cssDeclaration('--af-text-field-icon-size', token.iconSize),
-        cssDeclaration('--af-text-field-gap', token.gap),
-        cssDeclaration('--af-text-field-icon-inset', 'calc(var(--af-text-field-padding-x) + var(--af-text-field-gap))'),
-        cssDeclaration(
-          '--af-text-field-icon-text-offset',
-          'calc(var(--af-text-field-icon-inset) + var(--af-text-field-icon-size) + var(--af-text-field-gap))',
-        ),
-      ].join(' '),
+      {
+        filled: labelBase,
+        outlined: labelBase,
+        standard: labelBase,
+      },
     ]
   }),
-) as Record<TextFieldSize, string>
+) as Record<TextFieldSize, Record<FloatingStyle, string>>
 
-export const textFieldIconCls =
-  '[&_svg]:h-[var(--af-text-field-icon-size)] [&_svg]:w-[var(--af-text-field-icon-size)] [&_svg]:shrink-0'
+export const floatingLabelWithLeftIconSizeVariants: Record<
+  TextFieldSize,
+  Record<FloatingStyle, string>
+> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconTextOffset, token } = textFieldSizeTokenClasses(size)
+    const labelMaxWidth = `calc(100% - (${iconTextOffset} + ${token.paddingX}))`
+    const labelBase = [
+      textFieldTypographySizeVariants[size],
+      cssDeclaration('left', iconTextOffset),
+      cssDeclaration('max-width', labelMaxWidth),
+    ].join(' ')
+
+    return [
+      size,
+      {
+        filled: labelBase,
+        outlined: labelBase,
+        standard: labelBase,
+      },
+    ]
+  }),
+) as Record<TextFieldSize, Record<FloatingStyle, string>>
+
+export const floatingLabelWithLeftElementSizeVariants: Record<
+  TextFieldSize,
+  Record<FloatingStyle, string>
+> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconTextOffset, token } = textFieldSizeTokenClasses(size)
+    const labelLeft = `var(--af-text-field-left-slot-width,${iconTextOffset})`
+    const labelMaxWidth = `calc(100% - (${labelLeft} + ${token.paddingX}))`
+    const labelBase = [
+      textFieldTypographySizeVariants[size],
+      cssDeclaration('left', labelLeft),
+      cssDeclaration('max-width', labelMaxWidth),
+    ].join(' ')
+
+    return [
+      size,
+      {
+        filled: labelBase,
+        outlined: labelBase,
+        standard: `${textFieldTypographySizeVariants[size]} left-0 ${cssDeclaration('max-width', '100%')}`,
+      },
+    ]
+  }),
+) as Record<TextFieldSize, Record<FloatingStyle, string>>
 
 const nestedClassMapValues = <Value extends string>(map: Record<string, Record<string, Value>>) =>
   Object.values(map).flatMap(value => Object.values(value))
@@ -242,22 +539,41 @@ export const textFieldClassNames = [
   textFieldRootCls,
   textFieldInputBaseCls,
   textFieldIconContainerCls,
-  textFieldLeftIconContainerCls,
-  textFieldRightIconContainerCls,
-  textFieldInputWithLeftElementCls,
-  textFieldInputWithRightElementCls,
   ...nestedClassMapValues(textFieldEnhancementVariants),
   ...nestedClassMapValues(textFieldSurfaceColorVariants),
   ...nestedClassMapValues(textFieldColorVariants),
-  ...Object.values(textFieldFloatingWrapperColorVariants),
+  ...Object.values(textFieldFloatingLabelColorVariants),
   ...nestedClassMapValues(textFieldFloatingColorVariants),
   floatingInputBaseCls,
   ...Object.values(floatingInputStyleVariants),
-  floatingInputWithLeftIconCls,
-  floatingInputWithRightIconCls,
+  ...Object.values(textFieldTypographySizeVariants),
+  ...Object.values(textFieldInputLeftPaddingSizeVariants),
+  ...Object.values(textFieldInputRightPaddingSizeVariants),
+  ...Object.values(textFieldControlContentSizeVariants),
+  ...Object.values(textFieldControlSizeVariants),
+  ...Object.values(textFieldHeightSizeVariants),
+  ...Object.values(textFieldMinControlSizeVariants),
+  ...Object.values(textFieldTextareaSizeVariants),
+  ...Object.values(textFieldTextareaMinHeightVariants),
+  ...Object.values(textFieldFloatingBaseSizeVariants),
+  ...Object.values(textFieldFloatingInputContentSizeVariants),
+  ...nestedClassMapValues(textFieldFloatingInputSizeVariants),
+  ...Object.values(textFieldInputWithLeftIconSizeVariants),
+  ...Object.values(textFieldInputWithRightIconSizeVariants),
+  ...Object.values(textFieldLeftIconContainerSizeVariants),
+  ...Object.values(textFieldRightIconContainerSizeVariants),
+  ...Object.values(textFieldInputWithLeftElementSizeVariants),
+  ...Object.values(textFieldInputWithRightElementSizeVariants),
+  ...Object.values(floatingInputWithLeftIconSizeVariants),
+  ...Object.values(floatingInputWithRightIconSizeVariants),
+  ...Object.values(floatingInputWithLeftElementSizeVariants),
+  ...Object.values(floatingInputWithRightElementSizeVariants),
+  ...Object.values(textFieldIconSizeVariants),
+  ...Object.values(textFieldDateSegmentSizeVariants),
+  ...Object.values(textFieldDateRangeSurfaceSizeVariants),
   ...Object.values(floatingLabelStyleVariants),
+  ...nestedClassMapValues(floatingLabelSizeVariants),
+  ...nestedClassMapValues(floatingLabelWithLeftIconSizeVariants),
+  ...nestedClassMapValues(floatingLabelWithLeftElementSizeVariants),
   ...Object.values(floatingLabelFocusedPlaceholderVariants),
-  floatingLabelWithLeftIconCls,
-  ...Object.values(textFieldSizeVariants),
-  textFieldIconCls,
 ]

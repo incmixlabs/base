@@ -39,9 +39,9 @@ import {
   DateFieldWrapper,
   dateGhostIconButtonClassName,
   dateIconSlotClassName,
-  dateSegmentInputClassName,
   getDateFieldSurfaceClassName,
   getDateSegmentClassName,
+  getDateSegmentInputClassName,
 } from './date-field-shell'
 import { dateSurfaceFooterDivider, dateSurfacePopover } from './date-surface.shared.class'
 import { fromDateValue, toDateValue } from './date-value-boundary'
@@ -302,7 +302,7 @@ export function DateTimePicker({
           textFieldSize,
         })}
       >
-        <DateInput className={dateSegmentInputClassName}>
+        <DateInput className={getDateSegmentInputClassName(textFieldSize)}>
           {segment => (
             <DateSegment
               segment={segment}
