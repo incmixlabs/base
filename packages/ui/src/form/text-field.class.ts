@@ -136,6 +136,13 @@ export const textFieldElementSlotOffsetSizeVariants: Record<TextFieldSize, strin
   }),
 ) as Record<TextFieldSize, string>
 
+export const textFieldLabelEndPaddingSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { token } = textFieldSizeTokenClasses(size)
+    return [size, token.paddingX]
+  }),
+) as Record<TextFieldSize, string>
+
 export const textFieldMinControlSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
   extendedFormSizes.map(size => {
     const { token } = textFieldSizeTokenClasses(size)

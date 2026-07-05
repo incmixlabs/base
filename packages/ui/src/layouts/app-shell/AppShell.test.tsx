@@ -225,7 +225,7 @@ describe('AppShell', () => {
   })
 
   it('reports the measured resize width when the secondary width is a CSS value', async () => {
-    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+    const getBoundingClientRect = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
       x: 0,
       y: 0,
       width: 320,
@@ -237,24 +237,28 @@ describe('AppShell', () => {
       toJSON: () => ({}),
     })
 
-    render(
-      <AppShell.Root defaultOpen defaultSecondaryOpen>
-        <AppShell.Body>
-          <AppShell.Main>
-            <AppShell.Content>Page content</AppShell.Content>
-          </AppShell.Main>
-          <AppShell.Secondary aria-label="Components" resize width="var(--app-secondary-width)">
-            <div>Component list</div>
-          </AppShell.Secondary>
-        </AppShell.Body>
-      </AppShell.Root>,
-    )
+    try {
+      render(
+        <AppShell.Root defaultOpen defaultSecondaryOpen>
+          <AppShell.Body>
+            <AppShell.Main>
+              <AppShell.Content>Page content</AppShell.Content>
+            </AppShell.Main>
+            <AppShell.Secondary aria-label="Components" resize width="var(--app-secondary-width)">
+              <div>Component list</div>
+            </AppShell.Secondary>
+          </AppShell.Body>
+        </AppShell.Root>,
+      )
 
-    const separator = screen.getByRole('separator', { name: 'Resize secondary panel' })
+      const separator = screen.getByRole('separator', { name: 'Resize secondary panel' })
 
-    await waitFor(() => {
-      expect(separator).toHaveAttribute('aria-valuenow', '320')
-    })
+      await waitFor(() => {
+        expect(separator).toHaveAttribute('aria-valuenow', '320')
+      })
+    } finally {
+      getBoundingClientRect.mockRestore()
+    }
   })
 
   it('uses semantic muted text for secondary sidebar descriptions', () => {

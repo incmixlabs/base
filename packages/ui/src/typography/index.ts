@@ -19,6 +19,8 @@ export { Quote, type QuoteProps } from './quote/Quote'
 export { Strong, type StrongProps } from './strong/Strong'
 // Typography components
 export { Text, type TextProps } from './text/Text'
+export { SubTitle, type SubTitleProps } from './title/SubTitle'
+export { Title, type TitleProps } from './title/Title'
 // Typography tokens
 export {
   type TypographyColor,

@@ -2,6 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { getPropDefValues } from '@/theme/props/prop-def'
+import { designTokens } from '@/theme/tokens'
 import { headingBase, headingSizeResponsive, typographyTrimByTrim } from '../typography.class'
 import { Heading } from './Heading'
 import { headingPropDefs } from './heading.props'
@@ -32,5 +33,17 @@ describe('Heading', () => {
     render(<Heading trim="start">Trimmed heading</Heading>)
 
     expect(screen.getByRole('heading', { name: 'Trimmed heading' })).toHaveClass(typographyTrimByTrim.start)
+  })
+
+  it('treats muted variant as readable text with muted opacity', () => {
+    render(
+      <Heading color="neutral" variant="muted">
+        Muted heading
+      </Heading>,
+    )
+
+    const heading = screen.getByRole('heading', { name: 'Muted heading' })
+    expect(heading).toHaveClass('opacity-70')
+    expect(heading).toHaveStyle({ color: designTokens.color.neutral.text })
   })
 })

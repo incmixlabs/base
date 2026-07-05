@@ -9,6 +9,7 @@ import {
   floatingInputWithLeftIconSizeVariants,
   floatingLabelSizeVariants,
   floatingLabelStyleVariants,
+  floatingLabelWithLeftElementSizeVariants,
   floatingLabelWithLeftIconSizeVariants,
   textFieldEnhancementVariants,
   textFieldFloatingColorVariants,
@@ -135,5 +136,27 @@ describe('TextField', () => {
     expect(slot).toHaveStyle({ width: '8.75rem' })
     expect(input.getAttribute('style') ?? '').not.toContain('--af-text-field')
     expect(slot?.getAttribute('style') ?? '').not.toContain('--af-text-field')
+  })
+
+  it('uses explicit custom element width for floating labels', () => {
+    const { container } = render(
+      <TextField
+        aria-label="Phone"
+        variant="floating-outlined"
+        label="Phone"
+        leftElement={<span data-testid="prefix">+1</span>}
+        leftElementWidth="8.75rem"
+      />,
+    )
+
+    const input = screen.getByRole('textbox', { name: 'Phone' })
+    const label = container.querySelector('label')
+    const slot = container.querySelector('[data-testid="prefix"]')?.parentElement
+
+    expect(input).toHaveStyle({ paddingLeft: '8.75rem' })
+    expect(slot).toHaveStyle({ width: '8.75rem' })
+    expect(label).toHaveClass(floatingLabelWithLeftElementSizeVariants.md.outlined)
+    expect(label).toHaveStyle({ left: '8.75rem' })
+    expect(label?.getAttribute('style') ?? '').toContain('max-width: calc(100% - (8.75rem +')
   })
 })

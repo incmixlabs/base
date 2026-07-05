@@ -16,7 +16,8 @@ import { cn } from '@/lib/utils'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { normalizeEnumPropValue } from '@/theme/props/prop-def'
 import { designTokens, type Radius, type Responsive, type SurfaceColorKey } from '@/theme/tokens'
-import { Text } from '@/typography/text/Text'
+import { SubTitle, type SubTitleProps } from '@/typography/title/SubTitle'
+import { Title, type TitleProps } from '@/typography/title/Title'
 import { Surface } from '../surface/Surface'
 import type { SurfaceShape } from '../surface/surface.props'
 import {
@@ -209,18 +210,15 @@ CardHeader.displayName = 'Card.Header'
 // Card Title
 // ============================================================================
 
-export interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
-  /** As child element */
-  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
-}
+export interface CardTitleProps extends Omit<TitleProps, 'asChild'> {}
 
 /** CardTitle export. */
 export const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
-  ({ as: Comp = 'h3', className, children, ...props }, ref) => {
+  ({ className, children, ...props }, ref) => {
     return (
-      <Comp ref={ref} className={cn(cardTitleBase, className)} {...props}>
+      <Title ref={ref} className={cn(cardTitleBase, className)} {...props}>
         {children}
-      </Comp>
+      </Title>
     )
   },
 )
@@ -231,15 +229,15 @@ CardTitle.displayName = 'Card.Title'
 // Card Description
 // ============================================================================
 
-export interface CardDescriptionProps extends Omit<React.HTMLAttributes<HTMLParagraphElement>, 'color'> {}
+export interface CardDescriptionProps extends Omit<SubTitleProps, 'as' | 'asChild'> {}
 
 /** CardDescription export. */
 export const CardDescription = React.forwardRef<HTMLParagraphElement, CardDescriptionProps>(
   ({ className, children, ...props }, ref) => {
     return (
-      <Text ref={ref} as="p" size="sm" variant="muted" className={className} {...props}>
+      <SubTitle ref={ref} as="p" className={className} {...props}>
         {children}
-      </Text>
+      </SubTitle>
     )
   },
 )

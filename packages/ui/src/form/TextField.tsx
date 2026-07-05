@@ -40,6 +40,7 @@ import {
   textFieldInputWithLeftIconSizeVariants,
   textFieldInputWithRightElementSizeVariants,
   textFieldInputWithRightIconSizeVariants,
+  textFieldLabelEndPaddingSizeVariants,
   textFieldLeftIconContainerSizeVariants,
   textFieldRightIconContainerSizeVariants,
   textFieldRootCls,
@@ -55,6 +56,10 @@ export type { TextFieldProps } from './text-field.props'
 type TextFieldIconSize = NonNullable<IconProps['size']>
 const textFieldIconSlotBase = 'box-border flex min-w-0 items-center justify-center'
 const textFieldElementSlotBase = 'absolute inset-y-0 z-10 box-border flex min-w-0 items-center'
+
+function toCssLength(value: React.CSSProperties['width']) {
+  return typeof value === 'number' ? `${value}px` : value
+}
 
 /** TextField export. */
 export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
@@ -115,6 +120,14 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     } as React.CSSProperties
     const leftElementSlotStyles = { width: leftElementSlotWidth } as React.CSSProperties
     const rightElementSlotStyles = { width: rightElementSlotWidth } as React.CSSProperties
+    const leftElementLabelSlotWidth = toCssLength(leftElementSlotWidth)
+    const leftElementFloatingLabelStyles =
+      leftElement && leftElementLabelSlotWidth
+        ? ({
+            left: leftElementLabelSlotWidth,
+            maxWidth: `calc(100% - (${leftElementLabelSlotWidth} + ${textFieldLabelEndPaddingSizeVariants[size]}))`,
+          } satisfies React.CSSProperties)
+        : undefined
 
     const regularStyles = {
       ...radiusStyles,
@@ -210,6 +223,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           {effectiveLabel && (
             <label
               htmlFor={inputId}
+              style={leftElementFloatingLabelStyles}
               className={clsx(
                 cn(
                   // TW: static label styles
