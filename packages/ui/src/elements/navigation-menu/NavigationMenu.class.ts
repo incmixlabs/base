@@ -1,10 +1,43 @@
-import type { Color } from '../../theme/tokens'
-import { semanticColorScale } from '../../theme/tokens'
+import { semanticColorVar } from '../../theme/props/color.prop'
+import { type Color, semanticColorScale } from '../../theme/tokens'
 import type { NavigationMenuSize, NavigationMenuVariant } from './navigation-menu.props'
 
 const cls = (...tokens: string[]) => tokens.join(' ')
-const property = (name: string, value: string) => ['[', name, ':', value, ']'].join('')
-const colorVar = (color: Color, token: string) => ['var(--color-', color, '-', token, ')'].join('')
+
+function classValue(value: string) {
+  return value.replace(/\s+/g, '_')
+}
+
+function cssDeclaration(property: string, value: string) {
+  return `[${property}:${classValue(value)}]`
+}
+
+function variantCssDeclaration(variant: string, property: string, value: string) {
+  return `${variant}:${cssDeclaration(property, value)}`
+}
+
+function stateBackgroundClass(variant: string, color: Color, token: 'surface' | 'surface-hover') {
+  return variantCssDeclaration(variant, 'background-color', semanticColorVar(color, token))
+}
+
+function stateTextClass(variant: string, color: Color) {
+  return variantCssDeclaration(variant, 'color', semanticColorVar(color, 'text'))
+}
+
+function stateHighContrastOutlineClass(variant: string, color: Color) {
+  return variantCssDeclaration(
+    `[${variant}.af-high-contrast]`,
+    'box-shadow',
+    `inset 0 0 0 1px ${semanticColorVar(color, 'solid')}`,
+  )
+}
+
+function createNavigationMenuColorRecord(createValue: (color: Color) => string): Record<Color, string> {
+  const colorCoverage: Record<Exclude<Color, (typeof semanticColorScale)[number]>, never> = {}
+  void colorCoverage
+
+  return Object.fromEntries(semanticColorScale.map(color => [color, createValue(color)])) as Record<Color, string>
+}
 
 export const navigationMenuRootBaseCls = 'relative z-10 flex max-w-full'
 export const navigationMenuRootVerticalCls = 'items-start'
@@ -18,17 +51,11 @@ export const navigationMenuItemBaseCls = 'relative list-none'
 export const navigationMenuTriggerBaseCls =
   'group inline-flex shrink-0 items-center justify-center whitespace-nowrap border border-transparent outline-none transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2'
 
-const navigationMenuActionBase = cls(
-  'cursor-pointer bg-transparent text-neutral tracking-normal',
-  'hover:[background-color:var(--af-navigation-menu-accent-soft-hover)]',
-  'hover:[color:var(--af-navigation-menu-accent-text)]',
-)
+const navigationMenuActionBase = cls('cursor-pointer bg-transparent text-neutral tracking-normal')
 
 export const navigationMenuTriggerBase = cls(
   navigationMenuActionBase,
   'data-[pressed]:translate-y-px',
-  'data-[popup-open]:[background-color:var(--af-navigation-menu-accent-soft)]',
-  'data-[popup-open]:[color:var(--af-navigation-menu-accent-text)]',
   '[&.af-high-contrast]:font-semibold',
 )
 
@@ -98,14 +125,7 @@ export const navigationMenuViewportBase = 'w-max min-w-full max-w-[calc(100vw_-_
 export const navigationMenuLinkBaseCls =
   'group flex min-w-0 gap-3 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2'
 
-export const navigationMenuLinkBase = cls(
-  'text-neutral no-underline tracking-normal',
-  'hover:[background-color:var(--af-navigation-menu-accent-soft-hover)]',
-  'hover:[color:var(--af-navigation-menu-accent-text)]',
-  'data-[active]:[background-color:var(--af-navigation-menu-accent-soft)]',
-  'data-[active]:[color:var(--af-navigation-menu-accent-text)]',
-  '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--af-navigation-menu-accent-solid)]',
-)
+export const navigationMenuLinkBase = cls('text-neutral no-underline tracking-normal')
 
 export const navigationMenuLinkBySize = {
   sm: 'p-2.5 text-sm leading-5 rounded-sm',
@@ -124,28 +144,32 @@ export const navigationMenuLinkDescriptionBySize = {
   lg: 'text-base leading-6',
 } as const satisfies Record<NavigationMenuSize, string>
 
-export const navigationMenuSimpleLinkBase = cls(
-  navigationMenuActionBase,
-  'no-underline',
-  'data-[active]:[background-color:var(--af-navigation-menu-accent-soft)]',
-  'data-[active]:[color:var(--af-navigation-menu-accent-text)]',
-  '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--af-navigation-menu-accent-solid)]',
+export const navigationMenuSimpleLinkBase = cls(navigationMenuActionBase, 'no-underline')
+
+const navigationMenuActionColor = createNavigationMenuColorRecord(color =>
+  cls(stateBackgroundClass('hover', color, 'surface-hover'), stateTextClass('hover', color)),
+)
+
+export const navigationMenuTriggerColor = createNavigationMenuColorRecord(color =>
+  cls(
+    navigationMenuActionColor[color],
+    stateBackgroundClass('data-[popup-open]', color, 'surface'),
+    stateTextClass('data-[popup-open]', color),
+    stateHighContrastOutlineClass('&[data-popup-open]', color),
+  ),
+)
+
+export const navigationMenuLinkColor = createNavigationMenuColorRecord(color =>
+  cls(
+    navigationMenuActionColor[color],
+    stateBackgroundClass('data-[active]', color, 'surface'),
+    stateTextClass('data-[active]', color),
+    stateHighContrastOutlineClass('&[data-active]', color),
+  ),
 )
 
 export const navigationMenuBackdropBase =
   'fixed inset-0 [background-color:color-mix(in_oklch,black_8%,transparent)] backdrop-blur-[1px]'
-
-export const navigationMenuColor = Object.fromEntries(
-  semanticColorScale.map(color => [
-    color,
-    cls(
-      property('--af-navigation-menu-accent-solid', colorVar(color, 'solid')),
-      property('--af-navigation-menu-accent-soft', colorVar(color, 'soft')),
-      property('--af-navigation-menu-accent-soft-hover', colorVar(color, 'soft-hover')),
-      property('--af-navigation-menu-accent-text', colorVar(color, 'text')),
-    ),
-  ]),
-) as Record<Color, string>
 
 export const navigationMenuClassNames = [
   navigationMenuRootBaseCls,
@@ -180,5 +204,6 @@ export const navigationMenuClassNames = [
   ...Object.values(navigationMenuLinkDescriptionBySize),
   navigationMenuSimpleLinkBase,
   navigationMenuBackdropBase,
-  ...Object.values(navigationMenuColor),
+  ...Object.values(navigationMenuTriggerColor),
+  ...Object.values(navigationMenuLinkColor),
 ]
