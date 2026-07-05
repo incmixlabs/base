@@ -82,6 +82,14 @@ function stateTextClass(variant: string, color: Color) {
   return variantCssDeclaration(variant, 'color', semanticColorVar(color, 'text'))
 }
 
+function backgroundClass(color: Color, token: 'surface' | 'surface-hover') {
+  return cssDeclaration('background-color', semanticColorVar(color, token))
+}
+
+function textClass(color: Color) {
+  return cssDeclaration('color', semanticColorVar(color, 'text'))
+}
+
 function stateHighContrastOutlineClass(variant: string, color: Color) {
   return variantCssDeclaration(
     `[${variant}.af-high-contrast]`,
@@ -109,7 +117,7 @@ export const navigationMenuItemBaseCls = 'relative list-none'
 export const navigationMenuTriggerBaseCls =
   'group inline-flex shrink-0 items-center justify-center whitespace-nowrap border border-transparent outline-none transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2'
 
-const navigationMenuActionBase = cls('cursor-pointer bg-transparent text-neutral tracking-normal')
+const navigationMenuActionBase = cls('cursor-pointer tracking-normal')
 
 export const navigationMenuTriggerBase = cls(
   navigationMenuActionBase,
@@ -183,7 +191,7 @@ export const navigationMenuViewportBase = 'w-max min-w-full max-w-[calc(100vw_-_
 export const navigationMenuLinkBaseCls =
   'group flex min-w-0 gap-3 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2'
 
-export const navigationMenuLinkBase = cls('text-neutral no-underline tracking-normal')
+export const navigationMenuLinkBase = cls('no-underline tracking-normal')
 
 export const navigationMenuLinkBySize = {
   sm: navigationMenuLinkSizeClassName('sm'),
@@ -194,7 +202,7 @@ export const navigationMenuLinkBySize = {
 export const navigationMenuLinkIconBaseCls =
   'mt-0.5 inline-flex shrink-0 items-center justify-center [&_svg]:h-[1.25rem] [&_svg]:w-[1.25rem]'
 export const navigationMenuLinkTitleBase = 'font-semibold text-current'
-export const navigationMenuLinkDescriptionBase = '[color:color-mix(in_oklch,var(--color-neutral-text)_72%,transparent)]'
+export const navigationMenuLinkDescriptionBase = '[color:color-mix(in_oklch,currentColor_72%,transparent)]'
 
 export const navigationMenuLinkDescriptionBySize = {
   sm: navigationMenuLinkDescriptionSizeClassName('sm'),
@@ -205,7 +213,12 @@ export const navigationMenuLinkDescriptionBySize = {
 export const navigationMenuSimpleLinkBase = cls(navigationMenuActionBase, 'no-underline')
 
 const navigationMenuActionColor = createNavigationMenuColorRecord(color =>
-  cls(stateBackgroundClass('hover', color, 'surface-hover'), stateTextClass('hover', color)),
+  cls(
+    backgroundClass(color, 'surface'),
+    textClass(color),
+    stateBackgroundClass('hover', color, 'surface-hover'),
+    stateTextClass('hover', color),
+  ),
 )
 
 export const navigationMenuTriggerColor = createNavigationMenuColorRecord(color =>
