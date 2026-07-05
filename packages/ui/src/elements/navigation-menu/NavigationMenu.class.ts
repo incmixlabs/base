@@ -82,12 +82,27 @@ function stateTextClass(variant: string, color: Color) {
   return variantCssDeclaration(variant, 'color', semanticColorVar(color, 'text'))
 }
 
-function backgroundClass(color: Color, token: 'surface' | 'surface-hover') {
-  return cssDeclaration('background-color', semanticColorVar(color, token))
+function colorVar(
+  color: Color,
+  token: 'background' | 'surface' | 'surface-hover' | 'border' | 'border-subtle' | 'text',
+) {
+  return token === 'background' ? `var(--color-${color}-background)` : semanticColorVar(color, token)
+}
+
+function backgroundClass(color: Color, token: 'background' | 'surface' | 'surface-hover') {
+  return cssDeclaration('background-color', colorVar(color, token))
 }
 
 function textClass(color: Color) {
-  return cssDeclaration('color', semanticColorVar(color, 'text'))
+  return cssDeclaration('color', colorVar(color, 'text'))
+}
+
+function borderClass(color: Color, token: 'border' | 'border-subtle' | 'text') {
+  return cssDeclaration('border-color', colorVar(color, token))
+}
+
+function customPropertyClass(property: string, value: string) {
+  return cssDeclaration(property, value)
 }
 
 function stateHighContrastOutlineClass(variant: string, color: Color) {
@@ -159,31 +174,37 @@ export const navigationMenuPositionerBase = 'z-[1000]'
 export const navigationMenuPopupBaseCls = 'relative box-border overflow-hidden border border-solid outline-none'
 export const navigationMenuPopupBase = cls(
   'min-w-[min(100vw_-_2rem,18rem)] max-w-[calc(100vw_-_2rem)] max-h-[var(--available-height)]',
-  'text-neutral origin-[var(--transform-origin)]',
+  'origin-[var(--transform-origin)]',
   'transition-[opacity,transform] duration-[var(--af-motion-fast)] ease-[var(--af-ease-standard)]',
   'data-[starting-style]:opacity-0 data-[ending-style]:opacity-0',
   'data-[starting-style]:scale-[0.98] data-[ending-style]:scale-[0.98]',
 )
 
 export const navigationMenuPopupByVariant = {
-  solid: cls(
-    '[background-color:var(--color-neutral-background)]',
-    '[border-color:var(--color-neutral-border)]',
-    '[--af-floating-surface-arrow-fill:var(--color-neutral-background)]',
-    '[--af-floating-surface-arrow-edge:var(--color-neutral-border)]',
-    '[box-shadow:0_18px_48px_color-mix(in_oklch,black_16%,transparent),0_4px_16px_color-mix(in_oklch,black_10%,transparent)]',
+  solid: createNavigationMenuColorRecord(color =>
+    cls(
+      backgroundClass(color, 'background'),
+      textClass(color),
+      borderClass(color, 'border'),
+      customPropertyClass('--af-floating-surface-arrow-fill', colorVar(color, 'background')),
+      customPropertyClass('--af-floating-surface-arrow-edge', colorVar(color, 'border')),
+      '[box-shadow:0_18px_48px_color-mix(in_oklch,black_16%,transparent),0_4px_16px_color-mix(in_oklch,black_10%,transparent)]',
+    ),
   ),
-  soft: cls(
-    '[background-color:var(--color-neutral-surface)]',
-    '[border-color:var(--color-neutral-border-subtle)]',
-    '[--af-floating-surface-arrow-fill:var(--color-neutral-surface)]',
-    '[--af-floating-surface-arrow-edge:var(--color-neutral-border-subtle)]',
-    'backdrop-saturate-[140%] backdrop-blur-[10px]',
-    '[box-shadow:inset_0_1px_0_var(--color-panel-highlight),0_18px_48px_color-mix(in_oklch,black_12%,transparent),0_4px_16px_color-mix(in_oklch,black_8%,transparent)]',
+  soft: createNavigationMenuColorRecord(color =>
+    cls(
+      backgroundClass(color, 'surface'),
+      textClass(color),
+      borderClass(color, 'border-subtle'),
+      customPropertyClass('--af-floating-surface-arrow-fill', colorVar(color, 'surface')),
+      customPropertyClass('--af-floating-surface-arrow-edge', colorVar(color, 'border-subtle')),
+      'backdrop-saturate-[140%] backdrop-blur-[10px]',
+      '[box-shadow:inset_0_1px_0_var(--color-panel-highlight),0_18px_48px_color-mix(in_oklch,black_12%,transparent),0_4px_16px_color-mix(in_oklch,black_8%,transparent)]',
+    ),
   ),
-} as const satisfies Record<NavigationMenuVariant, string>
+} as const satisfies Record<NavigationMenuVariant, Record<Color, string>>
 
-export const navigationMenuPopupHighContrast = '[border-color:var(--color-neutral-text)]'
+export const navigationMenuPopupHighContrast = createNavigationMenuColorRecord(color => borderClass(color, 'text'))
 
 export const navigationMenuViewportBaseCls = 'box-border overflow-auto'
 export const navigationMenuViewportBase = 'w-max min-w-full max-w-[calc(100vw_-_2rem)] max-h-[var(--available-height)]'
@@ -262,8 +283,8 @@ export const navigationMenuClassNames = [
   navigationMenuPositionerBase,
   navigationMenuPopupBaseCls,
   navigationMenuPopupBase,
-  ...Object.values(navigationMenuPopupByVariant),
-  navigationMenuPopupHighContrast,
+  ...Object.values(navigationMenuPopupByVariant).flatMap(variantClasses => Object.values(variantClasses)),
+  ...Object.values(navigationMenuPopupHighContrast),
   navigationMenuViewportBaseCls,
   navigationMenuViewportBase,
   navigationMenuLinkBaseCls,

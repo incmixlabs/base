@@ -545,8 +545,8 @@ const NavigationMenuPopup = React.forwardRef<HTMLElement, NavigationMenuPopupPro
         className={cn(
           navigationMenuPopupBaseCls,
           navigationMenuPopupBase,
-          navigationMenuPopupByVariant[safeVariant],
-          safeHighContrast && navigationMenuPopupHighContrast,
+          navigationMenuPopupByVariant[safeVariant][context.color],
+          safeHighContrast && navigationMenuPopupHighContrast[context.color],
           className,
         )}
         style={{ ...getRadiusStyles(radius), ...style }}
