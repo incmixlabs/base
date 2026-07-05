@@ -1,10 +1,7 @@
 import type { Color } from '../../theme/tokens'
-import { semanticColorScale } from '../../theme/tokens'
 import type { NavigationMenuSize, NavigationMenuVariant } from './navigation-menu.props'
 
 const cls = (...tokens: string[]) => tokens.join(' ')
-const property = (name: string, value: string) => ['[', name, ':', value, ']'].join('')
-const colorVar = (color: Color, token: string) => ['var(--color-', color, '-', token, ')'].join('')
 
 export const navigationMenuRootBaseCls = 'relative z-10 flex max-w-full'
 export const navigationMenuRootVerticalCls = 'items-start'
@@ -18,17 +15,11 @@ export const navigationMenuItemBaseCls = 'relative list-none'
 export const navigationMenuTriggerBaseCls =
   'group inline-flex shrink-0 items-center justify-center whitespace-nowrap border border-transparent outline-none transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2'
 
-const navigationMenuActionBase = cls(
-  'cursor-pointer bg-transparent text-neutral tracking-normal',
-  'hover:[background-color:var(--af-navigation-menu-accent-soft-hover)]',
-  'hover:[color:var(--af-navigation-menu-accent-text)]',
-)
+const navigationMenuActionBase = cls('cursor-pointer bg-transparent text-neutral tracking-normal')
 
 export const navigationMenuTriggerBase = cls(
   navigationMenuActionBase,
   'data-[pressed]:translate-y-px',
-  'data-[popup-open]:[background-color:var(--af-navigation-menu-accent-soft)]',
-  'data-[popup-open]:[color:var(--af-navigation-menu-accent-text)]',
   '[&.af-high-contrast]:font-semibold',
 )
 
@@ -98,14 +89,7 @@ export const navigationMenuViewportBase = 'w-max min-w-full max-w-[calc(100vw_-_
 export const navigationMenuLinkBaseCls =
   'group flex min-w-0 gap-3 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2'
 
-export const navigationMenuLinkBase = cls(
-  'text-neutral no-underline tracking-normal',
-  'hover:[background-color:var(--af-navigation-menu-accent-soft-hover)]',
-  'hover:[color:var(--af-navigation-menu-accent-text)]',
-  'data-[active]:[background-color:var(--af-navigation-menu-accent-soft)]',
-  'data-[active]:[color:var(--af-navigation-menu-accent-text)]',
-  '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--af-navigation-menu-accent-solid)]',
-)
+export const navigationMenuLinkBase = cls('text-neutral no-underline tracking-normal')
 
 export const navigationMenuLinkBySize = {
   sm: 'p-2.5 text-sm leading-5 rounded-sm',
@@ -124,28 +108,163 @@ export const navigationMenuLinkDescriptionBySize = {
   lg: 'text-base leading-6',
 } as const satisfies Record<NavigationMenuSize, string>
 
-export const navigationMenuSimpleLinkBase = cls(
-  navigationMenuActionBase,
-  'no-underline',
-  'data-[active]:[background-color:var(--af-navigation-menu-accent-soft)]',
-  'data-[active]:[color:var(--af-navigation-menu-accent-text)]',
-  '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--af-navigation-menu-accent-solid)]',
-)
+export const navigationMenuSimpleLinkBase = cls(navigationMenuActionBase, 'no-underline')
+
+const navigationMenuActionColor = {
+  slate: 'hover:[background-color:var(--color-slate-soft-hover)] hover:[color:var(--color-slate-text)]',
+  primary: 'hover:[background-color:var(--color-primary-soft-hover)] hover:[color:var(--color-primary-text)]',
+  secondary: 'hover:[background-color:var(--color-secondary-soft-hover)] hover:[color:var(--color-secondary-text)]',
+  accent: 'hover:[background-color:var(--color-accent-soft-hover)] hover:[color:var(--color-accent-text)]',
+  neutral: 'hover:[background-color:var(--color-neutral-soft-hover)] hover:[color:var(--color-neutral-text)]',
+  info: 'hover:[background-color:var(--color-info-soft-hover)] hover:[color:var(--color-info-text)]',
+  success: 'hover:[background-color:var(--color-success-soft-hover)] hover:[color:var(--color-success-text)]',
+  warning: 'hover:[background-color:var(--color-warning-soft-hover)] hover:[color:var(--color-warning-text)]',
+  error: 'hover:[background-color:var(--color-error-soft-hover)] hover:[color:var(--color-error-text)]',
+  inverse: 'hover:[background-color:var(--color-inverse-soft-hover)] hover:[color:var(--color-inverse-text)]',
+  light: 'hover:[background-color:var(--color-light-soft-hover)] hover:[color:var(--color-light-text)]',
+  dark: 'hover:[background-color:var(--color-dark-soft-hover)] hover:[color:var(--color-dark-text)]',
+} as const satisfies Record<Color, string>
+
+export const navigationMenuTriggerColor = {
+  slate: cls(
+    navigationMenuActionColor.slate,
+    'data-[popup-open]:[background-color:var(--color-slate-soft)]',
+    'data-[popup-open]:[color:var(--color-slate-text)]',
+  ),
+  primary: cls(
+    navigationMenuActionColor.primary,
+    'data-[popup-open]:[background-color:var(--color-primary-soft)]',
+    'data-[popup-open]:[color:var(--color-primary-text)]',
+  ),
+  secondary: cls(
+    navigationMenuActionColor.secondary,
+    'data-[popup-open]:[background-color:var(--color-secondary-soft)]',
+    'data-[popup-open]:[color:var(--color-secondary-text)]',
+  ),
+  accent: cls(
+    navigationMenuActionColor.accent,
+    'data-[popup-open]:[background-color:var(--color-accent-soft)]',
+    'data-[popup-open]:[color:var(--color-accent-text)]',
+  ),
+  neutral: cls(
+    navigationMenuActionColor.neutral,
+    'data-[popup-open]:[background-color:var(--color-neutral-soft)]',
+    'data-[popup-open]:[color:var(--color-neutral-text)]',
+  ),
+  info: cls(
+    navigationMenuActionColor.info,
+    'data-[popup-open]:[background-color:var(--color-info-soft)]',
+    'data-[popup-open]:[color:var(--color-info-text)]',
+  ),
+  success: cls(
+    navigationMenuActionColor.success,
+    'data-[popup-open]:[background-color:var(--color-success-soft)]',
+    'data-[popup-open]:[color:var(--color-success-text)]',
+  ),
+  warning: cls(
+    navigationMenuActionColor.warning,
+    'data-[popup-open]:[background-color:var(--color-warning-soft)]',
+    'data-[popup-open]:[color:var(--color-warning-text)]',
+  ),
+  error: cls(
+    navigationMenuActionColor.error,
+    'data-[popup-open]:[background-color:var(--color-error-soft)]',
+    'data-[popup-open]:[color:var(--color-error-text)]',
+  ),
+  inverse: cls(
+    navigationMenuActionColor.inverse,
+    'data-[popup-open]:[background-color:var(--color-inverse-soft)]',
+    'data-[popup-open]:[color:var(--color-inverse-text)]',
+  ),
+  light: cls(
+    navigationMenuActionColor.light,
+    'data-[popup-open]:[background-color:var(--color-light-soft)]',
+    'data-[popup-open]:[color:var(--color-light-text)]',
+  ),
+  dark: cls(
+    navigationMenuActionColor.dark,
+    'data-[popup-open]:[background-color:var(--color-dark-soft)]',
+    'data-[popup-open]:[color:var(--color-dark-text)]',
+  ),
+} as const satisfies Record<Color, string>
+
+export const navigationMenuLinkColor = {
+  slate: cls(
+    navigationMenuActionColor.slate,
+    'data-[active]:[background-color:var(--color-slate-soft)]',
+    'data-[active]:[color:var(--color-slate-text)]',
+    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-slate-solid)]',
+  ),
+  primary: cls(
+    navigationMenuActionColor.primary,
+    'data-[active]:[background-color:var(--color-primary-soft)]',
+    'data-[active]:[color:var(--color-primary-text)]',
+    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-primary-solid)]',
+  ),
+  secondary: cls(
+    navigationMenuActionColor.secondary,
+    'data-[active]:[background-color:var(--color-secondary-soft)]',
+    'data-[active]:[color:var(--color-secondary-text)]',
+    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-secondary-solid)]',
+  ),
+  accent: cls(
+    navigationMenuActionColor.accent,
+    'data-[active]:[background-color:var(--color-accent-soft)]',
+    'data-[active]:[color:var(--color-accent-text)]',
+    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-accent-solid)]',
+  ),
+  neutral: cls(
+    navigationMenuActionColor.neutral,
+    'data-[active]:[background-color:var(--color-neutral-soft)]',
+    'data-[active]:[color:var(--color-neutral-text)]',
+    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-neutral-solid)]',
+  ),
+  info: cls(
+    navigationMenuActionColor.info,
+    'data-[active]:[background-color:var(--color-info-soft)]',
+    'data-[active]:[color:var(--color-info-text)]',
+    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-info-solid)]',
+  ),
+  success: cls(
+    navigationMenuActionColor.success,
+    'data-[active]:[background-color:var(--color-success-soft)]',
+    'data-[active]:[color:var(--color-success-text)]',
+    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-success-solid)]',
+  ),
+  warning: cls(
+    navigationMenuActionColor.warning,
+    'data-[active]:[background-color:var(--color-warning-soft)]',
+    'data-[active]:[color:var(--color-warning-text)]',
+    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-warning-solid)]',
+  ),
+  error: cls(
+    navigationMenuActionColor.error,
+    'data-[active]:[background-color:var(--color-error-soft)]',
+    'data-[active]:[color:var(--color-error-text)]',
+    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-error-solid)]',
+  ),
+  inverse: cls(
+    navigationMenuActionColor.inverse,
+    'data-[active]:[background-color:var(--color-inverse-soft)]',
+    'data-[active]:[color:var(--color-inverse-text)]',
+    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-inverse-solid)]',
+  ),
+  light: cls(
+    navigationMenuActionColor.light,
+    'data-[active]:[background-color:var(--color-light-soft)]',
+    'data-[active]:[color:var(--color-light-text)]',
+    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-light-solid)]',
+  ),
+  dark: cls(
+    navigationMenuActionColor.dark,
+    'data-[active]:[background-color:var(--color-dark-soft)]',
+    'data-[active]:[color:var(--color-dark-text)]',
+    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-dark-solid)]',
+  ),
+} as const satisfies Record<Color, string>
 
 export const navigationMenuBackdropBase =
   'fixed inset-0 [background-color:color-mix(in_oklch,black_8%,transparent)] backdrop-blur-[1px]'
-
-export const navigationMenuColor = Object.fromEntries(
-  semanticColorScale.map(color => [
-    color,
-    cls(
-      property('--af-navigation-menu-accent-solid', colorVar(color, 'solid')),
-      property('--af-navigation-menu-accent-soft', colorVar(color, 'soft')),
-      property('--af-navigation-menu-accent-soft-hover', colorVar(color, 'soft-hover')),
-      property('--af-navigation-menu-accent-text', colorVar(color, 'text')),
-    ),
-  ]),
-) as Record<Color, string>
 
 export const navigationMenuClassNames = [
   navigationMenuRootBaseCls,
@@ -180,5 +299,6 @@ export const navigationMenuClassNames = [
   ...Object.values(navigationMenuLinkDescriptionBySize),
   navigationMenuSimpleLinkBase,
   navigationMenuBackdropBase,
-  ...Object.values(navigationMenuColor),
+  ...Object.values(navigationMenuTriggerColor),
+  ...Object.values(navigationMenuLinkColor),
 ]

@@ -13,7 +13,6 @@ import { floatingArrowBase, floatingArrowSurface } from '../surface/surface.clas
 import { getRadiusStyles, useThemeRadius } from '../utils'
 import {
   navigationMenuBackdropBase,
-  navigationMenuColor,
   navigationMenuContentBase,
   navigationMenuContentBaseCls,
   navigationMenuContentBySize,
@@ -24,6 +23,7 @@ import {
   navigationMenuLinkBase,
   navigationMenuLinkBaseCls,
   navigationMenuLinkBySize,
+  navigationMenuLinkColor,
   navigationMenuLinkDescriptionBase,
   navigationMenuLinkDescriptionBySize,
   navigationMenuLinkIconBaseCls,
@@ -42,6 +42,7 @@ import {
   navigationMenuTriggerBase,
   navigationMenuTriggerBaseCls,
   navigationMenuTriggerBySize,
+  navigationMenuTriggerColor,
   navigationMenuViewportBase,
   navigationMenuViewportBaseCls,
 } from './NavigationMenu.class'
@@ -300,7 +301,7 @@ const NavigationMenuTrigger = React.forwardRef<HTMLButtonElement, NavigationMenu
           navigationMenuTriggerBaseCls,
           navigationMenuTriggerBase,
           navigationMenuTriggerBySize[size],
-          navigationMenuColor[color],
+          navigationMenuTriggerColor[color],
           highContrast && 'af-high-contrast',
           className,
         )}
@@ -378,7 +379,7 @@ const NavigationMenuLink = React.forwardRef<HTMLAnchorElement, NavigationMenuLin
           hasStructuredContent
             ? [navigationMenuLinkBaseCls, navigationMenuLinkBase, navigationMenuLinkBySize[size]]
             : [navigationMenuTriggerBaseCls, navigationMenuSimpleLinkBase, navigationMenuTriggerBySize[size]],
-          navigationMenuColor[color],
+          navigationMenuLinkColor[color],
           highContrast && 'af-high-contrast',
           className,
         )}
