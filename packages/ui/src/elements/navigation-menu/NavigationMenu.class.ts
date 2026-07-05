@@ -204,7 +204,9 @@ export const navigationMenuPopupByVariant = {
   ),
 } as const satisfies Record<NavigationMenuVariant, Record<Color, string>>
 
-export const navigationMenuPopupHighContrast = createNavigationMenuColorRecord(color => borderClass(color, 'text'))
+export const navigationMenuPopupHighContrast = createNavigationMenuColorRecord(color =>
+  cls(borderClass(color, 'text'), customPropertyClass('--af-floating-surface-arrow-edge', colorVar(color, 'text'))),
+)
 
 export const navigationMenuViewportBaseCls = 'box-border overflow-auto'
 export const navigationMenuViewportBase = 'w-max min-w-full max-w-[calc(100vw_-_2rem)] max-h-[var(--available-height)]'
