@@ -127,6 +127,8 @@ describe('NavigationMenu', () => {
       mdSize.paddingX,
       mdSize.fontSize,
       mdSize.leading,
+      '[background-color:var(--color-primary-surface)]',
+      '[color:var(--color-primary-text)]',
       'hover:[background-color:var(--color-primary-surface-hover)]',
       'hover:[color:var(--color-primary-text)]',
       'data-[popup-open]:[background-color:var(--color-primary-surface)]',
@@ -162,6 +164,8 @@ describe('NavigationMenu', () => {
       mdSize.padding,
       mdSize.fontSize,
       mdSize.leading,
+      '[background-color:var(--color-primary-surface)]',
+      '[color:var(--color-primary-text)]',
       'hover:[background-color:var(--color-primary-surface-hover)]',
       'hover:[color:var(--color-primary-text)]',
       'data-[active]:[background-color:var(--color-primary-surface)]',
@@ -173,6 +177,9 @@ describe('NavigationMenu', () => {
 
     const iconSlot = structuredLink.querySelector('span')
     expectClassTokens(iconSlot?.className, ['[&_svg]:h-[1.25rem]', '[&_svg]:w-[1.25rem]'])
+    expectClassTokens(screen.getByText('Team workflows and reporting.').className, [
+      '[color:color-mix(in_oklch,currentColor_72%,transparent)]',
+    ])
 
     const simpleLink = screen.getByRole('link', { name: 'Pricing' })
     expectClassTokens(simpleLink.className, [
@@ -183,11 +190,47 @@ describe('NavigationMenu', () => {
       mdSize.fontSize,
       mdSize.leading,
       'no-underline',
+      '[background-color:var(--color-primary-surface)]',
+      '[color:var(--color-primary-text)]',
       'data-[active]:[background-color:var(--color-primary-surface)]',
       'data-[active]:[color:var(--color-primary-text)]',
     ])
     expect(simpleLink.className).not.toContain('navigation-menu-accent')
     expect(simpleLink.className).not.toContain('color-primary-soft')
     expect(simpleLink.className).not.toContain('p-3')
+  })
+
+  it('pairs inverse surface and text on resting navigation items', () => {
+    render(
+      <NavigationMenu.Root color="inverse">
+        <NavigationMenu.List>
+          <NavigationMenu.Item value="product">
+            <NavigationMenu.Trigger>Product</NavigationMenu.Trigger>
+            <NavigationMenu.Content>
+              <NavigationMenu.Link href="/platform" title="Platform" description="Team workflows." />
+            </NavigationMenu.Content>
+          </NavigationMenu.Item>
+          <NavigationMenu.Item>
+            <NavigationMenu.Link href="/pricing">Pricing</NavigationMenu.Link>
+          </NavigationMenu.Item>
+        </NavigationMenu.List>
+      </NavigationMenu.Root>,
+    )
+
+    const trigger = screen.getByRole('button', { name: 'Product' })
+    expectClassTokens(trigger.className, [
+      '[background-color:var(--color-inverse-surface)]',
+      '[color:var(--color-inverse-text)]',
+      'hover:[background-color:var(--color-inverse-surface-hover)]',
+      'hover:[color:var(--color-inverse-text)]',
+    ])
+    expect(trigger.className).not.toContain('text-neutral')
+
+    const simpleLink = screen.getByRole('link', { name: 'Pricing' })
+    expectClassTokens(simpleLink.className, [
+      '[background-color:var(--color-inverse-surface)]',
+      '[color:var(--color-inverse-text)]',
+    ])
+    expect(simpleLink.className).not.toContain('text-neutral')
   })
 })
