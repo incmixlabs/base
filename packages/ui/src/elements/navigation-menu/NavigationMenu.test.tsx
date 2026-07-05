@@ -14,6 +14,12 @@ function expectClassTokens(className: string | undefined, tokens: readonly strin
   }
 }
 
+function getPopupNavigation() {
+  const popup = screen.getAllByRole('navigation').find(element => !element.hasAttribute('data-orientation'))
+  expect(popup).toBeTruthy()
+  return popup as HTMLElement
+}
+
 function classValue(value: string) {
   return value.replace(/\s+/g, '_')
 }
@@ -140,18 +146,19 @@ describe('NavigationMenu', () => {
     expect(trigger.className).not.toContain('navigation-menu-accent')
     expect(trigger.className).not.toContain('color-primary-soft')
 
-    const popup = document.querySelector('[class*="box-shadow:0_18px_48px"]') as HTMLElement | null
-    expect(popup).toBeTruthy()
-    expectClassTokens(popup?.className, [
-      '[background-color:var(--color-neutral-background)]',
-      '[border-color:var(--color-neutral-border)]',
-      '[--af-floating-surface-arrow-fill:var(--color-neutral-background)]',
-      '[--af-floating-surface-arrow-edge:var(--color-neutral-border)]',
+    const popup = getPopupNavigation()
+    expectClassTokens(popup.className, [
+      '[background-color:var(--color-primary-background)]',
+      '[color:var(--color-primary-text)]',
+      '[border-color:var(--color-primary-border)]',
+      '[--af-floating-surface-arrow-fill:var(--color-primary-background)]',
+      '[--af-floating-surface-arrow-edge:var(--color-primary-border)]',
       '[box-shadow:0_18px_48px_color-mix(in_oklch,black_16%,transparent),0_4px_16px_color-mix(in_oklch,black_10%,transparent)]',
     ])
-    expect(popup?.className).not.toContain('[fill:')
+    expect(popup.className).not.toContain('text-neutral')
+    expect(popup.className).not.toContain('[fill:')
 
-    const arrow = popup?.querySelector('svg[viewBox="0 0 20 10"]')?.parentElement
+    const arrow = popup.querySelector('svg[viewBox="0 0 20 10"]')?.parentElement
     expect(arrow).toBeTruthy()
     expectClassTokens(arrow?.className, [
       'flex',
@@ -202,7 +209,7 @@ describe('NavigationMenu', () => {
 
   it('pairs inverse surface and text on resting navigation items', () => {
     render(
-      <NavigationMenu.Root color="inverse">
+      <NavigationMenu.Root defaultValue="product" color="inverse" variant="soft">
         <NavigationMenu.List>
           <NavigationMenu.Item value="product">
             <NavigationMenu.Trigger>Product</NavigationMenu.Trigger>
@@ -214,6 +221,11 @@ describe('NavigationMenu', () => {
             <NavigationMenu.Link href="/pricing">Pricing</NavigationMenu.Link>
           </NavigationMenu.Item>
         </NavigationMenu.List>
+        <NavigationMenu.Portal>
+          <NavigationMenu.Positioner>
+            <NavigationMenu.Popup />
+          </NavigationMenu.Positioner>
+        </NavigationMenu.Portal>
       </NavigationMenu.Root>,
     )
 
@@ -232,5 +244,41 @@ describe('NavigationMenu', () => {
       '[color:var(--color-inverse-text)]',
     ])
     expect(simpleLink.className).not.toContain('text-neutral')
+
+    const popup = getPopupNavigation()
+    expectClassTokens(popup.className, [
+      '[background-color:var(--color-inverse-surface)]',
+      '[color:var(--color-inverse-text)]',
+      '[border-color:var(--color-inverse-border-subtle)]',
+      '[--af-floating-surface-arrow-fill:var(--color-inverse-surface)]',
+      '[--af-floating-surface-arrow-edge:var(--color-inverse-border-subtle)]',
+    ])
+    expect(popup.className).not.toContain('text-neutral')
+  })
+
+  it('syncs high-contrast popup border and arrow edge colors', () => {
+    render(
+      <NavigationMenu.Root defaultValue="product" color="inverse" variant="soft" highContrast>
+        <NavigationMenu.List>
+          <NavigationMenu.Item value="product">
+            <NavigationMenu.Trigger>Product</NavigationMenu.Trigger>
+            <NavigationMenu.Content>
+              <NavigationMenu.Link href="/platform">Platform</NavigationMenu.Link>
+            </NavigationMenu.Content>
+          </NavigationMenu.Item>
+        </NavigationMenu.List>
+        <NavigationMenu.Portal>
+          <NavigationMenu.Positioner>
+            <NavigationMenu.Popup />
+          </NavigationMenu.Positioner>
+        </NavigationMenu.Portal>
+      </NavigationMenu.Root>,
+    )
+
+    const popup = getPopupNavigation()
+    expectClassTokens(popup.className, [
+      '[border-color:var(--color-inverse-text)]',
+      '[--af-floating-surface-arrow-edge:var(--color-inverse-text)]',
+    ])
   })
 })
