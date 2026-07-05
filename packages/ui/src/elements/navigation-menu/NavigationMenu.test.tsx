@@ -97,10 +97,13 @@ describe('NavigationMenu', () => {
       'min-h-[2rem]',
       'px-3',
       'text-base',
-      'hover:[background-color:var(--af-navigation-menu-accent-soft-hover)]',
-      'data-[popup-open]:[background-color:var(--af-navigation-menu-accent-soft)]',
-      '[--af-navigation-menu-accent-soft:var(--color-primary-soft)]',
+      'hover:[background-color:var(--color-primary-surface-hover)]',
+      'hover:[color:var(--color-primary-text)]',
+      'data-[popup-open]:[background-color:var(--color-primary-surface)]',
+      'data-[popup-open]:[color:var(--color-primary-text)]',
     ])
+    expect(trigger.className).not.toContain('navigation-menu-accent')
+    expect(trigger.className).not.toContain('color-primary-soft')
 
     const popup = document.querySelector('[class*="box-shadow:0_18px_48px"]') as HTMLElement | null
     expect(popup).toBeTruthy()
@@ -125,9 +128,14 @@ describe('NavigationMenu', () => {
     expectClassTokens(structuredLink.className, [
       'p-3',
       'text-base',
-      'hover:[background-color:var(--af-navigation-menu-accent-soft-hover)]',
-      'data-[active]:[background-color:var(--af-navigation-menu-accent-soft)]',
+      'hover:[background-color:var(--color-primary-surface-hover)]',
+      'hover:[color:var(--color-primary-text)]',
+      'data-[active]:[background-color:var(--color-primary-surface)]',
+      'data-[active]:[color:var(--color-primary-text)]',
+      '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-primary-solid)]',
     ])
+    expect(structuredLink.className).not.toContain('navigation-menu-accent')
+    expect(structuredLink.className).not.toContain('color-primary-soft')
 
     const iconSlot = structuredLink.querySelector('span')
     expectClassTokens(iconSlot?.className, ['[&_svg]:h-[1.25rem]', '[&_svg]:w-[1.25rem]'])
@@ -139,8 +147,11 @@ describe('NavigationMenu', () => {
       'px-3',
       'text-base',
       'no-underline',
-      'data-[active]:[background-color:var(--af-navigation-menu-accent-soft)]',
+      'data-[active]:[background-color:var(--color-primary-surface)]',
+      'data-[active]:[color:var(--color-primary-text)]',
     ])
+    expect(simpleLink.className).not.toContain('navigation-menu-accent')
+    expect(simpleLink.className).not.toContain('color-primary-soft')
     expect(simpleLink.className).not.toContain('p-3')
   })
 })
