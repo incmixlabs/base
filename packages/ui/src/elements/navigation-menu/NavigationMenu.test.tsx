@@ -1,18 +1,12 @@
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
+import { expectClassTokens } from '@/test/class-name-utils'
 import { controlSizeTokens } from '@/theme/token-maps'
 import { NavigationMenu } from './NavigationMenu'
 
 afterEach(() => {
   cleanup()
 })
-
-function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-  for (const token of tokens) {
-    expect(classTokens).toContain(token)
-  }
-}
 
 function getPopupNavigation() {
   const popup = screen.getAllByRole('navigation').find(element => !element.hasAttribute('data-orientation'))

@@ -1,6 +1,7 @@
 import { cleanup, render, screen } from '@testing-library/react'
 import * as React from 'react'
 import { afterEach, describe, expect, it } from 'vitest'
+import { expectClassTokens } from '@/test/class-name-utils'
 import type { WheelPickerOption } from './wheel-picker'
 import { WheelPicker, WheelPickerWrapper } from './wheel-picker'
 import {
@@ -11,13 +12,6 @@ import {
 } from './wheel-picker.class'
 
 const wheelPickerWrapperTokens = wheelPickerWrapper.split(/\s+/).filter(Boolean)
-
-function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-  for (const token of tokens) {
-    expect(classTokens).toContain(token)
-  }
-}
 
 afterEach(() => {
   cleanup()

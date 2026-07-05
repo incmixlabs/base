@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
+import { expectClassTokens } from '@/test/class-name-utils'
 import { heightResponsiveClasses, heightResponsiveVars } from '@/theme/helpers/height-responsive'
 import { Theme } from '@/theme/ThemeProvider'
 import { designTokens } from '@/theme/tokens'
@@ -35,14 +36,6 @@ const expectedDialogContentClasses = [
   'top-1/2',
   '[translate:0_-50%]',
 ] as const
-
-function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-
-  for (const token of tokens) {
-    expect(classTokens).toContain(token)
-  }
-}
 
 afterEach(() => {
   cleanup()

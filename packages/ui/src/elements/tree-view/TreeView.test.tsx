@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { expectClassTokens } from '@/test/class-name-utils'
 import { TreeView } from './TreeView'
 
 describe('TreeView', () => {
@@ -22,13 +23,6 @@ describe('TreeView', () => {
       children: [{ id: 'file-b', name: 'File B', draggable: true }],
     },
   ]
-
-  function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-    const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-    for (const token of tokens) {
-      expect(classTokens).toContain(token)
-    }
-  }
 
   it('calls onItemDrag when drop resolves the source item from dataTransfer', () => {
     const onItemDrag = vi.fn()

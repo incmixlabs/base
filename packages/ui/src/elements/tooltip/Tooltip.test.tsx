@@ -1,15 +1,9 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+import { expectClassTokens } from '@/test/class-name-utils'
 import { TooltipWrapper } from './TooltipWrapper'
 import { Tooltip } from './Tooltip'
 import { tooltipContentPropDefs } from './tooltip.props'
-
-function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-  for (const token of tokens) {
-    expect(classTokens).toContain(token)
-  }
-}
 
 describe('Tooltip', () => {
   it('keeps size metadata scalar until responsive class handling exists', () => {

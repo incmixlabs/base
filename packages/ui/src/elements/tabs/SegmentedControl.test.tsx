@@ -2,24 +2,13 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { expectClassTokens, expectNoClassToken } from '@/test/class-name-utils'
 import { SegmentedControl } from './SegmentedControl'
 
 afterEach(() => {
   vi.restoreAllMocks()
   cleanup()
 })
-
-function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-  for (const token of tokens) {
-    expect(classTokens).toContain(token)
-  }
-}
-
-function expectNoClassToken(className: string | undefined, token: string) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-  expect(classTokens).not.toContain(token)
-}
 
 function mockTransitionStyle(transitionDuration: string) {
   const originalGetComputedStyle = window.getComputedStyle.bind(window)

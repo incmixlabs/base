@@ -2,6 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { expectClassTokens } from '@/test/class-name-utils'
 import { Stepper } from './Stepper'
 
 const steps = [
@@ -19,14 +20,6 @@ const stepsWithDisabledMiddle = [
 afterEach(() => {
   cleanup()
 })
-
-function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-
-  for (const token of tokens) {
-    expect(classTokens).toContain(token)
-  }
-}
 
 describe('Stepper', () => {
   it('renders the semantic utility class contract', () => {

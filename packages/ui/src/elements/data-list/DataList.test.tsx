@@ -1,17 +1,11 @@
 import '@testing-library/jest-dom/vitest'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+import { expectClassTokens } from '@/test/class-name-utils'
 import { getPropDefValues } from '@/theme/props/prop-def'
 import { getTextSizeClasses } from '@/typography/get-text-size-classes'
 import { DataList } from './DataList'
 import { dataListPropDefs } from './data-list.props'
-
-function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-  for (const token of tokens) {
-    expect(classTokens).toContain(token)
-  }
-}
 
 function expectNoTrimSelectorClasses(className: string | undefined) {
   expect(className).not.toContain("[&>[data-slot='data-list-item']:first-child]:mt-[calc(")
