@@ -1,4 +1,5 @@
 import { semanticColorVar } from '../../theme/props/color.prop'
+import { controlSizeTokens } from '../../theme/token-maps'
 import { type Color, semanticColorScale } from '../../theme/tokens'
 import type { NavigationMenuSize, NavigationMenuVariant } from './navigation-menu.props'
 
@@ -8,8 +9,65 @@ function classValue(value: string) {
   return value.replace(/\s+/g, '_')
 }
 
+function arbitraryValueClass(prefix: string, value: string) {
+  return `${prefix}-[${classValue(value)}]`
+}
+
 function cssDeclaration(property: string, value: string) {
   return `[${property}:${classValue(value)}]`
+}
+
+const navigationMenuRadiusBySize = {
+  sm: 'rounded-sm',
+  md: 'rounded-md',
+  lg: 'rounded-lg',
+} as const satisfies Record<NavigationMenuSize, string>
+
+const navigationMenuDescriptionTextSizeBySize = {
+  sm: 'sm',
+  md: 'sm',
+  lg: 'md',
+} as const satisfies Record<NavigationMenuSize, keyof typeof controlSizeTokens>
+
+function navigationMenuTypographyClassName(size: NavigationMenuSize) {
+  const token = controlSizeTokens[size]
+  return `${cssDeclaration('font-size', token.fontSize)} ${arbitraryValueClass('leading', token.lineHeight)}`
+}
+
+function navigationMenuTriggerSizeClassName(size: NavigationMenuSize) {
+  const token = controlSizeTokens[size]
+  return cls(
+    arbitraryValueClass('min-h', token.height),
+    arbitraryValueClass('gap', token.gap),
+    arbitraryValueClass('px', token.paddingX),
+    navigationMenuTypographyClassName(size),
+    navigationMenuRadiusBySize[size],
+  )
+}
+
+function navigationMenuIconSizeClassName(size: NavigationMenuSize) {
+  const token = controlSizeTokens[size]
+  return `${arbitraryValueClass('h', token.iconSize)} ${arbitraryValueClass('w', token.iconSize)}`
+}
+
+function navigationMenuContentSizeClassName(size: NavigationMenuSize) {
+  const token = controlSizeTokens[size]
+  return cls(arbitraryValueClass('p', token.paddingY), navigationMenuTypographyClassName(size))
+}
+
+function navigationMenuLinkSizeClassName(size: NavigationMenuSize) {
+  const token = controlSizeTokens[size]
+  return cls(
+    arbitraryValueClass('p', token.paddingX),
+    navigationMenuTypographyClassName(size),
+    navigationMenuRadiusBySize[size],
+  )
+}
+
+function navigationMenuLinkDescriptionSizeClassName(size: NavigationMenuSize) {
+  const textSize = navigationMenuDescriptionTextSizeBySize[size]
+  const token = controlSizeTokens[textSize]
+  return `${cssDeclaration('font-size', token.fontSize)} ${arbitraryValueClass('leading', token.lineHeight)}`
 }
 
 function variantCssDeclaration(variant: string, property: string, value: string) {
@@ -60,18 +118,18 @@ export const navigationMenuTriggerBase = cls(
 )
 
 export const navigationMenuTriggerBySize = {
-  sm: 'min-h-[1.75rem] gap-1.5 px-2.5 text-sm leading-5 rounded-sm',
-  md: 'min-h-[2rem] gap-2 px-3 text-base leading-6 rounded-md',
-  lg: 'min-h-[2.5rem] gap-2.5 px-3.5 text-lg leading-[1.625rem] rounded-lg',
+  sm: navigationMenuTriggerSizeClassName('sm'),
+  md: navigationMenuTriggerSizeClassName('md'),
+  lg: navigationMenuTriggerSizeClassName('lg'),
 } as const satisfies Record<NavigationMenuSize, string>
 
 export const navigationMenuIconBaseCls = 'inline-flex shrink-0 items-center justify-center transition-transform'
 export const navigationMenuIconBase = 'group-data-[popup-open]:rotate-180'
 
 export const navigationMenuIconBySize = {
-  sm: 'h-[1rem] w-[1rem]',
-  md: 'h-[1rem] w-[1rem]',
-  lg: 'h-[1.125rem] w-[1.125rem]',
+  sm: navigationMenuIconSizeClassName('sm'),
+  md: navigationMenuIconSizeClassName('md'),
+  lg: navigationMenuIconSizeClassName('lg'),
 } as const satisfies Record<NavigationMenuSize, string>
 
 export const navigationMenuContentBaseCls = 'box-border min-w-0'
@@ -83,9 +141,9 @@ export const navigationMenuContentBase = cls(
 )
 
 export const navigationMenuContentBySize = {
-  sm: 'p-1 text-sm leading-5',
-  md: 'p-1 text-base leading-6',
-  lg: 'p-[0.4375rem] text-lg leading-[1.625rem]',
+  sm: navigationMenuContentSizeClassName('sm'),
+  md: navigationMenuContentSizeClassName('md'),
+  lg: navigationMenuContentSizeClassName('lg'),
 } as const satisfies Record<NavigationMenuSize, string>
 
 export const navigationMenuPositionerBase = 'z-[1000]'
@@ -128,9 +186,9 @@ export const navigationMenuLinkBaseCls =
 export const navigationMenuLinkBase = cls('text-neutral no-underline tracking-normal')
 
 export const navigationMenuLinkBySize = {
-  sm: 'p-2.5 text-sm leading-5 rounded-sm',
-  md: 'p-3 text-base leading-6 rounded-md',
-  lg: 'p-3.5 text-lg leading-[1.625rem] rounded-lg',
+  sm: navigationMenuLinkSizeClassName('sm'),
+  md: navigationMenuLinkSizeClassName('md'),
+  lg: navigationMenuLinkSizeClassName('lg'),
 } as const satisfies Record<NavigationMenuSize, string>
 
 export const navigationMenuLinkIconBaseCls =
@@ -139,9 +197,9 @@ export const navigationMenuLinkTitleBase = 'font-semibold text-current'
 export const navigationMenuLinkDescriptionBase = '[color:color-mix(in_oklch,var(--color-neutral-text)_72%,transparent)]'
 
 export const navigationMenuLinkDescriptionBySize = {
-  sm: 'text-sm leading-5',
-  md: 'text-sm leading-5',
-  lg: 'text-base leading-6',
+  sm: navigationMenuLinkDescriptionSizeClassName('sm'),
+  md: navigationMenuLinkDescriptionSizeClassName('md'),
+  lg: navigationMenuLinkDescriptionSizeClassName('lg'),
 } as const satisfies Record<NavigationMenuSize, string>
 
 export const navigationMenuSimpleLinkBase = cls(navigationMenuActionBase, 'no-underline')
