@@ -141,12 +141,14 @@ describe('NavigationMenu', () => {
     const popup = document.querySelector('[class*="box-shadow:0_18px_48px"]') as HTMLElement | null
     expect(popup).toBeTruthy()
     expectClassTokens(popup?.className, [
-      '[background-color:var(--color-neutral-background)]',
-      '[border-color:var(--color-neutral-border)]',
-      '[--af-floating-surface-arrow-fill:var(--color-neutral-background)]',
-      '[--af-floating-surface-arrow-edge:var(--color-neutral-border)]',
+      '[background-color:var(--color-primary-surface)]',
+      '[border-color:var(--color-primary-border)]',
+      '[color:var(--color-primary-text)]',
+      '[--af-floating-surface-arrow-fill:var(--color-primary-surface)]',
+      '[--af-floating-surface-arrow-edge:var(--color-primary-border)]',
       '[box-shadow:0_18px_48px_color-mix(in_oklch,black_16%,transparent),0_4px_16px_color-mix(in_oklch,black_10%,transparent)]',
     ])
+    expect(popup?.className).not.toContain('color-neutral-background')
     expect(popup?.className).not.toContain('[fill:')
 
     const arrow = popup?.querySelector('svg[viewBox="0 0 20 10"]')?.parentElement

@@ -33,7 +33,8 @@ import {
   navigationMenuPopupBase,
   navigationMenuPopupBaseCls,
   navigationMenuPopupByVariant,
-  navigationMenuPopupHighContrast,
+  navigationMenuPopupColor,
+  navigationMenuPopupHighContrastColor,
   navigationMenuPositionerBase,
   navigationMenuRootBase,
   navigationMenuRootBaseCls,
@@ -531,6 +532,8 @@ const NavigationMenuPopup = React.forwardRef<HTMLElement, NavigationMenuPopupPro
     const context = React.useContext(NavigationMenuContext)
     const safeVariant = (normalizeEnumPropValue(navigationMenuPropDefs.Root.variant, variant ?? context.variant) ??
       navigationMenuPropDefs.Root.variant.default) as NavigationMenuVariant
+    const safeColor = (normalizeEnumPropValue(navigationMenuPropDefs.Root.color, context.color) ??
+      SemanticColor.slate) as Color
     const safeHighContrast =
       normalizeBooleanPropValue(navigationMenuPropDefs.Root.highContrast, highContrast ?? context.highContrast) ??
       navigationMenuPropDefs.Root.highContrast.default
@@ -546,7 +549,9 @@ const NavigationMenuPopup = React.forwardRef<HTMLElement, NavigationMenuPopupPro
           navigationMenuPopupBaseCls,
           navigationMenuPopupBase,
           navigationMenuPopupByVariant[safeVariant],
-          safeHighContrast && navigationMenuPopupHighContrast,
+          safeHighContrast
+            ? navigationMenuPopupHighContrastColor[safeColor][safeVariant]
+            : navigationMenuPopupColor[safeColor][safeVariant],
           className,
         )}
         style={{ ...getRadiusStyles(radius), ...style }}
