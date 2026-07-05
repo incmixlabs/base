@@ -531,20 +531,14 @@ export const floatingLabelWithLeftElementSizeVariants: Record<
   Record<FloatingStyle, string>
 > = Object.fromEntries(
   extendedFormSizes.map(size => {
-    const { iconTextOffset, token } = textFieldSizeTokenClasses(size)
-    const labelMaxWidth = `calc(100% - (${iconTextOffset} + ${token.paddingX}))`
-    const labelBase = [
-      textFieldTypographySizeVariants[size],
-      cssDeclaration('left', iconTextOffset),
-      cssDeclaration('max-width', labelMaxWidth),
-    ].join(' ')
+    const labelBase = textFieldTypographySizeVariants[size]
 
     return [
       size,
       {
         filled: labelBase,
         outlined: labelBase,
-        standard: `${textFieldTypographySizeVariants[size]} left-0 ${cssDeclaration('max-width', '100%')}`,
+        standard: labelBase,
       },
     ]
   }),

@@ -156,6 +156,8 @@ describe('TextField', () => {
     expect(input).toHaveStyle({ paddingLeft: '8.75rem' })
     expect(slot).toHaveStyle({ width: '8.75rem' })
     expect(label).toHaveClass(floatingLabelWithLeftElementSizeVariants.md.outlined)
+    expect(floatingLabelWithLeftElementSizeVariants.md.outlined).not.toContain('[left:')
+    expect(floatingLabelWithLeftElementSizeVariants.md.outlined).not.toContain('max-width')
     expect(label).toHaveStyle({ left: '8.75rem' })
     expect(label?.getAttribute('style') ?? '').toContain('max-width: calc(100% - (8.75rem +')
   })
