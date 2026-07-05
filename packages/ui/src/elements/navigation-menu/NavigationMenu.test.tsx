@@ -101,6 +101,7 @@ describe('NavigationMenu', () => {
       'hover:[color:var(--color-primary-text)]',
       'data-[popup-open]:[background-color:var(--color-primary-surface)]',
       'data-[popup-open]:[color:var(--color-primary-text)]',
+      '[&[data-popup-open].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-primary-solid)]',
     ])
     expect(trigger.className).not.toContain('navigation-menu-accent')
     expect(trigger.className).not.toContain('color-primary-soft')

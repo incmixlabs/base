@@ -1,7 +1,43 @@
-import type { Color } from '../../theme/tokens'
+import { semanticColorVar } from '../../theme/props/color.prop'
+import { type Color, semanticColorScale } from '../../theme/tokens'
 import type { NavigationMenuSize, NavigationMenuVariant } from './navigation-menu.props'
 
 const cls = (...tokens: string[]) => tokens.join(' ')
+
+function classValue(value: string) {
+  return value.replace(/\s+/g, '_')
+}
+
+function cssDeclaration(property: string, value: string) {
+  return `[${property}:${classValue(value)}]`
+}
+
+function variantCssDeclaration(variant: string, property: string, value: string) {
+  return `${variant}:${cssDeclaration(property, value)}`
+}
+
+function stateBackgroundClass(variant: string, color: Color, token: 'surface' | 'surface-hover') {
+  return variantCssDeclaration(variant, 'background-color', semanticColorVar(color, token))
+}
+
+function stateTextClass(variant: string, color: Color) {
+  return variantCssDeclaration(variant, 'color', semanticColorVar(color, 'text'))
+}
+
+function stateHighContrastOutlineClass(variant: string, color: Color) {
+  return variantCssDeclaration(
+    `[${variant}.af-high-contrast]`,
+    'box-shadow',
+    `inset 0 0 0 1px ${semanticColorVar(color, 'solid')}`,
+  )
+}
+
+function createNavigationMenuColorRecord(createValue: (color: Color) => string): Record<Color, string> {
+  const colorCoverage: Record<Exclude<Color, (typeof semanticColorScale)[number]>, never> = {}
+  void colorCoverage
+
+  return Object.fromEntries(semanticColorScale.map(color => [color, createValue(color)])) as Record<Color, string>
+}
 
 export const navigationMenuRootBaseCls = 'relative z-10 flex max-w-full'
 export const navigationMenuRootVerticalCls = 'items-start'
@@ -110,158 +146,27 @@ export const navigationMenuLinkDescriptionBySize = {
 
 export const navigationMenuSimpleLinkBase = cls(navigationMenuActionBase, 'no-underline')
 
-const navigationMenuActionColor = {
-  slate: 'hover:[background-color:var(--color-slate-surface-hover)] hover:[color:var(--color-slate-text)]',
-  primary: 'hover:[background-color:var(--color-primary-surface-hover)] hover:[color:var(--color-primary-text)]',
-  secondary: 'hover:[background-color:var(--color-secondary-surface-hover)] hover:[color:var(--color-secondary-text)]',
-  accent: 'hover:[background-color:var(--color-accent-surface-hover)] hover:[color:var(--color-accent-text)]',
-  neutral: 'hover:[background-color:var(--color-neutral-surface-hover)] hover:[color:var(--color-neutral-text)]',
-  info: 'hover:[background-color:var(--color-info-surface-hover)] hover:[color:var(--color-info-text)]',
-  success: 'hover:[background-color:var(--color-success-surface-hover)] hover:[color:var(--color-success-text)]',
-  warning: 'hover:[background-color:var(--color-warning-surface-hover)] hover:[color:var(--color-warning-text)]',
-  error: 'hover:[background-color:var(--color-error-surface-hover)] hover:[color:var(--color-error-text)]',
-  inverse: 'hover:[background-color:var(--color-inverse-surface-hover)] hover:[color:var(--color-inverse-text)]',
-  light: 'hover:[background-color:var(--color-light-surface-hover)] hover:[color:var(--color-light-text)]',
-  dark: 'hover:[background-color:var(--color-dark-surface-hover)] hover:[color:var(--color-dark-text)]',
-} as const satisfies Record<Color, string>
+const navigationMenuActionColor = createNavigationMenuColorRecord(color =>
+  cls(stateBackgroundClass('hover', color, 'surface-hover'), stateTextClass('hover', color)),
+)
 
-export const navigationMenuTriggerColor = {
-  slate: cls(
-    navigationMenuActionColor.slate,
-    'data-[popup-open]:[background-color:var(--color-slate-surface)]',
-    'data-[popup-open]:[color:var(--color-slate-text)]',
+export const navigationMenuTriggerColor = createNavigationMenuColorRecord(color =>
+  cls(
+    navigationMenuActionColor[color],
+    stateBackgroundClass('data-[popup-open]', color, 'surface'),
+    stateTextClass('data-[popup-open]', color),
+    stateHighContrastOutlineClass('&[data-popup-open]', color),
   ),
-  primary: cls(
-    navigationMenuActionColor.primary,
-    'data-[popup-open]:[background-color:var(--color-primary-surface)]',
-    'data-[popup-open]:[color:var(--color-primary-text)]',
-  ),
-  secondary: cls(
-    navigationMenuActionColor.secondary,
-    'data-[popup-open]:[background-color:var(--color-secondary-surface)]',
-    'data-[popup-open]:[color:var(--color-secondary-text)]',
-  ),
-  accent: cls(
-    navigationMenuActionColor.accent,
-    'data-[popup-open]:[background-color:var(--color-accent-surface)]',
-    'data-[popup-open]:[color:var(--color-accent-text)]',
-  ),
-  neutral: cls(
-    navigationMenuActionColor.neutral,
-    'data-[popup-open]:[background-color:var(--color-neutral-surface)]',
-    'data-[popup-open]:[color:var(--color-neutral-text)]',
-  ),
-  info: cls(
-    navigationMenuActionColor.info,
-    'data-[popup-open]:[background-color:var(--color-info-surface)]',
-    'data-[popup-open]:[color:var(--color-info-text)]',
-  ),
-  success: cls(
-    navigationMenuActionColor.success,
-    'data-[popup-open]:[background-color:var(--color-success-surface)]',
-    'data-[popup-open]:[color:var(--color-success-text)]',
-  ),
-  warning: cls(
-    navigationMenuActionColor.warning,
-    'data-[popup-open]:[background-color:var(--color-warning-surface)]',
-    'data-[popup-open]:[color:var(--color-warning-text)]',
-  ),
-  error: cls(
-    navigationMenuActionColor.error,
-    'data-[popup-open]:[background-color:var(--color-error-surface)]',
-    'data-[popup-open]:[color:var(--color-error-text)]',
-  ),
-  inverse: cls(
-    navigationMenuActionColor.inverse,
-    'data-[popup-open]:[background-color:var(--color-inverse-surface)]',
-    'data-[popup-open]:[color:var(--color-inverse-text)]',
-  ),
-  light: cls(
-    navigationMenuActionColor.light,
-    'data-[popup-open]:[background-color:var(--color-light-surface)]',
-    'data-[popup-open]:[color:var(--color-light-text)]',
-  ),
-  dark: cls(
-    navigationMenuActionColor.dark,
-    'data-[popup-open]:[background-color:var(--color-dark-surface)]',
-    'data-[popup-open]:[color:var(--color-dark-text)]',
-  ),
-} as const satisfies Record<Color, string>
+)
 
-export const navigationMenuLinkColor = {
-  slate: cls(
-    navigationMenuActionColor.slate,
-    'data-[active]:[background-color:var(--color-slate-surface)]',
-    'data-[active]:[color:var(--color-slate-text)]',
-    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-slate-solid)]',
+export const navigationMenuLinkColor = createNavigationMenuColorRecord(color =>
+  cls(
+    navigationMenuActionColor[color],
+    stateBackgroundClass('data-[active]', color, 'surface'),
+    stateTextClass('data-[active]', color),
+    stateHighContrastOutlineClass('&[data-active]', color),
   ),
-  primary: cls(
-    navigationMenuActionColor.primary,
-    'data-[active]:[background-color:var(--color-primary-surface)]',
-    'data-[active]:[color:var(--color-primary-text)]',
-    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-primary-solid)]',
-  ),
-  secondary: cls(
-    navigationMenuActionColor.secondary,
-    'data-[active]:[background-color:var(--color-secondary-surface)]',
-    'data-[active]:[color:var(--color-secondary-text)]',
-    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-secondary-solid)]',
-  ),
-  accent: cls(
-    navigationMenuActionColor.accent,
-    'data-[active]:[background-color:var(--color-accent-surface)]',
-    'data-[active]:[color:var(--color-accent-text)]',
-    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-accent-solid)]',
-  ),
-  neutral: cls(
-    navigationMenuActionColor.neutral,
-    'data-[active]:[background-color:var(--color-neutral-surface)]',
-    'data-[active]:[color:var(--color-neutral-text)]',
-    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-neutral-solid)]',
-  ),
-  info: cls(
-    navigationMenuActionColor.info,
-    'data-[active]:[background-color:var(--color-info-surface)]',
-    'data-[active]:[color:var(--color-info-text)]',
-    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-info-solid)]',
-  ),
-  success: cls(
-    navigationMenuActionColor.success,
-    'data-[active]:[background-color:var(--color-success-surface)]',
-    'data-[active]:[color:var(--color-success-text)]',
-    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-success-solid)]',
-  ),
-  warning: cls(
-    navigationMenuActionColor.warning,
-    'data-[active]:[background-color:var(--color-warning-surface)]',
-    'data-[active]:[color:var(--color-warning-text)]',
-    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-warning-solid)]',
-  ),
-  error: cls(
-    navigationMenuActionColor.error,
-    'data-[active]:[background-color:var(--color-error-surface)]',
-    'data-[active]:[color:var(--color-error-text)]',
-    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-error-solid)]',
-  ),
-  inverse: cls(
-    navigationMenuActionColor.inverse,
-    'data-[active]:[background-color:var(--color-inverse-surface)]',
-    'data-[active]:[color:var(--color-inverse-text)]',
-    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-inverse-solid)]',
-  ),
-  light: cls(
-    navigationMenuActionColor.light,
-    'data-[active]:[background-color:var(--color-light-surface)]',
-    'data-[active]:[color:var(--color-light-text)]',
-    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-light-solid)]',
-  ),
-  dark: cls(
-    navigationMenuActionColor.dark,
-    'data-[active]:[background-color:var(--color-dark-surface)]',
-    'data-[active]:[color:var(--color-dark-text)]',
-    '[&[data-active].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-dark-solid)]',
-  ),
-} as const satisfies Record<Color, string>
+)
 
 export const navigationMenuBackdropBase =
   'fixed inset-0 [background-color:color-mix(in_oklch,black_8%,transparent)] backdrop-blur-[1px]'
