@@ -25,6 +25,7 @@ import {
   floatingLabelWithLeftElementSizeVariants,
   floatingLabelWithLeftIconSizeVariants,
   textFieldControlContentSizeVariants,
+  textFieldElementSlotOffsetSizeVariants,
   textFieldEnhancementVariants,
   textFieldFloatingBaseSizeVariants,
   textFieldFloatingColorVariants,
@@ -39,6 +40,7 @@ import {
   textFieldInputWithLeftIconSizeVariants,
   textFieldInputWithRightElementSizeVariants,
   textFieldInputWithRightIconSizeVariants,
+  textFieldLabelEndPaddingSizeVariants,
   textFieldLeftIconContainerSizeVariants,
   textFieldRightIconContainerSizeVariants,
   textFieldRootCls,
@@ -53,6 +55,11 @@ export type { TextFieldProps } from './text-field.props'
 
 type TextFieldIconSize = NonNullable<IconProps['size']>
 const textFieldIconSlotBase = 'box-border flex min-w-0 items-center justify-center'
+const textFieldElementSlotBase = 'absolute inset-y-0 z-10 box-border flex min-w-0 items-center'
+
+function toCssLength(value: React.CSSProperties['width']) {
+  return typeof value === 'number' ? `${value}px` : value
+}
 
 /** TextField export. */
 export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
@@ -67,6 +74,8 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
       rightIcon,
       leftElement,
       rightElement,
+      leftElementWidth,
+      rightElementWidth,
       label,
       className,
       style,
@@ -101,6 +110,24 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
 
     // Determine effective color (error overrides)
     const effectiveColor: Color = error ? 'error' : (color ?? 'slate')
+
+    const fallbackElementSlotWidth = textFieldElementSlotOffsetSizeVariants[size]
+    const leftElementSlotWidth = leftElementWidth ?? fallbackElementSlotWidth
+    const rightElementSlotWidth = rightElementWidth ?? fallbackElementSlotWidth
+    const inputElementSlotStyles = {
+      ...(leftElement ? { paddingLeft: leftElementSlotWidth } : undefined),
+      ...(rightElement ? { paddingRight: rightElementSlotWidth } : undefined),
+    } as React.CSSProperties
+    const leftElementSlotStyles = { width: leftElementSlotWidth } as React.CSSProperties
+    const rightElementSlotStyles = { width: rightElementSlotWidth } as React.CSSProperties
+    const leftElementLabelSlotWidth = toCssLength(leftElementSlotWidth)
+    const leftElementFloatingLabelStyles =
+      leftElement && leftElementLabelSlotWidth
+        ? ({
+            left: leftElementLabelSlotWidth,
+            maxWidth: `calc(100% - (${leftElementLabelSlotWidth} + ${textFieldLabelEndPaddingSizeVariants[size]}))`,
+          } satisfies React.CSSProperties)
+        : undefined
 
     const regularStyles = {
       ...radiusStyles,
@@ -152,13 +179,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           )}
 
           {leftElement && (
-            <div
-              className={clsx(
-                textFieldIconSlotBase,
-                textFieldIconContainerCls,
-                textFieldLeftIconContainerSizeVariants[size],
-              )}
-            >
+            <div className={clsx(textFieldElementSlotBase, 'left-0 justify-start')} style={leftElementSlotStyles}>
               {leftElement}
             </div>
           )}
@@ -174,6 +195,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             readOnly={effectiveReadOnly}
             data-filled={floatingHasValue ? '' : undefined}
             data-focused={floatingFocused ? '' : undefined}
+            style={inputElementSlotStyles}
             className={clsx(
               cn(textFieldInputBaseCls, 'peer', floatingInputBaseCls),
               // Keep prop-map classes outside tailwind-merge so arbitrary selectors remain intact.
@@ -201,6 +223,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           {effectiveLabel && (
             <label
               htmlFor={inputId}
+              style={leftElementFloatingLabelStyles}
               className={clsx(
                 cn(
                   // TW: static label styles
@@ -237,13 +260,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           )}
 
           {rightElement && (
-            <div
-              className={clsx(
-                textFieldIconSlotBase,
-                textFieldIconContainerCls,
-                textFieldRightIconContainerSizeVariants[size],
-              )}
-            >
+            <div className={clsx(textFieldElementSlotBase, 'right-0 justify-end')} style={rightElementSlotStyles}>
               {rightElement}
             </div>
           )}
@@ -272,13 +289,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
         )}
 
         {leftElement && (
-          <div
-            className={clsx(
-              textFieldIconSlotBase,
-              textFieldIconContainerCls,
-              textFieldLeftIconContainerSizeVariants[size],
-            )}
-          >
+          <div className={clsx(textFieldElementSlotBase, 'left-0 justify-start')} style={leftElementSlotStyles}>
             {leftElement}
           </div>
         )}
@@ -289,6 +300,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
           disabled={effectiveDisabled}
           aria-invalid={error || undefined}
           readOnly={effectiveReadOnly}
+          style={inputElementSlotStyles}
           className={clsx(
             cn(
               textFieldInputBaseCls,
@@ -337,13 +349,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
         )}
 
         {rightElement && (
-          <div
-            className={clsx(
-              textFieldIconSlotBase,
-              textFieldIconContainerCls,
-              textFieldRightIconContainerSizeVariants[size],
-            )}
-          >
+          <div className={clsx(textFieldElementSlotBase, 'right-0 justify-end')} style={rightElementSlotStyles}>
             {rightElement}
           </div>
         )}

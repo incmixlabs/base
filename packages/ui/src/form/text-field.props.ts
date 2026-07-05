@@ -29,6 +29,10 @@ export interface TextFieldProps extends Omit<React.InputHTMLAttributes<HTMLInput
   leftElement?: React.ReactNode
   /** Interactive element on the right (e.g., toggle button) */
   rightElement?: React.ReactNode
+  /** Width reserved for the left interactive element */
+  leftElementWidth?: React.CSSProperties['width']
+  /** Width reserved for the right interactive element */
+  rightElementWidth?: React.CSSProperties['width']
   /** Label text (required for floating-* variants) */
   label?: string
 }
@@ -47,6 +51,8 @@ const textFieldRootPropDefs = {
   rightIcon: { type: 'string' },
   leftElement: { type: 'ReactNode' },
   rightElement: { type: 'ReactNode' },
+  leftElementWidth: { type: 'string' },
+  rightElementWidth: { type: 'string' },
   ...colorPropDef,
   ...radiusPropDef,
 } satisfies {
@@ -59,6 +65,8 @@ const textFieldRootPropDefs = {
   rightIcon: PropDef<string>
   leftElement: PropDef<React.ReactNode>
   rightElement: PropDef<React.ReactNode>
+  leftElementWidth: PropDef<string>
+  rightElementWidth: PropDef<string>
 }
 
 const sides = ['left', 'right'] as const

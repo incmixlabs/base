@@ -2,6 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { getPropDefValues } from '@/theme/props/prop-def'
+import { designTokens } from '@/theme/tokens'
 import { textBase, textSizeResponsive, typographyTrimByTrim } from '../typography.class'
 import { Text } from './Text'
 import { textPropDefs } from './text.props'
@@ -50,6 +51,18 @@ describe('Text', () => {
     render(<Text muted>Muted copy</Text>)
 
     expect(screen.getByText('Muted copy')).toHaveClass('opacity-70')
+  })
+
+  it('treats muted variant as readable text with muted opacity', () => {
+    render(
+      <Text color="neutral" variant="muted">
+        Muted variant
+      </Text>,
+    )
+
+    const text = screen.getByText('Muted variant')
+    expect(text).toHaveClass('opacity-70')
+    expect(text).toHaveStyle({ color: designTokens.color.neutral.text })
   })
 
   it('can render semantic cite text', () => {

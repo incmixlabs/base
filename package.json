@@ -26,12 +26,6 @@
     "playwright": "^1.61.1",
     "typescript": "catalog:"
   },
-  "pnpm": {
-    "overrides": {
-      "brace-expansion": "5.0.6",
-      "ws": "8.20.1"
-    }
-  },
   "engines": {
     "node": ">=20.19.0"
   }

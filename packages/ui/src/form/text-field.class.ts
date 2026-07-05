@@ -129,6 +129,20 @@ export const textFieldHeightSizeVariants: Record<TextFieldSize, string> = Object
   }),
 ) as Record<TextFieldSize, string>
 
+export const textFieldElementSlotOffsetSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { iconTextOffset } = textFieldSizeTokenClasses(size)
+    return [size, iconTextOffset]
+  }),
+) as Record<TextFieldSize, string>
+
+export const textFieldLabelEndPaddingSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
+  extendedFormSizes.map(size => {
+    const { token } = textFieldSizeTokenClasses(size)
+    return [size, token.paddingX]
+  }),
+) as Record<TextFieldSize, string>
+
 export const textFieldMinControlSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
   extendedFormSizes.map(size => {
     const { token } = textFieldSizeTokenClasses(size)
@@ -244,14 +258,14 @@ export const textFieldRightIconContainerSizeVariants: Record<TextFieldSize, stri
 export const textFieldInputWithLeftElementSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
   extendedFormSizes.map(size => {
     const { iconTextOffset } = textFieldSizeTokenClasses(size)
-    return [size, cssDeclaration('padding-left', `var(--af-text-field-left-slot-width,${iconTextOffset})`)]
+    return [size, cssDeclaration('padding-left', iconTextOffset)]
   }),
 ) as Record<TextFieldSize, string>
 
 export const textFieldInputWithRightElementSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
   extendedFormSizes.map(size => {
     const { iconTextOffset } = textFieldSizeTokenClasses(size)
-    return [size, cssDeclaration('padding-right', `var(--af-text-field-right-slot-width,${iconTextOffset})`)]
+    return [size, cssDeclaration('padding-right', iconTextOffset)]
   }),
 ) as Record<TextFieldSize, string>
 
@@ -272,14 +286,14 @@ export const floatingInputWithRightIconSizeVariants: Record<TextFieldSize, strin
 export const floatingInputWithLeftElementSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
   extendedFormSizes.map(size => {
     const { iconTextOffset } = textFieldSizeTokenClasses(size)
-    return [size, cssDeclaration('padding-left', `var(--af-text-field-left-slot-width,${iconTextOffset})`)]
+    return [size, cssDeclaration('padding-left', iconTextOffset)]
   }),
 ) as Record<TextFieldSize, string>
 
 export const floatingInputWithRightElementSizeVariants: Record<TextFieldSize, string> = Object.fromEntries(
   extendedFormSizes.map(size => {
     const { iconTextOffset } = textFieldSizeTokenClasses(size)
-    return [size, cssDeclaration('padding-right', `var(--af-text-field-right-slot-width,${iconTextOffset})`)]
+    return [size, cssDeclaration('padding-right', iconTextOffset)]
   }),
 ) as Record<TextFieldSize, string>
 
@@ -517,21 +531,14 @@ export const floatingLabelWithLeftElementSizeVariants: Record<
   Record<FloatingStyle, string>
 > = Object.fromEntries(
   extendedFormSizes.map(size => {
-    const { iconTextOffset, token } = textFieldSizeTokenClasses(size)
-    const labelLeft = `var(--af-text-field-left-slot-width,${iconTextOffset})`
-    const labelMaxWidth = `calc(100% - (${labelLeft} + ${token.paddingX}))`
-    const labelBase = [
-      textFieldTypographySizeVariants[size],
-      cssDeclaration('left', labelLeft),
-      cssDeclaration('max-width', labelMaxWidth),
-    ].join(' ')
+    const labelBase = textFieldTypographySizeVariants[size]
 
     return [
       size,
       {
         filled: labelBase,
         outlined: labelBase,
-        standard: `${textFieldTypographySizeVariants[size]} left-0 ${cssDeclaration('max-width', '100%')}`,
+        standard: labelBase,
       },
     ]
   }),

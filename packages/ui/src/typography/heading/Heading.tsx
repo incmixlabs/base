@@ -2,6 +2,7 @@ import * as React from 'react'
 import { getSpacingClasses, type Responsive, Slot, type Spacing } from '@/layouts/layout-utils'
 import { cn } from '@/lib/utils'
 import { highContrastPropDef } from '@/theme/props/high-contrast.prop'
+import { mutedClassName } from '@/theme/props/muted.prop'
 import { normalizeBooleanPropValue } from '@/theme/props/prop-def'
 import { getResponsiveVariantClasses, typographyBreakpointKeys } from '../responsive'
 import type { TypographyColor, TypographyVariant } from '../tokens'
@@ -71,6 +72,7 @@ export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
   ) => {
     const sizeClasses = getHeadingSizeClasses(size)
     const safeHighContrast = normalizeBooleanPropValue(highContrastPropDef.highContrast, highContrast) ?? false
+    const isMutedVariant = variant === 'muted'
     const resolvedWeight = safeHighContrast
       ? ({
           light: 'regular',
@@ -108,6 +110,7 @@ export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
           wrap === 'pretty' && 'text-pretty',
           wrap === 'balance' && 'text-balance',
           typographyTrimByTrim[trim ?? 'normal'],
+          isMutedVariant && mutedClassName,
 
           // High contrast
           safeHighContrast && 'saturate-[1.1]',

@@ -48,6 +48,31 @@ function renderSecondarySidebarShell() {
   )
 }
 
+function renderOverlayShell() {
+  return render(
+    <AppShell.Root overlay defaultOpen defaultSecondaryOpen secondaryLabel="Components">
+      <AppShell.Body>
+        <AppShell.Sidebar>
+          <div>Primary nav</div>
+        </AppShell.Sidebar>
+        <AppShell.Main>
+          <AppShell.Header>
+            <AppShell.HeaderInner>
+              <AppShell.HeaderStart>
+                <AppShell.SidebarTrigger data-testid="app-shell-trigger" />
+              </AppShell.HeaderStart>
+            </AppShell.HeaderInner>
+          </AppShell.Header>
+          <AppShell.Content>Page content</AppShell.Content>
+        </AppShell.Main>
+        <AppShell.Secondary aria-label="Components">
+          <div>Component list</div>
+        </AppShell.Secondary>
+      </AppShell.Body>
+    </AppShell.Root>,
+  )
+}
+
 describe('AppShell', () => {
   beforeAll(() => {
     originalMatchMedia = window.matchMedia
@@ -182,5 +207,76 @@ describe('AppShell', () => {
     expect(body).toHaveClass('overflow-y-auto')
     expect(body).toHaveTextContent('Scrollable body')
     expect(footer).toHaveTextContent('Save')
+  })
+
+  it('registers overlay secondary content in the drawer', async () => {
+    renderOverlayShell()
+
+    await waitFor(() => {
+      expect(screen.getByTestId('app-shell-trigger')).toHaveAccessibleName('Open navigation drawer')
+    })
+
+    fireEvent.click(screen.getByTestId('app-shell-trigger'))
+
+    expect(await screen.findByRole('tab', { name: 'Components' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('tab', { name: 'Components' }))
+
+    expect(screen.getByText('Component list')).toBeInTheDocument()
+  })
+
+  it('reports the measured resize width when the secondary width is a CSS value', async () => {
+    const getBoundingClientRect = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+      x: 0,
+      y: 0,
+      width: 320,
+      height: 400,
+      top: 0,
+      right: 320,
+      bottom: 400,
+      left: 0,
+      toJSON: () => ({}),
+    })
+
+    try {
+      render(
+        <AppShell.Root defaultOpen defaultSecondaryOpen>
+          <AppShell.Body>
+            <AppShell.Main>
+              <AppShell.Content>Page content</AppShell.Content>
+            </AppShell.Main>
+            <AppShell.Secondary aria-label="Components" resize width="var(--app-secondary-width)">
+              <div>Component list</div>
+            </AppShell.Secondary>
+          </AppShell.Body>
+        </AppShell.Root>,
+      )
+
+      const separator = screen.getByRole('separator', { name: 'Resize secondary panel' })
+
+      await waitFor(() => {
+        expect(separator).toHaveAttribute('aria-valuenow', '320')
+      })
+    } finally {
+      getBoundingClientRect.mockRestore()
+    }
+  })
+
+  it('uses semantic muted text for secondary sidebar descriptions', () => {
+    render(
+      <AppShell.Root defaultOpen defaultSecondaryOpen secondaryLabel="Builder">
+        <AppShell.Body>
+          <AppShell.Main>
+            <AppShell.Content>Page content</AppShell.Content>
+          </AppShell.Main>
+          <AppShell.SecondarySidebar aria-label="Builder" description="Panel description" title="Path">
+            <div>Scrollable body</div>
+          </AppShell.SecondarySidebar>
+        </AppShell.Body>
+      </AppShell.Root>,
+    )
+
+    const description = screen.getByText('Panel description')
+    expect(description).toHaveClass('text-muted')
+    expect(description).not.toHaveAttribute('style')
   })
 })

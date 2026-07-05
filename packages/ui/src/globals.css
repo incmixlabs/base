@@ -3,6 +3,8 @@
 @import "./theme/reset.css";
 @import "./theme/animations.css";
 
+@source "./**/*.{ts,tsx,mdx}";
+
 @unocss preflights;
 @unocss default;
 

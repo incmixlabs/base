@@ -66,6 +66,7 @@ export const Text = React.forwardRef<HTMLElement, TextProps>(
     const sizeClasses = getTextSizeClasses(size)
     const safeHighContrast = normalizeBooleanPropValue(highContrastPropDef.highContrast, highContrast) ?? false
     const safeMuted = normalizeBooleanPropValue(mutedPropDef.muted, muted) ?? false
+    const isMutedVariant = variant === 'muted'
     const resolvedWeight = safeHighContrast
       ? ({
           light: 'regular',
@@ -100,7 +101,7 @@ export const Text = React.forwardRef<HTMLElement, TextProps>(
         wrap === 'pretty' && 'text-pretty',
         wrap === 'balance' && 'text-balance',
         typographyTrimByTrim[trim ?? 'normal'],
-        safeMuted && mutedClassName,
+        (safeMuted || isMutedVariant) && mutedClassName,
 
         // Margin
         getSpacingClasses(m, 'm'),

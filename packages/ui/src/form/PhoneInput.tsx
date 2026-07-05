@@ -185,10 +185,6 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       [selectedCountry, emitChange],
     )
 
-    const textFieldStyle = {
-      '--af-text-field-left-slot-width': '8.75rem',
-      ...style,
-    } as React.CSSProperties
     const hasAriaLabelledBy = Boolean(props['aria-labelledby']?.trim())
     const fallbackAriaLabel =
       ariaLabel ?? (!hasAriaLabelledBy && hasAssociatedLabel === false ? 'Phone number' : undefined)
@@ -209,7 +205,8 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
         radius={radiusProp}
         error={error}
         className={className}
-        style={textFieldStyle}
+        style={style}
+        leftElementWidth="8.75rem"
         leftElement={
           <Flex
             align="center"
@@ -256,9 +253,10 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
               <div
                 ref={dropdownRef}
                 className={cn(
-                  'absolute left-0 top-full mt-1 z-50',
-                  'w-64 max-h-[200px] overflow-y-auto',
+                  'absolute left-0 top-full mt-1 z-[1000]',
+                  'w-64',
                   pickerPopupBase,
+                  'max-h-[200px] overflow-y-auto',
                   'animate-in fade-in-0 zoom-in-95',
                 )}
                 role="listbox"
