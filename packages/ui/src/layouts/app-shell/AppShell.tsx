@@ -583,6 +583,60 @@ function parseCssLengthToPixels(value: string) {
   return match[2] === 'rem' ? amount * 16 : amount
 }
 
+function areShallowEqualObjects(a: object | null | undefined, b: object | null | undefined) {
+  if (Object.is(a, b)) return true
+  if (!a || !b) return false
+
+  const aEntries = Object.entries(a)
+  const bEntries = Object.entries(b)
+  if (aEntries.length !== bEntries.length) return false
+
+  return aEntries.every(([key, value]) => Object.is(value, (b as Record<string, unknown>)[key]))
+}
+
+function useShallowStableObject<T extends object | null | undefined>(value: T) {
+  const ref = React.useRef(value)
+
+  if (!areShallowEqualObjects(ref.current, value)) {
+    ref.current = value
+  }
+
+  return ref.current
+}
+
+function useMeasuredElementWidth(ref: React.RefObject<HTMLElement | null>, enabled: boolean) {
+  const [width, setWidth] = React.useState<number | null>(null)
+
+  React.useLayoutEffect(() => {
+    if (!enabled) {
+      setWidth(null)
+      return undefined
+    }
+
+    const element = ref.current
+    if (!element) {
+      setWidth(null)
+      return undefined
+    }
+
+    const updateWidth = () => {
+      const nextWidth = Math.round(element.getBoundingClientRect().width)
+      setWidth(Number.isFinite(nextWidth) && nextWidth > 0 ? nextWidth : null)
+    }
+
+    updateWidth()
+
+    if (typeof ResizeObserver === 'undefined') return undefined
+
+    const observer = new ResizeObserver(updateWidth)
+    observer.observe(element)
+
+    return () => observer.disconnect()
+  }, [enabled, ref])
+
+  return width
+}
+
 export function AppShellSecondary({
   width = SECONDARY_WIDTH,
   resize = false,
@@ -606,9 +660,16 @@ export function AppShellSecondary({
   )
   const [resizedWidth, setResizedWidth] = React.useState<number | null>(() => initialResizeWidth)
   const [isResizing, setIsResizing] = React.useState(false)
-  const currentResizeWidth = resizedWidth ?? initialResizeWidth ?? resizeMinWidth
+  const stableProps = useShallowStableObject(props)
+  const stableStyle = useShallowStableObject(style)
   const resolvedWidth = resizedWidth == null ? width : `${resizedWidth}px`
-  const resolvedStyle = resize ? { ...style, width: resolvedWidth, flexShrink: 0 } : { width, flexShrink: 0, ...style }
+  const resolvedStyle = React.useMemo(
+    () => (resize ? { ...stableStyle, width: resolvedWidth, flexShrink: 0 } : { width, flexShrink: 0, ...stableStyle }),
+    [resize, resolvedWidth, stableStyle, width],
+  )
+  const measuredResizeWidth = useMeasuredElementWidth(secondaryRef, resize && !overlay)
+  const currentResizeWidth = resizedWidth ?? measuredResizeWidth ?? initialResizeWidth ?? resizeMinWidth
+  const ariaResizeWidth = resizedWidth ?? measuredResizeWidth ?? initialResizeWidth
 
   const applySecondaryWidth = React.useCallback(
     (nextWidth: number) => {
@@ -734,40 +795,59 @@ export function AppShellSecondary({
 
   React.useEffect(() => stopResize, [stopResize])
 
-  const secondaryNode = (
-    <aside
-      ref={secondaryRef}
-      data-slot="app-shell-secondary"
-      className={cn(
-        'relative z-20 pointer-events-auto flex h-full min-h-0 flex-col overflow-x-hidden',
-        scroll === 'auto' ? 'overflow-y-auto' : 'overflow-y-hidden',
-        side === 'right' ? appShellSecondaryRight : appShellSecondaryLeft,
-        className,
-      )}
-      style={resolvedStyle}
-      {...props}
-    >
-      {!overlay && resize ? (
-        <div
-          role="separator"
-          aria-orientation="vertical"
-          aria-label="Resize secondary panel"
-          aria-valuemin={resizeMinWidth}
-          aria-valuemax={resizeMaxWidth}
-          aria-valuenow={Math.round(currentResizeWidth)}
-          tabIndex={0}
-          data-resizing={isResizing ? '' : undefined}
-          className={cn(
-            appShellSecondaryResizeHandle,
-            side === 'right' ? appShellSecondaryResizeHandleRight : appShellSecondaryResizeHandleLeft,
-          )}
-          onMouseDown={handleResizeMouseDown}
-          onTouchStart={handleResizeTouchStart}
-          onKeyDown={handleResizeKeyDown}
-        />
-      ) : null}
-      {children}
-    </aside>
+  const secondaryNode = React.useMemo(
+    () => (
+      <aside
+        ref={secondaryRef}
+        data-slot="app-shell-secondary"
+        className={cn(
+          'relative z-20 pointer-events-auto flex h-full min-h-0 flex-col overflow-x-hidden',
+          scroll === 'auto' ? 'overflow-y-auto' : 'overflow-y-hidden',
+          side === 'right' ? appShellSecondaryRight : appShellSecondaryLeft,
+          className,
+        )}
+        style={resolvedStyle}
+        {...stableProps}
+      >
+        {!overlay && resize ? (
+          <div
+            role="separator"
+            aria-orientation="vertical"
+            aria-label="Resize secondary panel"
+            aria-valuemin={resizeMinWidth}
+            aria-valuemax={resizeMaxWidth}
+            aria-valuenow={ariaResizeWidth == null ? undefined : Math.round(ariaResizeWidth)}
+            tabIndex={0}
+            data-resizing={isResizing ? '' : undefined}
+            className={cn(
+              appShellSecondaryResizeHandle,
+              side === 'right' ? appShellSecondaryResizeHandleRight : appShellSecondaryResizeHandleLeft,
+            )}
+            onMouseDown={handleResizeMouseDown}
+            onTouchStart={handleResizeTouchStart}
+            onKeyDown={handleResizeKeyDown}
+          />
+        ) : null}
+        {children}
+      </aside>
+    ),
+    [
+      ariaResizeWidth,
+      children,
+      className,
+      handleResizeKeyDown,
+      handleResizeMouseDown,
+      handleResizeTouchStart,
+      isResizing,
+      overlay,
+      resize,
+      resizeMaxWidth,
+      resizeMinWidth,
+      resolvedStyle,
+      scroll,
+      side,
+      stableProps,
+    ],
   )
 
   React.useLayoutEffect(() => {
@@ -814,9 +894,7 @@ export function AppShellSecondarySidebar({
           </Flex>
           {description ? (
             <div>
-              <div style={{ color: 'var(--color-slate-text)' }} className="text-xs">
-                {description}
-              </div>
+              <div className="text-xs text-muted">{description}</div>
             </div>
           ) : null}
         </Column>

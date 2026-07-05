@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, it } from 'vitest'
+import { expectClassTokens, expectNoClassTokens, splitClassNames } from '@/test/class-name-utils'
 import { Header } from './Header'
 import { headerRoot, headerSticky } from './header.class'
 
@@ -14,10 +15,8 @@ describe('Header', () => {
 
     const header = screen.getByTestId('header')
 
-    for (const className of [...headerRoot.split(/\s+/), ...headerSticky.split(/\s+/)]) {
-      expect(header.className).toContain(className)
-    }
-    expect(header.className).not.toContain('af-header')
+    expectClassTokens(header.className, [...splitClassNames(headerRoot), ...splitClassNames(headerSticky)])
+    expectNoClassTokens(header.className, ['af-header'])
   })
 
   it('can render without sticky positioning', () => {
@@ -25,8 +24,7 @@ describe('Header', () => {
 
     const header = screen.getByTestId('header')
 
-    expect(header.className).toContain(headerRoot.split(/\s+/)[0])
-    expect(header.className).not.toContain('sticky')
-    expect(header.className).not.toContain('top-0')
+    expectClassTokens(header.className, splitClassNames(headerRoot))
+    expectNoClassTokens(header.className, splitClassNames(headerSticky))
   })
 })
