@@ -108,7 +108,7 @@ describe('TextField', () => {
     const label = container.querySelector('label')
 
     expect(input).toHaveClass(floatingInputWithLeftIconSizeVariants.md)
-    expect(input).not.toHaveClass(floatingInputWithLeftElementSizeVariants.md)
+    expect(floatingInputWithLeftElementSizeVariants.md).toBe(floatingInputWithLeftIconSizeVariants.md)
     expect(label).toHaveClass(floatingLabelStyleVariants.outlined)
     expect(label).not.toHaveClass(floatingLabelSizeVariants.md.outlined)
     expect(label).toHaveClass(floatingLabelWithLeftIconSizeVariants.md.outlined)
@@ -118,8 +118,22 @@ describe('TextField', () => {
     expect(floatingLabelWithLeftIconSizeVariants.md.outlined).not.toContain('--af-text-field-left-slot-width')
     expect(floatingLabelWithLeftIconSizeVariants.md.standard).not.toContain('left-0')
     expect(floatingLabelWithLeftIconSizeVariants.md.standard).toContain('[left:')
-    expect(floatingInputWithLeftElementSizeVariants.md).toContain('--af-text-field-left-slot-width')
+    expect(floatingInputWithLeftElementSizeVariants.md).not.toContain('--af-text-field-left-slot-width')
     expect(floatingLabelStyleVariants.outlined).toContain(formControlNeutralBackground)
     expect(floatingLabelStyleVariants.outlined).not.toContain('var(--background)')
+  })
+
+  it('reserves explicit custom element width without TextField CSS variables', () => {
+    const { container } = render(
+      <TextField aria-label="Phone" leftElement={<span data-testid="prefix">+1</span>} leftElementWidth="8.75rem" />,
+    )
+
+    const input = screen.getByRole('textbox', { name: 'Phone' })
+    const slot = container.querySelector('[data-testid="prefix"]')?.parentElement
+
+    expect(input).toHaveStyle({ paddingLeft: '8.75rem' })
+    expect(slot).toHaveStyle({ width: '8.75rem' })
+    expect(input.getAttribute('style') ?? '').not.toContain('--af-text-field')
+    expect(slot?.getAttribute('style') ?? '').not.toContain('--af-text-field')
   })
 })

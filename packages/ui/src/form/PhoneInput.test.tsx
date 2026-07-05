@@ -16,7 +16,10 @@ describe('PhoneInput', () => {
   it('renders an accessible phone field and country selector', () => {
     render(<PhoneInput countries={['US', 'CA']} />)
 
-    expect(screen.getByRole('textbox', { name: 'Phone number' })).toHaveAttribute('type', 'tel')
+    const input = screen.getByRole('textbox', { name: 'Phone number' })
+    expect(input).toHaveAttribute('type', 'tel')
+    expect(input).toHaveStyle({ paddingLeft: '8.75rem' })
+    expect(input.getAttribute('style') ?? '').not.toContain('--af-text-field')
     expect(
       screen.getByRole('button', { name: /change country code, current country united states \+1/i }),
     ).toBeEnabled()
@@ -88,6 +91,14 @@ describe('PhoneInput', () => {
     expect(screen.getByRole('button', { name: /change country code/i })).toBeDisabled()
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
     expect(handleChange).not.toHaveBeenCalled()
+  })
+
+  it('renders the country popup above surrounding form chrome with its own scroll area', () => {
+    render(<PhoneInput countries={['US', 'CA']} />)
+
+    fireEvent.click(screen.getByRole('button', { name: /change country code/i }))
+
+    expect(screen.getByRole('listbox')).toHaveClass('z-[1000]', 'max-h-[200px]', 'overflow-y-auto')
   })
 
   it('keeps phone formatting behavior when TextField handles the input surface', () => {
