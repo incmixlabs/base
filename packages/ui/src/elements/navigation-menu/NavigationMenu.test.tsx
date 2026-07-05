@@ -1,5 +1,6 @@
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
+import { controlSizeTokens } from '@/theme/token-maps'
 import { NavigationMenu } from './NavigationMenu'
 
 afterEach(() => {
@@ -10,6 +11,32 @@ function expectClassTokens(className: string | undefined, tokens: readonly strin
   const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
   for (const token of tokens) {
     expect(classTokens).toContain(token)
+  }
+}
+
+function classValue(value: string) {
+  return value.replace(/\s+/g, '_')
+}
+
+function arbitraryValueClass(prefix: string, value: string) {
+  return `${prefix}-[${classValue(value)}]`
+}
+
+function cssDeclaration(property: string, value: string) {
+  return `[${property}:${classValue(value)}]`
+}
+
+function controlSizeClassTokens(size: keyof typeof controlSizeTokens) {
+  const token = controlSizeTokens[size]
+  return {
+    fontSize: cssDeclaration('font-size', token.fontSize),
+    gap: arbitraryValueClass('gap', token.gap),
+    iconHeight: arbitraryValueClass('h', token.iconSize),
+    iconWidth: arbitraryValueClass('w', token.iconSize),
+    leading: arbitraryValueClass('leading', token.lineHeight),
+    minHeight: arbitraryValueClass('min-h', token.height),
+    padding: arbitraryValueClass('p', token.paddingX),
+    paddingX: arbitraryValueClass('px', token.paddingX),
   }
 }
 
@@ -92,17 +119,22 @@ describe('NavigationMenu', () => {
     expect(root?.className).not.toContain('NavigationMenu')
 
     const trigger = screen.getByRole('button', { name: 'Platform' })
+    const mdSize = controlSizeClassTokens('md')
     expectClassTokens(trigger.className, [
       'group',
-      'min-h-[2rem]',
-      'px-3',
-      'text-base',
+      mdSize.minHeight,
+      mdSize.gap,
+      mdSize.paddingX,
+      mdSize.fontSize,
+      mdSize.leading,
       'hover:[background-color:var(--color-primary-surface-hover)]',
       'hover:[color:var(--color-primary-text)]',
       'data-[popup-open]:[background-color:var(--color-primary-surface)]',
       'data-[popup-open]:[color:var(--color-primary-text)]',
       '[&[data-popup-open].af-high-contrast]:[box-shadow:inset_0_0_0_1px_var(--color-primary-solid)]',
     ])
+    const triggerIcon = trigger.querySelector('span')
+    expectClassTokens(triggerIcon?.className, [mdSize.iconHeight, mdSize.iconWidth])
     expect(trigger.className).not.toContain('navigation-menu-accent')
     expect(trigger.className).not.toContain('color-primary-soft')
 
@@ -127,8 +159,9 @@ describe('NavigationMenu', () => {
 
     const structuredLink = screen.getByRole('link', { name: /Platform/ })
     expectClassTokens(structuredLink.className, [
-      'p-3',
-      'text-base',
+      mdSize.padding,
+      mdSize.fontSize,
+      mdSize.leading,
       'hover:[background-color:var(--color-primary-surface-hover)]',
       'hover:[color:var(--color-primary-text)]',
       'data-[active]:[background-color:var(--color-primary-surface)]',
@@ -144,9 +177,11 @@ describe('NavigationMenu', () => {
     const simpleLink = screen.getByRole('link', { name: 'Pricing' })
     expectClassTokens(simpleLink.className, [
       'inline-flex',
-      'min-h-[2rem]',
-      'px-3',
-      'text-base',
+      mdSize.minHeight,
+      mdSize.gap,
+      mdSize.paddingX,
+      mdSize.fontSize,
+      mdSize.leading,
       'no-underline',
       'data-[active]:[background-color:var(--color-primary-surface)]',
       'data-[active]:[color:var(--color-primary-text)]',
