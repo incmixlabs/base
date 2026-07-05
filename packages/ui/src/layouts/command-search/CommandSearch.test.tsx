@@ -2,19 +2,13 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
+import { expectClassTokens } from '@/test/class-name-utils'
 import { CommandSearchInput, type CommandSearchItem, CommandSearchProvider } from './CommandSearch'
 
 class ResizeObserverMock {
   observe() {}
   unobserve() {}
   disconnect() {}
-}
-
-function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-  for (const token of tokens) {
-    expect(classTokens).toContain(token)
-  }
 }
 
 describe('CommandSearch', () => {

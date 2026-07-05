@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import userEvent from '@testing-library/user-event'
 import * as React from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { expectClassTokens, expectNoClassToken } from '@/test/class-name-utils'
 import { Tabs } from './Tabs'
 import { partitionStackedPanels } from './tabs-children'
 import { getMaxTransitionTime } from './tabs-transition'
@@ -11,18 +12,6 @@ afterEach(() => {
   vi.restoreAllMocks()
   cleanup()
 })
-
-function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-  for (const token of tokens) {
-    expect(classTokens).toContain(token)
-  }
-}
-
-function expectNoClassToken(className: string | undefined, token: string) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-  expect(classTokens).not.toContain(token)
-}
 
 function mockTransitionStyle(transitionDuration: string, transitionDelay = '0s') {
   const originalGetComputedStyle = window.getComputedStyle.bind(window)

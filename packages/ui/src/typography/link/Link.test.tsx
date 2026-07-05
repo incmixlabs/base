@@ -1,17 +1,11 @@
 import '@testing-library/jest-dom/vitest'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+import { expectClassTokens } from '@/test/class-name-utils'
 import { getPropDefValues } from '@/theme/props/prop-def'
 import { Link } from './Link'
 import { linkBase, linkSizeResponsive } from './link.class'
 import { linkPropDefs } from './link.props'
-
-function expectClassTokens(className: string | undefined, tokens: readonly string[]) {
-  const classTokens = new Set((className ?? '').split(/\s+/).filter(Boolean))
-  for (const token of tokens) {
-    expect(classTokens).toContain(token)
-  }
-}
 
 function expectPropValue<T extends string>(values: readonly T[], value: T): T {
   expect(values).toContain(value)
