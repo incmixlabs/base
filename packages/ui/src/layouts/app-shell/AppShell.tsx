@@ -17,7 +17,7 @@ import { ThemeToggle } from '@/theme/ThemeToggle'
 import { useOptionalThemeProviderContext } from '@/theme/theme-provider.context'
 import { CommandSearchInput } from '../command-search/CommandSearch'
 import { Sidebar, useSidebar } from '../sidebar/Sidebar'
-import { sidebarColorStyles } from '../sidebar/Sidebar.class'
+import { sidebarColorStyles, sidebarColorVars } from '../sidebar/Sidebar.class'
 import type { SidebarVariant } from '../sidebar/sidebar.props'
 import {
   appShellBody,
@@ -435,7 +435,14 @@ export function AppShellSidebar({
   // Wrap children with color styles so sidebar CSS variables are available in the drawer
   React.useLayoutEffect(() => {
     if (overlay) {
-      setSidebarContent(<div className={sidebarColorStyles[variant]?.[color]}>{children}</div>)
+      setSidebarContent(
+        <div
+          className={sidebarColorStyles[variant]?.[color]}
+          style={sidebarColorVars[variant]?.[color] as React.CSSProperties}
+        >
+          {children}
+        </div>,
+      )
     }
     return () => {
       if (overlay) setSidebarContent(null)
