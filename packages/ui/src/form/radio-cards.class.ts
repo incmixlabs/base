@@ -48,7 +48,7 @@ export const radioCardIndicatorInnerColorVariants = Object.fromEntries(
   semanticColorKeys.map(color => {
     const selectedColor = selectedRadioCardColor(color)
 
-    return [color, joinClass('[background-color:', colorVar(selectedColor, 'solid'), ']')]
+    return [color, joinClass('bg-', selectedColor, '-solid')]
   }),
 ) as Record<Color, string>
 

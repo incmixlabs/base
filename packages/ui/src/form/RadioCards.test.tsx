@@ -40,7 +40,7 @@ describe('RadioCards', () => {
     ])
     expectClassTokens(indicatorShell?.className, ['border-primary', 'bg-primary-surface'])
     expectClassTokens(indicatorShell?.firstElementChild?.className, [
-      '[background-color:var(--color-primary-solid)]',
+      'bg-primary-solid',
       '[height:0.625rem]',
       '[width:0.625rem]',
     ])
@@ -118,10 +118,18 @@ describe('RadioCards', () => {
 
     expectClassTokens(content?.className, ['text-xs', 'leading-4'])
     expectClassTokens(indicatorShell?.className, ['box-border', '[height:0.75rem]', '[width:0.75rem]'])
-    expectClassTokens(indicatorInner?.className, [
-      '[background-color:var(--color-primary-solid)]',
-      '[height:0.375rem]',
-      '[width:0.375rem]',
-    ])
+    expectClassTokens(indicatorInner?.className, ['bg-primary-solid', '[height:0.375rem]', '[width:0.375rem]'])
+  })
+
+  it('uses emitted semantic background utilities for non-primary selected indicators', () => {
+    render(
+      <RadioCards.Root value="warning" color="warning">
+        <RadioCards.Item value="warning">Warning</RadioCards.Item>
+      </RadioCards.Root>,
+    )
+
+    const indicatorInner = screen.getByRole('radio', { name: 'Warning' }).querySelector('span')?.firstElementChild
+
+    expectClassTokens(indicatorInner?.className, ['bg-warning-solid'])
   })
 })
