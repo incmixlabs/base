@@ -19,11 +19,29 @@ const variantBgToken = {
 
 type SidebarVisualVariant = keyof typeof variantBgToken
 
-function sidebarVarClass(name: string, value: string) {
-  return `[--${name}:${value}]`
-}
+type SidebarColorVarName =
+  | '--sidebar'
+  | '--sidebar-foreground'
+  | '--sidebar-hover'
+  | '--sidebar-hover-foreground'
+  | '--sidebar-active'
+  | '--sidebar-active-foreground'
+  | '--sidebar-border'
+  | '--sidebar-ring'
 
-function createSidebarColorClassName(panelColor: Color, variant: SidebarVisualVariant) {
+export type SidebarColorVars = Record<SidebarColorVarName, string>
+
+export const sidebarBg = '[background-color:var(--sidebar)]'
+export const sidebarForeground = '[color:var(--sidebar-foreground)]'
+export const sidebarBorder = '[border-color:var(--sidebar-border)]'
+export const sidebarRing = '[--tw-ring-color:var(--sidebar-ring)]'
+export const sidebarBorderBackground = '[background-color:var(--sidebar-border)]'
+export const sidebarPrimary = '[background-color:var(--sidebar-active)]'
+export const sidebarPrimaryForeground = '[color:var(--sidebar-active-foreground)]'
+export const sidebarAccent = '[background-color:var(--sidebar-hover)]'
+export const sidebarAccentForeground = '[color:var(--sidebar-hover-foreground)]'
+
+function createSidebarColorVars(panelColor: Color, variant: SidebarVisualVariant): SidebarColorVars {
   const panelBackground = semanticColorVar(panelColor, variantBgToken[variant])
   const panelForeground =
     variant === 'surface'
@@ -44,27 +62,37 @@ function createSidebarColorClassName(panelColor: Color, variant: SidebarVisualVa
     variant === 'solid' ? semanticColorVar(panelColor, 'contrast') : semanticColorVar(panelColor, 'text')
   const ringColor = semanticColorVar(panelColor, 'solid')
 
-  return [
-    sidebarVarClass('sidebar', panelBackground),
-    sidebarVarClass('sidebar-foreground', panelForeground),
-    sidebarVarClass('sidebar-hover', hoverBackground),
-    sidebarVarClass('sidebar-hover-foreground', hoverForeground),
-    sidebarVarClass('sidebar-active', activeBackground),
-    sidebarVarClass('sidebar-active-foreground', activeForeground),
-    sidebarVarClass('sidebar-border', panelBorder),
-    sidebarVarClass('sidebar-ring', ringColor),
-    'bg-sidebar text-sidebar-foreground border-sidebar-border',
-  ].join(' ')
+  return {
+    '--sidebar': panelBackground,
+    '--sidebar-foreground': panelForeground,
+    '--sidebar-hover': hoverBackground,
+    '--sidebar-hover-foreground': hoverForeground,
+    '--sidebar-active': activeBackground,
+    '--sidebar-active-foreground': activeForeground,
+    '--sidebar-border': panelBorder,
+    '--sidebar-ring': ringColor,
+  }
 }
+
+const sidebarColorClassName = `${sidebarBg} ${sidebarForeground} ${sidebarBorder}`
 
 const sidebarVisualVariants: SidebarVisualVariant[] = ['surface', 'solid', 'soft']
 
+// Color-specific values are set via sidebarColorVars; these classes only bind
+// the CSS custom properties to background, foreground, and border utilities.
 export const sidebarColorStyles = Object.fromEntries(
   sidebarVisualVariants.map(variant => [
     variant,
-    Object.fromEntries(semanticColorKeys.map(color => [color, createSidebarColorClassName(color as Color, variant)])),
+    Object.fromEntries(semanticColorKeys.map(color => [color, sidebarColorClassName])),
   ]),
 ) as Record<SidebarVisualVariant, Record<Color, string>>
+
+export const sidebarColorVars = Object.fromEntries(
+  sidebarVisualVariants.map(variant => [
+    variant,
+    Object.fromEntries(semanticColorKeys.map(color => [color, createSidebarColorVars(color as Color, variant)])),
+  ]),
+) as Record<SidebarVisualVariant, Record<Color, SidebarColorVars>>
 
 const enabledHoverTone =
   '[&:hover:not(:disabled):not([aria-disabled=true])]:[background-color:var(--sidebar-hover)] [&:hover:not(:disabled):not([aria-disabled=true])]:[color:var(--sidebar-hover-foreground)]'
@@ -75,28 +103,27 @@ const enabledFocusTone =
 const activeTone =
   'data-[active]:[background-color:var(--sidebar-active)] data-[active]:[color:var(--sidebar-active-foreground)] data-[active=true]:[background-color:var(--sidebar-active)] data-[active=true]:[color:var(--sidebar-active-foreground)] [&[aria-current=page]]:[background-color:var(--sidebar-active)] [&[aria-current=page]]:[color:var(--sidebar-active-foreground)]'
 
-export const sidebarMenuButtonTone = `text-sidebar-foreground bg-transparent ${enabledHoverTone} ${enabledActiveTone} ${enabledFocusTone} ${activeTone}`
+export const sidebarMenuButtonTone = `${sidebarForeground} bg-transparent ${enabledHoverTone} ${enabledActiveTone} ${enabledFocusTone} ${activeTone}`
 
-export const sidebarMenuButtonToneHighlight = `text-sidebar-foreground bg-transparent relative z-1 ${enabledHoverTone} ${enabledActiveTone} ${enabledFocusTone} ${activeTone}`
+export const sidebarMenuButtonToneHighlight = `${sidebarForeground} bg-transparent relative z-1 ${enabledHoverTone} ${enabledActiveTone} ${enabledFocusTone} ${activeTone}`
 
-export const sidebarContentSurface = 'bg-sidebar'
+export const sidebarContentSurface = sidebarBg
 
 export const sidebarPanelSurface = 'border-0 shadow-none'
 
-export const sidebarMenuSubFloatingPanel = 'bg-sidebar border-sidebar-border'
+export const sidebarSubMenuFloatingPanel = `${sidebarBg} ${sidebarForeground} ${sidebarBorder}`
 
 export const sidebarGroupedMenuSubPanel = 'top-3 w-64 rounded-xl p-2 [box-shadow:var(--shadow-4)]'
 
-export const sidebarGroupedMenuSubHeader =
-  'mb-2 border-b border-sidebar-border rounded-lg p-2 text-xs leading-4 tracking-[0.12em] uppercase text-sidebar-foreground opacity-[0.65]'
+export const sidebarGroupedMenuSubHeader = `mb-2 border-b ${sidebarBorder} rounded-lg p-2 text-xs leading-4 tracking-[0.12em] uppercase ${sidebarForeground} opacity-[0.65]`
 
-export const sidebarGroupedMenuSubHeaderIcon = 'text-sidebar-foreground opacity-80'
+export const sidebarGroupedMenuSubHeaderIcon = `${sidebarForeground} opacity-80`
 
-export const sidebarGroupedMenuButton = 'text-sidebar-foreground opacity-70'
+export const sidebarGroupedMenuButton = `${sidebarForeground} opacity-70`
 
 export const sidebarSkeletonTone = 'bg-[var(--sidebar-hover)]'
 
-export const sidebarMenuButtonHasActiveChild = 'bg-transparent text-sidebar-foreground font-medium'
+export const sidebarMenuButtonHasActiveChild = `bg-transparent ${sidebarForeground} font-medium`
 
 export const sidebarMenuSubButtonTone = sidebarMenuButtonTone
 
@@ -129,11 +156,20 @@ export const sidebarClassNames = [
   ...Object.values(sidebarGroupAnchorStyles),
   ...Object.values(sidebarMenuButtonVariantStyles),
   ...Object.values(sidebarColorStyles).flatMap(colorMap => Object.values(colorMap)),
+  sidebarBg,
+  sidebarForeground,
+  sidebarBorder,
+  sidebarRing,
+  sidebarBorderBackground,
+  sidebarPrimary,
+  sidebarPrimaryForeground,
+  sidebarAccent,
+  sidebarAccentForeground,
   sidebarMenuButtonTone,
   sidebarMenuButtonToneHighlight,
   sidebarContentSurface,
   sidebarPanelSurface,
-  sidebarMenuSubFloatingPanel,
+  sidebarSubMenuFloatingPanel,
   sidebarGroupedMenuSubPanel,
   sidebarGroupedMenuSubHeader,
   sidebarGroupedMenuSubHeaderIcon,

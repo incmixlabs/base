@@ -16,7 +16,7 @@ import { breakpointMedia } from '@/theme/helpers/responsive/breakpoints'
 import { ThemeToggle } from '@/theme/ThemeToggle'
 import { useOptionalThemeProviderContext } from '@/theme/theme-provider.context'
 import { CommandSearchInput } from '../command-search/CommandSearch'
-import { Sidebar, useSidebar } from '../sidebar/Sidebar'
+import { getSidebarColorStyle, Sidebar, useSidebar } from '../sidebar/Sidebar'
 import { sidebarColorStyles } from '../sidebar/Sidebar.class'
 import type { SidebarVariant } from '../sidebar/sidebar.props'
 import {
@@ -435,7 +435,11 @@ export function AppShellSidebar({
   // Wrap children with color styles so sidebar CSS variables are available in the drawer
   React.useLayoutEffect(() => {
     if (overlay) {
-      setSidebarContent(<div className={sidebarColorStyles[variant]?.[color]}>{children}</div>)
+      setSidebarContent(
+        <div className={sidebarColorStyles[variant]?.[color]} style={getSidebarColorStyle(variant, color)}>
+          {children}
+        </div>,
+      )
     }
     return () => {
       if (overlay) setSidebarContent(null)

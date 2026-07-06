@@ -20,6 +20,7 @@ import { normalizeEnumPropValue } from '@/theme/props/prop-def'
 import {
   sidebarBodyText,
   sidebarColorStyles,
+  sidebarColorVars,
   sidebarContentSurface,
   sidebarGroupAnchorStyles,
   sidebarGroupLabelText,
@@ -32,9 +33,9 @@ import {
   sidebarMenuSubButtonSizeStyles,
   sidebarMenuSubButtonTone,
   sidebarMenuSubButtonToneHighlight,
-  sidebarMenuSubFloatingPanel,
   sidebarPanelSurface,
   sidebarSkeletonTone,
+  sidebarSubMenuFloatingPanel,
 } from './Sidebar.class'
 import type {
   SidebarCollapsible,
@@ -61,6 +62,13 @@ const SIDEBAR_WIDTH = '16rem'
 const SIDEBAR_WIDTH_MOBILE = '18rem'
 const SIDEBAR_WIDTH_ICON = '3rem'
 const SIDEBAR_KEYBOARD_SHORTCUT = 'b'
+
+export function getSidebarColorStyle(variant: SidebarVariant, color: SidebarColor, style?: React.CSSProperties) {
+  return {
+    ...sidebarColorVars[variant][color],
+    ...style,
+  } as React.CSSProperties
+}
 
 function readSidebarCookie(): boolean | null {
   const value = readCookie(SIDEBAR_COOKIE_NAME)
@@ -248,9 +256,9 @@ function SidebarRoot({
         color={safeColor}
         radius="none"
         hidden={hidden}
-        style={style}
+        style={getSidebarColorStyle(safeVariant, safeColor, style)}
         className={cn(
-          'text-sidebar-foreground flex h-full w-[var(--sidebar-width)] flex-col',
+          'flex h-full w-[var(--sidebar-width)] flex-col',
           sidebarColorStyles[safeVariant][safeColor],
           sidebarPanelSurface,
           className,
@@ -271,13 +279,15 @@ function SidebarRoot({
           data-slot="sidebar"
           data-mobile="true"
           hidden={hidden}
-          className={cn('bg-sidebar text-sidebar-foreground w-[var(--sidebar-width)] p-0 [&>button]:hidden', className)}
-          style={
-            {
-              '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
-              ...style,
-            } as React.CSSProperties
-          }
+          className={cn(
+            'w-[var(--sidebar-width)] p-0 [&>button]:hidden',
+            sidebarColorStyles[safeVariant][safeColor],
+            className,
+          )}
+          style={getSidebarColorStyle(safeVariant, safeColor, {
+            '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
+            ...style,
+          } as React.CSSProperties)}
           side={safeSide}
         >
           <Sheet.Header className="sr-only">
@@ -289,12 +299,8 @@ function SidebarRoot({
             variant={safeVariant}
             color={safeColor}
             radius="none"
-            style={style}
-            className={cn(
-              'text-sidebar-foreground flex size-full flex-col',
-              sidebarColorStyles[safeVariant][safeColor],
-              sidebarPanelSurface,
-            )}
+            style={getSidebarColorStyle(safeVariant, safeColor, style)}
+            className={cn('flex size-full flex-col', sidebarColorStyles[safeVariant][safeColor], sidebarPanelSurface)}
           >
             {children}
           </Surface>
@@ -311,12 +317,13 @@ function SidebarRoot({
   return (
     <CollapsibleContext.Provider value={collapsibleValue}>
       <div
-        className="group peer text-sidebar-foreground"
+        className={cn('group peer', sidebarColorStyles[safeVariant][safeColor])}
         data-state={state}
         data-collapsible={collapsibleValue}
         data-side={safeSide}
         data-slot="sidebar"
         hidden={hidden}
+        style={getSidebarColorStyle(safeVariant, safeColor)}
       >
         {/* This is what handles the sidebar gap on desktop */}
         <div
@@ -352,12 +359,8 @@ function SidebarRoot({
             variant={safeVariant}
             color={safeColor}
             radius="none"
-            style={style}
-            className={cn(
-              'text-sidebar-foreground flex size-full flex-col',
-              sidebarColorStyles[safeVariant][safeColor],
-              sidebarPanelSurface,
-            )}
+            style={getSidebarColorStyle(safeVariant, safeColor, style)}
+            className={cn('flex size-full flex-col', sidebarColorStyles[safeVariant][safeColor], sidebarPanelSurface)}
           >
             {children}
           </Surface>
@@ -762,11 +765,14 @@ function SidebarMenuSub({ className, style, open, ...props }: SidebarMenuSubProp
         'm-0 list-none flex min-w-0 flex-col',
         iconMode
           ? 'absolute start-full top-0 z-50 min-w-40 translate-x-2 rounded-md border p-1 shadow-md invisible pointer-events-none opacity-0 group-hover/menu-item:visible group-hover/menu-item:pointer-events-auto group-hover/menu-item:opacity-100 group-focus-within/menu-item:visible group-focus-within/menu-item:pointer-events-auto group-focus-within/menu-item:opacity-100 peer-data-[active=true]/menu-button:visible peer-data-[active=true]/menu-button:pointer-events-auto peer-data-[active=true]/menu-button:opacity-100 peer-aria-expanded/menu-button:visible peer-aria-expanded/menu-button:pointer-events-auto peer-aria-expanded/menu-button:opacity-100'
-          : 'border-sidebar-border mx-3.5 translate-x-px rtl:-translate-x-px gap-1 border-s px-2.5 py-0.5',
-        iconMode && sidebarMenuSubFloatingPanel,
+          : 'mx-3.5 translate-x-px rtl:-translate-x-px gap-1 border-s px-2.5 py-0.5',
+        iconMode && sidebarSubMenuFloatingPanel,
         className,
       )}
-      style={style}
+      style={{
+        borderColor: 'var(--sidebar-border)',
+        ...style,
+      }}
       {...props}
     />
   )
