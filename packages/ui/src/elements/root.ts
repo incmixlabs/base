@@ -90,7 +90,7 @@ export {
   gradientPresets,
 } from './gradient-background/gradient-presets'
 export { HoverCard } from './hover-card/HoverCard'
-export { Image, type ImageObjectFit, type ImageProps } from './image/Image'
+export { Image, type ImageFocalPoint, type ImageObjectFit, type ImageProps } from './image/Image'
 export {
   type ColorSwatchOption,
   ColorSwatchPicker,

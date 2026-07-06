@@ -16,6 +16,12 @@ const meta: Meta<typeof Image> = {
     radius: 'md',
   },
   argTypes: {
+    focalPoint: {
+      control: 'object',
+    },
+    objectPosition: {
+      control: 'text',
+    },
     objectFit: {
       control: 'select',
       options: ['contain', 'cover', 'fill', 'none', 'scale-down'],
@@ -88,6 +94,19 @@ export const FallbackSource: Story = {
         <Image {...args} className="h-full w-full" />
       </AspectRatio>
     </div>
+  ),
+}
+
+export const FocalPoint: Story = {
+  args: {
+    src: sampleSrc,
+    alt: 'Focal point sample',
+    focalPoint: { x: 50, y: 15 },
+  },
+  render: args => (
+    <AspectRatio ratio="4/3" className="w-[420px] overflow-hidden rounded-xl border">
+      <Image {...args} className="h-full w-full" />
+    </AspectRatio>
   ),
 }
 

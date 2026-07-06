@@ -50,6 +50,33 @@ describe('Image', () => {
     )
   })
 
+  it('applies objectPosition directly', () => {
+    render(<Image src="https://example.com/photo.jpg" alt="Positioned sample" objectPosition="center 20%" />)
+
+    expect(screen.getByAltText('Positioned sample')).toHaveStyle({ objectPosition: 'center 20%' })
+  })
+
+  it('maps focalPoint to object-position percentages', () => {
+    render(<Image src="https://example.com/photo.jpg" alt="Focal sample" focalPoint={{ x: 50, y: 15 }} />)
+
+    expect(screen.getByAltText('Focal sample')).toHaveStyle({ objectPosition: '50% 15%' })
+  })
+
+  it('lets objectPosition override focalPoint', () => {
+    render(
+      <Image
+        src="https://example.com/photo.jpg"
+        alt="Override sample"
+        focalPoint={{ x: 50, y: 15 }}
+        objectPosition="center bottom"
+      />,
+    )
+
+    expect(screen.getByAltText('Override sample')).toHaveStyle({
+      objectPosition: 'center bottom',
+    })
+  })
+
   it('switches to fallbackSrc on error and clears responsive source attributes', () => {
     const onError = vi.fn()
 

@@ -16,6 +16,8 @@ const imagePropDefs = {
   loading: { type: 'enum', values: loadingValues, required: false, default: undefined },
   decoding: { type: 'enum', values: decodingValues, required: false, default: undefined },
   objectFit: { type: 'enum', values: objectFitValues, required: false, default: 'cover' },
+  objectPosition: { type: 'string', required: false },
+  focalPoint: { type: 'object', typeFullName: 'ImageFocalPoint', required: false },
   ...radiusPropDef,
 } satisfies {
   src: PropDef<string>
@@ -28,6 +30,8 @@ const imagePropDefs = {
   loading: PropDef<(typeof loadingValues)[number]>
   decoding: PropDef<(typeof decodingValues)[number]>
   objectFit: PropDef<(typeof objectFitValues)[number]>
+  objectPosition: PropDef<string>
+  focalPoint: PropDef<{ x: number; y: number }>
   radius: typeof radiusPropDef.radius
 }
 
