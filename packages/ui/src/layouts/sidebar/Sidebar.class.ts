@@ -78,6 +78,8 @@ const sidebarColorClassName = `${sidebarBg} ${sidebarForeground} ${sidebarBorder
 
 const sidebarVisualVariants: SidebarVisualVariant[] = ['surface', 'solid', 'soft']
 
+// Color-specific values are set via sidebarColorVars; these classes only bind
+// the CSS custom properties to background, foreground, and border utilities.
 export const sidebarColorStyles = Object.fromEntries(
   sidebarVisualVariants.map(variant => [
     variant,
@@ -109,7 +111,7 @@ export const sidebarContentSurface = sidebarBg
 
 export const sidebarPanelSurface = 'border-0 shadow-none'
 
-export const sidebarMenuSubFloatingPanel = `${sidebarBg} ${sidebarBorder}`
+export const sidebarMenuSubFloatingPanel = `${sidebarBg} ${sidebarForeground} ${sidebarBorder}`
 
 export const sidebarGroupedMenuSubPanel = 'top-3 w-64 rounded-xl p-2 [box-shadow:var(--shadow-4)]'
 
@@ -154,9 +156,6 @@ export const sidebarClassNames = [
   ...Object.values(sidebarGroupAnchorStyles),
   ...Object.values(sidebarMenuButtonVariantStyles),
   ...Object.values(sidebarColorStyles).flatMap(colorMap => Object.values(colorMap)),
-  ...Object.values(sidebarColorVars).flatMap(colorMap =>
-    Object.values(colorMap).flatMap(vars => Object.entries(vars).map(([name, value]) => `[${name}:${value}]`)),
-  ),
   sidebarBg,
   sidebarForeground,
   sidebarBorder,

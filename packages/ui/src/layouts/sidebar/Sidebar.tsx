@@ -63,7 +63,7 @@ const SIDEBAR_WIDTH_MOBILE = '18rem'
 const SIDEBAR_WIDTH_ICON = '3rem'
 const SIDEBAR_KEYBOARD_SHORTCUT = 'b'
 
-function getSidebarColorStyle(variant: SidebarVariant, color: SidebarColor, style?: React.CSSProperties) {
+export function getSidebarColorStyle(variant: SidebarVariant, color: SidebarColor, style?: React.CSSProperties) {
   return {
     ...sidebarColorVars[variant][color],
     ...style,
@@ -770,8 +770,6 @@ function SidebarMenuSub({ className, style, open, ...props }: SidebarMenuSubProp
         className,
       )}
       style={{
-        backgroundColor: iconMode ? 'var(--sidebar)' : undefined,
-        color: iconMode ? 'var(--sidebar-foreground)' : undefined,
         borderColor: 'var(--sidebar-border)',
         ...style,
       }}
