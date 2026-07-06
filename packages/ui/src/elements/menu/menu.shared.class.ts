@@ -10,7 +10,6 @@ const prefixClasses = (prefix: string, className: string) =>
     .filter(Boolean)
     .map(token => `${prefix}:${token}`)
     .join(' ')
-const hoverItemClasses = (className: string) => prefixClasses('[&:hover:not([data-disabled])]', className)
 const createMenuColorClassMap = (getClassName: (color: Color) => string) =>
   Object.fromEntries(semanticColorScale.map(color => [color, getClassName(color)])) as Record<Color, string>
 
@@ -99,8 +98,6 @@ export const menuItemByVariant = {
   solid: createMenuColorClassMap(color => {
     const recipe = semanticColorClassRecipes[color]
     return cls(
-      hoverItemClasses(recipe.fill.solid),
-      hoverItemClasses(recipe.text.contrast),
       prefixClasses('data-[highlighted]', recipe.fill.solid),
       prefixClasses('data-[highlighted]', recipe.text.contrast),
       prefixClasses('data-[state=open]', recipe.interactionFill.soft),
@@ -110,7 +107,6 @@ export const menuItemByVariant = {
   soft: createMenuColorClassMap(color => {
     const recipe = semanticColorClassRecipes[color]
     return cls(
-      hoverItemClasses(recipe.interactionFill.soft),
       prefixClasses('data-[highlighted]', recipe.interactionFill.soft),
       prefixClasses('data-[state=open]', recipe.fill.soft),
       'data-[state=open]:text-neutral',
@@ -123,8 +119,6 @@ export const menuItemByVariantHighlight = {
     const recipe = semanticColorClassRecipes[color]
     return cls(
       'relative z-[1]',
-      hoverItemClasses(recipe.fill.solid),
-      hoverItemClasses(recipe.text.contrast),
       'data-[highlighted]:bg-transparent',
       prefixClasses('data-[highlighted]', recipe.text.contrast),
       prefixClasses('data-[state=open]', recipe.interactionFill.soft),
@@ -135,7 +129,6 @@ export const menuItemByVariantHighlight = {
     const recipe = semanticColorClassRecipes[color]
     return cls(
       'relative z-[1]',
-      hoverItemClasses(recipe.interactionFill.soft),
       'data-[highlighted]:bg-transparent',
       prefixClasses('data-[state=open]', recipe.fill.soft),
       'data-[state=open]:text-neutral',
