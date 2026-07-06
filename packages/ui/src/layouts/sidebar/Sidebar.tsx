@@ -33,9 +33,9 @@ import {
   sidebarMenuSubButtonSizeStyles,
   sidebarMenuSubButtonTone,
   sidebarMenuSubButtonToneHighlight,
-  sidebarMenuSubFloatingPanel,
   sidebarPanelSurface,
   sidebarSkeletonTone,
+  sidebarSubMenuFloatingPanel,
 } from './Sidebar.class'
 import type {
   SidebarCollapsible,
@@ -766,7 +766,7 @@ function SidebarMenuSub({ className, style, open, ...props }: SidebarMenuSubProp
         iconMode
           ? 'absolute start-full top-0 z-50 min-w-40 translate-x-2 rounded-md border p-1 shadow-md invisible pointer-events-none opacity-0 group-hover/menu-item:visible group-hover/menu-item:pointer-events-auto group-hover/menu-item:opacity-100 group-focus-within/menu-item:visible group-focus-within/menu-item:pointer-events-auto group-focus-within/menu-item:opacity-100 peer-data-[active=true]/menu-button:visible peer-data-[active=true]/menu-button:pointer-events-auto peer-data-[active=true]/menu-button:opacity-100 peer-aria-expanded/menu-button:visible peer-aria-expanded/menu-button:pointer-events-auto peer-aria-expanded/menu-button:opacity-100'
           : 'mx-3.5 translate-x-px rtl:-translate-x-px gap-1 border-s px-2.5 py-0.5',
-        iconMode && sidebarMenuSubFloatingPanel,
+        iconMode && sidebarSubMenuFloatingPanel,
         className,
       )}
       style={{

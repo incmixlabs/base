@@ -111,7 +111,7 @@ export const sidebarContentSurface = sidebarBg
 
 export const sidebarPanelSurface = 'border-0 shadow-none'
 
-export const sidebarMenuSubFloatingPanel = `${sidebarBg} ${sidebarForeground} ${sidebarBorder}`
+export const sidebarSubMenuFloatingPanel = `${sidebarBg} ${sidebarForeground} ${sidebarBorder}`
 
 export const sidebarGroupedMenuSubPanel = 'top-3 w-64 rounded-xl p-2 [box-shadow:var(--shadow-4)]'
 
@@ -169,7 +169,7 @@ export const sidebarClassNames = [
   sidebarMenuButtonToneHighlight,
   sidebarContentSurface,
   sidebarPanelSurface,
-  sidebarMenuSubFloatingPanel,
+  sidebarSubMenuFloatingPanel,
   sidebarGroupedMenuSubPanel,
   sidebarGroupedMenuSubHeader,
   sidebarGroupedMenuSubHeaderIcon,
