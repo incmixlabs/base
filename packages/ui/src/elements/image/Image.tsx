@@ -15,9 +15,19 @@ const objectFitClassName: Record<ImageObjectFit, string> = {
   'scale-down': 'object-scale-down',
 }
 
+export interface ImageFocalPoint {
+  x: number
+  y: number
+}
+
+const getFocalPointObjectPosition = (focalPoint: ImageFocalPoint | undefined) =>
+  focalPoint ? `${focalPoint.x}% ${focalPoint.y}%` : undefined
+
 export interface ImageProps extends Omit<React.ComponentPropsWithoutRef<'img'>, 'children'> {
+  focalPoint?: ImageFocalPoint
   fallbackSrc?: string
   objectFit?: ImageObjectFit
+  objectPosition?: React.CSSProperties['objectPosition']
   radius?: Radius
 }
 
@@ -33,6 +43,8 @@ const Image = React.forwardRef<HTMLImageElement, ImageProps>(
       fallbackSrc,
       onError,
       radius: radiusProp,
+      objectPosition,
+      focalPoint,
       style,
       ...props
     },
@@ -41,7 +53,12 @@ const Image = React.forwardRef<HTMLImageElement, ImageProps>(
     const [resolvedSrc, setResolvedSrc] = React.useState(src)
     const [usingFallback, setUsingFallback] = React.useState(false)
     const radius = useThemeRadius(radiusProp)
-    const resolvedStyle = { ...getRadiusStyles(radius), ...style }
+    const resolvedObjectPosition = objectPosition ?? getFocalPointObjectPosition(focalPoint)
+    const resolvedStyle = {
+      ...getRadiusStyles(radius),
+      ...(resolvedObjectPosition !== undefined ? { objectPosition: resolvedObjectPosition } : {}),
+      ...style,
+    }
 
     React.useEffect(() => {
       setResolvedSrc(src)
