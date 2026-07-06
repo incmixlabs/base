@@ -19,6 +19,10 @@ const joinClass = (...parts: string[]) => parts.join('')
 const colorVar = (color: string, token: string) => joinClass('var(--color-', color, '-', token, ')')
 
 const selectedRadioCardColor = (color: Color): Color => (color === 'neutral' ? 'primary' : color)
+const createRadioCardColorVariants = (getClassName: (color: Color, selectedColor: Color) => string) =>
+  Object.fromEntries(
+    semanticColorKeys.map(color => [color, getClassName(color, selectedRadioCardColor(color))]),
+  ) as Record<Color, string>
 
 export const radioCardRootBase =
   'group relative flex box-border cursor-pointer rounded-lg border border-solid text-left outline-none transition-all'
@@ -26,7 +30,7 @@ export const radioCardRootBase =
 export const radioCardIndicatorBase =
   'mt-1 inline-flex box-border shrink-0 items-center justify-center rounded-full border-2 border-solid transition-all duration-150'
 
-export const radioCardIndicatorInner = 'rounded-full [background-color:var(--color-light-solid)]'
+export const radioCardIndicatorInner = 'rounded-full'
 
 export const radioCardContentBase = 'flex-1'
 
@@ -44,43 +48,33 @@ export const radioCardIndicatorInnerSizeVariants = {
   lg: '[height:0.75rem] [width:0.75rem]',
 } as const satisfies Record<RadioCardSize, string>
 
-export const radioCardIndicatorColorVariants = Object.fromEntries(
-  semanticColorKeys.map(color => {
-    const selectedColor = selectedRadioCardColor(color)
+export const radioCardIndicatorInnerColorVariants = createRadioCardColorVariants((_color, selectedColor) =>
+  joinClass('bg-', selectedColor, '-solid'),
+)
 
-    return [
-      color,
-      [
-        joinClass('border-', color),
-        joinClass('bg-', color, '-surface'),
-        joinClass('text-', selectedColor),
-        joinClass('group-data-[checked]:[border-color:', colorVar(selectedColor, 'solid'), ']'),
-        joinClass('group-data-[checked]:bg-', selectedColor, '-solid'),
-      ].join(' '),
-    ]
-  }),
-) as Record<Color, string>
+export const radioCardIndicatorColorVariants = createRadioCardColorVariants((color, selectedColor) =>
+  [joinClass('border-', color), joinClass('bg-', color, '-surface'), joinClass('text-', selectedColor)].join(' '),
+)
 
-export const radioCardRootColorVariants = Object.fromEntries(
-  semanticColorKeys.map(color => {
-    const selectedColor = selectedRadioCardColor(color)
-
-    return [
-      color,
-      [
-        joinClass(
-          'focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:[outline-color:',
-          colorVar(selectedColor, 'solid-alpha'),
-          ']',
-        ),
-        joinClass('data-[checked]:[border-color:', colorVar(selectedColor, 'solid'), ']'),
-        joinClass('data-[checked]:bg-', selectedColor, '-soft'),
-        joinClass('data-[checked]:[box-shadow:0_0_0_2px_', colorVar(selectedColor, 'solid-alpha'), ']'),
-        joinClass('data-[checked]:hover:bg-', selectedColor, '-soft-hover'),
-      ].join(' '),
-    ]
-  }),
-) as Record<Color, string>
+export const radioCardRootColorVariants = createRadioCardColorVariants((_color, selectedColor) =>
+  [
+    joinClass(
+      'focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:[outline-color:',
+      colorVar(selectedColor, 'solid-alpha'),
+      ']',
+    ),
+    joinClass('data-[checked]:[border-color:', colorVar(selectedColor, 'solid'), ']'),
+    joinClass('data-[checked]:[background-color:', colorVar(selectedColor, 'soft'), ']'),
+    joinClass(
+      'data-[checked]:[box-shadow:inset_0_0_0_1px_',
+      colorVar(selectedColor, 'solid'),
+      ',0_0_0_2px_',
+      colorVar(selectedColor, 'solid-alpha'),
+      ']',
+    ),
+    joinClass('data-[checked]:hover:[background-color:', colorVar(selectedColor, 'soft-hover'), ']'),
+  ].join(' '),
+)
 
 export const radioCardsClassNames = [
   radioCardRootBase,
@@ -93,5 +87,6 @@ export const radioCardsClassNames = [
   ...Object.values(radioCardIndicatorSizeVariants),
   ...Object.values(radioCardIndicatorInnerSizeVariants),
   ...Object.values(radioCardIndicatorColorVariants),
+  ...Object.values(radioCardIndicatorInnerColorVariants),
   ...Object.values(radioCardRootColorVariants),
 ]

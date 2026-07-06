@@ -33,16 +33,16 @@ describe('RadioCards', () => {
     const indicatorShell = radioCard.querySelector('span')
 
     expectClassTokens(radioCard.className, [
-      'data-[checked]:bg-primary-soft',
+      'data-[checked]:[background-color:var(--color-primary-soft)]',
       'data-[checked]:[border-color:var(--color-primary-solid)]',
-      'data-[checked]:[box-shadow:0_0_0_2px_var(--color-primary-solid-alpha)]',
-      'data-[checked]:hover:bg-primary-soft-hover',
+      'data-[checked]:[box-shadow:inset_0_0_0_1px_var(--color-primary-solid),0_0_0_2px_var(--color-primary-solid-alpha)]',
+      'data-[checked]:hover:[background-color:var(--color-primary-soft-hover)]',
     ])
-    expectClassTokens(indicatorShell?.className, [
-      'border-primary',
-      'bg-primary-surface',
-      'group-data-[checked]:bg-primary-solid',
-      'group-data-[checked]:[border-color:var(--color-primary-solid)]',
+    expectClassTokens(indicatorShell?.className, ['border-primary', 'bg-primary-surface'])
+    expectClassTokens(indicatorShell?.firstElementChild?.className, [
+      'bg-primary-solid',
+      '[height:0.625rem]',
+      '[width:0.625rem]',
     ])
     const radioCardTokens = new Set(radioCard.className.split(/\s+/).filter(Boolean))
     expect(radioCardTokens).not.toContain('surface-color-primary')
@@ -118,10 +118,18 @@ describe('RadioCards', () => {
 
     expectClassTokens(content?.className, ['text-xs', 'leading-4'])
     expectClassTokens(indicatorShell?.className, ['box-border', '[height:0.75rem]', '[width:0.75rem]'])
-    expectClassTokens(indicatorInner?.className, [
-      '[background-color:var(--color-light-solid)]',
-      '[height:0.375rem]',
-      '[width:0.375rem]',
-    ])
+    expectClassTokens(indicatorInner?.className, ['bg-primary-solid', '[height:0.375rem]', '[width:0.375rem]'])
+  })
+
+  it('uses emitted semantic background utilities for non-primary selected indicators', () => {
+    render(
+      <RadioCards.Root value="warning" color="warning">
+        <RadioCards.Item value="warning">Warning</RadioCards.Item>
+      </RadioCards.Root>,
+    )
+
+    const indicatorInner = screen.getByRole('radio', { name: 'Warning' }).querySelector('span')?.firstElementChild
+
+    expectClassTokens(indicatorInner?.className, ['bg-warning-solid'])
   })
 })

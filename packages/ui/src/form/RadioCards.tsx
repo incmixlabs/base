@@ -25,6 +25,7 @@ import {
   radioCardIndicatorBase,
   radioCardIndicatorColorVariants,
   radioCardIndicatorInner,
+  radioCardIndicatorInnerColorVariants,
   radioCardIndicatorInnerSizeVariants,
   radioCardIndicatorSizeVariants,
   radioCardPaddingVariants,
@@ -242,7 +243,11 @@ const RadioCardsItem = React.forwardRef<HTMLButtonElement, RadioCardsItemProps>(
             )}
           >
             <RadioPrimitive.Indicator
-              className={cn(radioCardIndicatorInner, radioCardIndicatorInnerSizeVariants[context.size])}
+              className={cn(
+                radioCardIndicatorInner,
+                radioCardIndicatorInnerSizeVariants[context.size],
+                radioCardIndicatorInnerColorVariants[context.color],
+              )}
             />
           </span>
           {/* Content */}

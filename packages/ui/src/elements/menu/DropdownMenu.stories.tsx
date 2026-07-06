@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Cloud, CreditCard, Github, Keyboard, LifeBuoy, LogOut, Plus, Settings, User, UserPlus } from 'lucide-react'
 import { useState } from 'react'
-import { Button, DropdownMenu } from '@/elements'
+import { Button, DropdownMenu, IconButton } from '@/elements'
 import { SemanticColor } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
 import { dropdownMenuPropDefs } from './dropdown-menu.props'
@@ -184,6 +184,50 @@ export const Default: StoryObj = {
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   ),
+}
+
+export const SitesRowActions: StoryObj = {
+  render: () => {
+    const [actionsOpen, setActionsOpen] = useState(false)
+    const row = { name: 'Meta', kind: 'page' }
+
+    return (
+      <div className="flex min-w-64 items-center justify-between rounded-md border border-neutral px-3 py-2">
+        <span className="font-medium">{row.name}</span>
+        <DropdownMenu.Root open={actionsOpen} onOpenChange={setActionsOpen}>
+          <DropdownMenu.Trigger>
+            <IconButton
+              aria-label={`${row.name} actions`}
+              color="slate"
+              icon="ellipsis-vertical"
+              onClick={event => event.stopPropagation()}
+              onContextMenu={event => {
+                event.preventDefault()
+                event.stopPropagation()
+                setActionsOpen(true)
+              }}
+              onKeyDown={event => event.stopPropagation()}
+              onPointerDown={event => event.stopPropagation()}
+              size="xs"
+              title="Actions"
+              type="button"
+              variant="ghost"
+            />
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content align="end" sideOffset={6} size="sm">
+            <DropdownMenu.Item>Add Page</DropdownMenu.Item>
+            <DropdownMenu.Item>Preview</DropdownMenu.Item>
+            <DropdownMenu.Item>Edit</DropdownMenu.Item>
+            <DropdownMenu.Item>Set as home</DropdownMenu.Item>
+            <DropdownMenu.Item>Duplicate</DropdownMenu.Item>
+            <DropdownMenu.Item>Copy path</DropdownMenu.Item>
+            <DropdownMenu.Separator />
+            <DropdownMenu.Item color="error">Delete</DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
+      </div>
+    )
+  },
 }
 
 export const WithShortcuts: StoryObj = {
