@@ -19,6 +19,10 @@ const joinClass = (...parts: string[]) => parts.join('')
 const colorVar = (color: string, token: string) => joinClass('var(--color-', color, '-', token, ')')
 
 const selectedRadioCardColor = (color: Color): Color => (color === 'neutral' ? 'primary' : color)
+const createRadioCardColorVariants = (getClassName: (color: Color, selectedColor: Color) => string) =>
+  Object.fromEntries(
+    semanticColorKeys.map(color => [color, getClassName(color, selectedRadioCardColor(color))]),
+  ) as Record<Color, string>
 
 export const radioCardRootBase =
   'group relative flex box-border cursor-pointer rounded-lg border border-solid text-left outline-none transition-all'
@@ -44,51 +48,33 @@ export const radioCardIndicatorInnerSizeVariants = {
   lg: '[height:0.75rem] [width:0.75rem]',
 } as const satisfies Record<RadioCardSize, string>
 
-export const radioCardIndicatorInnerColorVariants = Object.fromEntries(
-  semanticColorKeys.map(color => {
-    const selectedColor = selectedRadioCardColor(color)
+export const radioCardIndicatorInnerColorVariants = createRadioCardColorVariants((_color, selectedColor) =>
+  joinClass('bg-', selectedColor, '-solid'),
+)
 
-    return [color, joinClass('bg-', selectedColor, '-solid')]
-  }),
-) as Record<Color, string>
+export const radioCardIndicatorColorVariants = createRadioCardColorVariants((color, selectedColor) =>
+  [joinClass('border-', color), joinClass('bg-', color, '-surface'), joinClass('text-', selectedColor)].join(' '),
+)
 
-export const radioCardIndicatorColorVariants = Object.fromEntries(
-  semanticColorKeys.map(color => {
-    const selectedColor = selectedRadioCardColor(color)
-
-    return [
-      color,
-      [joinClass('border-', color), joinClass('bg-', color, '-surface'), joinClass('text-', selectedColor)].join(' '),
-    ]
-  }),
-) as Record<Color, string>
-
-export const radioCardRootColorVariants = Object.fromEntries(
-  semanticColorKeys.map(color => {
-    const selectedColor = selectedRadioCardColor(color)
-
-    return [
-      color,
-      [
-        joinClass(
-          'focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:[outline-color:',
-          colorVar(selectedColor, 'solid-alpha'),
-          ']',
-        ),
-        joinClass('data-[checked]:[border-color:', colorVar(selectedColor, 'solid'), ']'),
-        joinClass('data-[checked]:[background-color:', colorVar(selectedColor, 'soft'), ']'),
-        joinClass(
-          'data-[checked]:[box-shadow:inset_0_0_0_1px_',
-          colorVar(selectedColor, 'solid'),
-          ',0_0_0_2px_',
-          colorVar(selectedColor, 'solid-alpha'),
-          ']',
-        ),
-        joinClass('data-[checked]:hover:[background-color:', colorVar(selectedColor, 'soft-hover'), ']'),
-      ].join(' '),
-    ]
-  }),
-) as Record<Color, string>
+export const radioCardRootColorVariants = createRadioCardColorVariants((_color, selectedColor) =>
+  [
+    joinClass(
+      'focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:[outline-color:',
+      colorVar(selectedColor, 'solid-alpha'),
+      ']',
+    ),
+    joinClass('data-[checked]:[border-color:', colorVar(selectedColor, 'solid'), ']'),
+    joinClass('data-[checked]:[background-color:', colorVar(selectedColor, 'soft'), ']'),
+    joinClass(
+      'data-[checked]:[box-shadow:inset_0_0_0_1px_',
+      colorVar(selectedColor, 'solid'),
+      ',0_0_0_2px_',
+      colorVar(selectedColor, 'solid-alpha'),
+      ']',
+    ),
+    joinClass('data-[checked]:hover:[background-color:', colorVar(selectedColor, 'soft-hover'), ']'),
+  ].join(' '),
+)
 
 export const radioCardsClassNames = [
   radioCardRootBase,

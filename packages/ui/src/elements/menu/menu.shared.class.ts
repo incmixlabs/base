@@ -98,10 +98,8 @@ export const menuItemByVariant = {
   solid: createMenuColorClassMap(color => {
     const recipe = semanticColorClassRecipes[color]
     return cls(
-      prefixClasses('data-[highlighted]', recipe.fill.solid),
-      prefixClasses('data-[highlighted]', recipe.text.contrast),
-      prefixClasses('data-[state=open]', recipe.interactionFill.soft),
-      prefixClasses('data-[state=open]', recipe.text.contrast),
+      prefixClasses('data-[highlighted]', cls(recipe.fill.solid, recipe.text.contrast)),
+      prefixClasses('data-[state=open]', cls(recipe.interactionFill.soft, recipe.text.contrast)),
     )
   }),
   soft: createMenuColorClassMap(color => {
@@ -119,10 +117,8 @@ export const menuItemByVariantHighlight = {
     const recipe = semanticColorClassRecipes[color]
     return cls(
       'relative z-[1]',
-      'data-[highlighted]:bg-transparent',
-      prefixClasses('data-[highlighted]', recipe.text.contrast),
-      prefixClasses('data-[state=open]', recipe.interactionFill.soft),
-      prefixClasses('data-[state=open]', recipe.text.contrast),
+      prefixClasses('data-[highlighted]', cls('bg-transparent', recipe.text.contrast)),
+      prefixClasses('data-[state=open]', cls(recipe.interactionFill.soft, recipe.text.contrast)),
     )
   }),
   soft: createMenuColorClassMap(color => {
