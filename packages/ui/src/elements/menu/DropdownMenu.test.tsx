@@ -137,6 +137,8 @@ describe('DropdownMenu', () => {
       'text-base',
       'leading-6',
       'text-primary',
+      '[&:hover:not([data-disabled])]:bg-primary-solid',
+      '[&:hover:not([data-disabled])]:text-primary-contrast',
       'data-[highlighted]:bg-primary-solid',
       'data-[highlighted]:text-primary-contrast',
       'data-[state=open]:bg-primary-highlight',
