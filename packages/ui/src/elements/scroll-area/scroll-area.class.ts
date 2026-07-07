@@ -18,7 +18,7 @@ export const scrollAreaBaseCls = 'relative w-full'
 export const scrollAreaRootCls = 'scroll-area-root'
 
 export const scrollAreaRoot =
-  'relative min-h-0 min-w-0 [background-color:var(--scroll-area-surface-color)] scroll-area-root [--scroll-area-thickness:0.5rem] [--scroll-area-thumb-inset:1px] [--scroll-area-track-radius:9999px] [--scroll-area-thumb-radius:9999px] [--scroll-area-thumb-shadow:none] [--scroll-area-control-size:1rem] [--scroll-area-rail-gap:0.375rem] [--scroll-area-rail-reserve:1.5rem] [--scroll-area-thumb-color:var(--color-neutral-soft-hover)] [--scroll-area-thumb-hover-color:var(--color-neutral-text)] [--scroll-area-track-color:var(--color-neutral-border)] [--scroll-area-surface-color:transparent] [--scroll-area-arrow-color:var(--color-slate-border)] [--scroll-area-arrow-hover-color:var(--color-slate-text)] [data-controls="false"]:[--scroll-area-rail-reserve:calc(var(--scroll-area-thickness)_+_0.5rem)]'
+  'group relative min-h-0 min-w-0 [background-color:var(--scroll-area-surface-color)] scroll-area-root [--scroll-area-thickness:0.5rem] [--scroll-area-thumb-inset:1px] [--scroll-area-track-radius:9999px] [--scroll-area-thumb-radius:9999px] [--scroll-area-thumb-shadow:none] [--scroll-area-control-size:1rem] [--scroll-area-rail-gap:0.375rem] [--scroll-area-rail-reserve:1.5rem] [--scroll-area-thumb-color:var(--color-neutral-soft-hover)] [--scroll-area-thumb-hover-color:var(--color-neutral-text)] [--scroll-area-track-color:var(--color-neutral-border)] [--scroll-area-surface-color:transparent] [--scroll-area-arrow-color:var(--color-slate-border)] [--scroll-area-arrow-hover-color:var(--color-slate-text)] [data-controls="false"]:[--scroll-area-rail-reserve:calc(var(--scroll-area-thickness)_+_0.5rem)]'
 
 export const scrollAreaBySize = {
   none: '',
@@ -34,7 +34,7 @@ export const scrollAreaByDirection = {
 } as const
 
 export const scrollAreaViewport =
-  'w-full h-full min-h-0 min-w-0 box-border overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [.scroll-area-root[data-vertical-rail="true"]_&]:[width:calc(100%_-_var(--scroll-area-rail-reserve))] [.scroll-area-root[data-horizontal-rail="true"]_&]:[height:calc(100%_-_var(--scroll-area-rail-reserve))] [.scroll-area-root[data-vertical-rail="true"][data-horizontal-rail="true"]_&]:[width:calc(100%_-_var(--scroll-area-rail-reserve))] [.scroll-area-root[data-vertical-rail="true"][data-horizontal-rail="true"]_&]:[height:calc(100%_-_var(--scroll-area-rail-reserve))]'
+  'w-full h-full min-h-0 min-w-0 box-border overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden group-data-[vertical-rail=true]:[width:calc(100%_-_var(--scroll-area-rail-reserve))] group-data-[horizontal-rail=true]:[height:calc(100%_-_var(--scroll-area-rail-reserve))]'
 
 export const scrollAreaContent = 'min-w-full box-border'
 
