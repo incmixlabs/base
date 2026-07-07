@@ -380,7 +380,7 @@ export function DatePicker({
       <button
         type="button"
         aria-label="Open calendar"
-        data-date-picker-calendar-button=""
+        data-af-date-calendar-button=""
         disabled={effectiveIsDisabled}
         onClick={() => {
           setIsOpen(prev => {
