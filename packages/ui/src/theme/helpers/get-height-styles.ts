@@ -66,8 +66,8 @@ export function getHeightProps(props: HeightProps): { className?: string; style?
           continue
         }
 
-        classNames.push(responsiveHeightClasses[property][breakpoint])
-        assignStyleValue(style, responsiveHeightVars[property][breakpoint], breakpointValue)
+        classNames.push(responsiveHeightClasses[property]![breakpoint]!)
+        assignStyleValue(style, responsiveHeightVars[property]![breakpoint]!, breakpointValue)
       }
       continue
     }
