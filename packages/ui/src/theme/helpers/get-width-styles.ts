@@ -71,8 +71,8 @@ export function getWidthProps(props: WidthProps): { className?: string; style?: 
           continue
         }
 
-        classNames.push(responsiveWidthClasses[property][breakpoint])
-        assignStyleValue(style, responsiveWidthVars[property][breakpoint], breakpointValue)
+        classNames.push(responsiveWidthClasses[property]![breakpoint]!)
+        assignStyleValue(style, responsiveWidthVars[property]![breakpoint]!, breakpointValue)
       }
       continue
     }
