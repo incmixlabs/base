@@ -22,6 +22,12 @@ describe('DatePicker', () => {
     expect(trigger).toBeDisabled()
   })
 
+  it('marks the text-entry calendar button with the owned data hook', () => {
+    render(<DatePicker ariaLabel="Start date" entryMode="text" />)
+
+    expect(screen.getByRole('button', { name: /open calendar/i })).toHaveAttribute('data-af-date-calendar-button', '')
+  })
+
   it('inherits size from FieldGroup when no explicit size is provided', () => {
     const { container } = render(
       <FieldGroup size="lg">
