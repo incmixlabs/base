@@ -34,7 +34,7 @@ export const scrollAreaByDirection = {
 } as const
 
 export const scrollAreaViewport =
-  'w-full h-full min-h-0 min-w-0 box-border overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [.scroll-area-root[data-vertical-rail="true"]_&]:[width:calc(100%_-_var(--scroll-area-rail-reserve))] [.scroll-area-root[data-horizontal-rail="true"]_&]:[height:calc(100%_-_var(--scroll-area-rail-reserve))] [.scroll-area-root[data-vertical-rail="true"][data-horizontal-rail="true"]_&]:[width:calc(100%_-_var(--scroll-area-rail-reserve))]:[height:calc(100%_-_var(--scroll-area-rail-reserve))]'
+  'w-full h-full min-h-0 min-w-0 box-border overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [.scroll-area-root[data-vertical-rail="true"]_&]:[width:calc(100%_-_var(--scroll-area-rail-reserve))] [.scroll-area-root[data-horizontal-rail="true"]_&]:[height:calc(100%_-_var(--scroll-area-rail-reserve))] [.scroll-area-root[data-vertical-rail="true"][data-horizontal-rail="true"]_&]:[width:calc(100%_-_var(--scroll-area-rail-reserve))] [.scroll-area-root[data-vertical-rail="true"][data-horizontal-rail="true"]_&]:[height:calc(100%_-_var(--scroll-area-rail-reserve))]'
 
 export const scrollAreaContent = 'min-w-full box-border'
 
