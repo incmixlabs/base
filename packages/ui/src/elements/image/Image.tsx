@@ -1,5 +1,6 @@
 'use client'
 
+import { ImageOff } from 'lucide-react'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import type { Radius } from '@/theme/tokens'
@@ -29,6 +30,7 @@ export interface ImageProps extends Omit<React.ComponentPropsWithoutRef<'img'>, 
   objectFit?: ImageObjectFit
   objectPosition?: React.CSSProperties['objectPosition']
   radius?: Radius
+  errorFallback?: React.ReactNode
 }
 
 const Image = React.forwardRef<HTMLImageElement, ImageProps>(
@@ -41,17 +43,20 @@ const Image = React.forwardRef<HTMLImageElement, ImageProps>(
       srcSet,
       sizes,
       fallbackSrc,
+      errorFallback,
       onError,
       radius: radiusProp,
       objectPosition,
       focalPoint,
       style,
+      crossOrigin,
       ...props
     },
     ref,
   ) => {
     const [resolvedSrc, setResolvedSrc] = React.useState(src)
     const [usingFallback, setUsingFallback] = React.useState(false)
+    const [hasError, setHasError] = React.useState(false)
     const radius = useThemeRadius(radiusProp)
     const resolvedObjectPosition = objectPosition ?? getFocalPointObjectPosition(focalPoint)
     const resolvedStyle = {
@@ -63,7 +68,29 @@ const Image = React.forwardRef<HTMLImageElement, ImageProps>(
     React.useEffect(() => {
       setResolvedSrc(src)
       setUsingFallback(false)
+      setHasError(false)
     }, [src])
+
+    if (hasError) {
+      if (errorFallback !== undefined) {
+        return errorFallback
+      }
+      return (
+        <div
+          className={cn(
+            'flex flex-col items-center justify-center bg-neutral-soft text-muted-foreground min-h-[80px] w-full h-full p-4 border border-red-500/10 text-center gap-1',
+            'rounded-[var(--element-border-radius)]',
+            className,
+          )}
+          style={resolvedStyle}
+          role="img"
+          aria-label={alt || 'Image failed to load'}
+        >
+          <ImageOff size={24} className="opacity-60 shrink-0" />
+          <span className="text-[10px] font-medium opacity-80 leading-tight">Image load failed</span>
+        </div>
+      )
+    }
 
     return (
       <img
@@ -72,6 +99,7 @@ const Image = React.forwardRef<HTMLImageElement, ImageProps>(
         src={resolvedSrc}
         srcSet={usingFallback ? undefined : srcSet}
         sizes={usingFallback ? undefined : sizes}
+        crossOrigin={crossOrigin}
         className={cn(
           'block max-w-full',
           'rounded-[var(--element-border-radius)]',
@@ -83,6 +111,8 @@ const Image = React.forwardRef<HTMLImageElement, ImageProps>(
           if (!usingFallback && fallbackSrc) {
             setResolvedSrc(fallbackSrc)
             setUsingFallback(true)
+          } else {
+            setHasError(true)
           }
           onError?.(event)
         }}

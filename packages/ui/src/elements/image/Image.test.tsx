@@ -99,4 +99,36 @@ describe('Image', () => {
     expect(image).not.toHaveAttribute('sizes')
     expect(onError).toHaveBeenCalledTimes(1)
   })
+
+  it('renders default ImageOff fallback placeholder on load error when fallbackSrc is missing or also fails', () => {
+    render(<Image src="https://example.com/does-not-exist.jpg" alt="Failed image" />)
+
+    const image = screen.getByAltText('Failed image')
+    fireEvent.error(image)
+
+    expect(screen.queryByAltText('Failed image')).toBeNull()
+    expect(screen.getByText('Image load failed')).toBeInTheDocument()
+  })
+
+  it('renders custom errorFallback on load error when provided', () => {
+    render(
+      <Image
+        src="https://example.com/does-not-exist.jpg"
+        alt="Custom fallback image"
+        errorFallback={<div data-testid="custom-error-fallback">Custom Error</div>}
+      />,
+    )
+
+    const image = screen.getByAltText('Custom fallback image')
+    fireEvent.error(image)
+
+    expect(screen.queryByAltText('Custom fallback image')).toBeNull()
+    expect(screen.getByTestId('custom-error-fallback')).toHaveTextContent('Custom Error')
+  })
+
+  it('passes crossOrigin prop through to the img element', () => {
+    render(<Image src="https://example.com/photo.jpg" alt="CORS sample" crossOrigin="anonymous" />)
+
+    expect(screen.getByAltText('CORS sample')).toHaveAttribute('crossorigin', 'anonymous')
+  })
 })
