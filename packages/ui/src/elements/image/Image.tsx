@@ -4,6 +4,7 @@ import { ImageOff } from 'lucide-react'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import type { Radius } from '@/theme/tokens'
+import { Text } from '@/typography/text/Text'
 import { getRadiusStyles, useThemeRadius } from '../utils'
 
 export type ImageObjectFit = 'contain' | 'cover' | 'fill' | 'none' | 'scale-down'
@@ -78,7 +79,7 @@ const Image = React.forwardRef<HTMLImageElement, ImageProps>(
       return (
         <div
           className={cn(
-            'flex flex-col items-center justify-center bg-neutral-soft text-muted-foreground min-h-[80px] w-full h-full p-4 border border-red-500/10 text-center gap-1',
+            'flex flex-col items-center justify-center bg-neutral-soft text-muted-foreground min-h-[80px] w-full h-full p-4 border border-[var(--color-error-border-subtle)] text-center gap-1',
             'rounded-[var(--element-border-radius)]',
             className,
           )}
@@ -87,7 +88,9 @@ const Image = React.forwardRef<HTMLImageElement, ImageProps>(
           aria-label={alt || 'Image failed to load'}
         >
           <ImageOff size={24} className="opacity-60 shrink-0" />
-          <span className="text-[10px] font-medium opacity-80 leading-tight">Image load failed</span>
+          <Text size="xs" weight="medium" color="error" className="opacity-80 leading-tight">
+            Image load failed
+          </Text>
         </div>
       )
     }
