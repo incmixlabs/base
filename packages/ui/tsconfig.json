@@ -14,6 +14,7 @@
     "noEmit": true,
     "outDir": "./dist",
     "jsx": "react-jsx",
+    "ignoreDeprecations": "6.0",
 
     /* Linting */
     "strict": true,
@@ -22,6 +23,7 @@
     "noFallthroughCasesInSwitch": true,
 
     "baseUrl": ".",
+    "rootDir": "../..",
     "paths": {
       "@/*": ["./src/*"],
       "@incmix/theme": ["../theme/src/index.ts"]

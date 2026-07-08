@@ -28,6 +28,7 @@
   "devDependencies": {
     "tsup": "catalog:",
     "typescript": "catalog:",
+    "vite": "catalog:",
     "vitest": "catalog:"
   }
 }
