@@ -18,7 +18,7 @@ await copyAsset(join(packageRoot, 'src/theme/animations.css'), join(packageRoot,
 await rm(join(packageRoot, 'dist/fonts'), { recursive: true, force: true })
 await copyAsset(join(packageRoot, 'src/fonts'), join(packageRoot, 'dist/fonts'))
 
-const declarationSource = join(packageRoot, 'dist/ui/src')
+const declarationSource = join(packageRoot, 'dist/packages/ui/src')
 const copiedDeclarationMarker = join(packageRoot, 'dist/index.d.ts')
 
 if (existsSync(declarationSource)) {
@@ -29,7 +29,4 @@ if (!existsSync(copiedDeclarationMarker)) {
   throw new Error(`Expected TypeScript declaration output at ${declarationSource}`)
 }
 
-await Promise.all([
-  rm(join(packageRoot, 'dist/theme/src'), { recursive: true, force: true }),
-  rm(join(packageRoot, 'dist/ui'), { recursive: true, force: true }),
-])
+await Promise.all([rm(join(packageRoot, 'dist/packages'), { recursive: true, force: true })])
