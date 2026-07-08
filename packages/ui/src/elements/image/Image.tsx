@@ -2,6 +2,7 @@
 
 import { ImageOff } from 'lucide-react'
 import * as React from 'react'
+import { Flex } from '@/layouts/flex/Flex'
 import { cn } from '@/lib/utils'
 import type { Radius } from '@/theme/tokens'
 import { Text } from '@/typography/text/Text'
@@ -77,9 +78,12 @@ const Image = React.forwardRef<HTMLImageElement, ImageProps>(
         return errorFallback
       }
       return (
-        <div
+        <Flex
+          direction="column"
+          align="center"
+          justify="center"
           className={cn(
-            'flex flex-col items-center justify-center bg-neutral-soft text-muted-foreground min-h-[80px] w-full h-full p-4 border border-[var(--color-error-border-subtle)] text-center gap-1',
+            'bg-neutral-soft text-muted-foreground min-h-[80px] w-full h-full p-4 border border-[var(--color-error-border-subtle)] text-center gap-1',
             'rounded-[var(--element-border-radius)]',
             className,
           )}
@@ -91,7 +95,7 @@ const Image = React.forwardRef<HTMLImageElement, ImageProps>(
           <Text size="xs" weight="medium" color="error" className="opacity-80 leading-tight">
             Image load failed
           </Text>
-        </div>
+        </Flex>
       )
     }
 
