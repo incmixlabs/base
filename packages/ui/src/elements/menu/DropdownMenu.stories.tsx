@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Cloud, CreditCard, Github, Keyboard, LifeBuoy, LogOut, Plus, Settings, User, UserPlus } from 'lucide-react'
+import { Cloud, CreditCard, Keyboard, LifeBuoy, LogOut, Plus, Settings, Terminal, User, UserPlus } from 'lucide-react'
 import { useState } from 'react'
 import { Button, DropdownMenu, IconButton } from '@/elements'
 import { SemanticColor } from '@/theme/props/color.prop'
@@ -381,7 +381,7 @@ export const UserMenu: StoryObj = {
         </DropdownMenu.Group>
         <DropdownMenu.Separator />
         <DropdownMenu.Item>
-          <Github className="mr-2 h-4 w-4" />
+          <Terminal className="mr-2 h-4 w-4" />
           GitHub
         </DropdownMenu.Item>
         <DropdownMenu.Item>
