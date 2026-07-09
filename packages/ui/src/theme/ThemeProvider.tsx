@@ -32,6 +32,10 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   children,
   radius,
   appearance,
+  accentColor,
+  grayColor,
+  scaling,
+  onAppearanceChange,
   breakpoints,
   dashboard,
   ...props
@@ -60,11 +64,14 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   const contextValue = React.useMemo(
     () => ({
       appearance,
+      accentColor,
+      grayColor,
       radius,
+      scaling,
       breakpoints: normalizedBreakpoints,
       dashboard: normalizedDashboard,
     }),
-    [appearance, radius, normalizedBreakpoints, normalizedDashboard],
+    [appearance, accentColor, grayColor, radius, scaling, normalizedBreakpoints, normalizedDashboard],
   )
 
   return (
