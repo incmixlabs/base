@@ -3,19 +3,6 @@
 import '../theme/typography-tokens.css'
 
 // Layout Components
-export {
-  AppShell,
-  type AppShellHeaderProps,
-  type AppShellProps,
-  AppShellRoot,
-  type AppShellRootComponentProps,
-  type AppShellRootProps,
-  type AppShellSecondaryProps,
-  type AppShellSecondarySidebarProps,
-  type AppShellSidebarProps,
-} from './app-shell/AppShell'
-export { AppShellWrapper, type AppShellWrapperProps } from './app-shell/AppShellWrapper'
-export { useAppShell } from './app-shell/app-shell.context'
 export { AspectRatio, type AspectRatioProps } from './aspect-ratio/AspectRatio'
 export { Box, type BoxProps } from './box/Box'
 export {
@@ -154,5 +141,4 @@ export {
   type SidebarWrapperTeam,
   type SidebarWrapperUser,
 } from './sidebar/SidebarWrapper'
-export { SidebarWrapperShell, type SidebarWrapperShellProps } from './sidebar/SidebarWrapperShell'
 export { UtilityPanel, type UtilityPanelProps } from './utility-panel/UtilityPanel'

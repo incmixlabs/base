@@ -139,10 +139,7 @@
       "types": "./dist/layouts/index.d.ts",
       "import": "./dist/layouts.js"
     },
-    "./layouts/app-shell/AppShell": {
-      "types": "./dist/layouts/app-shell/AppShell.d.ts",
-      "import": "./dist/layouts/app-shell/AppShell.js"
-    },
+
     "./layouts/dashboard": {
       "types": "./dist/layouts/dashboard/index.d.ts",
       "import": "./dist/layouts/dashboard.js"
@@ -167,10 +164,7 @@
       "types": "./dist/layouts/sidebar/Sidebar.d.ts",
       "import": "./dist/layouts/sidebar/Sidebar.js"
     },
-    "./layouts/sidebar/SidebarWrapperShell": {
-      "types": "./dist/layouts/sidebar/SidebarWrapperShell.d.ts",
-      "import": "./dist/layouts/sidebar/SidebarWrapperShell.js"
-    },
+
     "./layouts/sidebar/sidebar-wrapper.types": {
       "types": "./dist/layouts/sidebar/sidebar-wrapper.types.d.ts",
       "import": "./dist/layouts/sidebar/sidebar-wrapper.types.js"
@@ -266,9 +260,6 @@
     "@ncdai/react-wheel-picker": "1.2.2",
     "@tanstack/react-query": "catalog:",
     "@types/canvas-confetti": "^1.9.0",
-    "@xstate/react": "catalog:",
-    "@xstate/store": "catalog:",
-    "@xstate/store-react": "catalog:",
     "canvas-confetti": "^1.9.4",
     "chrono-node": "^2.9.1",
     "class-variance-authority": "^0.7.1",
@@ -286,8 +277,7 @@
     "react-resizable-panels": "4.12.1",
     "react-textarea-autosize": "^8.5.9",
     "use-mask-input": "3.10.3",
-    "uuid": "catalog:",
-    "xstate": "catalog:"
+    "uuid": "catalog:"
   },
   "sideEffects": [
     "*.css",
