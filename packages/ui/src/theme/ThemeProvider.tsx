@@ -1,6 +1,6 @@
 import * as React from 'react'
-import type { ThemeBreakpointConfig, ThemeBreakpoints } from './theme-breakpoints'
-import type { ThemeDashboard } from './theme-dashboard'
+import { normalizeThemeBreakpoints, type ThemeBreakpointConfig, type ThemeBreakpoints } from './theme-breakpoints'
+import { normalizeThemeDashboardColumns, normalizeThemeDashboardGap, type ThemeDashboard } from './theme-dashboard'
 
 export interface ThemeProviderProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode
@@ -44,14 +44,27 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
       } as React.CSSProperties)
     : undefined
 
+  const normalizedBreakpoints = React.useMemo(() => {
+    if (!breakpoints) return undefined
+    return normalizeThemeBreakpoints(breakpoints)
+  }, [breakpoints])
+
+  const normalizedDashboard = React.useMemo(() => {
+    if (!dashboard) return undefined
+    return {
+      gap: normalizeThemeDashboardGap(dashboard.gap),
+      columns: normalizeThemeDashboardColumns(dashboard.columns),
+    }
+  }, [dashboard])
+
   const contextValue = React.useMemo(
     () => ({
       appearance,
       radius,
-      breakpoints,
-      dashboard,
+      breakpoints: normalizedBreakpoints,
+      dashboard: normalizedDashboard,
     }),
-    [appearance, radius, breakpoints, dashboard],
+    [appearance, radius, normalizedBreakpoints, normalizedDashboard],
   )
 
   return (

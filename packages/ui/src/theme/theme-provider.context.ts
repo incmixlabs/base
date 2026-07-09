@@ -1,14 +1,17 @@
 'use client'
 
 import * as React from 'react'
+import type { ThemeBreakpoints } from './theme-breakpoints'
+import type { ThemeDashboard } from './theme-dashboard'
+
 export interface ThemeProviderContextValue {
   appearance?: 'light' | 'dark'
   accentColor?: string
   grayColor?: string
   radius?: string
   scaling?: string
-  breakpoints?: any
-  dashboard?: any
+  breakpoints?: ThemeBreakpoints
+  dashboard?: ThemeDashboard
 }
 
 export const ThemeContext = React.createContext<ThemeProviderContextValue | undefined>(undefined)
