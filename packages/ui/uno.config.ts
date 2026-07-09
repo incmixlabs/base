@@ -143,7 +143,7 @@ import { sliderClassNames } from './src/form/Slider.class'
 import { switchClassNames } from './src/form/switch.class'
 import { textFieldClassNames } from './src/form/text-field.class'
 import { textFieldStylesClassNames } from './src/form/textFieldStyles'
-import { appShellClassNames } from './src/layouts/app-shell/app-shell.class'
+
 import { aspectRatioByRatio } from './src/layouts/aspect-ratio/aspect-ratio.class'
 import { boxRootBase, boxSurfaceColorClassNames } from './src/layouts/box/box.class'
 import {
@@ -493,8 +493,7 @@ export default defineConfig({
       ...splitClasses(switchClassNames),
       // Text field styles
       ...splitClasses([...textFieldClassNames, ...textFieldStylesClassNames]),
-      // App shell styles
-      ...splitClasses(appShellClassNames),
+
       // Date form styles
       ...splitClasses([
         ...dateSurfaceSharedClassNames,

@@ -1,7 +1,15 @@
 'use client'
 
 import * as React from 'react'
-import type { ThemeProviderContextValue } from './ThemeProvider'
+export interface ThemeProviderContextValue {
+  appearance?: 'light' | 'dark'
+  accentColor?: string
+  grayColor?: string
+  radius?: string
+  scaling?: string
+  breakpoints?: any
+  dashboard?: any
+}
 
 export const ThemeContext = React.createContext<ThemeProviderContextValue | undefined>(undefined)
 

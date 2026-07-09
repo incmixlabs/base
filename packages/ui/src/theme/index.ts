@@ -22,15 +22,7 @@ export {
   type TokenStyleValue,
   transposeTokenStyle,
 } from '@incmix/theme'
-export {
-  AdminThemeProvider,
-  type AdminThemeProviderProps,
-  type CreateThemeAppearanceBootstrapScriptOptions,
-  createThemeAppearanceBootstrapScript,
-  DEFAULT_THEME_APPEARANCE_COOKIE_MAX_AGE,
-  DEFAULT_THEME_APPEARANCE_COOKIE_NAME,
-  type ThemeAppearanceCookieOptions,
-} from './AdminThemeProvider'
+
 export { chartDarkTokenColorMap, chartLightTokenColorMap, chartTokenColorMap } from './chart-token-map'
 export * from './contract/theme-contract'
 export * from './font-sources'
@@ -47,28 +39,13 @@ export {
   semanticColorVar,
 } from './props/color.prop'
 export * from './runtime/theme-compiler'
-export { ThemePanel, type ThemePanelProps } from './ThemePanel'
+
 export {
-  type PanelBackground,
-  type ThemeCalendar,
-  type ThemeLocale,
   ThemeProvider,
   ThemeProvider as Theme,
-  type ThemeProviderConfigPatch,
-  type ThemeProviderContextValue,
-  type ThemeProviderContextValue as ThemeContextValue,
   type ThemeProviderProps,
-  type ThemeProviderProps as ThemeProps,
 } from './ThemeProvider'
-export { ThemeToggle, type ThemeToggleProps } from './ThemeToggle'
-export {
-  type ThemeVarsContextValue,
-  ThemeVarsProvider,
-  type ThemeVarsProviderProps,
-  type ThemeVarsTheme,
-  useOptionalThemeVarsContext,
-  useThemeVarsContext,
-} from './ThemeVarsProvider'
+
 export {
   DEFAULT_THEME_BREAKPOINTS,
   normalizeThemeBreakpoints,
@@ -135,18 +112,3 @@ export {
   type ThemeColorToken,
   textFieldTokens,
 } from './tokens'
-export {
-  DEFAULT_THEME_CONFIG_STORAGE_KEY,
-  type UsePersistentThemeConfigOptions,
-  usePersistentThemeConfig,
-} from './usePersistentThemeConfig'
-export {
-  DEFAULT_THEME_USER_PREFERENCES_STORAGE_KEY,
-  type UsePersistentThemePreferencesOptions,
-  usePersistentThemePreferences,
-} from './usePersistentThemePreferences'
-export {
-  DEFAULT_THEME_VARS_TOKENS_STORAGE_KEY,
-  type UsePersistentThemeVarsTokensOptions,
-  usePersistentThemeVarsTokens,
-} from './usePersistentThemeVarsTokens'
