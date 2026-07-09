@@ -79,7 +79,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
       <ThemePortalContainerContext.Provider value={undefined as any}>
         <RootThemePortalContainerContext.Provider value={undefined as any}>
           <ThemeRadiusProvider value={radius as any}>
-            <div style={style} {...props}>
+            <div {...props} style={{ ...style, ...props.style }}>
               {children}
             </div>
           </ThemeRadiusProvider>
