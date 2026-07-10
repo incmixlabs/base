@@ -1,7 +1,8 @@
 import { cleanup, render, screen } from '@testing-library/react'
-import { afterEach, describe, it } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 import { expectClassTokens } from '@/test/class-name-utils'
 import { SemanticColor } from '@/theme/props/color.prop'
+import { ThemeProvider } from '../../theme/ThemeProvider'
 import { Toggle, ToggleGroup } from './Toggle'
 
 afterEach(() => {
@@ -89,5 +90,23 @@ describe('ToggleGroup', () => {
       '[&:not(:first-child)]:-mt-px',
       '[&:last-child:not(:first-child)]:rounded-t-none',
     ])
+  })
+
+  it('applies theme-derived class names and attributes when wrapped in ThemeProvider', () => {
+    const { container } = render(
+      <ThemeProvider appearance="dark" radius="medium">
+        <ToggleGroup.Root value={['bold']}>
+          <ToggleGroup.Item value="bold" aria-label="Bold">
+            B
+          </ToggleGroup.Item>
+        </ToggleGroup.Root>
+      </ThemeProvider>,
+    )
+
+    const providerDiv = container.firstChild as HTMLElement
+    expect(providerDiv).toHaveClass('af-themes')
+    expect(providerDiv).toHaveClass('dark')
+    expect(providerDiv).toHaveAttribute('data-appearance', 'dark')
+    expect(providerDiv).toHaveAttribute('data-radius', 'medium')
   })
 })
