@@ -109,4 +109,25 @@ describe('ToggleGroup', () => {
     expect(providerDiv).toHaveAttribute('data-appearance', 'dark')
     expect(providerDiv).toHaveAttribute('data-radius', 'medium')
   })
+
+  it('preserves consumer data attributes when matching theme props are unset', () => {
+    const { container } = render(
+      <ThemeProvider
+        data-appearance="consumer-appearance"
+        data-radius="consumer-radius"
+        data-accent-color="consumer-accent"
+      >
+        <ToggleGroup.Root value={['bold']}>
+          <ToggleGroup.Item value="bold" aria-label="Bold">
+            B
+          </ToggleGroup.Item>
+        </ToggleGroup.Root>
+      </ThemeProvider>,
+    )
+
+    const providerDiv = container.firstChild as HTMLElement
+    expect(providerDiv).toHaveAttribute('data-appearance', 'consumer-appearance')
+    expect(providerDiv).toHaveAttribute('data-radius', 'consumer-radius')
+    expect(providerDiv).toHaveAttribute('data-accent-color', 'consumer-accent')
+  })
 })
