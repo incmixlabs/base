@@ -51,15 +51,6 @@ catalogs:
     '@vitejs/plugin-react':
       specifier: 5.2.0
       version: 5.2.0
-    '@xstate/react':
-      specifier: 6.1.0
-      version: 6.1.0
-    '@xstate/store':
-      specifier: 4.2.1
-      version: 4.2.1
-    '@xstate/store-react':
-      specifier: 2.0.0
-      version: 2.0.0
     autoprefixer:
       specifier: 10.5.2
       version: 10.5.2
@@ -117,9 +108,6 @@ catalogs:
     vitest:
       specifier: 4.1.10
       version: 4.1.10
-    xstate:
-      specifier: 5.32.4
-      version: 5.32.4
 
 importers:
 
@@ -201,15 +189,6 @@ importers:
       '@types/canvas-confetti':
         specifier: ^1.9.0
         version: 1.9.0
-      '@xstate/react':
-        specifier: 'catalog:'
-        version: 6.1.0(@types/react@19.2.17)(react@19.2.7)(xstate@5.32.4)
-      '@xstate/store':
-        specifier: 'catalog:'
-        version: 4.2.1
-      '@xstate/store-react':
-        specifier: 'catalog:'
-        version: 2.0.0(react@19.2.7)
       canvas-confetti:
         specifier: ^1.9.4
         version: 1.9.4
@@ -264,9 +243,6 @@ importers:
       uuid:
         specifier: 'catalog:'
         version: 14.0.1
-      xstate:
-        specifier: 'catalog:'
-        version: 5.32.4
     devDependencies:
       '@incmix/config':
         specifier: workspace:*
@@ -1910,23 +1886,6 @@ packages:
   '@webcontainer/env@1.1.1':
     resolution: {integrity: sha512-6aN99yL695Hi9SuIk1oC88l9o0gmxL1nGWWQ/kNy81HigJ0FoaoTXpytCj6ItzgyCEwA9kF1wixsTuv5cjsgng==}
 
-  '@xstate/react@6.1.0':
-    resolution: {integrity: sha512-ep9F0jGTI63B/jE8GHdMpUqtuz7yRebNaKv8EMUaiSi29NOglywc2X2YSOV/ygbIK+LtmgZ0q9anoEA2iBSEOw==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      xstate: ^5.28.0
-    peerDependenciesMeta:
-      xstate:
-        optional: true
-
-  '@xstate/store-react@2.0.0':
-    resolution: {integrity: sha512-i8rXkUHfZqHUijgA/IORXDESAuHwO939jHIsEtf3nitJkOy1AcZ73DMaAlLqH03nVS082PJkUZFRAu5nwb9Fxg==}
-    peerDependencies:
-      react: ^18.0.0 || ^19.0.0
-
-  '@xstate/store@4.2.1':
-    resolution: {integrity: sha512-dX7g9bYFOK/YvyFJVCsdHk3o/g1eC+eJcX8mHPWmitAXH6O58xSk1V91lUj67/cn27c2+uMKl98N7nRz+IyHoA==}
-
   acorn@8.17.0:
     resolution: {integrity: sha512-xRQbDb9BnwDafYNn6Vwl839DYVjqXYb1XVGtWAZ1kcDc6iwAL4hg3B1dZlRiuENFeO2H53gFG3in621AdERVAg==}
     engines: {node: '>=0.4.0'}
@@ -3292,9 +3251,6 @@ packages:
   xmlchars@2.2.0:
     resolution: {integrity: sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==}
 
-  xstate@5.32.4:
-    resolution: {integrity: sha512-E5WtDB8DBs2ZWliz2Ry9XfbSZTbBRcK/cwefBot04qQ/L5SLP16xpnTDU4/ZFXuXFhNxi7JP2RhuoGwBnM+S4A==}
-
   y18n@4.0.3:
     resolution: {integrity: sha512-JKhqTOwSrqNA1NY5lSztJ1GrBiUodLMmIZuLiDaMRJ+itFd+ABVE8XBjOvIWL+rSqNDC74LCSFmlb/U4UZ4hJQ==}
 
@@ -4630,23 +4586,6 @@ snapshots:
 
   '@webcontainer/env@1.1.1': {}
 
-  '@xstate/react@6.1.0(@types/react@19.2.17)(react@19.2.7)(xstate@5.32.4)':
-    dependencies:
-      react: 19.2.7
-      use-isomorphic-layout-effect: 1.2.1(@types/react@19.2.17)(react@19.2.7)
-      use-sync-external-store: 1.6.0(react@19.2.7)
-    optionalDependencies:
-      xstate: 5.32.4
-    transitivePeerDependencies:
-      - '@types/react'
-
-  '@xstate/store-react@2.0.0(react@19.2.7)':
-    dependencies:
-      '@xstate/store': 4.2.1
-      react: 19.2.7
-
-  '@xstate/store@4.2.1': {}
-
   acorn@8.17.0: {}
 
   ansi-regex@5.0.1: {}
@@ -5979,8 +5918,6 @@ snapshots:
   xml-name-validator@5.0.0: {}
 
   xmlchars@2.2.0: {}
-
-  xstate@5.32.4: {}
 
   y18n@4.0.3: {}
 

@@ -74,12 +74,29 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     [appearance, accentColor, grayColor, radius, scaling, normalizedBreakpoints, normalizedDashboard],
   )
 
+  const themeClassName = [
+    'af-themes',
+    appearance === 'light' && 'light',
+    appearance === 'dark' && 'dark',
+    props.className,
+  ]
+    .filter(Boolean)
+    .join(' ')
+
+  const themeDataAttributes = {
+    'data-appearance': appearance,
+    'data-radius': radius,
+    'data-accent-color': accentColor,
+    'data-gray-color': grayColor,
+    'data-scaling': scaling,
+  }
+
   return (
     <ThemeContext.Provider value={contextValue}>
       <ThemePortalContainerContext.Provider value={undefined as any}>
         <RootThemePortalContainerContext.Provider value={undefined as any}>
           <ThemeRadiusProvider value={radius as any}>
-            <div {...props} style={{ ...style, ...props.style }}>
+            <div {...props} className={themeClassName} style={{ ...style, ...props.style }} {...themeDataAttributes}>
               {children}
             </div>
           </ThemeRadiusProvider>
