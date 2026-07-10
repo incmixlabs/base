@@ -1,4 +1,6 @@
 import * as React from 'react'
+import { buildRuntimePaletteVars } from './runtime-palette-vars'
+import { buildSemanticLaneVars } from './semantic-lane-vars'
 import { normalizeThemeBreakpoints, type ThemeBreakpointConfig, type ThemeBreakpoints } from './theme-breakpoints'
 import { normalizeThemeDashboardColumns, normalizeThemeDashboardGap, type ThemeDashboard } from './theme-dashboard'
 
@@ -26,7 +28,7 @@ export interface ThemeProviderContextValue {
 
 import { ThemeRadiusProvider } from '../elements/utils'
 import { RootThemePortalContainerContext, ThemeContext, ThemePortalContainerContext } from './theme-provider.context'
-import { designTokens } from './tokens'
+import { designTokens, SEMANTIC_COLOR_DEFAULTS, THEME_COLOR_VARIANT_DEFAULTS } from './tokens'
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   children,
@@ -42,11 +44,13 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
 }) => {
   const resolvedRadius =
     radius && radius in designTokens.radius ? designTokens.radius[radius as keyof typeof designTokens.radius] : radius
-  const style = resolvedRadius
-    ? ({
-        '--element-border-radius': resolvedRadius,
-      } as React.CSSProperties)
-    : undefined
+  const resolvedAppearance = appearance === 'dark' ? 'dark' : 'light'
+  const style = {
+    ...buildRuntimePaletteVars(resolvedAppearance),
+    ...buildSemanticLaneVars(SEMANTIC_COLOR_DEFAULTS, THEME_COLOR_VARIANT_DEFAULTS),
+    ...(resolvedRadius ? { '--element-border-radius': resolvedRadius } : {}),
+    ...(scaling ? { '--scaling': scaling } : {}),
+  } as React.CSSProperties
 
   const normalizedBreakpoints = React.useMemo(() => {
     if (!breakpoints) return undefined
