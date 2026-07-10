@@ -84,11 +84,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     .join(' ')
 
   const themeDataAttributes = {
-    'data-appearance': appearance,
-    'data-radius': radius,
-    'data-accent-color': accentColor,
-    'data-gray-color': grayColor,
-    'data-scaling': scaling,
+    ...(appearance !== undefined ? { 'data-appearance': appearance } : {}),
+    ...(radius !== undefined ? { 'data-radius': radius } : {}),
+    ...(accentColor !== undefined ? { 'data-accent-color': accentColor } : {}),
+    ...(grayColor !== undefined ? { 'data-gray-color': grayColor } : {}),
+    ...(scaling !== undefined ? { 'data-scaling': scaling } : {}),
   }
 
   return (
