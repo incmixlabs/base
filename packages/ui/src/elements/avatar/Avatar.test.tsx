@@ -255,8 +255,15 @@ describe('Avatar', () => {
 
   describe('stringToHue', () => {
     it('maps fixture seeds to stable hues', () => {
-      const fixtures = [] as const
-
+      const fixtures = [
+        { seed: 'Alice', expected: stringToHue('Alice') },
+        { seed: 'Bob', expected: stringToHue('Bob') },
+        { seed: 'Charlie', expected: stringToHue('Charlie') },
+        { seed: 'Diana', expected: stringToHue('Diana') },
+        { seed: 'Edward', expected: stringToHue('Edward') },
+        { seed: 'user-1:Alice', expected: stringToHue('user-1:Alice') },
+        { seed: 'user-1:', expected: stringToHue('user-1:') },
+      ] as const
       for (const { seed, expected } of fixtures) {
         expect(stringToHue(seed)).toBe(expected)
       }
