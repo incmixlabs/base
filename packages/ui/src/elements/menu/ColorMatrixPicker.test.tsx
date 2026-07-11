@@ -93,17 +93,42 @@ describe('ColorMatrixPicker', () => {
     const firstMatrixSwatch = screen.getByRole('radio', { name: `${HUE_NAMES[0]} ${firstMatrixStep}` })
 
     expect(preferredSwatch).toHaveAttribute('aria-checked', 'true')
+    expect(preferredSwatch).toHaveAttribute('tabindex', '0')
+    expect(recentSwatch).toHaveAttribute('tabindex', '-1')
 
     preferredSwatch.focus()
     expect(preferredSwatch).toHaveFocus()
 
     await user.keyboard('{ArrowDown}')
     expect(recentSwatch).toHaveFocus()
+    expect(preferredSwatch).toHaveAttribute('tabindex', '-1')
+    expect(recentSwatch).toHaveAttribute('tabindex', '0')
 
     await user.keyboard('{ArrowDown}')
     expect(firstMatrixSwatch).toHaveFocus()
+    expect(recentSwatch).toHaveAttribute('tabindex', '-1')
+    expect(firstMatrixSwatch).toHaveAttribute('tabindex', '0')
 
     await user.keyboard('{ArrowUp}')
     expect(recentSwatch).toHaveFocus()
+  })
+
+  it('falls back to the first swatch as the only tab stop when value is not in the matrix', async () => {
+    const user = userEvent.setup()
+    const firstMatrixStep = HUE_STEPS.find(step => {
+      const numericStep = Number(step)
+      return Number.isInteger(numericStep) && numericStep >= 3 && numericStep <= 11
+    })
+
+    render(<ColorMatrixPicker value="#not-in-matrix" onChange={() => {}} />)
+
+    await user.click(screen.getByRole('button', { name: 'Color' }))
+
+    const firstMatrixSwatch = await screen.findByRole('radio', { name: `${HUE_NAMES[0]} ${firstMatrixStep}` })
+    const allSwatches = screen.getAllByRole('radio')
+    const tabbableSwatches = allSwatches.filter(swatch => swatch.getAttribute('tabindex') === '0')
+
+    expect(firstMatrixSwatch).toHaveAttribute('tabindex', '0')
+    expect(tabbableSwatches).toEqual([firstMatrixSwatch])
   })
 })
