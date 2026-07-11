@@ -13,6 +13,7 @@ export interface ColorMatrixPickerProps {
   onCommit?: (color: string) => void
   label?: string
   disabled?: boolean
+  preferredColors?: string[]
   recentColors?: string[]
 }
 
@@ -31,12 +32,14 @@ export function ColorMatrixPicker({
   onCommit,
   label = 'Color',
   disabled = false,
+  preferredColors = [],
   recentColors = [],
 }: ColorMatrixPickerProps) {
   const swatchRefs = React.useRef<Array<HTMLButtonElement | null>>([])
   const pendingCommitRef = React.useRef<string | null>(null)
   const columnCount = MATRIX_STEPS.length
   const totalCount = HUE_NAMES.length * MATRIX_STEPS.length
+  const preferredColorOptions = preferredColors.filter(Boolean).slice(0, RECENT_COLOR_LIMIT)
   const recentColorOptions = recentColors.filter(Boolean).slice(0, RECENT_COLOR_LIMIT)
 
   const focusSwatch = React.useCallback(
@@ -98,6 +101,36 @@ export function ColorMatrixPicker({
     [onChange],
   )
 
+  const renderColorSection = (sectionLabel: 'Preferred' | 'Recent', colors: string[], withSeparator: boolean) => (
+    <div className="mb-3">
+      <DropdownMenu.Label className="mb-2 px-0">{sectionLabel}</DropdownMenu.Label>
+      <Grid columns={`repeat(${RECENT_COLOR_LIMIT}, minmax(0, 1fr))`} gap="1">
+        {colors.map((color, index) => {
+          const isSelected = value === color
+          return (
+            <button
+              key={`${color}-${index}`}
+              type="button"
+              aria-label={`${sectionLabel} color ${index + 1}`}
+              disabled={disabled}
+              onClick={() => handleColorSelect(color)}
+              style={{ backgroundColor: color }}
+              className={cn(
+                'h-5 w-5 cursor-pointer rounded-sm border p-0 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
+                isSelected
+                  ? 'border-white scale-110 shadow-md ring-1 ring-primary'
+                  : 'border-black/10 hover:scale-105 active:scale-95',
+                disabled && 'cursor-not-allowed opacity-50 hover:scale-100 active:scale-100',
+              )}
+              title={color}
+            />
+          )
+        })}
+      </Grid>
+      {withSeparator && <DropdownMenu.Separator className="mt-3" />}
+    </div>
+  )
+
   return (
     <DropdownMenu.Root onOpenChange={handleOpenChange}>
       <DropdownMenu.Trigger>
@@ -122,35 +155,8 @@ export function ColorMatrixPicker({
         sideOffset={6}
         className="p-3 min-w-[240px] max-h-[70vh] overflow-y-auto"
       >
-        {recentColorOptions.length > 0 && (
-          <div className="mb-3">
-            <DropdownMenu.Label className="mb-2 px-0">Recent</DropdownMenu.Label>
-            <Grid columns={`repeat(${RECENT_COLOR_LIMIT}, minmax(0, 1fr))`} gap="1">
-              {recentColorOptions.map((color, index) => {
-                const isSelected = value === color
-                return (
-                  <button
-                    key={`${color}-${index}`}
-                    type="button"
-                    aria-label={`Recent color ${index + 1}`}
-                    disabled={disabled}
-                    onClick={() => handleColorSelect(color)}
-                    style={{ backgroundColor: color }}
-                    className={cn(
-                      'h-5 w-5 cursor-pointer rounded-sm border p-0 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
-                      isSelected
-                        ? 'border-white scale-110 shadow-md ring-1 ring-primary'
-                        : 'border-black/10 hover:scale-105 active:scale-95',
-                      disabled && 'cursor-not-allowed opacity-50 hover:scale-100 active:scale-100',
-                    )}
-                    title={color}
-                  />
-                )
-              })}
-            </Grid>
-            <DropdownMenu.Separator className="mt-3" />
-          </div>
-        )}
+        {preferredColorOptions.length > 0 && renderColorSection('Preferred', preferredColorOptions, true)}
+        {recentColorOptions.length > 0 && renderColorSection('Recent', recentColorOptions, true)}
         <Grid
           role="radiogroup"
           aria-label={`${label} options`}
