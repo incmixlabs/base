@@ -20,4 +20,5 @@ export type {
   ThemeBreakpoints,
 } from './theme/theme-breakpoints'
 export type { ThemeDashboard } from './theme/theme-dashboard'
+export { isJsonObject } from './utils/object'
 export { escapeCssString, extractPrimaryFontFamily } from './utils/strings'
