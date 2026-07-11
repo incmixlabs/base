@@ -3,14 +3,17 @@
 import * as React from 'react'
 import { Button } from '@/elements/button/Button'
 import { DropdownMenu } from '@/elements/menu/DropdownMenu'
+import { Grid } from '@/layouts/grid/Grid'
 import { cn } from '@/lib/utils'
 import { HUE_NAMES, HUE_STEPS, type HueName, type HueStep } from '@/theme/tokens'
 
 export interface ColorMatrixPickerProps {
   value: string
   onChange: (color: string) => void
+  onCommit?: (color: string) => void
   label?: string
   disabled?: boolean
+  recentColors?: string[]
 }
 
 const MATRIX_STEPS = HUE_STEPS.filter((step): step is HueStep => {
@@ -20,10 +23,21 @@ const MATRIX_STEPS = HUE_STEPS.filter((step): step is HueStep => {
 
 const getColorVar = (family: HueName, step: HueStep) => `var(--${family}-${step})`
 
-export function ColorMatrixPicker({ value, onChange, label = 'Color', disabled = false }: ColorMatrixPickerProps) {
+const RECENT_COLOR_LIMIT = 9
+
+export function ColorMatrixPicker({
+  value,
+  onChange,
+  onCommit,
+  label = 'Color',
+  disabled = false,
+  recentColors = [],
+}: ColorMatrixPickerProps) {
   const swatchRefs = React.useRef<Array<HTMLButtonElement | null>>([])
+  const pendingCommitRef = React.useRef<string | null>(null)
   const columnCount = MATRIX_STEPS.length
   const totalCount = HUE_NAMES.length * MATRIX_STEPS.length
+  const recentColorOptions = recentColors.filter(Boolean).slice(0, RECENT_COLOR_LIMIT)
 
   const focusSwatch = React.useCallback(
     (index: number) => {
@@ -60,8 +74,32 @@ export function ColorMatrixPicker({ value, onChange, label = 'Color', disabled =
     [focusSwatch],
   )
 
+  const handleOpenChange = React.useCallback(
+    (open: boolean) => {
+      if (open) {
+        pendingCommitRef.current = null
+        return
+      }
+
+      const pendingColor = pendingCommitRef.current
+      pendingCommitRef.current = null
+      if (pendingColor) {
+        onCommit?.(pendingColor)
+      }
+    },
+    [onCommit],
+  )
+
+  const handleColorSelect = React.useCallback(
+    (color: string) => {
+      pendingCommitRef.current = color
+      onChange(color)
+    },
+    [onChange],
+  )
+
   return (
-    <DropdownMenu.Root>
+    <DropdownMenu.Root onOpenChange={handleOpenChange}>
       <DropdownMenu.Trigger>
         <Button
           variant="soft"
@@ -84,11 +122,42 @@ export function ColorMatrixPicker({ value, onChange, label = 'Color', disabled =
         sideOffset={6}
         className="p-3 min-w-[240px] max-h-[70vh] overflow-y-auto"
       >
-        <div
+        {recentColorOptions.length > 0 && (
+          <div className="mb-3">
+            <DropdownMenu.Label className="mb-2 px-0">Recent</DropdownMenu.Label>
+            <Grid columns={`repeat(${RECENT_COLOR_LIMIT}, minmax(0, 1fr))`} gap="1">
+              {recentColorOptions.map((color, index) => {
+                const isSelected = value === color
+                return (
+                  <button
+                    key={`${color}-${index}`}
+                    type="button"
+                    aria-label={`Recent color ${index + 1}`}
+                    disabled={disabled}
+                    onClick={() => handleColorSelect(color)}
+                    style={{ backgroundColor: color }}
+                    className={cn(
+                      'h-5 w-5 cursor-pointer rounded-sm border p-0 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
+                      isSelected
+                        ? 'border-white scale-110 shadow-md ring-1 ring-primary'
+                        : 'border-black/10 hover:scale-105 active:scale-95',
+                      disabled && 'cursor-not-allowed opacity-50 hover:scale-100 active:scale-100',
+                    )}
+                    title={color}
+                  />
+                )
+              })}
+            </Grid>
+            <DropdownMenu.Separator className="mt-3" />
+          </div>
+        )}
+        <Grid
           role="radiogroup"
           aria-label={`${label} options`}
           aria-disabled={disabled || undefined}
-          className="grid grid-cols-9 gap-1 select-none"
+          columns={`repeat(${columnCount}, minmax(0, 1fr))`}
+          gap="1"
+          className="select-none"
         >
           {HUE_NAMES.map((family, rowIndex) =>
             MATRIX_STEPS.map((step, columnIndex) => {
@@ -107,7 +176,7 @@ export function ColorMatrixPicker({ value, onChange, label = 'Color', disabled =
                   aria-checked={isSelected}
                   aria-label={swatchLabel}
                   disabled={disabled}
-                  onClick={() => onChange(colorVar)}
+                  onClick={() => handleColorSelect(colorVar)}
                   onKeyDown={event => handleSwatchKeyDown(event, swatchIndex)}
                   style={{ backgroundColor: colorVar }}
                   className={cn(
@@ -122,7 +191,7 @@ export function ColorMatrixPicker({ value, onChange, label = 'Color', disabled =
               )
             }),
           )}
-        </div>
+        </Grid>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )
