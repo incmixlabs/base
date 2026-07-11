@@ -197,6 +197,10 @@
       "types": "./dist/theme/token-class-helpers.d.ts",
       "import": "./dist/theme/token-class-helpers.js"
     },
+    "./theme/tokens": {
+      "types": "./dist/theme/tokens.d.ts",
+      "import": "./dist/theme/tokens.js"
+    },
     "./typography": {
       "types": "./dist/typography/index.d.ts",
       "import": "./dist/typography.js"

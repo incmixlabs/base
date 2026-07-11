@@ -57,6 +57,7 @@ const lightEntries = {
   theme: 'src/theme/index.ts',
   'theme/contract': 'src/theme/contract/theme-contract.ts',
   'theme/token-class-helpers': 'src/theme/token-class-helpers.ts',
+  'theme/tokens': 'src/theme/tokens.ts',
   typography: 'src/typography/index.ts',
   'typography/heading/Heading': 'src/typography/heading/Heading.tsx',
   'typography/text/Text': 'src/typography/text/Text.tsx',
