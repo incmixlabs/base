@@ -62,66 +62,87 @@ export function ColorMatrixPicker({
   const swatchRefs = React.useRef<Array<HTMLButtonElement | null>>([])
   const pendingCommitRef = React.useRef<string | null>(null)
   const columnCount = MATRIX_STEPS.length
-  const preferredColorOptions = preferredColors.filter(Boolean).slice(0, COLOR_MATRIX_ROW_LENGTH)
-  const recentColorOptions = recentColors.filter(Boolean).slice(0, COLOR_MATRIX_ROW_LENGTH)
-  const colorRows: ColorSwatchRow[] = []
 
-  if (preferredColorOptions.length > 0) {
-    colorRows.push({
-      key: 'preferred',
-      label: 'Preferred',
-      swatches: preferredColorOptions.map((color, index) => ({
-        key: `preferred-${color}-${index}`,
-        color,
-        label: `Preferred color ${index + 1}: ${color}`,
-        shape: 'square',
-      })),
-    })
-  }
+  const indexedRows = React.useMemo(() => {
+    const colorRows: ColorSwatchRow[] = []
+    const preferredColorOptions = preferredColors.filter(Boolean).slice(0, COLOR_MATRIX_ROW_LENGTH)
+    const recentColorOptions = recentColors.filter(Boolean).slice(0, COLOR_MATRIX_ROW_LENGTH)
 
-  if (recentColorOptions.length > 0) {
-    colorRows.push({
-      key: 'recent',
-      label: 'Recent',
-      swatches: recentColorOptions.map((color, index) => ({
-        key: `recent-${color}-${index}`,
-        color,
-        label: `Recent color ${index + 1}: ${color}`,
-        shape: 'square',
-      })),
-    })
-  }
+    if (preferredColorOptions.length > 0) {
+      colorRows.push({
+        key: 'preferred',
+        label: 'Preferred',
+        swatches: preferredColorOptions.map((color, index) => ({
+          key: `preferred-${color}-${index}`,
+          color,
+          label: `Preferred color ${index + 1}: ${color}`,
+          shape: 'square',
+        })),
+      })
+    }
 
-  for (const family of HUE_NAMES) {
-    colorRows.push({
-      key: family,
-      swatches: MATRIX_STEPS.map(step => {
-        const colorVar = getColorVar(family, step)
-        return {
-          key: `${family}-${step}`,
-          color: colorVar,
-          label: `${family} ${step}`,
-          shape: 'round',
-        }
-      }),
-    })
-  }
+    if (recentColorOptions.length > 0) {
+      colorRows.push({
+        key: 'recent',
+        label: 'Recent',
+        swatches: recentColorOptions.map((color, index) => ({
+          key: `recent-${color}-${index}`,
+          color,
+          label: `Recent color ${index + 1}: ${color}`,
+          shape: 'square',
+        })),
+      })
+    }
 
-  let nextFlatIndex = 0
-  const indexedRows: IndexedColorSwatchRow[] = colorRows.map((row, rowIndex) => ({
-    ...row,
-    rowIndex,
-    swatches: row.swatches.map((swatch, columnIndex) => ({
-      ...swatch,
+    for (const family of HUE_NAMES) {
+      colorRows.push({
+        key: family,
+        swatches: MATRIX_STEPS.map(step => {
+          const colorVar = getColorVar(family, step)
+          return {
+            key: `${family}-${step}`,
+            color: colorVar,
+            label: `${family} ${step}`,
+            shape: 'round',
+          }
+        }),
+      })
+    }
+
+    let nextFlatIndex = 0
+    return colorRows.map((row, rowIndex) => ({
+      ...row,
       rowIndex,
-      columnIndex,
-      flatIndex: nextFlatIndex++,
-    })),
-  }))
-  const totalCount = nextFlatIndex
+      swatches: row.swatches.map((swatch, columnIndex) => ({
+        ...swatch,
+        rowIndex,
+        columnIndex,
+        flatIndex: nextFlatIndex++,
+      })),
+    }))
+  }, [preferredColors, recentColors])
+
+  const totalCount = React.useMemo(() => {
+    return indexedRows.reduce((acc, row) => acc + row.swatches.length, 0)
+  }, [indexedRows])
+
+  const [focusedIndex, setFocusedIndex] = React.useState(() => {
+    const swatches = indexedRows.flatMap(row => row.swatches)
+    const selectedIndex = swatches.findIndex(swatch => swatch.color === value)
+    return selectedIndex !== -1 ? selectedIndex : 0
+  })
+
+  React.useEffect(() => {
+    const swatches = indexedRows.flatMap(row => row.swatches)
+    const selectedIndex = swatches.findIndex(swatch => swatch.color === value)
+    if (selectedIndex !== -1) {
+      setFocusedIndex(selectedIndex)
+    }
+  }, [value, indexedRows])
 
   const focusSwatchByFlatIndex = (index: number) => {
     const nextIndex = Math.max(0, Math.min(index, totalCount - 1))
+    setFocusedIndex(nextIndex)
     swatchRefs.current[nextIndex]?.focus()
   }
 
@@ -130,6 +151,7 @@ export function ColorMatrixPicker({
     if (!row) return
     const swatch = row.swatches[Math.max(0, Math.min(columnIndex, row.swatches.length - 1))]
     if (!swatch) return
+    setFocusedIndex(swatch.flatIndex)
     swatchRefs.current[swatch.flatIndex]?.focus()
   }
 
@@ -228,11 +250,13 @@ export function ColorMatrixPicker({
                       }}
                       type="button"
                       role="radio"
+                      tabIndex={swatch.flatIndex === focusedIndex ? 0 : -1}
                       aria-checked={isSelected}
                       aria-label={swatch.label}
                       disabled={disabled}
                       onClick={() => handleColorSelect(swatch.color)}
                       onKeyDown={event => handleSwatchKeyDown(event, swatch)}
+                      onFocus={() => setFocusedIndex(swatch.flatIndex)}
                       style={{ backgroundColor: swatch.color }}
                       className={cn(
                         'h-5 w-5 cursor-pointer border p-0 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
