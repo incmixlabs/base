@@ -39,13 +39,13 @@ export {
   semanticColorVar,
 } from './props/color.prop'
 export * from './runtime/theme-compiler'
-
+export * from './runtime-palette-vars'
+export * from './semantic-lane-vars'
 export {
   ThemeProvider,
   ThemeProvider as Theme,
   type ThemeProviderProps,
 } from './ThemeProvider'
-
 export {
   DEFAULT_THEME_BREAKPOINTS,
   normalizeThemeBreakpoints,
