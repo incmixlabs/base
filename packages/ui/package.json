@@ -85,6 +85,10 @@
       "types": "./dist/elements/navigation-menu/NavigationMenu.d.ts",
       "import": "./dist/elements/navigation-menu/NavigationMenu.js"
     },
+    "./elements/menu/ColorMatrixPicker": {
+      "types": "./dist/elements/menu/ColorMatrixPicker.d.ts",
+      "import": "./dist/elements/menu/ColorMatrixPicker.js"
+    },
     "./elements/qr-code": {
       "types": "./dist/elements/qr-code/index.d.ts",
       "import": "./dist/elements/qr-code.js"

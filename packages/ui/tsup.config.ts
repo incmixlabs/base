@@ -39,6 +39,7 @@ const lightEntries = {
   'elements/confetti': 'src/elements/confetti/index.tsx',
   'elements/qr-code': 'src/elements/qr-code/index.ts',
   'elements/navigation-menu/NavigationMenu': 'src/elements/navigation-menu/NavigationMenu.tsx',
+  'elements/menu/ColorMatrixPicker': 'src/elements/menu/ColorMatrixPicker.tsx',
   'elements/tour': 'src/elements/tour/index.ts',
   resizable: 'src/layouts/resizable/index.ts',
   'resizable/Resizable': 'src/layouts/resizable/Resizable.tsx',
