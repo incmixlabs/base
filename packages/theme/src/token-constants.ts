@@ -144,8 +144,9 @@ export const BORDER_RADIUS_TO_PIXELS = {
   lg: '20px',
   full: '9999px',
 } as const
+export const SKIP_HUES = ['tomato', 'crimson', 'plum', 'sky', 'mint'] as const
 
-export const HUE_NAMES = [
+const ALL_HUE_NAMES = [
   'orange',
   'tomato',
   'red',
@@ -168,7 +169,14 @@ export const HUE_NAMES = [
   'gray',
 ] as const
 
-export type HueName = (typeof HUE_NAMES)[number]
+type SkipHueName = (typeof SKIP_HUES)[number]
+type AllHueName = (typeof ALL_HUE_NAMES)[number]
+
+export type HueName = Exclude<AllHueName, SkipHueName>
+
+export const HUE_NAMES = ALL_HUE_NAMES.filter(
+  (hue): hue is HueName => !SKIP_HUES.includes(hue as SkipHueName),
+) as readonly HueName[]
 
 export const HUE_STEPS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 'contrast'] as const
 

@@ -92,6 +92,10 @@ export {
 export { HoverCard } from './hover-card/HoverCard'
 export { Image, type ImageFocalPoint, type ImageObjectFit, type ImageProps } from './image/Image'
 export {
+  ColorMatrixPicker,
+  type ColorMatrixPickerProps,
+} from './menu/ColorMatrixPicker'
+export {
   type ColorSwatchOption,
   ColorSwatchPicker,
   type ColorSwatchPickerProps,

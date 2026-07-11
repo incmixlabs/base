@@ -340,7 +340,7 @@ export const SEMANTIC_COLOR_DEFAULTS: Record<SemanticLane, SemanticHue> = {
   dark: 'black',
 } as const
 
-const semanticHueLabels: Record<SemanticHue, string> = {
+const semanticHueLabels = {
   slate: 'Slate',
   neutral: 'Neutral',
   inverse: 'Inverse',
@@ -366,7 +366,7 @@ const semanticHueLabels: Record<SemanticHue, string> = {
   amber: 'Amber',
   brown: 'Brown',
   gray: 'Gray',
-}
+} as unknown as Record<SemanticHue, string>
 
 export const SEMANTIC_HUE_OPTIONS = [
   {
