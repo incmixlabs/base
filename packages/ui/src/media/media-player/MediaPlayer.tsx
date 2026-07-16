@@ -830,7 +830,8 @@ function MediaPlayerControls(props: MediaPlayerControlsProps) {
   const isFullscreen = useMediaSelector(state => state.mediaIsFullscreen ?? false)
   const controlsVisible = useStore(state => state.controlsVisible)
 
-  const ControlsPrimitive = asChild ? Slot : 'div'
+  const shouldRenderAsChild = asChild && React.isValidElement(children) && children.type !== React.Fragment
+  const ControlsPrimitive = shouldRenderAsChild ? Slot : 'div'
   const standardControls = (
     <>
       {showPlay ? <MediaPlayerPlay /> : null}

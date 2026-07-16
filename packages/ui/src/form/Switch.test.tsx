@@ -49,6 +49,19 @@ describe('Switch', () => {
     ])
   })
 
+  it('uses neutral checked colors with dark-mode variants', () => {
+    render(<Switch color="neutral" defaultChecked data-testid="switch" />)
+
+    const switchControl = screen.getByTestId('switch')
+
+    expectClassTokens(switchControl.className, [
+      'data-[checked]:[background-color:var(--color-neutral-border)]',
+      'dark:data-[checked]:[background-color:color-mix(in_oklch,var(--color-neutral-border)_72%,white)]',
+      'data-[checked]:[border-color:var(--color-neutral-border)]',
+      'dark:data-[checked]:[border-color:color-mix(in_oklch,var(--color-neutral-border)_72%,white)]',
+    ])
+  })
+
   it.each(switchSizeCases)('uses static size utilities for $size', ({ size, root, thumb: thumbTokens }) => {
     render(<Switch size={size} data-testid="switch" />)
 
