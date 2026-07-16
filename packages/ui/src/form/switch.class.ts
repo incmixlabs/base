@@ -29,7 +29,7 @@ const switchCheckedClassName = (color: string) =>
   ].join(' ')
 
 export const switchUncheckedTrackClassName =
-  '[background-color:var(--color-neutral-border-subtle)] [border-color:var(--color-neutral-border-subtle)] dark:[background-color:color-mix(in_oklch,var(--color-neutral-border-subtle)_68%,white)] dark:[border-color:color-mix(in_oklch,var(--color-neutral-border-subtle)_68%,white)]'
+  '[&:not([data-checked])]:[background-color:var(--color-neutral-border-subtle)] [&:not([data-checked])]:[border-color:var(--color-neutral-border-subtle)] dark:[&:not([data-checked])]:[background-color:color-mix(in_oklch,var(--color-neutral-border-subtle)_68%,white)] dark:[&:not([data-checked])]:[border-color:color-mix(in_oklch,var(--color-neutral-border-subtle)_68%,white)]'
 
 const createSwitchColorVariantClasses = (color: Color): Record<SwitchVariant, string> => ({
   classic: [
