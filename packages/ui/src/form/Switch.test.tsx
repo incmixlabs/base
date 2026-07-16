@@ -38,7 +38,8 @@ describe('Switch', () => {
     const switchControl = screen.getByTestId('switch')
 
     expectClassTokens(switchControl.className, [
-      'bg-neutral-soft',
+      '[background-color:var(--gray-3)]',
+      '[border-color:var(--gray-3)]',
       'data-[checked]:bg-success-solid',
       'data-[checked]:[border-color:var(--color-success-solid)]',
       'focus-visible:[outline-color:var(--color-success-solid-alpha)]',

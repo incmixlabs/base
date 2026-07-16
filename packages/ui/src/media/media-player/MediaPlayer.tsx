@@ -785,28 +785,87 @@ function MediaPlayerAudio(props: MediaPlayerAudioProps) {
 // Controls
 // ============================================================================
 
-function MediaPlayerControls(props: DivProps) {
-  const { asChild, className, ...controlsProps } = props
+interface MediaPlayerControlsProps extends DivProps {
+  placement?: 'overlay' | 'docked'
+  showCaptions?: boolean
+  showDownload?: boolean
+  showFullscreen?: boolean
+  showLoop?: boolean
+  showPictureInPicture?: boolean
+  showPlay?: boolean
+  showPlaybackSpeed?: boolean
+  showSeek?: boolean
+  showSeekBackward?: boolean
+  showSeekForward?: boolean
+  showSettings?: boolean
+  showTime?: boolean
+  showVolume?: boolean
+}
+
+function MediaPlayerControls(props: MediaPlayerControlsProps) {
+  const {
+    asChild,
+    children,
+    className,
+    placement = 'overlay',
+    showCaptions = false,
+    showDownload = false,
+    showFullscreen = true,
+    showLoop = false,
+    showPictureInPicture = false,
+    showPlay = true,
+    showPlaybackSpeed = false,
+    showSeek = true,
+    showSeekBackward = false,
+    showSeekForward = false,
+    showSettings = false,
+    showTime = true,
+    showVolume = true,
+    ...controlsProps
+  } = props
 
   const context = useMediaPlayerContext('MediaPlayerControls')
   const isFullscreen = useMediaSelector(state => state.mediaIsFullscreen ?? false)
   const controlsVisible = useStore(state => state.controlsVisible)
 
   const ControlsPrimitive = asChild ? Slot : 'div'
+  const standardControls = (
+    <>
+      {showPlay ? <MediaPlayerPlay /> : null}
+      {showSeekBackward ? <MediaPlayerSeekBackward /> : null}
+      {showSeekForward ? <MediaPlayerSeekForward /> : null}
+      {showTime ? <MediaPlayerTime /> : null}
+      {showSeek ? <MediaPlayerSeek className="flex-1" /> : null}
+      {showVolume ? <MediaPlayerVolume /> : null}
+      {showPlaybackSpeed ? <MediaPlayerPlaybackSpeed /> : null}
+      {showLoop ? <MediaPlayerLoop /> : null}
+      {showPictureInPicture && context.isVideo ? <MediaPlayerPiP /> : null}
+      {showCaptions && context.isVideo ? <MediaPlayerCaptions /> : null}
+      {showDownload ? <MediaPlayerDownload /> : null}
+      {showFullscreen && context.isVideo ? <MediaPlayerFullscreen /> : null}
+      {showSettings ? <MediaPlayerSettings /> : null}
+    </>
+  )
 
   return (
     <ControlsPrimitive
       data-disabled={context.disabled ? '' : undefined}
+      data-placement={placement}
       data-slot="media-player-controls"
       data-state={isFullscreen ? 'fullscreen' : 'windowed'}
       data-visible={controlsVisible ? '' : undefined}
       dir={context.dir}
       className={cn(
-        'pointer-events-none absolute end-0 bottom-0 start-0 z-50 flex items-center gap-2 in-[:fullscreen]:px-6 px-4 in-[:fullscreen]:py-4 py-3 opacity-0 transition-opacity duration-200 data-[visible]:pointer-events-auto data-[visible]:opacity-100',
+        'z-50 flex items-center gap-2 in-[:fullscreen]:px-6 px-4 in-[:fullscreen]:py-4 py-3',
+        placement === 'overlay'
+          ? 'pointer-events-none absolute end-0 bottom-0 start-0 opacity-0 transition-opacity duration-200 data-[visible]:pointer-events-auto data-[visible]:opacity-100'
+          : 'relative shrink-0 border-neutral border-t bg-neutral-surface text-neutral',
         className,
       )}
       {...controlsProps}
-    />
+    >
+      {children === undefined ? standardControls : children}
+    </ControlsPrimitive>
   )
 }
 

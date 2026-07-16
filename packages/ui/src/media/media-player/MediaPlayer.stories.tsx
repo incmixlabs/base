@@ -78,6 +78,19 @@ export const Minimal: Story = {
   ),
 }
 
+export const DockedControls: Story = {
+  render: () => (
+    <div style={{ width: 640 }}>
+      <MediaPlayer.Root>
+        <MediaPlayer.Video src={VIDEO_SRC} playsInline preload="metadata" />
+        <MediaPlayer.Loading />
+        <MediaPlayer.Error />
+        <MediaPlayer.Controls placement="docked" showPlaybackSpeed />
+      </MediaPlayer.Root>
+    </div>
+  ),
+}
+
 // ============================================================================
 // With Settings
 // ============================================================================
