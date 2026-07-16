@@ -794,6 +794,7 @@ interface MediaPlayerControlsProps extends DivProps {
   showPictureInPicture?: boolean
   showPlay?: boolean
   showPlaybackSpeed?: boolean
+  showReplay?: boolean
   showSeek?: boolean
   showSeekBackward?: boolean
   showSeekForward?: boolean
@@ -815,6 +816,7 @@ function MediaPlayerControls(props: MediaPlayerControlsProps) {
     showPictureInPicture = false,
     showPlay = true,
     showPlaybackSpeed = false,
+    showReplay = false,
     showSeek = true,
     showSeekBackward = false,
     showSeekForward = false,
@@ -832,6 +834,7 @@ function MediaPlayerControls(props: MediaPlayerControlsProps) {
   const standardControls = (
     <>
       {showPlay ? <MediaPlayerPlay /> : null}
+      {showReplay ? <MediaPlayerReplay /> : null}
       {showSeekBackward ? <MediaPlayerSeekBackward /> : null}
       {showSeekForward ? <MediaPlayerSeekForward /> : null}
       {showTime ? <MediaPlayerTime /> : null}
@@ -1218,6 +1221,42 @@ function MediaPlayerPlay(props: React.ComponentProps<typeof Button>) {
         onClick={onPlayToggle}
       >
         {children ?? (mediaPaused ? <PlayIcon className="fill-current" /> : <PauseIcon />)}
+      </Button>
+    </MediaPlayerTooltip>
+  )
+}
+
+function MediaPlayerReplay(props: React.ComponentProps<typeof Button>) {
+  const { onClick, children, className, disabled, ...replayButtonProps } = props
+
+  const context = useMediaPlayerContext('MediaPlayerReplay')
+  const dispatch = useMediaDispatch()
+  const isDisabled = disabled || context.disabled
+
+  const onReplay = (event: React.MouseEvent<HTMLButtonElement>) => {
+    onClick?.(event)
+
+    if (event.defaultPrevented) return
+
+    dispatch({ type: MediaActionTypes.MEDIA_SEEK_REQUEST, detail: 0 })
+    dispatch({ type: MediaActionTypes.MEDIA_PLAY_REQUEST })
+  }
+
+  return (
+    <MediaPlayerTooltip tooltip="Replay">
+      <Button
+        type="button"
+        aria-controls={context.mediaId}
+        aria-label="Replay"
+        data-disabled={isDisabled ? '' : undefined}
+        data-slot="media-player-replay-button"
+        disabled={isDisabled}
+        {...replayButtonProps}
+        variant="ghost"
+        className={cn('h-8 w-8 shrink-0 p-0 [&_svg]:h-4 [&_svg]:w-4', className)}
+        onClick={onReplay}
+      >
+        {children ?? <RefreshCcwIcon />}
       </Button>
     </MediaPlayerTooltip>
   )
@@ -2921,6 +2960,7 @@ export const MediaPlayer = {
   Error: MediaPlayerError,
   VolumeIndicator: MediaPlayerVolumeIndicator,
   Play: MediaPlayerPlay,
+  Replay: MediaPlayerReplay,
   SeekBackward: MediaPlayerSeekBackward,
   SeekForward: MediaPlayerSeekForward,
   Seek: MediaPlayerSeek,
