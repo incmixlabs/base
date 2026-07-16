@@ -32,19 +32,33 @@ const switchSizeCases = [
 ] as const
 
 describe('Switch', () => {
-  it('uses semantic checked colors', () => {
+  it('uses semantic checked and unchecked colors', () => {
     render(<Switch color="success" variant="soft" highContrast size="sm" data-testid="switch" />)
 
     const switchControl = screen.getByTestId('switch')
 
     expectClassTokens(switchControl.className, [
-      'bg-neutral-soft',
+      '[&:not([data-checked])]:[background-color:var(--color-neutral-border-subtle)]',
+      '[&:not([data-checked])]:[border-color:var(--color-neutral-border-subtle)]',
       'data-[checked]:bg-success-solid',
       'data-[checked]:[border-color:var(--color-success-solid)]',
       'focus-visible:[outline-color:var(--color-success-solid-alpha)]',
       'rounded-full',
       'af-high-contrast',
       'saturate-[1.2]',
+    ])
+  })
+
+  it('uses neutral checked colors with dark-mode variants', () => {
+    render(<Switch color="neutral" defaultChecked data-testid="switch" />)
+
+    const switchControl = screen.getByTestId('switch')
+
+    expectClassTokens(switchControl.className, [
+      'data-[checked]:[background-color:var(--color-neutral-border)]',
+      'dark:data-[checked]:[background-color:color-mix(in_oklch,var(--color-neutral-border)_72%,white)]',
+      'data-[checked]:[border-color:var(--color-neutral-border)]',
+      'dark:data-[checked]:[border-color:color-mix(in_oklch,var(--color-neutral-border)_72%,white)]',
     ])
   })
 

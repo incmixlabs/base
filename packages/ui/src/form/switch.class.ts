@@ -20,18 +20,26 @@ const switchFocusClassName = (color: string) =>
 
 const switchCheckedClassName = (color: string) =>
   [
-    joinClass('data-[checked]:bg-', color, '-solid'),
-    joinClass('data-[checked]:[border-color:', colorVar(color, 'solid'), ']'),
+    color === 'neutral'
+      ? 'data-[checked]:[background-color:var(--color-neutral-border)] dark:data-[checked]:[background-color:color-mix(in_oklch,var(--color-neutral-border)_72%,white)]'
+      : joinClass('data-[checked]:bg-', color, '-solid'),
+    color === 'neutral'
+      ? 'data-[checked]:[border-color:var(--color-neutral-border)] dark:data-[checked]:[border-color:color-mix(in_oklch,var(--color-neutral-border)_72%,white)]'
+      : joinClass('data-[checked]:[border-color:', colorVar(color, 'solid'), ']'),
   ].join(' ')
+
+export const switchUncheckedTrackClassName =
+  '[&:not([data-checked])]:[background-color:var(--color-neutral-border-subtle)] [&:not([data-checked])]:[border-color:var(--color-neutral-border-subtle)] dark:[&:not([data-checked])]:[background-color:color-mix(in_oklch,var(--color-neutral-border-subtle)_68%,white)] dark:[&:not([data-checked])]:[border-color:color-mix(in_oklch,var(--color-neutral-border-subtle)_68%,white)]'
 
 const createSwitchColorVariantClasses = (color: Color): Record<SwitchVariant, string> => ({
   classic: [
     switchFocusClassName(color),
     switchCheckedClassName(color),
-    'bg-neutral-surface border-neutral shadow-[inset_0_1px_2px_color-mix(in_oklch,black_10%,transparent)]',
+    switchUncheckedTrackClassName,
+    'shadow-[inset_0_1px_2px_color-mix(in_oklch,black_10%,transparent)]',
   ].join(' '),
-  surface: [switchFocusClassName(color), switchCheckedClassName(color), 'bg-neutral-surface border-neutral'].join(' '),
-  soft: [switchFocusClassName(color), switchCheckedClassName(color), 'bg-neutral-soft border-transparent'].join(' '),
+  surface: [switchFocusClassName(color), switchCheckedClassName(color), switchUncheckedTrackClassName].join(' '),
+  soft: [switchFocusClassName(color), switchCheckedClassName(color), switchUncheckedTrackClassName].join(' '),
 })
 
 const createSegmentedLabelColorClasses = (color: Color) => ({
@@ -115,6 +123,7 @@ export const switchSegmentedSizeClasses: Record<SwitchSize, string> = {
 export const switchClassNames = [
   switchRootBase,
   switchRootForcedColorAdjust,
+  switchUncheckedTrackClassName,
   switchThumbBase,
   switchSegmentedRootBase,
   switchSegmentedControlBase,
