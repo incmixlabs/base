@@ -32,14 +32,14 @@ const switchSizeCases = [
 ] as const
 
 describe('Switch', () => {
-  it('uses semantic checked colors', () => {
+  it('uses semantic checked and unchecked colors', () => {
     render(<Switch color="success" variant="soft" highContrast size="sm" data-testid="switch" />)
 
     const switchControl = screen.getByTestId('switch')
 
     expectClassTokens(switchControl.className, [
-      '[background-color:var(--gray-3)]',
-      '[border-color:var(--gray-3)]',
+      '[&:not([data-checked])]:[background-color:var(--color-neutral-border-subtle)]',
+      '[&:not([data-checked])]:[border-color:var(--color-neutral-border-subtle)]',
       'data-[checked]:bg-success-solid',
       'data-[checked]:[border-color:var(--color-success-solid)]',
       'focus-visible:[outline-color:var(--color-success-solid-alpha)]',
