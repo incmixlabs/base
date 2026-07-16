@@ -34,6 +34,10 @@ export const designTokens = {
     full: '9999px',
   },
 
+  aspectRatio: {
+    galleryCard: '1.64 / 1',
+  },
+
   variant: {
     solid: {
       background: 'var(--color-accent-9)',

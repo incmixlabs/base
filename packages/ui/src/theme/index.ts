@@ -96,6 +96,7 @@ export {
   type ContainerBreakpoint,
   containerBreakpointKeys,
   containerBreakpoints,
+  designTokens,
   type GrayColor,
   type GridColumns,
   HUE_NAMES,
