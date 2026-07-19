@@ -54,6 +54,7 @@ describe('SegmentedControl', () => {
         data-testid="segmented"
         value="a"
         size={'9' as any}
+        radius={'bad' as any}
         variant={'bad' as any}
         color={'nope' as any}
       >
@@ -63,14 +64,46 @@ describe('SegmentedControl', () => {
     )
 
     const root = screen.getByTestId('segmented')
-    expectClassTokens(root.className, ['h-8', 'p-0', 'gap-2'])
+    expectClassTokens(root.className, ['h-8', 'p-0', 'gap-2', 'rounded-none'])
     const indicator = root.querySelector('[aria-hidden="true"]')
     expectClassTokens(indicator?.className, [
+      'rounded-none',
       '[background-color:var(--color-slate-background)]',
       'border',
       'border-solid',
       'border-slate',
     ])
+    expectClassTokens(screen.getByRole('radio', { name: 'A' }).className, ['rounded-none'])
+  })
+
+  it('uses no radius by default for the surface root, indicator, and items', () => {
+    render(
+      <SegmentedControl.Root data-testid="segmented" value="a">
+        <SegmentedControl.Item value="a">A</SegmentedControl.Item>
+        <SegmentedControl.Item value="b">B</SegmentedControl.Item>
+      </SegmentedControl.Root>,
+    )
+
+    const root = screen.getByTestId('segmented')
+    expectClassTokens(root.className, ['rounded-none'])
+    expectClassTokens(root.querySelector('[aria-hidden="true"]')?.className, ['rounded-none'])
+    expectClassTokens(screen.getByRole('radio', { name: 'A' }).className, ['rounded-none'])
+    expectClassTokens(screen.getByRole('radio', { name: 'B' }).className, ['rounded-none'])
+  })
+
+  it('applies the same explicit surface radius to the root, indicator, and items', () => {
+    render(
+      <SegmentedControl.Root data-testid="segmented" value="a" radius="lg">
+        <SegmentedControl.Item value="a">A</SegmentedControl.Item>
+        <SegmentedControl.Item value="b">B</SegmentedControl.Item>
+      </SegmentedControl.Root>,
+    )
+
+    const root = screen.getByTestId('segmented')
+    expectClassTokens(root.className, ['rounded-lg'])
+    expectClassTokens(root.querySelector('[aria-hidden="true"]')?.className, ['rounded-lg'])
+    expectClassTokens(screen.getByRole('radio', { name: 'A' }).className, ['rounded-lg'])
+    expectClassTokens(screen.getByRole('radio', { name: 'B' }).className, ['rounded-lg'])
   })
 
   it('applies high-contrast styles for selected items', () => {

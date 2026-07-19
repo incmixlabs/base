@@ -11,7 +11,6 @@ import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props
 import type { Color, Radius } from '@/theme/tokens'
 import { SurfaceVariants } from '@/theme/tokens'
 import { SimpleTooltip } from '../tooltip/Tooltip'
-import { useThemeRadius } from '../utils'
 import { segmentedControlRootPropDefs } from './segmented-control.props'
 import { selectSegmentedControlVariantSizeMap } from './segmented-control.shared'
 import {
@@ -217,13 +216,12 @@ const SegmentedControlRoot = React.forwardRef<HTMLDivElement, SegmentedControlRo
       segmentedControlRootPropDefs.variant.default) as SegmentedVariant
     const safeColor = (normalizeEnumPropValue(segmentedControlRootPropDefs.color, color) ??
       SemanticColor.slate) as Color
-    const safeRadius = normalizeEnumPropValue(segmentedControlRootPropDefs.radius, radiusProp) as Radius | undefined
+    const radius = normalizeEnumPropValue(segmentedControlRootPropDefs.radius, radiusProp) as Radius
     const safeHighContrast = normalizeBooleanPropValue(segmentedControlRootPropDefs.highContrast, highContrast) ?? false
     const safeHover =
       normalizeBooleanPropValue(segmentedControlRootPropDefs.hover, hover) ?? segmentedControlRootPropDefs.hover.default
     const safeDisabled = normalizeBooleanPropValue(segmentedControlRootPropDefs.disabled, disabled)
     const safeAnimated = normalizeBooleanPropValue(segmentedControlRootPropDefs.animated, animated) ?? false
-    const radius = useThemeRadius(safeRadius)
     const marginProps = getMarginProps({ m: mProp, mx, my, mt, mr, mb, ml })
     const [internalValue, setInternalValue] = React.useState(defaultValue || '')
     const value = controlledValue ?? internalValue

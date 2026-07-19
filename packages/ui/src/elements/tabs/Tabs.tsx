@@ -4,11 +4,12 @@ import { Tabs as TabsPrimitive } from '@base-ui/react/tabs'
 import * as React from 'react'
 import { useComposedRefs } from '@/lib/compose-refs'
 import { cn } from '@/lib/utils'
+import { radiusClassByToken } from '@/theme/helpers'
 import { getMarginProps } from '@/theme/helpers/get-margin-styles'
 import { SemanticColor } from '@/theme/props/color.prop'
 import type { MarginProps } from '@/theme/props/margin.props'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
-import type { Color } from '@/theme/tokens'
+import type { Color, Radius } from '@/theme/tokens'
 import { SimpleTooltip } from '../tooltip/Tooltip'
 import { createTabsSizeConfigs, selectSegmentedControlVariantSizeMap } from './segmented-control.shared'
 import {
@@ -75,6 +76,7 @@ const { surfaceSizes, lineSizes } = createTabsSizeConfigs(
 
 interface TabsContextValue {
   size: TabsSize
+  radius: Radius
   variant: TabsVariant
   color: Color
   highContrast: boolean
@@ -87,6 +89,7 @@ interface TabsContextValue {
 
 const TabsContext = React.createContext<TabsContextValue>({
   size: DEFAULT_TABS_SIZE,
+  radius: tabsPropDefs.Root.radius.default as Radius,
   variant: DEFAULT_TABS_VARIANT,
   color: SemanticColor.slate,
   highContrast: false,
@@ -101,6 +104,7 @@ export interface TabsRootProps extends MarginProps {
   defaultValue?: string
   onValueChange?: (value: string) => void
   size?: TabsSize
+  radius?: Radius
   variant?: TabsVariant
   color?: Color
   highContrast?: boolean
@@ -120,6 +124,7 @@ const TabsRoot = React.forwardRef<HTMLDivElement, TabsRootProps>(
       defaultValue,
       onValueChange,
       size = DEFAULT_TABS_SIZE,
+      radius: radiusProp,
       variant = DEFAULT_TABS_VARIANT,
       color = SemanticColor.slate,
       highContrast = false,
@@ -143,6 +148,7 @@ const TabsRoot = React.forwardRef<HTMLDivElement, TabsRootProps>(
   ) => {
     const tabsSize = (normalizeEnumPropValue(tabsPropDefs.Root.size, size) ??
       tabsPropDefs.Root.size.default) as TabsSize
+    const radius = normalizeEnumPropValue(tabsPropDefs.Root.radius, radiusProp) as Radius
     const safeVariant = (normalizeEnumPropValue(tabsPropDefs.Root.variant, variant) ??
       tabsPropDefs.Root.variant.default) as TabsVariant
     const safeColor = (normalizeEnumPropValue(tabsPropDefs.Root.color, color) ?? SemanticColor.slate) as Color
@@ -168,6 +174,7 @@ const TabsRoot = React.forwardRef<HTMLDivElement, TabsRootProps>(
       <TabsContext.Provider
         value={{
           size: tabsSize,
+          radius,
           variant: safeVariant,
           color: safeColor,
           highContrast: safeHighContrast,
@@ -216,7 +223,7 @@ export interface TabsListProps {
 
 const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(
   ({ className, children, justify = 'start', ...props }, ref) => {
-    const { size, variant, color, activeValue, orientation } = React.useContext(TabsContext)
+    const { size, radius, variant, color, activeValue, orientation } = React.useContext(TabsContext)
 
     const listRef = React.useRef<HTMLDivElement>(null)
     const indicatorStyle = useAnimatedIndicator({
@@ -262,6 +269,7 @@ const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(
         className={cn(
           segmentedRootBaseCls,
           rootSizeClass,
+          variant === TabsVariants.surface && radiusClassByToken[radius],
           variant === TabsVariants.surface && segmentedSurfaceRootByColor[color],
           variant === TabsVariants.line &&
             (isVertical ? segmentedUnderlineRootVerticalByColor[color] : segmentedUnderlineRootByColor[color]),
@@ -280,6 +288,7 @@ const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(
           aria-hidden="true"
           className={cn(
             segmentedIndicatorBaseCls,
+            variant === TabsVariants.surface && radiusClassByToken[radius],
             variant === TabsVariants.line &&
               (isVertical ? segmentedUnderlineIndicatorVerticalCls : segmentedUnderlineIndicatorCls),
             variant === TabsVariants.surface
@@ -305,7 +314,8 @@ export interface TabsTriggerProps {
 
 const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
   ({ value, disabled, className, children, ...props }, ref) => {
-    const { size, variant, color, highContrast, hover, activeValue, orientation, icons } = React.useContext(TabsContext)
+    const { size, radius, variant, color, highContrast, hover, activeValue, orientation, icons } =
+      React.useContext(TabsContext)
     const sizeConfig = selectSegmentedControlVariantSizeMap(variant, TabsVariants.surface, surfaceSizes, lineSizes)[
       size
     ]
@@ -324,6 +334,7 @@ const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
           segmentedTabInteractiveCls,
           'transition-all',
           sizeConfig.trigger,
+          variant === TabsVariants.surface && radiusClassByToken[radius],
           variant === TabsVariants.surface && '!items-end',
           variant === TabsVariants.surface && 'border-0',
           variant === TabsVariants.line && !isVertical && '!items-end',

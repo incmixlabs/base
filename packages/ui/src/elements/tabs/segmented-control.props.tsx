@@ -12,19 +12,20 @@ const segmentedControlSharedRootPropDefs = {
   ...hoverPropDefTrue,
   animated: { type: 'boolean', default: false },
   size: { type: 'enum', values: sizes, default: 'md', responsive: true },
+  radius: { ...radiusPropDef.radius, default: 'none' },
   ...colorPropDef,
   ...highContrastPropDef,
 } satisfies {
   hover: PropDef<boolean>
   animated: PropDef<boolean>
   size: PropDef<(typeof sizes)[number]>
+  radius: PropDef<(typeof radiusPropDef.radius.values)[number]>
 }
 
 const segmentedControlRootPropDefs = {
   ...segmentedControlSharedRootPropDefs,
   disabled: { type: 'boolean', className: 'disabled', default: false },
   variant: { type: 'enum', values: variants, default: 'surface' },
-  ...radiusPropDef,
 } satisfies {
   hover: PropDef<boolean>
   animated: PropDef<boolean>

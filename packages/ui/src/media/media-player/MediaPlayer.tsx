@@ -40,6 +40,7 @@ import { Button } from '@/elements/button/Button'
 import { Image } from '@/elements/image/Image'
 import { DropdownMenu } from '@/elements/menu/DropdownMenu'
 import { Tooltip } from '@/elements/tooltip/Tooltip'
+import { useAsRef } from '@/hooks/use-as-ref'
 import { Slot } from '@/layouts/layout-utils'
 import { useComposedRefs } from '@/lib/compose-refs'
 import { cn } from '@/lib/utils'
@@ -267,11 +268,16 @@ function MediaPlayerImpl(props: MediaPlayerRootProps) {
   const rootRef = React.useRef<RootElement | null>(null)
   const [rootElement, setRootElement] = React.useState<RootElement | null>(null)
   const fullscreenRef = useMediaFullscreenRef()
+  const fullscreenRefCallbackRef = useAsRef(fullscreenRef)
+  const stableFullscreenRef = React.useCallback(
+    (element: RootElement | null) => fullscreenRefCallbackRef.current(element),
+    [fullscreenRefCallbackRef],
+  )
   const setRootRef = React.useCallback((el: RootElement | null) => {
     rootRef.current = el
     setRootElement(el)
   }, [])
-  const composedRef = useComposedRefs(ref, setRootRef, fullscreenRef)
+  const composedRef = useComposedRefs(ref, setRootRef, stableFullscreenRef)
 
   const dir = useDirection(dirProp)
   const dispatch = useMediaDispatch()
@@ -722,7 +728,12 @@ function MediaPlayerVideo(props: MediaPlayerVideoProps) {
   const context = useMediaPlayerContext('MediaPlayerVideo')
   const dispatch = useMediaDispatch()
   const mediaRefCallback = useMediaRef()
-  const composedRef = useComposedRefs(ref, context.setMediaRef, mediaRefCallback)
+  const mediaRefCallbackRef = useAsRef(mediaRefCallback)
+  const stableMediaRefCallback = React.useCallback(
+    (element: HTMLVideoElement | null) => mediaRefCallbackRef.current(element),
+    [mediaRefCallbackRef],
+  )
+  const composedRef = useComposedRefs(ref, context.setMediaRef, stableMediaRefCallback)
 
   const onPlayToggle = (event: React.MouseEvent<HTMLVideoElement>) => {
     onClick?.(event)
@@ -765,7 +776,12 @@ function MediaPlayerAudio(props: MediaPlayerAudioProps) {
 
   const context = useMediaPlayerContext('MediaPlayerAudio')
   const mediaRefCallback = useMediaRef()
-  const composedRef = useComposedRefs(ref, context.setMediaRef, mediaRefCallback)
+  const mediaRefCallbackRef = useAsRef(mediaRefCallback)
+  const stableMediaRefCallback = React.useCallback(
+    (element: HTMLAudioElement | null) => mediaRefCallbackRef.current(element),
+    [mediaRefCallbackRef],
+  )
+  const composedRef = useComposedRefs(ref, context.setMediaRef, stableMediaRefCallback)
 
   const AudioPrimitive = asChild ? Slot : 'audio'
 
