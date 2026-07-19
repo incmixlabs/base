@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import * as React from 'react'
 import { SemanticColor, semanticColorKeys } from '@/theme/props/color.prop'
 import { getPropDefValues } from '@/theme/props/prop-def'
-import { radiusPropDef } from '@/theme/props/radius.prop'
 import { createKeyedStateMap } from '@/theme/tokens'
 import { Text } from '@/typography'
 import { SegmentedControl } from './SegmentedControl'
@@ -27,7 +26,7 @@ export const Playground: Story = {
     },
     radius: {
       control: { type: 'select' },
-      options: getPropDefValues(radiusPropDef.radius),
+      options: getPropDefValues(segmentedControlRootPropDefs.radius),
     },
     color: {
       control: { type: 'select' },
@@ -49,7 +48,7 @@ export const Playground: Story = {
   },
   args: {
     size: 'md',
-    radius: 'md',
+    radius: 'none',
     color: SemanticColor.slate,
     variant: 'surface',
     disabled: false,
@@ -163,7 +162,7 @@ export const Sizes: Story = {
 // Radius
 export const Radius: Story = {
   render: () => {
-    const radii = getPropDefValues(radiusPropDef.radius)
+    const radii = getPropDefValues(segmentedControlRootPropDefs.radius)
     const [values, setValues] = React.useState(createKeyedStateMap(radii, () => 'a'))
 
     return (
@@ -172,7 +171,7 @@ export const Radius: Story = {
           <div key={radius}>
             <Text as="p" size="sm" color="neutral" muted mb="2" className="capitalize">
               {radius}
-              {radius === radiusPropDef.radius.default ? ' (default)' : ''}
+              {radius === segmentedControlRootPropDefs.radius.default ? ' (default)' : ''}
             </Text>
             <SegmentedControl.Root
               radius={radius}

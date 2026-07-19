@@ -12,6 +12,7 @@ const tabsRootPropDefs = {
 } satisfies {
   hover: typeof segmentedControlSharedRootPropDefs.hover
   size: typeof segmentedControlSharedRootPropDefs.size
+  radius: typeof segmentedControlSharedRootPropDefs.radius
   variant: PropDef<(typeof variants)[number]>
   color: typeof segmentedControlSharedRootPropDefs.color
   highContrast: typeof segmentedControlSharedRootPropDefs.highContrast

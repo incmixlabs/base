@@ -25,6 +25,10 @@ export const Playground: Story = {
       control: { type: 'select' },
       options: getPropDefValues(tabsPropDefs.Root.size),
     },
+    radius: {
+      control: { type: 'select' },
+      options: getPropDefValues(tabsPropDefs.Root.radius),
+    },
     variant: {
       control: { type: 'select' },
       options: getPropDefValues(tabsPropDefs.Root.variant),
@@ -42,6 +46,7 @@ export const Playground: Story = {
   },
   args: {
     size: 'md',
+    radius: 'none',
     variant: 'line',
     color: SemanticColor.slate,
     highContrast: false,
@@ -50,6 +55,7 @@ export const Playground: Story = {
   render: args => (
     <Tabs.Root
       size={args.size}
+      radius={args.radius}
       variant={args.variant}
       color={args.color}
       highContrast={args.highContrast}

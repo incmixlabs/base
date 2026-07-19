@@ -90,7 +90,7 @@ describe('Tabs', () => {
 
   it('applies valid values and high-contrast styles', () => {
     render(
-      <Tabs.Root defaultValue="a" size="xl" variant="surface" color="success" highContrast>
+      <Tabs.Root defaultValue="a" size="xl" radius="lg" variant="surface" color="success" highContrast>
         <Tabs.List data-testid="list">
           <Tabs.Trigger value="a">A</Tabs.Trigger>
         </Tabs.List>
@@ -98,9 +98,10 @@ describe('Tabs', () => {
     )
 
     const list = screen.getByTestId('list')
-    expectClassTokens(list.className, ['h-11', 'p-0', 'gap-[0.6875rem]'])
+    expectClassTokens(list.className, ['h-11', 'p-0', 'gap-[0.6875rem]', 'rounded-lg'])
     const indicator = list.querySelector('[aria-hidden="true"]')
     expectClassTokens(indicator?.className, [
+      'rounded-lg',
       '[background-color:var(--color-success-background)]',
       'border',
       'border-solid',
@@ -114,8 +115,26 @@ describe('Tabs', () => {
       '[padding-bottom:calc(0.5rem_-_2px)]',
       'text-xl',
       'leading-7',
+      'rounded-lg',
       '[color:var(--color-success-solid)]',
     ])
+  })
+
+  it('uses no radius by default for the surface list, indicator, and triggers', () => {
+    render(
+      <Tabs.Root defaultValue="a" variant="surface">
+        <Tabs.List data-testid="list">
+          <Tabs.Trigger value="a">A</Tabs.Trigger>
+          <Tabs.Trigger value="b">B</Tabs.Trigger>
+        </Tabs.List>
+      </Tabs.Root>,
+    )
+
+    const list = screen.getByTestId('list')
+    expectClassTokens(list.className, ['rounded-none'])
+    expectClassTokens(list.querySelector('[aria-hidden="true"]')?.className, ['rounded-none'])
+    expectClassTokens(screen.getByRole('tab', { name: 'A' }).className, ['rounded-none'])
+    expectClassTokens(screen.getByRole('tab', { name: 'B' }).className, ['rounded-none'])
   })
 
   it('uses underline size classes for line variant triggers', () => {
