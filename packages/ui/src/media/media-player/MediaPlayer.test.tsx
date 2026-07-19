@@ -70,9 +70,15 @@ describe('MediaPlayer.Controls', () => {
 
 describe('MediaPlayer media refs', () => {
   it('keeps the video ref stable when its parent rerenders', () => {
+    const refCalls: Array<HTMLVideoElement | null> = []
+
     function VideoHarness() {
       const [renderCount, setRenderCount] = React.useState(0)
       const [videoElement, setVideoElement] = React.useState<HTMLVideoElement | null>(null)
+      const handleVideoRef = React.useCallback((element: HTMLVideoElement | null) => {
+        refCalls.push(element)
+        setVideoElement(element)
+      }, [])
 
       return (
         <>
@@ -80,7 +86,7 @@ describe('MediaPlayer media refs', () => {
             Rerender
           </button>
           <MediaPlayer.Root data-render-count={renderCount}>
-            <MediaPlayer.Video ref={setVideoElement} />
+            <MediaPlayer.Video ref={handleVideoRef} />
           </MediaPlayer.Root>
           <span>{videoElement ? 'Video attached' : 'Video detached'}</span>
         </>
@@ -90,7 +96,9 @@ describe('MediaPlayer media refs', () => {
     render(<VideoHarness />)
 
     expect(screen.getByText('Video attached')).toBeInTheDocument()
+    const refCallCountBeforeRerender = refCalls.length
     expect(() => fireEvent.click(screen.getByRole('button', { name: 'Rerender' }))).not.toThrow()
     expect(screen.getByText('Video attached')).toBeInTheDocument()
+    expect(refCalls.slice(refCallCountBeforeRerender)).not.toContain(null)
   })
 })
