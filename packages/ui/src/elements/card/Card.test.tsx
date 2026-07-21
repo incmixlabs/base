@@ -18,6 +18,19 @@ afterEach(() => {
 })
 
 describe('Card', () => {
+  it('reserves a top action row when content contains card actions', () => {
+    render(
+      <Card.Root>
+        <Card.Content data-testid="content">
+          <Card.Actions>Actions</Card.Actions>
+          Content
+        </Card.Content>
+      </Card.Root>,
+    )
+
+    expect(screen.getByTestId('content')).toHaveStyle({ paddingTop: '2rem' })
+  })
+
   it('applies root and responsive padding classes on the card surface', () => {
     render(
       <Card.Root data-testid="card" size={{ initial: 'xs', md: 'lg' }}>

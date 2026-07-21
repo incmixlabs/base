@@ -4,12 +4,20 @@ import type { cardPropDefs } from './card.props'
 type CardSize = (typeof cardPropDefs.size.values)[number]
 type CardContainerBreakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
-export const cardRootBase = '[container-type:inline-size]'
+export const cardRootBase = '[container-type:inline-size] group relative'
 export const cardRootSizeWrapperBase = 'box-border'
 export const cardHeaderBase = 'flex flex-col gap-[0.375rem]'
 export const cardTitleBase = 'text-lg font-semibold leading-none tracking-tight'
 export const cardContentBase = 'pt-4'
+export const cardContentActionClearance = '2rem'
 export const cardFooterBase = 'flex items-center pt-4'
+export const cardActionsBase = 'absolute end-0 top-0 z-10 flex items-center gap-1'
+export const cardActionsRevealHoverFocus = [
+  'pointer-events-none opacity-0',
+  'transition-opacity duration-[var(--af-motion-fast)] ease-[var(--af-ease-standard)] motion-reduce:transition-none',
+  'group-hover:!pointer-events-auto group-hover:opacity-100',
+  'group-focus-within:!pointer-events-auto group-focus-within:opacity-100',
+].join(' ')
 
 export const cardSizeClass = 'af-card-size'
 

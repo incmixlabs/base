@@ -21,6 +21,9 @@ import { Title, type TitleProps } from '@/typography/title/Title'
 import { Surface } from '../surface/Surface'
 import type { SurfaceShape } from '../surface/surface.props'
 import {
+  cardActionsBase,
+  cardActionsRevealHoverFocus,
+  cardContentActionClearance,
   cardContentBase,
   cardFooterBase,
   cardHeaderBase,
@@ -118,6 +121,7 @@ export const CardRoot = React.forwardRef<HTMLDivElement, CardRootProps>(
       ...propsWithoutLayoutComposition,
       radius: resolvedRadius,
     })
+    const { onClick: onRootClick, ...surfaceProps } = rootProps
     const hasExplicitPaddingProps = [
       sharedLayoutProps.p,
       sharedLayoutProps.px,
@@ -177,7 +181,15 @@ export const CardRoot = React.forwardRef<HTMLDivElement, CardRootProps>(
             '--inset-border-radius': designTokens.radius[themeRadius],
           } as React.CSSProperties
         }
-        {...rootProps}
+        {...surfaceProps}
+        onClick={event => {
+          const target = event.target as HTMLElement
+          if (target.closest?.('[data-slot="card-actions"]')) {
+            event.stopPropagation()
+            return
+          }
+          onRootClick?.(event)
+        }}
       >
         {content}
       </Surface>
@@ -245,6 +257,35 @@ export const CardDescription = React.forwardRef<HTMLParagraphElement, CardDescri
 CardDescription.displayName = 'Card.Description'
 
 // ============================================================================
+// Card Actions
+// ============================================================================
+
+export type CardActionsReveal = 'always' | 'hover-focus'
+
+export interface CardActionsProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Controls whether actions remain visible or appear when the card is hovered or focused. */
+  reveal?: CardActionsReveal
+}
+
+/** Actions positioned at the logical top-end of the card. */
+export const CardActions = React.forwardRef<HTMLDivElement, CardActionsProps>(
+  ({ className, children, reveal = 'always', ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        data-slot="card-actions"
+        className={cn(cardActionsBase, reveal === 'hover-focus' && cardActionsRevealHoverFocus, className)}
+        {...props}
+      >
+        {children}
+      </div>
+    )
+  },
+)
+
+CardActions.displayName = 'Card.Actions'
+
+// ============================================================================
 // Card Content
 // ============================================================================
 
@@ -252,9 +293,18 @@ export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
 
 /** CardContent export. */
 export const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
-  ({ className, children, ...props }, ref) => {
+  ({ className, children, style, ...props }, ref) => {
+    const hasActions = React.Children.toArray(children).some(
+      child => React.isValidElement(child) && child.type === CardActions,
+    )
+
     return (
-      <div ref={ref} className={cn(cardContentBase, className)} {...props}>
+      <div
+        ref={ref}
+        className={cn(cardContentBase, className)}
+        style={{ paddingTop: hasActions ? cardContentActionClearance : undefined, ...style }}
+        {...props}
+      >
         {children}
       </div>
     )
@@ -289,6 +339,7 @@ CardFooter.displayName = 'Card.Footer'
 /** Card export. */
 export const Card = {
   Root: CardRoot,
+  Actions: CardActions,
   Header: CardHeader,
   Title: CardTitle,
   Description: CardDescription,
@@ -298,6 +349,7 @@ export const Card = {
 
 export namespace CardProps {
   export type Root = CardRootProps
+  export type Actions = CardActionsProps
   export type Header = CardHeaderProps
   export type Title = CardTitleProps
   export type Description = CardDescriptionProps
