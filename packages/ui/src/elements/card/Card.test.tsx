@@ -28,7 +28,7 @@ describe('Card', () => {
       </Card.Root>,
     )
 
-    expect(screen.getByTestId('content').className).toContain('[&:has(>[data-slot=card-actions])]:pt-10')
+    expect(screen.getByTestId('content')).toHaveStyle({ paddingTop: '2rem' })
   })
 
   it('applies root and responsive padding classes on the card surface', () => {

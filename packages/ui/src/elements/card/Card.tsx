@@ -23,6 +23,7 @@ import type { SurfaceShape } from '../surface/surface.props'
 import {
   cardActionsBase,
   cardActionsRevealHoverFocus,
+  cardContentActionClearance,
   cardContentBase,
   cardFooterBase,
   cardHeaderBase,
@@ -292,9 +293,18 @@ export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
 
 /** CardContent export. */
 export const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
-  ({ className, children, ...props }, ref) => {
+  ({ className, children, style, ...props }, ref) => {
+    const hasActions = React.Children.toArray(children).some(
+      child => React.isValidElement(child) && child.type === CardActions,
+    )
+
     return (
-      <div ref={ref} className={cn(cardContentBase, className)} {...props}>
+      <div
+        ref={ref}
+        className={cn(cardContentBase, className)}
+        style={{ paddingTop: hasActions ? cardContentActionClearance : undefined, ...style }}
+        {...props}
+      >
         {children}
       </div>
     )
