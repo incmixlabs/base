@@ -8,7 +8,7 @@ export const cardRootBase = '[container-type:inline-size] group relative'
 export const cardRootSizeWrapperBase = 'box-border'
 export const cardHeaderBase = 'flex flex-col gap-[0.375rem]'
 export const cardTitleBase = 'text-lg font-semibold leading-none tracking-tight'
-export const cardContentBase = 'pt-4'
+export const cardContentBase = 'pt-4 [&:has(>[data-slot=card-actions])]:pt-10'
 export const cardFooterBase = 'flex items-center pt-4'
 export const cardActionsBase = 'absolute end-0 top-0 z-10 flex items-center gap-1'
 export const cardActionsRevealHoverFocus = [
