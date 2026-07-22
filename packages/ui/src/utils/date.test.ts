@@ -35,4 +35,16 @@ describe('date utilities', () => {
 
     expect(formatDate('2026-07-22')).toBe(expected)
   })
+
+  it('formats date-only values with years below 100 as local calendar dates', () => {
+    const expectedDate = new Date(0)
+    expectedDate.setFullYear(1, 0, 1)
+    expectedDate.setHours(0, 0, 0, 0)
+    const expected = new Intl.DateTimeFormat(undefined, {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    }).format(expectedDate)
+
+    expect(formatDate('0001-01-01')).toBe(expected)
+  })
 })

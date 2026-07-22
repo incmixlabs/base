@@ -15,7 +15,9 @@ function parseDateOnly(value: string) {
   const year = Number(yearText)
   const month = Number(monthText) - 1
   const day = Number(dayText)
-  const date = new Date(year, month, day)
+  const date = new Date(0)
+  date.setFullYear(year, month, day)
+  date.setHours(0, 0, 0, 0)
   if (date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day) return undefined
   return date
 }
