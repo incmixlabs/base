@@ -217,6 +217,10 @@
       "types": "./dist/utils/date.d.ts",
       "import": "./dist/utils/date.js"
     },
+    "./utils/file": {
+      "types": "./dist/utils/file.d.ts",
+      "import": "./dist/utils/file.js"
+    },
     "./utils/object": {
       "types": "./dist/utils/object.d.ts",
       "import": "./dist/utils/object.js"

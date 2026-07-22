@@ -20,5 +20,14 @@ export type {
   ThemeBreakpoints,
 } from './theme/theme-breakpoints'
 export type { ThemeDashboard } from './theme/theme-dashboard'
-export { isJsonObject } from './utils/object'
+export { formatDate, formatDurationMs, isSameDay } from './utils/date'
+export { formatBytes, formatDimensions } from './utils/file'
+export type {
+  JsonArrayValue,
+  JsonObjectValue,
+  JsonPrimitiveValue,
+  JsonValue,
+  StructuredJsonValue,
+} from './utils/object'
+export { isJsonObject, parseStructuredJsonValue } from './utils/object'
 export { escapeCssString, extractPrimaryFontFamily } from './utils/strings'
