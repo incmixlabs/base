@@ -24,6 +24,8 @@ export interface ThemeProviderContextValue {
   scaling?: string
   breakpoints?: ThemeBreakpoints
   dashboard?: ThemeDashboard
+  themeClassName?: string
+  themeStyles?: React.CSSProperties
 }
 
 import { ThemeRadiusProvider } from '../elements/utils'
@@ -65,25 +67,16 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     }
   }, [dashboard])
 
-  const contextValue = React.useMemo(
-    () => ({
-      appearance,
-      accentColor,
-      grayColor,
-      radius,
-      scaling,
-      breakpoints: normalizedBreakpoints,
-      dashboard: normalizedDashboard,
-    }),
-    [appearance, accentColor, grayColor, radius, scaling, normalizedBreakpoints, normalizedDashboard],
-  )
-
   const themeClassName = [
     'af-themes',
     appearance === 'light' && 'light',
     appearance === 'dark' && 'dark',
     props.className,
   ]
+    .filter(Boolean)
+    .join(' ')
+
+  const coreThemeClassName = ['af-themes', appearance === 'light' && 'light', appearance === 'dark' && 'dark']
     .filter(Boolean)
     .join(' ')
 
@@ -94,6 +87,31 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     ...(grayColor !== undefined ? { 'data-gray-color': grayColor } : {}),
     ...(scaling !== undefined ? { 'data-scaling': scaling } : {}),
   }
+
+  const contextValue = React.useMemo<ThemeProviderContextValue>(
+    () => ({
+      appearance,
+      accentColor,
+      grayColor,
+      radius,
+      scaling,
+      breakpoints: normalizedBreakpoints,
+      dashboard: normalizedDashboard,
+      themeClassName: coreThemeClassName,
+      themeStyles: style,
+    }),
+    [
+      appearance,
+      accentColor,
+      grayColor,
+      radius,
+      scaling,
+      normalizedBreakpoints,
+      normalizedDashboard,
+      coreThemeClassName,
+      style,
+    ],
+  )
 
   return (
     <ThemeContext.Provider value={contextValue}>

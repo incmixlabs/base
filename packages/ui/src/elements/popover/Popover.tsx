@@ -10,7 +10,7 @@ import { SemanticColor } from '@/theme/props/color.prop'
 import type { HeightProps } from '@/theme/props/height.props'
 import { normalizeBooleanPropValue, normalizeEnumPropValue } from '@/theme/props/prop-def'
 import type { WidthProps } from '@/theme/props/width.props'
-import { useThemePortalContainer } from '@/theme/theme-provider.context'
+import { ThemeContext } from '@/theme/theme-provider.context'
 import type { Color, Radius } from '@/theme/tokens'
 import { IconButton } from '../button/IconButton'
 import { FloatingArrowSvg } from '../surface/FloatingArrowSvg'
@@ -196,11 +196,20 @@ const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentProps>(
       [safeVariant, safeColor, safeHighContrast],
     )
 
-    const portalContainer = useThemePortalContainer()
+    const themeContext = React.useContext(ThemeContext)
+    const themeClassName = themeContext?.themeClassName
+    const themeStyles = themeContext?.themeStyles
+    const resolvedPortalContainer = typeof document !== 'undefined' ? document.body : undefined
 
     return (
-      <PopoverPrimitive.Portal container={portalContainer}>
-        <PopoverPrimitive.Positioner side={side} align={align} sideOffset={sideOffset} alignOffset={alignOffset}>
+      <PopoverPrimitive.Portal container={resolvedPortalContainer}>
+        <PopoverPrimitive.Positioner
+          side={side}
+          align={align}
+          sideOffset={sideOffset}
+          alignOffset={alignOffset}
+          style={{ zIndex: 1000 }}
+        >
           <PopoverVisualContext.Provider value={contextValue}>
             <PopoverPrimitive.Popup
               ref={ref}
@@ -216,10 +225,18 @@ const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentProps>(
                 safeHighContrast && floatingSurfaceHighContrastEffectByVariant[safeVariant],
                 widthProps.className,
                 heightProps.className,
+                themeClassName,
                 className,
               )}
-              style={{ ...getRadiusStyles(radius), ...widthProps.style, ...heightProps.style }}
               {...props}
+              style={{
+                zIndex: 1000,
+                ...getRadiusStyles(radius),
+                ...widthProps.style,
+                ...heightProps.style,
+                ...themeStyles,
+                ...(props as { style?: React.CSSProperties }).style,
+              }}
             >
               {children}
             </PopoverPrimitive.Popup>
