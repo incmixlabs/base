@@ -12,6 +12,8 @@ export interface ThemeProviderContextValue {
   scaling?: string
   breakpoints?: ThemeBreakpoints
   dashboard?: ThemeDashboard
+  themeClassName?: string
+  themeStyles?: React.CSSProperties
 }
 
 export const ThemeContext = React.createContext<ThemeProviderContextValue | undefined>(undefined)
@@ -23,7 +25,7 @@ export function useThemePortalContainer(): HTMLElement | null | undefined {
   const hasProvider = React.useContext(ThemeContext) !== undefined
   const container = React.useContext(ThemePortalContainerContext)
   if (!hasProvider) return undefined
-  return container
+  return container || undefined
 }
 
 export function useRootThemePortalContainer(): HTMLElement | null | undefined {
